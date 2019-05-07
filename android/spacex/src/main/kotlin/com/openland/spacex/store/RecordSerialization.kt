@@ -44,7 +44,7 @@ fun parseRecord(key: String, src: String): Record {
     val field = JSONObject(src)
     val fields = mutableMapOf<String, RecordValue>()
     for (key in field.keys()) {
-        val f = field[key]
+        val f = field[key]!!
         fields[key] = parseValue(f)
     }
     return Record(key, fields)

@@ -1,6 +1,5 @@
 package com.openland.spacex.store
 
-import android.util.Log
 import com.openland.spacex.InvalidDataException
 import com.openland.spacex.OutputType
 import com.openland.spacex.Selector
@@ -164,7 +163,7 @@ fun normalizeResponse(rootCacheKey: String?, type: OutputType.Object, arguments:
     val res = collection.build()
     val delta = System.currentTimeMillis() - start
     if (delta > 20) {
-        Log.e("SpaceX", "Normalization took too long: " + (System.currentTimeMillis() - start) + " ms")
+        // Log.e("SpaceX", "Normalization took too long: " + (System.currentTimeMillis() - start) + " ms")
     }
     return res
 }
