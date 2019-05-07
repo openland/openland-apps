@@ -210,6 +210,7 @@ export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
 export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFragment>(Comment.CommentEntryFragment);
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
+export const ConferenceShortFragment = typedFragment<Types.ConferenceShort>(ConferenceFull.ConferenceShort);
 export const DaialogListMessageFragment = typedFragment<Types.DaialogListMessage>(Message.DaialogListMessage);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);

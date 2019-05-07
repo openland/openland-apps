@@ -695,45 +695,45 @@
       }
     },
     {
-      "signature": "7b1d85efeed96709518738c1acde5ab65b33e4d9d6aadab3a7235f795cbaed34",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename conference{__typename...ConferenceFull}peerId}}",
+      "signature": "b8cb15eee931e2e8c16a223b09eaccf032834704ff3011ed47014e89f1bb8ec1",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename conference{__typename...ConferenceShort}peerId}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename conference{__typename...ConferenceFull}peerId}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename conference{__typename...ConferenceShort}peerId}}"
       }
     },
     {
-      "signature": "79d90b791205f712d4ea803bcacadb0e900befe943f64aa5b64095d23379202e",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename...ConferenceFull}}",
+      "signature": "b80ed86b16c7c0afdf7411e50a9b62da8dd68e401214e2f97312ad079b79d97a",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename...ConferenceShort}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename...ConferenceFull}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename...ConferenceShort}}"
       }
     },
     {
-      "signature": "4f34185332afbcccc1a09cd00f6ec7ad70a02a9fec800fe3add9edcb4e4930a8",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename...ConferenceFull}}",
+      "signature": "3b90c98e80ef34310cb5410ce01f1f0511641b1e5756aab67e9bb6f6763aefd0",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename...ConferenceShort}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename...ConferenceFull}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename...ConferenceShort}}"
       }
     },
     {
-      "signature": "8b94c4defd83133c55947ade0e38715bf9ffbc22c38f04702c918ed4104b9ea4",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceOffer($id:ID!,$offer:String!,$ownPeerId:ID!,$peerId:ID!){peerConnectionOffer(id:$id,offer:$offer,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}",
+      "signature": "aac299594cbdf824d55de7ea47da99b648e1a25cfb6379fb6da3a328e8d44995",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceOffer($id:ID!,$offer:String!,$ownPeerId:ID!,$peerId:ID!){peerConnectionOffer(id:$id,offer:$offer,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceOffer($id:ID!,$offer:String!,$ownPeerId:ID!,$peerId:ID!){peerConnectionOffer(id:$id,offer:$offer,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceOffer($id:ID!,$offer:String!,$ownPeerId:ID!,$peerId:ID!){peerConnectionOffer(id:$id,offer:$offer,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}"
       }
     },
     {
-      "signature": "6f297f0d7167b7b5fb9f4531d3f19b008aa9f2aa31566caa593754bdb0673095",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceAnswer($answer:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionAnswer(answer:$answer,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}",
+      "signature": "14adcc187fea824856e738087d8f796a41a010efcc799af8a5694d53b01653f7",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceAnswer($answer:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionAnswer(answer:$answer,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceAnswer($answer:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionAnswer(answer:$answer,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceAnswer($answer:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionAnswer(answer:$answer,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}"
       }
     },
     {
-      "signature": "8e02cd81c6374fafdd57cb761f2464d7bac709c99b222d3b471247bdeae8f20d",
-      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceCandidate($candidate:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionCandidate(candidate:$candidate,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}",
+      "signature": "4020fa9e9ab956bc2951daf928ac924096bc32a897436b4bdbc2b890df4e3b92",
+      "document": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceCandidate($candidate:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionCandidate(candidate:$candidate,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}",
       "metadata": {
-        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation ConferenceCandidate($candidate:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionCandidate(candidate:$candidate,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceFull}}"
+        "engineSignature": "fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}mutation ConferenceCandidate($candidate:String!,$id:ID!,$ownPeerId:ID!,$peerId:ID!){peerConnectionCandidate(candidate:$candidate,id:$id,ownPeerId:$ownPeerId,peerId:$peerId){__typename...ConferenceShort}}"
       }
     },
     {

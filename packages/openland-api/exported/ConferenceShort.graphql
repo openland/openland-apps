@@ -1,0 +1,11 @@
+fragment ConferenceShort on Conference {
+  __typename
+  iceServers {
+    __typename
+    credential
+    urls
+    username
+  }
+  id
+  startTime
+}

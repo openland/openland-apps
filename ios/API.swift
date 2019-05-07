@@ -14010,9 +14010,9 @@ public final class ConferenceMediaQuery: GraphQLQuery {
 
 public final class ConferenceJoinMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceFull\n    }\n  }\n}"
+    "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceShort\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
 
@@ -14101,7 +14101,7 @@ public final class ConferenceJoinMutation: GraphQLMutation {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(ConferenceFull.self),
+          GraphQLFragmentSpread(ConferenceShort.self),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -14135,9 +14135,9 @@ public final class ConferenceJoinMutation: GraphQLMutation {
             self.resultMap = unsafeResultMap
           }
 
-          public var conferenceFull: ConferenceFull {
+          public var conferenceShort: ConferenceShort {
             get {
-              return ConferenceFull(unsafeResultMap: resultMap)
+              return ConferenceShort(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -14151,9 +14151,9 @@ public final class ConferenceJoinMutation: GraphQLMutation {
 
 public final class ConferenceLeaveMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}"
+    "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
   public var peerId: GraphQLID
@@ -14198,7 +14198,7 @@ public final class ConferenceLeaveMutation: GraphQLMutation {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(ConferenceFull.self),
+        GraphQLFragmentSpread(ConferenceShort.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -14232,9 +14232,9 @@ public final class ConferenceLeaveMutation: GraphQLMutation {
           self.resultMap = unsafeResultMap
         }
 
-        public var conferenceFull: ConferenceFull {
+        public var conferenceShort: ConferenceShort {
           get {
-            return ConferenceFull(unsafeResultMap: resultMap)
+            return ConferenceShort(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -14247,9 +14247,9 @@ public final class ConferenceLeaveMutation: GraphQLMutation {
 
 public final class ConferenceKeepAliveMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}"
+    "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
   public var peerId: GraphQLID
@@ -14294,7 +14294,7 @@ public final class ConferenceKeepAliveMutation: GraphQLMutation {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(ConferenceFull.self),
+        GraphQLFragmentSpread(ConferenceShort.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -14328,9 +14328,9 @@ public final class ConferenceKeepAliveMutation: GraphQLMutation {
           self.resultMap = unsafeResultMap
         }
 
-        public var conferenceFull: ConferenceFull {
+        public var conferenceShort: ConferenceShort {
           get {
-            return ConferenceFull(unsafeResultMap: resultMap)
+            return ConferenceShort(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -14343,9 +14343,9 @@ public final class ConferenceKeepAliveMutation: GraphQLMutation {
 
 public final class ConferenceOfferMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceFull\n  }\n}"
+    "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
   public var ownPeerId: GraphQLID
@@ -14394,7 +14394,7 @@ public final class ConferenceOfferMutation: GraphQLMutation {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(ConferenceFull.self),
+        GraphQLFragmentSpread(ConferenceShort.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -14428,9 +14428,9 @@ public final class ConferenceOfferMutation: GraphQLMutation {
           self.resultMap = unsafeResultMap
         }
 
-        public var conferenceFull: ConferenceFull {
+        public var conferenceShort: ConferenceShort {
           get {
-            return ConferenceFull(unsafeResultMap: resultMap)
+            return ConferenceShort(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -14443,9 +14443,9 @@ public final class ConferenceOfferMutation: GraphQLMutation {
 
 public final class ConferenceAnswerMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceFull\n  }\n}"
+    "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
   public var ownPeerId: GraphQLID
@@ -14494,7 +14494,7 @@ public final class ConferenceAnswerMutation: GraphQLMutation {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(ConferenceFull.self),
+        GraphQLFragmentSpread(ConferenceShort.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -14528,9 +14528,9 @@ public final class ConferenceAnswerMutation: GraphQLMutation {
           self.resultMap = unsafeResultMap
         }
 
-        public var conferenceFull: ConferenceFull {
+        public var conferenceShort: ConferenceShort {
           get {
-            return ConferenceFull(unsafeResultMap: resultMap)
+            return ConferenceShort(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -14543,9 +14543,9 @@ public final class ConferenceAnswerMutation: GraphQLMutation {
 
 public final class ConferenceCandidateMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceFull\n  }\n}"
+    "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(ConferenceFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(ConferenceShort.fragmentDefinition) }
 
   public var id: GraphQLID
   public var ownPeerId: GraphQLID
@@ -14594,7 +14594,7 @@ public final class ConferenceCandidateMutation: GraphQLMutation {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(ConferenceFull.self),
+        GraphQLFragmentSpread(ConferenceShort.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -14628,9 +14628,9 @@ public final class ConferenceCandidateMutation: GraphQLMutation {
           self.resultMap = unsafeResultMap
         }
 
-        public var conferenceFull: ConferenceFull {
+        public var conferenceShort: ConferenceShort {
           get {
-            return ConferenceFull(unsafeResultMap: resultMap)
+            return ConferenceShort(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -23912,6 +23912,123 @@ public struct ConferenceFull: GraphQLFragment {
           resultMap.updateValue(newValue, forKey: "ice")
         }
       }
+    }
+  }
+
+  public struct IceServer: GraphQLSelectionSet {
+    public static let possibleTypes = ["ICEServer"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("urls", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+      GraphQLField("username", type: .scalar(String.self)),
+      GraphQLField("credential", type: .scalar(String.self)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(urls: [String], username: String? = nil, credential: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "ICEServer", "urls": urls, "username": username, "credential": credential])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var urls: [String] {
+      get {
+        return resultMap["urls"]! as! [String]
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "urls")
+      }
+    }
+
+    public var username: String? {
+      get {
+        return resultMap["username"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "username")
+      }
+    }
+
+    public var credential: String? {
+      get {
+        return resultMap["credential"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "credential")
+      }
+    }
+  }
+}
+
+public struct ConferenceShort: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}"
+
+  public static let possibleTypes = ["Conference"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("startTime", type: .scalar(String.self)),
+    GraphQLField("iceServers", type: .nonNull(.list(.nonNull(.object(IceServer.selections))))),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, startTime: String? = nil, iceServers: [IceServer]) {
+    self.init(unsafeResultMap: ["__typename": "Conference", "id": id, "startTime": startTime, "iceServers": iceServers.map { (value: IceServer) -> ResultMap in value.resultMap }])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var startTime: String? {
+    get {
+      return resultMap["startTime"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "startTime")
+    }
+  }
+
+  public var iceServers: [IceServer] {
+    get {
+      return (resultMap["iceServers"] as! [ResultMap]).map { (value: ResultMap) -> IceServer in IceServer(unsafeResultMap: value) }
+    }
+    set {
+      resultMap.updateValue(newValue.map { (value: IceServer) -> ResultMap in value.resultMap }, forKey: "iceServers")
     }
   }
 

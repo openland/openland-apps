@@ -4721,6 +4721,15 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if name == "ConferenceShort" {
+      let data = ConferenceShort(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
     if name == "DaialogListMessage" {
       let data = DaialogListMessage(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename

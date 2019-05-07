@@ -8253,7 +8253,7 @@
 					"type": "ID!"
 				}
 			],
-			"source": "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceFull\n    }\n  }\n}",
+			"source": "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceShort\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "conferenceJoin",
@@ -8300,7 +8300,7 @@
 								}
 							],
 							"fragmentSpreads": [
-								"ConferenceFull"
+								"ConferenceShort"
 							],
 							"inlineFragments": []
 						}
@@ -8312,12 +8312,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceFull\n    }\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "849c06479cd527be5db92611f391386677d65d8322188dc5ccfb55adb9c4396d"
+			"sourceWithFragments": "mutation ConferenceJoin($id: ID!) {\n  conferenceJoin(id: $id) {\n    __typename\n    peerId\n    conference {\n      __typename\n      ...ConferenceShort\n    }\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "b401f8c43af22acd594c50a6cdd30eafaa2d4f6cb604e3a950be45eeb67ddc37"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -8334,7 +8332,7 @@
 					"type": "ID!"
 				}
 			],
-			"source": "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}",
+			"source": "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "conferenceLeave",
@@ -8369,7 +8367,7 @@
 						}
 					],
 					"fragmentSpreads": [
-						"ConferenceFull"
+						"ConferenceShort"
 					],
 					"inlineFragments": []
 				}
@@ -8377,12 +8375,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "eb3447a7346692c875b8896b01754630b4eaaac4e5ed396996d68124e9590cfb"
+			"sourceWithFragments": "mutation ConferenceLeave($id: ID!, $peerId: ID!) {\n  conferenceLeave(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "4cccfd3d69b2d796431aae940fc397e517d7d4ee9b1f9d36b328ad639f088c66"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -8399,7 +8395,7 @@
 					"type": "ID!"
 				}
 			],
-			"source": "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}",
+			"source": "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "conferenceKeepAlive",
@@ -8434,7 +8430,7 @@
 						}
 					],
 					"fragmentSpreads": [
-						"ConferenceFull"
+						"ConferenceShort"
 					],
 					"inlineFragments": []
 				}
@@ -8442,12 +8438,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceFull\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "45079fc18408650bcb431d14a065e54a9ec3fb715262807596d0b9654e95785e"
+			"sourceWithFragments": "mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {\n  conferenceKeepAlive(id: $id, peerId: $peerId) {\n    __typename\n    ...ConferenceShort\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "a18fc76228f42e0f393f819cf5759111a159e327502c1cd483f4492ce681d367"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -8472,7 +8466,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceFull\n  }\n}",
+			"source": "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "peerConnectionOffer",
@@ -8523,7 +8517,7 @@
 						}
 					],
 					"fragmentSpreads": [
-						"ConferenceFull"
+						"ConferenceShort"
 					],
 					"inlineFragments": []
 				}
@@ -8531,12 +8525,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceFull\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "083f73a42f658aac5d92c781d6d05a6e7a06d8e6f8b83434d6bd060cab8b6fad"
+			"sourceWithFragments": "mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {\n  peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {\n    __typename\n    ...ConferenceShort\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "b1f74b0ad73c2ff17a9ecd6fd984230e188995c4e320d89bef138c9f7ac29651"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -8561,7 +8553,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceFull\n  }\n}",
+			"source": "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "peerConnectionAnswer",
@@ -8612,7 +8604,7 @@
 						}
 					],
 					"fragmentSpreads": [
-						"ConferenceFull"
+						"ConferenceShort"
 					],
 					"inlineFragments": []
 				}
@@ -8620,12 +8612,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceFull\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "7f4baf6488941839b2149a405c0f5d4eb283db17fd085c979f18f3f7eb3a146d"
+			"sourceWithFragments": "mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {\n  peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {\n    __typename\n    ...ConferenceShort\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "abbd10248ecfb96953078f31dd5f48456439e3ce4a0e8bfc1bf83cf81188c5c3"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -8650,7 +8640,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceFull\n  }\n}",
+			"source": "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "peerConnectionCandidate",
@@ -8701,7 +8691,7 @@
 						}
 					],
 					"fragmentSpreads": [
-						"ConferenceFull"
+						"ConferenceShort"
 					],
 					"inlineFragments": []
 				}
@@ -8709,12 +8699,10 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"ConferenceFull",
-				"UserShort",
-				"OrganizationShort"
+				"ConferenceShort"
 			],
-			"sourceWithFragments": "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceFull\n  }\n}\nfragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "58a1e7be85fdef3a29cb66961a3ef0576555854c2e3cf9079a4fe5dc4b3ff733"
+			"sourceWithFragments": "mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {\n  peerConnectionCandidate(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, candidate: $candidate) {\n    __typename\n    ...ConferenceShort\n  }\n}\nfragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"operationId": "49b5ed93964906df2ac91f3018d3f64f9ded84d4d2cb180bbea6125c63d6dbd5"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
@@ -14663,6 +14651,77 @@
 					],
 					"fragmentSpreads": [],
 					"inlineFragments": []
+				},
+				{
+					"responseName": "iceServers",
+					"fieldName": "iceServers",
+					"type": "[ICEServer!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "urls",
+							"fieldName": "urls",
+							"type": "[String!]!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "username",
+							"fieldName": "username",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "credential",
+							"fieldName": "credential",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
+			"typeCondition": "Conference",
+			"possibleTypes": [
+				"Conference"
+			],
+			"fragmentName": "ConferenceShort",
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
+			"source": "fragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "id",
+					"fieldName": "id",
+					"type": "ID!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "startTime",
+					"fieldName": "startTime",
+					"type": "Date",
+					"isConditional": false,
+					"isDeprecated": false
 				},
 				{
 					"responseName": "iceServers",

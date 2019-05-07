@@ -16,7 +16,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
     }
     return (
         <XView height={0} alignSelf="stretch">
-            {data.conference.peers.length === 0 && <TalkWatchComponent id={data.conference.id} />}
+            <TalkWatchComponent id={data.conference.id} />
             {data.conference.peers.length !== 0 && (
                 <>
                     <XView
@@ -79,7 +79,6 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                         )}
                     </XView>
                     )}
-                    <TalkWatchComponent id={data.conference.id} />
                 </>
             )}
         </XView>

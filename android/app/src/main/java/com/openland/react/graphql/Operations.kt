@@ -509,6 +509,18 @@ private val ConferenceFullSelector = obj(listOf(
             field("startTime","startTime", scalar("Date"))
         ))
 
+private val ConferenceShortSelector = obj(listOf(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("iceServers","iceServers", notNull(list(notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("credential","credential", scalar("String")),
+                    field("urls","urls", notNull(list(notNull(scalar("String"))))),
+                    field("username","username", scalar("String"))
+                )))))),
+            field("id","id", notNull(scalar("ID"))),
+            field("startTime","startTime", scalar("Date"))
+        ))
+
 private val DaialogListMessageSelector = obj(listOf(
             field("__typename","__typename", notNull(scalar("String"))),
             field("date","date", notNull(scalar("Date"))),
@@ -1870,13 +1882,13 @@ private val CommentUnsetReactionSelector = obj(listOf(
 private val ConferenceAnswerSelector = obj(listOf(
             field("peerConnectionAnswer","peerConnectionAnswer", mapOf("answer" to refValue("answer"), "id" to refValue("id"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceFullSelector)
+                    fragment("Conference", ConferenceShortSelector)
                 ))))
         ))
 private val ConferenceCandidateSelector = obj(listOf(
             field("peerConnectionCandidate","peerConnectionCandidate", mapOf("candidate" to refValue("candidate"), "id" to refValue("id"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceFullSelector)
+                    fragment("Conference", ConferenceShortSelector)
                 ))))
         ))
 private val ConferenceJoinSelector = obj(listOf(
@@ -1884,7 +1896,7 @@ private val ConferenceJoinSelector = obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("conference","conference", notNull(obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("Conference", ConferenceFullSelector)
+                            fragment("Conference", ConferenceShortSelector)
                         )))),
                     field("peerId","peerId", notNull(scalar("ID")))
                 ))))
@@ -1892,19 +1904,19 @@ private val ConferenceJoinSelector = obj(listOf(
 private val ConferenceKeepAliveSelector = obj(listOf(
             field("conferenceKeepAlive","conferenceKeepAlive", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceFullSelector)
+                    fragment("Conference", ConferenceShortSelector)
                 ))))
         ))
 private val ConferenceLeaveSelector = obj(listOf(
             field("conferenceLeave","conferenceLeave", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceFullSelector)
+                    fragment("Conference", ConferenceShortSelector)
                 ))))
         ))
 private val ConferenceOfferSelector = obj(listOf(
             field("peerConnectionOffer","peerConnectionOffer", mapOf("id" to refValue("id"), "offer" to refValue("offer"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceFullSelector)
+                    fragment("Conference", ConferenceShortSelector)
                 ))))
         ))
 private val CreateAppSelector = obj(listOf(
@@ -2963,37 +2975,37 @@ object Operations {
     val ConferenceAnswer = object: OperationDefinition {
         override val name = "ConferenceAnswer"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceAnswer(\$answer:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionAnswer(answer:\$answer,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceAnswer(\$answer:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionAnswer(answer:\$answer,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceAnswerSelector
     }
     val ConferenceCandidate = object: OperationDefinition {
         override val name = "ConferenceCandidate"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceCandidate(\$candidate:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionCandidate(candidate:\$candidate,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceCandidate(\$candidate:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionCandidate(candidate:\$candidate,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceCandidateSelector
     }
     val ConferenceJoin = object: OperationDefinition {
         override val name = "ConferenceJoin"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceJoin(\$id:ID!){conferenceJoin(id:\$id){__typename conference{__typename ...ConferenceFull}peerId}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceJoin(\$id:ID!){conferenceJoin(id:\$id){__typename conference{__typename ...ConferenceShort}peerId}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceJoinSelector
     }
     val ConferenceKeepAlive = object: OperationDefinition {
         override val name = "ConferenceKeepAlive"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceKeepAlive(\$id:ID!,\$peerId:ID!){conferenceKeepAlive(id:\$id,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceKeepAlive(\$id:ID!,\$peerId:ID!){conferenceKeepAlive(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceKeepAliveSelector
     }
     val ConferenceLeave = object: OperationDefinition {
         override val name = "ConferenceLeave"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceLeave(\$id:ID!,\$peerId:ID!){conferenceLeave(id:\$id,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceLeave(\$id:ID!,\$peerId:ID!){conferenceLeave(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceLeaveSelector
     }
     val ConferenceOffer = object: OperationDefinition {
         override val name = "ConferenceOffer"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ConferenceOffer(\$id:ID!,\$offer:String!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionOffer(id:\$id,offer:\$offer,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "mutation ConferenceOffer(\$id:ID!,\$offer:String!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionOffer(id:\$id,offer:\$offer,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
         override val selector = ConferenceOfferSelector
     }
     val CreateApp = object: OperationDefinition {
