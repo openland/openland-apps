@@ -51,6 +51,7 @@ export type XTextInputProps =
 class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
         store: XStoreState;
+        minimal: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -91,6 +92,7 @@ class XRichTextInputStored extends React.PureComponent<
 
 class XTextInput extends React.PureComponent<
     XTextInputProps & {
+        minimal: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -129,8 +131,9 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
+    minimal: boolean;
     key: string;
-    message: DataSourceMessageItem;
+    message: DataSourceMessageItem & { depth: number };
     onClose: (event?: React.MouseEvent) => void;
 };
 
@@ -150,6 +153,7 @@ export const EditMessageInline = ({
     variables,
     message,
     onClose,
+    minimal,
 }: EditMessageInlineT & {
     variables: {
         roomId: string;
@@ -186,11 +190,14 @@ export const EditMessageInline = ({
                         onClose();
                     }}
                     defaultData={{
-                        message,
+                        message: {
+                            text: message.text,
+                        },
                     }}
                 >
                     <TextInputWrapper>
                         <XTextInput
+                            minimal={minimal}
                             valueStoreKey="fields.message"
                             kind="from_store"
                             initialMentions={
@@ -206,7 +213,7 @@ export const EditMessageInline = ({
                         <XButton text="Cancel" size="default" onClick={onClose} />
                     </Footer>
                 </XForm>
-                <PressEscTipFooter onClose={onClose} />
+                {minimal && <PressEscTipFooter onClose={onClose} />}
             </XShortcuts>
         </React.Fragment>
     );

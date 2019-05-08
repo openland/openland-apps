@@ -143,6 +143,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
     componentDidUpdate() {
         const { message, messagesContext, isActive } = this.props;
+
         const isEditView = messagesContext.editMessageId === message.id;
 
         let selected = false;
@@ -245,9 +246,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
         if (!message.isSending) {
-            if (isEditView && message.text && this.props.conversationId) {
+            if (isEditView && message.text) {
                 content.push(
                     <EditMessageInline
+                        minimal={!!this.props.isComment}
                         message={message}
                         key={'editForm' + message.id}
                         onClose={this.hideEditView}
@@ -453,21 +455,22 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isService) {
-            const postMessageButtons = (
-                <PostMessageButtons
-                    showNumberOfComments={this.props.showNumberOfComments}
-                    isModal={!!this.props.isModal}
-                    isComment={!!this.props.isComment}
-                    onlyLikes={!!this.props.onlyLikes}
-                    isChannel={this.props.isChannel}
-                    message={this.props.message}
-                    conversationId={this.props.conversationId}
-                    me={this.props.me}
-                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
-                    usernameOfRepliedUser={usernameOfRepliedUser}
-                    commentProps={commentProps}
-                />
-            );
+            const postMessageButtons =
+                isEditView && !!this.props.isComment ? null : (
+                    <PostMessageButtons
+                        showNumberOfComments={this.props.showNumberOfComments}
+                        isModal={!!this.props.isModal}
+                        isComment={!!this.props.isComment}
+                        onlyLikes={!!this.props.onlyLikes}
+                        isChannel={this.props.isChannel}
+                        message={this.props.message}
+                        conversationId={this.props.conversationId}
+                        me={this.props.me}
+                        onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        usernameOfRepliedUser={usernameOfRepliedUser}
+                        commentProps={commentProps}
+                    />
+                );
 
             return (
                 <DesktopMessageContainer

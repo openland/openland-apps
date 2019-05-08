@@ -23,6 +23,10 @@ import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { showDeleteCommentConfirmation } from './DeleteCommentConfirmModal';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from 'openland-web/components/messenger/MessagesStateContext';
 
 const CommentView = ({
     originalMessageId,
@@ -44,7 +48,7 @@ const CommentView = ({
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
 }) => {
     const messenger = React.useContext(MessengerContext);
-    const client = useClient();
+    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const getCommentElem = (commentId: string) => {
         const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
@@ -85,8 +89,13 @@ const CommentView = ({
         setShowInputId(showInputId === message.key ? null : message.key);
     };
 
-    const onCommentEditClick = async () => {
-        alert('edit');
+    const onCommentEditClick = async (e: React.MouseEvent) => {
+        if (!message.isSending) {
+            e.stopPropagation();
+            messagesContext.resetAll();
+            messagesContext.setEditMessage(message.id!, message.text!);
+        }
+
         // await client.mutateEditComment({
         //     id: message.key,
         //     message: 'edit',
