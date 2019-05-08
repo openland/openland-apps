@@ -12,6 +12,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { XView } from 'react-mental';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -130,7 +131,18 @@ const Footer = Glamorous(XHorizontal)({
 type EditMessageInlineT = {
     key: string;
     message: DataSourceMessageItem;
-    onClose: any;
+    onClose: (event?: React.MouseEvent) => void;
+};
+
+const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) => void }) => {
+    return (
+        <XView flexDirection="row" fontSize={12} fontWeight={'600'}>
+            <XView opacity={0.4}>Press Esc to </XView>
+            <XView marginLeft={2} color={'#1790ff'} cursor={'pointer'} onClick={onClose}>
+                cancel
+            </XView>
+        </XView>
+    );
 };
 
 export const EditMessageInline = ({
@@ -194,6 +206,7 @@ export const EditMessageInline = ({
                         <XButton text="Cancel" size="default" onClick={onClose} />
                     </Footer>
                 </XForm>
+                <PressEscTipFooter onClose={onClose} />
             </XShortcuts>
         </React.Fragment>
     );
