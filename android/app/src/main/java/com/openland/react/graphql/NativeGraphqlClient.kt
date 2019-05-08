@@ -8,7 +8,7 @@ import org.json.JSONObject
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
 
     private var connected = false
-    private val client = SpaceXClient("wss:$endpoint", token, context)
+    private val client = SpaceXClient("wss:$endpoint", token, context, storage ?: "storage")
     private val watches = mutableMapOf<String, () -> Unit>()
     private val subscriptions = mutableMapOf<String, SpaceXClient.SpaceXSubscription>()
 

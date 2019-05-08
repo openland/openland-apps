@@ -24,13 +24,13 @@ interface StoreWriteCallback {
     fun onError()
 }
 
-class SpaceXClient(url: String, token: String?, context: Context) {
+class SpaceXClient(url: String, token: String?, context: Context, name: String) {
     private var isConnected = false
     private val transport: WebSocketTransport = WebSocketTransport(context, url, token) {
         isConnected = it
         this.connectionStateListener?.invoke(it)
     }
-    private val scheduler = StoreScheduler()
+    private val scheduler = StoreScheduler(name, context)
     private val transportScheduler = TransportScheduler(transport, scheduler)
     private val queue = DispatchQueue()
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null

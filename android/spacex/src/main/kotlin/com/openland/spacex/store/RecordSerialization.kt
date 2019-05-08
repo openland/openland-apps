@@ -25,8 +25,8 @@ fun parseValue(f: Any): RecordValue {
         return RecordValue.String(f)
     } else if (f is Boolean) {
         return RecordValue.Boolean(f)
-    } else if (f is Double) {
-        return RecordValue.Number(f)
+    } else if (f is Number) {
+        return RecordValue.Number(f.toDouble())
     } else if (f is JSONObject) {
         return RecordValue.Reference(f["key"] as String)
     } else if (f is JSONArray) {

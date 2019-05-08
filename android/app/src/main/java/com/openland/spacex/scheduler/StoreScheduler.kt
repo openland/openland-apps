@@ -1,5 +1,6 @@
 package com.openland.spacex.scheduler
 
+import android.content.Context
 import android.util.Log
 import com.openland.spacex.OperationDefinition
 import com.openland.spacex.store.*
@@ -17,9 +18,13 @@ class StoreScheduler {
     }
 
     val queue = DispatchQueue()
-    private val persistence = PersistenceScheduler(this)
+    private val persistence: PersistenceScheduler
     private val store = RecordStore()
     private val bus = RecordStoreBus()
+
+    constructor(name: String, context: Context) {
+        persistence = PersistenceScheduler(context, name, this)
+    }
 
     fun readQueryFromCache(operation: OperationDefinition, arguments: JSONObject, queue: DispatchQueue, callback: (result: QueryReadResult) -> Unit) {
         this.queue.async {
@@ -50,6 +55,7 @@ class StoreScheduler {
             prepareMerge(recordSet) {
                 val changed = store.merge(recordSet)
                 bus.publish(changed)
+                persistence.write(RecordSet(changed.mapValues { store.read(it.key) }))
                 queue.async {
                     callback()
                 }
