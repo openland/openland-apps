@@ -118,6 +118,9 @@ class WebSocketTransport {
         override fun cancel() {
             queue.async {
                 liveOperations.remove(id)
+                if (connected) {
+                    postMessage("stop", JSONObject(), id)
+                }
             }
         }
 

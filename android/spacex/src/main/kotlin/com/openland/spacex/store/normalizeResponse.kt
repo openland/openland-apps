@@ -14,11 +14,11 @@ private class NormalizedCollection {
 }
 
 private fun normalizeValue(
-        parentCacheKey: String,
+        parentCacheKey: String?,
         collection: NormalizedCollection,
         value: OutputType,
         arguments: JSONObject,
-        data: Any?): RecordValue {
+        data: Any?): RecordValue? {
     if (value is OutputType.NotNull) {
         val res = normalizeValue(parentCacheKey, collection, value.inner, arguments, data)
         if (res == RecordValue.Null) {
@@ -31,39 +31,50 @@ private fun normalizeValue(
         return RecordValue.Null
     }
     if (value is OutputType.Scalar) {
-        return when {
-            value.name == "String" || value.name == "ID" || value.name == "Date" -> {
-                return when (data) {
-                    is Number -> RecordValue.String(data.toString())
-                    is Boolean -> RecordValue.String(data.toString())
-                    else -> RecordValue.String(data as String)
+        if (parentCacheKey != null) {
+            return when {
+                value.name == "String" || value.name == "ID" || value.name == "Date" -> {
+                    return when (data) {
+                        is Number -> RecordValue.String(data.toString())
+                        is Boolean -> RecordValue.String(data.toString())
+                        else -> RecordValue.String(data as String)
+                    }
                 }
-            }
-            value.name == "Int" || value.name == "Float" -> {
-                if (data is Number) {
-                    RecordValue.Number(data.toDouble())
-                } else {
-                    throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                value.name == "Int" || value.name == "Float" -> {
+                    if (data is Number) {
+                        RecordValue.Number(data.toDouble())
+                    } else {
+                        throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                    }
                 }
-            }
-            value.name == "Boolean" -> {
-                if (data is Boolean) {
-                    RecordValue.Boolean(data)
-                } else {
-                    throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                value.name == "Boolean" -> {
+                    if (data is Boolean) {
+                        RecordValue.Boolean(data)
+                    } else {
+                        throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                    }
                 }
+                else -> throw InvalidDataException("Unsupported Scalar: " + value.name)
             }
-            else -> throw InvalidDataException("Unsupported Scalar: " + value.name)
+        } else {
+            return null
         }
     } else if (value is OutputType.List) {
         val arr = (data as JSONArray)
-        val items = mutableListOf<RecordValue>()
-        for (i in 0 until arr.length()) {
-            items.add(normalizeValue("$parentCacheKey.$i", collection, value.inner, arguments, data.get(i)))
+        if (parentCacheKey != null) {
+
+            val items = mutableListOf<RecordValue>()
+            for (i in 0 until arr.length()) {
+                items.add(normalizeValue("$parentCacheKey.$i", collection, value.inner, arguments, data.get(i))!!)
+            }
+            return RecordValue.List(items)
+        } else {
+            for (i in 0 until arr.length()) {
+                normalizeValue(null, collection, value.inner, arguments, data.get(i))
+            }
         }
-        return RecordValue.List(items)
     } else if (value is OutputType.Object) {
-        return normalizeSelector(parentCacheKey, collection, value.selectors, arguments, data as JSONObject)!!
+        return normalizeSelector(parentCacheKey, collection, value.selectors, arguments, data as JSONObject)
     }
 
     error("Unreachable code")
@@ -104,7 +115,9 @@ private fun normalizeSelector(
         if (f is Selector.Field) {
             if (map != null) {
                 val key = selectorKey(f.name, f.arguments, arguments)
-                map[key] = normalizeValue(id!! + "." + key, collection, f.type, arguments, data.opt(f.alias))
+                map[key] = normalizeValue(id!! + "." + key, collection, f.type, arguments, data.opt(f.alias))!!
+            } else {
+                normalizeValue(null, collection, f.type, arguments, data.opt(f.alias))
             }
         } else if (f is Selector.TypeCondition) {
             if (data["__typename"] == f.type) {
@@ -143,7 +156,7 @@ private fun normalizeRootSelector(rootCacheKey: String?, collection: NormalizedC
             } else {
                 map = ex
             }
-            map["data"] = normalizeValue(id, collection, f.type, arguments, data[f.alias])
+            map["data"] = normalizeValue(id, collection, f.type, arguments, data[f.alias])!!
         }
     } else {
         normalizeSelector(null, collection, selectors, arguments, data)
