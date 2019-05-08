@@ -223,6 +223,8 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                         } else {
                             doRequest()
                         }
+                    } else {
+                        doRequest()
                     }
                 }
             } else {
@@ -230,11 +232,29 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
             }
         }
 
+        private fun doReload() {
+            if (this.completed) {
+                return
+            }
+            scheduler.readQueryFromCache(operation, arguments, queue) {
+                if (this.completed) {
+                    return@readQueryFromCache
+                }
+                if (it is QueryReadResult.Value) {
+                    callback.onResult(it.value)
+                } else {
+                    doRequest()
+                }
+            }
+        }
+
         private fun doSubscribe(data: JSONObject) {
             // TODO: Optimize!!
             val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
             storeSubscription = scheduler.subscribe(normalized, queue) {
-                doInit()
+                storeSubscription?.invoke()
+                storeSubscription = null
+                doReload()
             }
         }
 
@@ -254,6 +274,8 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
 
         fun stop() {
             this.completed = true
+            this.storeSubscription?.invoke()
+            this.storeSubscription = null
         }
     }
 }
