@@ -24,39 +24,6 @@ import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 
-const getCommentElem = (commentId: string) => {
-    const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
-    if (items.length === 1) {
-        return items[0] as HTMLElement;
-    }
-    return null;
-};
-
-const scrollToComment = ({
-    commentId,
-    scrollRef,
-    mode = 'bottom',
-}: {
-    commentId: string;
-    scrollRef: React.RefObject<XScrollView3>;
-    mode?: 'top' | 'bottom';
-}) => {
-    let targetElem = getCommentElem(commentId);
-    if (targetElem) {
-        if (mode === 'bottom') {
-            scrollRef!!.current!!.scrollToBottomOfElement({
-                targetElem,
-                offset: 10,
-            });
-        } else {
-            scrollRef!!.current!!.scrollToTopOfElement({
-                targetElem,
-                offset: 10,
-            });
-        }
-    }
-};
-
 const CommentView = ({
     message,
     setShowInputId,
@@ -76,6 +43,37 @@ const CommentView = ({
 }) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
+
+    const getCommentElem = (commentId: string) => {
+        const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
+        if (items.length === 1) {
+            return items[0] as HTMLElement;
+        }
+        return null;
+    };
+
+    const scrollToComment = ({
+        commentId,
+        mode = 'bottom',
+    }: {
+        commentId: string;
+        mode?: 'top' | 'bottom';
+    }) => {
+        let targetElem = getCommentElem(commentId);
+        if (targetElem) {
+            if (mode === 'bottom') {
+                scrollRef!!.current!!.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            } else {
+                scrollRef!!.current!!.scrollToTopOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            }
+        }
+    };
 
     const { onSendFile, onSend } = useSendMethods({
         messageId: message.id,
@@ -103,9 +101,8 @@ const CommentView = ({
         });
     };
 
-    let offset;
-
     let DEPTH_LIMIT = 4;
+    let offset;
 
     if (message.depth === 0) {
         offset = 0;
@@ -123,6 +120,21 @@ const CommentView = ({
             : null;
     const parentComment = commentsMap[parentCommentId];
 
+    const onCommentBackToUserMessageClick = () => {
+        return parentComment
+            ? () => {
+                  scrollToComment({
+                      commentId: parentCommentId,
+                  });
+              }
+            : undefined;
+    };
+
+    const usernameOfRepliedUser =
+        parentComment && message.depth >= DEPTH_LIMIT
+            ? parentComment.comment.sender.name
+            : undefined;
+
     return (
         <div data-comment-id={message.id}>
             <XView
@@ -131,21 +143,8 @@ const CommentView = ({
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
                 <MessageComponent
-                    onCommentBackToUserMessageClick={
-                        parentComment
-                            ? () => {
-                                  scrollToComment({
-                                      scrollRef,
-                                      commentId: parentCommentId,
-                                  });
-                              }
-                            : undefined
-                    }
-                    usernameOfRepliedUser={
-                        parentComment && message.depth >= DEPTH_LIMIT
-                            ? parentComment.comment.sender.name
-                            : undefined
-                    }
+                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                    usernameOfRepliedUser={usernameOfRepliedUser}
                     deleted={message.id ? commentsMap[message.id].deleted : false}
                     commentDepth={message.depth}
                     noSelector
@@ -162,7 +161,6 @@ const CommentView = ({
                     <UploadContextProvider>
                         <CommentsInput
                             topLevelComment={message.depth === 0}
-                            commentsInputRef={currentCommentsInputRef}
                             getMentionsSuggestions={getMentionsSuggestions}
                             minimal
                             onSendFile={onSendFile}
@@ -177,10 +175,10 @@ const CommentView = ({
                                     uploadedFileKey,
                                 );
                                 scrollToComment({
-                                    scrollRef,
                                     commentId: newCommentId,
                                 });
                             }}
+                            commentsInputRef={currentCommentsInputRef}
                         />
                     </UploadContextProvider>
                 )}
@@ -189,33 +187,7 @@ const CommentView = ({
     );
 };
 
-const OriginalMessageComponent = ({ messageId }: { messageId: string }) => {
-    const messenger = React.useContext(MessengerContext);
-    const client = useClient();
-    const commentedMessage = client.useMessage({
-        messageId,
-    });
-    const maybeGeneralMessage = commentedMessage.message;
-
-    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
-        return null;
-    }
-
-    const finalMessage = convertDsMessage(convertMessage(maybeGeneralMessage));
-
-    return (
-        <MessageComponent
-            noSelector
-            message={finalMessage}
-            showNumberOfComments={false}
-            onlyLikes={true}
-            me={messenger.user}
-            isModal={true}
-        />
-    );
-};
-
-export const CommentsView = ({
+export const CommentsBlockView = ({
     messageId,
     setShowInputId,
     showInputId,
@@ -295,6 +267,32 @@ export const CommentsView = ({
                 undefined
             )}
         </>
+    );
+};
+
+const OriginalMessageComponent = ({ messageId }: { messageId: string }) => {
+    const messenger = React.useContext(MessengerContext);
+    const client = useClient();
+    const commentedMessage = client.useMessage({
+        messageId,
+    });
+    const maybeGeneralMessage = commentedMessage.message;
+
+    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
+        return null;
+    }
+
+    const finalMessage = convertDsMessage(convertMessage(maybeGeneralMessage));
+
+    return (
+        <MessageComponent
+            noSelector
+            message={finalMessage}
+            showNumberOfComments={false}
+            onlyLikes={true}
+            me={messenger.user}
+            isModal={true}
+        />
     );
 };
 
@@ -396,12 +394,12 @@ export const CommentsModalInnerNoRouter = ({
                         backgroundColor={'rgba(216, 218, 229, 0.45)'}
                         width="100%"
                     />
-                    <CommentsView
-                        scrollRef={scrollRef}
+                    <CommentsBlockView
                         messageId={messageId}
                         setShowInputId={setShowInputId}
                         showInputId={showInputId}
                         getMentionsSuggestions={getMentionsSuggestions}
+                        scrollRef={scrollRef}
                         currentCommentsInputRef={currentCommentsInputRef}
                     />
                 </XScrollView3>
