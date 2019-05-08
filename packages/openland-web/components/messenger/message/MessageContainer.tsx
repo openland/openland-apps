@@ -34,6 +34,7 @@ export interface DesktopMessageContainerProps {
     children?: any;
     selectMessage: () => void;
     room?: RoomChat_room;
+    isEditView: boolean;
 }
 
 interface PreambulaContainerProps {
@@ -105,6 +106,7 @@ interface MessageContainerWrapperProps {
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
     cursorPointer: boolean;
+    isEditView: boolean;
 }
 
 const CompactMessageContainerWrapper = ({
@@ -167,11 +169,7 @@ const NotCompactModalMessageContainerWrapper = ({
     children,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -187,13 +185,10 @@ const NotCompactModalMessageContainerWrapper = ({
 
 const NotCompactShortMessageContainerWrapper = ({
     children,
+    isEditView,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -201,7 +196,7 @@ const NotCompactShortMessageContainerWrapper = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             marginTop={20}
-            paddingRight={20}
+            paddingRight={isEditView ? 0 : 20}
         >
             {children}
         </XView>
@@ -243,8 +238,8 @@ const DeletedCommentAvatar = () => {
     return (
         <XView width={44} minHeight={23}>
             <XView
-                width={28}
-                height={28}
+                width={26}
+                height={26}
                 backgroundColor={'rgba(0, 0, 0, 0.05)'}
                 borderRadius={18}
                 alignItems="center"
@@ -329,7 +324,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 id={sender.id}
                                 title={sender.name}
                                 src={sender.photo}
-                                size={props.commentDepth && props.commentDepth > 0 ? 28 : 36}
+                                size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
                             />
                         </UserPopper>
                     )
@@ -383,19 +378,18 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                             </XView>
                         )}
                     </XView>
-                    {!props.isComment &&
-                        !props.isModal && (
-                            <XView
-                                paddingLeft={8}
-                                fontSize={12}
-                                color="rgba(0, 0, 0, 0.4)"
-                                fontWeight="600"
-                                alignSelf="flex-end"
-                                marginBottom={-1}
-                            >
-                                <XDate value={props.date.toString()} format="time" />
-                            </XView>
-                        )}
+                    {!props.isComment && !props.isModal && (
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                            alignSelf="flex-end"
+                            marginBottom={-1}
+                        >
+                            <XDate value={props.date.toString()} format="time" />
+                        </XView>
+                    )}
                 </XView>
             ),
             [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
@@ -486,6 +480,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         <MessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            isEditView={props.isEditView}
             cursorPointer={props.selecting}
             onClick={(e: any) => {
                 if (props.selecting) {
@@ -498,7 +493,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             {!props.noSelector && selector}
             {preambula}
             {content}
-            {actions}
+            {props.isEditView && !!isComment ? null : actions}
         </MessageContainerWrapper>
     );
 };

@@ -233,8 +233,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         } = this.props;
         const { isEditView, selected, hideMenu } = this.state;
 
-        // const isEditView = true;
-
         let content: any[] = [];
         let edited = message.isEdited;
 
@@ -493,6 +491,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={!!selected}
                     selectMessage={this.selectMessage}
                     room={this.props.room}
+                    isEditView={isEditView}
                 >
                     {content}
                     {postMessageButtons}

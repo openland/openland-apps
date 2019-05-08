@@ -93,6 +93,7 @@ class XRichTextInputStored extends React.PureComponent<
 class XTextInput extends React.PureComponent<
     XTextInputProps & {
         minimal: boolean;
+        round: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -207,23 +208,28 @@ export const EditMessageInline = ({
                         },
                     }}
                 >
-                    <TextInputWrapper>
-                        <XTextInput
-                            minimal={minimal}
-                            valueStoreKey="fields.message"
-                            kind="from_store"
-                            initialMentions={
-                                message.spans
-                                    ? convertSpansToUserWithOffset({ spans: message.spans })
-                                    : []
-                            }
-                            getMentionsSuggestions={getMentionsSuggestions}
-                        />
-                    </TextInputWrapper>
-                    <Footer separator={5}>
-                        <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
-                        <XButton text="Cancel" size="default" onClick={onClose} />
-                    </Footer>
+                    <XView marginLeft={-15}>
+                        <TextInputWrapper>
+                            <XTextInput
+                                minimal={minimal}
+                                round={minimal}
+                                valueStoreKey="fields.message"
+                                kind="from_store"
+                                initialMentions={
+                                    message.spans
+                                        ? convertSpansToUserWithOffset({ spans: message.spans })
+                                        : []
+                                }
+                                getMentionsSuggestions={getMentionsSuggestions}
+                            />
+                        </TextInputWrapper>
+                    </XView>
+                    {!minimal && (
+                        <Footer separator={5}>
+                            <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
+                            <XButton text="Cancel" size="default" onClick={onClose} />
+                        </Footer>
+                    )}
                 </XForm>
                 {minimal && <PressEscTipFooter onClose={onClose} />}
             </XShortcuts>
