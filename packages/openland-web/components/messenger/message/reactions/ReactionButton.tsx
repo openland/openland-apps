@@ -351,9 +351,7 @@ export const CommentReactionButton = React.memo(
 
         return reactionsCount || hover ? (
             <XView flexDirection="row" alignItems="center" position="relative">
-                <XView alignItems="center">
-                    {finalLikeIconElement}
-                </XView>
+                <XView alignItems="center">{finalLikeIconElement}</XView>
                 <XView alignItems="center" position="absolute" left={20}>
                     <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
                         {reactionsCount ? reactionsCount : null}

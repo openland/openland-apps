@@ -25,6 +25,7 @@ import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 
 const CommentView = ({
+    originalMessageId,
     message,
     setShowInputId,
     showInputId,
@@ -33,6 +34,7 @@ const CommentView = ({
     scrollRef,
     currentCommentsInputRef,
 }: {
+    originalMessageId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
     message: DataSourceWebMessageItem & { depth: number };
@@ -76,7 +78,6 @@ const CommentView = ({
     };
 
     const { onSendFile, onSend } = useSendMethods({
-        messageId: message.id,
         setShowInputId,
     });
 
@@ -169,11 +170,13 @@ const CommentView = ({
                                 mentions: UserWithOffset[] | null,
                                 uploadedFileKey: string,
                             ) => {
-                                const newCommentId = await onSend(
+                                const newCommentId = await onSend({
+                                    messageId: originalMessageId,
+                                    replyComment: message.id!!,
                                     msgToSend,
                                     mentions,
                                     uploadedFileKey,
-                                );
+                                });
                                 scrollToComment({
                                     commentId: newCommentId,
                                 });
@@ -188,7 +191,7 @@ const CommentView = ({
 };
 
 export const CommentsBlockView = ({
-    messageId,
+    originalMessageId,
     setShowInputId,
     showInputId,
     getMentionsSuggestions,
@@ -197,7 +200,7 @@ export const CommentsBlockView = ({
 }: {
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
-    messageId: string;
+    originalMessageId: string;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
@@ -208,7 +211,7 @@ export const CommentsBlockView = ({
 
     const messageComments = client.useMessageComments(
         {
-            messageId,
+            messageId: originalMessageId,
         },
         { fetchPolicy: 'cache-and-network' },
     );
@@ -225,6 +228,7 @@ export const CommentsBlockView = ({
         .map(message => {
             return (
                 <CommentView
+                    originalMessageId={originalMessageId}
                     key={`comment_${message.id}`}
                     scrollRef={scrollRef}
                     message={message}
@@ -332,7 +336,6 @@ export const CommentsModalInnerNoRouter = ({
     };
 
     const { onSendFile, onSend } = useSendMethods({
-        messageId,
         setShowInputId,
     });
 
@@ -371,57 +374,65 @@ export const CommentsModalInnerNoRouter = ({
     }, [showInputId]);
 
     return (
-        <IsActiveContext.Provider value={true}>
-            <XView>
-                <DeleteCommentConfirmModal />
-
-                <XScrollView3
-                    useDefaultScroll
-                    flexGrow={1}
-                    flexShrink={1}
-                    maxHeight={700}
-                    ref={scrollRef}
-                >
-                    <XView position="absolute" zIndex={100} right={32} top={28}>
-                        <ModalCloser />
-                    </XView>
-                    <XView paddingHorizontal={32} paddingTop={28}>
-                        <OriginalMessageComponent messageId={messageId} />
-                    </XView>
-                    <XView
-                        marginTop={28}
-                        height={1}
-                        backgroundColor={'rgba(216, 218, 229, 0.45)'}
-                        width="100%"
-                    />
-                    <CommentsBlockView
-                        messageId={messageId}
-                        setShowInputId={setShowInputId}
-                        showInputId={showInputId}
-                        getMentionsSuggestions={getMentionsSuggestions}
-                        scrollRef={scrollRef}
-                        currentCommentsInputRef={currentCommentsInputRef}
-                    />
-                </XScrollView3>
+        <UploadContextProvider>
+            <IsActiveContext.Provider value={true}>
                 <XView>
-                    <CommentsInput
-                        getMentionsSuggestions={getMentionsSuggestions}
-                        onSendFile={onSendFile}
-                        onSend={async (
-                            msgToSend: string,
-                            mentions: UserWithOffset[] | null,
-                            uploadedFileKey: string,
-                        ) => {
-                            await onSend(msgToSend, mentions, uploadedFileKey);
+                    <DeleteCommentConfirmModal />
 
-                            if (scrollRef && scrollRef.current) {
-                                scrollRef.current.scrollToBottom();
-                            }
-                        }}
-                    />
+                    <XScrollView3
+                        useDefaultScroll
+                        flexGrow={1}
+                        flexShrink={1}
+                        maxHeight={700}
+                        ref={scrollRef}
+                    >
+                        <XView position="absolute" zIndex={100} right={32} top={28}>
+                            <ModalCloser />
+                        </XView>
+                        <XView paddingHorizontal={32} paddingTop={28}>
+                            <OriginalMessageComponent messageId={messageId} />
+                        </XView>
+                        <XView
+                            marginTop={28}
+                            height={1}
+                            backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                            width="100%"
+                        />
+                        <CommentsBlockView
+                            originalMessageId={messageId}
+                            setShowInputId={setShowInputId}
+                            showInputId={showInputId}
+                            getMentionsSuggestions={getMentionsSuggestions}
+                            scrollRef={scrollRef}
+                            currentCommentsInputRef={currentCommentsInputRef}
+                        />
+                    </XScrollView3>
+                    <XView>
+                        <CommentsInput
+                            getMentionsSuggestions={getMentionsSuggestions}
+                            onSendFile={onSendFile}
+                            onSend={async (
+                                msgToSend: string,
+                                mentions: UserWithOffset[] | null,
+                                uploadedFileKey: string,
+                            ) => {
+                                await onSend({
+                                    messageId,
+                                    replyComment: null,
+                                    msgToSend,
+                                    mentions,
+                                    uploadedFileKey,
+                                });
+
+                                if (scrollRef && scrollRef.current) {
+                                    scrollRef.current.scrollToBottom();
+                                }
+                            }}
+                        />
+                    </XView>
                 </XView>
-            </XView>
-        </IsActiveContext.Provider>
+            </IsActiveContext.Provider>
+        </UploadContextProvider>
     );
 };
 
@@ -430,11 +441,7 @@ export const CommentsModalInner = () => {
 
     const [messageId, roomId] = router.routeQuery.comments.split('&');
 
-    return (
-        <UploadContextProvider>
-            <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />
-        </UploadContextProvider>
-    );
+    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
 };
 
 export const openDeleteCommentsModal = ({

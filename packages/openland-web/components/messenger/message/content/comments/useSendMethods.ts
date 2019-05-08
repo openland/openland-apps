@@ -31,11 +31,9 @@ export const uploadFile = async ({
 };
 
 export const useSendMethods = ({
-    messageId,
     setShowInputId,
 }: {
-    messageId: any;
-    setShowInputId: any;
+    setShowInputId: (a: string | null) => void;
 }) => {
     const addComment = useAddComment();
     const onSendFile = async (file: UploadCare.File) => {
@@ -47,16 +45,24 @@ export const useSendMethods = ({
         });
     };
 
-    const onSend = async (
-        msgToSend: string,
-        mentions: UserWithOffset[] | null,
-        uploadedFileKey: string,
-    ) => {
+    const onSend = async ({
+        messageId,
+        msgToSend,
+        replyComment,
+        mentions,
+        uploadedFileKey,
+    }: {
+        messageId: string;
+        replyComment: string | null;
+        msgToSend: string;
+        mentions: UserWithOffset[] | null;
+        uploadedFileKey: string;
+    }) => {
         const newCommentId = await addComment({
             messageId,
             mentions,
             message: msgToSend,
-            replyComment: null,
+            replyComment,
             fileAttachments: uploadedFileKey ? [{ fileId: uploadedFileKey }] : [],
         });
         setShowInputId(null);
