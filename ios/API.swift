@@ -14801,6 +14801,322 @@ public final class MediaOfferMutation: GraphQLMutation {
   }
 }
 
+public final class MediaNegotiationNeededMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {\n  mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}"
+
+  public var id: GraphQLID
+  public var peerId: GraphQLID
+
+  public init(id: GraphQLID, peerId: GraphQLID) {
+    self.id = id
+    self.peerId = peerId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id, "peerId": peerId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("mediaStreamNegotiationNeeded", arguments: ["id": GraphQLVariable("id"), "peerId": GraphQLVariable("peerId")], type: .nonNull(.object(MediaStreamNegotiationNeeded.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(mediaStreamNegotiationNeeded: MediaStreamNegotiationNeeded) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "mediaStreamNegotiationNeeded": mediaStreamNegotiationNeeded.resultMap])
+    }
+
+    public var mediaStreamNegotiationNeeded: MediaStreamNegotiationNeeded {
+      get {
+        return MediaStreamNegotiationNeeded(unsafeResultMap: resultMap["mediaStreamNegotiationNeeded"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "mediaStreamNegotiationNeeded")
+      }
+    }
+
+    public struct MediaStreamNegotiationNeeded: GraphQLSelectionSet {
+      public static let possibleTypes = ["ConferenceMedia"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("streams", type: .nonNull(.list(.nonNull(.object(Stream.selections))))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, streams: [Stream]) {
+        self.init(unsafeResultMap: ["__typename": "ConferenceMedia", "id": id, "streams": streams.map { (value: Stream) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var streams: [Stream] {
+        get {
+          return (resultMap["streams"] as! [ResultMap]).map { (value: ResultMap) -> Stream in Stream(unsafeResultMap: value) }
+        }
+        set {
+          resultMap.updateValue(newValue.map { (value: Stream) -> ResultMap in value.resultMap }, forKey: "streams")
+        }
+      }
+
+      public struct Stream: GraphQLSelectionSet {
+        public static let possibleTypes = ["MediaStream"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("state", type: .nonNull(.scalar(MediaStreamState.self))),
+          GraphQLField("sdp", type: .scalar(String.self)),
+          GraphQLField("ice", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, state: MediaStreamState, sdp: String? = nil, ice: [String]) {
+          self.init(unsafeResultMap: ["__typename": "MediaStream", "id": id, "state": state, "sdp": sdp, "ice": ice])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var state: MediaStreamState {
+          get {
+            return resultMap["state"]! as! MediaStreamState
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "state")
+          }
+        }
+
+        public var sdp: String? {
+          get {
+            return resultMap["sdp"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "sdp")
+          }
+        }
+
+        public var ice: [String] {
+          get {
+            return resultMap["ice"]! as! [String]
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "ice")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class MediaFailedMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation MediaFailed($id: ID!, $peerId: ID!) {\n  mediaStreamFailed(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}"
+
+  public var id: GraphQLID
+  public var peerId: GraphQLID
+
+  public init(id: GraphQLID, peerId: GraphQLID) {
+    self.id = id
+    self.peerId = peerId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id, "peerId": peerId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("mediaStreamFailed", arguments: ["id": GraphQLVariable("id"), "peerId": GraphQLVariable("peerId")], type: .nonNull(.object(MediaStreamFailed.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(mediaStreamFailed: MediaStreamFailed) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "mediaStreamFailed": mediaStreamFailed.resultMap])
+    }
+
+    public var mediaStreamFailed: MediaStreamFailed {
+      get {
+        return MediaStreamFailed(unsafeResultMap: resultMap["mediaStreamFailed"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "mediaStreamFailed")
+      }
+    }
+
+    public struct MediaStreamFailed: GraphQLSelectionSet {
+      public static let possibleTypes = ["ConferenceMedia"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("streams", type: .nonNull(.list(.nonNull(.object(Stream.selections))))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, streams: [Stream]) {
+        self.init(unsafeResultMap: ["__typename": "ConferenceMedia", "id": id, "streams": streams.map { (value: Stream) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var streams: [Stream] {
+        get {
+          return (resultMap["streams"] as! [ResultMap]).map { (value: ResultMap) -> Stream in Stream(unsafeResultMap: value) }
+        }
+        set {
+          resultMap.updateValue(newValue.map { (value: Stream) -> ResultMap in value.resultMap }, forKey: "streams")
+        }
+      }
+
+      public struct Stream: GraphQLSelectionSet {
+        public static let possibleTypes = ["MediaStream"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("state", type: .nonNull(.scalar(MediaStreamState.self))),
+          GraphQLField("sdp", type: .scalar(String.self)),
+          GraphQLField("ice", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, state: MediaStreamState, sdp: String? = nil, ice: [String]) {
+          self.init(unsafeResultMap: ["__typename": "MediaStream", "id": id, "state": state, "sdp": sdp, "ice": ice])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var state: MediaStreamState {
+          get {
+            return resultMap["state"]! as! MediaStreamState
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "state")
+          }
+        }
+
+        public var sdp: String? {
+          get {
+            return resultMap["sdp"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "sdp")
+          }
+        }
+
+        public var ice: [String] {
+          get {
+            return resultMap["ice"]! as! [String]
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "ice")
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class MediaAnswerMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!) {\n  mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}"

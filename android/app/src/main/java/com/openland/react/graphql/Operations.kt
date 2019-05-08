@@ -2034,6 +2034,32 @@ private val MediaCandidateSelector = obj(listOf(
                         ))))))
                 ))))
         ))
+private val MediaFailedSelector = obj(listOf(
+            field("mediaStreamFailed","mediaStreamFailed", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("sdp","sdp", scalar("String")),
+                            field("state","state", notNull(scalar("String")))
+                        ))))))
+                ))))
+        ))
+private val MediaNegotiationNeededSelector = obj(listOf(
+            field("mediaStreamNegotiationNeeded","mediaStreamNegotiationNeeded", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("sdp","sdp", scalar("String")),
+                            field("state","state", notNull(scalar("String")))
+                        ))))))
+                ))))
+        ))
 private val MediaOfferSelector = obj(listOf(
             field("mediaStreamOffer","mediaStreamOffer", mapOf("id" to refValue("id"), "offer" to refValue("offer"), "peerId" to refValue("peerId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3104,6 +3130,18 @@ object Operations {
         override val body = "mutation MediaCandidate(\$candidate:String!,\$id:ID!,\$peerId:ID!){mediaStreamCandidate(candidate:\$candidate,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
         override val selector = MediaCandidateSelector
     }
+    val MediaFailed = object: OperationDefinition {
+        override val name = "MediaFailed"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation MediaFailed(\$id:ID!,\$peerId:ID!){mediaStreamFailed(id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
+        override val selector = MediaFailedSelector
+    }
+    val MediaNegotiationNeeded = object: OperationDefinition {
+        override val name = "MediaNegotiationNeeded"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation MediaNegotiationNeeded(\$id:ID!,\$peerId:ID!){mediaStreamNegotiationNeeded(id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
+        override val selector = MediaNegotiationNeededSelector
+    }
     val MediaOffer = object: OperationDefinition {
         override val name = "MediaOffer"
         override val kind = OperationKind.MUTATION
@@ -3642,6 +3680,8 @@ object Operations {
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
+        if (name == "MediaFailed") return MediaFailed
+        if (name == "MediaNegotiationNeeded") return MediaNegotiationNeeded
         if (name == "MediaOffer") return MediaOffer
         if (name == "MessageSetReaction") return MessageSetReaction
         if (name == "MessageUnsetReaction") return MessageUnsetReaction

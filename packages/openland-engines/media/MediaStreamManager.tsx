@@ -63,6 +63,28 @@ export class MediaStreamManager {
                 }
             });
         };
+
+        this.peerConnection.onnegotiationneeded = () => {
+            console.warn('[WEBRTC]: onnegotiationneeded')
+            if (this.streamConfig.state === 'READY') {
+                backoff(async () => {
+                    if (this.destroyed) {
+                        return;
+                    }
+                    await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId })
+                })
+            }
+        }
+
+        this.peerConnection.oniceconnectionstatechange = (ev) => {
+            console.warn('[WEBRTC]: oniceconnectionstatechange ')
+            if (ev.target.iceConnectionState === 'failed') {
+                this.destroy();
+                backoff(async () => {
+                    await this.client.mutateMediaFailed({ id: this.id, peerId: this.peerId })
+                })
+            }
+        }
         this.peerConnection.addStream(this.stream);
         this.handleState();
     }
@@ -86,6 +108,9 @@ export class MediaStreamManager {
                 return;
             }
             this.offerHandled = true;
+            this.readyHandled = false;
+            this.localDescription = undefined;
+            this.remoteDescription = undefined;
             backoff(async () => {
                 if (this.destroyed) {
                     return;
@@ -109,6 +134,9 @@ export class MediaStreamManager {
                 return;
             }
             this.answerHandled = true;
+            this.readyHandled = false;
+            this.localDescription = undefined;
+            this.remoteDescription = undefined;
 
             backoff(async () => {
                 if (this.destroyed) {
@@ -140,6 +168,8 @@ export class MediaStreamManager {
         } else if (this.streamConfig.state === 'READY') {
             if (!this.readyHandled) {
                 this.readyHandled = true;
+                this.answerHandled = false;
+                this.offerHandled = false;
 
                 backoff(async () => {
                     if (this.destroyed) {
