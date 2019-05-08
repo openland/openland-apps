@@ -23,7 +23,7 @@ import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { PostMessageButtons } from './PostMessageButtons';
+import { PostMessageButtons, CommentPropsT } from './PostMessageButtons';
 import { XView } from 'react-mental';
 
 const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
@@ -105,9 +105,7 @@ export interface MessageComponentProps {
     isChannel?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
-    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-    onCommentEditClick?: (event: React.MouseEvent<any>) => void;
-    onCommentDeleteClick?: (event: React.MouseEvent<any>) => void;
+    commentProps?: CommentPropsT;
     conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
@@ -227,9 +225,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     render() {
         let {
             message,
-            onCommentReplyClick,
-            onCommentEditClick,
-            onCommentDeleteClick,
+            commentProps,
             haveReactions,
             usernameOfRepliedUser,
             onCommentBackToUserMessageClick,
@@ -454,13 +450,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     onlyLikes={!!this.props.onlyLikes}
                     isChannel={this.props.isChannel}
                     message={this.props.message}
-                    onCommentReplyClick={onCommentReplyClick}
-                    onCommentEditClick={onCommentEditClick}
-                    onCommentDeleteClick={onCommentDeleteClick}
                     conversationId={this.props.conversationId}
                     me={this.props.me}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                     usernameOfRepliedUser={usernameOfRepliedUser}
+                    commentProps={commentProps}
                 />
             );
 

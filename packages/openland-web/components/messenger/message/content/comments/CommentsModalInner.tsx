@@ -150,9 +150,7 @@ const CommentView = ({
                     commentDepth={message.depth}
                     noSelector
                     isComment
-                    onCommentReplyClick={onCommentReplyClick}
-                    onCommentEditClick={onCommentEditClick}
-                    onCommentDeleteClick={onCommentDeleteClick}
+                    commentProps={{ onCommentReplyClick, onCommentEditClick, onCommentDeleteClick }}
                     message={message}
                     onlyLikes={true}
                     me={messenger.user}
