@@ -1,48 +1,61 @@
 import * as React from 'react';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { useClient } from 'openland-web/utils/useClient';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XModalController } from 'openland-x/showModal';
+import { useForm } from 'openland-form/useForm';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XView } from 'react-mental';
 
-export const DeleteCommentConfirmModal = ({
-    messageId,
-    commentIdToDelete,
-    setCommentIdToDelete,
-}: {
+type DeleteCommentT = {
     messageId: string;
     commentIdToDelete: string | null;
-    setCommentIdToDelete: (a: string | null) => void;
-}) => {
-    const client = useClient();
-    return (
-        <XModalForm
-            submitProps={{
-                text: 'Delete',
-                style: 'danger',
-            }}
-            title={`Delete comment`}
-            defaultData={{}}
-            defaultAction={async () => {
-                await client.mutateDeleteComment({
-                    id: commentIdToDelete!!,
-                });
-
-                await client.refetchMessageComments({
-                    messageId,
-                });
-                setCommentIdToDelete(null);
-            }}
-            isOpen={!!commentIdToDelete}
-            onClosed={() => {
-                setCommentIdToDelete(null);
-            }}
-            submitBtnText="Delete"
-        >
-            <XFormLoadingContent>
-                <XVertical flexGrow={1} separator={8}>
-                    Delete this comment for everyone? This cannot be undone.
-                </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
-    );
 };
+
+const DeleteCommentDialog = React.memo<
+    {
+        ctx: XModalController;
+    } & DeleteCommentT
+>(({ messageId, commentIdToDelete, ctx }) => {
+    const client = useClient();
+    const form = useForm();
+
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            await client.mutateDeleteComment({
+                id: commentIdToDelete!!,
+            });
+
+            await client.refetchMessageComments({
+                messageId,
+            });
+            ctx.hide();
+        });
+    }, []);
+
+    return (
+        <XView borderRadius={8} overflow="hidden">
+            {form.error && <XErrorMessage message={form.error} />}
+            <XModalContent fontSize={18} lineHeight="28px">
+                Delete this comment for everyone? This cannot be undone.
+            </XModalContent>
+            <XModalFooter>
+                <XModalFooterButton text="Cancel" style="ghost" onClick={() => ctx.hide()} />
+                <XModalFooterButton
+                    text="Delete"
+                    style="danger"
+                    onClick={doConfirm}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+});
+
+export function showDeleteCommentConfirmation(deleteCommentProps: DeleteCommentT) {
+    showModalBox({ title: 'Delete comment' }, ctx => {
+        return <DeleteCommentDialog {...deleteCommentProps} ctx={ctx} />;
+    });
+}

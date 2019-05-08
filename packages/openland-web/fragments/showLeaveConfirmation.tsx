@@ -9,6 +9,7 @@ import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { XView } from 'react-mental';
 
 const LeaveDialog = React.memo<{ id: string; ctx: XModalController }>(props => {
     const router = React.useContext(XRouterContext)!;
@@ -37,20 +38,26 @@ const LeaveDialog = React.memo<{ id: string; ctx: XModalController }>(props => {
     return (
         <>
             {form.error && <XErrorMessage message={form.error} />}
-            <XModalContent fontSize={18} lineHeight="28px">
-                Are you sure you want to leave? You will lose access to all internal chats at{' '}
-                {data.organizationProfile.name}. You can only join {data.organizationProfile.name}{' '}
-                by invitation in the future.
-            </XModalContent>
-            <XModalFooter>
-                <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
-                <XModalFooterButton
-                    text="Yes, I am sure"
-                    style="danger"
-                    onClick={doConfirm}
-                    loading={form.loading}
-                />
-            </XModalFooter>
+            <XView flexDirection="column" borderRadius={8} overflow="hidden">
+                <XModalContent fontSize={18} lineHeight="28px">
+                    Are you sure you want to leave? You will lose access to all internal chats at{' '}
+                    {data.organizationProfile.name}. You can only join{' '}
+                    {data.organizationProfile.name} by invitation in the future.
+                </XModalContent>
+                <XModalFooter>
+                    <XModalFooterButton
+                        text="Cancel"
+                        style="ghost"
+                        onClick={() => props.ctx.hide()}
+                    />
+                    <XModalFooterButton
+                        text="Yes, I am sure"
+                        style="danger"
+                        onClick={doConfirm}
+                        loading={form.loading}
+                    />
+                </XModalFooter>
+            </XView>
         </>
     );
 });
