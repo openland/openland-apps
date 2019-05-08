@@ -22,7 +22,7 @@ sealed class TransportSubscriptionResult {
 }
 
 class TransportScheduler(val transport: WebSocketTransport, val store: StoreScheduler) {
-    private val transportQueue = DispatchQueue()
+    private val transportQueue = DispatchQueue("transport")
 
     fun operation(operation: OperationDefinition, arguments: JSONObject, queue: DispatchQueue, callback: (result: TransportOperationResult) -> Unit) {
         var completed = false
@@ -66,13 +66,6 @@ class TransportScheduler(val transport: WebSocketTransport, val store: StoreSche
     }
 
     fun subscription(operation: OperationDefinition, arguments: JSONObject, queue: DispatchQueue, callback: (result: TransportSubscriptionResult) -> Unit): RunningOperation {
-
-        //
-        // TODO: Fix Subscription updates handling. There is a small chance that updates will be
-        //       applied in incorrect sequence
-        //
-
-
         return transport.operation(JSONObject(
                 mapOf(
                         "query" to operation.body,

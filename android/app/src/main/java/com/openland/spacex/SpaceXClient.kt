@@ -32,7 +32,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     }
     private val scheduler = StoreScheduler(name, context)
     private val transportScheduler = TransportScheduler(transport, scheduler)
-    private val queue = DispatchQueue()
+    private val queue = DispatchQueue("client")
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
 
     fun setConnectionStateListener(handler: (connected: Boolean) -> Unit) {

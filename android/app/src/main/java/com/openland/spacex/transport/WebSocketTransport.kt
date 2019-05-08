@@ -10,7 +10,7 @@ class WebSocketTransport {
     private val context: Context
     private val token: String?
     private var ws: WebSocketStableClient? = null
-    private val queue = DispatchQueue()
+    private val queue = DispatchQueue("ws")
     private var nextId = 1
     private var connected = false
     private var liveOperations = mutableMapOf<String, PendingOperation>()

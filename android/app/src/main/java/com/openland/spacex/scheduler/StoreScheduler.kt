@@ -17,7 +17,7 @@ class StoreScheduler {
         val ROOT_QUERY = "ROOT_QUERY"
     }
 
-    val queue = DispatchQueue()
+    val queue = DispatchQueue("store")
     private val persistence: PersistenceScheduler
     private val store = RecordStore()
     private val bus = RecordStoreBus()

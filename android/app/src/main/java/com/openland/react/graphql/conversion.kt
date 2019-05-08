@@ -12,7 +12,7 @@ fun ReadableArray.toKotlinX(): Any? {
             v.isNull -> res.add(JSONObject.NULL)
             v.type == ReadableType.String -> res.add(v.asString())
             v.type == ReadableType.Boolean -> res.add(v.asBoolean())
-            v.type == ReadableType.Number -> res.add(v.asDouble().toBigDecimal())
+            v.type == ReadableType.Number -> res.add(v.asDouble())
             v.type == ReadableType.Array -> res.add(v.asArray().toKotlinX())
             v.type == ReadableType.Map -> res.add(v.asMap().toKotlinX())
             else -> throw Error("Unknown type: " + v.type)
@@ -33,7 +33,7 @@ fun ReadableMap.toKotlinX(): JSONObject {
             continue
         }
         when {
-            v.type == ReadableType.Number -> res[k] = v.asDouble().toBigDecimal()
+            v.type == ReadableType.Number -> res[k] = v.asDouble()
             v.type == ReadableType.Boolean -> res[k] = v.asBoolean()
             v.type == ReadableType.String -> res[k] = v.asString()
             v.type == ReadableType.Map -> res[k] = v.asMap().toKotlinX()

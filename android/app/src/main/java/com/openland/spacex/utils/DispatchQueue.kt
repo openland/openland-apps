@@ -2,9 +2,10 @@ package com.openland.spacex.utils
 
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import java.util.concurrent.Executors
 
-class DispatchQueue {
+class DispatchQueue(val name: String) {
     private companion object {
         private val thread = HandlerThread("timer")
         val handler: Handler by lazy { Handler(thread.looper) }
@@ -47,9 +48,14 @@ class DispatchQueue {
 
     fun async(op: () -> Unit) {
         queue.submit {
+            val start = System.currentTimeMillis()
             try {
                 currentQueueLocal.set(true)
                 op()
+                val delta = (System.currentTimeMillis() - start)
+                if (delta > 20) {
+                    Log.w("SpaceX-Dispatch", "[$name] Dispatch completed in $delta ms")
+                }
             } catch (t: Throwable) {
                 t.printStackTrace()
             } finally {

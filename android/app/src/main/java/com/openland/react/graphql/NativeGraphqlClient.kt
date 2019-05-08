@@ -239,7 +239,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
 
             override fun onError() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                // Ignore
             }
 
         })
