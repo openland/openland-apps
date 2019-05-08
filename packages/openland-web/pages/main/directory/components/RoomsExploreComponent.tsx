@@ -1,6 +1,4 @@
 import * as React from 'react';
-
-import { EmptyComponent } from './directory/RoomEmptyComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
@@ -8,6 +6,7 @@ import {
     ComponentWithSort,
 } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 import { useClient } from 'openland-web/utils/useClient';
+import { EmptySearchBlock } from 'openland-web/pages/main/directory/components/EmptySearchBlock';
 
 interface WithChatSearchRoomsProps {
     customButton?: any;
@@ -18,9 +17,10 @@ interface WithChatSearchRoomsProps {
         sort: string;
     };
     tagsCount: (n: number) => void;
+    notFoundText: string;
 }
 
-export const Rooms = (props: WithChatSearchRoomsProps) => {
+const Rooms = (props: WithChatSearchRoomsProps) => {
     const client = useClient();
     const { tagsCount, customMenu, customButton, CustomButtonComponent } = props;
     const data = client.useRoomSearch(props.variables, {
@@ -30,7 +30,7 @@ export const Rooms = (props: WithChatSearchRoomsProps) => {
     if (!data) {
         tagsCount(0);
 
-        return <EmptyComponent />;
+        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
     }
 
     if (
@@ -65,7 +65,7 @@ export const Rooms = (props: WithChatSearchRoomsProps) => {
     } else {
         tagsCount(0);
 
-        return <EmptyComponent />;
+        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
     }
 };
 

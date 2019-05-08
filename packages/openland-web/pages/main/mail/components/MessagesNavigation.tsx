@@ -53,7 +53,6 @@ export const MessagesNavigation = XMemo(
 
         // let isCompose = path.endsWith('/new');
 
-        let isRooms = path.endsWith('/channels');
         let isCall = path.endsWith('/call');
         let isOrganizationInvite = path.includes('join') && !path.includes('joinChannel');
         let isRoomInvite = path.includes('joinChannel') || path.includes('invite');
@@ -75,10 +74,6 @@ export const MessagesNavigation = XMemo(
         }
         if (isRoomInvite) {
             tab = tabs.roomInvite;
-        }
-
-        if (isRooms) {
-            tab = tabs.rooms;
         }
 
         if (isCall) {

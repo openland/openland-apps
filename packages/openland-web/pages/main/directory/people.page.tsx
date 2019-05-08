@@ -10,13 +10,15 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { withApp } from 'openland-web/components/withApp';
+
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
     error: any;
+    notFoundText: string;
 }
 
-export const PeopleCards = ({ variables, error, tagsCount }: PeopleCardsProps) => {
+export const PeopleCards = ({ variables, error, tagsCount, notFoundText }: PeopleCardsProps) => {
     const client = useClient();
 
     const data = client.useExplorePeople(variables, {
@@ -49,7 +51,7 @@ export const PeopleCards = ({ variables, error, tagsCount }: PeopleCardsProps) =
                     />
                 </XContentWrapper>
             )}
-            {noData && <EmptySearchBlock text="No people matches your search" />}
+            {noData && <EmptySearchBlock text={`We couldn't find anything for ${notFoundText}`} />}
         </>
     );
 };
@@ -67,11 +69,11 @@ const SearchUserProfileComponent = XMemo(({ id }: { id: string }) => (
     <UserProfile userId={id} onDirectory={true} />
 ));
 
+const CardsComponent = ComponentWithSort({ Component: PeopleCards });
+
 export default withApp('People', 'viewer', () => {
     const router = React.useContext(XRouterContext) as XRouter;
     const page = router.routeQuery.page;
-
-    let CardsComponent = ComponentWithSort({ Component: PeopleCards });
 
     return (
         <DirectoryNavigation
