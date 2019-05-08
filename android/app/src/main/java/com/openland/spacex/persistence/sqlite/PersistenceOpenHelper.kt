@@ -1,4 +1,4 @@
-package com.openland.spacex.persistence
+package com.openland.spacex.persistence.sqlite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
