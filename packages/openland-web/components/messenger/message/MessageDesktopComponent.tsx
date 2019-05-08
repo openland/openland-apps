@@ -19,7 +19,7 @@ import {
     RoomChat_room,
 } from 'openland-api/Types';
 import { MessagesStateContextProps } from '../MessagesStateContext';
-import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
+import { EditMessageInline } from './edit/MessageEditComponent';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -245,7 +245,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isSending) {
             if (isEditView && message.text && this.props.conversationId) {
                 content.push(
-                    <EditMessageInlineWrapper
+                    <EditMessageInline
                         message={message}
                         key={'editForm' + message.id}
                         onClose={this.hideEditView}

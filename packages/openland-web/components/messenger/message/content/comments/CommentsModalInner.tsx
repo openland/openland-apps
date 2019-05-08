@@ -86,10 +86,11 @@ const CommentView = ({
     };
 
     const onCommentEditClick = async () => {
-        await client.mutateEditComment({
-            id: message.key,
-            message: 'edit',
-        });
+        alert('edit');
+        // await client.mutateEditComment({
+        //     id: message.key,
+        //     message: 'edit',
+        // });
     };
 
     const onCommentDeleteClick = async () => {

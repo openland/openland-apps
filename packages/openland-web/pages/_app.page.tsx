@@ -103,7 +103,8 @@ export default withData(
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
-                                                <React.Suspense fallback={<div />}>
+                                                <Component {...pageProps} />
+                                                {/* <React.Suspense fallback={<div />}>
                                                     <div style={{ margin: 'auto' }}>
                                                         <XView justifyContent="center">
                                                             <CommentsModalInnerNoRouter
@@ -116,7 +117,7 @@ export default withData(
                                                             />
                                                         </XView>
                                                     </div>
-                                                </React.Suspense>
+                                                </React.Suspense> */}
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>

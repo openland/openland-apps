@@ -128,118 +128,73 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
-    id: string;
-    message: any;
+    key: string;
+    message: DataSourceMessageItem;
     onClose: any;
-    initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserForMention[]>;
 };
 
-const EditMessageInline = (props: EditMessageInlineT) => {
+export const EditMessageInline = ({
+    key,
+    variables,
+    message,
+    onClose,
+}: EditMessageInlineT & {
+    variables: {
+        roomId: string;
+    };
+}) => {
     const client = useClient();
 
-    return (
-        <XForm
-            defaultAction={async data => {
-                await client.mutateRoomEditMessage({
-                    messageId: props.id,
-                    message: data.message.text,
-                    file: data.message.file,
-                    replyMessages: data.message.replyMessages,
-                    mentions: data.message.mentions.map((mention: any) => mention.user.id),
-                });
-
-                props.onClose();
-            }}
-            defaultData={{
-                message: props.message,
-            }}
-        >
-            <TextInputWrapper>
-                <XTextInput
-                    valueStoreKey="fields.message"
-                    kind="from_store"
-                    initialMentions={props.initialMentions}
-                    getMentionsSuggestions={props.getMentionsSuggestions}
-                />
-            </TextInputWrapper>
-            <Footer separator={5}>
-                <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
-                <XButton
-                    text="Cancel"
-                    size="default"
-                    onClick={() => {
-                        props.onClose();
-                    }}
-                />
-            </Footer>
-        </XForm>
-    );
-};
-
-type EditMessageInlineWrapperInnerT = {
-    initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserForMention[]>;
-} & EditMessageInlineWrapperT;
-class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
-    onCloseHandler = () => {
-        this.props.onClose();
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembers(variables);
+        return data && data.members.map(({ user }) => user);
     };
 
-    render() {
-        return (
+    return (
+        <React.Fragment key={key}>
             <XShortcuts
                 supressOtherShortcuts
                 handlerMap={{
-                    ESC: this.onCloseHandler,
+                    ESC: onClose,
                 }}
                 keymap={{
                     ESC: 'esc',
                 }}
             >
-                <EditMessageInline
-                    id={this.props.message.id!}
-                    message={this.props.message}
-                    initialMentions={this.props.initialMentions}
-                    getMentionsSuggestions={this.props.getMentionsSuggestions}
-                    onClose={this.onCloseHandler}
-                />
+                <XForm
+                    defaultAction={async data => {
+                        await client.mutateRoomEditMessage({
+                            messageId: message!!.id!!,
+                            message: data.message.text,
+                            file: data.message.file,
+                            replyMessages: data.message.replyMessages,
+                            mentions: data.message.mentions.map((mention: any) => mention.user.id),
+                        });
+
+                        onClose();
+                    }}
+                    defaultData={{
+                        message,
+                    }}
+                >
+                    <TextInputWrapper>
+                        <XTextInput
+                            valueStoreKey="fields.message"
+                            kind="from_store"
+                            initialMentions={
+                                message.spans
+                                    ? convertSpansToUserWithOffset({ spans: message.spans })
+                                    : []
+                            }
+                            getMentionsSuggestions={getMentionsSuggestions}
+                        />
+                    </TextInputWrapper>
+                    <Footer separator={5}>
+                        <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
+                        <XButton text="Cancel" size="default" onClick={onClose} />
+                    </Footer>
+                </XForm>
             </XShortcuts>
-        );
-    }
-}
-
-type EditMessageInlineWrapperT = {
-    message: DataSourceMessageItem;
-    onClose: any;
-    key?: string;
-};
-
-export const EditMessageInlineWrapper = (
-    props: EditMessageInlineWrapperT & {
-        variables: {
-            roomId: string;
-        };
-    },
-) => {
-    const client = useClient();
-
-    const getMentionsSuggestions = async () => {
-        const data = await client.queryRoomMembers(props.variables);
-        return data && data.members.map(({ user }) => user);
-    };
-
-    return (
-        <EditMessageInlineWrapperInner
-            initialMentions={
-                props.message.spans
-                    ? convertSpansToUserWithOffset({ spans: props.message.spans })
-                    : []
-            }
-            getMentionsSuggestions={getMentionsSuggestions}
-            message={props.message}
-            onClose={props.onClose}
-            key={props.key}
-        />
+        </React.Fragment>
     );
 };
