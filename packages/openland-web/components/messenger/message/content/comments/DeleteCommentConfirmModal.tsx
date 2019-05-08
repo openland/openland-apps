@@ -4,9 +4,16 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { useClient } from 'openland-web/utils/useClient';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 
-export const DeleteCommentConfirmModal = () => {
+export const DeleteCommentConfirmModal = ({
+    messageId,
+    commentIdToDelete,
+    setCommentIdToDelete,
+}: {
+    messageId: string;
+    commentIdToDelete: string | null;
+    setCommentIdToDelete: (a: string | null) => void;
+}) => {
     const client = useClient();
-
     return (
         <XModalForm
             submitProps={{
@@ -16,9 +23,19 @@ export const DeleteCommentConfirmModal = () => {
             title={`Delete comment`}
             defaultData={{}}
             defaultAction={async () => {
-                //
+                await client.mutateDeleteComment({
+                    id: commentIdToDelete!!,
+                });
+
+                await client.refetchMessageComments({
+                    messageId,
+                });
+                setCommentIdToDelete(null);
             }}
-            targetQuery={'deleteComment'}
+            isOpen={!!commentIdToDelete}
+            onClosed={() => {
+                setCommentIdToDelete(null);
+            }}
             submitBtnText="Delete"
         >
             <XFormLoadingContent>

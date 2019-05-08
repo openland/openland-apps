@@ -30,6 +30,7 @@ const CommentView = ({
     setShowInputId,
     showInputId,
     getMentionsSuggestions,
+    setCommentIdToDelete,
     commentsMap,
     scrollRef,
     currentCommentsInputRef,
@@ -39,6 +40,7 @@ const CommentView = ({
     showInputId: string | null;
     message: DataSourceWebMessageItem & { depth: number };
     getMentionsSuggestions: () => Promise<UserForMention[]>;
+    setCommentIdToDelete: (a: string | null) => void;
     commentsMap: any;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
@@ -93,13 +95,7 @@ const CommentView = ({
     };
 
     const onCommentDeleteClick = async () => {
-        await client.mutateDeleteComment({
-            id: message.key,
-        });
-
-        await client.refetchMessageComments({
-            messageId: message.key,
-        });
+        setCommentIdToDelete(message.id!!);
     };
 
     let DEPTH_LIMIT = 4;
@@ -193,6 +189,7 @@ export const CommentsBlockView = ({
     setShowInputId,
     showInputId,
     getMentionsSuggestions,
+    setCommentIdToDelete,
     scrollRef,
     currentCommentsInputRef,
 }: {
@@ -200,6 +197,7 @@ export const CommentsBlockView = ({
     showInputId: string | null;
     originalMessageId: string;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
+    setCommentIdToDelete: (a: string | null) => void;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
 }) => {
@@ -232,6 +230,7 @@ export const CommentsBlockView = ({
                     message={message}
                     setShowInputId={setShowInputId}
                     showInputId={showInputId}
+                    setCommentIdToDelete={setCommentIdToDelete}
                     getMentionsSuggestions={getMentionsSuggestions}
                     currentCommentsInputRef={currentCommentsInputRef}
                     commentsMap={commentsMap}
@@ -321,8 +320,11 @@ export const CommentsModalInnerNoRouter = ({
     roomId: string;
 }) => {
     const client = useClient();
+
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
+
+    const [commentIdToDelete, setCommentIdToDelete] = React.useState<string | null>(null);
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
 
     const getMentionsSuggestions = async () => {
@@ -375,8 +377,11 @@ export const CommentsModalInnerNoRouter = ({
         <UploadContextProvider>
             <IsActiveContext.Provider value={true}>
                 <XView>
-                    <DeleteCommentConfirmModal />
-
+                    <DeleteCommentConfirmModal
+                        messageId={messageId}
+                        commentIdToDelete={commentIdToDelete}
+                        setCommentIdToDelete={setCommentIdToDelete}
+                    />
                     <XScrollView3
                         useDefaultScroll
                         flexGrow={1}
@@ -397,6 +402,7 @@ export const CommentsModalInnerNoRouter = ({
                             width="100%"
                         />
                         <CommentsBlockView
+                            setCommentIdToDelete={setCommentIdToDelete}
                             originalMessageId={messageId}
                             setShowInputId={setShowInputId}
                             showInputId={showInputId}
