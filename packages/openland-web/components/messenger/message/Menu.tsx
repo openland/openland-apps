@@ -155,7 +155,6 @@ interface MenuProps {
 
 export const Menu = React.memo(
     ({ conversationId, hover, message, isModal, isComment, selectMessage, room }: MenuProps) => {
-        hover = true;
         let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
@@ -171,7 +170,7 @@ export const Menu = React.memo(
 
         React.useEffect(() => {
             // do nothing if dont active chat
-        }, [isActive])
+        }, [isActive]);
 
         const setReplyMessages = (e: any) => {
             if (!message.isSending) {
