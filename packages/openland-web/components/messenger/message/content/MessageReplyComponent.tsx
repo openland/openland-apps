@@ -63,13 +63,18 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                         />,
                     );
                 } else {
+                    const dimentions = {
+                        originalWidth: w,
+                        originalHeight: h,
+                        width: w,
+                        height: h,
+                    };
                     content.push(
                         <MessageImageComponent
                             key={'file'}
                             file={props.attach.fileId}
                             fileName={name}
-                            width={w}
-                            height={h}
+                            dimentions={dimentions}
                             startSelected={props.startSelected}
                         />,
                     );

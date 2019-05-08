@@ -6,21 +6,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
-    const attachments =
-        generalMessage &&
-        generalMessage.attachments.map((attachment: FullMessage_GeneralMessage_attachments) => {
-            if (attachment.__typename === 'MessageAttachmentFile') {
-                return {
-                    ...attachment,
-                    fileMetadata: {
-                        ...attachment.fileMetadata,
-                        imageWidth: 180,
-                        imageHeight: 120,
-                    },
-                };
-            }
-            return attachment;
-        });
     return {
         chatId: '',
         type: 'message',
@@ -39,7 +24,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         reactions: generalMessage && generalMessage.reactions,
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
-        attachments,
+        attachments: generalMessage && generalMessage.attachments,
         reply:
             generalMessage && generalMessage.quotedMessages
                 ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
