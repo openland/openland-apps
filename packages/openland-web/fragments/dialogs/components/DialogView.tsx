@@ -40,6 +40,11 @@ export let channelIconClass = css`
     }
 `;
 
+const DialogTitleClassName = css`
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
 export let channelSecretIconClass = css`
     margin: 0px 0px -2px 0px;
     path {
@@ -255,7 +260,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 )}
                             </XViewSelectedContext.Consumer>
                         )}
-                        <span>{dialog.titleEmojify}</span>
+                        <span className={DialogTitleClassName}>{dialog.titleEmojify}</span>
                     </XView>
                     {dialog.date && (
                         <XView
