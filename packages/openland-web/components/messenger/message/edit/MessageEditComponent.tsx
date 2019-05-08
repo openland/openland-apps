@@ -131,9 +131,10 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
+    isComment: boolean;
     minimal: boolean;
     key: string;
-    message: DataSourceMessageItem & { depth: number };
+    message: DataSourceMessageItem & { depth?: number };
     onClose: (event?: React.MouseEvent) => void;
 };
 
@@ -153,6 +154,7 @@ export const EditMessageInline = ({
     variables,
     message,
     onClose,
+    isComment,
     minimal,
 }: EditMessageInlineT & {
     variables: {
@@ -162,7 +164,8 @@ export const EditMessageInline = ({
     const client = useClient();
 
     const getMentionsSuggestions = async () => {
-        const data = await client.queryRoomMembers(variables);
+        const data = await client.queryRoomMembersForMentionsPaginated(variables);
+
         return data && data.members.map(({ user }) => user);
     };
 
@@ -179,13 +182,22 @@ export const EditMessageInline = ({
             >
                 <XForm
                     defaultAction={async data => {
-                        await client.mutateRoomEditMessage({
-                            messageId: message!!.id!!,
-                            message: data.message.text,
-                            file: data.message.file,
-                            replyMessages: data.message.replyMessages,
-                            mentions: data.message.mentions.map((mention: any) => mention.user.id),
-                        });
+                        if (isComment) {
+                            await client.mutateEditComment({
+                                id: message.id!!,
+                                message: data.message.text,
+                            });
+                        } else {
+                            await client.mutateRoomEditMessage({
+                                messageId: message!!.id!!,
+                                message: data.message.text,
+                                file: data.message.file,
+                                replyMessages: data.message.replyMessages,
+                                mentions: data.message.mentions.map(
+                                    (mention: any) => mention.user.id,
+                                ),
+                            });
+                        }
 
                         onClose();
                     }}

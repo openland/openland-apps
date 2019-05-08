@@ -30,6 +30,7 @@ import {
 
 const CommentView = ({
     originalMessageId,
+    roomId,
     message,
     setShowInputId,
     showInputId,
@@ -39,6 +40,7 @@ const CommentView = ({
     currentCommentsInputRef,
 }: {
     originalMessageId: string;
+    roomId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
     message: DataSourceWebMessageItem & { depth: number };
@@ -95,11 +97,6 @@ const CommentView = ({
             messagesContext.resetAll();
             messagesContext.setEditMessage(message.id!, message.text!);
         }
-
-        // await client.mutateEditComment({
-        //     id: message.key,
-        //     message: 'edit',
-        // });
     };
 
     const onCommentDeleteClick = async () => {
@@ -151,6 +148,7 @@ const CommentView = ({
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
                 <MessageComponent
+                    conversationId={roomId}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                     usernameOfRepliedUser={usernameOfRepliedUser}
                     deleted={message.id ? commentsMap[message.id].deleted : false}
@@ -196,6 +194,7 @@ const CommentView = ({
 };
 
 export const CommentsBlockView = ({
+    roomId,
     originalMessageId,
     setShowInputId,
     showInputId,
@@ -203,6 +202,7 @@ export const CommentsBlockView = ({
     scrollRef,
     currentCommentsInputRef,
 }: {
+    roomId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
     originalMessageId: string;
@@ -233,6 +233,7 @@ export const CommentsBlockView = ({
         .map(message => {
             return (
                 <CommentView
+                    roomId={roomId}
                     originalMessageId={originalMessageId}
                     key={`comment_${message.id}`}
                     scrollRef={scrollRef}
@@ -279,7 +280,7 @@ export const CommentsBlockView = ({
     );
 };
 
-const OriginalMessageComponent = ({ messageId }: { messageId: string }) => {
+const OriginalMessageComponent = ({ messageId, roomId }: { messageId: string; roomId: string }) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const commentedMessage = client.useMessage({
@@ -296,6 +297,7 @@ const OriginalMessageComponent = ({ messageId }: { messageId: string }) => {
     return (
         <MessageComponent
             noSelector
+            conversationId={roomId}
             message={finalMessage}
             showNumberOfComments={false}
             onlyLikes={true}
@@ -395,7 +397,7 @@ export const CommentsModalInnerNoRouter = ({
                             <ModalCloser />
                         </XView>
                         <XView paddingHorizontal={32} paddingTop={28}>
-                            <OriginalMessageComponent messageId={messageId} />
+                            <OriginalMessageComponent messageId={messageId} roomId={roomId} />
                         </XView>
                         <XView
                             marginTop={28}
@@ -404,6 +406,7 @@ export const CommentsModalInnerNoRouter = ({
                             width="100%"
                         />
                         <CommentsBlockView
+                            roomId={roomId}
                             originalMessageId={messageId}
                             setShowInputId={setShowInputId}
                             showInputId={showInputId}

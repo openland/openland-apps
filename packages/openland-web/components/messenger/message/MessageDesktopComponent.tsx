@@ -101,12 +101,12 @@ export interface MessageComponentProps {
     isPinned?: boolean;
     isModal?: boolean;
     commentDepth?: number;
-    message: DataSourceWebMessageItem;
+    message: DataSourceWebMessageItem & { depth?: number };
     isChannel?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
     commentProps?: CommentPropsT;
-    conversationId?: string;
+    conversationId: string | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
     onlyLikes?: boolean;
@@ -246,9 +246,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
         if (!message.isSending) {
-            if (isEditView && message.text) {
+            if (isEditView && message.text && this.props.conversationId) {
                 content.push(
                     <EditMessageInline
+                        isComment={!!this.props.isComment}
                         minimal={!!this.props.isComment}
                         message={message}
                         key={'editForm' + message.id}

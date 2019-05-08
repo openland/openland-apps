@@ -57,6 +57,7 @@ export const MessageModalBody = (props: MessageComponentProps) => {
     return (
         <>
             <MessageComponent
+                conversationId={null}
                 noSelector
                 message={dsMessages}
                 onlyLikes={true}
