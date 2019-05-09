@@ -2513,6 +2513,13 @@ private val ConferenceWatchSelector = obj(listOf(
                     fragment("Conference", ConferenceFullSelector)
                 ))))
         ))
+private val DebugEventsWatchSelector = obj(listOf(
+            field("debugEvents","debugEvents", mapOf("eventsCount" to refValue("eventsCount"), "fromState" to refValue("fromState"), "randomDelays" to refValue("randomDelays"), "seed" to refValue("seed")), notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("key","key", notNull(scalar("String"))),
+                    field("seq","seq", notNull(scalar("Int")))
+                ))))
+        ))
 private val DialogsWatchSelector = obj(listOf(
             field("dialogsUpdates","event", mapOf("fromState" to refValue("state")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3562,6 +3569,12 @@ object Operations {
         override val body = "subscription ConferenceWatch(\$id:ID!){alphaConferenceWatch(id:\$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = ConferenceWatchSelector
     }
+    val DebugEventsWatch = object: OperationDefinition {
+        override val name = "DebugEventsWatch"
+        override val kind = OperationKind.SUBSCRIPTION
+        override val body = "subscription DebugEventsWatch(\$eventsCount:Int!,\$fromState:String,\$randomDelays:Boolean!,\$seed:String!){debugEvents(eventsCount:\$eventsCount,fromState:\$fromState,randomDelays:\$randomDelays,seed:\$seed){__typename key seq}}"
+        override val selector = DebugEventsWatchSelector
+    }
     val DialogsWatch = object: OperationDefinition {
         override val name = "DialogsWatch"
         override val kind = OperationKind.SUBSCRIPTION
@@ -3752,6 +3765,7 @@ object Operations {
         if (name == "CommentWatch") return CommentWatch
         if (name == "ConferenceMediaWatch") return ConferenceMediaWatch
         if (name == "ConferenceWatch") return ConferenceWatch
+        if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch

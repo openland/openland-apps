@@ -1087,6 +1087,13 @@
       }
     },
     {
+      "signature": "6bbb402df4bd58a0adc64b2b58fac229317166a13afadc3831b978ca42f06920",
+      "document": "subscription DebugEventsWatch($eventsCount:Int!,$fromState:String,$randomDelays:Boolean!,$seed:String!){debugEvents(eventsCount:$eventsCount,fromState:$fromState,randomDelays:$randomDelays,seed:$seed){__typename key seq}}",
+      "metadata": {
+        "engineSignature": "subscription DebugEventsWatch($eventsCount:Int!,$fromState:String,$randomDelays:Boolean!,$seed:String!){debugEvents(eventsCount:$eventsCount,fromState:$fromState,randomDelays:$randomDelays,seed:$seed){__typename key seq}}"
+      }
+    },
+    {
       "signature": "a388a282621369646de9778f6e16e9e5b09db2f04d88fa47de98ab6d195dfe53",
       "document": "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}",
       "metadata": {

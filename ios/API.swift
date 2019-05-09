@@ -20716,6 +20716,101 @@ public final class SuperAdminRemoveMutation: GraphQLMutation {
   }
 }
 
+public final class DebugEventsWatchSubscription: GraphQLSubscription {
+  public let operationDefinition =
+    "subscription DebugEventsWatch($fromState: String, $eventsCount: Int!, $randomDelays: Boolean!, $seed: String!) {\n  debugEvents(fromState: $fromState, eventsCount: $eventsCount, randomDelays: $randomDelays, seed: $seed) {\n    __typename\n    seq\n    key\n  }\n}"
+
+  public var fromState: String?
+  public var eventsCount: Int
+  public var randomDelays: Bool
+  public var seed: String
+
+  public init(fromState: String? = nil, eventsCount: Int, randomDelays: Bool, seed: String) {
+    self.fromState = fromState
+    self.eventsCount = eventsCount
+    self.randomDelays = randomDelays
+    self.seed = seed
+  }
+
+  public var variables: GraphQLMap? {
+    return ["fromState": fromState, "eventsCount": eventsCount, "randomDelays": randomDelays, "seed": seed]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Subscription"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("debugEvents", arguments: ["fromState": GraphQLVariable("fromState"), "eventsCount": GraphQLVariable("eventsCount"), "randomDelays": GraphQLVariable("randomDelays"), "seed": GraphQLVariable("seed")], type: .nonNull(.object(DebugEvent.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(debugEvents: DebugEvent) {
+      self.init(unsafeResultMap: ["__typename": "Subscription", "debugEvents": debugEvents.resultMap])
+    }
+
+    public var debugEvents: DebugEvent {
+      get {
+        return DebugEvent(unsafeResultMap: resultMap["debugEvents"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "debugEvents")
+      }
+    }
+
+    public struct DebugEvent: GraphQLSelectionSet {
+      public static let possibleTypes = ["DebugEvent"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("seq", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("key", type: .nonNull(.scalar(String.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(seq: Int, key: String) {
+        self.init(unsafeResultMap: ["__typename": "DebugEvent", "seq": seq, "key": key])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var seq: Int {
+        get {
+          return resultMap["seq"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "seq")
+        }
+      }
+
+      public var key: String {
+        get {
+          return resultMap["key"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "key")
+        }
+      }
+    }
+  }
+}
+
 public final class ProfileQuery: GraphQLQuery {
   public let operationDefinition =
     "query Profile {\n  user: me {\n    __typename\n    id\n    shortname\n  }\n  profile: myProfile {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin: alphaLinkedin\n    primaryOrganization {\n      __typename\n      id\n      name\n    }\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      id\n      name\n    }\n  }\n}"

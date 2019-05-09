@@ -38614,6 +38614,31 @@ export interface SuperAdminRemoveVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: DebugEventsWatch
+// ====================================================
+
+export interface DebugEventsWatch_debugEvents {
+  __typename: "DebugEvent";
+  seq: number;
+  key: string;
+}
+
+export interface DebugEventsWatch {
+  debugEvents: DebugEventsWatch_debugEvents;
+}
+
+export interface DebugEventsWatchVariables {
+  fromState?: string | null;
+  eventsCount: number;
+  randomDelays: boolean;
+  seed: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Profile
 // ====================================================
 
