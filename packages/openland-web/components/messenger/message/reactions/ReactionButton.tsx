@@ -11,7 +11,6 @@ import { ReactionItem } from './MessageReaction';
 import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { XButton } from 'openland-x/XButton';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -275,12 +274,12 @@ const LikeIcon = React.forwardRef<HTMLDivElement, LikeIconPropsT>(({ isActive, o
 
 export const CommentReactionButton = React.memo(
     ({
-        id,
         reactions,
+        id,
         hover,
     }: {
-        id: string;
         reactions?: FullMessage_GeneralMessage_reactions[];
+        id: string;
         hover?: boolean;
     }) => {
         let client = useClient();
@@ -288,14 +287,15 @@ export const CommentReactionButton = React.memo(
         const myId = userContext!!.user!!.id!!;
         const likeReaction = MessageReactionType.LIKE;
 
-        let reactionsCount = 0;
+        let reactionsCount = reactions ? reactions.length : 0;
         let isActive = false;
-        let userNamesLiked: string[] = [];
+
+        let userNamesLiked: any[] = [];
         let numberOfUsersExtraLiked = null;
 
         if (reactions) {
-            userNamesLiked = reactions.slice(0, 10).map(reaction => {
-                return reaction.user.name;
+            userNamesLiked = reactions.slice(0, 10).map((reaction, key) => {
+                return <div key={key}>{reaction.user.name}</div>;
             });
 
             if (reactions.length > 10) {
@@ -307,8 +307,6 @@ export const CommentReactionButton = React.memo(
                     (userReaction: FullMessage_GeneralMessage_reactions) =>
                         userReaction.user.id === myId && userReaction.reaction === likeReaction,
                 ).length > 0;
-
-            reactionsCount = reactions.length;
         }
 
         const likeIconElement = (
@@ -334,13 +332,24 @@ export const CommentReactionButton = React.memo(
             reactions && reactions.length ? (
                 <XPopper
                     content={
-                        <XView>
-                            {userNamesLiked}
-                            {numberOfUsersExtraLiked}
+                        <XView paddingRight={32} paddingBottom={1}>
+                            <XView marginTop={2} fontWeight={'600'} fontSize={11}>
+                                Liked
+                            </XView>
+                            <XView marginTop={3} fontSize={11} lineHeight={1.33}>
+                                {userNamesLiked}
+                            </XView>
+                            {numberOfUsersExtraLiked && (
+                                <XView fontSize={11} lineHeight={1.33}>
+                                    + {numberOfUsersExtraLiked}{' '}
+                                    {numberOfUsersExtraLiked === 1 ? 'person' : 'people'}{' '}
+                                </XView>
+                            )}
                         </XView>
                     }
-                    showOnHover={true}
-                    placement="bottom"
+                    marginLeft={-12}
+                    showOnHover
+                    placement="bottom-start"
                     style="dark"
                 >
                     {likeIconElement}
