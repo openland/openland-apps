@@ -4,6 +4,7 @@ import data from 'emoji-mart/data/emojione.json';
 import { css } from 'linaria';
 import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
+import { XPopper } from 'openland-x/XPopper';
 
 const emojiWrapperClassName = css`
     width: 18px;
@@ -45,27 +46,29 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
     });
 
     return (
-        <div>
-            {showPicker && (
-                <div className={pickerClassName} ref={ref}>
-                    <NimblePicker
-                        showPreview
-                        emojiTooltip
-                        data={data}
-                        color="#1790ff"
-                        set="emojione"
-                        onSelect={onEmojiPicked}
-                    />
-                </div>
-            )}
+        <XPopper
+            show={showPicker}
+            placement="top"
+            content={
+                <NimblePicker
+                    showPreview
+                    emojiTooltip
+                    data={data}
+                    color="#1790ff"
+                    set="emojione"
+                    onSelect={onEmojiPicked}
+                />
+            }
+        >
             <div
+                ref={ref}
                 className={emojiWrapperClassName}
                 onClick={() => {
-                    setShowPicker(true);
+                    setShowPicker(!showPicker);
                 }}
             >
                 <EmojiIcon />
             </div>
-        </div>
+        </XPopper>
     );
 };
