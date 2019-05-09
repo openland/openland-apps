@@ -1,23 +1,11 @@
-import { MessageSpanType, MessageSpanInput } from 'openland-api/Types';
-
-const whiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
-
-const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
-    '*': { type: MessageSpanType.Bold },
-    '```': { type: MessageSpanType.CodeBlock, master: true },
-    '`': { type: MessageSpanType.InlineCode },
-    '🌈': { type: MessageSpanType.Insane },
-    '~': { type: MessageSpanType.Irony },
-    '_': { type: MessageSpanType.Italic },
-    ':': { type: MessageSpanType.Loud, master: true },
-    '🔄': { type: MessageSpanType.Rotating },
-};
+import { MessageSpanInput } from 'openland-api/Types';
+import { WhiteListAroundSpec, SpanSymbolToType } from './Span';
 
 const _getCurrentSymbol = (text: string, index: number, open: boolean): string | false => {
     let isSpec = false;
     let symbol = '';
 
-    for (let s in spanMap) {
+    for (let s in SpanSymbolToType) {
         if (s === text.slice(index, index + s.length)) {
             isSpec = true;
             symbol = s;
@@ -29,7 +17,7 @@ const _getCurrentSymbol = (text: string, index: number, open: boolean): string |
     if (isSpec) {
         const arroundSymbolIndex = (!open) ? (index + symbol.length) : (index - 1);
 
-        return whiteListAroundSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
+        return WhiteListAroundSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
     }
 
     return false;
@@ -67,7 +55,7 @@ export const parseSpans = (text: string): MessageSpanInput[] => {
                 o.used = true;
 
                 res.push({
-                    type: spanMap[o.symbol].type,
+                    type: SpanSymbolToType[o.symbol].type,
                     offset: o.offset,
                     length: c.offset - o.offset + o.symbol.length
                 });

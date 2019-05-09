@@ -1,4 +1,4 @@
-import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort } from "openland-api/Types";
+import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, MessageSpanType } from "openland-api/Types";
 
 type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating';
 export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate | SpanCodeBlock | SpanCodeInline | SpanInsane | SpanIrony | SpanItalic | SpanLoud | SpanRotating;
@@ -74,3 +74,27 @@ export interface SpanRoom extends SpanAbs {
 }
 
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
+
+export const WhiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
+
+export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
+    '*': { type: MessageSpanType.Bold },
+    '```': { type: MessageSpanType.CodeBlock, master: true },
+    '`': { type: MessageSpanType.InlineCode },
+    '🌈': { type: MessageSpanType.Insane },
+    '~': { type: MessageSpanType.Irony },
+    '_': { type: MessageSpanType.Italic },
+    ':': { type: MessageSpanType.Loud },
+    '🔄': { type: MessageSpanType.Rotating },
+};
+
+export const SpanTypeToSymbol = {
+    'bold': '*',
+    'code_block': '```',
+    'code_inline': '`',
+    'insane': '🌈',
+    'irony': '~',
+    'italic': '_',
+    'loud': ':',
+    'rotating': '🔄',
+};

@@ -1,4 +1,4 @@
-import { Span, ServerSpan } from 'openland-y-utils/spans/Span';
+import { Span, ServerSpan, SpanTypeToSymbol } from 'openland-y-utils/spans/Span';
 
 const _findChildSpans = (spans: ServerSpan[], parent: ServerSpan): { lastIndex: number; childs: ServerSpan[] } => {
     let childs: ServerSpan[] = [];
@@ -90,25 +90,56 @@ const _preprocessRawText = (text: string, startOffset: number): Span[] => {
     return res;
 }
 
-const _addTextSpans = (text: string, deltaOffset: number, spans: Span[]): Span[] => {
+const _getTextSpans = (text: string, parent: Span): Span[] => {
+    let slicedText = text.substr(parent.offset, parent.length);
+
     let res: Span[] = [];
     let offset = 0;
 
-    for (let s of spans) {
-        let rawFirst = text.substr(offset, (s.offset - deltaOffset) - offset);
+    for (let s of parent.childrens || []) {
+        let rawFirst = slicedText.substr(offset, (s.offset - parent.offset) - offset);
 
         if (rawFirst) {
-            res.push(..._preprocessRawText(rawFirst, offset + deltaOffset));
+            res.push(..._preprocessRawText(rawFirst, offset + parent.offset));
         }
 
-        offset = (s.offset - deltaOffset) + s.length;
+        offset = (s.offset - parent.offset) + s.length;
     }
 
-    let rawLast = text.slice(offset);
+    let rawLast = slicedText.slice(offset);
 
-    res.push(..._preprocessRawText(rawLast, offset + deltaOffset));
+    res.push(..._preprocessRawText(rawLast, offset + parent.offset));
 
     return res;
+}
+
+const _removeSpecSymbols = (spans: Span[], symbol?: string): Span[] => {
+    if (typeof symbol === 'string') {
+        if (spans[0] && spans[0].type === 'text') {
+            if (spans[0].text && spans[0].text.startsWith(symbol)) {
+                spans[0].text = spans[0].text.replace(symbol, '');
+    
+                if (spans[0].text.length === 0) {
+                    spans = spans.slice(1);
+                }
+            }
+        }
+    
+        const lastIndex = spans.length - 1;
+    
+        if (spans[lastIndex] && spans[lastIndex].type === 'text' && spans[lastIndex].text && spans[lastIndex].text!.endsWith(symbol)) {
+            const text = spans[spans.length - 1].text!;
+            const processed = text.substr(0, text.lastIndexOf(symbol));
+    
+            spans[lastIndex].text = processed;
+    
+            if (processed.length === 0) {
+                spans.pop();
+            }
+        }
+    }
+
+    return spans;
 }
 
 const _recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
@@ -125,8 +156,9 @@ const _recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
             childrens: _recursiveProcessing(text, childs),
         }
 
-        const sliceOfText = text.substr(span.offset, span.length);
-        const textSpans = _addTextSpans(sliceOfText, span.offset, currentSpan.childrens || []);
+        let textSpans = _getTextSpans(text, currentSpan);
+
+        textSpans = _removeSpecSymbols(textSpans, SpanTypeToSymbol[currentSpan.type]);
 
         currentSpan.childrens = (currentSpan.childrens || []).concat(textSpans).sort((a, b) => a.offset - b.offset);
 
