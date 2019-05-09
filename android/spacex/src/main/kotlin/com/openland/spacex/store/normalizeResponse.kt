@@ -72,6 +72,7 @@ private fun normalizeValue(
             for (i in 0 until arr.length()) {
                 normalizeValue(null, collection, value.inner, arguments, data.get(i))
             }
+            return null
         }
     } else if (value is OutputType.Object) {
         return normalizeSelector(parentCacheKey, collection, value.selectors, arguments, data as JSONObject)

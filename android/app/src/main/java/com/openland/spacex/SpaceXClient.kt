@@ -10,6 +10,7 @@ import com.openland.spacex.transport.WebSocketTransport
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.trace
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicInteger
 
 interface OperationCallback {
     fun onResult(result: JSONObject)
@@ -35,6 +36,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     private val transportScheduler = TransportScheduler(transport, scheduler)
     private val queue = DispatchQueue("client")
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
+    private var nextId = AtomicInteger(1)
 
     fun setConnectionStateListener(handler: (connected: Boolean) -> Unit) {
         this.connectionStateListener = handler
@@ -108,7 +110,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         if (operation.kind != OperationKind.QUERY) {
             throw Error("Invalid operation kind")
         }
-        val watchQueryWatch = QueryWatch(operation, arguments, policy, callback)
+        val watchQueryWatch = QueryWatch(nextId.getAndIncrement(), operation, arguments, policy, callback)
         watchQueryWatch.start()
         return {
             watchQueryWatch.stop()
@@ -186,41 +188,21 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     // Watch
     //
 
-    private inner class QueryWatch(val operation: OperationDefinition,
-                                   val arguments: JSONObject,
-                                   val policy: FetchPolicy,
-                                   val callback: OperationCallback) {
+    private inner class QueryWatch(
+            val id: Int,
+            val operation: OperationDefinition,
+            val arguments: JSONObject,
+            val policy: FetchPolicy,
+            val callback: OperationCallback
+    ) {
         private var completed = false
         private var storeSubscription: (() -> Unit)? = null
 
         fun start() {
+            // Log.d("SpaceX", "[$id] Start")
             if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
+                // Log.d("SpaceX", "[$id] Read")
                 scheduler.readQueryFromCache(operation, arguments, queue) {
-                    if (it is QueryReadResult.Value) {
-                        callback.onResult(it.value)
-                        if (policy == FetchPolicy.CACHE_FIRST) {
-                            doSubscribe(it.value)
-                        } else {
-                            doRequest()
-                        }
-                    } else {
-                        doRequest()
-                    }
-                }
-            } else {
-                doRequest()
-            }
-        }
-
-        private fun doInit() {
-            if (this.completed) {
-                return
-            }
-            if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                scheduler.readQueryFromCache(operation, arguments, queue) {
-                    if (this.completed) {
-                        return@readQueryFromCache
-                    }
                     if (it is QueryReadResult.Value) {
                         callback.onResult(it.value)
                         if (policy == FetchPolicy.CACHE_FIRST) {
@@ -241,12 +223,14 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
             if (this.completed) {
                 return
             }
+            // Log.d("SpaceX", "[$id] Read")
             scheduler.readQueryFromCache(operation, arguments, queue) {
                 if (this.completed) {
                     return@readQueryFromCache
                 }
                 if (it is QueryReadResult.Value) {
                     callback.onResult(it.value)
+                    doSubscribe(it.value)
                 } else {
                     doRequest()
                 }
@@ -254,6 +238,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         }
 
         private fun doSubscribe(data: JSONObject) {
+            // Log.d("SpaceX", "[$id] Subscribe")
             // TODO: Optimize!!
             val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
             storeSubscription = scheduler.subscribe(normalized, queue) {
@@ -264,7 +249,9 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         }
 
         private fun doRequest() {
+            // Log.d("SpaceX", "[$id] Request")
             transportScheduler.operation(operation, arguments, queue) {
+                // Log.d("SpaceX", "[$id] Response")
                 if (this.completed) {
                     return@operation
                 }
@@ -278,6 +265,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         }
 
         fun stop() {
+            // Log.d("SpaceX", "[$id] Stop")
             this.completed = true
             this.storeSubscription?.invoke()
             this.storeSubscription = null

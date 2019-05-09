@@ -59,9 +59,6 @@ class PersistenceScheduler(val context: Context, val name: String, val store: St
             // Notify
             for (p in pendingReadRequests) {
                 p.missing.removeAll(keys)
-                if (p.missing.isEmpty()) {
-                    p.callback()
-                }
             }
             val ready = pendingReadRequests.filter { it.missing.isEmpty() }
             pendingReadRequests.removeAll { it.missing.isEmpty() }
