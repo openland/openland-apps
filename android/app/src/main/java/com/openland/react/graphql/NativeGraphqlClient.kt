@@ -3,6 +3,7 @@ package com.openland.react.graphql
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.spacex.*
+import com.openland.spacex.utils.trace
 import org.json.JSONObject
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
@@ -52,7 +53,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
         client.query(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
             override fun onResult(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
 
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -65,7 +66,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
 
             override fun onError(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
@@ -95,7 +96,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
         val res = client.watch(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
             override fun onResult(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
 
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -108,7 +109,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
 
             override fun onError(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
@@ -133,7 +134,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     fun mutate(id: String, query: String, arguments: ReadableMap) {
         client.mutation(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
             override fun onResult(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
 
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -147,7 +148,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
 
             override fun onError(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
@@ -167,7 +168,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     fun subscribe(id: String, query: String, arguments: ReadableMap) {
         subscriptions[id] = client.subscribe(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
             override fun onResult(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
 
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -181,7 +182,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
 
             override fun onError(result: JSONObject) {
-                val res = result.toReact()
+                val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
@@ -209,7 +210,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     fun read(id: String, query: String, arguments: ReadableMap) {
         client.read(Operations.operationByName(query), arguments.toKotlinX(), object : StoreReadCallback {
             override fun onResult(result: JSONObject?) {
-                val res = result?.toReact()
+                val res = trace("toReact") { result?.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "response")

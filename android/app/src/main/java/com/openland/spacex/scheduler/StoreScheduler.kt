@@ -5,6 +5,7 @@ import android.util.Log
 import com.openland.spacex.OperationDefinition
 import com.openland.spacex.store.*
 import com.openland.spacex.utils.DispatchQueue
+import com.openland.spacex.utils.trace
 import org.json.JSONObject
 
 sealed class QueryReadResult {
@@ -30,16 +31,20 @@ class StoreScheduler {
         this.queue.async {
             prepareStore(operation, arguments) {
                 // Read from in-memory store
-                val res = readFromStore(StoreScheduler.ROOT_QUERY, store, operation.selector, arguments)
+                val res = trace("readQueryFromCache") { readFromStore(StoreScheduler.ROOT_QUERY, store, operation.selector, arguments) }
 
                 // Notify about result
                 if (res.first) {
                     queue.async {
-                        callback(QueryReadResult.Value(res.second!!))
+                        trace("readQueryFromCache:callback") {
+                            callback(QueryReadResult.Value(res.second!!))
+                        }
                     }
                 } else {
                     queue.async {
-                        callback(QueryReadResult.Missing)
+                        trace("readQueryFromCache:callback") {
+                            callback(QueryReadResult.Missing)
+                        }
                     }
                 }
             }
@@ -53,11 +58,16 @@ class StoreScheduler {
     fun merge(recordSet: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
         this.queue.async {
             prepareMerge(recordSet) {
-                val changed = store.merge(recordSet)
-                bus.publish(changed)
-                persistence.write(RecordSet(changed.mapValues { store.read(it.key) }))
+                val changed = trace("merge") { store.merge(recordSet) }
+                if (changed.isNotEmpty()) {
+                    trace("merge:publish") { bus.publish(changed) }
+                    trace("merge:write") {
+                        val toWrite = RecordSet(changed.mapValues { store.read(it.key) })
+                        persistence.write(toWrite)
+                    }
+                }
                 queue.async {
-                    callback()
+                    trace("merge:callback") { callback() }
                 }
             }
         }
@@ -65,9 +75,8 @@ class StoreScheduler {
 
     fun subscribe(recordSet: RecordSet, queue: DispatchQueue, callback: () -> Unit) = bus.subscribe(recordSet) { queue.async { callback() } }
 
-
     private fun prepareMerge(recordSet: RecordSet, callback: () -> Unit) {
-        val missing = recordSet.records.keys.filter { !store.isInMemory(it) }
+        val missing = trace("prepareMerge") { recordSet.records.keys.filter { !store.isInMemory(it) } }
         if (missing.isNotEmpty()) {
             persistence.read(missing.toSet()) {
                 callback()
@@ -78,7 +87,7 @@ class StoreScheduler {
     }
 
     private fun prepareStore(operation: OperationDefinition, arguments: JSONObject, callback: () -> Unit) {
-        val missing = collectMissingKeys(StoreScheduler.ROOT_QUERY, store, operation.selector, arguments)
+        val missing = trace("collectMissingKeys") { collectMissingKeys(StoreScheduler.ROOT_QUERY, store, operation.selector, arguments) }
         if (missing.isNotEmpty()) {
             persistence.read(missing) {
                 prepareStore(operation, arguments, callback)

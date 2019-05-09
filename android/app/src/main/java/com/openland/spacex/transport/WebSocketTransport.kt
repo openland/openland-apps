@@ -110,8 +110,12 @@ class WebSocketTransport {
         }
     }
 
-    private fun postMessage(type: String, payload: JSONObject, id: String) {
-        this.ws!!.postMessage(JSONObject(mapOf("id" to id, "type" to type, "payload" to payload)))
+    private fun postMessage(type: String, payload: JSONObject?, id: String) {
+        if (payload != null) {
+            this.ws!!.postMessage(JSONObject(mapOf("id" to id, "type" to type, "payload" to payload)))
+        } else {
+            this.ws!!.postMessage(JSONObject(mapOf("id" to id, "type" to type)))
+        }
     }
 
     private inner class PendingOperation(val id: String, var query: JSONObject, val callback: TransportOperationCallback) : RunningOperation {
@@ -119,7 +123,7 @@ class WebSocketTransport {
             queue.async {
                 liveOperations.remove(id)
                 if (connected) {
-                    postMessage("stop", JSONObject(), id)
+                    postMessage("stop", null, id)
                 }
             }
         }

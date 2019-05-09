@@ -8,6 +8,7 @@ import com.openland.spacex.transport.RunningOperation
 import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
 import com.openland.spacex.utils.DispatchQueue
+import com.openland.spacex.utils.trace
 import org.json.JSONObject
 
 interface OperationCallback {
@@ -54,20 +55,24 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                     callback.onResult(it.value)
                 } else {
                     transportScheduler.operation(operation, arguments, queue) { r ->
-                        if (r is TransportOperationResult.Value) {
-                            callback.onResult(r.data)
-                        } else if (r is TransportOperationResult.Error) {
-                            callback.onError(r.data)
+                        trace("query:operation") {
+                            if (r is TransportOperationResult.Value) {
+                                callback.onResult(r.data)
+                            } else if (r is TransportOperationResult.Error) {
+                                callback.onError(r.data)
+                            }
                         }
                     }
                 }
             }
         } else {
             transportScheduler.operation(operation, arguments, queue) { r ->
-                if (r is TransportOperationResult.Value) {
-                    callback.onResult(r.data)
-                } else if (r is TransportOperationResult.Error) {
-                    callback.onError(r.data)
+                trace("query:operation") {
+                    if (r is TransportOperationResult.Value) {
+                        callback.onResult(r.data)
+                    } else if (r is TransportOperationResult.Error) {
+                        callback.onError(r.data)
+                    }
                 }
             }
         }

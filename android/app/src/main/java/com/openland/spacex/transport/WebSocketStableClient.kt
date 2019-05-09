@@ -148,7 +148,7 @@ class WebSocketStableClient(val context: Context,
         ws.onMessage {
             queue.async {
                 if (ws == this.connection) {
-                    Log.d(tag, "Message: $it")
+                    Log.d(tag, "<<: $it")
                     onMessage(it)
                 }
             }
@@ -199,7 +199,9 @@ class WebSocketStableClient(val context: Context,
 
     private fun sendMessage(message: JSONObject) {
         try {
-            this.connection!!.postMessage(message.toString())
+            val serialized = message.toString()
+            Log.d(tag, ">>: $serialized")
+            this.connection!!.postMessage(serialized)
         } catch (t: Throwable) {
             t.printStackTrace()
             onFailure()
@@ -207,9 +209,11 @@ class WebSocketStableClient(val context: Context,
     }
 
     private fun onFailure() {
-        val c = this.connection!!
-        this.connection = null
-        c.close()
+        if (this.connection != null) {
+            val c = this.connection!!
+            this.connection = null
+            c.close()
+        }
 
         if (this.state === ConnectionState.STARTED) {
             this.state = ConnectionState.COMPLETED
