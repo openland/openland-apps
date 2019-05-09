@@ -61,6 +61,7 @@ const DiscussButton = React.memo(
 );
 
 export type CommentPropsT = {
+    messageId: string;
     onCommentReplyClick: (event: React.MouseEvent<any>) => void;
     onCommentEditClick: (event: React.MouseEvent<any, MouseEvent>) => void;
     onCommentDeleteClick: (event: React.MouseEvent<any, MouseEvent>) => void;

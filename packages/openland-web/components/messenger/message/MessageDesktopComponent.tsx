@@ -247,6 +247,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             if (isEditView && message.text && this.props.conversationId) {
                 content.push(
                     <EditMessageInline
+                        commentProps={this.props.commentProps}
                         isComment={!!this.props.isComment}
                         minimal={!!this.props.isComment}
                         message={message}

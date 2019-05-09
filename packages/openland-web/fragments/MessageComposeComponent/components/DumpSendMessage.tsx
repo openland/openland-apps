@@ -58,7 +58,7 @@ export type TextInputComponentT = {
     topLevelComment?: boolean;
     fullWidth?: boolean;
     minimal?: boolean;
-    hideAttach?: boolean;
+    hideAttachments?: boolean;
     round?: boolean;
     handleChange: (a: { text: string; mentions: UserWithOffset[] }) => void;
     handleSend: () => any;
@@ -96,7 +96,7 @@ export const DumpSendMessage = React.memo(
         fullWidth,
         minimal,
         round,
-        hideAttach,
+        hideAttachments,
         placeholder,
     }: DumpSendMessageT) => {
         const { handleDrop } = React.useContext(UploadContext);
@@ -128,14 +128,16 @@ export const DumpSendMessage = React.memo(
                             handleDrop={handleDrop}
                             round={round}
                             minimal={minimal}
-                            hideAttach={hideAttach}
+                            hideAttachments={hideAttachments}
                         />
                         <XHorizontal
                             alignItems="center"
                             justifyContent="space-between"
                             flexGrow={1}
                         >
-                            {!minimal && !hideAttach && <AttachmentButtons enabled={enabled} />}
+                            {!minimal && !hideAttachments && (
+                                <AttachmentButtons enabled={enabled} />
+                            )}
 
                             {!minimal && (
                                 <XButton

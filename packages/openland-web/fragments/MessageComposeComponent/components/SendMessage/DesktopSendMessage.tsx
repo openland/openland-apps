@@ -37,7 +37,7 @@ export const DesktopSendMessage = ({
     getMentionsSuggestions,
     initialMentions,
     minimal,
-    hideAttach,
+    hideAttachments,
     round,
     placeholder,
 }: TextInputComponentT) => {
@@ -45,7 +45,7 @@ export const DesktopSendMessage = ({
         <TextInputWrapper minimal={minimal}>
             <XRichTextInput2
                 minimal={minimal}
-                hideAttach={hideAttach}
+                hideAttachments={hideAttachments}
                 round={round}
                 flexGrow={1}
                 getMentionsSuggestions={getMentionsSuggestions}

@@ -13,6 +13,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { XView } from 'react-mental';
+import { CommentPropsT } from '../PostMessageButtons';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -142,6 +143,7 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
+    commentProps?: CommentPropsT;
     isComment: boolean;
     minimal: boolean;
     key: string;
@@ -161,6 +163,7 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
 };
 
 export const EditMessageInline = ({
+    commentProps,
     key,
     variables,
     message,
@@ -185,6 +188,10 @@ export const EditMessageInline = ({
             await client.mutateEditComment({
                 id: message.id!!,
                 message: data.message.text,
+            });
+
+            await client.refetchMessageComments({
+                messageId: commentProps!!.messageId,
             });
         } else {
             await client.mutateRoomEditMessage({
