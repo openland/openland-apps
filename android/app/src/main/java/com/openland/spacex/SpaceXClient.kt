@@ -150,37 +150,45 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         private var runningOperation: (RunningOperation)? = null
 
         fun start() {
-            runningOperation = transportScheduler.subscription(operation, arguments, queue) {
-                if (it is TransportSubscriptionResult.Value) {
-                    callback.onResult(it.data)
-                } else if (it is TransportSubscriptionResult.Error) {
-                    restart()
-                } else if (it is TransportSubscriptionResult.Completed) {
-                    restart()
+            queue.async {
+                runningOperation = transportScheduler.subscription(operation, arguments, queue) {
+                    if (it is TransportSubscriptionResult.Value) {
+                        callback.onResult(it.data)
+                    } else if (it is TransportSubscriptionResult.Error) {
+                        restart()
+                    } else if (it is TransportSubscriptionResult.Completed) {
+                        restart()
+                    }
                 }
             }
         }
 
         private fun restart() {
-            this.runningOperation?.cancel()
-            this.runningOperation = null
-            start()
+            queue.async {
+                this.runningOperation?.cancel()
+                this.runningOperation = null
+                start()
+            }
         }
 
         fun updateArguments(arguments: JSONObject) {
-            this.runningOperation?.lazyUpdate(JSONObject(
-                    mapOf(
-                            "query" to operation.body,
-                            "name" to operation.name,
-                            "variables" to arguments
-                    )
-            ))
+            queue.async {
+                this.runningOperation?.lazyUpdate(JSONObject(
+                        mapOf(
+                                "query" to operation.body,
+                                "name" to operation.name,
+                                "variables" to arguments
+                        )
+                ))
+            }
         }
 
         fun stop() {
-            this.completed = true
-            this.runningOperation?.cancel()
-            this.runningOperation = null
+            queue.async {
+                this.completed = true
+                this.runningOperation?.cancel()
+                this.runningOperation = null
+            }
         }
     }
 
@@ -199,23 +207,25 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         private var storeSubscription: (() -> Unit)? = null
 
         fun start() {
-            // Log.d("SpaceX", "[$id] Start")
-            if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                // Log.d("SpaceX", "[$id] Read")
-                scheduler.readQueryFromCache(operation, arguments, queue) {
-                    if (it is QueryReadResult.Value) {
-                        callback.onResult(it.value)
-                        if (policy == FetchPolicy.CACHE_FIRST) {
-                            doSubscribe(it.value)
+            queue.async {
+                // Log.d("SpaceX", "[$id] Start")
+                if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
+                    // Log.d("SpaceX", "[$id] Read")
+                    scheduler.readQueryFromCache(operation, arguments, queue) {
+                        if (it is QueryReadResult.Value) {
+                            callback.onResult(it.value)
+                            if (policy == FetchPolicy.CACHE_FIRST) {
+                                doSubscribe(it.value)
+                            } else {
+                                doRequest()
+                            }
                         } else {
                             doRequest()
                         }
-                    } else {
-                        doRequest()
                     }
+                } else {
+                    doRequest()
                 }
-            } else {
-                doRequest()
             }
         }
 
@@ -265,10 +275,12 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         }
 
         fun stop() {
-            // Log.d("SpaceX", "[$id] Stop")
-            this.completed = true
-            this.storeSubscription?.invoke()
-            this.storeSubscription = null
+            queue.async {
+                // Log.d("SpaceX", "[$id] Stop")
+                this.completed = true
+                this.storeSubscription?.invoke()
+                this.storeSubscription = null
+            }
         }
     }
 }
