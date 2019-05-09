@@ -85,6 +85,7 @@ export const RoomsExploreComponent = () => {
                     { label: 'Creation date', value: 'createdAt' },
                 ],
             }}
+            defaultSortOption="membersCount"
         />
     );
 };

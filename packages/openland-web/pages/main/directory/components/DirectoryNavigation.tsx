@@ -31,6 +31,7 @@ export const SearchCardsOrShowProfile = XMemo(
         CardsComponent,
         ProfileComponent,
         sortOptions,
+        defaultSortOption,
         withoutFeatured,
         page,
     }: {
@@ -44,13 +45,14 @@ export const SearchCardsOrShowProfile = XMemo(
             label: string;
             values: { label: string; value: string }[];
         };
+        defaultSortOption?: string;
         withoutFeatured?: boolean;
         page?: number;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
         const [sort, setSort] = React.useState({
-            orderBy: 'membersCount',
+            orderBy: defaultSortOption || 'createdAt',
             featured: true,
         });
 
@@ -170,16 +172,16 @@ export const DirectoryNavigation = XMemo(
                 menuChildrenContent={
                     <>
                         <MenuItem path="/directory" title="Groups" icon={<RoomIcon />} />
+                        <MenuItem
+                            path="/directory/communities"
+                            title="Communities"
+                            icon={<CommunityIcon />}
+                        />
                         <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
                         <MenuItem
                             path="/directory/organizations"
                             title="Organizations"
                             icon={<OrganizationsIcon />}
-                        />
-                        <MenuItem
-                            path="/directory/communities"
-                            title="Communities"
-                            icon={<CommunityIcon />}
                         />
                         <XWithRole role="feature-non-production">
                             <MenuItem
