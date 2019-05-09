@@ -12462,25 +12462,29 @@ public final class BetaAddMessageCommentMutation: GraphQLMutation {
 
 public final class EditCommentMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation EditComment($id: ID!, $message: String) {\n  editComment(id: $id, message: $message)\n}"
+    "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments)\n}"
 
   public var id: GraphQLID
   public var message: String?
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
 
-  public init(id: GraphQLID, message: String? = nil) {
+  public init(id: GraphQLID, message: String? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?) {
     self.id = id
     self.message = message
+    self.mentions = mentions
+    self.fileAttachments = fileAttachments
   }
 
   public var variables: GraphQLMap? {
-    return ["id": id, "message": message]
+    return ["id": id, "message": message, "mentions": mentions, "fileAttachments": fileAttachments]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("editComment", arguments: ["id": GraphQLVariable("id"), "message": GraphQLVariable("message")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("editComment", arguments: ["id": GraphQLVariable("id"), "message": GraphQLVariable("message"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap

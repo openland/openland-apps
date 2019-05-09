@@ -1,3 +1,3 @@
-mutation EditComment($id: ID!, $message: String) {
-  editComment(id: $id, message: $message)
+mutation EditComment($fileAttachments: [FileAttachmentInput!], $id: ID!, $mentions: [MentionInput!], $message: String) {
+  editComment(fileAttachments: $fileAttachments, id: $id, mentions: $mentions, message: $message)
 }

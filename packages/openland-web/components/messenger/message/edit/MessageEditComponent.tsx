@@ -58,7 +58,7 @@ class XRichTextInputStored extends React.PureComponent<
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
 > {
-    onChangeHandler = (value: any) => {
+    onChangeHandler = (value: { text: string; mentions?: UserWithOffset[] }) => {
         if (this.props.kind === 'from_store') {
             const previosValue = this.props.store.readValue(this.props.valueStoreKey);
             this.props.store.writeValue(this.props.valueStoreKey, {
@@ -155,7 +155,7 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
     return (
         <XView flexDirection="row" fontSize={12} fontWeight={'600'}>
             <XView opacity={0.4}>Press Esc to </XView>
-            <XView marginLeft={2} color={'#1790ff'} cursor={'pointer'} onClick={onClose}>
+            <XView marginLeft={3} color={'#1790ff'} cursor={'pointer'} onClick={onClose}>
                 cancel
             </XView>
         </XView>
@@ -188,6 +188,12 @@ export const EditMessageInline = ({
             await client.mutateEditComment({
                 id: message.id!!,
                 message: data.message.text,
+                mentions: data.message.mentions.map((mention: UserWithOffset) => ({
+                    userId: mention.user.id,
+                    offset: mention.offset,
+                    length: mention.length,
+                })),
+                fileAttachments: [],
             });
 
             await client.refetchMessageComments({

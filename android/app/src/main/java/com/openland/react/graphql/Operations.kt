@@ -1959,7 +1959,7 @@ private val DeleteUserSelector = obj(listOf(
             field("superDeleteUser","superDeleteUser", mapOf("id" to refValue("id")), notNull(scalar("Boolean")))
         ))
 private val EditCommentSelector = obj(listOf(
-            field("editComment","editComment", mapOf("id" to refValue("id"), "message" to refValue("message")), notNull(scalar("Boolean")))
+            field("editComment","editComment", mapOf("fileAttachments" to refValue("fileAttachments"), "id" to refValue("id"), "mentions" to refValue("mentions"), "message" to refValue("message")), notNull(scalar("Boolean")))
         ))
 private val EditPostMessageSelector = obj(listOf(
             field("alphaEditPostMessage","editPostMessage", mapOf("attachments" to refValue("attachments"), "messageId" to refValue("messageId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
@@ -3086,7 +3086,7 @@ object Operations {
     val EditComment = object: OperationDefinition {
         override val name = "EditComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation EditComment(\$id:ID!,\$message:String){editComment(id:\$id,message:\$message)}"
+        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message)}"
         override val selector = EditCommentSelector
     }
     val EditPostMessage = object: OperationDefinition {

@@ -2548,7 +2548,9 @@ class ApiFactory: ApiFactoryBase {
     if (name == "EditComment") {
       let id = notNull(readString(src, "id"))
       let message = readString(src, "message")
-      let requestBody = EditCommentMutation(id: id, message: message)
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let requestBody = EditCommentMutation(id: id, message: message, mentions: mentions, fileAttachments: fileAttachments)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)

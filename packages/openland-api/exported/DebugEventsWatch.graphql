@@ -1,0 +1,7 @@
+subscription DebugEventsWatch($eventsCount: Int!, $fromState: String, $randomDelays: Boolean!, $seed: String!) {
+  debugEvents(eventsCount: $eventsCount, fromState: $fromState, randomDelays: $randomDelays, seed: $seed) {
+    __typename
+    key
+    seq
+  }
+}

@@ -52,7 +52,7 @@ export const MentionSuggestions = ({
                 mentionState.isSelecting ? mentionSuggestionsShow : mentionSuggestionsHide,
             )}
             style={{
-                width: sizeOfContainer.width,
+                width: sizeOfContainer.width || '100%',
                 maxHeight: hideAttachments ? '19vh' : '23vh',
                 overflow: 'scroll',
                 left: mentionState.isSelecting ? 0 : sizeOfContainer.width / 2,

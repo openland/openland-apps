@@ -29747,6 +29747,8 @@ export interface EditComment {
 export interface EditCommentVariables {
   id: string;
   message?: string | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
 }
 
 /* tslint:disable */
