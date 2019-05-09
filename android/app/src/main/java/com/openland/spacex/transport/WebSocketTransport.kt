@@ -86,9 +86,9 @@ class WebSocketTransport {
             val data = payload.optJSONObject("data")
             if (this.liveOperations.containsKey(id)) {
                 if (errors != null) {
-                    this.liveOperations[id]!!.callback.onError(errors)
+                    this.liveOperations[id]?.callback?.onError(errors)
                 } else {
-                    this.liveOperations[id]!!.callback.onResult(data!!)
+                    this.liveOperations[id]?.callback?.onResult(data!!)
                 }
             }
         } else if (type == "error") {

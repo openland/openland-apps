@@ -37,6 +37,7 @@ class WebSocketStableClient(val context: Context,
     private var attempt = 0
     private var networkAvailable = false
     private var existingFlush: (() -> Unit)? = null
+    private var keepAliveTimeout: (() -> Unit)? = null
     private var connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
             queue.async {
@@ -176,7 +177,11 @@ class WebSocketStableClient(val context: Context,
             val parsed = JSONObject(message)
             val type = parsed.getString("type")
             if (type == "ka") {
-                // TODO: Handle
+                // Default keep-alive interval on server is 10 seconds.
+                this.keepAliveTimeout?.invoke()
+                this.keepAliveTimeout = queue.asyncDelayed(15000) {
+                    onFailure()
+                }
             } else if (type == "connection_ack") {
                 if (this.state == ConnectionState.STARTING) {
                     this.state = ConnectionState.STARTED
