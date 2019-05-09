@@ -6,7 +6,6 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XRichTextInput } from 'openland-x/XRichTextInput';
 import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Inputs', 'viewer', props => {
@@ -448,10 +447,6 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                             />
                         </XVertical2>
                     </XHorizontal>
-                    <XTitle>Rich Text Input</XTitle>
-                    <XVertical2>
-                        <XRichTextInput placeholder={'Try type something...'} value={''} />
-                    </XVertical2>
                 </XVertical2>
             </XContent>
         </DevDocsScaffold>

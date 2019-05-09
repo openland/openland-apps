@@ -12,6 +12,8 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { XView } from 'react-mental';
+import { CommentPropsT } from '../PostMessageButtons';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -49,7 +51,9 @@ export type XTextInputProps =
 
 class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
+        onSubmit: () => Promise<void>;
         store: XStoreState;
+        minimal: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -80,6 +84,7 @@ class XRichTextInputStored extends React.PureComponent<
                 {...other}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
+                hideAttachments
                 value={value.text}
                 initialMentions={this.props.initialMentions}
                 getMentionsSuggestions={this.props.getMentionsSuggestions}
@@ -90,6 +95,9 @@ class XRichTextInputStored extends React.PureComponent<
 
 class XTextInput extends React.PureComponent<
     XTextInputProps & {
+        onSubmit: (data: any) => Promise<void>;
+        minimal: boolean;
+        round: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -109,6 +117,13 @@ class XTextInput extends React.PureComponent<
                         return (
                             <XRichTextInputStored
                                 {...other}
+                                onSubmit={async () => {
+                                    await this.props.onSubmit({
+                                        [valueStoreKey.replace('fields.', '')]: store.readValue(
+                                            valueStoreKey,
+                                        ),
+                                    });
+                                }}
                                 valueStoreKey={valueStoreKeyCached}
                                 store={store}
                             />
@@ -128,118 +143,114 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
-    id: string;
-    message: any;
-    onClose: any;
-    initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserForMention[]>;
+    commentProps?: CommentPropsT;
+    isComment: boolean;
+    minimal: boolean;
+    key: string;
+    message: DataSourceMessageItem & { depth?: number };
+    onClose: (event?: React.MouseEvent) => void;
 };
 
-const EditMessageInline = (props: EditMessageInlineT) => {
-    const client = useClient();
-
+const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) => void }) => {
     return (
-        <XForm
-            defaultAction={async data => {
-                await client.mutateRoomEditMessage({
-                    messageId: props.id,
-                    message: data.message.text,
-                    file: data.message.file,
-                    replyMessages: data.message.replyMessages,
-                    mentions: data.message.mentions.map((mention: any) => mention.user.id),
-                });
-
-                props.onClose();
-            }}
-            defaultData={{
-                message: props.message,
-            }}
-        >
-            <TextInputWrapper>
-                <XTextInput
-                    valueStoreKey="fields.message"
-                    kind="from_store"
-                    initialMentions={props.initialMentions}
-                    getMentionsSuggestions={props.getMentionsSuggestions}
-                />
-            </TextInputWrapper>
-            <Footer separator={5}>
-                <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
-                <XButton
-                    text="Cancel"
-                    size="default"
-                    onClick={() => {
-                        props.onClose();
-                    }}
-                />
-            </Footer>
-        </XForm>
+        <XView flexDirection="row" fontSize={12} fontWeight={'600'}>
+            <XView opacity={0.4}>Press Esc to </XView>
+            <XView marginLeft={2} color={'#1790ff'} cursor={'pointer'} onClick={onClose}>
+                cancel
+            </XView>
+        </XView>
     );
 };
 
-type EditMessageInlineWrapperInnerT = {
-    initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserForMention[]>;
-} & EditMessageInlineWrapperT;
-class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
-    onCloseHandler = () => {
-        this.props.onClose();
+export const EditMessageInline = ({
+    commentProps,
+    key,
+    variables,
+    message,
+    onClose,
+    isComment,
+    minimal,
+}: EditMessageInlineT & {
+    variables: {
+        roomId: string;
+    };
+}) => {
+    const client = useClient();
+
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembersForMentionsPaginated(variables);
+
+        return data && data.members.map(({ user }) => user);
     };
 
-    render() {
-        return (
+    const onFormSubmit = async (data: any) => {
+        if (isComment) {
+            await client.mutateEditComment({
+                id: message.id!!,
+                message: data.message.text,
+            });
+
+            await client.refetchMessageComments({
+                messageId: commentProps!!.messageId,
+            });
+        } else {
+            await client.mutateRoomEditMessage({
+                messageId: message!!.id!!,
+                message: data.message.text,
+                file: data.message.file,
+                replyMessages: data.message.replyMessages,
+                mentions: data.message.mentions.map((mention: any) => mention.user.id),
+            });
+        }
+
+        onClose();
+    };
+
+    return (
+        <React.Fragment key={key}>
             <XShortcuts
                 supressOtherShortcuts
                 handlerMap={{
-                    ESC: this.onCloseHandler,
+                    ESC: onClose,
                 }}
                 keymap={{
                     ESC: 'esc',
                 }}
             >
-                <EditMessageInline
-                    id={this.props.message.id!}
-                    message={this.props.message}
-                    initialMentions={this.props.initialMentions}
-                    getMentionsSuggestions={this.props.getMentionsSuggestions}
-                    onClose={this.onCloseHandler}
-                />
+                <XForm
+                    defaultAction={onFormSubmit}
+                    defaultData={{
+                        message: {
+                            text: message.text,
+                        },
+                    }}
+                >
+                    <XView marginLeft={-15}>
+                        <TextInputWrapper>
+                            <XTextInput
+                                onSubmit={onFormSubmit}
+                                minimal={minimal}
+                                round={minimal}
+                                valueStoreKey="fields.message"
+                                kind="from_store"
+                                initialMentions={
+                                    message.spans
+                                        ? convertSpansToUserWithOffset({ spans: message.spans })
+                                        : []
+                                }
+                                getMentionsSuggestions={getMentionsSuggestions}
+                            />
+                        </TextInputWrapper>
+                    </XView>
+                    {!minimal && (
+                        <Footer separator={5}>
+                            <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
+                            <XButton text="Cancel" size="default" onClick={onClose} />
+                        </Footer>
+                    )}
+                </XForm>
+                {minimal && <PressEscTipFooter onClose={onClose} />}
             </XShortcuts>
-        );
-    }
-}
-
-type EditMessageInlineWrapperT = {
-    message: DataSourceMessageItem;
-    onClose: any;
-    key?: string;
-};
-
-export const EditMessageInlineWrapper = (
-    props: EditMessageInlineWrapperT & {
-        variables: {
-            roomId: string;
-        };
-    },
-) => {
-    const client = useClient();
-
-    const getMentionsSuggestions = async () => {
-        const data = await client.queryRoomMembers(props.variables);
-        return data && data.members.map(({ user }) => user);
-    };
-
-    return (
-        <EditMessageInlineWrapperInner
-            initialMentions={
-                props.message.spans
-                    ? convertSpansToUserWithOffset({ spans: props.message.spans })
-                    : []
-            }
-            getMentionsSuggestions={getMentionsSuggestions}
-            message={props.message}
-            onClose={props.onClose}
-            key={props.key}
-        />
+        </React.Fragment>
     );
 };

@@ -8,7 +8,7 @@ import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
-import { convertMessage } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -57,6 +57,7 @@ export const MessageModalBody = (props: MessageComponentProps) => {
     return (
         <>
             <MessageComponent
+                conversationId={null}
                 noSelector
                 message={dsMessages}
                 onlyLikes={true}

@@ -3,12 +3,8 @@ import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
-import {
-    CommentWatch_event_CommentUpdateSingle_update,
-    FullMessage_GeneralMessage_attachments,
-} from 'openland-api/Types';
+import { CommentWatch_event_CommentUpdateSingle_update, UserForMention } from 'openland-api/Types';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
@@ -19,117 +15,42 @@ import { convertDsMessage } from 'openland-web/components/messenger/data/WebMess
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
-import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
-import { FullMessage } from 'openland-api/Types';
-import { useAddComment } from './useAddComment';
-import { uploadFile } from './uploadFile';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
-import { showModalBox } from 'openland-x/showModalBox';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { convertMessage } from './convertMessage';
+import { useSendMethods } from './useSendMethods';
+import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { showDeleteCommentConfirmation } from './DeleteCommentConfirmModal';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from 'openland-web/components/messenger/MessagesStateContext';
 
-export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
-    let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
-    let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
-
-    const attachments =
-        generalMessage &&
-        generalMessage.attachments.map((attachment: FullMessage_GeneralMessage_attachments) => {
-            if (attachment.__typename === 'MessageAttachmentFile') {
-                return {
-                    ...attachment,
-                    fileMetadata: {
-                        ...attachment.fileMetadata,
-                        imageWidth: 180,
-                        imageHeight: 120,
-                    },
-                };
-            }
-            return attachment;
-        });
-    return {
-        chatId: '',
-        type: 'message',
-        id: src.id,
-        key: src.repeatKey || src.id,
-        date: parseInt(src.date, 10),
-        isOut: true,
-        senderId: src.sender.id,
-        senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
-        sender: src.sender,
-        text: src.message || undefined,
-        isSending: false,
-        attachTop: false,
-        attachBottom: false,
-        reactions: generalMessage && generalMessage.reactions,
-        serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
-        isService: !!serviceMessage,
-        attachments,
-        reply:
-            generalMessage && generalMessage.quotedMessages
-                ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
-                : undefined,
-        isEdited: generalMessage && generalMessage.edited,
-        spans: src.spans || [],
-        commentsCount: generalMessage ? generalMessage.commentsCount : null,
-    };
-}
-
-export const CommentsModalInnerNoRouter = ({
-    messageId,
+const CommentView = ({
+    originalMessageId,
     roomId,
+    message,
+    setShowInputId,
+    showInputId,
+    getMentionsSuggestions,
+    commentsMap,
+    scrollRef,
+    currentCommentsInputRef,
 }: {
-    messageId: string;
+    originalMessageId: string;
     roomId: string;
+    setShowInputId: (a: string | null) => void;
+    showInputId: string | null;
+    message: DataSourceWebMessageItem & { depth: number };
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
+    commentsMap: any;
+    scrollRef: React.RefObject<XScrollView3 | null>;
+    currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
 }) => {
-    const client = useClient();
-    let ctx = React.useContext(UserInfoContext);
-    const modal = React.useContext(XModalContext);
-    const modalBox = React.useContext(XModalBoxContext);
-    const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
-    const scrollRef = React.useRef<XScrollView3 | null>(null);
-    const addComment = useAddComment();
-
-    const isMobile = React.useContext(IsMobileContext);
-    let messenger = React.useContext(MessengerContext);
-    const [commentToScroll, setCommentToScroll] = React.useState<number>(0);
-
-    const [showInputId, setShowInputId] = React.useState<string | null>(null);
-
-    const commentedMessage = client.useMessage({
-        messageId,
-    });
-
-    const getMentionsSuggestions = async () => {
-        const data = await client.queryRoomMembersForMentionsPaginated({
-            roomId,
-        });
-
-        return data.members.map(({ user }) => user)
-    };
-
-    const maybeGeneralMessage = commentedMessage.message;
-
-    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
-        return null;
-    }
-
-    const messageComments = client.useMessageComments(
-        {
-            messageId,
-        },
-        { fetchPolicy: 'cache-and-network' },
-    );
-
-    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
-        if (event.__typename === 'CommentReceived') {
-            await client.refetchMessageComments({
-                messageId,
-            });
-        }
-    };
+    const messenger = React.useContext(MessengerContext);
+    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const getCommentElem = (commentId: string) => {
         const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
@@ -162,12 +83,288 @@ export const CommentsModalInnerNoRouter = ({
         }
     };
 
+    const { onSendFile, onSend } = useSendMethods({
+        setShowInputId,
+    });
+
+    const onCommentReplyClick = () => {
+        setShowInputId(showInputId === message.key ? null : message.key);
+    };
+
+    const onCommentEditClick = async (e: React.MouseEvent) => {
+        if (!message.isSending) {
+            e.stopPropagation();
+            messagesContext.resetAll();
+            messagesContext.setEditMessage(message.id!, message.text!);
+        }
+    };
+
+    const onCommentDeleteClick = async () => {
+        showDeleteCommentConfirmation({
+            messageId: originalMessageId,
+            commentIdToDelete: message.id!!,
+        });
+    };
+
+    let DEPTH_LIMIT = 4;
+    let offset;
+
+    if (message.depth === 0) {
+        offset = 0;
+    } else if (message.depth === 1) {
+        offset = 52;
+    } else if (message.depth < DEPTH_LIMIT) {
+        offset = 52 + 42 * (message.depth - 1);
+    } else {
+        offset = 52 + 42 * DEPTH_LIMIT;
+    }
+
+    const parentCommentId =
+        message.id && commentsMap[message.id] && commentsMap[message.id].parentComment
+            ? commentsMap[message.id].parentComment.id
+            : null;
+    const parentComment = commentsMap[parentCommentId];
+
+    const onCommentBackToUserMessageClick = () => {
+        return parentComment
+            ? () => {
+                  scrollToComment({
+                      commentId: parentCommentId,
+                  });
+              }
+            : undefined;
+    };
+
+    const usernameOfRepliedUser =
+        parentComment && message.depth >= DEPTH_LIMIT
+            ? parentComment.comment.sender.name
+            : undefined;
+
+    return (
+        <div data-comment-id={message.id}>
+            <XView
+                key={message.key}
+                marginLeft={offset}
+                width={`calc(800px - 32px - 32px - ${offset}px)`}
+            >
+                <MessageComponent
+                    conversationId={roomId}
+                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                    usernameOfRepliedUser={usernameOfRepliedUser}
+                    deleted={message.id ? commentsMap[message.id].deleted : false}
+                    commentDepth={message.depth}
+                    noSelector
+                    isComment
+                    commentProps={{
+                        onCommentReplyClick,
+                        onCommentEditClick,
+                        onCommentDeleteClick,
+                        messageId: originalMessageId,
+                    }}
+                    message={message}
+                    onlyLikes={true}
+                    me={messenger.user}
+                />
+
+                {showInputId === message.key && (
+                    <UploadContextProvider>
+                        <CommentsInput
+                            topLevelComment={message.depth === 0}
+                            getMentionsSuggestions={getMentionsSuggestions}
+                            minimal
+                            onSendFile={onSendFile}
+                            onSend={async (
+                                msgToSend: string,
+                                mentions: UserWithOffset[] | null,
+                                uploadedFileKey: string,
+                            ) => {
+                                const newCommentId = await onSend({
+                                    messageId: originalMessageId,
+                                    replyComment: message.id!!,
+                                    msgToSend,
+                                    mentions,
+                                    uploadedFileKey,
+                                });
+                                scrollToComment({
+                                    commentId: newCommentId,
+                                });
+                            }}
+                            commentsInputRef={currentCommentsInputRef}
+                        />
+                    </UploadContextProvider>
+                )}
+            </XView>
+        </div>
+    );
+};
+
+export const CommentsBlockView = ({
+    roomId,
+    originalMessageId,
+    setShowInputId,
+    showInputId,
+    getMentionsSuggestions,
+    scrollRef,
+    currentCommentsInputRef,
+}: {
+    roomId: string;
+    setShowInputId: (a: string | null) => void;
+    showInputId: string | null;
+    originalMessageId: string;
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
+    scrollRef: React.RefObject<XScrollView3 | null>;
+    currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
+}) => {
+    const client = useClient();
+    const isMobile = React.useContext(IsMobileContext);
+    const commentsMap = {};
+
+    const messageComments = client.useMessageComments(
+        {
+            messageId: originalMessageId,
+        },
+        { fetchPolicy: 'cache-and-network' },
+    );
+
+    messageComments.messageComments.comments.forEach(comment => {
+        commentsMap[comment.id] = comment;
+    });
+
+    const commentsElements = sortComments(messageComments.messageComments.comments, commentsMap)
+        .map(item => {
+            const res = convertDsMessage(convertMessage(item.comment));
+            return { ...res, depth: getDepthOfComment(item, commentsMap) };
+        })
+        .map(message => {
+            return (
+                <CommentView
+                    roomId={roomId}
+                    originalMessageId={originalMessageId}
+                    key={`comment_${message.id}`}
+                    scrollRef={scrollRef}
+                    message={message}
+                    setShowInputId={setShowInputId}
+                    showInputId={showInputId}
+                    getMentionsSuggestions={getMentionsSuggestions}
+                    currentCommentsInputRef={currentCommentsInputRef}
+                    commentsMap={commentsMap}
+                />
+            );
+        });
+
+    return (
+        <>
+            {commentsElements.length ? (
+                <>
+                    <XView
+                        paddingHorizontal={32}
+                        paddingTop={isMobile ? 0 : 30}
+                        paddingBottom={28}
+                        flexDirection="column"
+                    >
+                        <XView flexDirection="row" alignItems="center">
+                            <XView fontSize={16} fontWeight="600">
+                                Comments
+                            </XView>
+                            <XView fontSize={15} fontWeight="600" opacity={0.3} marginLeft={7}>
+                                {messageComments.messageComments.count}
+                            </XView>
+                        </XView>
+
+                        <XView flexDirection="row" marginBottom={16}>
+                            <XView flexGrow={1}>
+                                <XView>{commentsElements}</XView>
+                            </XView>
+                        </XView>
+                    </XView>
+                </>
+            ) : (
+                undefined
+            )}
+        </>
+    );
+};
+
+const OriginalMessageComponent = ({ messageId, roomId }: { messageId: string; roomId: string }) => {
+    const messenger = React.useContext(MessengerContext);
+    const client = useClient();
+    const commentedMessage = client.useMessage({
+        messageId,
+    });
+    const maybeGeneralMessage = commentedMessage.message;
+
+    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
+        return null;
+    }
+
+    const finalMessage = convertDsMessage(convertMessage(maybeGeneralMessage));
+
+    return (
+        <MessageComponent
+            noSelector
+            conversationId={roomId}
+            message={finalMessage}
+            showNumberOfComments={false}
+            onlyLikes={true}
+            me={messenger.user}
+            isModal={true}
+        />
+    );
+};
+
+const ModalCloser = () => {
+    const modal = React.useContext(XModalContext);
+    const modalBox = React.useContext(XModalBoxContext);
+
+    const onCloseModal = () => {
+        if (modal) {
+            modal.close();
+        }
+        if (modalBox) {
+            modalBox.close();
+        }
+    };
+    return <XModalCloser onClick={onCloseModal} />;
+};
+
+export const CommentsModalInnerNoRouter = ({
+    messageId,
+    roomId,
+}: {
+    messageId: string;
+    roomId: string;
+}) => {
+    const client = useClient();
+
+    const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
+    const scrollRef = React.useRef<XScrollView3 | null>(null);
+
+    const [showInputId, setShowInputId] = React.useState<string | null>(null);
+
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembersForMentionsPaginated({
+            roomId,
+        });
+
+        return data.members.map(({ user }) => user);
+    };
+
+    const { onSendFile, onSend } = useSendMethods({
+        setShowInputId,
+    });
+
     React.useEffect(() => {
         const watcher = new SequenceModernWatcher(
             'comment messageId:' + messageId,
             client.subscribeCommentWatch({ peerId: messageId }),
             client.client,
-            updateHandler,
+            async (event: CommentWatch_event_CommentUpdateSingle_update) => {
+                if (event.__typename === 'CommentReceived') {
+                    await client.refetchMessageComments({
+                        messageId,
+                    });
+                }
+            },
             undefined,
             { peerId: messageId },
             null,
@@ -175,35 +372,6 @@ export const CommentsModalInnerNoRouter = ({
         return () => {
             watcher.destroy();
         };
-    });
-
-    const commentsMap = {};
-
-    const testScrollToCommentBottom = () => {
-        scrollToComment({
-            commentId: messageComments.messageComments.comments[commentToScroll].id,
-            mode: 'bottom',
-        });
-        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
-    };
-
-    const testScrollToCommentTop = () => {
-        scrollToComment({
-            commentId: messageComments.messageComments.comments[commentToScroll].id,
-            mode: 'top',
-        });
-        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
-    };
-
-    messageComments.messageComments.comments.forEach(comment => {
-        commentsMap[comment.id] = comment;
-    });
-
-    const result = sortComments(messageComments.messageComments.comments, commentsMap);
-
-    const dsMessages = result.map(item => {
-        const res = convertDsMessage(convertMessage(item.comment));
-        return { ...res, depth: getDepthOfComment(item, commentsMap) };
     });
 
     React.useEffect(() => {
@@ -219,198 +387,65 @@ export const CommentsModalInnerNoRouter = ({
         }
     }, [showInputId]);
 
-    const commentsElements = [];
-
-    for (let message of dsMessages) {
-        const onCommentReplyClick = () => {
-            setShowInputId(showInputId === message.key ? null : message.key);
-        };
-
-        const onCommentEditClick = async () => {
-            await client.mutateEditComment({
-                id: message.key,
-                message: 'edit',
-            });
-        };
-
-        const onCommentDeleteClick = async () => {
-            await client.mutateDeleteComment({
-                id: message.key,
-            });
-
-            await client.refetchMessageComments({
-                messageId: message.key,
-            });
-        };
-
-        let offset;
-
-        let DEPTH_LIMIT = 4;
-
-        if (message.depth === 0) {
-            offset = 0;
-        } else if (message.depth === 1) {
-            offset = 52;
-        } else if (message.depth < DEPTH_LIMIT) {
-            offset = 52 + 42 * (message.depth - 1);
-        } else {
-            offset = 52 + 42 * DEPTH_LIMIT;
-        }
-
-        const parentCommentId =
-            message.id && commentsMap[message.id] && commentsMap[message.id].parentComment
-                ? commentsMap[message.id].parentComment.id
-                : null;
-        const parentComment = commentsMap[parentCommentId];
-
-        commentsElements.push(
-            <CommentView
-                scrollToComment={scrollToComment}
-                onCommentBackToUserMessageClick={
-                    parentComment
-                        ? () => {
-                              scrollToComment({
-                                  commentId: parentCommentId,
-                              });
-                          }
-                        : undefined
-                }
-                usernameOfRepliedUser={
-                    parentComment && message.depth >= DEPTH_LIMIT
-                        ? parentComment.comment.sender.name
-                        : undefined
-                }
-                deleted={message.id ? commentsMap[message.id].deleted : false}
-                messageId={messageId}
-                message={message}
-                offset={offset}
-                onCommentReplyClick={onCommentReplyClick}
-                // onCommentEditClick={
-                //     ctx!!.user!!.id === message.senderId ? onCommentEditClick : undefined
-                // }
-                onCommentDeleteClick={
-                    ctx!!.user!!.id === message.senderId ? onCommentDeleteClick : undefined
-                }
-                me={messenger.user}
-                showInputId={showInputId}
-                setShowInputId={setShowInputId}
-                currentCommentsInputRef={currentCommentsInputRef}
-                getMentionsSuggestions={getMentionsSuggestions}
-            />,
-        );
-    }
-
-    const finalMessages = convertDsMessage(convertMessage(maybeGeneralMessage));
-
     return (
-        <>
+        <UploadContextProvider>
             <IsActiveContext.Provider value={true}>
-                <XScrollView3
-                    useDefaultScroll
-                    flexGrow={1}
-                    flexShrink={1}
-                    maxHeight={700}
-                    ref={scrollRef}
-                >
-                    <XView position="absolute" zIndex={100} right={32} top={28}>
-                        <XModalCloser
-                            onClick={() => {
-                                if (modal) {
-                                    modal.close();
-                                }
-                                if (modalBox) {
-                                    modalBox.close();
+                <XView>
+                    <XScrollView3
+                        useDefaultScroll
+                        flexGrow={1}
+                        flexShrink={1}
+                        maxHeight={700}
+                        ref={scrollRef}
+                    >
+                        <XView position="absolute" zIndex={100} right={32} top={28}>
+                            <ModalCloser />
+                        </XView>
+                        <XView paddingHorizontal={32} paddingTop={28}>
+                            <OriginalMessageComponent messageId={messageId} roomId={roomId} />
+                        </XView>
+                        <XView
+                            marginTop={28}
+                            height={1}
+                            backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                            width="100%"
+                        />
+                        <CommentsBlockView
+                            roomId={roomId}
+                            originalMessageId={messageId}
+                            setShowInputId={setShowInputId}
+                            showInputId={showInputId}
+                            getMentionsSuggestions={getMentionsSuggestions}
+                            scrollRef={scrollRef}
+                            currentCommentsInputRef={currentCommentsInputRef}
+                        />
+                    </XScrollView3>
+                    <XView>
+                        <CommentsInput
+                            getMentionsSuggestions={getMentionsSuggestions}
+                            onSendFile={onSendFile}
+                            onSend={async (
+                                msgToSend: string,
+                                mentions: UserWithOffset[] | null,
+                                uploadedFileKey: string,
+                            ) => {
+                                await onSend({
+                                    messageId,
+                                    replyComment: null,
+                                    msgToSend,
+                                    mentions,
+                                    uploadedFileKey,
+                                });
+
+                                if (scrollRef && scrollRef.current) {
+                                    scrollRef.current.scrollToBottom();
                                 }
                             }}
                         />
                     </XView>
-                    <XView paddingHorizontal={32} paddingTop={28}>
-                        <MessageComponent
-                            noSelector
-                            message={finalMessages}
-                            showNumberOfComments={false}
-                            onlyLikes={true}
-                            me={messenger.user}
-                            isModal={true}
-                        />
-                    </XView>
-                    <XView
-                        marginTop={28}
-                        height={1}
-                        backgroundColor={'rgba(216, 218, 229, 0.45)'}
-                        width="100%"
-                    />
-
-                    {commentsElements.length ? (
-                        <>
-                            <XView
-                                paddingHorizontal={32}
-                                paddingTop={isMobile ? 0 : 30}
-                                paddingBottom={28}
-                                flexDirection="column"
-                            >
-                                <XView flexDirection="row" alignItems="center">
-                                    <XView fontSize={16} fontWeight="600">
-                                        Comments
-                                    </XView>
-                                    <XView
-                                        fontSize={15}
-                                        fontWeight="600"
-                                        opacity={0.3}
-                                        marginLeft={7}
-                                    >
-                                        {messageComments.messageComments.count}
-                                    </XView>
-                                </XView>
-
-                                <XView flexDirection="row" marginBottom={16}>
-                                    <XView flexGrow={1}>
-                                        <XView>{commentsElements}</XView>
-                                    </XView>
-                                </XView>
-                            </XView>
-                        </>
-                    ) : (
-                        undefined
-                    )}
-                </XScrollView3>
-                <XView>
-                    {/* <XView onClick={testScrollToCommentBottom}>
-                    Scroll to comment bottom {commentToScroll}
-                </XView>
-                <XView onClick={testScrollToCommentTop}>
-                    Scroll to comment top {commentToScroll}
-                </XView> */}
-                    <CommentsInput
-                        getMentionsSuggestions={getMentionsSuggestions}
-                        onSendFile={async (file: UploadCare.File) => {
-                            return await uploadFile({
-                                file,
-                                onProgress: (progress: number) => {
-                                    console.log('onProgress', progress);
-                                },
-                            });
-                        }}
-                        onSend={async (msgToSend, mentions, uploadedFileKey) => {
-                            await addComment({
-                                messageId,
-                                mentions,
-                                message: msgToSend,
-                                replyComment: null,
-                                fileAttachments: uploadedFileKey
-                                    ? [{ fileId: uploadedFileKey }]
-                                    : [],
-                            });
-                            setShowInputId(null);
-
-                            if (scrollRef && scrollRef.current) {
-                                scrollRef.current.scrollToBottom();
-                            }
-                        }}
-                    />
                 </XView>
             </IsActiveContext.Provider>
-        </>
+        </UploadContextProvider>
     );
 };
 
@@ -419,11 +454,17 @@ export const CommentsModalInner = () => {
 
     const [messageId, roomId] = router.routeQuery.comments.split('&');
 
-    return (
-        <UploadContextProvider>
-            <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />
-        </UploadContextProvider>
-    );
+    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
+};
+
+export const openDeleteCommentsModal = ({
+    router,
+    commentId,
+}: {
+    router: XRouter;
+    commentId: string;
+}) => {
+    router.pushQuery('deleteComment', `${commentId}`);
 };
 
 export const openCommentsModal = ({
@@ -435,15 +476,15 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
-    showModalBox(
-        {
-            width: 800,
-        },
-        () => (
-            <UploadContextProvider>
-                <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-            </UploadContextProvider>
-        ),
-    );
+    router.pushQuery('comments', `${messageId}&${conversationId}`);
+    // showModalBox(
+    //     {
+    //         width: 800,
+    //     },
+    //     () => (
+    //         <UploadContextProvider>
+    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+    //         </UploadContextProvider>
+    //     ),
+    // );
 };

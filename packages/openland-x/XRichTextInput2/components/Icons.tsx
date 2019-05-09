@@ -98,15 +98,17 @@ const FileInput = Glamorous.input({
 });
 
 export const Icons = ({
+    hideAttachments,
     hasText,
     minimal,
     onEmojiPicked,
     onSubmit,
 }: {
+    hideAttachments?: boolean;
     hasText?: boolean;
     minimal?: boolean;
     onEmojiPicked: (emoji: EmojiData) => void;
-    onSubmit?: () => void;
+    onSubmit?: () => Promise<void>;
 }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
     const { handleDrop, file } = React.useContext(UploadContext);
@@ -135,12 +137,12 @@ export const Icons = ({
             flexDirection="row"
         >
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            {minimal && (
+            {!hideAttachments && minimal && (
                 <XView marginRight={20}>
                     <PhotoButton fileSelector={fileSelector} />
                 </XView>
             )}
-            {minimal && (
+            {!hideAttachments && minimal && (
                 <XView marginRight={18}>
                     <DocumentButton fileSelector={fileSelector} />
                 </XView>

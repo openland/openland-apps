@@ -174,14 +174,20 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                         />,
                     );
                 } else {
+                    const dimentions = {
+                        originalWidth: fileAttach.fileMetadata.imageWidth,
+                        originalHeight: fileAttach.fileMetadata.imageHeight,
+                        width: fileAttach.fileMetadata.imageWidth,
+                        height: fileAttach.fileMetadata.imageHeight,
+                    };
+
                     content.push(
                         <MessageImageComponent
                             key={'file'}
                             file={fileAttach.fileId!}
                             fileName={fileAttach.fileMetadata.name}
                             startSelected={hideMenu}
-                            width={fileAttach.fileMetadata.imageWidth}
-                            height={fileAttach.fileMetadata.imageHeight}
+                            dimentions={dimentions}
                         />,
                     );
                 }

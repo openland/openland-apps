@@ -5,7 +5,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 28 | 24;
+type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 26 | 28 | 24;
 
 export interface XAvatar2Props {
     title: string;
@@ -103,6 +103,20 @@ const OnlineDot58 = () => (
     />
 );
 
+const OnlineDot40 = () => (
+    <XView
+        position="absolute"
+        bottom={1}
+        right={1}
+        width={8}
+        height={8}
+        borderRadius={4}
+        borderWidth={1}
+        borderColor="#ffffff"
+        backgroundColor="#5eb2ff"
+    />
+);
+
 const OnlineDot36 = () => (
     <XView
         position="absolute"
@@ -145,7 +159,7 @@ const OnlineDot28 = () => (
     />
 );
 
-const OnlineDot24 = () => (
+const OnlineDot26 = () => (
     <XView
         position="absolute"
         bottom={0}
@@ -159,14 +173,14 @@ const OnlineDot24 = () => (
     />
 );
 
-const OnlineDot40 = () => (
+const OnlineDot24 = () => (
     <XView
         position="absolute"
-        bottom={1}
-        right={1}
-        width={8}
-        height={8}
-        borderRadius={4}
+        bottom={0}
+        right={0}
+        width={6}
+        height={6}
+        borderRadius={3}
         borderWidth={1}
         borderColor="#ffffff"
         backgroundColor="#5eb2ff"
@@ -228,6 +242,16 @@ const AvatarContainer28 = (props: AvatarContainerProps) => (
     </XView>
 );
 
+const AvatarContainer26 = (props: AvatarContainerProps) => (
+    <XView width={26} height={26}>
+        <XView width="100%" height="100%" borderRadius={14} overflow="hidden">
+            {props.content}
+        </XView>
+
+        {props.online && <OnlineDot26 />}
+    </XView>
+);
+
 const AvatarContainer24 = (props: AvatarContainerProps) => (
     <XView width={24} height={24}>
         <XView width="100%" height="100%" borderRadius={12} overflow="hidden">
@@ -271,6 +295,8 @@ export const XAvatar2 = XMemo<XAvatar2Props>(props => {
         return <AvatarContainer32 content={content} online={props.online} />;
     } else if (props.size === 28) {
         return <AvatarContainer28 content={content} online={props.online} />;
+    } else if (props.size === 26) {
+        return <AvatarContainer26 content={content} online={props.online} />;
     } else if (props.size === 24) {
         return <AvatarContainer24 content={content} online={props.online} />;
     } else {

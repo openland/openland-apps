@@ -11,6 +11,7 @@ import { ReactionItem } from './MessageReaction';
 import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { XButton } from 'openland-x/XButton';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -259,19 +260,18 @@ const activeClassName = css`
     }
 `;
 
-const LikeIcon = ({
-    isActive,
-    onClick,
-}: {
+type LikeIconPropsT = {
     isActive: boolean;
     onClick: (event: React.MouseEvent) => void;
-}) => {
+};
+
+const LikeIcon = React.forwardRef<HTMLDivElement, LikeIconPropsT>(({ isActive, onClick }, ref) => {
     return (
-        <div onClick={onClick} className={cx(likeClassName, isActive && activeClassName)}>
+        <div ref={ref} onClick={onClick} className={cx(likeClassName, isActive && activeClassName)}>
             <ReactionIcon />
         </div>
     );
-};
+});
 
 export const CommentReactionButton = React.memo(
     ({
@@ -288,35 +288,70 @@ export const CommentReactionButton = React.memo(
         const myId = userContext!!.user!!.id!!;
         const likeReaction = MessageReactionType.LIKE;
 
-        let isActive =
-            reactions &&
-            reactions.filter(
-                (userReaction: FullMessage_GeneralMessage_reactions) =>
-                    userReaction.user.id === myId && userReaction.reaction === likeReaction,
-            ).length > 0;
+        let reactionsCount = 0;
+        let isActive = false;
+        let userNamesLiked: string[] = [];
+        let numberOfUsersExtraLiked = null;
 
-        let reactionsCount = reactions ? reactions.length : 0;
+        if (reactions) {
+            userNamesLiked = reactions.slice(0, 10).map(reaction => {
+                return reaction.user.name;
+            });
+
+            if (reactions.length > 10) {
+                numberOfUsersExtraLiked = reactions.length - 10;
+            }
+
+            isActive =
+                reactions.filter(
+                    (userReaction: FullMessage_GeneralMessage_reactions) =>
+                        userReaction.user.id === myId && userReaction.reaction === likeReaction,
+                ).length > 0;
+
+            reactionsCount = reactions.length;
+        }
+
+        const likeIconElement = (
+            <LikeIcon
+                isActive={!!isActive}
+                onClick={async () => {
+                    if (isActive) {
+                        client.mutateCommentUnsetReaction({
+                            commentId: id,
+                            reaction: likeReaction,
+                        });
+                    } else {
+                        client.mutateCommentSetReaction({
+                            commentId: id,
+                            reaction: likeReaction,
+                        });
+                    }
+                }}
+            />
+        );
+
+        const finalLikeIconElement =
+            reactions && reactions.length ? (
+                <XPopper
+                    content={
+                        <XView>
+                            {userNamesLiked}
+                            {numberOfUsersExtraLiked}
+                        </XView>
+                    }
+                    showOnHover={true}
+                    placement="bottom"
+                    style="dark"
+                >
+                    {likeIconElement}
+                </XPopper>
+            ) : (
+                likeIconElement
+            );
+
         return reactionsCount || hover ? (
             <XView flexDirection="row" alignItems="center" position="relative">
-                <XView alignItems="center">
-                    <LikeIcon
-                        isActive={!!isActive}
-                        onClick={async () => {
-                            if (isActive) {
-                                client.mutateCommentUnsetReaction({
-                                    commentId: id,
-                                    reaction: likeReaction,
-                                });
-                            } else {
-                                client.mutateCommentSetReaction({
-                                    commentId: id,
-                                    reaction: likeReaction,
-                                });
-                            }
-                        }}
-                    />
-                </XView>
-
+                <XView alignItems="center">{finalLikeIconElement}</XView>
                 <XView alignItems="center" position="absolute" left={20}>
                     <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
                         {reactionsCount ? reactionsCount : null}

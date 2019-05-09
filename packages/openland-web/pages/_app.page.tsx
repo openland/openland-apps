@@ -14,6 +14,8 @@ XStyleFactoryRegistry.registerFactory({
 import './_app.css';
 import './init';
 import '../globals';
+import { XView } from 'react-mental';
+import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import React from 'react';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
@@ -31,6 +33,31 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
+import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { XShortcutsRoot } from 'openland-x/XShortcuts';
+
+const TestCommentsComponent = () => {
+    const router = React.useContext(XRouterContext) as XRouter;
+
+    return (
+        <React.Suspense fallback={<div />}>
+            <div style={{ margin: 'auto' }}>
+                <XView justifyContent="center">
+                    <XShortcutsRoot>
+                        <MessageStateProviderComponent router={router}>
+                            <CommentsModalInnerNoRouter
+                                messageId={'nqOxVzlxrvtmRy5a0pRlcOZWbV'}
+                                roomId={'Om49WwAP7rfOwP49ZWbbcrdXbx'}
+                            />
+                        </MessageStateProviderComponent>
+                    </XShortcutsRoot>
+                </XView>
+            </div>
+        </React.Suspense>
+    );
+};
 
 export default withData(
     class MyApp extends App<{
@@ -102,6 +129,7 @@ export default withData(
                                         <RootErrorBoundary>
                                             <AppContainer>
                                                 <Component {...pageProps} />
+                                                {/* <TestCommentsComponent /> */}
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>

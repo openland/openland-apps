@@ -77,7 +77,7 @@ export function useHandleEditorChange({
     value,
     initialMentions,
 }: useHandleEditorChangeT) {
-    const [plainText, setPlainText] = React.useState('');
+    const [plainText, setPlainText] = React.useState(value);
     const [activeWord, setActiveWord] = React.useState<string>('');
     const [editorState, setEditorState] = React.useState(() =>
         getEditorStateFromText({ text: value, mentions: initialMentions || [] }),
@@ -182,6 +182,7 @@ export function useHandleEditorChange({
     }, [plainText]);
 
     return {
+        plainText,
         activeWord,
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,

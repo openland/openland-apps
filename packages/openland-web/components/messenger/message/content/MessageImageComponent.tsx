@@ -47,12 +47,18 @@ const ImageRadiusClassName = css`
     padding-left: 3px;
 `;
 
+export type MessageImageComponentDimentions = {
+    originalWidth: number;
+    originalHeight: number;
+    width: number;
+    height: number;
+};
+
 interface MessageImageComponentProps {
     file: string;
     fileName?: string;
-    width: number;
-    height: number;
     startSelected: boolean;
+    dimentions: MessageImageComponentDimentions;
 }
 
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
@@ -119,8 +125,13 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
         </div>
     );
 
-    let dimensions = layoutMedia(props.width, props.height);
-    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
+    let finalDimensions = layoutMedia(props.dimentions.width, props.dimentions.height);
+    let finalDimensions2 = layoutMedia(
+        props.dimentions.originalWidth,
+        props.dimentions.originalHeight,
+        1000,
+        1000,
+    );
 
     let radiusForImages = false;
     let localSettingsRadius = localStorage.getItem('image_view_alternative');
@@ -135,12 +146,12 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
             {!isMobile && (
                 <XModal
                     useTopCloser={true}
-                    width={dimensions2.width}
+                    width={finalDimensions2.width}
                     heading={null}
                     transparent={true}
                     isOpen={isOpen}
                     onClosed={closeView}
-                    body={modalBody(dimensions2.width, dimensions2.height)}
+                    body={modalBody(finalDimensions2.width, finalDimensions2.height)}
                 />
             )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
@@ -152,8 +163,8 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize="fill"
-                        width={dimensions.width}
-                        height={dimensions.height}
+                        width={finalDimensions.width}
+                        height={finalDimensions.height}
                         className={
                             ImageClassName +
                             (radiusForImages ? ' ' + ImageRadiusClassName : undefined)
