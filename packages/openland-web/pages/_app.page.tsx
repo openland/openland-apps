@@ -128,8 +128,8 @@ export default withData(
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
-                                                {/* <Component {...pageProps} /> */}
-                                                <TestCommentsComponent />
+                                                <Component {...pageProps} />
+                                                {/* <TestCommentsComponent /> */}
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>
