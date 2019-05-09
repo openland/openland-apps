@@ -115,8 +115,8 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                 )}
             </>
         ) : (
-            customMenu
-        );
+                customMenu
+            );
 
     return (
         <XView

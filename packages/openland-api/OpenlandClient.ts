@@ -463,6 +463,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
         return this.useQuery(Source.AvailableRoomsQuery, undefined, opts);
     }
+    async queryUserRooms(variables: Types.UserRoomsVariables, opts?: OperationParameters): Promise<Types.UserRooms> {
+        return this.client.query(Source.UserRoomsQuery, variables, opts);
+    }
+    async refetchUserRooms(variables: Types.UserRoomsVariables): Promise<Types.UserRooms> {
+        return this.refetch(Source.UserRoomsQuery, variables);
+    }
+    useUserRooms(variables: Types.UserRoomsVariables, opts?: QueryWatchParameters): Types.UserRooms {
+        return this.useQuerySuspense(Source.UserRoomsQuery, variables, opts);
+    }
+    useWithoutLoaderUserRooms(variables: Types.UserRoomsVariables, opts?: QueryWatchParameters): Types.UserRooms | null {
+        return this.useQuery(Source.UserRoomsQuery, variables, opts);
+    }
+    async queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: OperationParameters): Promise<Types.UserAvailableRooms> {
+        return this.client.query(Source.UserAvailableRoomsQuery, variables, opts);
+    }
+    async refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables): Promise<Types.UserAvailableRooms> {
+        return this.refetch(Source.UserAvailableRoomsQuery, variables);
+    }
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: QueryWatchParameters): Types.UserAvailableRooms {
+        return this.useQuerySuspense(Source.UserAvailableRoomsQuery, variables, opts);
+    }
+    useWithoutLoaderUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: QueryWatchParameters): Types.UserAvailableRooms | null {
+        return this.useQuery(Source.UserAvailableRoomsQuery, variables, opts);
+    }
     async queryGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
         return this.client.query(Source.GlobalSearchQuery, variables, opts);
     }

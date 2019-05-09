@@ -1073,7 +1073,24 @@ private val AccountSettingsSelector = obj(listOf(
                 ))))))
         ))
 private val AvailableRoomsSelector = obj(listOf(
-            field("betaAvailableRooms","rooms", notNull(list(notNull(obj(listOf(
+            field("betaUserAvailableRooms","availableRooms", mapOf("limit" to intValue(3)), notNull(list(notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(listOf(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(listOf(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            ))),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    )))
+                )))))),
+            field("betaUserRooms","userRooms", mapOf("limit" to intValue(3)), notNull(list(notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(listOf(
                         field("id","id", notNull(scalar("ID"))),
@@ -1825,6 +1842,44 @@ private val UserSelector = obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserFullSelector)
                 ))))
+        ))
+private val UserAvailableRoomsSelector = obj(listOf(
+            field("betaUserAvailableRooms","betaUserAvailableRooms", mapOf("after" to refValue("after"), "limit" to refValue("limit")), notNull(list(notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(listOf(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(listOf(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            ))),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    )))
+                ))))))
+        ))
+private val UserRoomsSelector = obj(listOf(
+            field("betaUserRooms","betaUserRooms", mapOf("after" to refValue("after"), "limit" to refValue("limit")), notNull(list(notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(listOf(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(listOf(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            ))),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    )))
+                ))))))
         ))
 private val UserStorageSelector = obj(listOf(
             field("userStorage","userStorage", mapOf("keys" to refValue("keys"), "namespace" to refValue("namespace")), notNull(list(notNull(obj(listOf(
@@ -2624,7 +2679,7 @@ object Operations {
     val AvailableRooms = object: OperationDefinition {
         override val name = "AvailableRooms"
         override val kind = OperationKind.QUERY
-        override val body = "query AvailableRooms{rooms:betaAvailableRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val body = "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
         override val selector = AvailableRoomsSelector
     }
     val ChatHistory = object: OperationDefinition {
@@ -2938,6 +2993,18 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query User(\$userId:ID!){conversation:room(id:\$userId){__typename ... on PrivateRoom{id settings{__typename id mute}}}user:user(id:\$userId){__typename ...UserFull}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = UserSelector
+    }
+    val UserAvailableRooms = object: OperationDefinition {
+        override val name = "UserAvailableRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query UserAvailableRooms(\$after:ID,\$limit:Int!){betaUserAvailableRooms(after:\$after,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = UserAvailableRoomsSelector
+    }
+    val UserRooms = object: OperationDefinition {
+        override val name = "UserRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query UserRooms(\$after:ID,\$limit:Int!){betaUserRooms(after:\$after,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = UserRoomsSelector
     }
     val UserStorage = object: OperationDefinition {
         override val name = "UserStorage"
@@ -3660,6 +3727,8 @@ object Operations {
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "User") return User
+        if (name == "UserAvailableRooms") return UserAvailableRooms
+        if (name == "UserRooms") return UserRooms
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
         if (name == "AccountCreateInvite") return AccountCreateInvite

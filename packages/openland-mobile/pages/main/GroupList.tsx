@@ -1,49 +1,66 @@
 import * as React from 'react';
+import * as Types from '../../../openland-api/Types'
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { SharedRoomKind, SharedRoomMembershipStatus, AvailableRooms_rooms_organization } from 'openland-api/Types';
+import { SharedRoomKind, SharedRoomMembershipStatus } from 'openland-api/Types';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { QueryWatchParameters, OperationParameters } from 'openland-graphql/GraphqlClient';
+import { SFlatList } from 'react-native-s/SFlatList';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 const GroupListComponent = React.memo<PageProps>((props) => {
-    let groups = props.router.params.groups as {
-        __typename: "SharedRoom";
-        id: string;
-        kind: SharedRoomKind;
-        title: string;
-        photo: string;
-        membersCount: number | null;
-        membership: SharedRoomMembershipStatus;
-        organization: AvailableRooms_rooms_organization | null;
-    }[]
+    let initial = props.router.params.initial as Types.AvailableRooms_availableRooms[];
 
-    for (let g of groups) {
-        console.log(JSON.stringify(g))
-    }
+    let [rooms, setRooms] = React.useState(initial);
+    const [loading, setLoading] = React.useState(false);
+    const [needMore, setNeedMore] = React.useState(true);
+    let handleLoadMore = React.useCallback(async () => {
+        if (!loading && needMore) {
+            setLoading(true);
+            let res;
+            if (props.router.params.query === 'available') {
+                res = (await getClient().queryUserAvailableRooms({ after: rooms[rooms.length - 1].id, limit: 10 }, { fetchPolicy: 'network-only' })).betaUserAvailableRooms;
+            } else {
+                res = (await getClient().queryUserRooms({ after: rooms[rooms.length - 1].id, limit: 10 }, { fetchPolicy: 'network-only' })).betaUserRooms;
+            }
+            console.warn('boom', res);
+            if (!res.length) {
+                setNeedMore(false);
+            }
+            setRooms([...rooms, ...res])
+            setLoading(false);
+        }
+
+    }, [rooms, loading]);
 
     return (
         <>
             <SHeader title={props.router.params.title} />
             <SDeferred>
-                <SScrollView>
-                    {groups.map((v) => (
+                <SFlatList
+                    data={rooms}
+                    renderItem={({ item }) => (
                         <ZListItem
-                            key={v.id}
-                            text={v.title}
+                            key={item.id}
+                            text={item.title}
                             leftAvatar={{
-                                photo: v.photo,
-                                key: v.id,
-                                title: v.title,
+                                photo: item.photo,
+                                key: item.id,
+                                title: item.title,
                             }}
-                            title={v.organization ? v.organization!.name : undefined}
-                            description={v.membersCount + ' members'}
+                            title={item.organization ? item.organization!.name : undefined}
+                            description={item.membersCount + ' members'}
                             path="Conversation"
-                            pathParams={{ flexibleId: v.id }}
+                            pathParams={{ flexibleId: item.id }}
                         />
-                    ))}
-                </SScrollView>
+                    )}
+                    keyExtractor={(item, index) => index + '-' + item.id}
+                    onEndReached={handleLoadMore}
+                    refreshing={loading}
+                />
             </SDeferred>
         </>
     );

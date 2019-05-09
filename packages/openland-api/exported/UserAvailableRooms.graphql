@@ -1,0 +1,19 @@
+query UserAvailableRooms($after: ID, $limit: Int!) {
+  betaUserAvailableRooms(after: $after, limit: $limit) {
+    __typename
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      photo
+      title
+    }
+  }
+}

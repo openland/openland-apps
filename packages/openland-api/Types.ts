@@ -32197,14 +32197,14 @@ export interface ConferenceWatchVariables {
 // GraphQL query operation: AvailableRooms
 // ====================================================
 
-export interface AvailableRooms_rooms_organization {
+export interface AvailableRooms_userRooms_organization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface AvailableRooms_rooms {
+export interface AvailableRooms_userRooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -32212,11 +32212,100 @@ export interface AvailableRooms_rooms {
   photo: string;
   membersCount: number | null;
   membership: SharedRoomMembershipStatus;
-  organization: AvailableRooms_rooms_organization | null;
+  organization: AvailableRooms_userRooms_organization | null;
+}
+
+export interface AvailableRooms_availableRooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface AvailableRooms_availableRooms {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: AvailableRooms_availableRooms_organization | null;
 }
 
 export interface AvailableRooms {
-  rooms: AvailableRooms_rooms[];
+  userRooms: AvailableRooms_userRooms[];
+  availableRooms: AvailableRooms_availableRooms[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: UserRooms
+// ====================================================
+
+export interface UserRooms_betaUserRooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface UserRooms_betaUserRooms {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: UserRooms_betaUserRooms_organization | null;
+}
+
+export interface UserRooms {
+  betaUserRooms: UserRooms_betaUserRooms[];
+}
+
+export interface UserRoomsVariables {
+  limit: number;
+  after?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: UserAvailableRooms
+// ====================================================
+
+export interface UserAvailableRooms_betaUserAvailableRooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface UserAvailableRooms_betaUserAvailableRooms {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: UserAvailableRooms_betaUserAvailableRooms_organization | null;
+}
+
+export interface UserAvailableRooms {
+  betaUserAvailableRooms: UserAvailableRooms_betaUserAvailableRooms[];
+}
+
+export interface UserAvailableRoomsVariables {
+  limit: number;
+  after?: string | null;
 }
 
 /* tslint:disable */

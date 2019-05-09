@@ -15695,7 +15695,7 @@ public final class ConferenceWatchSubscription: GraphQLSubscription {
 
 public final class AvailableRoomsQuery: GraphQLQuery {
   public let operationDefinition =
-    "query AvailableRooms {\n  rooms: betaAvailableRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}"
+    "query AvailableRooms {\n  userRooms: betaUserRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}"
 
   public init() {
   }
@@ -15704,7 +15704,8 @@ public final class AvailableRoomsQuery: GraphQLQuery {
     public static let possibleTypes = ["Query"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaAvailableRooms", alias: "rooms", type: .nonNull(.list(.nonNull(.object(Room.selections))))),
+      GraphQLField("betaUserRooms", alias: "userRooms", arguments: ["limit": 3], type: .nonNull(.list(.nonNull(.object(UserRoom.selections))))),
+      GraphQLField("betaUserAvailableRooms", alias: "availableRooms", arguments: ["limit": 3], type: .nonNull(.list(.nonNull(.object(AvailableRoom.selections))))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -15713,20 +15714,579 @@ public final class AvailableRoomsQuery: GraphQLQuery {
       self.resultMap = unsafeResultMap
     }
 
-    public init(rooms: [Room]) {
-      self.init(unsafeResultMap: ["__typename": "Query", "rooms": rooms.map { (value: Room) -> ResultMap in value.resultMap }])
+    public init(userRooms: [UserRoom], availableRooms: [AvailableRoom]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "userRooms": userRooms.map { (value: UserRoom) -> ResultMap in value.resultMap }, "availableRooms": availableRooms.map { (value: AvailableRoom) -> ResultMap in value.resultMap }])
     }
 
-    public var rooms: [Room] {
+    public var userRooms: [UserRoom] {
       get {
-        return (resultMap["rooms"] as! [ResultMap]).map { (value: ResultMap) -> Room in Room(unsafeResultMap: value) }
+        return (resultMap["userRooms"] as! [ResultMap]).map { (value: ResultMap) -> UserRoom in UserRoom(unsafeResultMap: value) }
       }
       set {
-        resultMap.updateValue(newValue.map { (value: Room) -> ResultMap in value.resultMap }, forKey: "rooms")
+        resultMap.updateValue(newValue.map { (value: UserRoom) -> ResultMap in value.resultMap }, forKey: "userRooms")
       }
     }
 
-    public struct Room: GraphQLSelectionSet {
+    public var availableRooms: [AvailableRoom] {
+      get {
+        return (resultMap["availableRooms"] as! [ResultMap]).map { (value: ResultMap) -> AvailableRoom in AvailableRoom(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: AvailableRoom) -> ResultMap in value.resultMap }, forKey: "availableRooms")
+      }
+    }
+
+    public struct UserRoom: GraphQLSelectionSet {
+      public static let possibleTypes = ["SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+        GraphQLField("title", type: .nonNull(.scalar(String.self))),
+        GraphQLField("photo", type: .nonNull(.scalar(String.self))),
+        GraphQLField("membersCount", type: .scalar(Int.self)),
+        GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+        GraphQLField("organization", type: .object(Organization.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, membersCount: Int? = nil, membership: SharedRoomMembershipStatus, organization: Organization? = nil) {
+        self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "membersCount": membersCount, "membership": membership, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var kind: SharedRoomKind {
+        get {
+          return resultMap["kind"]! as! SharedRoomKind
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "kind")
+        }
+      }
+
+      public var title: String {
+        get {
+          return resultMap["title"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "title")
+        }
+      }
+
+      public var photo: String {
+        get {
+          return resultMap["photo"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "photo")
+        }
+      }
+
+      public var membersCount: Int? {
+        get {
+          return resultMap["membersCount"] as? Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membersCount")
+        }
+      }
+
+      public var membership: SharedRoomMembershipStatus {
+        get {
+          return resultMap["membership"]! as! SharedRoomMembershipStatus
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membership")
+        }
+      }
+
+      public var organization: Organization? {
+        get {
+          return (resultMap["organization"] as? ResultMap).flatMap { Organization(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "organization")
+        }
+      }
+
+      public struct Organization: GraphQLSelectionSet {
+        public static let possibleTypes = ["Organization"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("photo", type: .scalar(String.self)),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, name: String, photo: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var photo: String? {
+          get {
+            return resultMap["photo"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "photo")
+          }
+        }
+      }
+    }
+
+    public struct AvailableRoom: GraphQLSelectionSet {
+      public static let possibleTypes = ["SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+        GraphQLField("title", type: .nonNull(.scalar(String.self))),
+        GraphQLField("photo", type: .nonNull(.scalar(String.self))),
+        GraphQLField("membersCount", type: .scalar(Int.self)),
+        GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+        GraphQLField("organization", type: .object(Organization.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, membersCount: Int? = nil, membership: SharedRoomMembershipStatus, organization: Organization? = nil) {
+        self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "membersCount": membersCount, "membership": membership, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var kind: SharedRoomKind {
+        get {
+          return resultMap["kind"]! as! SharedRoomKind
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "kind")
+        }
+      }
+
+      public var title: String {
+        get {
+          return resultMap["title"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "title")
+        }
+      }
+
+      public var photo: String {
+        get {
+          return resultMap["photo"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "photo")
+        }
+      }
+
+      public var membersCount: Int? {
+        get {
+          return resultMap["membersCount"] as? Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membersCount")
+        }
+      }
+
+      public var membership: SharedRoomMembershipStatus {
+        get {
+          return resultMap["membership"]! as! SharedRoomMembershipStatus
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membership")
+        }
+      }
+
+      public var organization: Organization? {
+        get {
+          return (resultMap["organization"] as? ResultMap).flatMap { Organization(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "organization")
+        }
+      }
+
+      public struct Organization: GraphQLSelectionSet {
+        public static let possibleTypes = ["Organization"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("photo", type: .scalar(String.self)),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, name: String, photo: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var photo: String? {
+          get {
+            return resultMap["photo"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "photo")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class UserRoomsQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query UserRooms($limit: Int!, $after: ID) {\n  betaUserRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}"
+
+  public var limit: Int
+  public var after: GraphQLID?
+
+  public init(limit: Int, after: GraphQLID? = nil) {
+    self.limit = limit
+    self.after = after
+  }
+
+  public var variables: GraphQLMap? {
+    return ["limit": limit, "after": after]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("betaUserRooms", arguments: ["limit": GraphQLVariable("limit"), "after": GraphQLVariable("after")], type: .nonNull(.list(.nonNull(.object(BetaUserRoom.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(betaUserRooms: [BetaUserRoom]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "betaUserRooms": betaUserRooms.map { (value: BetaUserRoom) -> ResultMap in value.resultMap }])
+    }
+
+    public var betaUserRooms: [BetaUserRoom] {
+      get {
+        return (resultMap["betaUserRooms"] as! [ResultMap]).map { (value: ResultMap) -> BetaUserRoom in BetaUserRoom(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: BetaUserRoom) -> ResultMap in value.resultMap }, forKey: "betaUserRooms")
+      }
+    }
+
+    public struct BetaUserRoom: GraphQLSelectionSet {
+      public static let possibleTypes = ["SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+        GraphQLField("title", type: .nonNull(.scalar(String.self))),
+        GraphQLField("photo", type: .nonNull(.scalar(String.self))),
+        GraphQLField("membersCount", type: .scalar(Int.self)),
+        GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+        GraphQLField("organization", type: .object(Organization.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, membersCount: Int? = nil, membership: SharedRoomMembershipStatus, organization: Organization? = nil) {
+        self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "membersCount": membersCount, "membership": membership, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var kind: SharedRoomKind {
+        get {
+          return resultMap["kind"]! as! SharedRoomKind
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "kind")
+        }
+      }
+
+      public var title: String {
+        get {
+          return resultMap["title"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "title")
+        }
+      }
+
+      public var photo: String {
+        get {
+          return resultMap["photo"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "photo")
+        }
+      }
+
+      public var membersCount: Int? {
+        get {
+          return resultMap["membersCount"] as? Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membersCount")
+        }
+      }
+
+      public var membership: SharedRoomMembershipStatus {
+        get {
+          return resultMap["membership"]! as! SharedRoomMembershipStatus
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membership")
+        }
+      }
+
+      public var organization: Organization? {
+        get {
+          return (resultMap["organization"] as? ResultMap).flatMap { Organization(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "organization")
+        }
+      }
+
+      public struct Organization: GraphQLSelectionSet {
+        public static let possibleTypes = ["Organization"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("photo", type: .scalar(String.self)),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, name: String, photo: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var photo: String? {
+          get {
+            return resultMap["photo"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "photo")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class UserAvailableRoomsQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}"
+
+  public var limit: Int
+  public var after: GraphQLID?
+
+  public init(limit: Int, after: GraphQLID? = nil) {
+    self.limit = limit
+    self.after = after
+  }
+
+  public var variables: GraphQLMap? {
+    return ["limit": limit, "after": after]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("betaUserAvailableRooms", arguments: ["limit": GraphQLVariable("limit"), "after": GraphQLVariable("after")], type: .nonNull(.list(.nonNull(.object(BetaUserAvailableRoom.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(betaUserAvailableRooms: [BetaUserAvailableRoom]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "betaUserAvailableRooms": betaUserAvailableRooms.map { (value: BetaUserAvailableRoom) -> ResultMap in value.resultMap }])
+    }
+
+    public var betaUserAvailableRooms: [BetaUserAvailableRoom] {
+      get {
+        return (resultMap["betaUserAvailableRooms"] as! [ResultMap]).map { (value: ResultMap) -> BetaUserAvailableRoom in BetaUserAvailableRoom(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: BetaUserAvailableRoom) -> ResultMap in value.resultMap }, forKey: "betaUserAvailableRooms")
+      }
+    }
+
+    public struct BetaUserAvailableRoom: GraphQLSelectionSet {
       public static let possibleTypes = ["SharedRoom"]
 
       public static let selections: [GraphQLSelection] = [

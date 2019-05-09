@@ -786,10 +786,24 @@
       }
     },
     {
-      "signature": "b6a9dba857925f7f66be92ffd986f339b3049ef093821dffc65844d246430936",
-      "document": "query AvailableRooms{rooms:betaAvailableRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "ae89234605296c3c91598970dffa0d552e0364aeb578ac1c3955cab73272adbb",
+      "document": "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {
-        "engineSignature": "query AvailableRooms{betaAvailableRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "query AvailableRooms{betaUserAvailableRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+      }
+    },
+    {
+      "signature": "86cbd3c856d2d196c5401e653b65ea95134f86894a4e18d7bc1de48097a5567d",
+      "document": "query UserRooms($after:ID,$limit:Int!){betaUserRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "metadata": {
+        "engineSignature": "query UserRooms($after:ID,$limit:Int!){betaUserRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+      }
+    },
+    {
+      "signature": "5367cfd0bd0d80ed228d473e845b6fc7bf7c57a762524b28f3ac099e5c8863ef",
+      "document": "query UserAvailableRooms($after:ID,$limit:Int!){betaUserAvailableRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "metadata": {
+        "engineSignature": "query UserAvailableRooms($after:ID,$limit:Int!){betaUserAvailableRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {

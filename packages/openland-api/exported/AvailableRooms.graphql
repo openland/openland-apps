@@ -1,5 +1,22 @@
 query AvailableRooms {
-  rooms: betaAvailableRooms {
+  availableRooms: betaUserAvailableRooms(limit: 3) {
+    __typename
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      photo
+      title
+    }
+  }
+  userRooms: betaUserRooms(limit: 3) {
     __typename
     ... on SharedRoom {
       id

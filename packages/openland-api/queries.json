@@ -9489,12 +9489,123 @@
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [],
-			"source": "query AvailableRooms {\n  rooms: betaAvailableRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"source": "query AvailableRooms {\n  userRooms: betaUserRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
 			"fields": [
 				{
-					"responseName": "rooms",
-					"fieldName": "betaAvailableRooms",
+					"responseName": "userRooms",
+					"fieldName": "betaUserRooms",
 					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": 3,
+							"type": "Int"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "kind",
+							"fieldName": "kind",
+							"type": "SharedRoomKind!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "title",
+							"fieldName": "title",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membership",
+							"fieldName": "membership",
+							"type": "SharedRoomMembershipStatus!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "availableRooms",
+					"fieldName": "betaUserAvailableRooms",
+					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": 3,
+							"type": "Int"
+						}
+					],
 					"isConditional": false,
 					"isDeprecated": false,
 					"fields": [
@@ -9592,8 +9703,286 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query AvailableRooms {\n  rooms: betaAvailableRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
-			"operationId": "679eecd728e3b606fd45b7f90f9ad984285fd1a5449eb4dad60e2df8ee7fed14"
+			"sourceWithFragments": "query AvailableRooms {\n  userRooms: betaUserRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"operationId": "dfbafbbc07516ccf96df901da58c65a52db37a1c502909b7f2974aea43817e44"
+		},
+		{
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
+			"operationName": "UserRooms",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "limit",
+					"type": "Int!"
+				},
+				{
+					"name": "after",
+					"type": "ID"
+				}
+			],
+			"source": "query UserRooms($limit: Int!, $after: ID) {\n  betaUserRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "betaUserRooms",
+					"fieldName": "betaUserRooms",
+					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": {
+								"kind": "Variable",
+								"variableName": "limit"
+							},
+							"type": "Int"
+						},
+						{
+							"name": "after",
+							"value": {
+								"kind": "Variable",
+								"variableName": "after"
+							},
+							"type": "ID"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "kind",
+							"fieldName": "kind",
+							"type": "SharedRoomKind!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "title",
+							"fieldName": "title",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membership",
+							"fieldName": "membership",
+							"type": "SharedRoomMembershipStatus!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query UserRooms($limit: Int!, $after: ID) {\n  betaUserRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"operationId": "3a5ede42e4d7cca6f1a316a1b47e0349d2befccd4d04902a404dfb280d1d7650"
+		},
+		{
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
+			"operationName": "UserAvailableRooms",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "limit",
+					"type": "Int!"
+				},
+				{
+					"name": "after",
+					"type": "ID"
+				}
+			],
+			"source": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "betaUserAvailableRooms",
+					"fieldName": "betaUserAvailableRooms",
+					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": {
+								"kind": "Variable",
+								"variableName": "limit"
+							},
+							"type": "Int"
+						},
+						{
+							"name": "after",
+							"value": {
+								"kind": "Variable",
+								"variableName": "after"
+							},
+							"type": "ID"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "kind",
+							"fieldName": "kind",
+							"type": "SharedRoomKind!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "title",
+							"fieldName": "title",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membership",
+							"fieldName": "membership",
+							"type": "SharedRoomMembershipStatus!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"operationId": "13f832471f67fb3ceb24c3718592ba36d7742f2b7e59633b4b32e1083fc1d523"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
