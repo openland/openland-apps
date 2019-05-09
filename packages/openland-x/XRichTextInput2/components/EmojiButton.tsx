@@ -20,22 +20,6 @@ const emojiWrapperClassName = css`
     }
 `;
 
-const pickerClassName = css`
-    position: absolute;
-    bottom: 50px;
-    right: 0;
-    margin-top: 10px;
-    padding: 0 0.3em;
-    z-index: 1;
-    box-sizing: content-box;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 30px 0 gainsboro;
-    & .emoji-mart-search {
-        display: block;
-    }
-`;
-
 type EmojiButtonT = { onEmojiPicked: (emoji: EmojiData) => void };
 
 export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {

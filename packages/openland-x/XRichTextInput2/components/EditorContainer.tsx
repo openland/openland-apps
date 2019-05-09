@@ -108,12 +108,15 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             ref={containerRef}
         >
             <MentionSuggestions
+                hideAttachments={props.hideAttachments}
                 onMentionPicked={onMentionPicked}
                 mentionState={mentionState}
                 sizeOfContainer={sizeOfContainer}
             />
 
-            <EmojiSuggestions emojiState={emojiState} addEmoji={finalAddEmoji} />
+            {!props.hideAttachments && (
+                <EmojiSuggestions emojiState={emojiState} addEmoji={finalAddEmoji} />
+            )}
 
             {children}
             <Icons

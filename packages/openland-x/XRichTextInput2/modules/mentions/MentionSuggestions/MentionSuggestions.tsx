@@ -38,10 +38,12 @@ export const MentionSuggestions = ({
     mentionState,
     onMentionPicked,
     sizeOfContainer,
+    hideAttachments,
 }: {
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: UserForMention) => void;
     sizeOfContainer: SizeT;
+    hideAttachments?: boolean;
 }) => {
     return (
         <div
@@ -51,7 +53,7 @@ export const MentionSuggestions = ({
             )}
             style={{
                 width: sizeOfContainer.width,
-                maxHeight: '23vh',
+                maxHeight: hideAttachments ? '19vh' : '23vh',
                 overflow: 'scroll',
                 left: mentionState.isSelecting ? 0 : sizeOfContainer.width / 2,
                 bottom: mentionState.isSelecting ? 50 : sizeOfContainer.height / 2,
