@@ -1967,6 +1967,14 @@ fun readSubscription(name: String, src: ReadableMap): Subscription<Operation.Dat
        builder.id(notNull(readString(src, "id")))
        return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "DebugEventsWatch") {
+       val builder = DebugEventsWatchSubscription.builder()
+       builder.fromState(readString(src, "fromState"))
+       builder.eventsCount(notNull(readInt(src, "eventsCount")))
+       builder.randomDelays(notNull(readBool(src, "randomDelays")))
+       builder.seed(notNull(readString(src, "seed")))
+       return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "OnlineWatch") {
        val builder = OnlineWatchSubscription.builder()
        builder.conversations(notNull(notNullListItems(readStringList(src, "conversations"))))

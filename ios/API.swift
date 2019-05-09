@@ -20185,6 +20185,101 @@ public final class SuperAdminRemoveMutation: GraphQLMutation {
   }
 }
 
+public final class DebugEventsWatchSubscription: GraphQLSubscription {
+  public let operationDefinition =
+    "subscription DebugEventsWatch($fromState: String, $eventsCount: Int!, $randomDelays: Boolean!, $seed: String!) {\n  debugEvents(fromState: $fromState, eventsCount: $eventsCount, randomDelays: $randomDelays, seed: $seed) {\n    __typename\n    seq\n    key\n  }\n}"
+
+  public var fromState: String?
+  public var eventsCount: Int
+  public var randomDelays: Bool
+  public var seed: String
+
+  public init(fromState: String? = nil, eventsCount: Int, randomDelays: Bool, seed: String) {
+    self.fromState = fromState
+    self.eventsCount = eventsCount
+    self.randomDelays = randomDelays
+    self.seed = seed
+  }
+
+  public var variables: GraphQLMap? {
+    return ["fromState": fromState, "eventsCount": eventsCount, "randomDelays": randomDelays, "seed": seed]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Subscription"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("debugEvents", arguments: ["fromState": GraphQLVariable("fromState"), "eventsCount": GraphQLVariable("eventsCount"), "randomDelays": GraphQLVariable("randomDelays"), "seed": GraphQLVariable("seed")], type: .nonNull(.object(DebugEvent.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(debugEvents: DebugEvent) {
+      self.init(unsafeResultMap: ["__typename": "Subscription", "debugEvents": debugEvents.resultMap])
+    }
+
+    public var debugEvents: DebugEvent {
+      get {
+        return DebugEvent(unsafeResultMap: resultMap["debugEvents"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "debugEvents")
+      }
+    }
+
+    public struct DebugEvent: GraphQLSelectionSet {
+      public static let possibleTypes = ["DebugEvent"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("seq", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("key", type: .nonNull(.scalar(String.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(seq: Int, key: String) {
+        self.init(unsafeResultMap: ["__typename": "DebugEvent", "seq": seq, "key": key])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var seq: Int {
+        get {
+          return resultMap["seq"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "seq")
+        }
+      }
+
+      public var key: String {
+        get {
+          return resultMap["key"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "key")
+        }
+      }
+    }
+  }
+}
+
 public final class ProfileQuery: GraphQLQuery {
   public let operationDefinition =
     "query Profile {\n  user: me {\n    __typename\n    id\n    shortname\n  }\n  profile: myProfile {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin: alphaLinkedin\n    primaryOrganization {\n      __typename\n      id\n      name\n    }\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      name\n    }\n  }\n}"
@@ -24437,7 +24532,7 @@ public struct FullMessage: GraphQLFragment {
   }
 
   public struct Span: GraphQLSelectionSet {
-    public static let possibleTypes = ["MessageSpanBold", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+    public static let possibleTypes = ["MessageSpanBold", "MessageSpanCodeBlock", "MessageSpanDate", "MessageSpanInlineCode", "MessageSpanInsane", "MessageSpanIrony", "MessageSpanItalic", "MessageSpanLink", "MessageSpanLoud", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanRotating", "MessageSpanUserMention"]
 
     public static let selections: [GraphQLSelection] = [
       GraphQLTypeCase(
@@ -24454,6 +24549,38 @@ public struct FullMessage: GraphQLFragment {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
+    }
+
+    public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanCodeBlock", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanDate(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanDate", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanInlineCode(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanInlineCode", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanInsane(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanInsane", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanIrony(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanIrony", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanItalic(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanItalic", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanLoud(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanLoud", "offset": offset, "length": length])
+    }
+
+    public static func makeMessageSpanRotating(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanRotating", "offset": offset, "length": length])
     }
 
     public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -26229,7 +26356,7 @@ public struct FullMessage: GraphQLFragment {
       }
 
       public struct Span: GraphQLSelectionSet {
-        public static let possibleTypes = ["MessageSpanBold", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+        public static let possibleTypes = ["MessageSpanBold", "MessageSpanCodeBlock", "MessageSpanDate", "MessageSpanInlineCode", "MessageSpanInsane", "MessageSpanIrony", "MessageSpanItalic", "MessageSpanLink", "MessageSpanLoud", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanRotating", "MessageSpanUserMention"]
 
         public static let selections: [GraphQLSelection] = [
           GraphQLTypeCase(
@@ -26250,6 +26377,38 @@ public struct FullMessage: GraphQLFragment {
 
         public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
           return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanCodeBlock", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanDate(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanDate", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanInlineCode(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanInlineCode", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanInsane(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanInsane", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanIrony(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanIrony", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanItalic(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanItalic", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanLoud(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanLoud", "offset": offset, "length": length])
+        }
+
+        public static func makeMessageSpanRotating(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageSpanRotating", "offset": offset, "length": length])
         }
 
         public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -27048,7 +27207,7 @@ public struct FullMessage: GraphQLFragment {
         }
 
         public struct Span: GraphQLSelectionSet {
-          public static let possibleTypes = ["MessageSpanBold", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+          public static let possibleTypes = ["MessageSpanBold", "MessageSpanCodeBlock", "MessageSpanDate", "MessageSpanInlineCode", "MessageSpanInsane", "MessageSpanIrony", "MessageSpanItalic", "MessageSpanLink", "MessageSpanLoud", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanRotating", "MessageSpanUserMention"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLTypeCase(
@@ -27069,6 +27228,38 @@ public struct FullMessage: GraphQLFragment {
 
           public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
             return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanCodeBlock", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanDate(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanDate", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanInlineCode(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanInlineCode", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanInsane(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanInsane", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanIrony(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanIrony", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanItalic(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanItalic", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanLoud(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanLoud", "offset": offset, "length": length])
+          }
+
+          public static func makeMessageSpanRotating(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageSpanRotating", "offset": offset, "length": length])
           }
 
           public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -28418,7 +28609,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanBold", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageSpanBold", "MessageSpanCodeBlock", "MessageSpanDate", "MessageSpanInlineCode", "MessageSpanInsane", "MessageSpanIrony", "MessageSpanItalic", "MessageSpanLink", "MessageSpanLoud", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanRotating", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -28435,6 +28626,38 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanCodeBlock", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanDate(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanDate", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanInlineCode(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanInlineCode", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanInsane(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanInsane", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanIrony(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanIrony", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanItalic(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanItalic", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanLoud(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanLoud", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanRotating(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanRotating", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -29277,7 +29500,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanBold", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageSpanBold", "MessageSpanCodeBlock", "MessageSpanDate", "MessageSpanInlineCode", "MessageSpanInsane", "MessageSpanIrony", "MessageSpanItalic", "MessageSpanLink", "MessageSpanLoud", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanRotating", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -29294,6 +29517,38 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanCodeBlock", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanDate(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanDate", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanInlineCode(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanInlineCode", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanInsane(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanInsane", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanIrony(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanIrony", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanItalic(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanItalic", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanLoud(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanLoud", "offset": offset, "length": length])
+      }
+
+      public static func makeMessageSpanRotating(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanRotating", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {

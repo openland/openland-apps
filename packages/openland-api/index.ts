@@ -189,6 +189,7 @@ export const SuperAccountMemberAddMutation = typedMutation<Types.SuperAccountMem
 export const SuperAccountMemberRemoveMutation = typedMutation<Types.SuperAccountMemberRemove, Types.SuperAccountMemberRemoveVariables>(Permissions.SuperAccountMemberRemoveMutation);
 export const SuperAdminAddMutation = typedMutation<Types.SuperAdminAdd, Types.SuperAdminAddVariables>(Permissions.SuperAdminAddMutation);
 export const SuperAdminRemoveMutation = typedMutation<Types.SuperAdminRemove, Types.SuperAdminRemoveVariables>(Permissions.SuperAdminRemoveMutation);
+export const DebugEventsWatchSubscription = typedSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables>(Permissions.DebugEventsWatchSubscription);
 export const ProfileQuery = typedQuery<Types.Profile, {}>(Settings.ProfileQuery);
 export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.ProfileUpdateVariables>(Settings.ProfileUpdateMutation);
 export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Settings.SetUserShortnameMutation);

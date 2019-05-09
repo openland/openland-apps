@@ -3495,6 +3495,23 @@ class ApiFactory: ApiFactoryBase {
       }
       return { () in res.cancel() }
     }
+    if (name == "DebugEventsWatch") {
+      let fromState = readString(src, "fromState")
+      let eventsCount = notNull(readInt(src, "eventsCount"))
+      let randomDelays = notNull(readBool(src, "randomDelays"))
+      let seed = notNull(readString(src, "seed"))
+      let requestBody = DebugEventsWatchSubscription(fromState: fromState, eventsCount: eventsCount, randomDelays: randomDelays, seed: seed)
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
     if (name == "OnlineWatch") {
       let conversations = notNull(notNullListItems(readStringList(src, "conversations")))
       let requestBody = OnlineWatchSubscription(conversations: conversations)

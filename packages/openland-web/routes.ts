@@ -257,6 +257,9 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 routes.add('/super/mails', '/dev/mails');
 routes.add('/super/mails/', '/dev/mails');
 
+routes.add('/super/debug', '/dev/debug');
+routes.add('/super/debug/', '/dev/debug');
+
 routes.add('/super', '/dev/orgs');
 routes.add('/super/', '/dev/orgs');
 routes.add('/super/orgs/:accountId', '/dev/orgView');

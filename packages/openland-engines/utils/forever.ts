@@ -12,3 +12,23 @@ export function forever(handler: () => Promise<void>) {
         }
     })();
 }
+
+export function foreverBreakable(handler: () => Promise<void>) {
+    let working = true;
+    (async () => {
+        while (working) {
+            try {
+                await handler();
+            } catch (e) {
+                console.warn(e);
+                await delay(1000);
+            }
+        }
+    })();
+
+    return {
+        break: () => {
+            working = false;
+        }
+    }
+}

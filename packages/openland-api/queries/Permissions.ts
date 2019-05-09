@@ -143,3 +143,12 @@ export const SuperAdminRemoveMutation = gql`
         superAdminRemove(userId: $userId)
     }
 `;
+
+export const DebugEventsWatchSubscription = gql`
+    subscription DebugEventsWatch($fromState: String, $eventsCount: Int!, $randomDelays: Boolean!, $seed: String!) {
+        debugEvents(fromState: $fromState, eventsCount: $eventsCount, randomDelays: $randomDelays, seed: $seed) {
+            seq
+            key
+        }
+    }
+`;
