@@ -169,9 +169,6 @@ export const Menu = React.memo(
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
-        const isActive = React.useContext(IsActiveContext);
-
-        React.useEffect(() => undefined, [isActive]);
 
         const setEditMessage = (e: any) => {
             if (!message.isSending) {

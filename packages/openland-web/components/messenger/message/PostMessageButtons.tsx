@@ -10,6 +10,7 @@ import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg
 import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const DiscussButton = React.memo(
     ({
@@ -143,7 +144,7 @@ export const PostMessageButtons = React.memo(
                                         Reply
                                     </XView>
 
-                                    {!deleted && (
+                                    {!deleted && me && message.senderId === me.id && (
                                         <XView
                                             marginLeft={12}
                                             color="rgba(0, 0, 0, 0.4)"
@@ -156,7 +157,10 @@ export const PostMessageButtons = React.memo(
                                         </XView>
                                     )}
 
-                                    {!deleted && (
+                                    <XWithRole
+                                        role="super-admin"
+                                        or={!!(!deleted && me && message.senderId === me.id)}
+                                    >
                                         <XView
                                             marginLeft={12}
                                             color="rgba(0, 0, 0, 0.4)"
@@ -167,7 +171,7 @@ export const PostMessageButtons = React.memo(
                                         >
                                             Delete
                                         </XView>
-                                    )}
+                                    </XWithRole>
                                 </>
                             )}
 
