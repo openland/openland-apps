@@ -1,6 +1,6 @@
 import { MessageSpanType, MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 
-const whiteListBeforeSpec = ['', ' ', '\n', ',', '.', '(', ')'];
+const whiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
 
 const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
     '*': { type: MessageSpanType.Bold },
@@ -40,7 +40,7 @@ const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string
     if (isSpec) {
         const arroundSymbolIndex = (currentSpecSymbol === symbol) ? (index + symbol.length) : (index - 1);
 
-        return whiteListBeforeSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
+        return whiteListAroundSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
     }
 
     return false;
