@@ -42,7 +42,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
                 'x-openland-access-token': auth.accessToken,
             },
         });
-        
+
         if (uploaded.ok) {
             let body = (await uploaded.json()) as {
                 ok: boolean;
@@ -64,11 +64,10 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             }
             path = Cookie.get('sign-redirect') || path;
             Cookie.remove('sign-redirect', { path: '/' });
-            
+
             createHistory({
                 forceRefresh: true,
             }).replace(path);
-            
         } else {
             trackError(JSON.stringify(uploaded));
             console.warn(uploaded);

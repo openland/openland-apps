@@ -84,20 +84,19 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                        />
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    <SortPicker
+                                        sort={sort}
+                                        onPick={setSort}
+                                        withoutFeatured={withoutFeatured}
+                                    />
+                                }
+                            />
+                        )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -272,10 +271,14 @@ export const ComponentWithSort = ({
                 tagsCount={tagsCount}
                 variables={{
                     ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                    sort: noSort ? '' : JSON.stringify([
-                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                        { [orderBy]: { order: 'desc' } },
-                    ]),
+                    sort: noSort
+                        ? ''
+                        : JSON.stringify([
+                              ...(featuredFirst
+                                  ? [{ ['featured']: { order: 'desc' } } as any]
+                                  : []),
+                              { [orderBy]: { order: 'desc' } },
+                          ]),
                     ...(variables.page ? { page: variables.page } : {}),
                 }}
                 customMenu={customMenu}

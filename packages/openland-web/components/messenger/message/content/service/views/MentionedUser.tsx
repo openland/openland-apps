@@ -42,12 +42,15 @@ export const MentionComponentInnerText = Glamorous.span(
 );
 
 export const MentionedUser = React.memo(({ user, isYou }: { user: UserShort; isYou: boolean }) => {
-    const userNameEmojified = React.useMemo(() => {
-        return emoji({
-            src: user.name,
-            size: 16,
-        });
-    }, [user.name]);
+    const userNameEmojified = React.useMemo(
+        () => {
+            return emoji({
+                src: user.name,
+                size: 16,
+            });
+        },
+        [user.name],
+    );
 
     return (
         <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>

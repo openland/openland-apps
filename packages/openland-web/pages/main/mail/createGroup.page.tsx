@@ -267,7 +267,10 @@ const CoverUpload = (props: CoverUploadProps) => {
 };
 
 interface OrganizationItemProps {
-    organization: MyOrganizations_myOrganizations | Organization_organization | OrganizationWithoutMembersFragment;
+    organization:
+        | MyOrganizations_myOrganizations
+        | Organization_organization
+        | OrganizationWithoutMembersFragment;
     onSelect: (v: string) => void;
     isSelected: boolean;
 }

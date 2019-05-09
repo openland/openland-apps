@@ -79,11 +79,14 @@ export const ContentEditableTextInput = React.forwardRef(
             }
         };
 
-        React.useEffect(() => {
-            if (value !== html) {
-                ref.current.innerHTML = value;
-            }
-        }, [value]);
+        React.useEffect(
+            () => {
+                if (value !== html) {
+                    ref.current.innerHTML = value;
+                }
+            },
+            [value],
+        );
 
         return (
             <>
