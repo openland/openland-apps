@@ -4,7 +4,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
+import { preprocessSpans } from 'openland-y-utils/SpansProcessor';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -34,7 +34,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         if (textSticker) {
             message = { ...message, text: message.text!.slice(1, message.text!.length - 1) };
         }
-        let preprocessed = preprocessText(message.text || '', message.spans);
+        let preprocessed = preprocessSpans(message.text || '', message.spans);
 
         let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress));
         if (message.title) {

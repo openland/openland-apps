@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
+import { preprocessSpans } from 'openland-y-utils/SpansProcessor';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -15,9 +15,9 @@ export interface ServiceMessageDefaultProps {
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
-    let preprocessed = preprocessText(props.message.text || '', props.message.spans);
+    let preprocessed = preprocessSpans(props.message.text || '', props.message.spans);
 
-    let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress, props.onGroupPress));
+    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.message, props.theme, props.onUserPress, props.onGroupPress));
 
     return (
         <ASFlex

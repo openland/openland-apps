@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, Linking, Clipboard, Share, TextStyle } from 'react-native';
-import { Span } from 'openland-mobile/utils/TextProcessor';
+import { Span } from 'openland-y-utils/SpansProcessor';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';

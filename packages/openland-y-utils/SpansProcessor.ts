@@ -1,5 +1,5 @@
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserTiny } from 'openland-api/Types';
-import { cropSpecSymbols } from 'openland-y-utils/cropSpecSymbols';
+import { cropSpecSymbols } from './cropSpecSymbols';
 
 type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating';
 
@@ -73,7 +73,7 @@ export interface SpanRoom extends SpanAbs {
     id: string;
 }
 
-function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
+const _preprocessRawText = (text: string): Span[] => {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
         if (res.length > 0) {
@@ -89,7 +89,7 @@ function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spa
     return res;
 }
 
-function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
+const _preprocessSpans = (text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[], mobile?: boolean): Span[] => {
     let res: Span[] = [];
     spans = spans.sort((a, b) => a.offset - b.offset);
 
@@ -97,7 +97,7 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
     for (let s of spans) {
         let raw = text.substr(offset, s.offset - offset);
         if (raw) {
-            res.push(...preprocessRawText(raw));
+            res.push(..._preprocessRawText(raw));
         }
         let spanText = text.substr(s.offset, s.length);
         let span: Span;
@@ -117,16 +117,28 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
         } else if (s.__typename === 'MessageSpanDate') {
             span = { type: 'date', date: s.date }
         } else if (s.__typename === 'MessageSpanCodeBlock') {
-            // spanText = cropSpecSymbols(spanText, '```');
+            if (!mobile) {
+                spanText = cropSpecSymbols(spanText, '```');
+            }
+
             span = { type: 'code_block' }
         } else if (s.__typename === 'MessageSpanInlineCode') {
-            // spanText = cropSpecSymbols(spanText, '`');
+            if (!mobile) {
+                spanText = cropSpecSymbols(spanText, '`');
+            }
+
             span = { type: 'code_inline' }
         } else if (s.__typename === 'MessageSpanInsane') {
-            // spanText = cropSpecSymbols(spanText, '🌈');
+            if (!mobile) {
+                spanText = cropSpecSymbols(spanText, '🌈');
+            }
+
             span = { type: 'insane' }
         } else if (s.__typename === 'MessageSpanIrony') {
-            // spanText = cropSpecSymbols(spanText, '~');
+            if (!mobile) {
+                spanText = cropSpecSymbols(spanText, '~');
+            }
+
             span = { type: 'irony' }
         } else if (s.__typename === 'MessageSpanItalic') {
             spanText = cropSpecSymbols(spanText, '_');
@@ -135,7 +147,10 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
             spanText = cropSpecSymbols(spanText, ':');
             span = { type: 'loud' }
         } else if (s.__typename === 'MessageSpanRotating') {
-            // spanText = cropSpecSymbols(spanText, '🔄');
+            if (!mobile) {
+                spanText = cropSpecSymbols(spanText, '🔄');
+            }
+
             span = { type: 'rotating' }
         } else {
             span = { type: 'text' };
@@ -147,17 +162,16 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
     }
 
     let rawLast = text.substr(offset, text.length - offset);
-    res.push(...preprocessRawText(rawLast));
+    res.push(..._preprocessRawText(rawLast));
 
     return res;
 }
 
-export function preprocessText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
+export const preprocessSpans = (text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[], mobile?: boolean): Span[] => {
     let res: Span[] = [];
-    let offset = 0;
 
-    if (offset < text.length) {
-        res.push(...preprocessSpans(text, spans || []));
+    if (text.length > 0) {
+        res.push(..._preprocessSpans(text, spans || [], mobile));
     }
 
     // Special case for empty string

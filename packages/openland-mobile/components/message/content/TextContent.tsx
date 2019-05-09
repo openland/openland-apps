@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Text, TextStyle } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
+import { preprocessSpans } from 'openland-y-utils/SpansProcessor';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
@@ -35,7 +35,7 @@ export const TextContent = (props: TextContentProps) => {
         message = { ...message, message: text!.slice(1, text!.length - 1) };
     }
 
-    let preprocessed = preprocessText(message.message || '', message.spans as any);
+    let preprocessed = preprocessSpans(message.message || '', message.spans);
     let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, props.onGroupPress, theme));
 
     if (message.message) {

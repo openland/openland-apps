@@ -5,7 +5,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
-import { preprocessText, Span } from 'openland-mobile/utils/TextProcessor';
+import { preprocessSpans, Span } from 'openland-y-utils/SpansProcessor';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
@@ -71,7 +71,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress))}
+                                        {preprocessSpans(generalMesage!.message!, generalMesage.spans).map((p, j) => renderPreprocessedText(p, j, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress))}
                                         {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
