@@ -21,9 +21,7 @@ const SpanView = (props: { span: Span, children?: any }) => {
     } else if (span.type === 'new_line') {
         return <br />
     } else {
-        return (
-            <span style={{ background: 'red' }}>{children}</span>
-        );
+        return <span style={{ background: 'red' }}>{children}</span>;
     }
 }
 
@@ -34,23 +32,6 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
         <DevDocsScaffold title="Spans">
             <XContent>
                 <XVertical2>
-                    <div style={{ background: 'red', fontSize: 20, color: 'white', padding: 20 }}>
-                        TODO (rendering):
-                        <br />
-                        - right offset for raw spans with new lines
-                        <br />
-                        <br />
-                        ------
-                        <br />
-                        <br />
-                        TODO (parsing):
-                        <br />
-                        - everything
-                    </div>
-                    <br />
-                    <div>text1 *_italic_ boldtext :loud _italic_:* text2 *_italic_ boldtext :loud _italic_:* text3</div>
-                    <br />
-
                     <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(parseSpans(value)) }) }} />
 
                     <div>{renderSpans(SpanView, processSpans(data.text, data.spans))}</div>

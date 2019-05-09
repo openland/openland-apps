@@ -65,21 +65,28 @@ const _convertServerSpan = (text: string, s: ServerSpan): Span => {
 
 const _preprocessRawText = (text: string, startOffset: number): Span[] => {
     let res: Span[] = [];
+
+    let garbageString = '';
+
     for (let p of text.split('\n')) {
         if (res.length > 0) {
             res.push({
                 type: 'new_line',
                 length: 0,
-                offset: startOffset
+                offset: startOffset + garbageString.length
             });
         }
+
         res.push({
             type: 'text',
             text: p,
             length: p.length,
-            offset: startOffset
+            offset: startOffset + garbageString.length
         });
+
+        garbageString += p;
     }
+
     return res;
 }
 
@@ -128,6 +135,8 @@ const _recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
 }
 
 export const processSpans = (text: string, spans: ServerSpan[]): Span[] => {
+    console.clear();
+
     let res: Span[] = [];
 
     let sortedSpans = spans.sort((a, b) => ((a.offset - b.offset) * 100000) + (b.length - a.length));
