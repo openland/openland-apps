@@ -15,6 +15,7 @@ interface OrganizationCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
     tagsCount: (n: number) => void;
+    notFoundText: string;
 }
 
 export const OrganizationCards = (props: OrganizationCardsProps) => {
@@ -49,40 +50,12 @@ export const OrganizationCards = (props: OrganizationCardsProps) => {
                     />
                 </XContentWrapper>
             )}
-            {noData && <EmptySearchBlock text="No organization matches your search" />}
+            {noData && (
+                <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />
+            )}
         </>
     );
 };
-
-interface OrganizationsProps {
-    featuredFirst: boolean;
-    orderBy: string;
-    query: string;
-    tagsCount: (n: number) => void;
-}
-
-export class Organizations extends React.PureComponent<OrganizationsProps> {
-    tagsCount = (n: number) => {
-        this.props.tagsCount(n);
-    };
-
-    render() {
-        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
-        if (this.props.featuredFirst) {
-            sort.unshift({ ['featured']: { order: 'desc' } });
-        }
-
-        return (
-            <OrganizationCards
-                tagsCount={this.tagsCount}
-                variables={{
-                    prefix: this.props.query,
-                    sort: JSON.stringify(sort),
-                }}
-            />
-        );
-    }
-}
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -97,10 +70,16 @@ const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
+const CardsComponent = ComponentWithSort({
+    Component: OrganizationCards,
+    queryToPrefix: true,
+    noSort: true,
+});
+
 export default withApp('Organizations', 'viewer', () => {
     const router = React.useContext(XRouterContext) as XRouter;
     const page = router.routeQuery.page;
-    let CardsComponent = ComponentWithSort({ Component: OrganizationCards, queryToPrefix: true });
+
     return (
         <DirectoryNavigation
             id={getOrganizationProfile(router.path)}

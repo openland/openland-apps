@@ -34,6 +34,7 @@ class RecordStoreTests {
         )
 
         // Initial merge
+        store.loaded(Record("key1", mapOf()))
         var changes = store.merge(record1)
         assertEquals(1, changes.size)
         assertEquals(setOf("field1", "field2", "field2", "field3", "field4", "field5"), changes.getValue("key1").fields)

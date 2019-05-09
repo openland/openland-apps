@@ -7,22 +7,14 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
-import { RoomsExploreComponent } from 'openland-web/fragments/RoomsExploreComponent';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
 import { OrganizationProfile } from '../../profile/components/OrganizationProfileComponent';
 import { RoomProfile } from '../../profile/components/RoomProfileComponent';
 import { UserProfile } from '../../profile/components/UserProfileComponent';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { AdaptiveHOC } from 'openland-web/components/Adaptive';
-import { Menu } from 'openland-web/components/MainLayout';
-import { XButton } from 'openland-x/XButton';
 import { RoomInviteFromLink } from './RoomInviteFromLink';
 import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
-import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
-import NewChatIcon from 'openland-icons/ic-new-chat.svg';
-import { TextDirectory } from 'openland-text/TextDirectory';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -235,7 +227,6 @@ export const ConversationContainerWrapper = ({
                 />
 
                 {tab === tabs.empty && <MessengerEmptyFragment />}
-                {tab === tabs.rooms && <RoomsExploreComponent />}
                 {tab === tabs.roomInvite && <RoomInviteFromLink />}
                 {tab === tabs.organizationInvite && <OrganizationInviteFromLink />}
                 {tab === tabs.organization && oid && (
@@ -255,127 +246,5 @@ export const ConversationContainerWrapper = ({
                 )}
             </ConversationContainerInner>
         </>
-    );
-};
-
-const containerStyle = css`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 344px;
-    flex-shrink: 0;
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #ececec;
-    @media (max-width: 1100px) {
-        width: 300px;
-    }
-    @media (max-width: 950px) {
-        width: 230px;
-    }
-`;
-
-const DesktopDialogContainer = ({ children }: { children: any }) => {
-    return <div className={containerStyle}>{children}</div>;
-};
-
-const AddButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#1790ff',
-        opacity: 0.5,
-    },
-});
-
-const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <DesktopDialogContainer>
-                <Menu
-                    title={'Messages'}
-                    rightContent={
-                        <PopperOptionsButton
-                            icon={<NewChatIcon />}
-                            title={TextDirectory.create.title}
-                        />
-                    }
-                />
-                <DialogListFragment />
-            </DesktopDialogContainer>
-
-            <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-        </XView>
-    );
-};
-
-const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <div
-                style={{
-                    display: tab === tabs.empty ? 'none' : 'flex',
-                }}
-            >
-                <XView width="100%">
-                    <Menu
-                        title={'Messages'}
-                        rightContent={
-                            <PopperOptionsButton
-                                icon={<NewChatIcon />}
-                                title={TextDirectory.create.title}
-                            />
-                        }
-                    />
-                    <DialogListFragment />
-                </XView>
-            </div>
-            <div
-                style={{
-                    display: tab !== tabs.empty ? 'none' : 'flex',
-                }}
-            >
-                <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-            </div>
-        </XView>
-    );
-};
-
-const PageInner = AdaptiveHOC({
-    DesktopComponent: DesktopPageInner,
-    MobileComponent: MobilePageInner,
-    fullWidth: true,
-});
-
-export const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <PageInner {...{ tab, conversationId, oid, uid, cid }} />
-        </XView>
     );
 };

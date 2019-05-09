@@ -160,6 +160,9 @@ export const Menu = React.memo(
 
         const messagesContext = React.useContext(MessagesStateContext);
         const isActive = React.useContext(IsActiveContext);
+
+        React.useEffect(() => undefined, [isActive]);
+
         const setEditMessage = (e: any) => {
             if (!message.isSending) {
                 e.stopPropagation();
@@ -167,10 +170,6 @@ export const Menu = React.memo(
                 messagesContext.setEditMessage(message.id!, message.text!);
             }
         };
-
-        React.useEffect(() => {
-            // do nothing if dont active chat
-        }, [isActive])
 
         const setReplyMessages = (e: any) => {
             if (!message.isSending) {
@@ -281,16 +280,16 @@ export const Menu = React.memo(
                                                 Reply
                                             </XMenuItem>
                                             {pinMessageAccess &&
-                                            message.id &&
-                                            room && (
-                                                <PinMessageButton
-                                                    variables={{
-                                                        chatId: room.id,
-                                                        messageId: message.id,
-                                                    }}
-                                                    onSuccess={() => setShowMenu(false)}
-                                                />
-                                            )}
+                                                message.id &&
+                                                room && (
+                                                    <PinMessageButton
+                                                        variables={{
+                                                            chatId: room.id,
+                                                            messageId: message.id,
+                                                        }}
+                                                        onSuccess={() => setShowMenu(false)}
+                                                    />
+                                                )}
                                             <XMenuItem
                                                 onClick={() => {
                                                     setShowMenu(false);

@@ -31968,6 +31968,68 @@ export interface MediaOfferVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: MediaNegotiationNeeded
+// ====================================================
+
+export interface MediaNegotiationNeeded_mediaStreamNegotiationNeeded_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaNegotiationNeeded_mediaStreamNegotiationNeeded {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaNegotiationNeeded_mediaStreamNegotiationNeeded_streams[];
+}
+
+export interface MediaNegotiationNeeded {
+  mediaStreamNegotiationNeeded: MediaNegotiationNeeded_mediaStreamNegotiationNeeded;
+}
+
+export interface MediaNegotiationNeededVariables {
+  id: string;
+  peerId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaFailed
+// ====================================================
+
+export interface MediaFailed_mediaStreamFailed_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaFailed_mediaStreamFailed {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaFailed_mediaStreamFailed_streams[];
+}
+
+export interface MediaFailed {
+  mediaStreamFailed: MediaFailed_mediaStreamFailed;
+}
+
+export interface MediaFailedVariables {
+  id: string;
+  peerId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: MediaAnswer
 // ====================================================
 

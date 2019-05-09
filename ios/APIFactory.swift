@@ -2859,6 +2859,40 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MediaNegotiationNeeded") {
+      let id = notNull(readString(src, "id"))
+      let peerId = notNull(readString(src, "peerId"))
+      let requestBody = MediaNegotiationNeededMutation(id: id, peerId: peerId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "MediaFailed") {
+      let id = notNull(readString(src, "id"))
+      let peerId = notNull(readString(src, "peerId"))
+      let requestBody = MediaFailedMutation(id: id, peerId: peerId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "MediaAnswer") {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))

@@ -8853,6 +8853,228 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"operationName": "MediaNegotiationNeeded",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				},
+				{
+					"name": "peerId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {\n  mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "mediaStreamNegotiationNeeded",
+					"fieldName": "mediaStreamNegotiationNeeded",
+					"type": "ConferenceMedia!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "streams",
+							"fieldName": "streams",
+							"type": "[MediaStream!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "state",
+									"fieldName": "state",
+									"type": "MediaStreamState!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "sdp",
+									"fieldName": "sdp",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "ice",
+									"fieldName": "ice",
+									"type": "[String!]!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {\n  mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}",
+			"operationId": "bb9d15f4f046016fabf395f71f6c551bfdd61cf28e1342bef529744c4115be64"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"operationName": "MediaFailed",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				},
+				{
+					"name": "peerId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation MediaFailed($id: ID!, $peerId: ID!) {\n  mediaStreamFailed(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "mediaStreamFailed",
+					"fieldName": "mediaStreamFailed",
+					"type": "ConferenceMedia!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "streams",
+							"fieldName": "streams",
+							"type": "[MediaStream!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "state",
+									"fieldName": "state",
+									"type": "MediaStreamState!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "sdp",
+									"fieldName": "sdp",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "ice",
+									"fieldName": "ice",
+									"type": "[String!]!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation MediaFailed($id: ID!, $peerId: ID!) {\n  mediaStreamFailed(id: $id, peerId: $peerId) {\n    __typename\n    id\n    streams {\n      __typename\n      id\n      state\n      sdp\n      ice\n    }\n  }\n}",
+			"operationId": "c30b95cd1c870db93249ca4d4646605f8faf6ac4ecc25ce67520aa871f52900c"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaAnswer",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -14724,7 +14946,7 @@
 				"Conference"
 			],
 			"fragmentName": "ConferenceShort",
-			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
 			"source": "fragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
 			"fields": [
 				{

@@ -4,6 +4,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XDate } from 'openland-x/XDate';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
+
 const textClassName = css`
     white-space: pre;
 `;

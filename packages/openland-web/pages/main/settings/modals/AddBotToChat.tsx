@@ -5,7 +5,7 @@ import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { SearchCardsOrShowProfile } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
-import { RoomsWithSort } from 'openland-web/fragments/RoomsExploreComponent';
+import { RoomsWithSort } from 'openland-web/pages/main/directory/components/RoomsExploreComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';

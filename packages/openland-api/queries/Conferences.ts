@@ -108,6 +108,34 @@ export const MediaOfferMutation = gql`
     }
 `;
 
+export const MediaNegotiationNeededMutation = gql`
+    mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {
+        mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
+`;
+
+export const MediaFailedMutation = gql`
+    mutation MediaFailed($id: ID!, $peerId: ID!) {
+        mediaStreamFailed(id: $id, peerId: $peerId) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
+`;
+
 export const MediaAnswerMutation = gql`
     mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!) {
         mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer) {

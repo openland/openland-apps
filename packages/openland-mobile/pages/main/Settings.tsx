@@ -29,7 +29,10 @@ let SettingsContent = ((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
 
     let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
-    let primary = resp.me!.primaryOrganization;
+    if (resp.me === null) {
+        return null
+    }
+    let primary = resp.me.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
     secondary.sort((a, b) => a.name.localeCompare(b.name));
     let secondaryFiltered = [];

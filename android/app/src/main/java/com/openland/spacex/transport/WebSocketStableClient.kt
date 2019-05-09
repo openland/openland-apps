@@ -181,6 +181,7 @@ class WebSocketStableClient(val context: Context,
                 if (this.state == ConnectionState.STARTING) {
                     this.state = ConnectionState.STARTED
                     this.pending.clear()
+                    this.callback.onConnected()
                 }
             } else {
                 this.callback.onMessage(parsed)

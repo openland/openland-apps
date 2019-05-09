@@ -940,6 +940,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
         return this.client.mutate(Source.MediaOfferMutation, variables);
     }
+    async mutateMediaNegotiationNeeded(variables: Types.MediaNegotiationNeededVariables): Promise<Types.MediaNegotiationNeeded> {
+        return this.client.mutate(Source.MediaNegotiationNeededMutation, variables);
+    }
+    async mutateMediaFailed(variables: Types.MediaFailedVariables): Promise<Types.MediaFailed> {
+        return this.client.mutate(Source.MediaFailedMutation, variables);
+    }
     async mutateMediaAnswer(variables: Types.MediaAnswerVariables): Promise<Types.MediaAnswer> {
         return this.client.mutate(Source.MediaAnswerMutation, variables);
     }

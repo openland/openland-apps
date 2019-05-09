@@ -24,15 +24,15 @@ interface StoreWriteCallback {
     fun onError()
 }
 
-class SpaceXClient(url: String, token: String?, context: Context) {
+class SpaceXClient(url: String, token: String?, context: Context, name: String) {
     private var isConnected = false
     private val transport: WebSocketTransport = WebSocketTransport(context, url, token) {
         isConnected = it
         this.connectionStateListener?.invoke(it)
     }
-    private val scheduler = StoreScheduler()
+    private val scheduler = StoreScheduler(name, context)
     private val transportScheduler = TransportScheduler(transport, scheduler)
-    private val queue = DispatchQueue()
+    private val queue = DispatchQueue("client")
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
 
     fun setConnectionStateListener(handler: (connected: Boolean) -> Unit) {
@@ -223,6 +223,8 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                         } else {
                             doRequest()
                         }
+                    } else {
+                        doRequest()
                     }
                 }
             } else {
@@ -230,11 +232,29 @@ class SpaceXClient(url: String, token: String?, context: Context) {
             }
         }
 
+        private fun doReload() {
+            if (this.completed) {
+                return
+            }
+            scheduler.readQueryFromCache(operation, arguments, queue) {
+                if (this.completed) {
+                    return@readQueryFromCache
+                }
+                if (it is QueryReadResult.Value) {
+                    callback.onResult(it.value)
+                } else {
+                    doRequest()
+                }
+            }
+        }
+
         private fun doSubscribe(data: JSONObject) {
             // TODO: Optimize!!
             val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
             storeSubscription = scheduler.subscribe(normalized, queue) {
-                doInit()
+                storeSubscription?.invoke()
+                storeSubscription = null
+                doReload()
             }
         }
 
@@ -254,6 +274,8 @@ class SpaceXClient(url: String, token: String?, context: Context) {
 
         fun stop() {
             this.completed = true
+            this.storeSubscription?.invoke()
+            this.storeSubscription = null
         }
     }
 }

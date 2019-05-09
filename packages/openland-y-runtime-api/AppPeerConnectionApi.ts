@@ -2,8 +2,11 @@ import { AppMediaStream } from './AppUserMediaApi';
 
 export interface AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
+    onnegotiationneeded: (() => void) | undefined;
+    oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined;
+
     addIceCandidate(candidate: string): Promise<void>;
-    
+
     createOffer(): Promise<string>;
     setLocalDescription(sdp: string): Promise<void>;
     setRemoteDescription(sdp: string): Promise<void>;

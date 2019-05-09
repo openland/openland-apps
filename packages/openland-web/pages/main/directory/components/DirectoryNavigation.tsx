@@ -82,23 +82,25 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
                             tagsCount={tagsCount}
+                            notFoundText={query}
                             variables={{
                                 query,
                                 page,
@@ -231,15 +233,18 @@ export const DirectoryNavigation = XMemo(
 export const ComponentWithSort = ({
     Component,
     queryToPrefix,
+    noSort,
 }: {
     Component: any;
     queryToPrefix?: boolean;
+    noSort?: boolean;
 }) => ({
     featuredFirst,
     orderBy,
     variables,
     tagsCount,
     customMenu,
+    notFoundText,
     CustomButtonComponent,
 }: {
     featuredFirst: boolean;
@@ -250,6 +255,7 @@ export const ComponentWithSort = ({
     };
     tagsCount: Function;
     customMenu: any;
+    notFoundText: string;
     CustomButtonComponent: any;
 }) => {
     return (
@@ -264,7 +270,7 @@ export const ComponentWithSort = ({
                 tagsCount={tagsCount}
                 variables={{
                     ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                    sort: JSON.stringify([
+                    sort: noSort ? '' : JSON.stringify([
                         ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
                         { [orderBy]: { order: 'desc' } },
                     ]),
@@ -272,6 +278,7 @@ export const ComponentWithSort = ({
                 }}
                 customMenu={customMenu}
                 CustomButtonComponent={CustomButtonComponent}
+                notFoundText={notFoundText}
             />
         </React.Suspense>
     );

@@ -27,6 +27,12 @@ class RecordStore {
         this.inMemory[record.key] = record
     }
 
+    fun loaded(set: RecordSet) {
+        for (s in set.records) {
+            loaded(s.value)
+        }
+    }
+
     fun read(key: String): Record {
         return loadRecord(key)
     }

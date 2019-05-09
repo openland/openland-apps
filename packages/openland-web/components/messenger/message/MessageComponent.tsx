@@ -53,9 +53,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const isActive = React.useContext(IsActiveContext);
     const isMobile = React.useContext(IsMobileContext);
 
-    React.useEffect(() => {
-        // do nothing if context dont update
-    }, [messagesContextProps]);
+    React.useEffect(() => undefined, [messagesContextProps]);
+
     return (
         <MessageComponentInner
             onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}

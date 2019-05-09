@@ -744,6 +744,20 @@
       }
     },
     {
+      "signature": "601b4ceaa3d2364d4c415a830a14dfae27c33c13ea9371ce1ff5d4f4ebb5814b",
+      "document": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "metadata": {
+        "engineSignature": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+      }
+    },
+    {
+      "signature": "0ed402628bcca1b5f90cb65b94a5ec4d9e557f4dddb1bf16824d47931594a4ba",
+      "document": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "metadata": {
+        "engineSignature": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+      }
+    },
+    {
       "signature": "eed7253d738d870fc8b1014a4893fd67a1cfbfc22929fc3d766bb20541e065bd",
       "document": "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
       "metadata": {

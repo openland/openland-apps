@@ -455,7 +455,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         <XView
             width={85}
             marginLeft={12}
-            marginTop={!compact ? 24 : undefined}
+            marginTop={!compact ? (isComment ? undefined : 24) : undefined}
             alignSelf="flex-start"
         >
             <Menu
