@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
 import { css, cx } from 'linaria';
@@ -9,6 +8,7 @@ import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPo
 import { SpannedString } from '../../data/SpannedString';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
+import { MentionComponentInnerText } from './service/views/MentionedUser';
 
 const EmojiSpaceStyle = css`
     & img {

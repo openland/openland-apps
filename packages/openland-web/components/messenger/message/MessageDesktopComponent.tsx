@@ -315,10 +315,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageTextComponentSpanned
+                                    isComment={this.props.isComment}
                                     spannedString={message.textSpannedString!}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
-                                    deleted={this.props.deleted}
                                 />,
                             );
                         }
@@ -402,6 +402,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             if (message.text && message.text.length > 0) {
                 content.push(
                     <MessageTextComponent
+                        isComment={this.props.isComment}
                         message={message.text}
                         spans={message.spans}
                         key={'text' + message.id}
@@ -457,6 +458,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             const postMessageButtons =
                 isEditView && !!this.props.isComment ? null : (
                     <PostMessageButtons
+                        deleted={this.props.deleted}
                         showNumberOfComments={this.props.showNumberOfComments}
                         isModal={!!this.props.isModal}
                         isComment={!!this.props.isComment}
@@ -492,6 +494,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selectMessage={this.selectMessage}
                     room={this.props.room}
                     isEditView={isEditView}
+                    isEdited={!!this.props.message.isEdited}
                 >
                     {content}
                     {postMessageButtons}

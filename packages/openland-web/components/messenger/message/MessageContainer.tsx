@@ -34,6 +34,7 @@ export interface DesktopMessageContainerProps {
     children?: any;
     selectMessage: () => void;
     room?: RoomChat_room;
+    isEdited: boolean;
     isEditView: boolean;
 }
 
@@ -377,6 +378,31 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 {props.sender.primaryOrganization.name}
                             </XView>
                         )}
+                        {(props.isEditView || props.isEdited) && (
+                            <>
+                                <XView
+                                    marginLeft={8}
+                                    alignSelf="center"
+                                    width={3}
+                                    height={3}
+                                    borderRadius={'50%'}
+                                    marginBottom={-1}
+                                    backgroundColor="rgba(0, 0, 0, 0.3)"
+                                />
+                                <XView
+                                    marginLeft={7}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontSize={12}
+                                    alignSelf="flex-end"
+                                    fontWeight={'600'}
+                                    marginBottom={-1}
+                                >
+                                    {props.isEditView
+                                        ? 'Editing message'
+                                        : props.isEdited && 'Edited'}
+                                </XView>
+                            </>
+                        )}
                     </XView>
                     {!props.isComment && !props.isModal && (
                         <XView
@@ -392,7 +418,13 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                     )}
                 </XView>
             ),
-            [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
+            [
+                props.date,
+                props.sender,
+                props.sender.primaryOrganization,
+                props.selecting,
+                props.isEditView,
+            ],
         );
     // Content
     const content = (
@@ -455,6 +487,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
+                deleted={deleted}
                 message={props.message}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}

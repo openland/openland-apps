@@ -50,6 +50,7 @@ export type XTextInputProps =
 
 class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
+        onSubmit: () => Promise<void>;
         store: XStoreState;
         minimal: boolean;
         initialMentions?: UserWithOffset[];
@@ -82,6 +83,7 @@ class XRichTextInputStored extends React.PureComponent<
                 {...other}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
+                hideAttachments
                 value={value.text}
                 initialMentions={this.props.initialMentions}
                 getMentionsSuggestions={this.props.getMentionsSuggestions}
@@ -92,6 +94,7 @@ class XRichTextInputStored extends React.PureComponent<
 
 class XTextInput extends React.PureComponent<
     XTextInputProps & {
+        onSubmit: (data: any) => Promise<void>;
         minimal: boolean;
         round: boolean;
         initialMentions?: UserWithOffset[];
@@ -113,6 +116,13 @@ class XTextInput extends React.PureComponent<
                         return (
                             <XRichTextInputStored
                                 {...other}
+                                onSubmit={async () => {
+                                    await this.props.onSubmit({
+                                        [valueStoreKey.replace('fields.', '')]: store.readValue(
+                                            valueStoreKey,
+                                        ),
+                                    });
+                                }}
                                 valueStoreKey={valueStoreKeyCached}
                                 store={store}
                             />
@@ -170,6 +180,25 @@ export const EditMessageInline = ({
         return data && data.members.map(({ user }) => user);
     };
 
+    const onFormSubmit = async (data: any) => {
+        if (isComment) {
+            await client.mutateEditComment({
+                id: message.id!!,
+                message: data.message.text,
+            });
+        } else {
+            await client.mutateRoomEditMessage({
+                messageId: message!!.id!!,
+                message: data.message.text,
+                file: data.message.file,
+                replyMessages: data.message.replyMessages,
+                mentions: data.message.mentions.map((mention: any) => mention.user.id),
+            });
+        }
+
+        onClose();
+    };
+
     return (
         <React.Fragment key={key}>
             <XShortcuts
@@ -182,26 +211,7 @@ export const EditMessageInline = ({
                 }}
             >
                 <XForm
-                    defaultAction={async data => {
-                        if (isComment) {
-                            await client.mutateEditComment({
-                                id: message.id!!,
-                                message: data.message.text,
-                            });
-                        } else {
-                            await client.mutateRoomEditMessage({
-                                messageId: message!!.id!!,
-                                message: data.message.text,
-                                file: data.message.file,
-                                replyMessages: data.message.replyMessages,
-                                mentions: data.message.mentions.map(
-                                    (mention: any) => mention.user.id,
-                                ),
-                            });
-                        }
-
-                        onClose();
-                    }}
+                    defaultAction={onFormSubmit}
                     defaultData={{
                         message: {
                             text: message.text,
@@ -211,6 +221,7 @@ export const EditMessageInline = ({
                     <XView marginLeft={-15}>
                         <TextInputWrapper>
                             <XTextInput
+                                onSubmit={onFormSubmit}
                                 minimal={minimal}
                                 round={minimal}
                                 valueStoreKey="fields.message"

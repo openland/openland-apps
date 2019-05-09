@@ -67,6 +67,7 @@ export type CommentPropsT = {
 };
 
 type PostMessageButtonsT = {
+    deleted?: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
@@ -82,6 +83,7 @@ type PostMessageButtonsT = {
 
 export const PostMessageButtons = React.memo(
     ({
+        deleted,
         isComment,
         isChannel,
         isModal,
@@ -140,27 +142,31 @@ export const PostMessageButtons = React.memo(
                                         Reply
                                     </XView>
 
-                                    <XView
-                                        marginLeft={12}
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        fontWeight="600"
-                                        fontSize={12}
-                                        cursor="pointer"
-                                        onClick={commentProps.onCommentEditClick}
-                                    >
-                                        Edit
-                                    </XView>
+                                    {!deleted && (
+                                        <XView
+                                            marginLeft={12}
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            fontWeight="600"
+                                            fontSize={12}
+                                            cursor="pointer"
+                                            onClick={commentProps.onCommentEditClick}
+                                        >
+                                            Edit
+                                        </XView>
+                                    )}
 
-                                    <XView
-                                        marginLeft={12}
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        fontWeight="600"
-                                        fontSize={12}
-                                        cursor="pointer"
-                                        onClick={commentProps.onCommentDeleteClick}
-                                    >
-                                        Delete
-                                    </XView>
+                                    {!deleted && (
+                                        <XView
+                                            marginLeft={12}
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            fontWeight="600"
+                                            fontSize={12}
+                                            cursor="pointer"
+                                            onClick={commentProps.onCommentDeleteClick}
+                                        >
+                                            Delete
+                                        </XView>
+                                    )}
                                 </>
                             )}
 

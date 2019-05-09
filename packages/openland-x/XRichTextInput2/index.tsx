@@ -15,7 +15,7 @@ import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions?: UserWithOffset[] }) => void;
     value: string;
-    onSubmit?: () => void;
+    onSubmit?: () => Promise<void>;
     placeholder?: string;
     autofocus?: boolean;
     initialMentions?: UserWithOffset[];
@@ -24,7 +24,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;
     round?: boolean;
-    hideAttach?: boolean;
+    hideAttachments?: boolean;
 }
 
 export const XRichTextInput2 = React.memo(
@@ -46,6 +46,7 @@ export const XRichTextInput2 = React.memo(
             const editorRef = React.useRef<Editor>(null);
 
             const {
+                plainText,
                 editorState,
                 setEditorState,
                 updateEditorStateFromTextAndMentions,
@@ -99,6 +100,7 @@ export const XRichTextInput2 = React.memo(
             return (
                 <EditorContainer
                     {...props}
+                    plainText={plainText}
                     onSubmit={onSubmit}
                     editorState={editorState}
                     setEditorState={setEditorState}

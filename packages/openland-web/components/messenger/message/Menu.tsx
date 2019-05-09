@@ -151,10 +151,20 @@ interface MenuProps {
     hover: boolean;
     selectMessage: () => void;
     room?: RoomChat_room;
+    deleted?: boolean;
 }
 
 export const Menu = React.memo(
-    ({ conversationId, hover, message, isModal, isComment, selectMessage, room }: MenuProps) => {
+    ({
+        conversationId,
+        hover,
+        message,
+        deleted,
+        isModal,
+        isComment,
+        selectMessage,
+        room,
+    }: MenuProps) => {
         let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
@@ -261,7 +271,7 @@ export const Menu = React.memo(
                                     }
                                     content={
                                         <>
-                                            {out && (
+                                            {out && !deleted && (
                                                 <XMenuItem
                                                     onClick={(e: any) => {
                                                         setEditMessage(e);

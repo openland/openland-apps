@@ -41,14 +41,16 @@ class ContainerWrapper extends React.PureComponent {
 }
 
 type EditorContainerContainer = XRichTextInput2Props & {
+    hideAttachments?: boolean;
     minimal?: boolean;
+    plainText: string;
     hideAttach?: boolean;
     round?: boolean;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: UserShort) => void;
-    onSubmit?: () => void;
+    onSubmit?: () => Promise<void>;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
     finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
@@ -115,7 +117,8 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
             {children}
             <Icons
-                hasText={!!props.value}
+                hideAttachments={props.hideAttachments}
+                hasText={!!props.plainText}
                 minimal={minimal}
                 onEmojiPicked={onEmojiPicked}
                 onSubmit={onSubmit}

@@ -11,7 +11,7 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
 };
 
 type useKeyHandlingT = {
-    onSubmit?: () => void;
+    onSubmit?: () => Promise<void>;
     mentionState: MentionSuggestionsStateT;
     emojiState: EmojiSuggestionsStateT;
     addMention: Function;
@@ -38,8 +38,9 @@ export function useDraftKeyHandling({
             }
 
             if (onSubmit) {
-                onSubmit();
-                updateEditorStateFromTextAndMentions({ text: '', mentions: [] });
+                onSubmit().then(() => {
+                    updateEditorStateFromTextAndMentions({ text: '', mentions: [] });
+                });
 
                 return 'handled';
             }
