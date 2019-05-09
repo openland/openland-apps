@@ -172,8 +172,6 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
 export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const isMobile = React.useContext(IsMobileContext);
     const state = React.useContext(MessagesStateContext);
-    const userContext = React.useContext(UserInfoContext);
-    const myId = userContext!!.user!!.id!!;
 
     const sharedRoom =
         room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
@@ -188,8 +186,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
                 isChannel={isChannel}
-                canMePinMessage={!!(sharedRoom && sharedRoom.canEdit)}
-                myId={myId}
             />
         );
     }

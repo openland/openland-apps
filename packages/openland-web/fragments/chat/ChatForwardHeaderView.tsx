@@ -71,19 +71,10 @@ export const ChatForwardHeaderView = (props: {
     roomId: string;
     privateRoom: boolean;
     isChannel: boolean;
-    canMePinMessage: boolean;
-    myId: string;
 }) => {
     const state = React.useContext(MessagesStateContext);
-    const { selectedMessages } = state;
-    const selectedMessageArr = Array.from(selectedMessages);
-
-    const youPinMessage = selectedMessageArr[0];
-    const canPinThisMessage =
-        !props.privateRoom && selectedMessages.size === 1 && !youPinMessage.isService;
-    let pinMessageAccess = canPinThisMessage && props.canMePinMessage;
-
     const { forwardMessagesId, resetAll } = state;
+
     if (forwardMessagesId && forwardMessagesId.size) {
         let size = forwardMessagesId.size;
         return (
@@ -124,15 +115,6 @@ export const ChatForwardHeaderView = (props: {
                             />
                         )}
                     </XWithRole>
-                    {pinMessageAccess && (
-                        <PinMessageButton
-                            variables={{
-                                chatId: props.roomId,
-                                messageId: Array.from(state.selectedMessages)[0].id!,
-                            }}
-                            onSuccess={state.resetAll}
-                        />
-                    )}
                     {!props.isChannel && (
                         <XButton
                             text="Reply"
