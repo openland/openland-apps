@@ -63,8 +63,8 @@ export class GlobalStateEngine {
     }
 
     handleDialogsStarted = (state: string) => {
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, (st) => {
-            this.engine.dialogList.handleStateProcessed(st);
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
+            await this.engine.dialogList.handleStateProcessed(st);
         });
     }
 
