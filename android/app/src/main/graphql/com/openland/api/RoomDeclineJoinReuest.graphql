@@ -1,6 +1,0 @@
-mutation RoomDeclineJoinReuest($roomId: ID!, $userId: ID!) {
-  betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId) {
-    __typename
-    ...RoomFull
-  }
-}

@@ -21,12 +21,18 @@ interface DottedMenuButtonStyleProps {
     active?: boolean;
     horizontal?: boolean;
     flat?: boolean;
+    marginLeft?: number;
+    marginRight?: number;
+    opacity?: number;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    ({ small, horizontal, flat, active }) => ({
+    ({ small, horizontal, flat, active, marginLeft, marginRight, opacity }) => ({
+        marginLeft: marginLeft !== undefined ? `${marginLeft}px !important` : undefined,
+        marginRight: marginRight !== undefined ? `${marginRight}px !important` : undefined,
         width: small ? 10 : 22,
-        height: 17,
+        height: 20,
+        opacity: opacity !== undefined ? opacity : undefined,
         display: 'flex',
         flexDirection: horizontal ? 'row' : 'column',
         alignItems: 'center',
@@ -86,6 +92,30 @@ const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
     },
 }));
 
+export class XOverflowDefalutTarget extends React.PureComponent<
+    DottedMenuButtonStyleProps & { onClick: () => void }
+> {
+    render() {
+        const { props } = this;
+        return (
+            <DottedMenuButtonStyle
+                onClick={props.onClick}
+                active={props.active}
+                small={props.small}
+                horizontal={props.horizontal}
+                flat={props.flat}
+                marginLeft={props.marginLeft}
+                marginRight={props.marginRight}
+                opacity={props.opacity}
+            >
+                <div />
+                <div />
+                <div />
+            </DottedMenuButtonStyle>
+        );
+    }
+}
+
 interface XOverflowProps {
     small?: boolean;
     placement?: Placement;
@@ -98,6 +128,9 @@ interface XOverflowProps {
     flat?: boolean;
     notificationStyle?: boolean;
     onClickTarget?: any;
+    useCustomTarget?: boolean;
+    showOnHover?: boolean;
+    onClickOutside?: () => void;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -113,19 +146,23 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
     switch = (e: any) => {
         e.stopPropagation();
+        const { show, onClickTarget } = this.props;
 
-        if (typeof this.props.show === 'undefined') {
+        if (typeof show === 'undefined') {
             this.setState({ show: !this.state.show });
         }
 
-        if (this.props.onClickTarget) {
-            this.props.onClickTarget();
+        if (onClickTarget) {
+            onClickTarget();
         }
     };
 
     handleClose = () => {
-        if (typeof this.props.show === 'undefined') {
+        const { show, onClickOutside } = this.props;
+        if (typeof show === 'undefined') {
             this.setState({ show: false });
+        } else if (onClickOutside !== undefined) {
+            onClickOutside();
         }
     };
 
@@ -134,13 +171,20 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
     };
 
     render() {
-        const { target, shadow, small } = this.props;
+        const { target, shadow, small, useCustomTarget } = this.props;
 
         let targetElement: any;
 
-        let show = typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
+        let show: boolean | undefined =
+            typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
 
-        if (target !== undefined) {
+        if (this.props.showOnHover) {
+            show = undefined;
+        }
+
+        if (useCustomTarget) {
+            targetElement = target;
+        } else if (target !== undefined && !useCustomTarget) {
             targetElement = React.cloneElement(target as any, {
                 onClick: this.switch,
                 innerRef: this.createRef,
@@ -149,7 +193,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
         return (
             <>
-                {shadow && <Shadow active={show} />}
+                {shadow && typeof show !== 'undefined' && <Shadow active={show} />}
                 <XPopper
                     show={show}
                     contentContainer={<XMenuVertical />}
@@ -158,10 +202,11 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     placement={this.props.placement || 'auto'}
                     width={this.props.width}
                     onClickOutside={this.handleClose}
+                    showOnHover={this.props.showOnHover}
                 >
                     {targetElement ? (
                         targetElement
-                    ) : this.props.notificationStyle === true ? (
+                    ) : this.props.notificationStyle === true && typeof show !== 'undefined' ? (
                         <NotificationButton
                             onClick={this.switch}
                             active={show}

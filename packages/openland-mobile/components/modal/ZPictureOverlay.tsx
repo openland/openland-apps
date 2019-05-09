@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, Animated, Dimensions, Platform, CameraRoll, BackHandler } from 'react-native';
+import { View, Animated, Dimensions, Platform, CameraRoll, BackHandler, Text } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { SDevice } from 'react-native-s/SDevice';
-import { SCloseButton } from 'react-native-s/SCloseButton';
+import { SCloseButton, SCloseIconButton } from 'react-native-s/SCloseButton';
 import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
@@ -13,6 +13,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
 
@@ -254,11 +255,29 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 }}
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <SCloseButton tintColor="#fff" onPress={handleCloseClick} />
+                    <SCloseIconButton tintColor="#fff" onPress={handleCloseClick} />
                     <SShareButton tintColor="#fff" onPress={handleShareClick} />
                 </View>
             </Animated.View>
 
+            {(!!props.config.title || !!props.config.subtitle) && (
+                <Animated.View
+                    style={{
+                        paddingBottom: SDevice.safeArea.bottom,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        opacity: Animated.multiply(progressLinear, barOpacity),
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0
+                    }}
+                >
+                    <View flexDirection="column" height={50} justifyContent="center">
+                        {!!props.config.title && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium }}>{props.config.title}</Text>}
+                        {!!props.config.subtitle && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 13, opacity: 0.8, marginTop: 2 }}>{props.config.subtitle}</Text>}
+                    </View>
+                </Animated.View>
+            )}
         </View>
     );
 

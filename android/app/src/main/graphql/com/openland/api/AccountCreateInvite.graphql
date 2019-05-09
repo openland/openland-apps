@@ -1,7 +1,0 @@
-mutation AccountCreateInvite {
-  alphaCreateInvite {
-    __typename
-    id
-    key
-  }
-}

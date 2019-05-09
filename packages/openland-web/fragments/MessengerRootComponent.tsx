@@ -11,8 +11,8 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import {
     MessageComposeComponentDraft,
     MessageComposeComponentProps,
-} from './MessageComposeComponent/MessageComposeComponentDesktop';
-import { MobileMessageCompose } from './MessageComposeComponent/MessageComposeComponentMobile';
+} from './MessageComposeComponent/components/MessageComposeComponentDesktop';
+import { MobileMessageCompose } from './MessageComposeComponent/components/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UploadCareUploading } from '../utils/UploadCareUploading';
 import {
@@ -312,6 +312,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
                     inputShower={this.handleShowIput}
+                    room={this.props.room}
                 />
 
                 {!this.state.hideInput && this.conversation.canSendMessage && (

@@ -3,27 +3,28 @@ import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
-import { useMentionSuggestions } from './useMentionSuggestions';
-import { useEmojiSuggestions, EmojiDataT } from './useEmojiSuggestions';
-import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
-import { useHandleEditorChange } from './useHandleEditorChange';
-import { useDraftKeyHandling } from './useDraftKeyHandling';
-import { usePasteFiles } from './usePasteFiles';
-import { useHandlePastedText } from './useHandlePastedText';
+import { useMentionSuggestions } from './modules/mentions/MentionSuggestions/useMentionSuggestions';
+import { UserForMention } from 'openland-api/Types';
+import { useEmojiSuggestions } from './modules/emoji/EmojiSuggestions/useEmojiSuggestions';
+import { useInputMethods, XRichTextInput2RefMethods } from './hooks/useInputMethods';
+import { useHandleEditorChange } from './hooks/useHandleEditorChange/useHandleEditorChange';
+import { useDraftKeyHandling } from './hooks/useDraftKeyHandling';
+import { usePasteFiles } from './hooks/usePasteFiles';
+import { useHandlePastedText } from './hooks/useHandlePastedText';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { UserShort } from 'openland-api/Types';
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions?: UserWithOffset[] }) => void;
     value: string;
-    onSubmit?: () => void;
+    onSubmit?: () => Promise<void>;
     placeholder?: string;
     autofocus?: boolean;
-    mentionsData?: UserWithOffset[];
+    initialMentions?: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;
     round?: boolean;
-    hideAttach?: boolean;
+    hideAttachments?: boolean;
 }
 
 export const XRichTextInput2 = React.memo(
@@ -33,16 +34,23 @@ export const XRichTextInput2 = React.memo(
                 return null;
             }
 
-            const { onSubmit, onChange, value, mentionsData, placeholder } = props;
+            const {
+                onSubmit,
+                onChange,
+                value,
+                getMentionsSuggestions,
+                initialMentions,
+                placeholder,
+            } = props;
 
             const editorRef = React.useRef<Editor>(null);
 
             const {
+                plainText,
                 editorState,
                 setEditorState,
                 updateEditorStateFromTextAndMentions,
                 activeWord,
-                setActiveWord,
                 handleEditorChange,
                 addMention,
                 addEmoji,
@@ -52,7 +60,7 @@ export const XRichTextInput2 = React.memo(
             } = useHandleEditorChange({
                 onChange,
                 value,
-                mentionsData,
+                initialMentions,
             });
 
             const { handlePastedText } = useHandlePastedText({ editorState, updateEditorState });
@@ -76,55 +84,31 @@ export const XRichTextInput2 = React.memo(
             });
 
             const mentionState = useMentionSuggestions({
-                mentionsData,
+                getMentionsSuggestions,
                 activeWord,
             });
-
-            const applyCurrentSuggestedMention = () => {
-                const mentionEntry = mentionState.suggestions[mentionState.selectedEntryIndex];
-                if (mentionEntry) {
-                    addMention(mentionEntry);
-                    setActiveWord('');
-                }
-            };
-
-            const applyEmoji = (emojiData: EmojiDataT) => {
-                addEmoji(emojiData);
-                setActiveWord('');
-            };
-
-            const applyCurrentSuggestedEmoji = () => {
-                const emojiData = emojiState.suggestions[emojiState.selectedEntryIndex];
-                if (emojiData) {
-                    applyEmoji(emojiData);
-                }
-            };
 
             const { keyBinding, onHandleKey } = useDraftKeyHandling({
                 updateEditorStateFromTextAndMentions,
                 onSubmit,
                 mentionState,
                 emojiState,
-                applyCurrentSuggestedMention: applyCurrentSuggestedMention,
-                applyCurrentSuggestedEmoji,
+                addMention,
+                addEmoji,
             });
 
             return (
                 <EditorContainer
                     {...props}
+                    plainText={plainText}
                     onSubmit={onSubmit}
                     editorState={editorState}
                     setEditorState={setEditorState}
                     emojiState={emojiState}
-                    onEmojiPicked={onEmojiPicked}
-                    finalAddEmoji={applyEmoji}
                     mentionState={mentionState}
-                    onMentionPicked={(mentionEntry: UserShort) => {
-                        if (mentionEntry) {
-                            addMention(mentionEntry);
-                            setActiveWord('');
-                        }
-                    }}
+                    finalAddEmoji={addEmoji}
+                    onMentionPicked={addMention}
+                    onEmojiPicked={onEmojiPicked}
                 >
                     <Editor
                         ref={editorRef}

@@ -6,7 +6,7 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 export const XMoreCardsWrapper = Glamorous.div<{ isShown: boolean }>(props => ({
     marginBottom: 4,
 
-    '& *:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3))': {
+    '& *:not(:nth-child(-n+10))': {
         display: !props.isShown ? 'none !important' : undefined,
     },
 }));
@@ -67,7 +67,7 @@ export class XMoreCards extends React.Component<XMoreCardsProps, XMoreCardsState
     };
 
     render() {
-        if (React.Children.count(this.props.children) > 4) {
+        if (React.Children.count(this.props.children) > 11) {
             return (
                 <>
                     <XMoreCardsWrapper isShown={this.state.isShown}>

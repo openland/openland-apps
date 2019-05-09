@@ -1,6 +1,0 @@
-mutation ConferenceLeave($id: ID!, $peerId: ID!) {
-  conferenceLeave(id: $id, peerId: $peerId) {
-    __typename
-    ...ConferenceFull
-  }
-}

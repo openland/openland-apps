@@ -1,3 +1,0 @@
-mutation ReplyMessage($mentions: [ID!], $message: String, $replyMessages: [ID!], $roomId: ID!) {
-  replyMessage: betaMessageSend(mentions: $mentions, message: $message, replyMessages: $replyMessages, room: $roomId)
-}

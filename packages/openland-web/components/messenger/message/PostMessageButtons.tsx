@@ -60,7 +60,15 @@ const DiscussButton = React.memo(
     },
 );
 
+export type CommentPropsT = {
+    messageId: string;
+    onCommentReplyClick: (event: React.MouseEvent<any>) => void;
+    onCommentEditClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+    onCommentDeleteClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+};
+
 type PostMessageButtonsT = {
+    deleted?: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
@@ -69,28 +77,25 @@ type PostMessageButtonsT = {
     message: DataSourceWebMessageItem;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
-    conversationId?: string;
+    conversationId: string | null;
     me?: UserShort | null;
-    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-    onCommentEditClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
-    onCommentDeleteClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
+    commentProps?: CommentPropsT;
 };
 
 export const PostMessageButtons = React.memo(
     ({
+        deleted,
         isComment,
         isChannel,
         isModal,
         onlyLikes,
         message,
-        onCommentReplyClick,
+        commentProps,
         onCommentBackToUserMessageClick,
         usernameOfRepliedUser,
         conversationId,
         me,
         showNumberOfComments,
-        onCommentEditClick,
-        onCommentDeleteClick,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -126,41 +131,46 @@ export const PostMessageButtons = React.memo(
                             >
                                 <XDate value={message.date.toString()} format="time" />
                             </XView>
-                            {onCommentReplyClick && (
-                                <XView
-                                    color="#1790ff"
-                                    fontWeight="600"
-                                    fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentReplyClick}
-                                >
-                                    Reply
-                                </XView>
+                            {commentProps && (
+                                <>
+                                    <XView
+                                        color="#1790ff"
+                                        fontWeight="600"
+                                        fontSize={12}
+                                        cursor="pointer"
+                                        onClick={commentProps.onCommentReplyClick}
+                                    >
+                                        Reply
+                                    </XView>
+
+                                    {!deleted && (
+                                        <XView
+                                            marginLeft={12}
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            fontWeight="600"
+                                            fontSize={12}
+                                            cursor="pointer"
+                                            onClick={commentProps.onCommentEditClick}
+                                        >
+                                            Edit
+                                        </XView>
+                                    )}
+
+                                    {!deleted && (
+                                        <XView
+                                            marginLeft={12}
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            fontWeight="600"
+                                            fontSize={12}
+                                            cursor="pointer"
+                                            onClick={commentProps.onCommentDeleteClick}
+                                        >
+                                            Delete
+                                        </XView>
+                                    )}
+                                </>
                             )}
-                            {onCommentEditClick && (
-                                <XView
-                                    marginLeft={12}
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    fontWeight="600"
-                                    fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentEditClick}
-                                >
-                                    Edit
-                                </XView>
-                            )}
-                            {onCommentDeleteClick && (
-                                <XView
-                                    marginLeft={12}
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    fontWeight="600"
-                                    fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentDeleteClick}
-                                >
-                                    Delete
-                                </XView>
-                            )}
+
                             {usernameOfRepliedUser && (
                                 <XView
                                     alignItems="center"

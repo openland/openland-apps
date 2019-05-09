@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { MessageSelector } from './MessageSelector';
-import { UserShort } from 'openland-api/Types';
+import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
@@ -18,7 +18,6 @@ export interface DesktopMessageContainerProps {
     compact: boolean;
     isModal?: boolean;
     isPinned?: boolean;
-    isChannel?: boolean;
     commentDepth?: number;
     isComment?: boolean;
     noSelector?: boolean;
@@ -33,6 +32,10 @@ export interface DesktopMessageContainerProps {
     haveReactions: boolean;
 
     children?: any;
+    selectMessage: () => void;
+    room?: RoomChat_room;
+    isEdited: boolean;
+    isEditView: boolean;
 }
 
 interface PreambulaContainerProps {
@@ -104,7 +107,7 @@ interface MessageContainerWrapperProps {
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
     cursorPointer: boolean;
-    selected: boolean;
+    isEditView: boolean;
 }
 
 const CompactMessageContainerWrapper = ({
@@ -113,7 +116,6 @@ const CompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
-    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -130,7 +132,6 @@ const CompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -143,7 +144,6 @@ const NotCompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
-    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -160,7 +160,6 @@ const NotCompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -171,11 +170,7 @@ const NotCompactModalMessageContainerWrapper = ({
     children,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -191,13 +186,10 @@ const NotCompactModalMessageContainerWrapper = ({
 
 const NotCompactShortMessageContainerWrapper = ({
     children,
+    isEditView,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -205,7 +197,7 @@ const NotCompactShortMessageContainerWrapper = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             marginTop={20}
-            paddingRight={20}
+            paddingRight={isEditView ? 0 : 20}
         >
             {children}
         </XView>
@@ -247,8 +239,8 @@ const DeletedCommentAvatar = () => {
     return (
         <XView width={44} minHeight={23}>
             <XView
-                width={28}
-                height={28}
+                width={26}
+                height={26}
                 backgroundColor={'rgba(0, 0, 0, 0.05)'}
                 borderRadius={18}
                 alignItems="center"
@@ -333,7 +325,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 id={sender.id}
                                 title={sender.name}
                                 src={sender.photo}
-                                size={props.commentDepth && props.commentDepth > 0 ? 28 : 36}
+                                size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
                             />
                         </UserPopper>
                     )
@@ -386,6 +378,31 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 {props.sender.primaryOrganization.name}
                             </XView>
                         )}
+                        {(props.isEditView || props.isEdited) && (
+                            <>
+                                <XView
+                                    marginLeft={8}
+                                    alignSelf="center"
+                                    width={3}
+                                    height={3}
+                                    borderRadius={'50%'}
+                                    marginBottom={-1}
+                                    backgroundColor="rgba(0, 0, 0, 0.3)"
+                                />
+                                <XView
+                                    marginLeft={7}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontSize={12}
+                                    alignSelf="flex-end"
+                                    fontWeight={'600'}
+                                    marginBottom={-1}
+                                >
+                                    {props.isEditView
+                                        ? 'Editing message'
+                                        : props.isEdited && 'Edited'}
+                                </XView>
+                            </>
+                        )}
                     </XView>
                     {!props.isComment && !props.isModal && (
                         <XView
@@ -401,7 +418,13 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                     )}
                 </XView>
             ),
-            [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
+            [
+                props.date,
+                props.sender,
+                props.sender.primaryOrganization,
+                props.selecting,
+                props.isEditView,
+            ],
         );
     // Content
     const content = (
@@ -455,14 +478,21 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
 
     // Actions
     let actions = (
-        <XView width={120} marginLeft={12} alignSelf="flex-start">
+        <XView
+            width={85}
+            marginLeft={12}
+            marginTop={!compact ? (isComment ? undefined : 24) : undefined}
+            alignSelf="flex-start"
+        >
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
+                deleted={deleted}
                 message={props.message}
-                isChannel={!!props.isChannel}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}
+                selectMessage={props.selectMessage}
+                room={props.room}
             />
         </XView>
     );
@@ -483,8 +513,8 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         <MessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            isEditView={props.isEditView}
             cursorPointer={props.selecting}
-            selected={props.selected}
             onClick={(e: any) => {
                 if (props.selecting) {
                     e.preventDefault();
@@ -496,10 +526,10 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             {!props.noSelector && selector}
             {preambula}
             {content}
-            {actions}
+            {props.isEditView && !!isComment ? null : actions}
         </MessageContainerWrapper>
     );
-}
+};
 
 const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
     return (

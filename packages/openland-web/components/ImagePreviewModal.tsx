@@ -34,12 +34,27 @@ interface ImagePreviewModal extends XModalProps {
 }
 
 export const ImagePreviewModal = (props: ImagePreviewModal) => {
+    const [showModal, setShowModal] = React.useState<boolean>(true);
+
     const messagesContextProps = React.useContext(MessagesStateContext);
     const isActive = React.useContext(IsActiveContext);
     const doRerender = messagesContextProps.useForwardHeader && isActive;
-    if (!isActive) {
-        return null;
+
+    React.useEffect(
+        () => {
+            if (!doRerender) {
+                return;
+            } else {
+                setShowModal(doRerender);
+            }
+        },
+        [doRerender],
+    );
+
+    if (!showModal) {
+        return props.target as React.ReactElement;
     }
+
     const modalBody = (width: number, height: number) => (
         <div className={ModalBody}>
             <XLink2
@@ -87,10 +102,6 @@ export const ImagePreviewModal = (props: ImagePreviewModal) => {
         </div>
     );
     let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
-
-    if (doRerender) {
-        return props.target as React.ReactElement;
-    }
 
     return (
         <XModal

@@ -1,6 +1,0 @@
-query Permissions {
-  myPermissions {
-    __typename
-    roles
-  }
-}

@@ -8,10 +8,14 @@ class AppPeerConnectionNative implements AppPeerConnection {
     private started = true;
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
+    onnegotiationneeded: (() => void) | undefined = undefined;
+    oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev: any) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
+        this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
+        this.connection.oniceconnectionstatechange = (ev: any) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev);
     }
 
     addIceCandidate = async (candidate: string) => {

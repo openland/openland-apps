@@ -10,6 +10,7 @@ import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -19,6 +20,7 @@ interface AsyncReplyMessageDocumentViewProps {
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     parent: DataSourceMessageItem;
     onPress: (document: DataSourceMessageItem) => void;
+    theme: AppTheme;
 
 }
 
@@ -99,7 +101,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncRepl
                     marginRight={14}
                 >
                     <ASText
-                        color={this.props.parent.isOut ? '#ffffff' : '#000000'}
+                        color={this.props.parent.isOut ? this.props.theme.textColorOut : this.props.theme.textColor}
                         height={18}
                         fontSize={15}
                         lineHeight={18}

@@ -1,3 +1,0 @@
-mutation RoomEditIntro($about: String, $file: String, $messageId: ID!, $uid: ID!) {
-  intro: betaIntroEdit(about: $about, file: $file, message: $about, mid: $messageId, uid: $uid)
-}

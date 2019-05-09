@@ -14,6 +14,7 @@ interface ExtractContentProps {
     theme: AppTheme;
 
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
@@ -31,10 +32,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
+        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
     }
     if (hasText) {
-        content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={props.onUserPress} isSmall={isSmall} theme={theme} />);
+        content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} isSmall={isSmall} theme={theme} />);
     }
 
     fileAttaches.map((file, index) => {

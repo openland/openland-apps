@@ -31,6 +31,7 @@ export const SearchCardsOrShowProfile = XMemo(
         CardsComponent,
         ProfileComponent,
         sortOptions,
+        defaultSortOption,
         withoutFeatured,
         page,
     }: {
@@ -44,13 +45,14 @@ export const SearchCardsOrShowProfile = XMemo(
             label: string;
             values: { label: string; value: string }[];
         };
+        defaultSortOption?: string;
         withoutFeatured?: boolean;
         page?: number;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
         const [sort, setSort] = React.useState({
-            orderBy: 'createdAt',
+            orderBy: defaultSortOption || 'createdAt',
             featured: true,
         });
 
@@ -99,6 +101,7 @@ export const SearchCardsOrShowProfile = XMemo(
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
                             tagsCount={tagsCount}
+                            notFoundText={query}
                             variables={{
                                 query,
                                 page,
@@ -168,16 +171,16 @@ export const DirectoryNavigation = XMemo(
                 menuChildrenContent={
                     <>
                         <MenuItem path="/directory" title="Groups" icon={<RoomIcon />} />
+                        <MenuItem
+                            path="/directory/communities"
+                            title="Communities"
+                            icon={<CommunityIcon />}
+                        />
                         <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
                         <MenuItem
                             path="/directory/organizations"
                             title="Organizations"
                             icon={<OrganizationsIcon />}
-                        />
-                        <MenuItem
-                            path="/directory/communities"
-                            title="Communities"
-                            icon={<CommunityIcon />}
                         />
                         <XWithRole role="feature-non-production">
                             <MenuItem
@@ -231,15 +234,18 @@ export const DirectoryNavigation = XMemo(
 export const ComponentWithSort = ({
     Component,
     queryToPrefix,
+    noSort,
 }: {
     Component: any;
     queryToPrefix?: boolean;
+    noSort?: boolean;
 }) => ({
     featuredFirst,
     orderBy,
     variables,
     tagsCount,
     customMenu,
+    notFoundText,
     CustomButtonComponent,
 }: {
     featuredFirst: boolean;
@@ -250,6 +256,7 @@ export const ComponentWithSort = ({
     };
     tagsCount: Function;
     customMenu: any;
+    notFoundText: string;
     CustomButtonComponent: any;
 }) => {
     return (
@@ -264,14 +271,19 @@ export const ComponentWithSort = ({
                 tagsCount={tagsCount}
                 variables={{
                     ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                    sort: JSON.stringify([
-                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                        { [orderBy]: { order: 'desc' } },
-                    ]),
+                    sort: noSort
+                        ? ''
+                        : JSON.stringify([
+                              ...(featuredFirst
+                                  ? [{ ['featured']: { order: 'desc' } } as any]
+                                  : []),
+                              { [orderBy]: { order: 'desc' } },
+                          ]),
                     ...(variables.page ? { page: variables.page } : {}),
                 }}
                 customMenu={customMenu}
                 CustomButtonComponent={CustomButtonComponent}
+                notFoundText={notFoundText}
             />
         </React.Suspense>
     );

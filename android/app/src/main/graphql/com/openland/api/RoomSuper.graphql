@@ -1,8 +1,0 @@
-query RoomSuper($id: ID!) {
-  roomSuper(id: $id) {
-    __typename
-    featured
-    id
-    listed
-  }
-}

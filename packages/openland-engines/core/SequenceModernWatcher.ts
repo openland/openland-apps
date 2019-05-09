@@ -38,12 +38,12 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
         (async () => {
             while (true) {
                 let update = await this.subscription.get();
-                this.handleUpdate(update);
+                await this.handleUpdate(update);
             }
         })();
     }
 
-    private handleUpdate = (update: TSubscription) => {
+    private handleUpdate = async (update: TSubscription) => {
         // if (update.errors && update.errors.length > 0) {
         //     throw update.errors;
         // }
@@ -57,10 +57,10 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
                 this.sequenceHandler.push(u);
             }
             if (this.seqHandler) {
-                this.seqHandler(event.seq);
+                await this.seqHandler(event.seq);
             }
             if (this.stateHandler) {
-                this.stateHandler(event.state);
+                await this.stateHandler(event.state);
             }
         } else {
             // Do single update
@@ -68,10 +68,10 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
             this.subscription.updateVariables({ ...this.variables, state: this.currentState });
             this.sequenceHandler.push(event.update);
             if (this.seqHandler) {
-                this.seqHandler(event.seq);
+                await this.seqHandler(event.seq);
             }
             if (this.stateHandler) {
-                this.stateHandler(event.state);
+                await this.stateHandler(event.state);
             }
         }
     }

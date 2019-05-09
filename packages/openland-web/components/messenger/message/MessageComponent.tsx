@@ -29,9 +29,7 @@ const MessageComponentInner = React.memo(
                     isPinned={props.isPinned}
                     commentDepth={props.commentDepth}
                     isComment={props.isComment}
-                    onCommentReplyClick={props.onCommentReplyClick}
-                    onCommentEditClick={props.onCommentEditClick}
-                    onCommentDeleteClick={props.onCommentDeleteClick}
+                    commentProps={props.commentProps}
                     noSelector={props.noSelector}
                     message={props.message}
                     conversationId={props.conversationId}
@@ -41,6 +39,7 @@ const MessageComponentInner = React.memo(
                     conversationType={props.conversationType}
                     messagesContext={props.messagesContextProps}
                     isActive={props.isActive}
+                    room={props.room}
                 />
             </>
         );
@@ -52,6 +51,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const isActive = React.useContext(IsActiveContext);
     const isMobile = React.useContext(IsMobileContext);
 
+    React.useEffect(() => undefined, [messagesContextProps]);
+
     return (
         <MessageComponentInner
             onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
@@ -62,9 +63,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
             isModal={props.isModal}
             isPinned={props.isPinned}
             isComment={props.isComment}
-            onCommentReplyClick={props.onCommentReplyClick}
-            onCommentEditClick={props.onCommentEditClick}
-            onCommentDeleteClick={props.onCommentDeleteClick}
+            commentProps={props.commentProps}
             noSelector={props.noSelector}
             onlyLikes={props.onlyLikes}
             isChannel={props.isChannel}
@@ -75,6 +74,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
             messagesContextProps={messagesContextProps}
             isMobile={isMobile}
             isActive={isActive}
+            room={props.room}
         />
     );
 };

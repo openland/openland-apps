@@ -1,3 +1,0 @@
-mutation RoomDeleteMessages($mids: [ID!]!) {
-  betaMessageDelete(mids: $mids)
-}

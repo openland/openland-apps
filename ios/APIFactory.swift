@@ -392,6 +392,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomMembersForMentionsPaginated") {
+      let roomId = notNull(readString(src, "roomId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = RoomMembersForMentionsPaginatedQuery(roomId: roomId, first: first, after: after)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomMembersPaginated") {
       let roomId = notNull(readString(src, "roomId"))
       let first = readInt(src, "first")
@@ -1245,6 +1261,22 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "RoomMembersForMentionsPaginated") {
+      let roomId = notNull(readString(src, "roomId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = RoomMembersForMentionsPaginatedQuery(roomId: roomId, first: first, after: after)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -2825,6 +2857,40 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MediaNegotiationNeeded") {
+      let id = notNull(readString(src, "id"))
+      let peerId = notNull(readString(src, "peerId"))
+      let requestBody = MediaNegotiationNeededMutation(id: id, peerId: peerId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "MediaFailed") {
+      let id = notNull(readString(src, "id"))
+      let peerId = notNull(readString(src, "peerId"))
+      let requestBody = MediaFailedMutation(id: id, peerId: peerId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "MediaAnswer") {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
@@ -3753,6 +3819,16 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomMembersForMentionsPaginated") {
+      let roomId = notNull(readString(src, "roomId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = RoomMembersForMentionsPaginatedQuery(roomId: roomId, first: first, after: after)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "RoomMembersPaginated") {
       let roomId = notNull(readString(src, "roomId"))
       let first = readInt(src, "first")
@@ -4307,6 +4383,18 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomMembersForMentionsPaginated") {
+      let roomId = notNull(readString(src, "roomId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = RoomMembersForMentionsPaginatedQuery(roomId: roomId, first: first, after: after)
+      let data = RoomMembersForMentionsPaginatedQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
     if (name == "RoomMembersPaginated") {
       let roomId = notNull(readString(src, "roomId"))
       let first = readInt(src, "first")
@@ -4684,6 +4772,24 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if name == "ConferenceShort" {
+      let data = ConferenceShort(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "DaialogListMessage" {
+      let data = DaialogListMessage(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
     if name == "TinyMessage" {
       let data = TinyMessage(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
@@ -4758,6 +4864,15 @@ class ApiFactory: ApiFactoryBase {
     }
     if name == "SettingsFull" {
       let data = SettingsFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "UserForMention" {
+      let data = UserForMention(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
       store.withinReadWriteTransaction { (tx) in
         try tx.write(object: data, withKey: key)

@@ -1,3 +1,0 @@
-mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {
-  betaReactionRemove(mid: $messageId, reaction: $reaction)
-}

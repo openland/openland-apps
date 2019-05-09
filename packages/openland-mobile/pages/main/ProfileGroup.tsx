@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, Room_room_SharedRoom_members } from 'openland-api/Types';
+import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -19,17 +19,22 @@ import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
+import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
     const roomId = props.router.params.id;
 
-    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as Room_room_SharedRoom;
+    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomWithoutMembers_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated({ roomId: roomId, first: 10 }, { fetchPolicy: 'cache-and-network' }).members;
 
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
+
+    const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
+
+    getChatOnlinesCount(roomId, client, (count) => setOnlineCount(count));
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
@@ -104,10 +109,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     }
                 },
                 'Add members',
-                room.members.map(m => m.user.id),
+                members.map(m => m.user.id),
                 { path: 'ProfileGroupLink', pathParams: { id: room.id } }
             );
-        }, [ room.members ]);
+        }, [ members ]);
 
         const handleManageClick = React.useCallback(() => {
             let builder = new ActionSheetBuilder();
@@ -140,7 +145,12 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             }
         }, [ room, roomId, members, loading ]);
 
-    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
+    let subtitle = (
+        <>
+            <Text>{(room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member'}</Text>
+            {onlineCount > 0 && (<Text style={{ color: theme.accentColor }}>{'   '}{onlineCount} online</Text>)}
+        </>
+    );
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 

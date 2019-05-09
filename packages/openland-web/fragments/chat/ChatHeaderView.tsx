@@ -30,8 +30,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
-import { TypingsViewProps } from '../../components/messenger/typings/TypingsView';
-import { forever } from '../../../openland-engines/utils/forever';
+import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -148,24 +147,11 @@ export const RowWithSeparators = ({
 
 export const ChatOnlinesTitle = (props: { chatId: string }) => {
     let client = useClient();
-    let [onlineCount, setOnlineCount] = React.useState<number | null>(null);
+    let [onlineCount, setOnlineCount] = React.useState<number>(0);
 
-    React.useEffect(
-        () => {
-            let sub = client.subscribeChatOnlinesCountWatch({ chatId: props.chatId });
+    getChatOnlinesCount(props.chatId, client, count => setOnlineCount(count));
 
-            forever(async () => {
-                setOnlineCount((await sub.get()).chatOnlinesCount.onlineMembers);
-            });
-
-            return () => {
-                sub.destroy();
-            };
-        },
-        [props.chatId],
-    );
-
-    if (!onlineCount) {
+    if (onlineCount <= 0) {
         return null;
     }
 
@@ -186,11 +172,11 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
 export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const isMobile = React.useContext(IsMobileContext);
     const state = React.useContext(MessagesStateContext);
-    const userContext = React.useContext(UserInfoContext);
-    const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
-    let privateRoom =
+    const sharedRoom =
+        room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+    const privateRoom =
         room.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
@@ -199,9 +185,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 roomId={room.id}
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
-                isChannel={!!(sharedRoom && sharedRoom.isChannel)}
-                canMePinMessage={!!(sharedRoom && sharedRoom.canEdit)}
-                myId={myId}
+                isChannel={isChannel}
             />
         );
     }
@@ -269,6 +253,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     photo={sharedRoom.photo}
                     socialImage={sharedRoom.socialImage}
                     roomId={sharedRoom.id}
+                    isChannel={isChannel}
                 />
             </>
         );

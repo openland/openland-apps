@@ -2,6 +2,38 @@ import gql from 'graphql-tag';
 import { UserTiny } from './UserTiny';
 import { UserShort } from './UserShort';
 
+export const DaialogListMessage = gql`
+    fragment DaialogListMessage on ModernMessage {
+        id
+        date
+        sender {
+            id
+            name
+            firstName
+        }
+        message
+        fallback
+        ... on GeneralMessage {
+            id
+            attachments {
+                id
+                fallback
+                ... on MessageAttachmentFile {
+                    id
+                    fileId
+                    fileMetadata {
+                        isImage
+                        imageFormat
+                    }
+                }
+            }
+            quotedMessages {
+                id
+            }
+        }
+    }
+`;
+
 export const TinyMessage = gql`
     fragment TinyMessage on ModernMessage {
         id
@@ -12,11 +44,13 @@ export const TinyMessage = gql`
         message
         fallback
         ... on GeneralMessage {
+            id
             commentsCount
             attachments {
                 id
                 fallback
                 ... on MessageAttachmentFile {
+                    id
                     fileId
                     fileMetadata {
                         isImage
@@ -44,6 +78,7 @@ export const FullMessage = gql`
         fallback
 
         ... on GeneralMessage {
+            id
             edited
             commentsCount
             attachments {
@@ -64,6 +99,7 @@ export const FullMessage = gql`
                 }
 
                 ... on MessageRichAttachment {
+                    id
                     title
                     subTitle
                     titleLink
@@ -95,6 +131,7 @@ export const FullMessage = gql`
                     }
                     keyboard {
                         buttons {
+                            id
                             title
                             style
                             url
@@ -115,6 +152,7 @@ export const FullMessage = gql`
                 spans {
                     offset
                     length
+
                     ... on MessageSpanUserMention {
                         user {
                             ...UserShort
@@ -143,14 +181,19 @@ export const FullMessage = gql`
                     ... on MessageSpanLink {
                         url
                     }
+                    ... on MessageSpanDate {
+                        date
+                    }
                 }
 
                 ... on GeneralMessage {
+                    id
                     commentsCount
                     edited
                     attachments {
                         fallback
                         ... on MessageAttachmentFile {
+                            id
                             fileId
                             fileMetadata {
                                 name
@@ -165,6 +208,7 @@ export const FullMessage = gql`
                         }
 
                         ... on MessageRichAttachment {
+                            id
                             title
                             subTitle
                             titleLink
@@ -211,14 +255,15 @@ export const FullMessage = gql`
         spans {
             offset
             length
+
             ... on MessageSpanUserMention {
                 user {
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ... on MessageSpanMultiUserMention {
                 users {
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ... on MessageSpanRoomMention {
@@ -239,13 +284,13 @@ export const FullMessage = gql`
             ... on MessageSpanLink {
                 url
             }
-            ... on MessageSpanBold {
-                offset
-                length
+            ... on MessageSpanDate {
+                date
             }
         }
 
         ... on ServiceMessage {
+            id
             serviceMetadata {
                 ... on InviteServiceMetadata {
                     users {

@@ -1,0 +1,34 @@
+fragment DaialogListMessage on ModernMessage {
+  __typename
+  date
+  fallback
+  id
+  message
+  sender {
+    __typename
+    firstName
+    id
+    name
+  }
+  ... on GeneralMessage {
+    attachments {
+      __typename
+      fallback
+      id
+      ... on MessageAttachmentFile {
+        fileId
+        fileMetadata {
+          __typename
+          imageFormat
+          isImage
+        }
+        id
+      }
+    }
+    id
+    quotedMessages {
+      __typename
+      id
+    }
+  }
+}

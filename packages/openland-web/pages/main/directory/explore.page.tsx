@@ -6,10 +6,12 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { useClient } from 'openland-web/utils/useClient';
+
 interface RoomsCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
     tagsCount: (n: number) => void;
+    notFoundText: string;
 }
 
 export const RoomsCards = (props: RoomsCardsProps) => {
@@ -40,7 +42,9 @@ export const RoomsCards = (props: RoomsCardsProps) => {
                         /> */}
                 </XContentWrapper>
             )}
-            {noData && <EmptySearchBlock text="No groups matches your search" />}
+            {noData && (
+                <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />
+            )}
         </>
     );
 };

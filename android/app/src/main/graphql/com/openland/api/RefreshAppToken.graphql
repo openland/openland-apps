@@ -1,6 +1,0 @@
-mutation RefreshAppToken($appId: ID!) {
-  refreshAppToken(appId: $appId) {
-    __typename
-    ...AppFull
-  }
-}

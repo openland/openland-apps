@@ -3,6 +3,7 @@ query RoomSearchText($query: String!) {
     __typename
     id: cid
     flexibleId: fid
+    id2: id
     kind
     photo
     title

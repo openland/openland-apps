@@ -1,8 +1,0 @@
-mutation UserStorageSet($data: [AppStorageValueInput!]!, $namespace: String!) {
-  userStorageSet(data: $data, namespace: $namespace) {
-    __typename
-    id
-    key
-    value
-  }
-}

@@ -1,17 +1,19 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
+import { UserForMention } from '../fragments/UserForMention';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull, RoomFullWithoutMembers } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
+import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
         dialogs(first: 20, after: $after) {
             items {
+                id
                 cid
                 fid
                 kind
@@ -22,7 +24,7 @@ export const DialogsQuery = gql`
                 isMuted
                 haveMention
                 topMessage: alphaTopMessage {
-                    ...TinyMessage
+                    ...DaialogListMessage
                 }
             }
             cursor
@@ -35,8 +37,7 @@ export const DialogsQuery = gql`
             unreadCount
         }
     }
-    ${UserTiny}
-    ${TinyMessage}
+    ${DaialogListMessage}
 `;
 
 export const CommentUpdateFragment = gql`
@@ -661,6 +662,7 @@ export const RoomLeaveMutation = gql`
 export const RoomSearchTextQuery = gql`
     query RoomSearchText($query: String!) {
         items: betaDialogTextSearch(query: $query) {
+            id2: id
             id: cid
             title
             flexibleId: fid
@@ -684,6 +686,7 @@ export const RoomSearchQuery = gql`
                         membership
                         membersCount
                         organization {
+                            id
                             photo
                             name
                         }
@@ -757,6 +760,17 @@ export const RoomMembersQuery = gql`
         }
     }
     ${UserShort}
+`;
+
+export const RoomMembersForMentionsPaginatedQuery = gql`
+    query RoomMembersForMentionsPaginated($roomId: ID!, $first: Int, $after: ID) {
+        members: roomMembers(roomId: $roomId, first: $first, after: $after) {
+            user {
+                ...UserForMention
+            }
+        }
+    }
+    ${UserForMention}
 `;
 
 export const RoomMembersPaginatedQuery = gql`
@@ -856,6 +870,7 @@ export const ResolvedInviteQuery = gql`
         invite: alphaResolveInvite(key: $key) {
             __typename
             ... on InviteInfo {
+                id
                 orgId
                 title
                 creator {
@@ -868,6 +883,7 @@ export const ResolvedInviteQuery = gql`
                 }
             }
             ... on RoomInvite {
+                id
                 invitedByUser {
                     ...UserShort
                 }

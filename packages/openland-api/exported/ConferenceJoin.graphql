@@ -3,7 +3,7 @@ mutation ConferenceJoin($id: ID!) {
     __typename
     conference {
       __typename
-      ...ConferenceFull
+      ...ConferenceShort
     }
     peerId
   }

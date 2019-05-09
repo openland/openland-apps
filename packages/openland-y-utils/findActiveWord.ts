@@ -1,13 +1,13 @@
 function findActiveWordStart (content: string, selection: { start: number, end: number }): number {
     let startIndex = selection.start - 1;
     while (startIndex >= 0) {
-        let whitelist = [' ', '\n', ',', '.', ')'];
+        let whitelist = [' ', '\n', ',', '.', '(', ')'];
 
         if (!(whitelist.includes(content.charAt(startIndex)))) {
             startIndex--;
         } else {
             break;
-        }
+        } 
     }
     return startIndex + 1;
 }

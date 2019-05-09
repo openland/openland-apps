@@ -19,6 +19,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
+import { formatDateTime } from 'openland-mobile/utils/formatTime';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -60,7 +61,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
+                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
@@ -69,8 +70,10 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => {
+    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         showPictureModal({
+            title: senderName,
+            subtitle: date ? formatDateTime(date) : undefined,
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: fileMeta.imageWidth,
             height: fileMeta.imageHeight,
@@ -106,8 +109,11 @@ export class MobileMessenger {
     handleDialogClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
-    handleAvatarClick = (id: string) => {
+    handleUserClick = (id: string) => {
         this.history.navigationManager.push('ProfileUser', { id });
+    }
+    handleGroupClick = (id: string) => {
+        this.history.navigationManager.push('ProfileGroup', { id });
     }
 
     handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {

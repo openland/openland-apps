@@ -13,6 +13,7 @@ import { useClient } from 'openland-web/utils/useClient';
 interface CommunitiesCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
+    notFoundText: string;
 }
 
 export const CommunitiesCards = (props: CommunitiesCardsProps) => {
@@ -45,7 +46,9 @@ export const CommunitiesCards = (props: CommunitiesCardsProps) => {
                     />
                 </XContentWrapper>
             )}
-            {noData && <EmptySearchBlock text="No community matches your search" />}
+            {noData && (
+                <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />
+            )}
         </>
     );
 };
@@ -63,22 +66,22 @@ const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
+const CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
+
 export default withApp('Communities', 'viewer', () => {
     const { path } = React.useContext(XRouterContext) as XRouter;
     const router = React.useContext(XRouterContext) as XRouter;
     const page = router.routeQuery.page;
 
-    let CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
-
     return (
         <DirectoryNavigation
             id={getCommunityProfile(path)}
-            title={'Communities'}
+            title="Communities"
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
-            searchPlaceholder={'Search communities'}
-            noQueryText={'All communities'}
-            hasQueryText={'Communities'}
+            searchPlaceholder="Search communities"
+            noQueryText="Featured communities"
+            hasQueryText="Communities"
             page={page}
         />
     );

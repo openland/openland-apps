@@ -7,7 +7,7 @@ import { SpannedString } from '../../data/SpannedString';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
-    message: string;
+    isComment?: boolean;
     isEdited: boolean;
     isService?: boolean;
     shouldCrop?: boolean;
@@ -46,33 +46,30 @@ const EditLabelStyle = css`
     letter-spacing: 0;
 `;
 
-export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, message, spans, isEdited, asPinMessage, isService }) => {
+export const MessageTextComponent = React.memo<MessageTextComponentProps & { message: string }>(
+    ({ shouldCrop, message, spans, isEdited, asPinMessage, isService, isComment }) => {
         let spannedString = spansPreprocess(message, spans, { disableBig: asPinMessage });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedStringView spannedString={spannedString} isService={isService} />
-                    {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+                    {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
                 </span>
             </div>
         );
     },
 );
 
-export const MessageTextComponentSpanned = React.memo<{
-    spannedString: SpannedString;
-    isEdited: boolean;
-    isService?: boolean;
-    shouldCrop?: boolean;
-    asPinMessage?: boolean;
-    deleted?: boolean;
-}>(({ shouldCrop, spannedString, isEdited, isService, deleted }) => {
+export const MessageTextComponentSpanned = React.memo<
+    MessageTextComponentProps & {
+        spannedString: SpannedString;
+    }
+>(({ shouldCrop, spannedString, isEdited, isService, isComment }) => {
     return (
         <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
             <span>
                 <SpannedStringView spannedString={spannedString} isService={isService} />
-                {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+                {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
             </span>
         </div>
     );

@@ -15,13 +15,13 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanUserMention {
       user {
         __typename
-        ...UserTiny
+        ...UserShort
       }
     }
     ... on MessageSpanMultiUserMention {
       users {
         __typename
-        ...UserTiny
+        ...UserShort
       }
     }
     ... on MessageSpanRoomMention {
@@ -44,9 +44,8 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanLink {
       url
     }
-    ... on MessageSpanBold {
-      length
-      offset
+    ... on MessageSpanDate {
+      date
     }
   }
   ... on GeneralMessage {
@@ -84,6 +83,7 @@ fragment FullMessage on ModernMessage {
           }
           url
         }
+        id
         image {
           __typename
           metadata {
@@ -102,6 +102,7 @@ fragment FullMessage on ModernMessage {
           __typename
           buttons {
             __typename
+            id
             style
             title
             url
@@ -116,6 +117,7 @@ fragment FullMessage on ModernMessage {
     }
     commentsCount
     edited
+    id
     quotedMessages {
       __typename
       date
@@ -163,6 +165,9 @@ fragment FullMessage on ModernMessage {
         ... on MessageSpanLink {
           url
         }
+        ... on MessageSpanDate {
+          date
+        }
       }
       ... on GeneralMessage {
         attachments {
@@ -181,6 +186,7 @@ fragment FullMessage on ModernMessage {
               size
             }
             filePreview
+            id
           }
           ... on MessageRichAttachment {
             fallback
@@ -198,6 +204,7 @@ fragment FullMessage on ModernMessage {
               }
               url
             }
+            id
             image {
               __typename
               metadata {
@@ -221,6 +228,7 @@ fragment FullMessage on ModernMessage {
         }
         commentsCount
         edited
+        id
       }
     }
     reactions {
@@ -233,6 +241,7 @@ fragment FullMessage on ModernMessage {
     }
   }
   ... on ServiceMessage {
+    id
     serviceMetadata {
       __typename
       ... on InviteServiceMetadata {

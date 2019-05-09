@@ -19,6 +19,10 @@ const GroupListComponent = React.memo<PageProps>((props) => {
         organization: AvailableRooms_rooms_organization | null;
     }[]
 
+    for (let g of groups) {
+        console.log(JSON.stringify(g))
+    }
+
     return (
         <>
             <SHeader title={props.router.params.title} />

@@ -11,6 +11,7 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
@@ -35,7 +36,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         }
         let preprocessed = preprocessText(message.text || '', message.spans);
 
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress));
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
@@ -46,14 +47,14 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 {!!message.text && <ASText
                     key={'text-' + mainTextColor}
                     color={mainTextColor}
-                    lineHeight={big ? undefined : 20}
+                    lineHeight={big ? 28 : 20}
                     letterSpacing={-0.3}
-                    fontSize={big ? 52 : 16}
-                    fontWeight={TextStyles.weight.regular}
+                    fontSize={big ? 26 : 16}
+                    fontWeight={big ? TextStyles.weight.medium : TextStyles.weight.regular}
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
-                    {this.props.padded !== false ? (message.isOut ? paddedTextOut : paddedText) : undefined}
+                    {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                 </ASText>}
             </>
         )

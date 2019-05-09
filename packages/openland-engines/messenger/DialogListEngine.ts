@@ -120,7 +120,7 @@ export class DialogListEngine {
 
         let provider: DataSourceStoredProvider<DialogDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
-                let res = await this.engine.client.queryDialogs({ after: cursor });
+                let res = await this.engine.client.queryDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
                 // for (let c of res.dialogs.items) {
                 //     if (c.kind === 'PRIVATE' && c.fid) {
                 //         this.userConversationMap.set(c.fid, c.cid);
@@ -264,6 +264,7 @@ export class DialogListEngine {
 
         if (existing && existing.messageId === mid) {
             await this._dataSourceStored.updateItem(extractDialog({
+                id: existing.key,
                 cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
             }, uid));
         }

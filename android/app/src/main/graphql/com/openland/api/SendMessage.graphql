@@ -1,3 +1,0 @@
-mutation SendMessage($file: String, $mentions: [ID!], $message: String, $repeatKey: String, $replyMessages: [ID!], $room: ID!) {
-  sentMessage: betaMessageSend(file: $file, mentions: $mentions, message: $message, repeatKey: $repeatKey, replyMessages: $replyMessages, room: $room)
-}

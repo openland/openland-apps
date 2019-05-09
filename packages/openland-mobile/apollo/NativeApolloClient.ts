@@ -56,13 +56,15 @@ export class NativeApolloClient extends BridgedClient {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
                         log.warn('Received failure');
-                        log.warn(src.data);
+                        log.log(JSON.stringify(src.data));
                         if (src.kind === 'graphql') {
                             this.operationFailed(src.id, convertError(src.data));
                         } else {
                             this.operationFailed(src.id, Error('Unknown error'));
                         }
                     } else if (src.type === 'response') {
+                        log.log('Received response');
+                        log.log(JSON.stringify(src.data));
                         this.operationUpdated(src.id, src.data);
                     } else if (src.type === 'status') {
                         this.statusWatcher.setState({ status: src.status });

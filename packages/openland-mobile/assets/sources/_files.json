@@ -83,8 +83,7 @@
             "name": "ic-call",
             "src": "ic-call.svg",
             "sizes": [
-                24,
-                20
+                26
             ]
         },
         {
@@ -468,6 +467,27 @@
             "src": "ic-forward-ios.svg",
             "sizes": [
                 26
+            ]
+        },
+        {
+            "name": "ic-edited",
+            "src": "ic-edited.svg",
+            "sizes": [
+                10
+            ]
+        },
+        {
+            "name": "ic-export",
+            "src": "ic-export.svg",
+            "sizes": [
+                28
+            ]
+        },
+        {
+            "name": "ic-modal-close",
+            "src": "ic-modal-close.svg",
+            "sizes": [
+                20
             ]
         }
     ]

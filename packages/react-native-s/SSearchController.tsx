@@ -101,7 +101,7 @@ class SSearchControlerComponent extends React.PureComponent<SSearchControlerProp
                     {this.state.searchMounted && (
                         <SAnimatedView
                             name={this.searchShadowView.name}
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: !this.state.query ? 'rgba(0,0,0,0.3)' : 'white' }}
+                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: !this.state.query ? this.props.theme.modalOverlay : this.props.theme.backgroundColor }}
                         >
                             <HeaderContextNone>
                                 <ASSafeAreaProvider top={-56}>

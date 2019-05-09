@@ -11,6 +11,9 @@ class AppPeerConnectionWeb implements AppPeerConnection {
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
 
+    onnegotiationneeded: (() => void) | undefined = undefined;
+    oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
+
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
@@ -35,6 +38,9 @@ class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio.load();
             this.audio.play();
         };
+
+        this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
+        this.connection.onconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any)
 
         // let audio = new Audio();
         // audio.autoplay = true;

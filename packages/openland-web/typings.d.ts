@@ -614,6 +614,8 @@ declare module 'react-native-webrtc' {
 
         onicecandidate: (src: any) => void;
 
+        onnegotiationneeded: () => void;
+
         close(): void;
     }
 

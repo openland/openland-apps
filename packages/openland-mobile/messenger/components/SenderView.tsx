@@ -10,12 +10,13 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 export interface SenderViewProps {
     sender: FullMessage_GeneralMessage_sender;
     date: any;
+    edited: boolean;
 }
 
 export const SenderView = React.memo<SenderViewProps>((props) => {
     const router = getMessenger().history.navigationManager;
     const theme = React.useContext(ThemeContext);
-    const { sender, date } = props;
+    const { sender, date, edited } = props;
 
     return (
         <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
@@ -35,7 +36,7 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                                 {' ' + sender.primaryOrganization.name}
                             </Text>}
                     </Text>
-                    <Text style={{ fontSize: 14, marginTop: Platform.OS === 'android' ? 2 : 5, color: '#99a2b0' }} allowFontScaling={false}>{formatDate(parseInt(date, 10))}</Text>
+                    <Text style={{ fontSize: 14, marginTop: Platform.OS === 'android' ? 2 : 5, color: '#99a2b0' }} allowFontScaling={false}>{formatDate(parseInt(date, 10))}{edited ? ' • Edited' : ''}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>

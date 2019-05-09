@@ -1,6 +1,0 @@
-query MyApps {
-  apps: myApps {
-    __typename
-    ...AppFull
-  }
-}

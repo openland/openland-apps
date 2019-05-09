@@ -13,6 +13,7 @@ interface ReplyContentProps {
     theme: AppTheme;
 
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
@@ -62,14 +63,14 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 {generalMesage!.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} isSmall={true} theme={theme} />}
+                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} isSmall={true} theme={theme} />}
                             {contentAttach}
                         </View>
                     );
                 } else {
                     return (
                         <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
-                            <TextContent message={quote} onUserPress={props.onUserPress} theme={theme} />
+                            <TextContent message={quote} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} theme={theme} />
                         </View>
                     )
                 }

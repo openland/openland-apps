@@ -1,4 +1,0 @@
-mutation SwitchReaction($from: String!, $messageId: ID!, $to: String!) {
-  betaReactionRemove(mid: $messageId, reaction: $from)
-  betaReactionSet(mid: $messageId, reaction: $to)
-}

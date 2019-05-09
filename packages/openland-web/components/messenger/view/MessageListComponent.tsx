@@ -4,7 +4,7 @@ import {
     ConversationEngine,
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
-import { UserShort, SharedRoomKind } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
@@ -67,6 +67,7 @@ interface MessageListProps {
     conversationId: string;
     scrollPosition?: (data: number) => void;
     isActive?: boolean;
+    room: RoomChat_room;
 }
 
 const LoadingWrapper = glamorous.div({
@@ -113,6 +114,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     isChannel={this.props.isChannel}
                     conversationId={this.props.conversationId}
                     me={this.props.me}
+                    room={this.props.room}
                 />
             );
         } else if (i.type === 'date') {

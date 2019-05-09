@@ -1,3 +1,0 @@
-query GetDraftMessage($conversationId: ID!) {
-  message: conversationDraft(conversationId: $conversationId)
-}

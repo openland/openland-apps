@@ -182,6 +182,7 @@ export interface AccountInviteInfo_invite_creator {
 
 export interface AccountInviteInfo_invite_organization {
   __typename: "Organization";
+  id: string;
   isCommunity: boolean;
   about: string | null;
 }
@@ -243,6 +244,7 @@ export interface AccountAppInviteInfo_invite_creator {
 
 export interface AccountAppInviteInfo_invite {
   __typename: "InviteInfo";
+  id: string;
   creator: AccountAppInviteInfo_invite_creator | null;
 }
 
@@ -806,24 +808,11 @@ export interface UserStorageSetVariables {
 // GraphQL query operation: Dialogs
 // ====================================================
 
-export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
@@ -841,24 +830,11 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
   fallback: string;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -879,7 +855,6 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_Mes
   fallback: string;
   fileId: string;
   fileMetadata: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
 }
 
 export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -905,7 +880,6 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
-  commentsCount: number;
   attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
   quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
 }
@@ -914,6 +888,7 @@ export type Dialogs_dialogs_items_topMessage = Dialogs_dialogs_items_topMessage_
 
 export interface Dialogs_dialogs_items {
   __typename: "Dialog";
+  id: string;
   cid: string;
   fid: string;
   kind: DialogKind;
@@ -1046,6 +1021,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -1059,6 +1035,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -1096,7 +1073,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1197,7 +1174,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -1240,7 +1224,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1341,7 +1325,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -1362,6 +1353,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -1404,6 +1396,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -1466,8 +1459,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   reaction: MessageReactionType;
 }
 
-export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1483,11 +1476,15 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -1510,11 +1507,15 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -1560,13 +1561,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   url: string;
 }
 
-export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanCodeBlock | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold;
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment {
   __typename: "GeneralMessage";
@@ -1698,6 +1700,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -1711,6 +1714,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -1748,7 +1752,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1849,7 +1853,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -1892,7 +1903,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1993,7 +2004,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -2014,6 +2032,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -2056,6 +2075,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -2118,8 +2138,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   reaction: MessageReactionType;
 }
 
-export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2135,11 +2155,15 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -2162,11 +2186,15 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -2212,13 +2240,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   url: string;
 }
 
-export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold;
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment {
   __typename: "GeneralMessage";
@@ -2359,6 +2388,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -2372,6 +2402,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -2409,7 +2440,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2510,7 +2541,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -2553,7 +2591,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2654,7 +2692,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -2675,6 +2720,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -2717,6 +2763,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -2779,8 +2826,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   reaction: MessageReactionType;
 }
 
-export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2796,11 +2843,15 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -2823,11 +2874,15 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -2873,13 +2928,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   url: string;
 }
 
-export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanCodeBlock | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold;
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment {
   __typename: "GeneralMessage";
@@ -3011,6 +3067,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -3024,6 +3081,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -3061,7 +3119,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3162,7 +3220,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -3205,7 +3270,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3306,7 +3371,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   url: string;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -3327,6 +3399,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -3369,6 +3442,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -3431,8 +3505,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   reaction: MessageReactionType;
 }
 
-export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3448,11 +3522,15 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -3475,11 +3553,15 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -3525,13 +3607,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   url: string;
 }
 
-export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold;
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanDate;
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment {
   __typename: "GeneralMessage";
@@ -3631,8 +3714,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3648,11 +3731,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -3675,11 +3762,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -3725,13 +3816,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -3794,6 +3886,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -3807,6 +3900,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -3844,7 +3938,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3945,7 +4039,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -3988,7 +4089,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4089,7 +4190,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -4110,6 +4218,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -4152,6 +4261,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -4259,8 +4369,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4276,11 +4386,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -4303,11 +4417,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -4353,13 +4471,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -4519,8 +4638,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4536,11 +4655,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -4563,11 +4686,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -4613,13 +4740,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -4682,6 +4810,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -4695,6 +4824,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -4732,7 +4862,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4833,7 +4963,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -4876,7 +5013,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4977,7 +5114,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -4998,6 +5142,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -5040,6 +5185,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -5147,8 +5293,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5164,11 +5310,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -5191,11 +5341,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -5241,13 +5395,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -5456,8 +5611,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5473,11 +5628,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -5500,11 +5659,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -5550,13 +5713,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -5619,6 +5783,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -5632,6 +5797,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -5669,7 +5835,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5770,7 +5936,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -5813,7 +5986,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5914,7 +6087,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -5935,6 +6115,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -5977,6 +6158,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -6084,8 +6266,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6101,11 +6283,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -6128,11 +6314,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -6178,13 +6368,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -6390,8 +6581,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6407,11 +6598,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -6434,11 +6629,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -6484,13 +6683,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -6553,6 +6753,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -6566,6 +6767,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -6603,7 +6805,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6704,7 +6906,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -6747,7 +6956,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6848,7 +7057,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -6869,6 +7085,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -6911,6 +7128,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -7018,8 +7236,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7035,11 +7253,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -7062,11 +7284,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -7112,13 +7338,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -7278,8 +7505,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7295,11 +7522,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -7322,11 +7553,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -7372,13 +7607,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -7441,6 +7677,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -7454,6 +7691,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -7491,7 +7729,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7592,7 +7830,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -7635,7 +7880,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7736,7 +7981,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -7757,6 +8009,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -7799,6 +8052,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -7906,8 +8160,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7923,11 +8177,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -7950,11 +8208,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -8000,13 +8262,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -8215,8 +8478,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8232,11 +8495,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -8259,11 +8526,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -8309,13 +8580,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -8378,6 +8650,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -8391,6 +8664,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -8428,7 +8702,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8529,7 +8803,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -8572,7 +8853,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8673,7 +8954,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   url: string;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -8694,6 +8982,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -8736,6 +9025,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -8843,8 +9133,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8860,11 +9150,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -8887,11 +9181,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -8937,13 +9235,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   url: string;
 }
 
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -10568,8 +10867,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -10585,11 +10884,15 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -10612,11 +10915,15 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -10662,13 +10969,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   url: string;
 }
 
-export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -10731,6 +11039,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -10744,6 +11053,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -10781,7 +11091,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -10882,7 +11192,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   url: string;
 }
 
-export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -10925,7 +11242,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11026,7 +11343,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   url: string;
 }
 
-export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -11047,6 +11371,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -11089,6 +11414,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -11196,8 +11522,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11213,11 +11539,15 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -11240,11 +11570,15 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -11290,13 +11624,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   url: string;
 }
 
-export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans = Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans = Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -11502,8 +11837,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11519,11 +11854,15 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -11546,11 +11885,15 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -11596,13 +11939,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   url: string;
 }
 
-export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -11665,6 +12009,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -11678,6 +12023,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -11715,7 +12061,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11816,7 +12162,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -11859,7 +12212,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11960,7 +12313,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -11981,6 +12341,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -12023,6 +12384,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -12130,8 +12492,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12147,11 +12509,15 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -12174,11 +12540,15 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -12224,13 +12594,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   url: string;
 }
 
-export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -12608,8 +12979,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12625,11 +12996,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -12652,11 +13027,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -12702,13 +13081,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -12771,6 +13151,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -12784,6 +13165,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -12821,7 +13203,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12922,7 +13304,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -12965,7 +13354,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13066,7 +13455,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -13087,6 +13483,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -13129,6 +13526,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -13236,8 +13634,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13253,11 +13651,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -13280,11 +13682,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -13330,13 +13736,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   url: string;
 }
 
-export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -13565,8 +13972,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13582,11 +13989,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -13609,11 +14020,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -13659,13 +14074,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   url: string;
 }
 
-export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -13728,6 +14144,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -13741,6 +14158,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -13778,7 +14196,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13879,7 +14297,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -13922,7 +14347,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14023,7 +14448,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -14044,6 +14476,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -14086,6 +14519,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -14193,8 +14627,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14210,11 +14644,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -14237,11 +14675,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -14287,13 +14729,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   url: string;
 }
 
-export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -14519,8 +14962,8 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14536,11 +14979,15 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_Messag
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -14563,11 +15010,15 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_Messag
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -14613,13 +15064,14 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_Messag
   url: string;
 }
 
-export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -14682,6 +15134,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_attachments_
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -14695,6 +15148,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_attachments_
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -14732,7 +15186,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14833,7 +15287,14 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
   url: string;
 }
 
-export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -14876,7 +15337,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14977,7 +15438,14 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
   url: string;
 }
 
-export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -14998,6 +15466,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -15040,6 +15509,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -15147,8 +15617,8 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15164,11 +15634,15 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_Messag
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -15191,11 +15665,15 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_Messag
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -15241,13 +15719,14 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_Messag
   url: string;
 }
 
-export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans = PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans = PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanLink | PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -15449,8 +15928,8 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15466,11 +15945,15 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_Me
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -15493,11 +15976,15 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_Me
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -15543,13 +16030,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_Me
   url: string;
 }
 
-export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -15612,6 +16100,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_attachme
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -15625,6 +16114,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_attachme
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -15662,7 +16152,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15763,7 +16253,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
   url: string;
 }
 
-export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -15806,7 +16303,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15907,7 +16404,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
   url: string;
 }
 
-export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -15928,6 +16432,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -15970,6 +16475,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -16077,8 +16583,8 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16094,11 +16600,15 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_Me
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -16121,11 +16631,15 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_Me
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -16171,13 +16685,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_Me
   url: string;
 }
 
-export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans = UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanLink | UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -16551,8 +17066,8 @@ export interface ChatHistory_messages_GeneralMessage_sender {
   primaryOrganization: ChatHistory_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16568,11 +17083,15 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -16595,11 +17114,15 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserM
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -16645,13 +17168,14 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanCodeBlock | ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink | ChatHistory_messages_GeneralMessage_spans_MessageSpanBold;
+export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanBold | ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink | ChatHistory_messages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -16714,6 +17238,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -16727,6 +17252,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -16764,7 +17290,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16865,7 +17391,14 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   url: string;
 }
 
-export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -16908,7 +17441,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17009,7 +17542,14 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   url: string;
 }
 
-export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -17030,6 +17570,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -17072,6 +17613,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -17179,8 +17721,8 @@ export interface ChatHistory_messages_ServiceMessage_sender {
   primaryOrganization: ChatHistory_messages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17196,11 +17738,15 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -17223,11 +17769,15 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserM
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -17273,13 +17823,14 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanCodeBlock | ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink | ChatHistory_messages_ServiceMessage_spans_MessageSpanBold;
+export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanBold | ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink | ChatHistory_messages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -17457,8 +18008,8 @@ export interface ChatInit_messages_GeneralMessage_sender {
   primaryOrganization: ChatInit_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatInit_messages_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatInit_messages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17474,11 +18025,15 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_u
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -17501,11 +18056,15 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMent
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -17551,13 +18110,14 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface ChatInit_messages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatInit_messages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatInit_messages_GeneralMessage_spans = ChatInit_messages_GeneralMessage_spans_MessageSpanCodeBlock | ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_spans_MessageSpanLink | ChatInit_messages_GeneralMessage_spans_MessageSpanBold;
+export type ChatInit_messages_GeneralMessage_spans = ChatInit_messages_GeneralMessage_spans_MessageSpanBold | ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_spans_MessageSpanLink | ChatInit_messages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatInit_messages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -17620,6 +18180,7 @@ export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachm
 
 export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -17633,6 +18194,7 @@ export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachm
 export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -17670,7 +18232,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
 }
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17771,7 +18333,14 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
   url: string;
 }
 
-export type ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -17814,7 +18383,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
 }
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17915,7 +18484,14 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   url: string;
 }
 
-export type ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -17936,6 +18512,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -17978,6 +18555,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -18085,8 +18663,8 @@ export interface ChatInit_messages_ServiceMessage_sender {
   primaryOrganization: ChatInit_messages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatInit_messages_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatInit_messages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18102,11 +18680,15 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_u
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -18129,11 +18711,15 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMent
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -18179,13 +18765,14 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface ChatInit_messages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatInit_messages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatInit_messages_ServiceMessage_spans = ChatInit_messages_ServiceMessage_spans_MessageSpanCodeBlock | ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_messages_ServiceMessage_spans_MessageSpanLink | ChatInit_messages_ServiceMessage_spans_MessageSpanBold;
+export type ChatInit_messages_ServiceMessage_spans = ChatInit_messages_ServiceMessage_spans_MessageSpanBold | ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_messages_ServiceMessage_spans_MessageSpanLink | ChatInit_messages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -18381,8 +18968,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18398,11 +18985,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -18425,11 +19016,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -18475,13 +19070,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   url: string;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -18544,6 +19140,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -18557,6 +19154,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -18594,7 +19192,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18695,7 +19293,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -18738,7 +19343,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18839,7 +19444,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -18860,6 +19472,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -18902,6 +19515,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -19009,8 +19623,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -19026,11 +19640,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -19053,11 +19671,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -19103,13 +19725,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   url: string;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -19662,8 +20285,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -19679,11 +20302,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -19706,11 +20333,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -19756,13 +20387,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   url: string;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -19825,6 +20457,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -19838,6 +20471,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -19875,7 +20509,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -19976,7 +20610,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   url: string;
 }
 
-export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -20019,7 +20660,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20120,7 +20761,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   url: string;
 }
 
-export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -20141,6 +20789,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -20183,6 +20832,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -20290,8 +20940,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20307,11 +20957,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -20334,11 +20988,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -20384,13 +21042,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   url: string;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -20754,8 +21413,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20771,11 +21430,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -20798,11 +21461,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -20848,13 +21515,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   url: string;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -20917,6 +21585,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -20930,6 +21599,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -20967,7 +21637,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21068,7 +21738,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   url: string;
 }
 
-export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -21111,7 +21788,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21212,7 +21889,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   url: string;
 }
 
-export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -21233,6 +21917,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -21275,6 +21960,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -21382,8 +22068,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21399,11 +22085,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -21426,11 +22116,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -21476,13 +22170,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   url: string;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -21843,8 +22538,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21860,11 +22555,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -21887,11 +22586,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -21937,13 +22640,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   url: string;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -22006,6 +22710,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -22019,6 +22724,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -22056,7 +22762,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22157,7 +22863,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   url: string;
 }
 
-export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -22200,7 +22913,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22301,7 +23014,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   url: string;
 }
 
-export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -22322,6 +23042,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -22364,6 +23085,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -22471,8 +23193,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22488,11 +23210,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -22515,11 +23241,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -22565,13 +23295,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   url: string;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -22935,8 +23666,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22952,11 +23683,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -22979,11 +23714,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -23029,13 +23768,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   url: string;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -23098,6 +23838,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_a
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -23111,6 +23852,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_a
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -23148,7 +23890,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23249,7 +23991,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   url: string;
 }
 
-export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -23292,7 +24041,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23393,7 +24142,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   url: string;
 }
 
-export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -23414,6 +24170,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -23456,6 +24213,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -23563,8 +24321,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23580,11 +24338,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -23607,11 +24369,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -23657,13 +24423,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   url: string;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -24024,8 +24791,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24041,11 +24808,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -24068,11 +24839,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -24118,13 +24893,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   url: string;
 }
 
-export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -24187,6 +24963,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -24200,6 +24977,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -24237,7 +25015,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24338,7 +25116,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   url: string;
 }
 
-export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -24381,7 +25166,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24482,7 +25267,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   url: string;
 }
 
-export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -24503,6 +25295,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -24545,6 +25338,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -24652,8 +25446,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24669,11 +25463,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -24696,11 +25494,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -24746,13 +25548,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   url: string;
 }
 
-export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -25114,8 +25917,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25131,11 +25934,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -25158,11 +25965,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -25208,13 +26019,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -25277,6 +26089,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -25290,6 +26103,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -25327,7 +26141,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25428,7 +26242,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -25471,7 +26292,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25572,7 +26393,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -25593,6 +26421,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -25635,6 +26464,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -25742,8 +26572,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25759,11 +26589,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -25786,11 +26620,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -25836,13 +26674,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   url: string;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -26014,6 +26853,7 @@ export interface RoomLeaveVariables {
 
 export interface RoomSearchText_items {
   __typename: "Dialog";
+  id2: string;
   id: string;
   title: string;
   flexibleId: string;
@@ -26039,6 +26879,7 @@ export interface RoomSearchTextVariables {
 
 export interface RoomSearch_items_edges_node_organization {
   __typename: "Organization";
+  id: string;
   photo: string | null;
   name: string;
 }
@@ -26239,6 +27080,43 @@ export interface RoomMembers {
 
 export interface RoomMembersVariables {
   roomId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: RoomMembersForMentionsPaginated
+// ====================================================
+
+export interface RoomMembersForMentionsPaginated_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface RoomMembersForMentionsPaginated_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: RoomMembersForMentionsPaginated_members_user_primaryOrganization | null;
+}
+
+export interface RoomMembersForMentionsPaginated_members {
+  __typename: "RoomMember";
+  user: RoomMembersForMentionsPaginated_members_user;
+}
+
+export interface RoomMembersForMentionsPaginated {
+  members: RoomMembersForMentionsPaginated_members[];
+}
+
+export interface RoomMembersForMentionsPaginatedVariables {
+  roomId: string;
+  first?: number | null;
+  after?: string | null;
 }
 
 /* tslint:disable */
@@ -26515,8 +27393,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -26532,11 +27410,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -26559,11 +27441,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -26609,13 +27495,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   url: string;
 }
 
-export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -26678,6 +27565,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -26691,6 +27579,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -26728,7 +27617,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -26829,7 +27718,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -26872,7 +27768,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -26973,7 +27869,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   url: string;
 }
 
-export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -26994,6 +27897,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -27036,6 +27940,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -27143,8 +28048,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27160,11 +28065,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -27187,11 +28096,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -27237,13 +28150,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   url: string;
 }
 
-export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -27623,8 +28537,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27640,11 +28554,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -27667,11 +28585,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -27717,13 +28639,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -27786,6 +28709,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -27799,6 +28723,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -27836,7 +28761,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27937,7 +28862,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -27980,7 +28912,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -28081,7 +29013,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   url: string;
 }
 
-export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -28102,6 +29041,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -28144,6 +29084,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -28251,8 +29192,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -28268,11 +29209,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -28295,11 +29240,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -28345,13 +29294,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   url: string;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -28648,6 +29598,7 @@ export interface ResolvedInvite_invite_InviteInfo_creator {
 
 export interface ResolvedInvite_invite_InviteInfo {
   __typename: "InviteInfo";
+  id: string;
   orgId: string;
   title: string;
   creator: ResolvedInvite_invite_InviteInfo_creator | null;
@@ -28721,6 +29672,7 @@ export interface ResolvedInvite_invite_RoomInvite_room {
 
 export interface ResolvedInvite_invite_RoomInvite {
   __typename: "RoomInvite";
+  id: string;
   invitedByUser: ResolvedInvite_invite_RoomInvite_invitedByUser;
   room: ResolvedInvite_invite_RoomInvite_room;
 }
@@ -28911,6 +29863,7 @@ export interface MessageComments_messageComments_comments_comment_attachments_Me
 
 export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -28924,6 +29877,7 @@ export interface MessageComments_messageComments_comments_comment_attachments_Me
 export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -28961,7 +29915,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 }
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29062,7 +30016,14 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   url: string;
 }
 
-export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -29105,7 +30066,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 }
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29206,7 +30167,14 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   url: string;
 }
 
-export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -29227,6 +30195,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -29269,6 +30238,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -29331,8 +30301,8 @@ export interface MessageComments_messageComments_comments_comment_reactions {
   reaction: MessageReactionType;
 }
 
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29348,11 +30318,15 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -29375,11 +30349,15 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -29425,13 +30403,14 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   url: string;
 }
 
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type MessageComments_messageComments_comments_comment_spans = MessageComments_messageComments_comments_comment_spans_MessageSpanCodeBlock | MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_spans_MessageSpanBold;
+export type MessageComments_messageComments_comments_comment_spans = MessageComments_messageComments_comments_comment_spans_MessageSpanBold | MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_spans_MessageSpanDate;
 
 export interface MessageComments_messageComments_comments_comment {
   __typename: "GeneralMessage";
@@ -29743,8 +30722,8 @@ export interface Message_message_GeneralMessage_sender {
   primaryOrganization: Message_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Message_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Message_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29760,11 +30739,15 @@ export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_use
 export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -29787,11 +30770,15 @@ export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMentio
 export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -29837,13 +30824,14 @@ export interface Message_message_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface Message_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Message_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Message_message_GeneralMessage_spans = Message_message_GeneralMessage_spans_MessageSpanCodeBlock | Message_message_GeneralMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_spans_MessageSpanLink | Message_message_GeneralMessage_spans_MessageSpanBold;
+export type Message_message_GeneralMessage_spans = Message_message_GeneralMessage_spans_MessageSpanBold | Message_message_GeneralMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_spans_MessageSpanLink | Message_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface Message_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -29906,6 +30894,7 @@ export interface Message_message_GeneralMessage_attachments_MessageRichAttachmen
 
 export interface Message_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -29919,6 +30908,7 @@ export interface Message_message_GeneralMessage_attachments_MessageRichAttachmen
 export interface Message_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -29956,7 +30946,7 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_se
 }
 
 export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30057,7 +31047,14 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_sp
   url: string;
 }
 
-export type Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -30100,7 +31097,7 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_se
 }
 
 export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30201,7 +31198,14 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_sp
   url: string;
 }
 
-export type Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -30222,6 +31226,7 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_at
 export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: Message_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -30264,6 +31269,7 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_at
 export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -30371,8 +31377,8 @@ export interface Message_message_ServiceMessage_sender {
   primaryOrganization: Message_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Message_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Message_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30388,11 +31394,15 @@ export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_use
 export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -30415,11 +31425,15 @@ export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMentio
 export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -30465,13 +31479,14 @@ export interface Message_message_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface Message_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Message_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Message_message_ServiceMessage_spans = Message_message_ServiceMessage_spans_MessageSpanCodeBlock | Message_message_ServiceMessage_spans_MessageSpanUserMention | Message_message_ServiceMessage_spans_MessageSpanMultiUserMention | Message_message_ServiceMessage_spans_MessageSpanRoomMention | Message_message_ServiceMessage_spans_MessageSpanLink | Message_message_ServiceMessage_spans_MessageSpanBold;
+export type Message_message_ServiceMessage_spans = Message_message_ServiceMessage_spans_MessageSpanBold | Message_message_ServiceMessage_spans_MessageSpanUserMention | Message_message_ServiceMessage_spans_MessageSpanMultiUserMention | Message_message_ServiceMessage_spans_MessageSpanRoomMention | Message_message_ServiceMessage_spans_MessageSpanLink | Message_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -30725,44 +31740,6 @@ export interface ConferenceMediaVariables {
 // GraphQL mutation operation: ConferenceJoin
 // ====================================================
 
-export interface ConferenceJoin_conferenceJoin_conference_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceJoin_conferenceJoin_conference_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceJoin_conferenceJoin_conference_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceJoin_conferenceJoin_conference_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceJoin_conferenceJoin_conference_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceJoin_conferenceJoin_conference_peers_user;
-  connection: ConferenceJoin_conferenceJoin_conference_peers_connection | null;
-}
-
 export interface ConferenceJoin_conferenceJoin_conference_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -30774,7 +31751,6 @@ export interface ConferenceJoin_conferenceJoin_conference {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceJoin_conferenceJoin_conference_peers[];
   iceServers: ConferenceJoin_conferenceJoin_conference_iceServers[];
 }
 
@@ -30800,44 +31776,6 @@ export interface ConferenceJoinVariables {
 // GraphQL mutation operation: ConferenceLeave
 // ====================================================
 
-export interface ConferenceLeave_conferenceLeave_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceLeave_conferenceLeave_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceLeave_conferenceLeave_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceLeave_conferenceLeave_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceLeave_conferenceLeave_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceLeave_conferenceLeave_peers_user;
-  connection: ConferenceLeave_conferenceLeave_peers_connection | null;
-}
-
 export interface ConferenceLeave_conferenceLeave_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -30849,7 +31787,6 @@ export interface ConferenceLeave_conferenceLeave {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceLeave_conferenceLeave_peers[];
   iceServers: ConferenceLeave_conferenceLeave_iceServers[];
 }
 
@@ -30870,44 +31807,6 @@ export interface ConferenceLeaveVariables {
 // GraphQL mutation operation: ConferenceKeepAlive
 // ====================================================
 
-export interface ConferenceKeepAlive_conferenceKeepAlive_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceKeepAlive_conferenceKeepAlive_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceKeepAlive_conferenceKeepAlive_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceKeepAlive_conferenceKeepAlive_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceKeepAlive_conferenceKeepAlive_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceKeepAlive_conferenceKeepAlive_peers_user;
-  connection: ConferenceKeepAlive_conferenceKeepAlive_peers_connection | null;
-}
-
 export interface ConferenceKeepAlive_conferenceKeepAlive_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -30919,7 +31818,6 @@ export interface ConferenceKeepAlive_conferenceKeepAlive {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceKeepAlive_conferenceKeepAlive_peers[];
   iceServers: ConferenceKeepAlive_conferenceKeepAlive_iceServers[];
 }
 
@@ -30940,44 +31838,6 @@ export interface ConferenceKeepAliveVariables {
 // GraphQL mutation operation: ConferenceOffer
 // ====================================================
 
-export interface ConferenceOffer_peerConnectionOffer_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceOffer_peerConnectionOffer_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceOffer_peerConnectionOffer_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceOffer_peerConnectionOffer_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceOffer_peerConnectionOffer_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceOffer_peerConnectionOffer_peers_user;
-  connection: ConferenceOffer_peerConnectionOffer_peers_connection | null;
-}
-
 export interface ConferenceOffer_peerConnectionOffer_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -30989,7 +31849,6 @@ export interface ConferenceOffer_peerConnectionOffer {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceOffer_peerConnectionOffer_peers[];
   iceServers: ConferenceOffer_peerConnectionOffer_iceServers[];
 }
 
@@ -31012,44 +31871,6 @@ export interface ConferenceOfferVariables {
 // GraphQL mutation operation: ConferenceAnswer
 // ====================================================
 
-export interface ConferenceAnswer_peerConnectionAnswer_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceAnswer_peerConnectionAnswer_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceAnswer_peerConnectionAnswer_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceAnswer_peerConnectionAnswer_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceAnswer_peerConnectionAnswer_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceAnswer_peerConnectionAnswer_peers_user;
-  connection: ConferenceAnswer_peerConnectionAnswer_peers_connection | null;
-}
-
 export interface ConferenceAnswer_peerConnectionAnswer_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -31061,7 +31882,6 @@ export interface ConferenceAnswer_peerConnectionAnswer {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceAnswer_peerConnectionAnswer_peers[];
   iceServers: ConferenceAnswer_peerConnectionAnswer_iceServers[];
 }
 
@@ -31084,44 +31904,6 @@ export interface ConferenceAnswerVariables {
 // GraphQL mutation operation: ConferenceCandidate
 // ====================================================
 
-export interface ConferenceCandidate_peerConnectionCandidate_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceCandidate_peerConnectionCandidate_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceCandidate_peerConnectionCandidate_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceCandidate_peerConnectionCandidate_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceCandidate_peerConnectionCandidate_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceCandidate_peerConnectionCandidate_peers_user;
-  connection: ConferenceCandidate_peerConnectionCandidate_peers_connection | null;
-}
-
 export interface ConferenceCandidate_peerConnectionCandidate_iceServers {
   __typename: "ICEServer";
   urls: string[];
@@ -31133,7 +31915,6 @@ export interface ConferenceCandidate_peerConnectionCandidate {
   __typename: "Conference";
   id: string;
   startTime: any | null;
-  peers: ConferenceCandidate_peerConnectionCandidate_peers[];
   iceServers: ConferenceCandidate_peerConnectionCandidate_iceServers[];
 }
 
@@ -31178,6 +31959,68 @@ export interface MediaOfferVariables {
   id: string;
   peerId: string;
   offer: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaNegotiationNeeded
+// ====================================================
+
+export interface MediaNegotiationNeeded_mediaStreamNegotiationNeeded_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaNegotiationNeeded_mediaStreamNegotiationNeeded {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaNegotiationNeeded_mediaStreamNegotiationNeeded_streams[];
+}
+
+export interface MediaNegotiationNeeded {
+  mediaStreamNegotiationNeeded: MediaNegotiationNeeded_mediaStreamNegotiationNeeded;
+}
+
+export interface MediaNegotiationNeededVariables {
+  id: string;
+  peerId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaFailed
+// ====================================================
+
+export interface MediaFailed_mediaStreamFailed_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaFailed_mediaStreamFailed {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaFailed_mediaStreamFailed_streams[];
+}
+
+export interface MediaFailed {
+  mediaStreamFailed: MediaFailed_mediaStreamFailed;
+}
+
+export interface MediaFailedVariables {
+  id: string;
+  peerId: string;
 }
 
 /* tslint:disable */
@@ -31798,8 +32641,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_se
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -31815,11 +32658,15 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -31842,11 +32689,15 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -31892,13 +32743,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   url: string;
 }
 
-export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Organization_organization_rooms_pinnedMessage_GeneralMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type Organization_organization_rooms_pinnedMessage_GeneralMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -31961,6 +32813,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_at
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -31974,6 +32827,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_at
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -32011,7 +32865,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32112,7 +32966,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   url: string;
 }
 
-export type Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -32155,7 +33016,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32256,7 +33117,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   url: string;
 }
 
-export type Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -32277,6 +33145,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -32319,6 +33188,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -32426,8 +33296,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32443,11 +33313,15 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -32470,11 +33344,15 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -32520,13 +33398,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   url: string;
 }
 
-export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type Organization_organization_rooms_pinnedMessage_ServiceMessage_spans = Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type Organization_organization_rooms_pinnedMessage_ServiceMessage_spans = Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -32789,8 +33668,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32806,11 +33685,15 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -32833,11 +33716,15 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -32883,13 +33770,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   url: string;
 }
 
-export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -32952,6 +33840,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -32965,6 +33854,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -33002,7 +33892,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33103,7 +33993,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   url: string;
 }
 
-export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -33146,7 +34043,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33247,7 +34144,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   url: string;
 }
 
-export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -33268,6 +34172,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -33310,6 +34215,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -33417,8 +34323,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33434,11 +34340,15 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -33461,11 +34371,15 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -33511,13 +34425,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   url: string;
 }
 
-export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -33779,8 +34694,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33796,11 +34711,15 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -33823,11 +34742,15 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -33873,13 +34796,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   url: string;
 }
 
-export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -33942,6 +34866,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -33955,6 +34880,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -33992,7 +34918,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34093,7 +35019,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   url: string;
 }
 
-export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -34136,7 +35069,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34237,7 +35170,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   url: string;
 }
 
-export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -34258,6 +35198,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -34300,6 +35241,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -34407,8 +35349,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34424,11 +35366,15 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -34451,11 +35397,15 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -34501,13 +35451,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   url: string;
 }
 
-export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -34780,8 +35731,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34797,11 +35748,15 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -34824,11 +35779,15 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -34874,13 +35833,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   url: string;
 }
 
-export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -34943,6 +35903,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -34956,6 +35917,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -34993,7 +35955,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35094,7 +36056,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   url: string;
 }
 
-export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -35137,7 +36106,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35238,7 +36207,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   url: string;
 }
 
-export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -35259,6 +36235,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -35301,6 +36278,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -35408,8 +36386,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35425,11 +36403,15 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -35452,11 +36434,15 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -35502,13 +36488,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   url: string;
 }
 
-export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans = OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -36036,8 +37023,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36053,11 +37040,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -36080,11 +37071,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -36130,13 +37125,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   url: string;
 }
 
-export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -36199,6 +37195,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -36212,6 +37209,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -36249,7 +37247,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36350,7 +37348,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   url: string;
 }
 
-export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -36393,7 +37398,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36494,7 +37499,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   url: string;
 }
 
-export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -36515,6 +37527,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -36557,6 +37570,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -36664,8 +37678,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36681,11 +37695,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -36708,11 +37726,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -36758,13 +37780,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   url: string;
 }
 
-export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -37323,6 +38346,7 @@ export interface SuperAccount_superAccount_features {
 
 export interface SuperAccount_superAccount_createdBy {
   __typename: "User";
+  id: string;
   name: string;
 }
 
@@ -37590,31 +38614,6 @@ export interface SuperAdminRemoveVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: DebugEventsWatch
-// ====================================================
-
-export interface DebugEventsWatch_debugEvents {
-  __typename: "DebugEvent";
-  seq: number;
-  key: string;
-}
-
-export interface DebugEventsWatch {
-  debugEvents: DebugEventsWatch_debugEvents;
-}
-
-export interface DebugEventsWatchVariables {
-  fromState?: string | null;
-  eventsCount: number;
-  randomDelays: boolean;
-  seed: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: Profile
 // ====================================================
 
@@ -37646,6 +38645,7 @@ export interface Profile_profile_primaryOrganization {
 
 export interface Profile_profile_invitedBy {
   __typename: "User";
+  id: string;
   name: string;
 }
 
@@ -37699,6 +38699,7 @@ export interface ProfileUpdate_updateProfile_photoRef {
 
 export interface ProfileUpdate_updateProfile_invitedBy {
   __typename: "User";
+  id: string;
   name: string;
 }
 
@@ -38212,8 +39213,8 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38229,11 +39230,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -38256,11 +39261,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -38306,13 +39315,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -38375,6 +39385,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -38388,6 +39399,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -38425,7 +39437,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38526,7 +39538,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -38569,7 +39588,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38670,7 +39689,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -38691,6 +39717,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -38733,6 +39760,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -38840,8 +39868,8 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38857,11 +39885,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -38884,11 +39916,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -38934,13 +39970,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   url: string;
 }
 
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -39309,6 +40346,7 @@ export interface CommentEntryFragment_comment_attachments_MessageRichAttachment_
 
 export interface CommentEntryFragment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -39322,6 +40360,7 @@ export interface CommentEntryFragment_comment_attachments_MessageRichAttachment_
 export interface CommentEntryFragment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -39359,7 +40398,7 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_send
 }
 
 export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39460,7 +40499,14 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_span
   url: string;
 }
 
-export type CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans = CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans = CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -39503,7 +40549,7 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_send
 }
 
 export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39604,7 +40650,14 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_span
   url: string;
 }
 
-export type CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans = CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans = CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -39625,6 +40678,7 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_atta
 export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentEntryFragment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -39667,6 +40721,7 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_atta
 export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -39729,8 +40784,8 @@ export interface CommentEntryFragment_comment_reactions {
   reaction: MessageReactionType;
 }
 
-export interface CommentEntryFragment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentEntryFragment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39746,11 +40801,15 @@ export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user_
 export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -39773,11 +40832,15 @@ export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_
 export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -39823,13 +40886,14 @@ export interface CommentEntryFragment_comment_spans_MessageSpanLink {
   url: string;
 }
 
-export interface CommentEntryFragment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentEntryFragment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentEntryFragment_comment_spans = CommentEntryFragment_comment_spans_MessageSpanCodeBlock | CommentEntryFragment_comment_spans_MessageSpanUserMention | CommentEntryFragment_comment_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_spans_MessageSpanRoomMention | CommentEntryFragment_comment_spans_MessageSpanLink | CommentEntryFragment_comment_spans_MessageSpanBold;
+export type CommentEntryFragment_comment_spans = CommentEntryFragment_comment_spans_MessageSpanBold | CommentEntryFragment_comment_spans_MessageSpanUserMention | CommentEntryFragment_comment_spans_MessageSpanMultiUserMention | CommentEntryFragment_comment_spans_MessageSpanRoomMention | CommentEntryFragment_comment_spans_MessageSpanLink | CommentEntryFragment_comment_spans_MessageSpanDate;
 
 export interface CommentEntryFragment_comment {
   __typename: "GeneralMessage";
@@ -39955,6 +41019,114 @@ export interface ConferenceFull {
   peers: ConferenceFull_peers[];
   iceServers: ConferenceFull_iceServers[];
 }
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: ConferenceShort
+// ====================================================
+
+export interface ConferenceShort_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
+export interface ConferenceShort {
+  __typename: "Conference";
+  id: string;
+  startTime: any | null;
+  iceServers: ConferenceShort_iceServers[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: DaialogListMessage
+// ====================================================
+
+export interface DaialogListMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+}
+
+export interface DaialogListMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DaialogListMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type DaialogListMessage_GeneralMessage_attachments = DaialogListMessage_GeneralMessage_attachments_MessageAttachmentPost | DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DaialogListMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DaialogListMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DaialogListMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DaialogListMessage_GeneralMessage_attachments[];
+  quotedMessages: DaialogListMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DaialogListMessage = DaialogListMessage_ServiceMessage | DaialogListMessage_GeneralMessage;
 
 /* tslint:disable */
 /* eslint-disable */
@@ -40163,6 +41335,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
 
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -40176,6 +41349,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_ke
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -40213,7 +41387,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40314,7 +41488,14 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   url: string;
 }
 
-export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -40357,7 +41538,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40458,7 +41639,14 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   url: string;
 }
 
-export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -40479,6 +41667,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -40521,6 +41710,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -40583,8 +41773,8 @@ export interface FullMessage_GeneralMessage_reactions {
   reaction: MessageReactionType;
 }
 
-export interface FullMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface FullMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40600,11 +41790,15 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_pr
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -40627,11 +41821,15 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_us
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -40677,13 +41875,14 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface FullMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface FullMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanCodeBlock | FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink | FullMessage_GeneralMessage_spans_MessageSpanBold;
+export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanBold | FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink | FullMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface FullMessage_GeneralMessage {
   __typename: "GeneralMessage";
@@ -40730,8 +41929,8 @@ export interface FullMessage_ServiceMessage_sender {
   primaryOrganization: FullMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface FullMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface FullMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40747,11 +41946,15 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_pr
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -40774,11 +41977,15 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_us
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -40824,13 +42031,14 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export interface FullMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface FullMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanCodeBlock | FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink | FullMessage_ServiceMessage_spans_MessageSpanBold;
+export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanBold | FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink | FullMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -41064,8 +42272,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41081,11 +42289,15 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -41108,11 +42320,15 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -41158,13 +42374,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   url: string;
 }
 
-export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -41227,6 +42444,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -41240,6 +42458,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -41277,7 +42496,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41378,7 +42597,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   url: string;
 }
 
-export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -41421,7 +42647,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41522,7 +42748,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   url: string;
 }
 
-export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -41543,6 +42776,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -41585,6 +42819,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -41692,8 +42927,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41709,11 +42944,15 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -41736,11 +42975,15 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -41786,13 +43029,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   url: string;
 }
 
-export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans = OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans = OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -42194,8 +43438,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42211,11 +43455,15 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -42238,11 +43486,15 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -42288,13 +43540,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -42357,6 +43610,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -42370,6 +43624,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -42407,7 +43662,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42508,7 +43763,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -42551,7 +43813,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42652,7 +43914,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   url: string;
 }
 
-export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -42673,6 +43942,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -42715,6 +43985,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -42822,8 +44093,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42839,11 +44110,15 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -42866,11 +44141,15 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -42916,13 +44195,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   url: string;
 }
 
-export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans = OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -43306,8 +44586,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43323,11 +44603,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -43350,11 +44634,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -43400,13 +44688,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   url: string;
 }
 
-export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -43469,6 +44758,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_Me
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -43482,6 +44772,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_Me
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -43519,7 +44810,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43620,7 +44911,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   url: string;
 }
 
-export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -43663,7 +44961,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43764,7 +45062,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   url: string;
 }
 
-export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -43785,6 +45090,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -43827,6 +45133,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -43934,8 +45241,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43951,11 +45258,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -43978,11 +45289,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -44028,13 +45343,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   url: string;
 }
 
-export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -44325,8 +45641,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44342,11 +45658,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -44369,11 +45689,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -44419,13 +45743,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   url: string;
 }
 
-export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -44488,6 +45813,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -44501,6 +45827,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -44538,7 +45865,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44639,7 +45966,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   url: string;
 }
 
-export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -44682,7 +46016,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44783,7 +46117,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   url: string;
 }
 
-export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -44804,6 +46145,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -44846,6 +46188,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -44953,8 +46296,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44970,11 +46313,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -44997,11 +46344,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -45047,13 +46398,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   url: string;
 }
 
-export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -45274,8 +46626,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45291,11 +46643,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -45318,11 +46674,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -45368,13 +46728,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   url: string;
 }
 
-export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -45437,6 +46798,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -45450,6 +46812,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -45487,7 +46850,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45588,7 +46951,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   url: string;
 }
 
-export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -45631,7 +47001,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45732,7 +47102,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   url: string;
 }
 
-export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -45753,6 +47130,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -45795,6 +47173,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -45902,8 +47281,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45919,11 +47298,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -45946,11 +47329,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -45996,13 +47383,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   url: string;
 }
 
-export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -46211,6 +47599,28 @@ export interface SettingsFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: UserForMention
+// ====================================================
+
+export interface UserForMention_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface UserForMention {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: UserForMention_primaryOrganization | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: UserFull
 // ====================================================
 
@@ -46397,6 +47807,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_attachmen
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -46410,6 +47821,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_attachmen
 export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -46447,7 +47859,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46548,7 +47960,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   url: string;
 }
 
-export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -46591,7 +48010,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46692,7 +48111,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   url: string;
 }
 
-export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -46713,6 +48139,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -46755,6 +48182,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -46817,8 +48245,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions
   reaction: MessageReactionType;
 }
 
-export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46834,11 +48262,15 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -46861,11 +48293,15 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -46911,13 +48347,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   url: string;
 }
 
-export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentUpdateFragment_CommentReceived_comment_comment_spans = CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanCodeBlock | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold;
+export type CommentUpdateFragment_CommentReceived_comment_comment_spans = CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment {
   __typename: "GeneralMessage";
@@ -47049,6 +48486,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachment
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -47062,6 +48500,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachment
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -47099,7 +48538,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47200,7 +48639,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   url: string;
 }
 
-export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -47243,7 +48689,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47344,7 +48790,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   url: string;
 }
 
-export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -47365,6 +48818,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -47407,6 +48861,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -47469,8 +48924,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions 
   reaction: MessageReactionType;
 }
 
-export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47486,11 +48941,15 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -47513,11 +48972,15 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -47563,13 +49026,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   url: string;
 }
 
-export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type CommentUpdateFragment_CommentUpdated_comment_comment_spans = CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanCodeBlock | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold;
+export type CommentUpdateFragment_CommentUpdated_comment_comment_spans = CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanDate;
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment {
   __typename: "GeneralMessage";
@@ -47650,8 +49114,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47667,11 +49131,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -47694,11 +49162,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -47744,13 +49216,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -47813,6 +49286,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -47826,6 +49300,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -47863,7 +49338,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47964,7 +49439,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   url: string;
 }
 
-export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -48007,7 +49489,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48108,7 +49590,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   url: string;
 }
 
-export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -48129,6 +49618,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -48171,6 +49661,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -48278,8 +49769,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48295,11 +49786,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -48322,11 +49817,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -48372,13 +49871,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -48538,8 +50038,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48555,11 +50055,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -48582,11 +50086,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -48632,13 +50140,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -48701,6 +50210,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -48714,6 +50224,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -48751,7 +50262,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48852,7 +50363,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   url: string;
 }
 
-export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -48895,7 +50413,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48996,7 +50514,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   url: string;
 }
 
-export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -49017,6 +50542,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -49059,6 +50585,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -49166,8 +50693,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49183,11 +50710,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -49210,11 +50741,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -49260,13 +50795,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";
@@ -49475,8 +51011,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49492,11 +51028,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -49519,11 +51059,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -49569,13 +51113,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -49638,6 +51183,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
+  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -49651,6 +51197,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -49688,7 +51235,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49789,7 +51336,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   url: string;
 }
 
-export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -49832,7 +51386,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49933,7 +51487,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   url: string;
 }
 
-export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
@@ -49954,6 +51515,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -49996,6 +51558,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -50103,8 +51666,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock {
-  __typename: "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -50120,11 +51683,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
@@ -50147,11 +51714,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
@@ -50197,13 +51768,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   url: string;
 }
 
-export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold";
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
   offset: number;
   length: number;
+  date: any;
 }
 
-export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanCodeBlock | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
+export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
   __typename: "Organization";

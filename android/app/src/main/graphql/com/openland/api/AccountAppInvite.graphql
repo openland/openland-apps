@@ -1,3 +1,0 @@
-query AccountAppInvite {
-  invite: appInvite
-}

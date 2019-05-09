@@ -10,13 +10,16 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
-    let data = client.useWithoutLoaderConference({ id: props.conversationId });
+    let data = client.useWithoutLoaderConference(
+        { id: props.conversationId },
+        { fetchPolicy: 'network-only' },
+    );
     if (!data) {
         return null;
     }
     return (
         <XView height={0} alignSelf="stretch">
-            {data.conference.peers.length === 0 && <TalkWatchComponent id={data.conference.id} />}
+            <TalkWatchComponent id={data.conference.id} />
             {data.conference.peers.length !== 0 && (
                 <>
                     <XView
@@ -79,7 +82,6 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                         )}
                     </XView>
                     )}
-                    <TalkWatchComponent id={data.conference.id} />
                 </>
             )}
         </XView>

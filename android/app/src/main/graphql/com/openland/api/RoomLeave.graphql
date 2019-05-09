@@ -1,6 +1,0 @@
-mutation RoomLeave($roomId: ID!) {
-  betaRoomLeave(roomId: $roomId) {
-    __typename
-    ...RoomFull
-  }
-}

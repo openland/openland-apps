@@ -20,6 +20,7 @@ export class MediaSessionManager {
     private streams = new Map<string, MediaStreamManager>();
     private mute: boolean;
     private isPrivate: boolean;
+    private ownPeerDetected = false;
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void) {
         this.client = client;
@@ -75,7 +76,7 @@ export class MediaSessionManager {
                 if (this.destroyed) {
                     return null;
                 }
-                return (await this.client.queryConference({ id: this.conversationId })).conference.id;
+                return (await this.client.queryConference({ id: this.conversationId }, { fetchPolicy: 'network-only' })).conference.id;
             }))!;
             if (!conferenceId) {
                 return;
@@ -110,8 +111,28 @@ export class MediaSessionManager {
             this.peerId = joinConference.peerId;
             this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
             this.doStart();
+
+            this.detectOwnPeerRemoved();
+
             return;
         })();
+    }
+
+    private detectOwnPeerRemoved = async () => {
+        let subscription = this.client.subscribeConferenceWatch({ id: this.conferenceId });
+        while (!this.destroyed) {
+            try {
+                let peers = (await subscription.get()).alphaConferenceWatch.peers;
+                let ownPeerDetected = !!peers.find(p => p.id === this.peerId);
+                if (this.ownPeerDetected && !ownPeerDetected) {
+                    this.onDestroyRequested()
+                }
+                this.ownPeerDetected = ownPeerDetected;
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+        subscription.destroy();
     }
 
     private doStart = () => {
@@ -149,6 +170,7 @@ export class MediaSessionManager {
                 }
             }
         })();
+
     }
 
     private handleState = () => {
@@ -163,9 +185,6 @@ export class MediaSessionManager {
                 console.log('[WEBRTC] Destroy stream ' + s);
                 this.streams.get(s)!.destroy();
                 this.streams.delete(s);
-                if (this.isPrivate && this.streams.keys.length === 0) {
-                    this.onDestroyRequested();
-                }
             }
         }
 

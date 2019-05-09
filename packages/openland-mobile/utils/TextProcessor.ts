@@ -1,15 +1,12 @@
-import linkify from 'linkify-it';
-import tlds from 'tlds';
-import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, UserTiny } from 'openland-api/Types';
-import { Stopwatch } from 'openland-y-utils/stopwatch';
+import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserTiny } from 'openland-api/Types';
 
-type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold';
+type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating';
 
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold;
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate | SpanCodeBlock | SpanCodeInline | SpanInsane | SpanIrony | SpanItalic | SpanLoud | SpanRotating;
+
 interface SpanAbs {
     type: SpanType;
     text?: string;
-    link?: string;
 }
 
 export interface SpanText extends SpanAbs {
@@ -18,6 +15,39 @@ export interface SpanText extends SpanAbs {
 
 export interface SpanBold extends SpanAbs {
     type: 'bold';
+}
+
+export interface SpanCodeBlock extends SpanAbs {
+    type: 'code_block';
+}
+
+export interface SpanCodeInline extends SpanAbs {
+    type: 'code_inline';
+}
+
+export interface SpanInsane extends SpanAbs {
+    type: 'insane';
+}
+
+export interface SpanIrony extends SpanAbs {
+    type: 'irony';
+}
+
+export interface SpanItalic extends SpanAbs {
+    type: 'italic';
+}
+
+export interface SpanLoud extends SpanAbs {
+    type: 'loud';
+}
+
+export interface SpanRotating extends SpanAbs {
+    type: 'rotating';
+}
+
+export interface SpanDate extends SpanAbs {
+    type: 'date';
+    date: string;
 }
 
 export interface SpanLink extends SpanAbs {
@@ -42,10 +72,6 @@ export interface SpanRoom extends SpanAbs {
     id: string;
 }
 
-let linkifyInstance = linkify()
-    .tlds(tlds)
-    .tlds('onion', true);
-
 function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
@@ -62,9 +88,7 @@ function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spa
     return res;
 }
 
-function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
-    // let sw = new Stopwatch('preprocessMentions');
-    // sw.next('preprocessMentions');
+function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];
     spans = spans.sort((a, b) => a.offset - b.offset);
 
@@ -73,10 +97,10 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
         let raw = text.substr(offset, s.offset - offset);
         if (raw) {
             res.push(...preprocessRawText(raw));
-
         }
         let spanText = text.substr(s.offset, s.length);
         let span: Span;
+
         if (s.__typename === 'MessageSpanLink') {
             span = { type: 'link', link: s.url };
         } else if (s.__typename === 'MessageSpanUserMention') {
@@ -88,9 +112,26 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
             span = { type: 'mention_users', users: s.users }
         } else if (s.__typename === 'MessageSpanBold') {
             span = { type: 'bold' }
+        } else if (s.__typename === 'MessageSpanDate') {
+            span = { type: 'date', date: s.date }
+        } else if (s.__typename === 'MessageSpanCodeBlock') {
+            span = { type: 'code_block' }
+        } else if (s.__typename === 'MessageSpanInlineCode') {
+            span = { type: 'code_inline' }
+        } else if (s.__typename === 'MessageSpanInsane') {
+            span = { type: 'insane' }
+        } else if (s.__typename === 'MessageSpanIrony') {
+            span = { type: 'irony' }
+        } else if (s.__typename === 'MessageSpanItalic') {
+            span = { type: 'italic' }
+        } else if (s.__typename === 'MessageSpanLoud') {
+            span = { type: 'loud' }
+        } else if (s.__typename === 'MessageSpanRotating') {
+            span = { type: 'rotating' }
         } else {
             span = { type: 'text' };
         }
+
         span.text = spanText;
         res.push(span);
         offset = s.offset + s.length;
@@ -99,30 +140,15 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
     let rawLast = text.substr(offset, text.length - offset);
     res.push(...preprocessRawText(rawLast));
 
-    // sw.next();
     return res;
 }
 
 export function preprocessText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
-    // TODO: process spans instead of mentions
     let res: Span[] = [];
     let offset = 0;
-    // let links = linkifyInstance.match(text);
-    // if (links !== null) { // Typings are weird
-    //     for (let l of links) {
-    //         if (l.index > offset) {
-    //             res.push(...preprocessRawText(text.substring(offset, l.index), spans));
-    //         }
-    //         res.push({
-    //             type: 'link',
-    //             text: l.text,
-    //             link: l.url
-    //         });
-    //         offset = l.lastIndex;
-    //     }
-    // }
+
     if (offset < text.length) {
-        res.push(...preprocessMentions(text, spans || []));
+        res.push(...preprocessSpans(text, spans || []));
     }
 
     // Special case for empty string
@@ -132,5 +158,6 @@ export function preprocessText(text: string, spans?: (FullMessage_GeneralMessage
             text: ''
         });
     }
+
     return res;
 }

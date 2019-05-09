@@ -127,26 +127,24 @@ const ReactionPicker = (props: {
     );
 };
 
-const PopperArrow = Glamorous(XPopper.Arrow)<{ myMessage: boolean }>(props => ({
+const PopperArrow = Glamorous(XPopper.Arrow)({
     position: 'absolute',
-    left: `${props.myMessage ? '98px' : '111px'} !important`,
+    left: '115px !important',
     '@media(min-width: 1340px)': {
         left: '98px !important',
     },
-}));
+});
 
 export const MessageReactionButton = ({
     onlyLikes,
     messageId,
     marginTop,
     marginLeft,
-    myMessage,
 }: {
     onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
-    myMessage: boolean;
 }) => {
     const [hovered, setHovered] = React.useState(false);
     const [beHovered, setBeHovered] = React.useState(false);
@@ -221,7 +219,7 @@ export const MessageReactionButton = ({
             contentContainer={<CustomPickerDiv />}
             marginBottom={10}
             show={beHovered}
-            arrow={<PopperArrow myMessage={myMessage} />}
+            arrow={<PopperArrow />}
         >
             <ReactionButtonInner
                 className="reaction-button"
@@ -261,28 +259,27 @@ const activeClassName = css`
     }
 `;
 
-const LikeIcon = ({
-    isActive,
-    onClick,
-}: {
+type LikeIconPropsT = {
     isActive: boolean;
     onClick: (event: React.MouseEvent) => void;
-}) => {
+};
+
+const LikeIcon = React.forwardRef<HTMLDivElement, LikeIconPropsT>(({ isActive, onClick }, ref) => {
     return (
-        <div onClick={onClick} className={cx(likeClassName, isActive && activeClassName)}>
+        <div ref={ref} onClick={onClick} className={cx(likeClassName, isActive && activeClassName)}>
             <ReactionIcon />
         </div>
     );
-};
+});
 
 export const CommentReactionButton = React.memo(
     ({
-        id,
         reactions,
+        id,
         hover,
     }: {
-        id: string;
         reactions?: FullMessage_GeneralMessage_reactions[];
+        id: string;
         hover?: boolean;
     }) => {
         let client = useClient();
@@ -290,35 +287,80 @@ export const CommentReactionButton = React.memo(
         const myId = userContext!!.user!!.id!!;
         const likeReaction = MessageReactionType.LIKE;
 
-        let isActive =
-            reactions &&
-            reactions.filter(
-                (userReaction: FullMessage_GeneralMessage_reactions) =>
-                    userReaction.user.id === myId && userReaction.reaction === likeReaction,
-            ).length > 0;
-
         let reactionsCount = reactions ? reactions.length : 0;
+        let isActive = false;
+
+        let userNamesLiked: any[] = [];
+        let numberOfUsersExtraLiked = null;
+
+        if (reactions) {
+            userNamesLiked = reactions.slice(0, 10).map((reaction, key) => {
+                return <div key={key}>{reaction.user.name}</div>;
+            });
+
+            if (reactions.length > 10) {
+                numberOfUsersExtraLiked = reactions.length - 10;
+            }
+
+            isActive =
+                reactions.filter(
+                    (userReaction: FullMessage_GeneralMessage_reactions) =>
+                        userReaction.user.id === myId && userReaction.reaction === likeReaction,
+                ).length > 0;
+        }
+
+        const likeIconElement = (
+            <LikeIcon
+                isActive={!!isActive}
+                onClick={async () => {
+                    if (isActive) {
+                        client.mutateCommentUnsetReaction({
+                            commentId: id,
+                            reaction: likeReaction,
+                        });
+                    } else {
+                        client.mutateCommentSetReaction({
+                            commentId: id,
+                            reaction: likeReaction,
+                        });
+                    }
+                }}
+            />
+        );
+
+        const finalLikeIconElement =
+            reactions && reactions.length ? (
+                <XPopper
+                    content={
+                        <XView paddingRight={32} paddingBottom={1}>
+                            <XView marginTop={2} fontWeight={'600'} fontSize={11}>
+                                Liked
+                            </XView>
+                            <XView marginTop={3} fontSize={11} lineHeight={1.33}>
+                                {userNamesLiked}
+                            </XView>
+                            {numberOfUsersExtraLiked && (
+                                <XView fontSize={11} lineHeight={1.33}>
+                                    + {numberOfUsersExtraLiked}{' '}
+                                    {numberOfUsersExtraLiked === 1 ? 'person' : 'people'}{' '}
+                                </XView>
+                            )}
+                        </XView>
+                    }
+                    marginLeft={-12}
+                    showOnHover
+                    placement="bottom-start"
+                    style="dark"
+                >
+                    {likeIconElement}
+                </XPopper>
+            ) : (
+                likeIconElement
+            );
+
         return reactionsCount || hover ? (
             <XView flexDirection="row" alignItems="center" position="relative">
-                <XView alignItems="center">
-                    <LikeIcon
-                        isActive={!!isActive}
-                        onClick={async () => {
-                            if (isActive) {
-                                client.mutateCommentUnsetReaction({
-                                    commentId: id,
-                                    reaction: likeReaction,
-                                });
-                            } else {
-                                client.mutateCommentSetReaction({
-                                    commentId: id,
-                                    reaction: likeReaction,
-                                });
-                            }
-                        }}
-                    />
-                </XView>
-
+                <XView alignItems="center">{finalLikeIconElement}</XView>
                 <XView alignItems="center" position="absolute" left={20}>
                     <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
                         {reactionsCount ? reactionsCount : null}

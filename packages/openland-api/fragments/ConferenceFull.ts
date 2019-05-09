@@ -23,3 +23,16 @@ export const ConferenceFull = gql`
     }
     ${UserShort}
 `;
+
+export const ConferenceShort = gql`
+    fragment ConferenceShort on Conference {
+        id
+        startTime
+        iceServers {
+            urls
+            username
+            credential
+        }
+    }
+    ${UserShort}
+`;

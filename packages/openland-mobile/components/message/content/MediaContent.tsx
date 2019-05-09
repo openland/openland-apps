@@ -65,7 +65,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { imageLayout, theme } = this.props;
+        const { imageLayout, theme, message } = this.props;
 
         let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
 
@@ -76,7 +76,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 marginVertical={5}
             >
                 <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
-                    <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8}>
+                    <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8} senderName={message.sender.name} date={message.date}>
                         <FastImage
                             style={{ borderRadius: 8, width: imageLayout.width, height: imageLayout.height }}
                             source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}

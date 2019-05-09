@@ -5,7 +5,6 @@ import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface TextContentProps {
@@ -16,6 +15,7 @@ interface TextContentProps {
     theme: AppTheme;
 
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
 }
 
 export const TextContent = (props: TextContentProps) => {
@@ -35,17 +35,17 @@ export const TextContent = (props: TextContentProps) => {
         message = { ...message, message: text!.slice(1, text!.length - 1) };
     }
 
-    let preprocessed = preprocessText(message.message || '', message.spans);
-    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, theme));
+    let preprocessed = preprocessText(message.message || '', message.spans as any);
+    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, props.onGroupPress, theme));
 
     if (message.message) {
         return (
             <Text
                 style={{
                     color: theme.textColor,
-                    lineHeight: big ? undefined : (props.isSmall ? 20 : 22),
-                    fontSize: big ? 52 : (props.isSmall ? 15 : 16),
-                    fontWeight: TextStyles.weight.regular,
+                    lineHeight: big ? 28 : (props.isSmall ? 20 : 22),
+                    fontSize: big ? 26 : (props.isSmall ? 15 : 16),
+                    fontWeight: big ? TextStyles.weight.medium : TextStyles.weight.regular,
                     fontStyle: props.fontStyle,
                 } as TextStyle}
                 allowFontScaling={false}

@@ -68,6 +68,7 @@ export const AccountInviteInfoQuery = gql`
             forName
             membersCount
             organization {
+                id
                 isCommunity: alphaIsCommunity
                 about
             }
@@ -79,6 +80,7 @@ export const AccountInviteInfoQuery = gql`
 export const AccountAppInviteInfoQuery = gql`
     query AccountAppInviteInfo($inviteKey: String!) {
         invite: alphaInviteInfo(key: $inviteKey) {
+            id
             creator {
                 ...UserShort
             }

@@ -16,13 +16,14 @@ import {
     SharedRoomKind,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    RoomChat_room,
 } from 'openland-api/Types';
 import { MessagesStateContextProps } from '../MessagesStateContext';
-import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
+import { EditMessageInline } from './edit/MessageEditComponent';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { PostMessageButtons } from './PostMessageButtons';
+import { PostMessageButtons, CommentPropsT } from './PostMessageButtons';
 import { XView } from 'react-mental';
 
 const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
@@ -100,14 +101,12 @@ export interface MessageComponentProps {
     isPinned?: boolean;
     isModal?: boolean;
     commentDepth?: number;
-    message: DataSourceWebMessageItem;
+    message: DataSourceWebMessageItem & { depth?: number };
     isChannel?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
-    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-    onCommentEditClick?: (event: React.MouseEvent<any>) => void;
-    onCommentDeleteClick?: (event: React.MouseEvent<any>) => void;
-    conversationId?: string;
+    commentProps?: CommentPropsT;
+    conversationId: string | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
     onlyLikes?: boolean;
@@ -115,6 +114,7 @@ export interface MessageComponentProps {
     isActive?: boolean | null;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
+    room?: RoomChat_room;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -143,6 +143,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
     componentDidUpdate() {
         const { message, messagesContext, isActive } = this.props;
+
         const isEditView = messagesContext.editMessageId === message.id;
 
         let selected = false;
@@ -225,9 +226,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     render() {
         let {
             message,
-            onCommentReplyClick,
-            onCommentEditClick,
-            onCommentDeleteClick,
+            commentProps,
             haveReactions,
             usernameOfRepliedUser,
             onCommentBackToUserMessageClick,
@@ -247,7 +246,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isSending) {
             if (isEditView && message.text && this.props.conversationId) {
                 content.push(
-                    <EditMessageInlineWrapper
+                    <EditMessageInline
+                        commentProps={this.props.commentProps}
+                        isComment={!!this.props.isComment}
+                        minimal={!!this.props.isComment}
                         message={message}
                         key={'editForm' + message.id}
                         onClose={this.hideEditView}
@@ -277,7 +279,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 return (
                                     <MessageReplyComponent
                                         attach={qfileAttach}
-                                        spans={item.spans}
+                                        spans={item.spans as any}
                                         sender={item.sender}
                                         date={item.date}
                                         message={item.message}
@@ -314,10 +316,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageTextComponentSpanned
+                                    isComment={this.props.isComment}
                                     spannedString={message.textSpannedString!}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
-                                    deleted={this.props.deleted}
                                 />,
                             );
                         }
@@ -337,13 +339,22 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         } else {
+                            const originalWidth = fileAttach.fileMetadata.imageWidth || 0;
+                            const originalHeight = fileAttach.fileMetadata.imageHeight || 0;
+
+                            const dimentions = {
+                                originalWidth,
+                                originalHeight,
+                                width: this.props.isComment ? 180 : originalWidth,
+                                height: this.props.isComment ? 120 : originalHeight,
+                            };
+
                             content.push(
                                 <MessageImageComponent
                                     key={'file' + message.id}
                                     file={fileAttach.fileId!}
                                     fileName={fileAttach.fileMetadata.name}
-                                    width={fileAttach.fileMetadata.imageWidth || 0}
-                                    height={fileAttach.fileMetadata.imageHeight || 0}
+                                    dimentions={dimentions}
                                     startSelected={hideMenu}
                                 />,
                             );
@@ -392,6 +403,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             if (message.text && message.text.length > 0) {
                 content.push(
                     <MessageTextComponent
+                        isComment={this.props.isComment}
                         message={message.text}
                         spans={message.spans}
                         key={'text' + message.id}
@@ -405,7 +417,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 let progress = Math.round(message.progress * 100);
                 let title = 'Uploading (' + progress + '%)';
                 content.push(
-                    <MessageUploadComponent key={'file' + message.id} progress={progress} title={title} />,
+                    <MessageUploadComponent
+                        key={'file' + message.id}
+                        progress={progress}
+                        title={title}
+                    />,
                 );
             }
             // TODO: recover retry button
@@ -440,23 +456,23 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isService) {
-            const postMessageButtons = (
-                <PostMessageButtons
-                    showNumberOfComments={this.props.showNumberOfComments}
-                    isModal={!!this.props.isModal}
-                    isComment={!!this.props.isComment}
-                    onlyLikes={!!this.props.onlyLikes}
-                    isChannel={this.props.isChannel}
-                    message={this.props.message}
-                    onCommentReplyClick={onCommentReplyClick}
-                    onCommentEditClick={onCommentEditClick}
-                    onCommentDeleteClick={onCommentDeleteClick}
-                    conversationId={this.props.conversationId}
-                    me={this.props.me}
-                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
-                    usernameOfRepliedUser={usernameOfRepliedUser}
-                />
-            );
+            const postMessageButtons =
+                isEditView && !!this.props.isComment ? null : (
+                    <PostMessageButtons
+                        deleted={this.props.deleted}
+                        showNumberOfComments={this.props.showNumberOfComments}
+                        isModal={!!this.props.isModal}
+                        isComment={!!this.props.isComment}
+                        onlyLikes={!!this.props.onlyLikes}
+                        isChannel={this.props.isChannel}
+                        message={this.props.message}
+                        conversationId={this.props.conversationId}
+                        me={this.props.me}
+                        onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        usernameOfRepliedUser={usernameOfRepliedUser}
+                        commentProps={commentProps}
+                    />
+                );
 
             return (
                 <DesktopMessageContainer
@@ -466,7 +482,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
                     isModal={this.props.isModal}
-                    isChannel={this.props.isChannel}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     message={this.props.message}
@@ -477,6 +492,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     sender={message.sender}
                     senderNameEmojify={message.senderNameEmojify}
                     selected={!!selected}
+                    selectMessage={this.selectMessage}
+                    room={this.props.room}
+                    isEditView={isEditView}
+                    isEdited={!!this.props.message.isEdited}
                 >
                     {content}
                     {postMessageButtons}

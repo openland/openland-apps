@@ -1,6 +1,6 @@
 mutation ConferenceAnswer($answer: String!, $id: ID!, $ownPeerId: ID!, $peerId: ID!) {
   peerConnectionAnswer(answer: $answer, id: $id, ownPeerId: $ownPeerId, peerId: $peerId) {
     __typename
-    ...ConferenceFull
+    ...ConferenceShort
   }
 }

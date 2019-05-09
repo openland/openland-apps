@@ -11,7 +11,6 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { RoomMembersPaginated } from 'openland-api/Types';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
@@ -74,14 +73,12 @@ export const AdminTools = (props: { id: string; variables: { id: string } }) => 
 
     return (
         <>
-            {data &&
-                data.roomSuper && (
-                    <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
-                )}
-            {data &&
-                data.roomSuper && (
-                    <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
-                )}
+            {data && data.roomSuper && (
+                <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
+            )}
+            {data && data.roomSuper && (
+                <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
+            )}
         </>
     );
 };
@@ -93,6 +90,8 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     const canEdit = chat.canEdit;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
+    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -181,6 +180,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 description={chat.description}
                                 photo={chat.photo}
                                 socialImage={chat.socialImage}
+                                isChannel={isChannel}
                             />
                         </>
                     )}
@@ -373,20 +373,19 @@ const MembersProvider = ({
 
         return (
             <Section separator={0} flexGrow={1}>
-                {isOwner &&
-                    (requests || []).length > 0 && (
-                        <XSwitcher style="button">
-                            <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
-                                Members
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'requests', value: '1' }}
-                                counter={requests!.length}
-                            >
-                                Requests
-                            </XSwitcher.Item>
-                        </XSwitcher>
-                    )}
+                {isOwner && (requests || []).length > 0 && (
+                    <XSwitcher style="button">
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
+                            Members
+                        </XSwitcher.Item>
+                        <XSwitcher.Item
+                            query={{ field: 'requests', value: '1' }}
+                            counter={requests!.length}
+                        >
+                            Requests
+                        </XSwitcher.Item>
+                    </XSwitcher>
+                )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}

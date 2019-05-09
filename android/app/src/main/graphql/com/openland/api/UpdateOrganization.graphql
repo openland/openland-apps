@@ -1,6 +1,0 @@
-mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
-  updateOrganizationProfile(id: $organizationId, input: $input) {
-    __typename
-    ...OrganizationProfileFull
-  }
-}
