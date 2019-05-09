@@ -316,7 +316,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageTextComponentSpanned
-                                    spannedString={message.textSpannedString!}
+                                    spans={message.textSpans!}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
                                     deleted={this.props.deleted}

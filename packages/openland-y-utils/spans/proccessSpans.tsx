@@ -25,7 +25,7 @@ const _convertServerSpan = (text: string, s: ServerSpan): Span => {
         span = { offset, length, type: 'link', link: s.url };
     } else if (s.__typename === 'MessageSpanUserMention') {
         // spanText = spanText.replace('@', '');
-        span = { offset, length, type: 'mention_user', name: s.user.name, id: s.user.id }
+        span = { offset, length, type: 'mention_user', user: s.user }
     } else if (s.__typename === 'MessageSpanRoomMention') {
         span = { offset, length, type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
@@ -95,15 +95,17 @@ const _addTextSpans = (text: string, deltaOffset: number, spans: Span[]): Span[]
     let offset = 0;
 
     for (let s of spans) {
-        let raw = text.substr(offset, (s.offset - deltaOffset) - offset);
-        if (raw) {
-            res.push(..._preprocessRawText(raw, offset + deltaOffset));
+        let rawFirst = text.substr(offset, (s.offset - deltaOffset) - offset);
+
+        if (rawFirst) {
+            res.push(..._preprocessRawText(rawFirst, offset + deltaOffset));
         }
 
         offset = (s.offset - deltaOffset) + s.length;
     }
 
     let rawLast = text.slice(offset);
+
     res.push(..._preprocessRawText(rawLast, offset + deltaOffset));
 
     return res;
@@ -134,12 +136,10 @@ const _recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
     return res;
 }
 
-export const processSpans = (text: string, spans: ServerSpan[]): Span[] => {
-    console.clear();
-
+export const processSpans = (text: string, spans?: ServerSpan[]): Span[] => {
     let res: Span[] = [];
 
-    let sortedSpans = spans.sort((a, b) => ((a.offset - b.offset) * 100000) + (b.length - a.length));
+    let sortedSpans = (spans || []).sort((a, b) => ((a.offset - b.offset) * 100000) + (b.length - a.length));
     let rootSpan = [{ offset: 0, length: text.length }];
 
     spans = [...rootSpan as any, ...sortedSpans];
