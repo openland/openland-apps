@@ -29,7 +29,15 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
 const handleNoSpans = (text: string, disableBig?: boolean): Span => {
     const { text: rootText, type: rootType } = checkSpanRootSize(text);
 
-    if (rootType !== 'text' && !disableBig) {
+    if (disableBig) {
+        return ({
+            type: 'text',
+            offset: 0,
+            length: rootText.length,
+            textRaw: rootText,
+            text: TextRenderProccessor.emojify(rootText)
+        });
+    } else {
         return ({
             type: rootType as any,
             offset: 0,
@@ -41,14 +49,6 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
                 textRaw: text,
                 text: TextRenderProccessor.emojify(rootText, true)
             }]
-        });
-    } else {
-        return ({
-            type: 'text',
-            offset: 0,
-            length: rootText.length,
-            textRaw: rootText,
-            text: TextRenderProccessor.emojify(rootText)
         });
     }
 }
