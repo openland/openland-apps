@@ -6,11 +6,14 @@ export async function delayForewer() {
     return new Promise(resolver => { /*Do nothing*/ });
 }
 
-export async function backoff<T>(callback: () => Promise<T>): Promise<T> {
+export async function backoff<T>(callback: () => Promise<T>, repeat?: number): Promise<T> {
     while (true) {
         try {
             return await callback();
         } catch (e) {
+            if (repeat !== undefined && !repeat--) {
+                throw (e);
+            }
             console.warn(e);
             await delay(1000);
         }
