@@ -14,7 +14,6 @@ XStyleFactoryRegistry.registerFactory({
 import './_app.css';
 import './init';
 import '../globals';
-import { XView } from 'react-mental';
 import React from 'react';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
@@ -32,47 +31,6 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
-import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XRouter } from 'openland-x-routing/XRouter';
-import { XShortcutsRoot } from 'openland-x/XShortcuts';
-import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
-
-const TestWrapper = ({ children }: { children: any }) => {
-    const router = React.useContext(XRouterContext) as XRouter;
-    return (
-        <React.Suspense fallback={<div />}>
-            <XShortcutsRoot>
-                <MessageStateProviderComponent router={router}>
-                    {children}
-                </MessageStateProviderComponent>
-            </XShortcutsRoot>
-        </React.Suspense>
-    );
-};
-
-const TestCommentsComponent = () => {
-    return (
-        <TestWrapper>
-            <CommentsModalInnerNoRouter
-                messageId="0DkElrP40mfJe1JbL0aXCWKa30"
-                roomId="1pm4Xrl3BpiDaQgayqAbuK1gDj"
-            />
-        </TestWrapper>
-    );
-};
-
-const TestMessengerComponent = () => {
-    return (
-        <TestWrapper>
-            <IsActiveContext.Provider value={true}>
-                <MessengerFragment id={'1pm4Xrl3BpiDaQgayqAbuK1gDj'} isActive />
-            </IsActiveContext.Provider>
-        </TestWrapper>
-    );
-};
 
 export default withData(
     class MyApp extends App<{
@@ -143,16 +101,13 @@ export default withData(
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
-                                                <XView justifyContent="center" width="50%">
+                                                {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
                                                 </XView>
                                                 <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
-                                                </XView>
-                                                {/* <Component {...pageProps} /> */}
-                                                {/* <TestCommentMessageComponent /> */}
-                                                {/* <TestInlineEditMessageComponent /> */}
-                                                {/* <TestInlineEditCommentComponent /> */}
+                                                </XView> */}
+                                                <Component {...pageProps} />
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>

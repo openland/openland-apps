@@ -47,7 +47,6 @@ const FileItem = Glamorous(XHorizontal)({
     lineHeight: 1.54,
     fontWeight: 500,
     color: '#000',
-    paddingLeft: 14,
     paddingRight: 14,
     '& .remove': {
         marginTop: 1,
@@ -74,7 +73,7 @@ const FileImage = Glamorous.div({
 });
 
 export const FileUploader = () => {
-    const { file, fileSrc, fileName, fileRemover } = React.useContext(UploadContext);
+    const { fileSrc, fileName, fileRemover, fileSize } = React.useContext(UploadContext);
 
     return (
         <>
@@ -86,12 +85,12 @@ export const FileUploader = () => {
                     </CoverDelButton>
                 </CoverWrapper>
             )}
-            {file && fileName && (
+            {fileName && fileSize && (
                 <FileItem key={'file' + fileName} separator={4} alignItems="center">
                     <FileImage />
                     <XHorizontal alignItems="center" separator={4}>
                         <div>
-                            {fileName} <span>•</span> {niceBytes(Number((file as any).size))}
+                            {fileName} <span>•</span> {niceBytes(fileSize)}
                         </div>
                         <XHorizontal alignItems="center" className="remove" onClick={fileRemover}>
                             <RemoveIcon />

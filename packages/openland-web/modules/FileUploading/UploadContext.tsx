@@ -8,20 +8,24 @@ export interface ContextT {
     file: FileT;
     fileSrc: FileSrcT;
     fileId?: string | null;
+    fileSize?: number | null;
     fileName: FileNameT;
     fileRemover: () => void;
     handleDrop: (file: any) => void;
-    handleSetFileId: (fileId: string) => void;
+    handleSetImage: (a: { fileId: string }) => void;
+    handleSetFile: (a: { fileId: string; fileName: string; fileSize: number }) => void;
 }
 
 export const UploadContext = React.createContext<ContextT>({
     file: undefined,
     fileSrc: undefined,
     fileId: undefined,
+    fileSize: undefined,
     fileName: undefined,
     fileRemover: () => null,
     handleDrop: () => null,
-    handleSetFileId: () => null,
+    handleSetImage: () => null,
+    handleSetFile: () => null,
 });
 
 export class UploadContextProvider extends React.Component<any, ContextT> {
@@ -33,16 +37,34 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             fileSrc: null,
             fileName: null,
             fileId: null,
+            fileSize: null,
             fileRemover: this.fileRemover,
             handleDrop: this.handleDrop,
-            handleSetFileId: this.handleSetFileId,
+            handleSetImage: this.handleSetImage,
+            handleSetFile: this.handleSetFile,
         };
     }
 
-    private handleSetFileId = (fileId: string) => {
+    private handleSetImage = ({ fileId }: { fileId: string }) => {
         this.setState({
             fileSrc: `https://ucarecdn.com/${fileId}/`,
             fileId: fileId,
+        });
+    };
+
+    private handleSetFile = ({
+        fileId,
+        fileName,
+        fileSize,
+    }: {
+        fileId: string;
+        fileName: string;
+        fileSize: number;
+    }) => {
+        this.setState({
+            fileId,
+            fileName,
+            fileSize,
         });
     };
 
@@ -54,6 +76,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
                 this.setState({
                     file: droppedFile,
                     fileSrc: reader.result as any,
+                    fileSize: droppedFile.size,
                     fileName: null,
                     fileId: null,
                 });
@@ -61,6 +84,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
                 this.setState({
                     file: droppedFile,
                     fileSrc: null,
+                    fileSize: droppedFile.size,
                     fileId: null,
                     fileName: droppedFile.name,
                 });
@@ -74,6 +98,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             fileSrc: null,
             fileName: null,
             fileId: null,
+            fileSize: null,
         });
     };
 
