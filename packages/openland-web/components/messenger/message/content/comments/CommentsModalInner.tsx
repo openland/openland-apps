@@ -27,6 +27,9 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
+import { showModalBox } from 'openland-x/showModalBox';
+import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
+import { XShortcutsRoot } from 'openland-x/XShortcuts';
 
 const CommentView = ({
     originalMessageId,
@@ -476,15 +479,19 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    router.pushQuery('comments', `${messageId}&${conversationId}`);
-    // showModalBox(
-    //     {
-    //         width: 800,
-    //     },
-    //     () => (
-    //         <UploadContextProvider>
-    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-    //         </UploadContextProvider>
-    //     ),
-    // );
+    // router.pushQuery('comments', `${messageId}&${conversationId}`);
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => (
+            <UploadContextProvider>
+                <XShortcutsRoot>
+                    <MessageStateProviderComponent router={router}>
+                        <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+                    </MessageStateProviderComponent>
+                </XShortcutsRoot>
+            </UploadContextProvider>
+        ),
+    );
 };
