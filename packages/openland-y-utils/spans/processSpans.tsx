@@ -26,10 +26,10 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
     return res;
 }
 
-const handleNoSpans = (text: string): Span => {
+const handleNoSpans = (text: string, disableBig?: boolean): Span => {
     const { text: rootText, size: rootSize } = checkSpanRootSize(text);
 
-    if (rootSize === 'big') {
+    if (rootSize === 'big' && !disableBig) {
         return ({
             type: 'loud',
             offset: 0,
@@ -39,7 +39,7 @@ const handleNoSpans = (text: string): Span => {
                 offset: 0,
                 length: rootText.length,
                 textRaw: text,
-                text: TextRenderProccessor.process(rootText, true)
+                text: TextRenderProccessor.emojify(rootText, true)
             }]
         });
     } else {
@@ -48,16 +48,16 @@ const handleNoSpans = (text: string): Span => {
             offset: 0,
             length: rootText.length,
             textRaw: rootText,
-            text: TextRenderProccessor.process(rootText)
+            text: TextRenderProccessor.emojify(rootText)
         });
     }
 }
 
-export const processSpans = (text: string, spans?: ServerSpan[]): Span[] => {
+export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: boolean): Span[] => {
     let res: Span[] = [];
 
     if (text.length > 0 && (!spans || spans.length === 0)) {
-        res.push(handleNoSpans(text));
+        res.push(handleNoSpans(text, disableBig));
     } else {
         let sortedSpans = (spans || []).sort((a, b) => ((a.offset - b.offset) * 100000) + (b.length - a.length));
         let rootSpan = [{ offset: 0, length: text.length }];

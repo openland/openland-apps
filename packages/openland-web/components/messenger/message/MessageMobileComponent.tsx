@@ -137,15 +137,14 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             if (message.isService) {
                 content.push(
                     <ServiceMessageComponent
-                        spans={message.textSpans || []}
+                        spans={message.textSpans}
                         key={'service_message'}
                     />,
                 );
             } else {
                 content.push(
                     <MessageTextComponent
-                        message={message.text || ''}
-                        spans={message.spans}
+                        spans={message.textSpans}
                         key={'text'}
                         isEdited={!!message.isEdited}
                     />,
@@ -225,8 +224,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.text && message.text.length > 0) {
             content.push(
                 <MessageTextComponent
-                    message={message.text}
-                    spans={message.spans}
+                    spans={message.textSpans}
                     key={'text'}
                     isService={false}
                     isEdited={!!message.isEdited}

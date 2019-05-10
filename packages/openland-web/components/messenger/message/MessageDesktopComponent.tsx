@@ -390,8 +390,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             if (message.text && message.text.length > 0) {
                 content.push(
                     <MessageTextComponent
-                        message={message.text}
-                        spans={message.spans}
+                        spans={message.textSpans}
                         key={'text' + message.id}
                         isService={false}
                         isEdited={!!message.isEdited}
@@ -432,7 +431,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (content.length === 0) {
             content.push(
                 <MessageTextComponent
-                    message={''}
                     spans={[]}
                     key={'text' + message.id}
                     isService={false}

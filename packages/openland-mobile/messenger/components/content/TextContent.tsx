@@ -4,10 +4,10 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
-import { preprocessSpans } from 'openland-y-utils/SpansProcessor';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { AppTheme } from 'openland-mobile/themes/themes';
+
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -18,25 +18,14 @@ interface TextContentProps {
     fontStyle?: 'italic' | 'normal';
     theme: AppTheme;
 }
+
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        let mainTextColor = this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
+        const { message, theme, onUserPress, onGroupPress } = this.props;
 
-        let singleEmoji = false;
-        let textSticker = false;
-        if (this.props.message.text) {
-            singleEmoji = isEmoji(this.props.message.text);
-            textSticker = (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
-        }
-        let big = singleEmoji || textSticker;
+        let mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
+        let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress);
 
-        let message = this.props.message;
-        if (textSticker) {
-            message = { ...message, text: message.text!.slice(1, message.text!.length - 1) };
-        }
-        let preprocessed = preprocessSpans(message.text || '', message.spans);
-
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress));
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
@@ -44,18 +33,19 @@ export class TextContent extends React.PureComponent<TextContentProps> {
 
         return (
             <>
-                {!!message.text && <ASText
-                    key={'text-' + mainTextColor}
-                    color={mainTextColor}
-                    lineHeight={big ? 28 : undefined}
-                    letterSpacing={-0.3}
-                    fontSize={big ? 26 : 16}
-                    fontWeight={big ? TextStyles.weight.medium : TextStyles.weight.regular}
-                    fontStyle={this.props.fontStyle}
-                >
-                    {parts}
-                    {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
-                </ASText>}
+                {!!message.text && (
+                    <ASText
+                        key={'text-' + mainTextColor}
+                        color={mainTextColor}
+                        letterSpacing={-0.3}
+                        fontSize={16}
+                        fontWeight={TextStyles.weight.regular}
+                        fontStyle={this.props.fontStyle}
+                    >
+                        {parts}
+                        {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
+                    </ASText>
+                )}
             </>
         )
     }

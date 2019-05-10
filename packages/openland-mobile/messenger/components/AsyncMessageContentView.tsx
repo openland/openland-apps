@@ -12,7 +12,6 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
-import { Span } from 'openland-y-utils/SpansProcessor';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
@@ -20,6 +19,8 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
+import { renderSpans } from 'openland-y-utils/spans/renderSpans';
+import { Span } from 'openland-y-utils/spans/Span';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
@@ -34,38 +35,46 @@ interface AsyncMessageTextViewProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 
-export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, theme: AppTheme, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
-    if (v.type === 'new_line') {
-        return <ASText key={'br-' + i} >{'\n'}</ASText>;
-    } else if (v.type === 'link') {
-        return <ASText key={'link-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(v.link, async () => await Linking.openURL(v.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
-    } else if (v.type === 'mention_user') {
-        return <ASText key={'mention-user-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
-    } else if (v.type === 'mention_room') {
-        return <ASText key={'mention-room-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
-    } else if (v.type === 'mention_users') {
-        return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />;
-    } else if (v.type === 'bold') {
-        return <ASText key={'text-bold-' + i} fontWeight={TextStyles.weight.bold}>{v.text}</ASText>;
-    } else if (v.type === 'date') {
-        return <ASText key={'date-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(v.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
-    } else if (v.type === 'code_block') {
-        return <ASText key={'code-block-' + i}>{v.text}</ASText>;
-    } else if (v.type === 'code_inline') {
-        return <ASText key={'code-inline-' + i}>{v.text}</ASText>;
-    } else if (v.type === 'insane') {
-        return <ASText key={'insane-' + i}>{v.text}</ASText>;
-    } else if (v.type === 'irony') {
-        return <ASText key={'irony-' + i}>{v.text}</ASText>;
-    } else if (v.type === 'italic') {
-        return <ASText key={'italic-' + i} fontStyle="italic">{v.text}</ASText>;
-    } else if (v.type === 'loud') {
-        return <ASText key={'loud-' + i} fontSize={26} lineHeight={28} fontWeight={TextStyles.weight.medium}>{v.text}</ASText>;
-    } else if (v.type === 'rotating') {
-        return <ASText key={'rotating-' + i}>{v.text}</ASText>;
-    } else {
-        return <ASText key={'text-' + i}>{v.text}</ASText>;
+export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: AppTheme, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
+    const SpanView = (props: { span: Span, children?: any }) => {
+        const { span, children } = props;
+
+        if (span.type === 'link') {
+            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+        } else if (span.type === 'mention_user') {
+            return <ASText key={'mention-user'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+        } else if (span.type === 'mention_room') {
+            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+        } else if (span.type === 'mention_users') {
+            return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
+        } else if (span.type === 'bold') {
+            return <ASText key={'bold'} fontSize={16} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
+        } else if (span.type === 'date') {
+            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+        } else if (span.type === 'code_block') {
+            return <ASText key={'code-block'}>{children}</ASText>;
+        } else if (span.type === 'code_inline') {
+            return <ASText key={'code-inline'}>{children}</ASText>;
+        } else if (span.type === 'insane') {
+            return <ASText key={'insane'}>{children}</ASText>;
+        } else if (span.type === 'irony') {
+            return <ASText key={'irony'}>{children}</ASText>;
+        } else if (span.type === 'italic') {
+            return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
+        } else if (span.type === 'loud') {
+            return <ASText key={'loud'} fontSize={26} lineHeight={28} fontWeight={TextStyles.weight.medium}>{children}</ASText>;
+        } else if (span.type === 'rotating') {
+            return <ASText key={'rotating'}>{children}</ASText>;
+        } else if (span.type === 'new_line') {
+            return <ASText key={'br'} >{'\n'}</ASText>;
+        } else if (span.type === 'text') {
+            return <ASText key={'text'}>{span.text}</ASText>;
+        }
+    
+        return props.children ? <span>{props.children}</span> : null;
     }
+    
+    return renderSpans(SpanView, spans) || [];
 }
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {

@@ -6,7 +6,6 @@ import { XVertical2 } from 'openland-x/XVertical2';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
-import { preprocessSpans } from 'openland-y-utils/SpansProcessor';
 import { prepareLegacySpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
@@ -39,10 +38,7 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
                     <XTitle>Parsed:</XTitle>
                     {data.spans.map((s, i) => <div key={'parsed-span-' + i}>{JSON.stringify(s)}</div>)}
 
-                    <XTitle>Processed (Legacy):</XTitle>
-                    {preprocessSpans(data.text, data.spans).map((s, i) => <div key={'processed-span-' + i}>{JSON.stringify(s)}</div>)}
-
-                    <XTitle>Processed (with childs):</XTitle>
+                    <XTitle>Processed:</XTitle>
                     {processSpans(data.text, data.spans).map((s, i) => <div key={'processed-span-' + i}>{JSON.stringify(s)}</div>)}
                 </XVertical2>
             </XContent>

@@ -28,6 +28,7 @@ import { MessageReplyComponent } from 'openland-web/components/messenger/message
 import { XLink } from 'openland-x/XLink';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const ReplyMessageWrapper = Glamorous.div({
     position: 'relative',
@@ -260,8 +261,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
             <XView marginTop={12}>
                 {message && (
                     <MessageTextComponent
-                        spans={pinMessage.spans}
-                        message={message}
+                        spans={processSpans(message, pinMessage.spans)}
                         isEdited={false}
                     />
                 )}
@@ -419,8 +419,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                 <XView fontSize={14} cursor="pointer">
                                     {pinMessage.message && (
                                         <MessageTextComponent
-                                            spans={pinMessage.spans}
-                                            message={pinMessage.message}
+                                            spans={processSpans(pinMessage.message, pinMessage.spans, true)}
                                             isEdited={false}
                                             asPinMessage={true}
                                             shouldCrop

@@ -248,6 +248,8 @@ const SpanView = React.memo<{ span: Span, children?: any }>(props => {
 });
 
 export const SpannedView = React.memo<{ spans: Span[] }>(props => {
+    console.warn('boom', props.spans);
+
     return (
         <>
             {renderSpans(SpanView, props.spans)}
