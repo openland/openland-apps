@@ -4222,7 +4222,7 @@
 			"rootType": "Mutation",
 			"variables": [
 				{
-					"name": "roomId",
+					"name": "chatId",
 					"type": "ID!"
 				},
 				{
@@ -4235,21 +4235,33 @@
 				},
 				{
 					"name": "mentions",
-					"type": "[ID!]"
+					"type": "[MentionInput!]"
+				},
+				{
+					"name": "fileAttachments",
+					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
+				},
+				{
+					"name": "repeatKey",
+					"type": "String"
 				}
 			],
-			"source": "mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages, mentions: $mentions)\n}",
+			"source": "mutation ReplyMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  replyMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}",
 			"fields": [
 				{
 					"responseName": "replyMessage",
-					"fieldName": "betaMessageSend",
+					"fieldName": "sendMessage",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "room",
+							"name": "chatId",
 							"value": {
 								"kind": "Variable",
-								"variableName": "roomId"
+								"variableName": "chatId"
 							},
 							"type": "ID!"
 						},
@@ -4275,7 +4287,31 @@
 								"kind": "Variable",
 								"variableName": "mentions"
 							},
-							"type": "[ID!]"
+							"type": "[MentionInput!]"
+						},
+						{
+							"name": "fileAttachments",
+							"value": {
+								"kind": "Variable",
+								"variableName": "fileAttachments"
+							},
+							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
+						},
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
 						}
 					],
 					"isConditional": false,
@@ -4285,8 +4321,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages, mentions: $mentions)\n}",
-			"operationId": "7927631678ed8656eab5d1de4a4837f87a0e6f0af2734f8e377fb2e5974ff944"
+			"sourceWithFragments": "mutation ReplyMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  replyMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}",
+			"operationId": "9db24e9080723af93e14c99f0276d800415c36e54d5b7854a556180e4e5ae2e4"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",

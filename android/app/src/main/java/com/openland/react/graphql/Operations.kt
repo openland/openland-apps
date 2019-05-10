@@ -2254,7 +2254,7 @@ private val RegisterWebPushSelector = obj(listOf(
             field("registerWebPush","registerWebPush", mapOf("endpoint" to refValue("endpoint")), notNull(scalar("String")))
         ))
 private val ReplyMessageSelector = obj(listOf(
-            field("betaMessageSend","replyMessage", mapOf("mentions" to refValue("mentions"), "message" to refValue("message"), "replyMessages" to refValue("replyMessages"), "room" to refValue("roomId")), notNull(scalar("Boolean")))
+            field("sendMessage","replyMessage", mapOf("chatId" to refValue("chatId"), "fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val ReportOnlineSelector = obj(listOf(
             field("presenceReportOnline","presenceReportOnline", mapOf("active" to refValue("active"), "platform" to refValue("platform"), "timeout" to intValue(5000)), notNull(scalar("String")))
@@ -3333,7 +3333,7 @@ object Operations {
     val ReplyMessage = object: OperationDefinition {
         override val name = "ReplyMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ReplyMessage(\$mentions:[ID!],\$message:String,\$replyMessages:[ID!],\$roomId:ID!){replyMessage:betaMessageSend(mentions:\$mentions,message:\$message,replyMessages:\$replyMessages,room:\$roomId)}"
+        override val body = "mutation ReplyMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){replyMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = ReplyMessageSelector
     }
     val ReportOnline = object: OperationDefinition {

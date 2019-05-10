@@ -8646,29 +8646,35 @@ public final class SendMessageMutation: GraphQLMutation {
 
 public final class ReplyMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages, mentions: $mentions)\n}"
+    "mutation ReplyMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  replyMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}"
 
-  public var roomId: GraphQLID
+  public var chatId: GraphQLID
   public var message: String?
   public var replyMessages: [GraphQLID]?
-  public var mentions: [GraphQLID]?
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
+  public var repeatKey: String?
 
-  public init(roomId: GraphQLID, message: String? = nil, replyMessages: [GraphQLID]?, mentions: [GraphQLID]?) {
-    self.roomId = roomId
+  public init(chatId: GraphQLID, message: String? = nil, replyMessages: [GraphQLID]?, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?, repeatKey: String? = nil) {
+    self.chatId = chatId
     self.message = message
     self.replyMessages = replyMessages
     self.mentions = mentions
+    self.fileAttachments = fileAttachments
+    self.spans = spans
+    self.repeatKey = repeatKey
   }
 
   public var variables: GraphQLMap? {
-    return ["roomId": roomId, "message": message, "replyMessages": replyMessages, "mentions": mentions]
+    return ["chatId": chatId, "message": message, "replyMessages": replyMessages, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans, "repeatKey": repeatKey]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaMessageSend", alias: "replyMessage", arguments: ["room": GraphQLVariable("roomId"), "message": GraphQLVariable("message"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("sendMessage", alias: "replyMessage", arguments: ["chatId": GraphQLVariable("chatId"), "message": GraphQLVariable("message"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans"), "repeatKey": GraphQLVariable("repeatKey")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap

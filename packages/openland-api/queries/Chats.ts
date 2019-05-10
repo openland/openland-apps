@@ -514,12 +514,23 @@ export const SendMessageMutation = gql`
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {
-        replyMessage: betaMessageSend(
-            room: $roomId
+    mutation ReplyMessage(
+        $chatId: ID!
+        $message: String
+        $replyMessages: [ID!]
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+        $repeatKey: String
+    ) {
+        replyMessage: sendMessage(
+            chatId: $chatId
             message: $message
             replyMessages: $replyMessages
             mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+            repeatKey: $repeatKey
         )
     }
 `;

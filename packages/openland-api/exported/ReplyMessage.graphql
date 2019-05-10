@@ -1,3 +1,3 @@
-mutation ReplyMessage($mentions: [ID!], $message: String, $replyMessages: [ID!], $roomId: ID!) {
-  replyMessage: betaMessageSend(mentions: $mentions, message: $message, replyMessages: $replyMessages, room: $roomId)
+mutation ReplyMessage($chatId: ID!, $fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $repeatKey: String, $replyMessages: [ID!], $spans: [MessageSpanInput!]) {
+  replyMessage: sendMessage(chatId: $chatId, fileAttachments: $fileAttachments, mentions: $mentions, message: $message, repeatKey: $repeatKey, replyMessages: $replyMessages, spans: $spans)
 }

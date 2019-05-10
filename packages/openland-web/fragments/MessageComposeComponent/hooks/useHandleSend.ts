@@ -10,6 +10,7 @@ import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
+import { findSpans } from 'openland-y-utils/findSpans';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -111,10 +112,11 @@ export function useHandleSend({
                 mentions = inputMethodsState.getMentions().map((user: any) => user);
             }
             await replyMessage({
-                roomId: conversationId!!,
+                chatId: conversationId!!,
                 message: inputValue,
-                mentions: mentions.map(m => m.user.id),
+                mentions: mentions,
                 replyMessages: finalQuoteMessagesId,
+                spans: findSpans(inputValue)
             });
         } else if (onSend && (inputValue || uploadedFileKey)) {
             if (inputMethodsState) {

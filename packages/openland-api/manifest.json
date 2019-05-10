@@ -345,10 +345,10 @@
       }
     },
     {
-      "signature": "8faa4e310894cc319bcd0dd2eb69a7aa5e539a66789e8e3f72425473a8c0d4a8",
-      "document": "mutation ReplyMessage($mentions:[ID!],$message:String,$replyMessages:[ID!],$roomId:ID!){replyMessage:betaMessageSend(mentions:$mentions,message:$message,replyMessages:$replyMessages,room:$roomId)}",
+      "signature": "d96facf6a9ca5357d31bcb4cb138889f57b0a53707a1816665b5630a35f79a26",
+      "document": "mutation ReplyMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){replyMessage:sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}",
       "metadata": {
-        "engineSignature": "mutation ReplyMessage($mentions:[ID!],$message:String,$replyMessages:[ID!],$roomId:ID!){betaMessageSend(mentions:$mentions,message:$message,replyMessages:$replyMessages,room:$roomId)}"
+        "engineSignature": "mutation ReplyMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}"
       }
     },
     {

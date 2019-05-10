@@ -2220,11 +2220,14 @@ class ApiFactory: ApiFactoryBase {
       return
     }
     if (name == "ReplyMessage") {
-      let roomId = notNull(readString(src, "roomId"))
+      let chatId = notNull(readString(src, "chatId"))
       let message = readString(src, "message")
       let replyMessages = notNullListItems(readStringList(src, "replyMessages"))
-      let mentions = notNullListItems(readStringList(src, "mentions"))
-      let requestBody = ReplyMessageMutation(roomId: roomId, message: message, replyMessages: replyMessages, mentions: mentions)
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let spans = notNullListItems(readMessageSpanInputList(src, "spans"))
+      let repeatKey = readString(src, "repeatKey")
+      let requestBody = ReplyMessageMutation(chatId: chatId, message: message, replyMessages: replyMessages, mentions: mentions, fileAttachments: fileAttachments, spans: spans, repeatKey: repeatKey)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)

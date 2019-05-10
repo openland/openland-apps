@@ -19942,10 +19942,13 @@ export interface ReplyMessage {
 }
 
 export interface ReplyMessageVariables {
-  roomId: string;
+  chatId: string;
   message?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
+  repeatKey?: string | null;
 }
 
 /* tslint:disable */
