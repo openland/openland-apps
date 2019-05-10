@@ -14,6 +14,14 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { XView } from 'react-mental';
 import { CommentPropsT } from '../PostMessageButtons';
+import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
+import { FileUploader } from 'openland-web/modules/FileUploading/FileUploader';
+import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
+
+import {
+    uploadFile,
+    getUploadCareFile,
+} from 'openland-web/components/messenger/message/content/comments/useSendMethods';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -84,7 +92,6 @@ class XRichTextInputStored extends React.PureComponent<
                 {...other}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
-                hideAttachments
                 value={value.text}
                 initialMentions={this.props.initialMentions}
                 getMentionsSuggestions={this.props.getMentionsSuggestions}
@@ -149,6 +156,9 @@ type EditMessageInlineT = {
     key: string;
     message: DataSourceMessageItem & { depth?: number };
     onClose: (event?: React.MouseEvent) => void;
+    variables: {
+        roomId: string;
+    };
 };
 
 const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) => void }) => {
@@ -162,19 +172,9 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
     );
 };
 
-export const EditMessageInline = ({
-    commentProps,
-    key,
-    variables,
-    message,
-    onClose,
-    isComment,
-    minimal,
-}: EditMessageInlineT & {
-    variables: {
-        roomId: string;
-    };
-}) => {
+const EditMessageInlineInner = (props: EditMessageInlineT) => {
+    const { file } = React.useContext(UploadContext);
+    const { commentProps, key, variables, message, onClose, isComment, minimal } = props;
     const client = useClient();
 
     const getMentionsSuggestions = async () => {
@@ -185,15 +185,28 @@ export const EditMessageInline = ({
 
     const onFormSubmit = async (data: any) => {
         if (isComment) {
+            let res = null;
+            if (file) {
+                res = await uploadFile({ file: getUploadCareFile(file) });
+            }
+
             await client.mutateEditComment({
                 id: message.id!!,
                 message: data.message.text,
-                mentions: data.message.mentions.map((mention: UserWithOffset) => ({
-                    userId: mention.user.id,
-                    offset: mention.offset,
-                    length: mention.length,
-                })),
-                fileAttachments: [],
+                mentions: data.message.mentions
+                    ? data.message.mentions.map((mention: UserWithOffset) => ({
+                          userId: mention.user.id,
+                          offset: mention.offset,
+                          length: mention.length,
+                      }))
+                    : null,
+                fileAttachments: res
+                    ? [
+                          {
+                              fileId: res,
+                          },
+                      ]
+                    : [],
             });
 
             await client.refetchMessageComments({
@@ -223,6 +236,11 @@ export const EditMessageInline = ({
                     ESC: 'esc',
                 }}
             >
+                {file && (
+                    <XView marginBottom={12}>
+                        <FileUploader />
+                    </XView>
+                )}
                 <XForm
                     defaultAction={onFormSubmit}
                     defaultData={{
@@ -231,7 +249,7 @@ export const EditMessageInline = ({
                         },
                     }}
                 >
-                    <XView marginLeft={-15}>
+                    <XView marginLeft={isComment ? -15 : 0}>
                         <TextInputWrapper>
                             <XTextInput
                                 onSubmit={onFormSubmit}
@@ -258,5 +276,13 @@ export const EditMessageInline = ({
                 {minimal && <PressEscTipFooter onClose={onClose} />}
             </XShortcuts>
         </React.Fragment>
+    );
+};
+
+export const EditMessageInline = (props: EditMessageInlineT) => {
+    return (
+        <UploadContextProvider>
+            <EditMessageInlineInner {...props} />
+        </UploadContextProvider>
     );
 };

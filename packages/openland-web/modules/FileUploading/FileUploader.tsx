@@ -13,7 +13,6 @@ const CoverWrapper = Glamorous.div({
     display: 'flex',
     width: 60,
     height: 60,
-    marginLeft: 14,
     '& > img': {
         display: 'block',
         minWidth: '100%',

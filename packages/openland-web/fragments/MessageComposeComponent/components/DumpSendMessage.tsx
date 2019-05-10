@@ -12,6 +12,7 @@ import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import Glamorous from 'glamorous';
 import { XThemeDefault } from 'openland-x/XTheme';
+import { XView } from 'react-mental';
 
 const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
     return {
@@ -100,6 +101,7 @@ export const DumpSendMessage = React.memo(
         placeholder,
     }: DumpSendMessageT) => {
         const { handleDrop } = React.useContext(UploadContext);
+
         return (
             <SendMessageWrapper
                 fullWidth={fullWidth}
@@ -116,7 +118,9 @@ export const DumpSendMessage = React.memo(
                                 onCancel={closeEditor}
                             />
                         )}
-                        <FileUploader />
+                        <XView marginLeft={14}>
+                            <FileUploader />
+                        </XView>
                         <TextInputComponent
                             initialMentions={initialMentions}
                             getMentionsSuggestions={getMentionsSuggestions}

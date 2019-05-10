@@ -10,6 +10,7 @@ import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
+import { getUploadCareFile } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -65,17 +66,15 @@ export function useHandleSend({
         return quoteState!!.getQuote();
     };
 
-    const onUploadCareSendFile = async (fileForUc: UploadCare.File) => {
+    const onUploadCareSendFile = async (fileForUc: any) => {
         let uploadedFileKey = undefined;
-        const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
-            uploadedFileKey = await onSendFile(ucFile);
+            uploadedFileKey = await onSendFile(getUploadCareFile(fileForUc));
             dropZoneContext.fileRemover();
         }
 
         return uploadedFileKey;
     };
-
     const closeEditor = () => {
         messagesContext.resetAll();
         setInputValue('');

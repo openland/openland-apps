@@ -526,7 +526,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             {!props.noSelector && selector}
             {preambula}
             {content}
-            {props.isEditView && !!isComment ? null : actions}
+            {props.isEditView || !!isComment ? null : actions}
         </MessageContainerWrapper>
     );
 };

@@ -122,20 +122,17 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    React.useEffect(
-        () => {
-            if (isActive) {
-                const newInputValue = hasReply()
-                    ? draftState.getNextDraft()
-                    : { text: '', mentions: [] };
-                messagesContext.changeForwardConverstion();
-                setInputValue(newInputValue.text);
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [isActive, currentConversationId],
-    );
+    React.useEffect(() => {
+        if (isActive) {
+            const newInputValue = hasReply()
+                ? draftState.getNextDraft()
+                : { text: '', mentions: [] };
+            messagesContext.changeForwardConverstion();
+            setInputValue(newInputValue.text);
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [isActive, currentConversationId]);
 
     const getMentionsSuggestions = async () => {
         return (await messageComposeProps.getMembers()).map(({ user }) => user);
