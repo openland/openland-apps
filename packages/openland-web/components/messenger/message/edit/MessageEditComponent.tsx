@@ -205,7 +205,7 @@ export const EditMessageInline = ({
             await client.mutateEditMessage({
                 messageId: message!!.id!!,
                 message: data.message.text,
-                fileAttachments: [{ fileId: data.message.file }],
+                fileAttachments: data.message.file ? [{ fileId: data.message.file }] : null,
                 replyMessages: data.message.replyMessages,
                 mentions: prepareMentionsToSend(data.message.mentions || []),
                 spans: findSpans(data.message.text || '')
