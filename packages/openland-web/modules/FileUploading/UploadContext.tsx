@@ -7,17 +7,21 @@ type FileNameT = string | null | undefined;
 export interface ContextT {
     file: FileT;
     fileSrc: FileSrcT;
+    fileId?: string | null;
     fileName: FileNameT;
     fileRemover: () => void;
     handleDrop: (file: any) => void;
+    handleSetFileId: (fileId: string) => void;
 }
 
 export const UploadContext = React.createContext<ContextT>({
     file: undefined,
     fileSrc: undefined,
+    fileId: undefined,
     fileName: undefined,
     fileRemover: () => null,
     handleDrop: () => null,
+    handleSetFileId: () => null,
 });
 
 export class UploadContextProvider extends React.Component<any, ContextT> {
@@ -28,10 +32,19 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             file: null,
             fileSrc: null,
             fileName: null,
+            fileId: null,
             fileRemover: this.fileRemover,
             handleDrop: this.handleDrop,
+            handleSetFileId: this.handleSetFileId,
         };
     }
+
+    private handleSetFileId = (fileId: string) => {
+        this.setState({
+            fileSrc: `https://ucarecdn.com/${fileId}/`,
+            fileId: fileId,
+        });
+    };
 
     private handleDrop = (droppedFile: any) => {
         const reader = new FileReader();
@@ -42,11 +55,13 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
                     file: droppedFile,
                     fileSrc: reader.result as any,
                     fileName: null,
+                    fileId: null,
                 });
             } else {
                 this.setState({
                     file: droppedFile,
                     fileSrc: null,
+                    fileId: null,
                     fileName: droppedFile.name,
                 });
             }
@@ -58,6 +73,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             file: null,
             fileSrc: null,
             fileName: null,
+            fileId: null,
         });
     };
 

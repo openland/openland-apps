@@ -173,7 +173,18 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
 };
 
 const EditMessageInlineInner = (props: EditMessageInlineT) => {
-    const { file } = React.useContext(UploadContext);
+    const { file, fileId, fileSrc, handleDrop, handleSetFileId } = React.useContext(UploadContext);
+
+    React.useEffect(() => {
+        if (props.message.attachments && props.message.attachments.length === 1) {
+            const attachment = props.message.attachments[0];
+
+            if (attachment.__typename === 'MessageAttachmentFile' && attachment.filePreview) {
+                handleSetFileId(attachment.fileId);
+            }
+        }
+    }, []);
+
     const { commentProps, key, variables, message, onClose, isComment, minimal } = props;
     const client = useClient();
 
@@ -185,8 +196,8 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
 
     const onFormSubmit = async (data: any) => {
         if (isComment) {
-            let res = null;
-            if (file) {
+            let res = fileId;
+            if (file && !res) {
                 res = await uploadFile({ file: getUploadCareFile(file) });
             }
 
@@ -236,7 +247,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                     ESC: 'esc',
                 }}
             >
-                {file && (
+                {(file || fileSrc) && (
                     <XView marginBottom={12}>
                         <FileUploader />
                     </XView>

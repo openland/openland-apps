@@ -78,7 +78,7 @@ export const FileUploader = () => {
 
     return (
         <>
-            {file && fileSrc && (
+            {fileSrc && (
                 <CoverWrapper>
                     <img src={fileSrc} />
                     <CoverDelButton onClick={fileRemover}>
