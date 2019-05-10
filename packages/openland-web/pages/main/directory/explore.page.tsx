@@ -60,6 +60,7 @@ export default withApp('Explore', 'viewer', () => {
             searchPlaceholder={'Search groups'}
             noQueryText={'All groups'}
             hasQueryText={'Groups'}
+            withoutFeatured
         />
     );
 });
