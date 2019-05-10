@@ -1,5 +1,6 @@
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { emoji } from 'openland-y-utils/emoji';
+import { SpanType } from './Span';
 
 function emojiChecker(messageText: string) {
     if (isEmoji(messageText)) {
@@ -15,19 +16,23 @@ function emojiChecker(messageText: string) {
     return true;
 }
 
-export const checkSpanRootSize = (text: string): { text: string, size: 'default' | 'big' } => {
+interface CheckSpanRootSizeResult {
+    text: string;
+    type: SpanType;
+}
+
+export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
-    let isRotating = text.startsWith('🔄') && text.endsWith('🔄');
-    let isInsane = text.startsWith('🌈') && text.endsWith('🌈');
-    let isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
+    let isRotating = !isOnlyEmoji && text.startsWith('🔄') && text.endsWith('🔄');
+    let isInsane = !isOnlyEmoji && text.startsWith('🌈') && text.endsWith('🌈');
+    let isMouthpiece = !isOnlyEmoji && text.startsWith('📣') && text.endsWith('📣');
+    let isTextSticker = !isOnlyEmoji && text.startsWith(':') && text.endsWith(':');
     let isBig =
         isOnlyEmoji ||
         isInsane ||
         isRotating ||
         isMouthpiece ||
-        (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
-
-    const isTextSticker = !isOnlyEmoji && isBig;
+        isTextSticker;
 
     if (isInsane || isMouthpiece || isRotating) {
         text = text
@@ -38,8 +43,20 @@ export const checkSpanRootSize = (text: string): { text: string, size: 'default'
         text = text.slice(1, text.length - 1);
     }
 
+    let type: SpanType = 'text';
+
+    if (isBig && !isOnlyEmoji) {
+        type = isInsane ? 'insane' : type;
+        type = isRotating ? 'rotating' : type;
+        type = (isTextSticker || isMouthpiece) ? 'loud' : type;
+    }
+
+    if (isBig && isOnlyEmoji) {
+        type = 'loud'
+    }
+
     return {
         text,
-        size: isBig ? 'big' : 'default'
+        type
     };
 };
