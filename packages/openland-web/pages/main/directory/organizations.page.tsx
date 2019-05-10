@@ -90,6 +90,7 @@ export default withApp('Organizations', 'viewer', () => {
             noQueryText={'All organizations'}
             hasQueryText={'Organizations'}
             page={page}
+            withoutFeatured
         />
     );
 });

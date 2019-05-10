@@ -37,9 +37,11 @@ export const CommunitiesCards = (props: CommunitiesCardsProps) => {
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {data.items.edges.map((i, j) => (
-                        <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />
-                    ))}
+                    {data.items.edges
+                        .sort((a, b) => b.node.membersCount - a.node.membersCount)
+                        .map(i => (
+                            <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />
+                        ))}
                     <PagePagination
                         pageInfo={data.items.pageInfo}
                         currentRoute="/directory/communities"
@@ -82,7 +84,13 @@ export default withApp('Communities', 'viewer', () => {
             searchPlaceholder="Search communities"
             noQueryText="Featured communities"
             hasQueryText="Communities"
+            withoutFeatured
             page={page}
+            defaultSortOption="membersCount"
+            sortOptions={{
+                label: 'Sort by',
+                values: [{ label: 'Members count', value: 'membersCount' }],
+            }}
         />
     );
 });

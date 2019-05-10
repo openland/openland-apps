@@ -84,19 +84,21 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -128,6 +130,8 @@ export const DirectoryNavigation = XMemo(
         children,
         withoutFeatured,
         page,
+        defaultSortOption,
+        sortOptions,
     }: {
         title: string;
         id?: string | null;
@@ -139,6 +143,11 @@ export const DirectoryNavigation = XMemo(
         children?: any;
         withoutFeatured?: boolean;
         page?: number;
+        defaultSortOption?: string;
+        sortOptions?: {
+            label: string;
+            values: { label: string; value: string }[];
+        };
     }) => {
         const [isMobile] = useIsMobile();
         return (
@@ -218,6 +227,8 @@ export const DirectoryNavigation = XMemo(
                                             noQueryText={noQueryText || ''}
                                             hasQueryText={hasQueryText || ''}
                                             withoutFeatured={withoutFeatured}
+                                            sortOptions={sortOptions}
+                                            defaultSortOption={defaultSortOption}
                                             page={page}
                                         />
                                     )}
