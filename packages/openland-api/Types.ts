@@ -12738,6 +12738,7 @@ export interface RoomChat_room_SharedRoom {
   title: string;
   membership: SharedRoomMembershipStatus;
   isChannel: boolean;
+  role: RoomMemberRole;
   canEdit: boolean;
   photo: string;
   pinnedMessage: RoomChat_room_SharedRoom_pinnedMessage | null;

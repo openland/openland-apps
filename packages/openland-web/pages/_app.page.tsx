@@ -15,6 +15,7 @@ import './_app.css';
 import './init';
 import '../globals';
 import React from 'react';
+import { XView } from 'react-mental';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
@@ -31,6 +32,7 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
+import { TestCommentsComponent } from './test';
 
 export default withData(
     class MyApp extends App<{
@@ -103,8 +105,8 @@ export default withData(
                                             <AppContainer>
                                                 {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
-                                                </XView>
-                                                <XView justifyContent="center" width="50%">
+                                                </XView> */}
+                                                {/* <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
                                                 </XView> */}
                                                 <Component {...pageProps} />

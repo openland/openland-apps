@@ -257,6 +257,7 @@ export const RoomChatQuery = gql`
                 title
                 membership
                 isChannel
+                role
                 canEdit
                 photo
                 pinnedMessage {

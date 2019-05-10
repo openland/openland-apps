@@ -11,6 +11,7 @@ import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { RoomChat_room } from 'openland-api/Types';
 
 const DiscussButton = React.memo(
     ({
@@ -81,6 +82,7 @@ type PostMessageButtonsT = {
     conversationId: string | null;
     me?: UserShort | null;
     commentProps?: CommentPropsT;
+    room?: RoomChat_room;
 };
 
 export const PostMessageButtons = React.memo(
@@ -97,6 +99,7 @@ export const PostMessageButtons = React.memo(
         conversationId,
         me,
         showNumberOfComments,
+        room,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -117,6 +120,13 @@ export const PostMessageButtons = React.memo(
             (!message.isSending && message.reactions && message.reactions.length !== 0);
 
         const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
+
+        let canDelete = !!(!deleted && me && message.senderId === me.id);
+        if (room && room.__typename === 'SharedRoom') {
+            canDelete = room.role === 'ADMIN' || room.role === 'OWNER';
+        }
+
+        console.log(room);
 
         const postMessageButtons = (
             <>
@@ -157,10 +167,7 @@ export const PostMessageButtons = React.memo(
                                         </XView>
                                     )}
 
-                                    <XWithRole
-                                        role="super-admin"
-                                        or={!!(!deleted && me && message.senderId === me.id)}
-                                    >
+                                    <XWithRole role="super-admin" or={canDelete}>
                                         <XView
                                             marginLeft={12}
                                             color="rgba(0, 0, 0, 0.4)"

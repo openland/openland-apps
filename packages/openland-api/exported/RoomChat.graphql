@@ -20,6 +20,7 @@ query RoomChat($id: ID!) {
         __typename
         ...FullMessage
       }
+      role
       title
     }
   }

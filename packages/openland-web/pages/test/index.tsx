@@ -5,6 +5,7 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 // import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const TestWrapper = ({ children }: { children: any }) => {
     const router = React.useContext(XRouterContext) as XRouter;
@@ -19,7 +20,7 @@ const TestWrapper = ({ children }: { children: any }) => {
     );
 };
 
-const TestCommentsComponent = () => {
+export const TestCommentsComponent = () => {
     return (
         <TestWrapper>
             <CommentsModalInnerNoRouter
@@ -30,7 +31,7 @@ const TestCommentsComponent = () => {
     );
 };
 
-// const TestMessengerComponent = () => {
+// export const TestMessengerComponent = () => {
 //     return (
 //         <TestWrapper>
 //             <IsActiveContext.Provider value={true}>

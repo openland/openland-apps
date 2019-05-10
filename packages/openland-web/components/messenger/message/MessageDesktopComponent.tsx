@@ -465,6 +465,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={usernameOfRepliedUser}
                         commentProps={commentProps}
+                        room={this.props.room}
                     />
                 );
 
