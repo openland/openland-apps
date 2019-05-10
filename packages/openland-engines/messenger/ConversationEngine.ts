@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -11,6 +11,9 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
+import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
+import { Span } from 'openland-y-utils/spans/Span';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const log = createLogger('Engine-Messages');
 
@@ -39,7 +42,7 @@ export interface DataSourceMessageItem {
     reply?: FullMessage_GeneralMessage_quotedMessages[];
     reactions?: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
-    spans?: FullMessage_ServiceMessage_spans[];
+    spans?: FullMessage_GeneralMessage_spans[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -48,6 +51,7 @@ export interface DataSourceMessageItem {
     progress?: number;
     commentsCount: number | null;
     fallback?: string;
+    textSpans: Span[];
 }
 
 export interface DataSourceDateItem {
@@ -86,6 +90,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
         fallback: src.fallback || undefined,
+        textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }
 
@@ -306,14 +311,17 @@ export class ConversationEngine implements MessageSendHandler {
             this.messagesActionsState.clear();
         }
 
+        let styledSpans = findSpans(message);
+
         let key = this.engine.sender.sendMessage({
             conversationId: this.conversationId,
             message,
             mentions,
             callback: this,
             quoted: (quoted || []).map(q => q.id!),
+            spans: styledSpans
         });
-        let spans = prepareLegacyMentions(message, mentions || []);
+        let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
         let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
         this.messages = [...this.messages, msgs];
@@ -644,7 +652,8 @@ export class ConversationEngine implements MessageSendHandler {
                     }
                 }] : undefined,
                 reply: p.quoted ? (p.quoted.map(convertMessageBack) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false,
+                textSpans: src.message ? processSpans(src.message, src.spans) : []
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

@@ -14,6 +14,7 @@ import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { MessageVideoComponent } from './MessageVideoComponent';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
@@ -34,8 +35,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
     if (props.message) {
         content.push(
             <MessageTextComponent
-                spans={props.spans}
-                message={props.message}
+                spans={processSpans(props.message, props.spans)}
                 key={'reply-text'}
                 isService={false}
                 isEdited={props.edited}

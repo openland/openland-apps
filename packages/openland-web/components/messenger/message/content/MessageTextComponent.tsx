@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { SpannedStringView } from './SpannedStringView';
-import { spansPreprocess } from '../../data/spansPreprocess';
-import { SpannedString } from '../../data/SpannedString';
+import { SpannedView } from './SpannedView';
+import { Span } from 'openland-y-utils/spans/Span';
 
 export interface MessageTextComponentProps {
-    spans?: FullMessage_GeneralMessage_spans[];
     isComment?: boolean;
+    spans: Span[];
     isEdited: boolean;
     isService?: boolean;
     shouldCrop?: boolean;
@@ -46,13 +44,12 @@ const EditLabelStyle = css`
     letter-spacing: 0;
 `;
 
-export const MessageTextComponent = React.memo<MessageTextComponentProps & { message: string }>(
-    ({ shouldCrop, message, spans, isEdited, asPinMessage, isService, isComment }) => {
-        let spannedString = spansPreprocess(message, spans, { disableBig: asPinMessage });
+export const MessageTextComponent = React.memo<MessageTextComponentProps>(
+    ({ shouldCrop, spans, isEdited, asPinMessage, isService, isComment }) => {
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
-                    <SpannedStringView spannedString={spannedString} isService={isService} />
+                    <SpannedView spans={spans} />
                     {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
                 </span>
             </div>
@@ -60,17 +57,15 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps & { mes
     },
 );
 
-export const MessageTextComponentSpanned = React.memo<
-    MessageTextComponentProps & {
-        spannedString: SpannedString;
+export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
+    ({ shouldCrop, spans, isEdited, isService, isComment }) => {
+        return (
+            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+                <span>
+                    <SpannedView spans={spans} />
+                    {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
+                </span>
+            </div>
+        );
     }
->(({ shouldCrop, spannedString, isEdited, isService, isComment }) => {
-    return (
-        <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-            <span>
-                <SpannedStringView spannedString={spannedString} isService={isService} />
-                {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
-            </span>
-        </div>
-    );
-});
+);

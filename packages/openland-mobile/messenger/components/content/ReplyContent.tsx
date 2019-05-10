@@ -5,13 +5,13 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
-import { preprocessText, Span } from 'openland-mobile/utils/TextProcessor';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
@@ -71,7 +71,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress))}
+                                        {renderPreprocessedText(processSpans(generalMesage!.message!, generalMesage.spans), message, this.props.theme, this.props.onUserPress, this.props.onGroupPress)}
                                         {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}

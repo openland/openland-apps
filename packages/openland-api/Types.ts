@@ -19920,12 +19920,13 @@ export interface SendMessage {
 }
 
 export interface SendMessageVariables {
+  chatId: string;
   message?: string | null;
-  file?: string | null;
-  repeatKey?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
-  room: string;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
+  repeatKey?: string | null;
 }
 
 /* tslint:disable */
@@ -30590,19 +30591,20 @@ export interface RoomDeleteUrlAugmentationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: RoomEditMessage
+// GraphQL mutation operation: EditMessage
 // ====================================================
 
-export interface RoomEditMessage {
-  betaMessageEdit: boolean;
+export interface EditMessage {
+  editMessage: boolean;
 }
 
-export interface RoomEditMessageVariables {
+export interface EditMessageVariables {
   messageId: string;
   message?: string | null;
-  file?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
 }
 
 /* tslint:disable */
@@ -52748,6 +52750,17 @@ export enum MessageReactionType {
   THUMB_UP = "THUMB_UP",
 }
 
+export enum MessageSpanType {
+  Bold = "Bold",
+  CodeBlock = "CodeBlock",
+  InlineCode = "InlineCode",
+  Insane = "Insane",
+  Irony = "Irony",
+  Italic = "Italic",
+  Loud = "Loud",
+  Rotating = "Rotating",
+}
+
 export enum ModernMessageButtonStyle {
   DEFAULT = "DEFAULT",
   LIGHT = "LIGHT",
@@ -52904,6 +52917,12 @@ export interface MentionInput {
   userIds?: string[] | null;
   offset: number;
   length: number;
+}
+
+export interface MessageSpanInput {
+  offset: number;
+  length: number;
+  type: MessageSpanType;
 }
 
 export interface ProfileInput {

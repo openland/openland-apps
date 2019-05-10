@@ -562,6 +562,168 @@ public enum PostMessageType: RawRepresentable, Equatable, Hashable, Apollo.JSOND
   }
 }
 
+public struct MentionInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(chatId: Swift.Optional<GraphQLID?> = nil, userId: Swift.Optional<GraphQLID?> = nil, userIds: Swift.Optional<[GraphQLID]?> = nil, offset: Int, length: Int) {
+    graphQLMap = ["chatId": chatId, "userId": userId, "userIds": userIds, "offset": offset, "length": length]
+  }
+
+  public var chatId: Swift.Optional<GraphQLID?> {
+    get {
+      return graphQLMap["chatId"] as! Swift.Optional<GraphQLID?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "chatId")
+    }
+  }
+
+  public var userId: Swift.Optional<GraphQLID?> {
+    get {
+      return graphQLMap["userId"] as! Swift.Optional<GraphQLID?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "userId")
+    }
+  }
+
+  public var userIds: Swift.Optional<[GraphQLID]?> {
+    get {
+      return graphQLMap["userIds"] as! Swift.Optional<[GraphQLID]?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "userIds")
+    }
+  }
+
+  public var offset: Int {
+    get {
+      return graphQLMap["offset"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "offset")
+    }
+  }
+
+  public var length: Int {
+    get {
+      return graphQLMap["length"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "length")
+    }
+  }
+}
+
+public struct FileAttachmentInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(fileId: String) {
+    graphQLMap = ["fileId": fileId]
+  }
+
+  public var fileId: String {
+    get {
+      return graphQLMap["fileId"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "fileId")
+    }
+  }
+}
+
+public struct MessageSpanInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(offset: Int, length: Int, type: MessageSpanType) {
+    graphQLMap = ["offset": offset, "length": length, "type": type]
+  }
+
+  public var offset: Int {
+    get {
+      return graphQLMap["offset"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "offset")
+    }
+  }
+
+  public var length: Int {
+    get {
+      return graphQLMap["length"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "length")
+    }
+  }
+
+  public var type: MessageSpanType {
+    get {
+      return graphQLMap["type"] as! MessageSpanType
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "type")
+    }
+  }
+}
+
+public enum MessageSpanType: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case bold
+  case italic
+  case irony
+  case inlineCode
+  case codeBlock
+  case insane
+  case loud
+  case rotating
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "Bold": self = .bold
+      case "Italic": self = .italic
+      case "Irony": self = .irony
+      case "InlineCode": self = .inlineCode
+      case "CodeBlock": self = .codeBlock
+      case "Insane": self = .insane
+      case "Loud": self = .loud
+      case "Rotating": self = .rotating
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .bold: return "Bold"
+      case .italic: return "Italic"
+      case .irony: return "Irony"
+      case .inlineCode: return "InlineCode"
+      case .codeBlock: return "CodeBlock"
+      case .insane: return "Insane"
+      case .loud: return "Loud"
+      case .rotating: return "Rotating"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: MessageSpanType, rhs: MessageSpanType) -> Bool {
+    switch (lhs, rhs) {
+      case (.bold, .bold): return true
+      case (.italic, .italic): return true
+      case (.irony, .irony): return true
+      case (.inlineCode, .inlineCode): return true
+      case (.codeBlock, .codeBlock): return true
+      case (.insane, .insane): return true
+      case (.loud, .loud): return true
+      case (.rotating, .rotating): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+}
+
 public struct RoomInviteInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
@@ -645,76 +807,6 @@ public struct RoomInviteEmailRequest: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "lastName")
-    }
-  }
-}
-
-public struct MentionInput: GraphQLMapConvertible {
-  public var graphQLMap: GraphQLMap
-
-  public init(chatId: Swift.Optional<GraphQLID?> = nil, userId: Swift.Optional<GraphQLID?> = nil, userIds: Swift.Optional<[GraphQLID]?> = nil, offset: Int, length: Int) {
-    graphQLMap = ["chatId": chatId, "userId": userId, "userIds": userIds, "offset": offset, "length": length]
-  }
-
-  public var chatId: Swift.Optional<GraphQLID?> {
-    get {
-      return graphQLMap["chatId"] as! Swift.Optional<GraphQLID?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "chatId")
-    }
-  }
-
-  public var userId: Swift.Optional<GraphQLID?> {
-    get {
-      return graphQLMap["userId"] as! Swift.Optional<GraphQLID?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "userId")
-    }
-  }
-
-  public var userIds: Swift.Optional<[GraphQLID]?> {
-    get {
-      return graphQLMap["userIds"] as! Swift.Optional<[GraphQLID]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "userIds")
-    }
-  }
-
-  public var offset: Int {
-    get {
-      return graphQLMap["offset"] as! Int
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "offset")
-    }
-  }
-
-  public var length: Int {
-    get {
-      return graphQLMap["length"] as! Int
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "length")
-    }
-  }
-}
-
-public struct FileAttachmentInput: GraphQLMapConvertible {
-  public var graphQLMap: GraphQLMap
-
-  public init(fileId: String) {
-    graphQLMap = ["fileId": fileId]
-  }
-
-  public var fileId: String {
-    get {
-      return graphQLMap["fileId"] as! String
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "fileId")
     }
   }
 }
@@ -8500,33 +8592,35 @@ public final class ChatInitQuery: GraphQLQuery {
 
 public final class SendMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation SendMessage($message: String, $file: String, $repeatKey: String, $replyMessages: [ID!], $mentions: [ID!], $room: ID!) {\n  sentMessage: betaMessageSend(message: $message, file: $file, repeatKey: $repeatKey, replyMessages: $replyMessages, mentions: $mentions, room: $room)\n}"
+    "mutation SendMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  sentMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}"
 
+  public var chatId: GraphQLID
   public var message: String?
-  public var file: String?
-  public var repeatKey: String?
   public var replyMessages: [GraphQLID]?
-  public var mentions: [GraphQLID]?
-  public var room: GraphQLID
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
+  public var repeatKey: String?
 
-  public init(message: String? = nil, file: String? = nil, repeatKey: String? = nil, replyMessages: [GraphQLID]?, mentions: [GraphQLID]?, room: GraphQLID) {
+  public init(chatId: GraphQLID, message: String? = nil, replyMessages: [GraphQLID]?, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?, repeatKey: String? = nil) {
+    self.chatId = chatId
     self.message = message
-    self.file = file
-    self.repeatKey = repeatKey
     self.replyMessages = replyMessages
     self.mentions = mentions
-    self.room = room
+    self.fileAttachments = fileAttachments
+    self.spans = spans
+    self.repeatKey = repeatKey
   }
 
   public var variables: GraphQLMap? {
-    return ["message": message, "file": file, "repeatKey": repeatKey, "replyMessages": replyMessages, "mentions": mentions, "room": room]
+    return ["chatId": chatId, "message": message, "replyMessages": replyMessages, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans, "repeatKey": repeatKey]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaMessageSend", alias: "sentMessage", arguments: ["message": GraphQLVariable("message"), "file": GraphQLVariable("file"), "repeatKey": GraphQLVariable("repeatKey"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions"), "room": GraphQLVariable("room")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("sendMessage", alias: "sentMessage", arguments: ["chatId": GraphQLVariable("chatId"), "message": GraphQLVariable("message"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans"), "repeatKey": GraphQLVariable("repeatKey")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -13178,33 +13272,35 @@ public final class RoomDeleteUrlAugmentationMutation: GraphQLMutation {
   }
 }
 
-public final class RoomEditMessageMutation: GraphQLMutation {
+public final class EditMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation RoomEditMessage($messageId: ID!, $message: String, $file: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  betaMessageEdit(mid: $messageId, message: $message, file: $file, replyMessages: $replyMessages, mentions: $mentions)\n}"
+    "mutation EditMessage($messageId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editMessage(messageId: $messageId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}"
 
   public var messageId: GraphQLID
   public var message: String?
-  public var file: String?
   public var replyMessages: [GraphQLID]?
-  public var mentions: [GraphQLID]?
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
 
-  public init(messageId: GraphQLID, message: String? = nil, file: String? = nil, replyMessages: [GraphQLID]?, mentions: [GraphQLID]?) {
+  public init(messageId: GraphQLID, message: String? = nil, replyMessages: [GraphQLID]?, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?) {
     self.messageId = messageId
     self.message = message
-    self.file = file
     self.replyMessages = replyMessages
     self.mentions = mentions
+    self.fileAttachments = fileAttachments
+    self.spans = spans
   }
 
   public var variables: GraphQLMap? {
-    return ["messageId": messageId, "message": message, "file": file, "replyMessages": replyMessages, "mentions": mentions]
+    return ["messageId": messageId, "message": message, "replyMessages": replyMessages, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaMessageEdit", arguments: ["mid": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "file": GraphQLVariable("file"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("editMessage", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -13213,16 +13309,16 @@ public final class RoomEditMessageMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(betaMessageEdit: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "betaMessageEdit": betaMessageEdit])
+    public init(editMessage: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "editMessage": editMessage])
     }
 
-    public var betaMessageEdit: Bool {
+    public var editMessage: Bool {
       get {
-        return resultMap["betaMessageEdit"]! as! Bool
+        return resultMap["editMessage"]! as! Bool
       }
       set {
-        resultMap.updateValue(newValue, forKey: "betaMessageEdit")
+        resultMap.updateValue(newValue, forKey: "editMessage")
       }
     }
   }

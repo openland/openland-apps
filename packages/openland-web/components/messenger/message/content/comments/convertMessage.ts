@@ -1,6 +1,7 @@
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
 import { FullMessage } from 'openland-api/Types';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -32,5 +33,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
+        textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }

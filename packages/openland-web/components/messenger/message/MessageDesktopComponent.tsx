@@ -298,11 +298,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     if (message.isService) {
                         content.push(
                             <ServiceMessageComponent
-                                senderUser={{ id: message.senderId, name: message.senderName }}
-                                myUserId={this.props.me ? this.props.me.id : ''}
-                                serviceMetadata={message.serviceMetaData!}
-                                message={message.text || ''}
-                                spans={message.spans || []}
+                                spans={message.textSpans}
                                 key={'service_message' + message.id}
                             />,
                         );
@@ -317,7 +313,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             content.push(
                                 <MessageTextComponentSpanned
                                     isComment={this.props.isComment}
-                                    spannedString={message.textSpannedString!}
+                                    spans={message.textSpans}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
                                 />,
@@ -404,8 +400,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 content.push(
                     <MessageTextComponent
                         isComment={this.props.isComment}
-                        message={message.text}
-                        spans={message.spans}
+                        spans={message.textSpans}
                         key={'text' + message.id}
                         isService={false}
                         isEdited={!!message.isEdited}
@@ -446,7 +441,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (content.length === 0) {
             content.push(
                 <MessageTextComponent
-                    message={''}
                     spans={[]}
                     key={'text' + message.id}
                     isService={false}
