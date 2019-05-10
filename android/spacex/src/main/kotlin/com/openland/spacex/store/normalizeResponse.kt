@@ -171,13 +171,7 @@ fun normalizeData(id: String, type: OutputType.Object, arguments: JSONObject, da
 }
 
 fun normalizeResponse(rootCacheKey: String?, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {
-    val start = System.currentTimeMillis()
     val collection = NormalizedCollection()
     normalizeRootSelector(rootCacheKey, collection, type.selectors, arguments, data)
-    val res = collection.build()
-    val delta = System.currentTimeMillis() - start
-    if (delta > 20) {
-        // Log.e("SpaceX", "Normalization took too long: " + (System.currentTimeMillis() - start) + " ms")
-    }
-    return res
+    return collection.build()
 }
