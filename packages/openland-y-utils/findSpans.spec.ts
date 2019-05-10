@@ -65,6 +65,18 @@ describe('Spans Parser', () => {
         expect(res.length).toBe(0);
     });
 
+    it('should respect line-break', () => {
+        let res = findSpans('*123\n123*');
+
+        expect(res.length).toBe(0);
+    });
+
+    it('should ignore close-backet', () => {
+        let res = findSpans(')*123123*');
+
+        expect(res.length).toBe(0);
+    });
+
     it('should ignore stupid users', () => {
         let res = findSpans('```123 *123* _123_');
 

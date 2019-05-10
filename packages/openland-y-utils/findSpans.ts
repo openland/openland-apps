@@ -1,17 +1,7 @@
-import { MessageSpanType, MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { SpanSymbolToType } from './spans/Span';
 
-const whiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
-
-const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
-    '*': { type: MessageSpanType.Bold },
-    '```': { type: MessageSpanType.CodeBlock, master: true },
-    '`': { type: MessageSpanType.InlineCode },
-    '🌈': { type: MessageSpanType.Insane },
-    '~': { type: MessageSpanType.Irony },
-    '_': { type: MessageSpanType.Italic },
-    ':': { type: MessageSpanType.Loud, master: true },
-    '🔄': { type: MessageSpanType.Rotating },
-};
+const whiteListAroundSpec = ['', ' ', '\n', ',', '.', '('];
 
 const spanInputMap = {
     'Bold': 'MessageSpanBold',
@@ -28,7 +18,7 @@ const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string
     let isSpec = false;
     let symbol = '';
 
-    for (let s in spanMap) {
+    for (let s in SpanSymbolToType) {
         if (s === text.slice(index, index + s.length)) {
             isSpec = true;
             symbol = s;
@@ -47,7 +37,7 @@ const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string
 }
 
 const isSpanMaster = (symbol: string) => {
-    return spanMap[symbol] ? !!spanMap[symbol].master : false;
+    return SpanSymbolToType[symbol] ? !!SpanSymbolToType[symbol].master : false;
 }
 
 export const findSpans = (text: string): MessageSpanInput[] => {
@@ -70,7 +60,7 @@ export const findSpans = (text: string): MessageSpanInput[] => {
 
                 if (spanLength > currentSpecSymbol.length * 2) {
                     res.push({
-                        type: spanMap[currentSpecSymbol].type,
+                        type: SpanSymbolToType[currentSpecSymbol].type,
                         offset: lastPos,
                         length: i - lastPos + currentSpecSymbol.length
                     });
@@ -79,6 +69,11 @@ export const findSpans = (text: string): MessageSpanInput[] => {
                 currentSpecSymbol = '';
                 lastPos = 0;
             }
+        }
+
+        if (text.charAt(i) === '\n' && !isSpanMaster(currentSpecSymbol)) {
+            currentSpecSymbol = '';
+            lastPos = 0;
         }
     }
 
