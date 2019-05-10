@@ -33,7 +33,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
         <XPopper
             show={showPicker}
             onClickOutside={() => {
-                setShowPicker(!showPicker);
+                setShowPicker(false);
             }}
             arrow={null}
             placement="top"
