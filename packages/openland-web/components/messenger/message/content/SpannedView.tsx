@@ -10,6 +10,7 @@ import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRel
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { MentionComponentInnerText } from './service/views/MentionedUser';
+import { divide } from 'lodash-es';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -38,6 +39,8 @@ const codeBlockClassName = css`
     font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
     white-space: pre;
     word-wrap: normal;
+    overflow-y: hidden;
+    overflow-x: auto;
 `;
 
 const loudTextClassName = css`
@@ -158,9 +161,9 @@ const SpanView = React.memo<{ span: Span, children?: any }>(props => {
         );
     } else if (span.type === 'code_block') {
         return (
-            <span className={codeBlockClassName}>
+            <div className={codeBlockClassName}>
                 {children}
-            </span>
+            </div>
         );
     } else if (span.type === 'mention_room') {
         return (
