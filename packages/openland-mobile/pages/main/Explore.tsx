@@ -96,7 +96,7 @@ const RoomsList = () => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization!.name}
+                        title={v.organization ? v.organization.name : undefined}
                         description={v.membersCount + ' members'}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
