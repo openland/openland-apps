@@ -137,12 +137,12 @@ export const Icons = ({
             flexDirection="row"
         >
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            {!hideAttachments && minimal && (
+            {minimal && !hideAttachments && (
                 <XView marginRight={20}>
                     <PhotoButton fileSelector={fileSelector} />
                 </XView>
             )}
-            {!hideAttachments && minimal && (
+            {minimal && !hideAttachments && (
                 <XView marginRight={18}>
                     <DocumentButton fileSelector={fileSelector} />
                 </XView>
