@@ -11,7 +11,7 @@ import { prepareLegacySpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { parseSpans } from 'openland-y-utils/spans/parseSpans';
-import { processSpans } from 'openland-y-utils/spans/proccessSpans';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const SpanView = (props: { span: Span, children?: any }) => {
     const { span, children } = props;

@@ -298,11 +298,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     if (message.isService) {
                         content.push(
                             <ServiceMessageComponent
-                                senderUser={{ id: message.senderId, name: message.senderName }}
-                                myUserId={this.props.me ? this.props.me.id : ''}
-                                serviceMetadata={message.serviceMetaData!}
-                                message={message.text || ''}
-                                spans={message.spans || []}
+                                spans={message.textSpans}
                                 key={'service_message' + message.id}
                             />,
                         );
@@ -316,7 +312,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageTextComponentSpanned
-                                    spans={message.textSpans!}
+                                    spans={message.textSpans}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
                                     deleted={this.props.deleted}

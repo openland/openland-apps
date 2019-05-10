@@ -28,6 +28,7 @@ import { UploadContextProvider } from 'openland-web/modules/FileUploading/Upload
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -74,6 +75,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
+        textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }
 

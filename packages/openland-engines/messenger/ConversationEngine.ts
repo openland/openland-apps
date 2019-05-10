@@ -12,6 +12,8 @@ import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
+import { Span } from 'openland-y-utils/spans/Span';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const log = createLogger('Engine-Messages');
 
@@ -49,6 +51,7 @@ export interface DataSourceMessageItem {
     progress?: number;
     commentsCount: number | null;
     fallback?: string;
+    textSpans: Span[];
 }
 
 export interface DataSourceDateItem {
@@ -87,6 +90,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
         fallback: src.fallback || undefined,
+        textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }
 
@@ -648,7 +652,8 @@ export class ConversationEngine implements MessageSendHandler {
                     }
                 }] : undefined,
                 reply: p.quoted ? (p.quoted.map(convertMessageBack) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false,
+                textSpans: src.message ? processSpans(src.message, src.spans) : []
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

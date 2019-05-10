@@ -1,39 +1,41 @@
 import { ServerSpan, Span, SpanTypeToSymbol } from './Span';
+import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 
-export const cropSpecSymbols = (text: string, symbol: string, opened?: boolean): { removedLength: number, croppedString: string } => {
-    let res = text;
-    let removedLength = 0;
+export const cropSpecSymbols = (spans: Span[], symbol: string, opened?: boolean): Span[] => {
+    // remove first symbol
+    if (spans[0] && spans[0].type === 'text' && spans[0].textRaw && spans[0].textRaw.startsWith(symbol)) {
+        spans[0].textRaw = spans[0].textRaw.replace(symbol, '');
 
-    if (opened) {
-        if (res.startsWith(symbol)) {
-            removedLength += symbol.length;
-            // remove first symbol
-            res = res.replace(symbol, '');
+        if (spans[0].textRaw.length <= 0) {
+            spans = spans.slice(1);
+
             // remove first line-breaker
-            if (res.charAt(0) === '\n') {
-                removedLength += 1;
-
-                res = res.replace('\n', '');
+            if (spans[0] && spans[0].type === 'new_line') {
+                spans = spans.slice(1);
             }
+        } else {
+            spans[0].text = TextRenderProccessor.process(spans[0].textRaw)
         }
-    } else {
-        if (res.startsWith(symbol) && res.endsWith(symbol)) {
-            removedLength += symbol.length;
+    }
+
+    if (!opened) {
+        // remove last symbol
+        const last = spans.length - 1;
+
+        if (spans[last] && spans[last].type === 'text' && spans[last].textRaw && spans[last].textRaw!.endsWith(symbol)) {
+            const text = spans[last].textRaw!;
+
+            spans[last].textRaw = text.substr(0, text.lastIndexOf(symbol));
     
-            // remove first symbol
-            res = res.replace(symbol, '');
-            // remove last symbol
-            res = res.substr(0, res.lastIndexOf(symbol));
-            // remove first line-breaker
-            if (res.charAt(0) === '\n') {
-                removedLength += 1;
-    
-                res = res.replace('\n', '');
+            if (spans[last].textRaw!.length <= 0) {
+                spans.pop();
+            } else {
+                spans[last].text = TextRenderProccessor.process(spans[last].textRaw!)
             }
         }
     }
 
-    return { removedLength, croppedString: res };
+    return spans;
 };
 
 export const findChildSpans = (spans: ServerSpan[], parent: ServerSpan): { lastIndex: number; childs: ServerSpan[] } => {
@@ -90,7 +92,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     return span;
 }
 
-export const preprocessRawText = (text: string, startOffset: number, proccessText?: (text: string) => any): Span[] => {
+export const preprocessRawText = (text: string, startOffset: number): Span[] => {
     let res: Span[] = [];
 
     let garbageString = '';
@@ -107,7 +109,7 @@ export const preprocessRawText = (text: string, startOffset: number, proccessTex
         res.push({
             type: 'text',
             textRaw: p,
-            text: proccessText ? proccessText(p) : p,
+            text: TextRenderProccessor.process(p),
             length: p.length,
             offset: startOffset + garbageString.length
         });
@@ -118,35 +120,32 @@ export const preprocessRawText = (text: string, startOffset: number, proccessTex
     return res;
 }
 
-export const getTextSpans = (text: string, parent: Span, proccessText?: (text: string) => any): Span[] => {
+export const getTextSpans = (text: string, parent: Span): Span[] => {
     let res: Span[] = [];
     let offset = 0;
-    let croppedOffset = 0;
 
     let slicedText = text.substr(parent.offset, parent.length);
-    let symbolObject = SpanTypeToSymbol[parent.type];
-
-    if (symbolObject) {
-        const { removedLength, croppedString } = cropSpecSymbols(slicedText, symbolObject.symbol, symbolObject.opened);
-
-        slicedText = croppedString;
-        croppedOffset = removedLength;
-    }
 
     for (let s of parent.childrens || []) {
-        let rawFirst = slicedText.substr(offset, (s.offset - parent.offset) - offset - croppedOffset);
+        let rawFirst = slicedText.substr(offset, (s.offset - parent.offset) - offset);
 
         if (rawFirst) {
-            res.push(...preprocessRawText(rawFirst, offset + parent.offset - croppedOffset, proccessText));
+            res.push(...preprocessRawText(rawFirst, offset + parent.offset));
         }
 
-        offset = (s.offset - parent.offset) + s.length - croppedOffset;
+        offset = (s.offset - parent.offset) + s.length;
     }
 
     let rawLast = slicedText.slice(offset);
 
     if (rawLast) {
-        res.push(...preprocessRawText(rawLast, offset + parent.offset - croppedOffset, proccessText));
+        res.push(...preprocessRawText(rawLast, offset + parent.offset));
+    }
+
+    let symbolObject = SpanTypeToSymbol[parent.type];
+
+    if (symbolObject) {
+        res = cropSpecSymbols(res, symbolObject.symbol, symbolObject.opened);
     }
 
     return res;

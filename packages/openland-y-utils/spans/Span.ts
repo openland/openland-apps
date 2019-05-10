@@ -7,9 +7,8 @@ interface SpanAbs {
     type: SpanType;
     offset: number;
     length: number;
-
     textRaw?: string;
-    text?: any;
+    text?: string | Element[] | JSX.Element[] | Element | JSX.Element;
     childrens?: Span[];
 }
 

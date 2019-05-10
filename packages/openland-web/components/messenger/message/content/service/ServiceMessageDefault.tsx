@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { Container } from './views/Container';
-import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { SpannedView } from '../SpannedView';
-import { processSpans } from 'openland-y-utils/spans/proccessSpans';
-import { emojifyText } from 'openland-web/components/messenger/data/spansMessageTextPreprocess';
+import { Span } from 'openland-y-utils/spans/Span';
 
-export const ServiceMessageDefault = React.memo<{
-    message: string;
-    spans?: FullMessage_ServiceMessage_spans[];
-}>(props => {
-    const parts = processSpans(props.message, props.spans, (text) => emojifyText(text));
-
+export const ServiceMessageDefault = React.memo<{ spans: Span[] }>(props => {
     return (
         <Container>
-            <SpannedView spans={parts} />
+            <SpannedView spans={props.spans} />
         </Container>
     );
 });
