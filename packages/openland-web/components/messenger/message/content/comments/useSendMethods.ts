@@ -1,14 +1,19 @@
+import UploadCare from 'uploadcare-widget';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 import { useAddComment } from './useAddComment';
 
+export const getUploadCareFile = (fileForUc: any): UploadCare.File => {
+    return UploadCare.fileFrom('object', fileForUc);
+};
+
 export const uploadFile = async ({
     file,
     onProgress,
 }: {
-    file: any;
-    onProgress: (progress: number) => void;
+    file: UploadCare.File;
+    onProgress?: (progress: number) => void;
 }) => {
     const uploadingFile = new UploadCareUploading(file);
 
@@ -18,7 +23,9 @@ export const uploadFile = async ({
             if (state.status === UploadStatus.FAILED) {
                 reject();
             } else if (state.status === UploadStatus.UPLOADING) {
-                onProgress(state.progress!!);
+                if (onProgress) {
+                    onProgress(state.progress!!);
+                }
             } else if (state.status === UploadStatus.COMPLETED) {
                 resolver(state.uuid!!);
             }
