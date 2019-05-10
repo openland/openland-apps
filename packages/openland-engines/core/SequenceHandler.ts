@@ -1,7 +1,9 @@
+
 export class SequenceHandler {
     private readonly handler: (src: any) => Promise<void>;
     private pending: any[] = [];
     private isHandling = false;
+    private after?: () => void = undefined;
 
     constructor(handler: (src: any) => Promise<void>) {
         this.handler = handler;
@@ -35,6 +37,19 @@ export class SequenceHandler {
                     this.afterHandled();
                 }
             })();
+        } else {
+            if (this.after) {
+                this.after();
+                this.after = undefined;
+            }
+        }
+    }
+
+    doAfter = (after: () => void) => {
+        if (this.pending.length || this.isHandling) {
+            this.after = after;
+        } else {
+            after();
         }
     }
 }
