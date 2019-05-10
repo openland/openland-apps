@@ -27,11 +27,11 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
 }
 
 const handleNoSpans = (text: string, disableBig?: boolean): Span => {
-    const { text: rootText, size: rootSize } = checkSpanRootSize(text);
+    const { text: rootText, type: rootType } = checkSpanRootSize(text);
 
-    if (rootSize === 'big' && !disableBig) {
+    if (rootType !== 'text' && !disableBig) {
         return ({
-            type: 'loud',
+            type: rootType as any,
             offset: 0,
             length: rootText.length,
             childrens: [{
