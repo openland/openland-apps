@@ -7,9 +7,9 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    cropSpecSymbols(spans: Span[], symbol: string, opened?: boolean) {
+    cropSpecSymbols(spans: Span[], symbol: string, opened?: boolean, isBigParent?: boolean) {
         if (['*', '_', ':', '@'].includes(symbol)) {
-            return cropSpecSymbols(spans, symbol, opened);
+            return cropSpecSymbols(spans, symbol, opened, isBigParent);
         }
 
         return spans;

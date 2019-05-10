@@ -1,7 +1,7 @@
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { Span } from './spans/Span';
 
-export const cropSpecSymbols = (spans: Span[], symbol: string, opened?: boolean): Span[] => {
+export const cropSpecSymbols = (spans: Span[], symbol: string, opened?: boolean, isBigParent?: boolean): Span[] => {
     // remove first symbol
     if (spans[0] && spans[0].type === 'text' && spans[0].textRaw && spans[0].textRaw.startsWith(symbol)) {
         spans[0].textRaw = spans[0].textRaw.replace(symbol, '');
@@ -14,7 +14,7 @@ export const cropSpecSymbols = (spans: Span[], symbol: string, opened?: boolean)
                 spans = spans.slice(1);
             }
         } else {
-            spans[0].text = TextRenderProccessor.emojify(spans[0].textRaw)
+            spans[0].text = TextRenderProccessor.emojify(spans[0].textRaw, isBigParent)
         }
     }
 
@@ -30,7 +30,7 @@ export const cropSpecSymbols = (spans: Span[], symbol: string, opened?: boolean)
             if (spans[last].textRaw!.length <= 0) {
                 spans.pop();
             } else {
-                spans[last].text = TextRenderProccessor.emojify(spans[last].textRaw!)
+                spans[last].text = TextRenderProccessor.emojify(spans[last].textRaw!, isBigParent)
             }
         }
     }

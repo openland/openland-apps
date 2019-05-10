@@ -57,7 +57,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     return span;
 }
 
-export const preprocessRawText = (text: string, startOffset: number): Span[] => {
+export const preprocessRawText = (text: string, startOffset: number, isBig?: boolean): Span[] => {
     let res: Span[] = [];
 
     let garbageString = '';
@@ -74,7 +74,7 @@ export const preprocessRawText = (text: string, startOffset: number): Span[] => 
         res.push({
             type: 'text',
             textRaw: p,
-            text: TextRenderProccessor.emojify(p),
+            text: TextRenderProccessor.emojify(p, isBig),
             length: p.length,
             offset: startOffset + garbageString.length
         });
@@ -91,11 +91,13 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
 
     let slicedText = text.substr(parent.offset, parent.length);
 
+    const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+
     for (let s of parent.childrens || []) {
         let rawFirst = slicedText.substr(offset, (s.offset - parent.offset) - offset);
 
         if (rawFirst) {
-            res.push(...preprocessRawText(rawFirst, offset + parent.offset));
+            res.push(...preprocessRawText(rawFirst, offset + parent.offset, isBigParent));
         }
 
         offset = (s.offset - parent.offset) + s.length;
@@ -104,13 +106,13 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     let rawLast = slicedText.slice(offset);
 
     if (rawLast) {
-        res.push(...preprocessRawText(rawLast, offset + parent.offset));
+        res.push(...preprocessRawText(rawLast, offset + parent.offset, isBigParent));
     }
 
     let symbolObject = SpanTypeToSymbol[parent.type];
 
     if (symbolObject) {
-        res = TextRenderProccessor.cropSpecSymbols(res, symbolObject.symbol, symbolObject.opened);
+        res = TextRenderProccessor.cropSpecSymbols(res, symbolObject.symbol, symbolObject.opened, isBigParent);
     }
 
     return res;
