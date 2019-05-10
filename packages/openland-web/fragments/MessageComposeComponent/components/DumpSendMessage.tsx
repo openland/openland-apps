@@ -100,7 +100,7 @@ export const DumpSendMessage = React.memo(
         hideAttachments,
         placeholder,
     }: DumpSendMessageT) => {
-        const { handleDrop } = React.useContext(UploadContext);
+        const { fileSrc, fileName, fileSize, handleDrop } = React.useContext(UploadContext);
 
         return (
             <SendMessageWrapper
@@ -118,9 +118,11 @@ export const DumpSendMessage = React.memo(
                                 onCancel={closeEditor}
                             />
                         )}
-                        <XView marginLeft={14}>
-                            <FileUploader />
-                        </XView>
+                        {(fileSrc || (fileName && fileSize)) && (
+                            <XView marginLeft={14}>
+                                <FileUploader />
+                            </XView>
+                        )}
                         <TextInputComponent
                             initialMentions={initialMentions}
                             getMentionsSuggestions={getMentionsSuggestions}
