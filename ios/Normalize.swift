@@ -38,11 +38,11 @@ fileprivate func normalizeValue(
   value: OutputType,
   args: JSON,
   data: JSON
-) -> RecordValue? {
+) throws -> RecordValue? {
   
   if (value is OutputType.NotNull) {
     let v2 = value as! OutputType.NotNull
-    let res = normalizeValue(
+    let res = try normalizeValue(
       parentCacheKey: parentCacheKey,
       collection: collection,
       value: v2.inner,
@@ -50,7 +50,7 @@ fileprivate func normalizeValue(
       data: data
     )
     if res is RecordValue.NullValue {
-      fatalError() // TODO: Replace
+      throw InvalidDataError("Unexpected null value")
     } else {
       return res
     }
@@ -69,14 +69,16 @@ fileprivate func normalizeValue(
         } else if data.int != nil {
           return RecordValue.NumberValue(value: Double(data.intValue))
         } else {
-          fatalError() // TODO: Replace
+          throw InvalidDataError("Unexpected value for " + sc.name + ": " + data.description)
         }
       } else if sc.name == "Boolean" {
         if data.bool != nil {
           return RecordValue.BooleanValue(value: data.boolValue)
         } else {
-          fatalError() // TODO: Replace
+          throw InvalidDataError("Unexpected value for Boolean: " + data.description)
         }
+      } else {
+        throw InvalidDataError("Unsupported scalar " + sc.name)
       }
     } else {
       return nil
@@ -86,7 +88,7 @@ fileprivate func normalizeValue(
     let vals = data.arrayValue
     var res: [RecordValue] = []
     for i in 0..<vals.count {
-      res.append(normalizeValue(
+      res.append(try normalizeValue(
         parentCacheKey: parentCacheKey! + "." + String(i),
         collection: collection,
         value: ls.inner,
@@ -97,7 +99,7 @@ fileprivate func normalizeValue(
     return RecordValue.ListValue(items: res)
   } else if value is OutputType.Object {
     let obj = value as! OutputType.Object
-    return normalizeSelector(
+    return try normalizeSelector(
       parentCacheKey: parentCacheKey,
       collection: collection,
       selectors: obj.selectors,
@@ -115,7 +117,7 @@ fileprivate func normalizeSelector(
   selectors: [Selector],
   args: JSON,
   data: JSON
-) -> RecordValue? {
+) throws -> RecordValue? {
   
   var id: String? = nil
   if data["id"].exists() {
@@ -142,7 +144,7 @@ fileprivate func normalizeSelector(
       let f2 = f as! Selector.Field
       if map != nil {
         let storeKey = f2.name
-        map![storeKey] = normalizeValue(
+        map![storeKey] = try normalizeValue(
           parentCacheKey: id!+"."+f2.name,
           collection: collection,
           value: f2.type,
@@ -150,7 +152,7 @@ fileprivate func normalizeSelector(
           data: data[f2.alias]
         )
       } else {
-        let _ = normalizeValue(
+        let _ = try normalizeValue(
           parentCacheKey: nil,
           collection: collection,
           value: f2.type,
@@ -161,7 +163,7 @@ fileprivate func normalizeSelector(
     } else if f is Selector.TypeCondition {
       let f2 = f as! Selector.TypeCondition
       if data["__typename"].string == f2.name {
-        let _ = normalizeSelector(
+        let _ = try normalizeSelector(
           parentCacheKey: parentCacheKey,
           collection: collection,
           selectors: f2.type.selectors,
@@ -171,13 +173,15 @@ fileprivate func normalizeSelector(
       }
     } else if f is Selector.Fragment {
       let f2 = f as! Selector.Fragment
-      let _ = normalizeSelector(
+      let _ = try normalizeSelector(
         parentCacheKey: parentCacheKey,
         collection: collection,
         selectors: f2.type.selectors,
         args: args,
         data: data
       )
+    } else {
+      fatalError("Unreachable code")
     }
   }
   
@@ -188,8 +192,8 @@ fileprivate func normalizeSelector(
   }
 }
 
-func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) -> [String: SRecord] {
+func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: SRecord] {
   let collection = NormalizedCollection()
-  let _ = normalizeSelector(parentCacheKey: id, collection: collection, selectors: type.selectors, args: args, data: data)
+  let _ = try normalizeSelector(parentCacheKey: id, collection: collection, selectors: type.selectors, args: args, data: data)
   return collection.build()
 }

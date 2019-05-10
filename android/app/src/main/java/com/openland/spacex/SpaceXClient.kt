@@ -1,11 +1,9 @@
 package com.openland.spacex
 
 import android.content.Context
-import android.util.Log
 import com.openland.spacex.scheduler.*
 import com.openland.spacex.store.*
 import com.openland.spacex.transport.RunningOperation
-import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.trace

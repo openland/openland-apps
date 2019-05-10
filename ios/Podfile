@@ -32,9 +32,7 @@ target 'openland' do
   pod 'Texture', '2.7'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.14.2'
-  pod 'Apollo', '~> 0.10.1'
-  pod 'Apollo/WebSocket', '~> 0.10.1'
-  pod 'Apollo/SQLite', '~> 0.10.1'
+  pod 'Starscream', '~> 3.0.2'
 
   pod 'AppCenter', '~> 1.13.0'
   pod 'AppCenter/Crashes', '~> 1.13.0'
