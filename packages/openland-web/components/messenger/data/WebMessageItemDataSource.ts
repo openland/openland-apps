@@ -8,6 +8,7 @@ import { spansPreprocess } from './spansPreprocess';
 import { emoji } from 'openland-y-utils/emoji';
 import { processSpans } from 'openland-y-utils/spans/proccessSpans';
 import { Span } from 'openland-y-utils/spans/Span';
+import { emojifyText } from './spansMessageTextPreprocess';
 
 export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderNameEmojify?: any;
@@ -30,7 +31,7 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
                   })
                 : undefined,
         textSpans:
-            src.type === 'message' && src.text ? processSpans(src.text!, src.spans) : undefined,
+            src.type === 'message' && src.text ? processSpans(src.text!, src.spans, (text) => emojifyText(text)) : undefined,
     };
 }
 

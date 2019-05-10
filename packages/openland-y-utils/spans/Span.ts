@@ -7,7 +7,9 @@ interface SpanAbs {
     type: SpanType;
     offset: number;
     length: number;
-    text?: string;
+
+    textRaw?: string;
+    text?: any;
     childrens?: Span[];
 }
 
@@ -88,13 +90,14 @@ export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?
     '🔄': { type: MessageSpanType.Rotating },
 };
 
-export const SpanTypeToSymbol = {
-    'bold': '*',
-    'code_block': '```',
-    'code_inline': '`',
-    'insane': '🌈',
-    'irony': '~',
-    'italic': '_',
-    'loud': ':',
-    'rotating': '🔄',
+export const SpanTypeToSymbol: { [key: string]: { symbol: string, opened?: boolean }} = {
+    'bold': { symbol: '*' },
+    'code_block': { symbol: '```' },
+    'code_inline': { symbol: '`' },
+    'insane': { symbol: '🌈' },
+    'irony': { symbol: '~' },
+    'italic': { symbol: '_' },
+    'loud': { symbol: ':' },
+    'rotating': { symbol: '🔄' },
+    'mention_user': { symbol: '@', opened: true },
 };

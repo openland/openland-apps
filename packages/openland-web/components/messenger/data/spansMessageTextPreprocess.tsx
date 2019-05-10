@@ -55,3 +55,10 @@ export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: b
         isOnlyEmoji,
     };
 };
+
+export const emojifyText = (text: string) => {
+    return emoji({
+        src: text,
+        size: 16,
+    });
+};

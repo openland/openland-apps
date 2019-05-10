@@ -4,6 +4,7 @@ import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { processSpans } from 'openland-y-utils/spans/proccessSpans';
 import { Span } from 'openland-y-utils/spans/Span';
+import { emojifyText } from '../../data/spansMessageTextPreprocess';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
@@ -50,7 +51,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
     ({ shouldCrop, message, spans, isEdited, asPinMessage, isService }) => {
         // let spannedString = spansPreprocess(message, spans, { disableBig: asPinMessage });
 
-        let parts = processSpans(message, spans);
+        let parts = processSpans(message, spans, (text) => emojifyText(text));
 
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
