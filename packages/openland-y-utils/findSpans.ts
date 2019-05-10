@@ -66,11 +66,15 @@ export const findSpans = (text: string): MessageSpanInput[] => {
                     lastPos = i;
                 }
             } else {
-                res.push({
-                    type: spanMap[currentSpecSymbol].type,
-                    offset: lastPos,
-                    length: i - lastPos + currentSpecSymbol.length
-                });
+                const spanLength = i - lastPos + currentSpecSymbol.length;
+
+                if (spanLength > currentSpecSymbol.length * 2) {
+                    res.push({
+                        type: spanMap[currentSpecSymbol].type,
+                        offset: lastPos,
+                        length: i - lastPos + currentSpecSymbol.length
+                    });
+                }
 
                 currentSpecSymbol = '';
                 lastPos = 0;
