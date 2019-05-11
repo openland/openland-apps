@@ -378,7 +378,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 {props.sender.primaryOrganization.name}
                             </XView>
                         )}
-                        {(props.isEditView || props.isEdited) && (
+                        {props.isComment && (props.isEditView || props.isEdited) && (
                             <>
                                 <XView
                                     marginLeft={8}
