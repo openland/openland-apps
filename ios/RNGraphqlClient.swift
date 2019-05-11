@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class RNGraphqlClient {
   
@@ -70,10 +71,14 @@ class RNGraphqlClient {
   }
   
   func query(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//
+    if !self.live {
+      return
+    }
+    
+    self.client.query(operation: Operations.shared.operationByName(query), variables: JSON()) { res in
+      
+    }
+
 //    let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
 //    let start = DispatchTime.now()
 //    self.factory.runQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in

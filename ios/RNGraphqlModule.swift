@@ -70,11 +70,6 @@ class RNGraphQL: RCTEventEmitter {
     self.clients[key]!.write(id: id, data: data, query: query, arguments: arguments)
   }
   
-  @objc(writeFragment:id:data:fragment:)
-  func writeFragment(key: String, id: String, data: NSDictionary, fragment: String) {
-    self.clients[key]!.writeFragment(id: id, data: data, fragment: fragment)
-  }
-  
   //
   // Implementation
   //
