@@ -28,7 +28,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
 
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
-            parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
+            parts.unshift(<ASText key={'text-title'} fontWeight={TextStyles.weight.medium}>{message.title}</ASText>);
         }
 
         return (

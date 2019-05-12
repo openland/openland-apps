@@ -67,7 +67,6 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     {!!generalMesage!.message && <ASText
                                         marginLeft={10}
                                         color={mainTextColor}
-                                        lineHeight={20}
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
