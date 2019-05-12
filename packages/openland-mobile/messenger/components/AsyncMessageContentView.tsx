@@ -48,7 +48,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
-            return <ASText key={'bold'} fontSize={16} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
+            return <ASText key={'bold'} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
         } else if (span.type === 'date') {
             return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'code_block') {
