@@ -651,7 +651,7 @@ export class ConversationEngine implements MessageSendHandler {
                         imageHeight: p.imageSize && p.imageSize.height || 0,
                     }
                 }] : undefined,
-                reply: p.quoted ? (p.quoted.map(convertMessageBack) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
+                reply: p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : []
             };
