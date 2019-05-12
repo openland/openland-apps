@@ -23,16 +23,11 @@ interface CheckSpanRootSizeResult {
 
 export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
-    let isRotating = !isOnlyEmoji && text.startsWith('🔄') && text.endsWith('🔄');
-    let isInsane = !isOnlyEmoji && text.startsWith('🌈') && text.endsWith('🌈');
-    let isMouthpiece = !isOnlyEmoji && text.startsWith('📣') && text.endsWith('📣');
-    let isTextSticker = !isOnlyEmoji && text.startsWith(':') && text.endsWith(':');
-    let isBig =
-        isOnlyEmoji ||
-        isInsane ||
-        isRotating ||
-        isMouthpiece ||
-        isTextSticker;
+
+    let isRotating = text.startsWith('🔄') && text.endsWith('🔄');
+    let isInsane = text.startsWith('🌈') && text.endsWith('🌈');
+    let isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
+    let isTextSticker = text.startsWith(':') && text.endsWith(':');
 
     if (isInsane || isMouthpiece || isRotating) {
         text = text
@@ -45,13 +40,11 @@ export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
 
     let type: SpanType = 'text';
 
-    if (isBig && !isOnlyEmoji) {
-        type = isInsane ? 'insane' : type;
-        type = isRotating ? 'rotating' : type;
-        type = (isTextSticker || isMouthpiece) ? 'loud' : type;
-    }
+    type = isInsane ? 'insane' : type;
+    type = isRotating ? 'rotating' : type;
+    type = (isTextSticker || isMouthpiece) ? 'loud' : type;
 
-    if (isBig && isOnlyEmoji) {
+    if (type === 'text' && isOnlyEmoji) {
         type = 'loud'
     }
 
