@@ -82,4 +82,14 @@ describe('Spans Parser', () => {
 
         expect(res.length).toBe(0);
     });
+
+    it('should ignore "!" before, but not after', () => {
+        let res = findSpans('!*123* _123_!');
+
+        expect(res.length).toBe(1);
+
+        expect(res[0].type).toBe("Italic");
+        expect(res[0].offset).toBe(7);
+        expect(res[0].length).toBe(5);
+    });
 });
