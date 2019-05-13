@@ -53,10 +53,7 @@ const _findSpans = (text: string, from: number, to: number, nested?: boolean): M
         let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol);
 
         if (typeof mayBeSymbol === 'string') {
-            if (mayBeSymbol !== currentSpecSymbol) {
-                currentSpecSymbol = mayBeSymbol;
-                lastPos = i;
-            } else {
+            if (mayBeSymbol === currentSpecSymbol) {
                 const spanLength = i - lastPos + currentSpecSymbol.length;
 
                 if (spanLength > currentSpecSymbol.length * 2) {
@@ -73,6 +70,9 @@ const _findSpans = (text: string, from: number, to: number, nested?: boolean): M
 
                 currentSpecSymbol = '';
                 lastPos = 0;
+            } else if (currentSpecSymbol === '') {
+                currentSpecSymbol = mayBeSymbol;
+                lastPos = i;
             }
         }
 

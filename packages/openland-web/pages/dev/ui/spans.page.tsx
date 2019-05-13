@@ -17,7 +17,7 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
         <DevDocsScaffold title="Spans">
             <XContent>
                 <XVertical2>
-                    <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(parseSpans(value)) }) }} />
+                    <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(parseSpans(value, true)) }) }} />
 
                     <SpannedView spans={processSpans(data.text, data.spans)} />
 
