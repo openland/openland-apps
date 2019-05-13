@@ -10,8 +10,8 @@ import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
-import { findSpans } from 'openland-y-utils/findSpans';
 import { getUploadCareFile } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
+import { parseSpans } from 'openland-y-utils/spans/parseSpans';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -115,7 +115,7 @@ export function useHandleSend({
                 message: inputValue,
                 mentions: mentions,
                 replyMessages: finalQuoteMessagesId,
-                spans: findSpans(inputValue),
+                spans: parseSpans(inputValue),
             });
         } else if (onSend && (inputValue || uploadedFileKey)) {
             if (inputMethodsState) {

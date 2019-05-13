@@ -1,7 +1,21 @@
-import { MessageSpanInput } from 'openland-api/Types';
-import { WhiteListAroundSpec, SpanSymbolToType } from './Span';
+import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { SpanSymbolToType } from './Span';
 
-const _getCurrentSymbol = (text: string, index: number, open: boolean): string | false => {
+const whiteListBeforeSpec = ['', ' ', '\n', ',', '.', '('];
+const whiteListAfterSpec = ['', ' ', '\n', ',', '.', '!', '?', ')'];
+
+const spanInputMap = {
+    'Bold': 'MessageSpanBold',
+    'CodeBlock': 'MessageSpanCodeBlock',
+    'InlineCode': 'MessageSpanInlineCode',
+    'Insane': 'MessageSpanInsane',
+    'Irony': 'MessageSpanIrony',
+    'Italic': 'MessageSpanItalic',
+    'Loud': 'MessageSpanLoud',
+    'Rotating': 'MessageSpanRotating',
+};
+
+const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string): string | false => {
     let isSpec = false;
     let symbol = '';
 
@@ -15,51 +29,78 @@ const _getCurrentSymbol = (text: string, index: number, open: boolean): string |
     }
 
     if (isSpec) {
-        const arroundSymbolIndex = (!open) ? (index + symbol.length) : (index - 1);
-
-        return WhiteListAroundSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
+        if (currentSpecSymbol === symbol) {
+            return whiteListAfterSpec.includes(text.charAt(index + symbol.length)) ? symbol : false
+        } else {
+            return whiteListBeforeSpec.includes(text.charAt(index - 1)) ? symbol : false;
+        }
     }
 
     return false;
 }
 
-export const parseSpans = (text: string): MessageSpanInput[] => {
+const isSpanMaster = (symbol: string) => {
+    return SpanSymbolToType[symbol] ? !!SpanSymbolToType[symbol].master : false;
+}
+
+const _findSpans = (text: string, from: number, to: number, nested?: boolean): MessageSpanInput[] => {
     let res: MessageSpanInput[] = [];
 
-    let openSpans: ({ symbol: string, offset: number, used: boolean })[] = [];
-    let closeSpans: ({ symbol: string, offset: number, used: boolean })[] = [];
+    let currentSpecSymbol = '';
+    let lastPos = 0;
 
-    for (var i = 0; i < text.length; i++) {
-        let mayBeOpenSymbol = _getCurrentSymbol(text, i, true);
-        let mayBeCloseSymbol = _getCurrentSymbol(text, i, false);
+    for (var i = from; i <= from + to; i++) {
+        let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol);
 
-        if (typeof mayBeOpenSymbol === 'string') {
-            openSpans.push({
-                symbol: mayBeOpenSymbol,
-                offset: i,
-                used: false,
-            });
-        } else if (typeof mayBeCloseSymbol === 'string') {
-            closeSpans.push({
-                symbol: mayBeCloseSymbol,
-                offset: i,
-                used: false,
-            });
+        if (typeof mayBeSymbol === 'string') {
+            if (mayBeSymbol !== currentSpecSymbol) {
+                currentSpecSymbol = mayBeSymbol;
+                lastPos = i;
+            } else {
+                const spanLength = i - lastPos + currentSpecSymbol.length;
+
+                if (spanLength > currentSpecSymbol.length * 2) {
+                    res.push({
+                        type: SpanSymbolToType[currentSpecSymbol].type,
+                        offset: lastPos,
+                        length: spanLength
+                    });
+
+                    if (nested && !isSpanMaster(currentSpecSymbol)) {
+                        res.push(..._findSpans(text, lastPos + currentSpecSymbol.length, spanLength - currentSpecSymbol.length - 1, nested));
+                    }
+                }
+
+                currentSpecSymbol = '';
+                lastPos = 0;
+            }
+        }
+
+        if (text.charAt(i) === '\n' && !isSpanMaster(currentSpecSymbol)) {
+            currentSpecSymbol = '';
+            lastPos = 0;
         }
     }
 
-    openSpans.map((o) => {
-        closeSpans.map((c) => {
-            if (c.symbol === o.symbol && c.offset > o.offset && !c.used && !o.used) {
-                c.used = true;
-                o.used = true;
+    return res;
+}
 
-                res.push({
-                    type: SpanSymbolToType[o.symbol].type,
-                    offset: o.offset,
-                    length: c.offset - o.offset + o.symbol.length
-                });
-            }
+export const parseSpans = (text: string, nested?: boolean): MessageSpanInput[] => {
+    let res: MessageSpanInput[] = [];
+
+    res.push(..._findSpans(text, 0, text.length - 1, nested));
+
+    return res;
+}
+
+export const prepareLegacySpans = (spans: MessageSpanInput[]): FullMessage_GeneralMessage_spans[] => {
+    let res: FullMessage_GeneralMessage_spans[] = [];
+
+    spans.map(span => {
+        res.push({
+            __typename: spanInputMap[span.type] as any,
+            offset: span.offset,
+            length: span.length
         });
     });
 

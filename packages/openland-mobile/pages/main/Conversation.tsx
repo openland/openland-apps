@@ -40,7 +40,7 @@ import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
-import { findSpans } from 'openland-y-utils/findSpans';
+import { parseSpans } from 'openland-y-utils/spans/parseSpans';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -175,7 +175,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     messageId: messageToEdit.id,
                     message: tx,
                     mentions: prepareLegacyMentionsForSend(tx, mentions || []),
-                    spans: findSpans(tx)
+                    spans: parseSpans(tx)
                 });
             } catch (e) {
                 Alert.alert(e.message);

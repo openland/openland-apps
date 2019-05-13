@@ -14,10 +14,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { XView } from 'react-mental';
 import { CommentPropsT } from '../PostMessageButtons';
-
-import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareMentionsToSend } from 'openland-engines/legacy/legacymentions';
-
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { FileUploader } from 'openland-web/modules/FileUploading/FileUploader';
 import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
@@ -26,6 +23,7 @@ import {
     uploadFile,
     getUploadCareFile,
 } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
+import { parseSpans } from 'openland-y-utils/spans/parseSpans';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -244,7 +242,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 fileAttachments: data.message.file ? [{ fileId: data.message.file }] : null,
                 replyMessages: data.message.replyMessages,
                 mentions: prepareMentionsToSend(data.message.mentions || []),
-                spans: findSpans(data.message.text || ''),
+                spans: parseSpans(data.message.text || ''),
             });
         }
 

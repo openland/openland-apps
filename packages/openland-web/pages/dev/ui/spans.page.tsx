@@ -6,8 +6,7 @@ import { XVertical2 } from 'openland-x/XVertical2';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
-import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
-import { parseSpans } from 'openland-y-utils/spans/parseSpans';
+import { parseSpans, prepareLegacySpans } from 'openland-y-utils/spans/parseSpans';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { SpannedView } from 'openland-web/components/messenger/message/content/SpannedView';
 
@@ -18,7 +17,7 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
         <DevDocsScaffold title="Spans">
             <XContent>
                 <XVertical2>
-                    <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(findSpans(value)) }) }} />
+                    <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(parseSpans(value)) }) }} />
 
                     <SpannedView spans={processSpans(data.text, data.spans)} />
 
