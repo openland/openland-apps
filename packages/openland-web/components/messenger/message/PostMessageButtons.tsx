@@ -126,8 +126,6 @@ export const PostMessageButtons = React.memo(
             canDelete = room.role === 'ADMIN' || room.role === 'OWNER';
         }
 
-        console.log(room);
-
         const postMessageButtons = (
             <>
                 {isComment && (

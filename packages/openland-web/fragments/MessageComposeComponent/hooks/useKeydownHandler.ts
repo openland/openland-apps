@@ -29,6 +29,7 @@ export function useKeydownHandler({
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const keydownHandler = (e: any) => {
+       
         if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
             return;
         }
@@ -40,18 +41,19 @@ export function useKeydownHandler({
             ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.getHasFocus()) ||
                 (e.code === 'KeyE' && e.ctrlKey)) &&
             !quoteState.quoteMessagesId.length
-        ) {
-            let messages = conversation
-                .getState()
-                .messages.filter(
-                    (m: any) =>  m.message && user && m.sender.id === user.id,
-                );
-            let messageData = messages[messages.length - 1];
+        ) { 
+            e.preventDefault();
 
-            if (messageData && !messagesContext.editMessageId) {
-                e.preventDefault();
-                messagesContext.setEditMessage(messageData.id, messageData.message);
+            const size = conversation.dataSource.getSize();
+            
+            for (let i = 0; i < size; i++) {
+                const item = conversation.dataSource.getAt(i);
+                if (item.type === 'message' && item.isSending === false &&  user && item.senderId === user.id && item.id && item.text) {
+                    messagesContext.setEditMessage(item.id, item.text);
+                    return;
+                }
             }
+           
         }
     };
 
