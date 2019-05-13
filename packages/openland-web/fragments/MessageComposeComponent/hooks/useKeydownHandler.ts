@@ -44,10 +44,11 @@ export function useKeydownHandler({
             let messages = conversation
                 .getState()
                 .messages.filter(
-                    (m: any) => isServerMessage(m) && m.message && user && m.sender.id === user.id,
+                    (m: any) =>  m.message && user && m.sender.id === user.id,
                 );
             let messageData = messages[messages.length - 1];
-            if (messageData && isServerMessage(messageData) && !messagesContext.editMessageId) {
+
+            if (messageData && !messagesContext.editMessageId) {
                 e.preventDefault();
                 messagesContext.setEditMessage(messageData.id, messageData.message);
             }
