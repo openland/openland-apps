@@ -2575,27 +2575,8 @@ class ApiFactory: ApiFactoryBase {
       let replyComment = readString(src, "replyComment")
       let mentions = notNullListItems(readMentionInputList(src, "mentions"))
       let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
-      let requestBody = AddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment, mentions: mentions, fileAttachments: fileAttachments)
-      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
-          if e != nil {
-            handler(nil, e)
-          } else if (r != nil && r!.errors != nil) {
-            handler(nil, NativeGraphqlError(src: r!.errors!))
-          } else if (r != nil && r!.data != nil) {
-            handler(r!.data!.resultMap, nil)
-          } else {
-            handler(nil, nil)
-          }
-      }
-      return
-    }
-    if (name == "BetaAddMessageComment") {
-      let messageId = notNull(readString(src, "messageId"))
-      let message = readString(src, "message")
-      let replyComment = readString(src, "replyComment")
-      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
-      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
-      let requestBody = BetaAddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment, mentions: mentions, fileAttachments: fileAttachments)
+      let spans = notNullListItems(readMessageSpanInputList(src, "spans"))
+      let requestBody = AddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment, mentions: mentions, fileAttachments: fileAttachments, spans: spans)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -2614,7 +2595,8 @@ class ApiFactory: ApiFactoryBase {
       let message = readString(src, "message")
       let mentions = notNullListItems(readMentionInputList(src, "mentions"))
       let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
-      let requestBody = EditCommentMutation(id: id, message: message, mentions: mentions, fileAttachments: fileAttachments)
+      let spans = notNullListItems(readMessageSpanInputList(src, "spans"))
+      let requestBody = EditCommentMutation(id: id, message: message, mentions: mentions, fileAttachments: fileAttachments, spans: spans)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)

@@ -12435,31 +12435,33 @@ public final class ResolvedInviteQuery: GraphQLQuery {
 
 public final class AddMessageCommentMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}"
+    "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  addMessageComment: betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}"
 
   public var messageId: GraphQLID
   public var message: String?
   public var replyComment: GraphQLID?
   public var mentions: [MentionInput]?
   public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
 
-  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?) {
+  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?) {
     self.messageId = messageId
     self.message = message
     self.replyComment = replyComment
     self.mentions = mentions
     self.fileAttachments = fileAttachments
+    self.spans = spans
   }
 
   public var variables: GraphQLMap? {
-    return ["messageId": messageId, "message": message, "replyComment": replyComment, "mentions": mentions, "fileAttachments": fileAttachments]
+    return ["messageId": messageId, "message": message, "replyComment": replyComment, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("addMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("betaAddMessageComment", alias: "addMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans")], type: .nonNull(.object(AddMessageComment.selections))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -12468,70 +12470,20 @@ public final class AddMessageCommentMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(addMessageComment: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "addMessageComment": addMessageComment])
+    public init(addMessageComment: AddMessageComment) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "addMessageComment": addMessageComment.resultMap])
     }
 
-    public var addMessageComment: Bool {
+    public var addMessageComment: AddMessageComment {
       get {
-        return resultMap["addMessageComment"]! as! Bool
+        return AddMessageComment(unsafeResultMap: resultMap["addMessageComment"]! as! ResultMap)
       }
       set {
-        resultMap.updateValue(newValue, forKey: "addMessageComment")
-      }
-    }
-  }
-}
-
-public final class BetaAddMessageCommentMutation: GraphQLMutation {
-  public let operationDefinition =
-    "mutation BetaAddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments) {\n    __typename\n    id\n  }\n}"
-
-  public var messageId: GraphQLID
-  public var message: String?
-  public var replyComment: GraphQLID?
-  public var mentions: [MentionInput]?
-  public var fileAttachments: [FileAttachmentInput]?
-
-  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?) {
-    self.messageId = messageId
-    self.message = message
-    self.replyComment = replyComment
-    self.mentions = mentions
-    self.fileAttachments = fileAttachments
-  }
-
-  public var variables: GraphQLMap? {
-    return ["messageId": messageId, "message": message, "replyComment": replyComment, "mentions": mentions, "fileAttachments": fileAttachments]
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes = ["Mutation"]
-
-    public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaAddMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments")], type: .nonNull(.object(BetaAddMessageComment.selections))),
-    ]
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-
-    public init(betaAddMessageComment: BetaAddMessageComment) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "betaAddMessageComment": betaAddMessageComment.resultMap])
-    }
-
-    public var betaAddMessageComment: BetaAddMessageComment {
-      get {
-        return BetaAddMessageComment(unsafeResultMap: resultMap["betaAddMessageComment"]! as! ResultMap)
-      }
-      set {
-        resultMap.updateValue(newValue.resultMap, forKey: "betaAddMessageComment")
+        resultMap.updateValue(newValue.resultMap, forKey: "addMessageComment")
       }
     }
 
-    public struct BetaAddMessageComment: GraphQLSelectionSet {
+    public struct AddMessageComment: GraphQLSelectionSet {
       public static let possibleTypes = ["CommentEntry"]
 
       public static let selections: [GraphQLSelection] = [
@@ -12572,29 +12524,31 @@ public final class BetaAddMessageCommentMutation: GraphQLMutation {
 
 public final class EditCommentMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments)\n}"
+    "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}"
 
   public var id: GraphQLID
   public var message: String?
   public var mentions: [MentionInput]?
   public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
 
-  public init(id: GraphQLID, message: String? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?) {
+  public init(id: GraphQLID, message: String? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?) {
     self.id = id
     self.message = message
     self.mentions = mentions
     self.fileAttachments = fileAttachments
+    self.spans = spans
   }
 
   public var variables: GraphQLMap? {
-    return ["id": id, "message": message, "mentions": mentions, "fileAttachments": fileAttachments]
+    return ["id": id, "message": message, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("editComment", arguments: ["id": GraphQLVariable("id"), "message": GraphQLVariable("message"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("editComment", arguments: ["id": GraphQLVariable("id"), "message": GraphQLVariable("message"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap

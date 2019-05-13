@@ -218,6 +218,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             await client.mutateEditComment({
                 id: message.id!!,
                 message: data.message.text,
+                spans: findSpans(data.message.text || ''),
                 mentions: data.message.mentions
                     ? data.message.mentions.map((mention: UserWithOffset) => ({
                           userId: mention.user.id,

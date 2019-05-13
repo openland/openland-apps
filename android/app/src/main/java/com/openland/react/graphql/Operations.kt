@@ -1918,10 +1918,7 @@ private val AddAppToChatSelector = obj(listOf(
                 ))))
         ))
 private val AddMessageCommentSelector = obj(listOf(
-            field("addMessageComment","addMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(scalar("Boolean")))
-        ))
-private val BetaAddMessageCommentSelector = obj(listOf(
-            field("betaAddMessageComment","betaAddMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(obj(listOf(
+            field("betaAddMessageComment","addMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment"), "spans" to refValue("spans")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 ))))
@@ -2015,7 +2012,7 @@ private val DeleteUserSelector = obj(listOf(
             field("superDeleteUser","superDeleteUser", mapOf("id" to refValue("id")), notNull(scalar("Boolean")))
         ))
 private val EditCommentSelector = obj(listOf(
-            field("editComment","editComment", mapOf("fileAttachments" to refValue("fileAttachments"), "id" to refValue("id"), "mentions" to refValue("mentions"), "message" to refValue("message")), notNull(scalar("Boolean")))
+            field("editComment","editComment", mapOf("fileAttachments" to refValue("fileAttachments"), "id" to refValue("id"), "mentions" to refValue("mentions"), "message" to refValue("message"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val EditMessageSelector = obj(listOf(
             field("editMessage","editMessage", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
@@ -3046,14 +3043,8 @@ object Operations {
     val AddMessageComment = object: OperationDefinition {
         override val name = "AddMessageComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){addMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment)}"
+        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
-    }
-    val BetaAddMessageComment = object: OperationDefinition {
-        override val name = "BetaAddMessageComment"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BetaAddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment){__typename id}}"
-        override val selector = BetaAddMessageCommentSelector
     }
     val CancelTyping = object: OperationDefinition {
         override val name = "CancelTyping"
@@ -3154,7 +3145,7 @@ object Operations {
     val EditComment = object: OperationDefinition {
         override val name = "EditComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message)}"
+        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String,\$spans:[MessageSpanInput!]){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message,spans:\$spans)}"
         override val selector = EditCommentSelector
     }
     val EditMessage = object: OperationDefinition {
@@ -3737,7 +3728,6 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddMessageComment") return AddMessageComment
-        if (name == "BetaAddMessageComment") return BetaAddMessageComment
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction

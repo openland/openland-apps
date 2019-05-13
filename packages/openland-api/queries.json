@@ -1,7 +1,7 @@
 {
 	"operations": [
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "Account",
 			"operationType": "query",
 			"rootType": "Query",
@@ -82,7 +82,7 @@
 			"operationId": "75d91fc895737019ba48854c3550ef5f4e5bf821769f7e3a37abf5e3b9ba712d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountSettings",
 			"operationType": "query",
 			"rootType": "Query",
@@ -138,7 +138,7 @@
 			"operationId": "474fdb41be9150deca7e2b1b10ad38b25baf4e1281de98f4df6c1ba44ff06acc"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "SettingsWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -175,7 +175,7 @@
 			"operationId": "8e479d719740077b4edb0e376978716d044dbfff05a4cfe24d2e0c1aed2d2233"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "CreateOrganization",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -236,7 +236,7 @@
 			"operationId": "f6831fe0ff169ae7f2fdbeb49611e02c6427b3a97a8404828b62101ff0511f33"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountInviteInfo",
 			"operationType": "query",
 			"rootType": "Query",
@@ -406,7 +406,7 @@
 			"operationId": "449bac767452b4feb22b375527608ad7b16b50959fe76d19d527fc9f4ec2ae60"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountAppInviteInfo",
 			"operationType": "query",
 			"rootType": "Query",
@@ -528,7 +528,7 @@
 			"operationId": "06f274b29439a10088ac9da8a3cb59069d378a99c05f72a4350c42b80aef7942"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountAppInvite",
 			"operationType": "query",
 			"rootType": "Query",
@@ -550,7 +550,7 @@
 			"operationId": "92485e320732c847a4bfd2d1e9f0667eb76669f900996bb1908f0d5e67716b04"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountInviteJoin",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -587,7 +587,7 @@
 			"operationId": "87acd52a2be3fa91bc8fb5651c16d36e338087d9bd02fa7da766f1bf2be88802"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountInvites",
 			"operationType": "query",
 			"rootType": "Query",
@@ -633,7 +633,7 @@
 			"operationId": "7c6375f060cf1743d397833557b02bf7457172113e285ae631893fc31ee3c82a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountInvitesHistory",
 			"operationType": "query",
 			"rootType": "Query",
@@ -717,7 +717,7 @@
 			"operationId": "ef5fbf28a8dd4b1903f16d67118321f3e811c9be7c758eaae48424ff44a1b2bb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountCreateInvite",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -763,7 +763,7 @@
 			"operationId": "ed84e765334ed5cf84882a9936cfed6857acffe3ceb6ffe346f1f92cdf54c193"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "AccountDestroyInvite",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -800,7 +800,7 @@
 			"operationId": "7b0d5b34eb34e2fbd32de3cf7af2065e1055f1cf01a3b2708208fe310198190e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "ProfilePrefill",
 			"operationType": "query",
 			"rootType": "Query",
@@ -853,7 +853,7 @@
 			"operationId": "869a1ca9997f74b34698133a00adf362cbfa0563b20c47c0f13d88eefe310330"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "CreateUserProfileAndOrganization",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -965,7 +965,7 @@
 			"operationId": "71bcc2ffe19ade12ac50d65255f1bd8b079346e57ccb403e7b04028bfa046fe8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "ReportOnline",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1019,7 +1019,7 @@
 			"operationId": "dae5bc153e0fe1a927d7ac90e49a4215e112464e021ad7c1717be44633465bf0"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "RegisterPush",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1068,7 +1068,7 @@
 			"operationId": "6a670ff6571c8c5ec63ca087a36729a73616fb193eb662a8af14689e55aaf45e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "FetchPushSettings",
 			"operationType": "query",
 			"rootType": "Query",
@@ -1107,7 +1107,7 @@
 			"operationId": "3e592c4aad6b00c990c8c205d08335e8e69578057c93284e084cf25e96b4d651"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
 			"operationName": "RegisterWebPush",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1144,7 +1144,7 @@
 			"operationId": "b2f5515c7a71a4edd320ba247409da877f20df3ad9e153b3baddf105227b2250"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "MyApps",
 			"operationType": "query",
 			"rootType": "Query",
@@ -1180,7 +1180,7 @@
 			"operationId": "7f5fcbd35608cf9f4f87d3244e1d9279834bbf7afa7cbf7ef10ec319f7eee515"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "CreateApp",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1267,7 +1267,7 @@
 			"operationId": "e66c8c46fe9ca81e6752c75cfdc56b39ab2f95b065b332ee0b5b74cfba58d247"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "UpdateApp",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1330,7 +1330,7 @@
 			"operationId": "d1d94b978780c5722ad634731a6d5868f94dfd702f0e12e99ae1c4a3a6c4d275"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "RefreshAppToken",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1381,7 +1381,7 @@
 			"operationId": "e65cb17b382c289dda44a069bf5ade942a5e118656a6b7ad0b4ac7da0079ad57"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "AddAppToChat",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1444,7 +1444,7 @@
 			"operationId": "6eaa02124f5d5f5122b497b98351b2f30cf23ebd7ce4b906c147c4a883a2db01"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "UserStorage",
 			"operationType": "query",
 			"rootType": "Query",
@@ -1524,7 +1524,7 @@
 			"operationId": "f2955d05aeba62849ed54aa06e079023314a4e56b24bb40e466e4218c6e20e54"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/App.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/App.ts",
 			"operationName": "UserStorageSet",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -1604,7 +1604,7 @@
 			"operationId": "6151ff3ad440a27aab076bde3d14d4a346e77cb2eaa66ceed11502d4fe3cf096"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "Dialogs",
 			"operationType": "query",
 			"rootType": "Query",
@@ -1826,7 +1826,7 @@
 			"operationId": "fe1bba7e86cf5bb55968999336a60205372e49034b4755212afeeee346ef7226"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "CommentWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -1996,7 +1996,7 @@
 			"operationId": "9c66580e1f1b7d4a63408e4020739d62aff7ecc2c7218e6dbaade4c11e5b33aa"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -2166,7 +2166,7 @@
 			"operationId": "5fba1e6e6d934f9e5f8b4add750616107910b69938acaa7a16fae5abdeed722e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "DialogsWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -2322,7 +2322,7 @@
 			"operationId": "e81688073c4444a6bb4d4bbbfcc70046bbd7027b576d40075650bf35e084e499"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "Room",
 			"operationType": "query",
 			"rootType": "Query",
@@ -2379,7 +2379,7 @@
 			"operationId": "304e4ceb624e5ebb374d55732e324d8d9f82921153415598402f915d8c92a2e6"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomChat",
 			"operationType": "query",
 			"rootType": "Query",
@@ -2575,7 +2575,7 @@
 			"operationId": "81175a789cbf56b19180507152519a585e5a82624a91add48a64e700b08f71cc"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomHeader",
 			"operationType": "query",
 			"rootType": "Query",
@@ -2968,7 +2968,7 @@
 			"operationId": "ef07650ca43fdd1ec50b7dd2ea48bf136cd61a47701ef502cb088d6174968766"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomWithoutMembers",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3025,7 +3025,7 @@
 			"operationId": "b63f9f5db5ef2f192fab4b531dfc2156c4c7e30d422295c3c220fd1c2ebfabb2"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomTiny",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3080,7 +3080,7 @@
 			"operationId": "26d4b02ef8cdc76efcbb30d5348e3a64984e80b8d1a8d4cb8f49ea35bb39fdd2"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomSuper",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3148,7 +3148,7 @@
 			"operationId": "ea0da06309ee39889fa82d9c702244cb768bff10fee5c16ea37ef267985a5dcb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "PinMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3215,7 +3215,7 @@
 			"operationId": "473b19639f62f6744e31644c4b3f6801a20969b12d0feb8bd384a00f09f6a967"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "UnpinMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3270,7 +3270,7 @@
 			"operationId": "8346afe3f4088e0dfcb9ef72040a394d600e17bb51f12ab14ac22f5cfb3dabb7"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "MessageSetReaction",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3319,7 +3319,7 @@
 			"operationId": "9f724c1931d29de4ff56e283a49dcb7bee4425d33089076e8259f313cb9a9a87"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "SwitchReaction",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3397,7 +3397,7 @@
 			"operationId": "6ab3b0a4733a61f350c28991ebf85cc7d4321be6ca72ff8088125c66c494d992"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "MessageUnsetReaction",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3446,7 +3446,7 @@
 			"operationId": "dc032ef7e85eb37d26760af50f7db33697bcbb08e4e6a53ea4458b267e067f40"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "SendPostMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3548,7 +3548,7 @@
 			"operationId": "f59b0bdb011d2d2fe6889c3f3b19be9b62205e5b3dc8684b3e0fd50cca5f94de"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "EditPostMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3650,7 +3650,7 @@
 			"operationId": "1c2dc61859a826aba683ecc21b65dc248c1b59f5d3192e8229c4555db1ac66bb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RespondPostMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3728,7 +3728,7 @@
 			"operationId": "6938e142dd9f03f679fcda35fcfbbfa7efcd38e432a942049ba9f5e99eb3c820"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "SaveDraftMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -3777,7 +3777,7 @@
 			"operationId": "274718b5770ce92fe0cb9f4f0a9cd6320fca98e1f3bff588f711221b2372ca4f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "GetDraftMessage",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3814,7 +3814,7 @@
 			"operationId": "c136a57f6da3543706ecd7709316c15d8008db66e054788a6ce4495bdbd74f7e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "GlobalCounter",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3860,7 +3860,7 @@
 			"operationId": "ba2ff26fcac56656eedb1e52d5625334b42a9f5142da25fc00ec6c10f030d5b3"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatHistory",
 			"operationType": "query",
 			"rootType": "Query",
@@ -3972,7 +3972,7 @@
 			"operationId": "8fef7ce45f125968a89d97cd3f7466896dde9325f4165f44cb24733812597276"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatInit",
 			"operationType": "query",
 			"rootType": "Query",
@@ -4114,7 +4114,7 @@
 			"operationId": "b5ca3db0bdfb8453caa3b0fbd6225526b0b1d6e40bccbeca38f4b11114fe2d57"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "SendMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4223,7 +4223,7 @@
 			"operationId": "17897dd83cbaed23e3d1c9177f48590e9807ff68a149500fb3a5de2993330297"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ReplyMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4332,7 +4332,7 @@
 			"operationId": "9db24e9080723af93e14c99f0276d800415c36e54d5b7854a556180e4e5ae2e4"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomRead",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4381,7 +4381,7 @@
 			"operationId": "87959d307e4b52880fbc752c7fc67974473b6733badac97a9f1634fef3ffad97"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatSearchGroup",
 			"operationType": "query",
 			"rootType": "Query",
@@ -4442,7 +4442,7 @@
 			"operationId": "f20769efeee3f92d24bc85f50787a79bd7597921377e8c37c2093e29c991a6a4"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomCreate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4581,7 +4581,7 @@
 			"operationId": "6599eb079eec56667dc804822d8e3b1dabed6badf0889ab8cba47ed7cb556596"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomCreateIntro",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4662,7 +4662,7 @@
 			"operationId": "caa61d4c68953e3abfae8948c07cfbaad8523ae0ddd3de6a40e5f58ebc94826e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomEditIntro",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4743,7 +4743,7 @@
 			"operationId": "2b9c001f97af214adc78cd1e496a5f712badfb7fd686b00ab757d5486abf9588"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "SetTyping",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4785,7 +4785,7 @@
 			"operationId": "3b376c9bf15b7e2e33ae0919cd60784a7f08b4b13818e26b2c9787fc4241fe2c"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "CancelTyping",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4822,7 +4822,7 @@
 			"operationId": "4ef135377fde8eb83287cef3d3cf25a742f8ccb2715f054fd81126c66f975ef5"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomAddMember",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4897,7 +4897,7 @@
 			"operationId": "c1fea38cba1ddc5414314c0e03511b65ef9ab8cd4d1029d65c6dbe7cbc8ad4bb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomDeclineJoinReuest",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -4966,7 +4966,7 @@
 			"operationId": "16f5386e3d6ed026ba6c99136114787cfcf9701e6497a1a92aa1d5f3234ba0c5"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomAddMembers",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5036,7 +5036,7 @@
 			"operationId": "0e18777dadc0ce0866faad595a7138ed31f49b738b2b4fd9f12c6c938ffd0cef"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomKick",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5105,7 +5105,7 @@
 			"operationId": "823e50ac93da94a9194a0ed12b740ab9ee1c18b7278de6c16639b910f0c5be54"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomChangeRole",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5186,7 +5186,7 @@
 			"operationId": "d6e1789e1ec0f3a0b166397ddabff53b015a6d1371e01d2f00eeabe59a0648eb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomLeave",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5243,7 +5243,7 @@
 			"operationId": "1ade4ae60b4075ca87b286f957bc46602c7c2b5c286b2969140adb50c86ad5a5"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomSearchText",
 			"operationType": "query",
 			"rootType": "Query",
@@ -5332,7 +5332,7 @@
 			"operationId": "1910ffa4dbb0eb380149622a0e39c9c7e40d519fd08ab5433161fbf20fa4f604"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomSearch",
 			"operationType": "query",
 			"rootType": "Query",
@@ -5595,7 +5595,7 @@
 			"operationId": "fa5c3fdfcfc9c1893b8c7f73610256409b5bab0f15d3cc69390e04d06965d6fb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomAlterFeatured",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5676,7 +5676,7 @@
 			"operationId": "e941c6e16566c7de768f67fc3cb788714d3e692586745aa9f68b1c67dd6f86de"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomAlterHidden",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -5756,7 +5756,7 @@
 			"operationId": "dac01e5e2d5890238c570a954f8325590e7327247276af35439e24507c325ddb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMembersShort",
 			"operationType": "query",
 			"rootType": "Query",
@@ -5827,7 +5827,7 @@
 			"operationId": "eb01e93b5df81e7aa52a034c5ea9fa3fab350786fb5005852c0616ff60ac22a6"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMemberShort",
 			"operationType": "query",
 			"rootType": "Query",
@@ -5924,7 +5924,7 @@
 			"operationId": "242bbda7495d286463dbe2643bfa7c14731d1aff08f283b8514c807732815833"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMembers",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6014,7 +6014,7 @@
 			"operationId": "5c053c02772ba8207acf048122445c5ac0a240db697eb8937c13e392d7d2f427"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMembersForMentionsPaginated",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6106,7 +6106,7 @@
 			"operationId": "c505a7bb461a9b1e6686f01f52c8133e9bc26923afe1a845ea9d8f807a829e03"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMembersPaginated",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6220,7 +6220,7 @@
 			"operationId": "cca2fb5a4c016577e5bcf6ecf9128a4ed5396faeb7e82370f7bfbd676a490adc"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomSettingsUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6294,7 +6294,7 @@
 			"operationId": "06c5327630b4f68b55f8ff4dc065d83b2cbf611eb2b3c34a16f38c060d629dcd"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomJoin",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6351,7 +6351,7 @@
 			"operationId": "2d6c875c94c0243c83c18bf600b0c9931065c1d0b582050b2680b15a6db25382"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomSendEmailInvite",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6401,7 +6401,7 @@
 			"operationId": "ed83ef0a666849b8aca04e2ba7d3635bc804fe1286e4b343f46a2c88e2d99e7f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomJoinInviteLink",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6458,7 +6458,7 @@
 			"operationId": "4ad47f7766f217901052b2e5b7a506864fe54bf62e30e7f6749a5657671367dc"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomRenewInviteLink",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6495,7 +6495,7 @@
 			"operationId": "87171fbd97b50c4b54a836173e5debda1343a8986dad09ace36e909d30e55acb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomInviteLink",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6532,7 +6532,7 @@
 			"operationId": "421f83a0ebf1bddcc0d9cb496cd80de3381bd8f91b8e0068b666901961599072"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomInviteInfo",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6707,7 +6707,7 @@
 			"operationId": "33a665e30ee69c581b164c8fac1eedee1e207319fee536b78c4d1cd164789fa6"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ResolvedInvite",
 			"operationType": "query",
 			"rootType": "Query",
@@ -6968,7 +6968,7 @@
 			"operationId": "a966562a2f1f57d23bbf811409cfb8872dc417faeab208a9d63a27cf99fd7977"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "AddMessageComment",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -6992,97 +6992,16 @@
 				{
 					"name": "fileAttachments",
 					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
 				}
 			],
-			"source": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
+			"source": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  addMessageComment: betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
 			"fields": [
 				{
 					"responseName": "addMessageComment",
-					"fieldName": "addMessageComment",
-					"type": "Boolean!",
-					"args": [
-						{
-							"name": "messageId",
-							"value": {
-								"kind": "Variable",
-								"variableName": "messageId"
-							},
-							"type": "ID!"
-						},
-						{
-							"name": "message",
-							"value": {
-								"kind": "Variable",
-								"variableName": "message"
-							},
-							"type": "String"
-						},
-						{
-							"name": "replyComment",
-							"value": {
-								"kind": "Variable",
-								"variableName": "replyComment"
-							},
-							"type": "ID"
-						},
-						{
-							"name": "mentions",
-							"value": {
-								"kind": "Variable",
-								"variableName": "mentions"
-							},
-							"type": "[MentionInput!]"
-						},
-						{
-							"name": "fileAttachments",
-							"value": {
-								"kind": "Variable",
-								"variableName": "fileAttachments"
-							},
-							"type": "[FileAttachmentInput!]"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
-			"operationId": "21f3cb89c6b96d50728808377d08010ff733d89514699badbd01cdc68e035731"
-		},
-		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
-			"operationName": "BetaAddMessageComment",
-			"operationType": "mutation",
-			"rootType": "Mutation",
-			"variables": [
-				{
-					"name": "messageId",
-					"type": "ID!"
-				},
-				{
-					"name": "message",
-					"type": "String"
-				},
-				{
-					"name": "replyComment",
-					"type": "ID"
-				},
-				{
-					"name": "mentions",
-					"type": "[MentionInput!]"
-				},
-				{
-					"name": "fileAttachments",
-					"type": "[FileAttachmentInput!]"
-				}
-			],
-			"source": "mutation BetaAddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments) {\n    __typename\n    id\n  }\n}",
-			"fields": [
-				{
-					"responseName": "betaAddMessageComment",
 					"fieldName": "betaAddMessageComment",
 					"type": "CommentEntry!",
 					"args": [
@@ -7125,6 +7044,14 @@
 								"variableName": "fileAttachments"
 							},
 							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
 						}
 					],
 					"isConditional": false,
@@ -7151,11 +7078,11 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation BetaAddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments) {\n    __typename\n    id\n  }\n}",
-			"operationId": "595dfe3f1a81976f9932302b404fdf645c1429b20cbb242c9b2574ab5d275d9a"
+			"sourceWithFragments": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  addMessageComment: betaAddMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"operationId": "090ef6030b4e0ca3a7d90b948f508b1f4920d5827b9ee95977d410181c041217"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "EditComment",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7175,9 +7102,13 @@
 				{
 					"name": "fileAttachments",
 					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
 				}
 			],
-			"source": "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
+			"source": "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}",
 			"fields": [
 				{
 					"responseName": "editComment",
@@ -7215,6 +7146,14 @@
 								"variableName": "fileAttachments"
 							},
 							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
 						}
 					],
 					"isConditional": false,
@@ -7224,11 +7163,11 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
-			"operationId": "007b0e5b64a182c02ec1f1af03c75a7c6d0f78f528c09522e930ae379698841e"
+			"sourceWithFragments": "mutation EditComment($id: ID!, $message: String, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editComment(id: $id, message: $message, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}",
+			"operationId": "2d5f0055d9c9deb950af70b56c8f428e5186af3877692dd6b25062e14c1226d9"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "DeleteComment",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7265,7 +7204,7 @@
 			"operationId": "1c15e6199ac581135afa4868872f463d7c505f01683520266b9f3e62a20d3df0"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "MessageComments",
 			"operationType": "query",
 			"rootType": "Query",
@@ -7375,7 +7314,7 @@
 			"operationId": "09094ea63e08a8945a9e6a293e5d89ba30d7bd9f8789f9c5dda9b40422fd2d91"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "CommentSetReaction",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7424,7 +7363,7 @@
 			"operationId": "68681459c19a3718ee3cbc5928062747ba8c14aa6a47fbbce51dd7ed41779857"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "CommentUnsetReaction",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7473,7 +7412,7 @@
 			"operationId": "d60882350e6c5b03ee3536480f68acc5a170f1c11395b23b98e7d6a432c808db"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7605,7 +7544,7 @@
 			"operationId": "f0b5bbbc0bb767fd8f436a48c752745289db117a3a2b2065f06f8301c6f28d28"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomDeleteMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7642,7 +7581,7 @@
 			"operationId": "e062da3347733ffc233e02064326d9cd578b945f9d49d92b81a1ae0e92c5c0e8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomDeleteMessages",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7679,7 +7618,7 @@
 			"operationId": "6227f6f997207c6854e98755bf4575fa5965643092a28544e0905b14f0ac0345"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomDeleteUrlAugmentation",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7716,7 +7655,7 @@
 			"operationId": "67fda9fa3d5efa14694df68eb86319ca4d8a8fd0440603b639287a25ccc974cb"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "EditMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7813,7 +7752,7 @@
 			"operationId": "94f5de73e975267e6ebc5c7a11451658a897e784627c758aec1e3259c0110b8a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "MarkSequenceRead",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -7850,7 +7789,7 @@
 			"operationId": "3ac00b53b7147bca4a579188417adf9b51e7ad32f013e5e699044474d861822e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "TypingsWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -7951,7 +7890,7 @@
 			"operationId": "04da3b3d737f1956129d22faa08dc677f35ff1b1fc9ab9118ddb982ad399fa5d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatOnlinesCountWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -8005,7 +7944,7 @@
 			"operationId": "cd54e19105faa346b1255242cd80841d3008a1e92818d3df2e53761a25d49a5d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "UpdateWelcomeMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8078,7 +8017,7 @@
 			"operationId": "93b2980a544ac0c75deee548ca088a0110f90181e863ac867a67c8078c132aee"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "Message",
 			"operationType": "query",
 			"rootType": "Query",
@@ -8132,7 +8071,7 @@
 			"operationId": "9070bd1d85d457258b6b6e40ab1e970bff17bd95900f0cf9de0036b70e8d1258"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "Conference",
 			"operationType": "query",
 			"rootType": "Query",
@@ -8185,7 +8124,7 @@
 			"operationId": "86264e0a99158b761ea883a66c6e91ad2d71a57714ce991c958ef2b527813525"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceMedia",
 			"operationType": "query",
 			"rootType": "Query",
@@ -8334,7 +8273,7 @@
 			"operationId": "35be179eae60bf0e919462a42fda8c13919b08fe865377cab4b7d55737f80935"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceJoin",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8409,7 +8348,7 @@
 			"operationId": "b401f8c43af22acd594c50a6cdd30eafaa2d4f6cb604e3a950be45eeb67ddc37"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceLeave",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8472,7 +8411,7 @@
 			"operationId": "4cccfd3d69b2d796431aae940fc397e517d7d4ee9b1f9d36b328ad639f088c66"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceKeepAlive",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8535,7 +8474,7 @@
 			"operationId": "a18fc76228f42e0f393f819cf5759111a159e327502c1cd483f4492ce681d367"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceOffer",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8622,7 +8561,7 @@
 			"operationId": "b1f74b0ad73c2ff17a9ecd6fd984230e188995c4e320d89bef138c9f7ac29651"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceAnswer",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8709,7 +8648,7 @@
 			"operationId": "abbd10248ecfb96953078f31dd5f48456439e3ce4a0e8bfc1bf83cf81188c5c3"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceCandidate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8796,7 +8735,7 @@
 			"operationId": "49b5ed93964906df2ac91f3018d3f64f9ded84d4d2cb180bbea6125c63d6dbd5"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaOffer",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -8919,7 +8858,7 @@
 			"operationId": "4ec27733a3432a25d6f42cc4d7c7a4850fc21aefc77991074d08c7aac204ffa1"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaNegotiationNeeded",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -9030,7 +8969,7 @@
 			"operationId": "bb9d15f4f046016fabf395f71f6c551bfdd61cf28e1342bef529744c4115be64"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaFailed",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -9141,7 +9080,7 @@
 			"operationId": "c30b95cd1c870db93249ca4d4646605f8faf6ac4ecc25ce67520aa871f52900c"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaAnswer",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -9264,7 +9203,7 @@
 			"operationId": "56c71f33327d511b28145a16127ab55180ce6d988a2c116c6f02945241402d33"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "MediaCandidate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -9387,7 +9326,7 @@
 			"operationId": "f0a65c04d41cbb16a07f1bc8b7b8bb6c7c47c258fc43ffcabd62dec2555992aa"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceMediaWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -9498,7 +9437,7 @@
 			"operationId": "3a548e19359ca7d9531648da9a3c777fe5399a524616528daa7c92ae8fdb155a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "ConferenceWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -9551,7 +9490,7 @@
 			"operationId": "bd37a1bbd428060b1194df1048f52eda5f1f7ead574667f5800d42babd45ce89"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Explore.ts",
 			"operationName": "AvailableRooms",
 			"operationType": "query",
 			"rootType": "Query",
@@ -9774,7 +9713,7 @@
 			"operationId": "dfbafbbc07516ccf96df901da58c65a52db37a1c502909b7f2974aea43817e44"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Explore.ts",
 			"operationName": "UserRooms",
 			"operationType": "query",
 			"rootType": "Query",
@@ -9913,7 +9852,7 @@
 			"operationId": "3a5ede42e4d7cca6f1a316a1b47e0349d2befccd4d04902a404dfb280d1d7650"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Explore.ts",
 			"operationName": "UserAvailableRooms",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10052,7 +9991,7 @@
 			"operationId": "13f832471f67fb3ceb24c3718592ba36d7742f2b7e59633b4b32e1083fc1d523"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Explore.ts",
 			"operationName": "GlobalSearch",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10232,7 +10171,7 @@
 			"operationId": "0f6cb763cf8089613119ef6e54e163479a8fa2ceea8a8ff1ded8c6cade8c97e3"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
 			"operationName": "FeatureFlags",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10285,7 +10224,7 @@
 			"operationId": "dd6de47404414231484d791d64fdfc82db8334197982191c682dd3784705d219"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
 			"operationName": "FeatureFlagAdd",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10365,7 +10304,7 @@
 			"operationId": "cf2235a1b518f31402fc0fffb85ff5d6ace7df3f8353b6646c6d3df74eb72ce8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
 			"operationName": "FeatureFlagEnable",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10469,7 +10408,7 @@
 			"operationId": "2083c426883d280373418e67fcd3ea5d057dd2a1a00f3b2b7778b99e0d13fe77"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
 			"operationName": "FeatureFlagDisable",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10573,7 +10512,7 @@
 			"operationId": "8e8d707747ab2b7b137ff14eb2c653496a49f44bc595887227731fc002b88722"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Feed.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
 			"operationName": "FeedHome",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10648,7 +10587,7 @@
 			"operationId": "9b64642dec89a5927278ca1c9443e717d062d71d951de7c86d54d0d329e02757"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Feed.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
 			"operationName": "FeedPost",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10702,7 +10641,7 @@
 			"operationId": "8f8865ff6130b6f6af24fc52cb195d51d2a9a2cff45cefeb5d48120184bda00f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "MyOrganizations",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10745,7 +10684,7 @@
 			"operationId": "ea530ac015f6828103f76649e218c996350fdc35ac7d6f81def47d47b38d1981"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "UpdateOrganization",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10808,7 +10747,7 @@
 			"operationId": "5dcec475e9f97846f7231e2db83ae25ae16ce31abcfe42495aad351af35665a8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "SetOrgShortname",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -10857,7 +10796,7 @@
 			"operationId": "2ba01d87de67cde65ef91cbc9a49ca67c67beab9b555f4683f363399d3786c14"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "Organization",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10914,7 +10853,7 @@
 			"operationId": "90eb7b8210f0bb079ee33bca1484dc81a8c61a7dcb3d954254d6dcaf8324a436"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationWithoutMembers",
 			"operationType": "query",
 			"rootType": "Query",
@@ -10971,7 +10910,7 @@
 			"operationId": "7f2eb293d95947b4822f4cd10b2d58ca90ffba03396a08242bf81ae9f79d8dc4"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationMembersShort",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11069,7 +11008,7 @@
 			"operationId": "000afa8b706debb33bacbf56a5d170ef411465ebdc0572268323d64c8200a64d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationMembersShortPaginated",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11195,7 +11134,7 @@
 			"operationId": "ef4ee0ee08d0bad9feadefaae84e7f3ddd50937f70c11d5d93a5b3aef45681a2"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationProfile",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11246,7 +11185,7 @@
 			"operationId": "dfca8d1a4e2a9fe0054420783c9b6342c9f068f10e4b7da5b64c6c7c37b95b6d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "ExploreOrganizations",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11462,7 +11401,7 @@
 			"operationId": "5e867fe96760dccf1d4096b7a6f188814b218faef98423237a6dd446b8b45c1f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "ExploreCommunity",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11642,7 +11581,7 @@
 			"operationId": "1683b2ae73735a325fdc58e87bd42354e609bfdb8e262037d7125f8358063478"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationChangeMemberRole",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -11703,7 +11642,7 @@
 			"operationId": "2c1206cb6dc01189e2d17cf07f43f7d1f2ae165875317411aee7b237b523b91e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationAddMember",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -11772,7 +11711,7 @@
 			"operationId": "c67e39d28fecd7f7c4e1ac6eacf4f12dc4e9194fc67a7c78225f3785af50230a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationRemoveMember",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -11821,7 +11760,7 @@
 			"operationId": "5f1c807a147aeaca15a675acefd6af98b3371fe2f5c8f540b87453a847028362"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationInviteMembers",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -11870,7 +11809,7 @@
 			"operationId": "bbab73ef170fbf7d935705f21ac0bbb765c933a5aacdf2b465bb7b6ff0922319"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationPublicInvite",
 			"operationType": "query",
 			"rootType": "Query",
@@ -11938,7 +11877,7 @@
 			"operationId": "695bfdf06fc8416883a48cb0750900636ec1d7983d400cf552c49f92bb24a95c"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationCreatePublicInvite",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12018,7 +11957,7 @@
 			"operationId": "55955682d04e275bfd3ffb85722ec928dc2666314a474d371293caef099181b5"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "DeleteOrganization",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12055,7 +11994,7 @@
 			"operationId": "1943b0cb999b7c1070e2d244152f6c5fe217795a985820661d39ebfa9f20a034"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationMemberRemove",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12121,7 +12060,7 @@
 			"operationId": "0e426a8697d8558f1a871019ee40e2f4bb39ee5d04f77ba429c4c1c5da7fb5f1"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationActivateByInvite",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12158,7 +12097,7 @@
 			"operationId": "5bdf1b731e1732711ccda488d3416c909a68a1c5f11ae0384539fffd53277cce"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationAlterPublished",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12221,7 +12160,7 @@
 			"operationId": "fb154ae63c001bc89eaac0ec23ce1a46305ba658dba6e1f40701fa7c40a3a90f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationByPrefix",
 			"operationType": "query",
 			"rootType": "Query",
@@ -12272,7 +12211,7 @@
 			"operationId": "57ba6ecc0814aff32b011a46417e01cc0acfe5b8f6d47daa78221a3bab082c42"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "Permissions",
 			"operationType": "query",
 			"rootType": "Query",
@@ -12311,7 +12250,7 @@
 			"operationId": "a4645b2b569166586d434a382d16320ccfc9999f859128de91439c67f6cf1f76"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "DebugMails",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12348,7 +12287,7 @@
 			"operationId": "63da7e2686018eb1c9f88b0106afdb2a54567e75325c2c4fc898919820490618"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAdmins",
 			"operationType": "query",
 			"rootType": "Query",
@@ -12416,7 +12355,7 @@
 			"operationId": "e2b6a618f400ac333d125650a56731fb0b656687d9e7639c63d482c44e92bd9a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccounts",
 			"operationType": "query",
 			"rootType": "Query",
@@ -12476,7 +12415,7 @@
 			"operationId": "4912b48bb1f25e954dc71aa547e620e0724519a16a205ce73c675d1f852b8c30"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccount",
 			"operationType": "query",
 			"rootType": "Query",
@@ -12668,7 +12607,7 @@
 			"operationId": "278a2657eb02e0856ed0899eb63d89caed9d491c9b91130df9002e4728ecf105"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountRename",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12741,7 +12680,7 @@
 			"operationId": "35e0b4c1ca53345b71db4be33f09d9d7d01f937d5edb66e20427e369e4369422"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountActivate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12802,7 +12741,7 @@
 			"operationId": "0634260d10c11dd5297daeb03a14dbb6fc99de5b60f582afba1c852030eb30ec"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountSuspend",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12863,7 +12802,7 @@
 			"operationId": "9731f7a74a97f83e2fda938181a4959263505df0da3600b3c9a403c1e67dcef1"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountPend",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12924,7 +12863,7 @@
 			"operationId": "e94d623a074a655a29baed63b62a0de47aa4548bebca58827c0b284362ad89c4"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountAdd",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -12978,7 +12917,7 @@
 			"operationId": "8040bdd9914bcb22b2177e32642d811080abe3729fecae8aafec56efbf037a2f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountMemberAdd",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13066,7 +13005,7 @@
 			"operationId": "cb0c75ea67d9b7252d5b73ca52aa0ad45c238acd836408197001594f2e36982d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAccountMemberRemove",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13154,7 +13093,7 @@
 			"operationId": "fe48ff191a761b04cada2cfd32a79dd6bf23fef6d0e07181a46db71c1a3c35dc"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAdminAdd",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13203,7 +13142,7 @@
 			"operationId": "f440c733de0c8db6b034cc5c7c67b5832011435850a008172d5a015594d51e37"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "SuperAdminRemove",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13240,7 +13179,7 @@
 			"operationId": "2d0cc3fb7ab84f3f2571981d691ccd467a8784d4e5d75a8aa7b9bb4d22b087c2"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Permissions.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Permissions.ts",
 			"operationName": "DebugEventsWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -13337,7 +13276,7 @@
 			"operationId": "4b40c879c733210c70f614db916a9cbe30986fa96df2038022a4c847fcde173c"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "Profile",
 			"operationType": "query",
 			"rootType": "Query",
@@ -13609,7 +13548,7 @@
 			"operationId": "0f38d47187e922fb5c57847fca0ff93d5c0bd1b08cdca47f04d54b4cf3cfcb96"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "ProfileUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13854,7 +13793,7 @@
 			"operationId": "8ab92dd9e53535f6e10ecf8b75ab0ccc03b56c90455e93c5b933cee9388e7df8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "SetUserShortname",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -13891,7 +13830,7 @@
 			"operationId": "7f73862c2c0dbb13a01ff87bd3477d333a04ce8410a46a807d5f7af1b26dbab3"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "ProfileCreate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -14064,7 +14003,7 @@
 			"operationId": "f19be472891264ad6a518c1bfbee153b51cfb434be1f780bdb7c2f8b3a51d70e"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "Settings",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14100,7 +14039,7 @@
 			"operationId": "35d2c1ce5886540c21c43499ce6cf62a8edd588ef5de583258e7ec1774e857f6"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
 			"operationName": "SettingsUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -14152,7 +14091,7 @@
 			"operationId": "b2d13a2c6fed15d76bb8eb2f0dfeb4225bcf1381cda6807dd0a0936b45a94515"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Track.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Track.ts",
 			"operationName": "PersistEvents",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -14225,7 +14164,7 @@
 			"operationId": "a68609c9bfa272b16e27a9d92541e9f8f7f4f1e3e51314d124baec5f9e9a155d"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "Users",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14294,7 +14233,7 @@
 			"operationId": "67dbb2aa634cac328a9ae07a9182c3f2664eeba0eea0b7b1cc2419e23fdbff2f"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "User",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14427,7 +14366,7 @@
 			"operationId": "01f81ce17a83dd461d63a10576b4e3655e0ecbfd63768978f01bbaf13f4d75c8"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "Online",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14495,7 +14434,7 @@
 			"operationId": "7686bc2494ba8abdf780a6454cc0bc2a92ff4c863d304d34f14af248518c9398"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "OnlineWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -14594,7 +14533,7 @@
 			"operationId": "2b432ff5475f23cdc3456d8e4f4a34c1a7e7cdb39faf4fc41438575b57454624"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "ExplorePeople",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14794,7 +14733,7 @@
 			"operationId": "2318c6108330f16307a9ff7d8d732c0d2a6ac1ef3f368a198f223fa2fea4183a"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "ResolveShortName",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14884,7 +14823,7 @@
 			"operationId": "e6ff583195db21acccda3ca815bc506626d8b7dd012889c4f90c8db594f5cdd6"
 		},
 		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",
 			"operationName": "DeleteUser",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -14928,7 +14867,7 @@
 				"AppChat"
 			],
 			"fragmentName": "AppChat",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/AppChat.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/AppChat.ts",
 			"source": "fragment AppChat on AppChat {\n  __typename\n  chat {\n    __typename\n    ... on PrivateRoom {\n      id\n    }\n    ... on SharedRoom {\n      id\n    }\n  }\n  webhook\n}",
 			"fields": [
 				{
@@ -15016,7 +14955,7 @@
 				"AppProfile"
 			],
 			"fragmentName": "AppFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/AppFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/AppFull.ts",
 			"source": "fragment AppFull on AppProfile {\n  __typename\n  id\n  name\n  shortname\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  about\n  token {\n    __typename\n    salt\n  }\n}",
 			"fields": [
 				{
@@ -15156,7 +15095,7 @@
 				"CommentEntry"
 			],
 			"fragmentName": "CommentEntryFragment",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/Comment.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/Comment.ts",
 			"source": "fragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}",
 			"fields": [
 				{
@@ -15264,7 +15203,7 @@
 				"Organization"
 			],
 			"fragmentName": "CommunitySearch",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/CommunitySearch.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/CommunitySearch.ts",
 			"source": "fragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n}",
 			"fields": [
 				{
@@ -15347,7 +15286,7 @@
 				"Conference"
 			],
 			"fragmentName": "ConferenceFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
 			"source": "fragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
 			"fields": [
 				{
@@ -15499,7 +15438,7 @@
 				"Conference"
 			],
 			"fragmentName": "ConferenceShort",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/ConferenceFull.ts",
 			"source": "fragment ConferenceShort on Conference {\n  __typename\n  id\n  startTime\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
 			"fields": [
 				{
@@ -15571,7 +15510,7 @@
 				"ServiceMessage"
 			],
 			"fragmentName": "DaialogListMessage",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/Message.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/Message.ts",
 			"source": "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n    firstName\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
 				{
@@ -15867,7 +15806,7 @@
 				"ServiceMessage"
 			],
 			"fragmentName": "TinyMessage",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/Message.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/Message.ts",
 			"source": "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    commentsCount\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
 				{
@@ -16139,7 +16078,7 @@
 				"ServiceMessage"
 			],
 			"fragmentName": "FullMessage",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/Message.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/Message.ts",
 			"source": "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}",
 			"fields": [
 				{
@@ -19191,7 +19130,7 @@
 				"Organization"
 			],
 			"fragmentName": "OrganizationFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationFull.ts",
 			"source": "fragment OrganizationFull on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  membersCount\n  members: alphaOrganizationMembers {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}",
 			"fields": [
 				{
@@ -19428,7 +19367,7 @@
 				"Organization"
 			],
 			"fragmentName": "OrganizationMedium",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationMedium.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationMedium.ts",
 			"source": "fragment OrganizationMedium on Organization {\n  __typename\n  id\n  name\n  photo\n  isMine\n  membersCount\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  isCommunity: alphaIsCommunity\n  adminMembers: alphaOrganizationAdminMembers {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n}",
 			"fields": [
 				{
@@ -19546,7 +19485,7 @@
 				"OrganizationProfile"
 			],
 			"fragmentName": "OrganizationProfileFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationProfileFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationProfileFull.ts",
 			"source": "fragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  featured: alphaFeatured\n}",
 			"fields": [
 				{
@@ -19704,7 +19643,7 @@
 				"Organization"
 			],
 			"fragmentName": "OrganizationSearch",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationSearch.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationSearch.ts",
 			"source": "fragment OrganizationSearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  membersCount\n  featured: alphaFeatured\n  members: alphaOrganizationMembers {\n    __typename\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n  }\n}",
 			"fields": [
 				{
@@ -19842,7 +19781,7 @@
 				"Organization"
 			],
 			"fragmentName": "OrganizationShort",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationShort.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationShort.ts",
 			"source": "fragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
 			"fields": [
 				{
@@ -19889,7 +19828,7 @@
 				"Organization"
 			],
 			"fragmentName": "OrganizationWithoutMembersFragment",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationWithoutMembersFragment.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/OrganizationWithoutMembersFragment.ts",
 			"source": "fragment OrganizationWithoutMembersFragment on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  membersCount\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}",
 			"fields": [
 				{
@@ -20084,7 +20023,7 @@
 				"SharedRoom"
 			],
 			"fragmentName": "RoomFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/RoomFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/RoomFull.ts",
 			"source": "fragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    canSendMessage\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}",
 			"fields": [
 				{
@@ -20500,7 +20439,7 @@
 				"SharedRoom"
 			],
 			"fragmentName": "RoomFullWithoutMembers",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/RoomFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/RoomFull.ts",
 			"source": "fragment RoomFullWithoutMembers on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    canSendMessage\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}",
 			"fields": [
 				{
@@ -20823,7 +20762,7 @@
 				"SharedRoom"
 			],
 			"fragmentName": "RoomShort",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/RoomShort.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/RoomShort.ts",
 			"source": "fragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}",
 			"fields": [
 				{
@@ -21069,7 +21008,7 @@
 				"SessionState"
 			],
 			"fragmentName": "SessionStateFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/SessionStateFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/SessionStateFull.ts",
 			"source": "fragment SessionStateFull on SessionState {\n  __typename\n  isLoggedIn\n  isProfileCreated\n  isAccountActivated\n  isAccountExists\n  isAccountPicked\n  isCompleted\n  isBlocked\n}",
 			"fields": [
 				{
@@ -21138,7 +21077,7 @@
 				"Settings"
 			],
 			"fragmentName": "SettingsFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/SettingsFragment.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/SettingsFragment.ts",
 			"source": "fragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
 			"fields": [
 				{
@@ -21206,7 +21145,7 @@
 				"User"
 			],
 			"fragmentName": "UserForMention",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/UserForMention.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/UserForMention.ts",
 			"source": "fragment UserForMention on User {\n  __typename\n  id\n  name\n  photo\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
 			"fields": [
 				{
@@ -21277,7 +21216,7 @@
 				"User"
 			],
 			"fragmentName": "UserFull",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/UserFull.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/UserFull.ts",
 			"source": "fragment UserFull on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  phone\n  email\n  website\n  about\n  location\n  isBot\n  isYou\n  online\n  lastSeen\n  linkedin\n  twitter\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
 			"fields": [
 				{
@@ -21434,7 +21373,7 @@
 				"User"
 			],
 			"fragmentName": "UserShort",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/UserShort.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/UserShort.ts",
 			"source": "fragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
 			"fields": [
 				{
@@ -21549,7 +21488,7 @@
 				"User"
 			],
 			"fragmentName": "UserTiny",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/UserTiny.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/UserTiny.ts",
 			"source": "fragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
 			"fields": [
 				{
@@ -21637,7 +21576,7 @@
 				"CommentUpdated"
 			],
 			"fragmentName": "CommentUpdateFragment",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"source": "fragment CommentUpdateFragment on CommentUpdate {\n  __typename\n  ... on CommentReceived {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n  ... on CommentUpdated {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}",
 			"fields": [
 				{
@@ -21729,7 +21668,7 @@
 				"ChatLostAccess"
 			],
 			"fragmentName": "ChatUpdateFragment",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"source": "fragment ChatUpdateFragment on ChatUpdate {\n  __typename\n  ... on ChatMessageReceived {\n    message {\n      __typename\n      ...FullMessage\n    }\n    repeatKey\n  }\n  ... on ChatMessageUpdated {\n    message {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on ChatMessageDeleted {\n    message {\n      __typename\n      id\n    }\n  }\n  ... on ChatUpdated {\n    chat {\n      __typename\n      ...RoomShort\n    }\n  }\n  ... on ChatLostAccess {\n    lostAccess\n  }\n}",
 			"fields": [
 				{
@@ -21929,7 +21868,7 @@
 				"DialogBump"
 			],
 			"fragmentName": "DialogUpdateFragment",
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"source": "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n}",
 			"fields": [
 				{
