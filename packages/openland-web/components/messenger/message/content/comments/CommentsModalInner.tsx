@@ -407,7 +407,7 @@ export const CommentsModalInnerNoRouter = ({
                         useDefaultScroll
                         flexGrow={1}
                         flexShrink={1}
-                        maxHeight={700}
+                        maxHeight={'calc(100vh - 48px - 114px)'}
                         ref={scrollRef}
                     >
                         <XView position="absolute" zIndex={100} right={32} top={28}>
