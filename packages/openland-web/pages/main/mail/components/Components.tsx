@@ -77,6 +77,17 @@ class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     }
 }
 
+export const useCheckPerf = ({ name, props }: { name: string; props?: any }) => {
+    // let t0 = performance.now();
+    // React.useLayoutEffect(() => {
+    //     let t1 = performance.now();
+    //     console.log(`${name} rerender: ` + (t1 - t0) + ` milliseconds.`);
+    //     if (props) {
+    //         console.log(props);
+    //     }
+    // }, [Math.random()]);
+};
+
 const DisplayNone = React.memo(
     ({
         isActive,
@@ -113,17 +124,6 @@ const maybeRequestIdleCallback = (cb: Function) => {
     } else {
         cb();
     }
-};
-
-export const useCheckPerf = ({ name, props }: { name: string; props?: any }) => {
-    // let t0 = performance.now();
-    // React.useLayoutEffect(() => {
-    //     let t1 = performance.now();
-    //     console.log(`${name} rerender: ` + (t1 - t0) + ` milliseconds.`);
-    //     if (props) {
-    //         console.log(props);
-    //     }
-    // }, [Math.random()]);
 };
 
 const CacheComponent = ({
