@@ -44,7 +44,7 @@ export const RoomsCards = (props: RoomsCardsProps) => {
                 </XContentWrapper>
             )}
             {noData && (
-                <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />
+                <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />
             )}
         </>
     );
