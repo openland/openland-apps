@@ -6085,7 +6085,7 @@ public final class RoomQuery: GraphQLQuery {
   public let operationDefinition =
     "query Room($id: ID!) {\n  room(id: $id) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var id: GraphQLID
 
@@ -9195,7 +9195,7 @@ public final class RoomAddMemberMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomAddMember($roomId: ID!, $userId: ID!) {\n  betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
   public var userId: GraphQLID
@@ -9292,7 +9292,7 @@ public final class RoomDeclineJoinReuestMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomDeclineJoinReuest($roomId: ID!, $userId: ID!) {\n  betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
   public var userId: GraphQLID
@@ -9388,7 +9388,7 @@ public final class RoomAddMembersMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {\n  betaRoomInvite(roomId: $roomId, invites: $invites) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
   public var invites: [RoomInviteInput]
@@ -9485,7 +9485,7 @@ public final class RoomKickMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomKick($roomId: ID!, $userId: ID!) {\n  betaRoomKick(roomId: $roomId, userId: $userId) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
   public var userId: GraphQLID
@@ -9581,7 +9581,7 @@ public final class RoomChangeRoleMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {\n  betaRoomChangeRole(roomId: $roomId, userId: $userId, newRole: $newRole) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
   public var userId: GraphQLID
@@ -9679,7 +9679,7 @@ public final class RoomLeaveMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomLeave($roomId: ID!) {\n  betaRoomLeave(roomId: $roomId) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
 
@@ -11303,7 +11303,7 @@ public final class RoomJoinMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomJoin($roomId: ID!) {\n  join: betaRoomJoin(roomId: $roomId) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var roomId: GraphQLID
 
@@ -11442,7 +11442,7 @@ public final class RoomJoinInviteLinkMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomJoinInviteLink($invite: String!) {\n  join: betaRoomInviteLinkJoin(invite: $invite) {\n    __typename\n    ...RoomFull\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition) }
 
   public var invite: String
 
@@ -34438,7 +34438,7 @@ public struct OrganizationWithoutMembersFragment: GraphQLFragment {
 
 public struct RoomFull: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    canSendMessage\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}"
+    "fragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    canSendMessage\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}"
 
   public static let possibleTypes = ["PrivateRoom", "SharedRoom"]
 
@@ -34457,8 +34457,8 @@ public struct RoomFull: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public static func makePrivateRoom(id: GraphQLID, user: AsPrivateRoom.User, settings: AsPrivateRoom.Setting) -> RoomFull {
-    return RoomFull(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap, "settings": settings.resultMap])
+  public static func makePrivateRoom(id: GraphQLID, user: AsPrivateRoom.User, settings: AsPrivateRoom.Setting, pinnedMessage: AsPrivateRoom.PinnedMessage? = nil) -> RoomFull {
+    return RoomFull(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap, "settings": settings.resultMap, "pinnedMessage": pinnedMessage.flatMap { (value: AsPrivateRoom.PinnedMessage) -> ResultMap in value.resultMap }])
   }
 
   public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: AsSharedRoom.Organization? = nil, membership: SharedRoomMembershipStatus, role: RoomMemberRole, membersCount: Int? = nil, members: [AsSharedRoom.Member], requests: [AsSharedRoom.Request]? = nil, settings: AsSharedRoom.Setting, canEdit: Bool, canSendMessage: Bool, welcomeMessage: AsSharedRoom.WelcomeMessage? = nil, pinnedMessage: AsSharedRoom.PinnedMessage? = nil) -> RoomFull {
@@ -34493,6 +34493,7 @@ public struct RoomFull: GraphQLFragment {
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("user", type: .nonNull(.object(User.selections))),
       GraphQLField("settings", type: .nonNull(.object(Setting.selections))),
+      GraphQLField("pinnedMessage", type: .object(PinnedMessage.selections)),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -34501,8 +34502,8 @@ public struct RoomFull: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, user: User, settings: Setting) {
-      self.init(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap, "settings": settings.resultMap])
+    public init(id: GraphQLID, user: User, settings: Setting, pinnedMessage: PinnedMessage? = nil) {
+      self.init(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap, "settings": settings.resultMap, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -34538,6 +34539,15 @@ public struct RoomFull: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue.resultMap, forKey: "settings")
+      }
+    }
+
+    public var pinnedMessage: PinnedMessage? {
+      get {
+        return (resultMap["pinnedMessage"] as? ResultMap).flatMap { PinnedMessage(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "pinnedMessage")
       }
     }
 
@@ -34634,6 +34644,56 @@ public struct RoomFull: GraphQLFragment {
         }
         set {
           resultMap.updateValue(newValue, forKey: "mute")
+        }
+      }
+    }
+
+    public struct PinnedMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(FullMessage.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var fullMessage: FullMessage {
+          get {
+            return FullMessage(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
         }
       }
     }
