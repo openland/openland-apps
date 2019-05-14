@@ -8,398 +8,186 @@
 
 import Foundation
 import SwiftyJSON
-import Starscream
 
-enum WebSocketState {
-  case waiting
-  case connecting
-  case starting
-  case started
-  case completed
-}
-
-protocol WebSocketApolloTransportDelegate: class {
-  func onMessage(src: WebSocketApolloTransport, message: JSON)
-  func onConnected(src: WebSocketApolloTransport)
-  func onDisconnected(src: WebSocketApolloTransport)
-}
-
-class WebSocketApolloTransport: WebSocketDelegate {
-  
-  private static let nextIdQueue = DispatchQueue(label: "ws-next-id")
-  private static var nextId: Int = 1
-
-  private let id: Int
-  private let url: String
-  private let params: [String: String?]
-  private var client: WebSocket? = nil
-  private var queue = DispatchQueue(label: "ws")
-  private var pending: [JSON] = []
-  private var state: WebSocketState = .waiting
-  weak var delegate: WebSocketApolloTransportDelegate? = nil
-  
-  init(url: String, params: [String: String?]) {
-    var id: Int = 0
-    WebSocketApolloTransport.nextIdQueue.sync {
-      id = WebSocketApolloTransport.nextId
-      WebSocketApolloTransport.nextId += 1
-    }
-    self.id = id
-    self.url = url
-    self.params = params
-  }
-  
-  func connect() {
-    print("[SpaceX-WS-\(self.id)]: Starting")
-    queue.async { [weak self] in
-      if let s = self {
-        s.doConnect()
-      }
-    }
-  }
-  
-  func post(message: JSON) {
-    queue.async { [weak self] in
-      if let s = self {
-        if s.state == .completed {
-          // Silently ignore if connection is completed
-          return
-        } else if s.state == .waiting {
-          // Add to pending buffer if we are not connected already
-          s.pending.append(message)
-        } else if s.state == .connecting {
-          // Add to pending buffer if we are not connected already
-          s.pending.append(message)
-        } else if s.state == .starting {
-          // If we connected, but not started add to pending buffer (in case of failed start)
-          // and send message to socket
-          s.pending.append(message)
-          s.client!.write(string: message.description)
-        } else if s.state == .started {
-          s.client!.write(string: message.description)
-        }
-      }
-    }
-  }
-  
-  private func doConnect() {
-    print("[SpaceX-WS-\(self.id)]: doConnect")
-    if self.state != .waiting {
-      fatalError("Unexpected state")
-    }
-    self.state = .connecting
-    client = WebSocket(url: URL(string: self.url)!, protocols: ["graphql-ws"])
-    client!.delegate = self
-    client!.connect()
-  }
-
-  private func onReceived(message: String) {
-    print("[SpaceX-WS-\(self.id)]: << " + message)
-    let parsed = JSON(parseJSON: message)
-    let type = parsed["type"].stringValue
-    if type == "ka" {
-      // TODO: Handle
-    } else if type == "connection_ack" {
-      if self.state == .starting {
-        self.state = .started
-        self.pending.removeAll()
-      }
-    } else {
-      self.delegate?.onMessage(src: self, message: parsed)
-    }
-  }
-  
-  private func onConnected() {
-    print("[SpaceX-WS-\(self.id)]: onConnected")
-    if self.state != .connecting {
-      fatalError("Unexpected state")
-    }
-    self.state = .starting
-    
-    self.doPostMesage(msg: JSON(["type": "connection_init","payload": params]))
-    for p in pending {
-      self.doPostMesage(msg: p)
-    }
-  }
-  
-  private func onDisconnected() {
-    print("[SpaceX-WS-\(self.id)]: onDisconnected")
-    if self.client != nil {
-      self.client?.disconnect()
-      self.client = nil
-    }
-    if self.state == .started {
-      self.state = .completed
-      self.delegate?.onDisconnected(src: self)
-    } else {
-      self.state = .waiting
-      // TODO: Backoff
-      self.connect()
-    }
-  }
-  
-  private func doPostMesage(msg: JSON) {
-    do {
-      let str = try NSString(data: msg.rawData(), encoding: String.Encoding.utf8.rawValue) as! String
-      print("[SpaceX-WS-\(self.id)]: >> \(str)")
-      client!.write(string: str)
-    } catch let error as NSError {
-      print(error.localizedDescription)
-    }
-  }
-  
-  func close() {
-    print("[SpaceX-WS-\(self.id)]: Stopping")
-    queue.async { [weak self] in
-      if let s = self {
-        s.client?.disconnect()
-      }
-    }
-  }
-  
-  //
-  // Web Socket
-  //
-  
-  func websocketDidConnect(socket: WebSocketClient) {
-    queue.async { [weak self] in
-      if let s = self {
-        s.onConnected()
-      }
-    }
-  }
-  
-  func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-    queue.async { [weak self] in
-      if let s = self {
-        s.onDisconnected()
-      }
-    }
-  }
-  
-  func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-    queue.async { [weak self] in
-      if let s = self {
-        s.onReceived(message: text)
-      }
-    }
-  }
-  
-  func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
-    // Ignore
-  }
-}
-
-enum TransportResult {
+enum SpaceXOperationResult {
   case result(data: JSON)
   case error(error: JSON)
-  case completed
 }
 
-protocol RunningOperation {
-  func cancel()
-  func lazyUpdate(operation: JSON)
-}
-
-
-fileprivate class PendingOperation: RunningOperation {
-  let id: String
-  var query: JSON
-  weak var parent: SpaceXTransport?
-  let callback: (TransportResult) -> Void
-  
-  init(parent: SpaceXTransport, id: String, query: JSON, callback: @escaping (TransportResult) -> Void) {
-    self.parent = parent
-    self.id = id
-    self.query = query
-    self.callback = callback
-  }
-  
-  func cancel() {
-    if let p = self.parent {
-      self.parent?.liveOperations.removeValue(forKey: self.id)
-      self.parent?.connection?.post(message: JSON([
-        "type": "stop",
-        "id": self.id
-        ]))
-    }
-  }
-  
-  func lazyUpdate(operation: JSON) {
-    // TODO: Implement
-  }
-}
-
-class SpaceXTransport: WebSocketApolloTransportDelegate {
-  private static let nextIdQueue = DispatchQueue(label: "ws-next-id")
-  private static var nextId: Int = 1
-  
-  let url: String
-  let params: [String: String?]
-  fileprivate var connection: WebSocketApolloTransport? = nil
-  fileprivate var liveOperations: [String: PendingOperation] = [:]
-  fileprivate var connected = false
-  fileprivate let queue = DispatchQueue(label: "transport")
-  
-  init(url: String, params: [String: String?]) {
-    self.url = url
-    self.params = params
-  }
-  
-  func connect() {
-    queue.async { [weak self] in
-      if let s = self {
-        s.doConnect()
-      }
-    }
-  }
-  
-  func operation(operation: OperationDefinition, variables: JSON, handler: @escaping (TransportResult) -> Void) -> RunningOperation {
-    var id: String = "0"
-    SpaceXTransport.nextIdQueue.sync {
-      id = "\(SpaceXTransport.nextId)"
-      SpaceXTransport.nextId += 1
-    }
-    let q = JSON([
-          "type": "start",
-          "id": id,
-          "payload": [
-            "query": operation.body,
-            "name": operation.name,
-            "variables": variables
-          ]])
-    let pending = PendingOperation(parent: self, id: id, query: q, callback: handler)
-    queue.sync {
-      self.liveOperations[id] = pending
-      self.connection?.post(message: pending.query)
-    }
-    return pending
-  }
-  
-  private func doConnect() {
-    self.connection = WebSocketApolloTransport(url: url, params: params)
-    self.connection!.delegate = self
-    self.connection!.connect()
-    for l in liveOperations {
-      self.connection!.post(message: l.value.query)
-    }
-  }
-  
-  private func onMessage(message: JSON) {
-    let type = message["type"].stringValue
-    if (type == "data") {
-      let id = message["id"].stringValue
-      let error = message["error"]
-      let data = message["data"]
-      if error.exists() {
-        self.liveOperations[id]?.callback(TransportResult.error(error: error))
-      } else {
-        self.liveOperations[id]?.callback(TransportResult.result(data: data))
-      }
-    } else if type == "error" {
-      //
-    } else if type == "complete" {
-      let id = message["id"].stringValue
-      self.liveOperations[id]?.callback(TransportResult.completed)
-      self.liveOperations.removeValue(forKey: id)
-    }
-  }
-  
-  private func onConnected() {
-    // TODO: Notify App
-  }
-  
-  private func onDisconnected() {
-    // TODO: Notify Apps
-    
-    // Reconnect
-    if self.connection != nil {
-      self.connection?.close()
-      self.connection = nil
-    }
-    doConnect()
-  }
-
-  //
-  // Transport delegate
-  //
-  
-  func onMessage(src: WebSocketApolloTransport, message: JSON) {
-    queue.async { [weak self] in
-      if let s = self {
-        if s.connection === src {
-          s.onMessage(message: message)
-        }
-      }
-    }
-  }
-  
-  func onConnected(src: WebSocketApolloTransport) {
-    queue.async { [weak self] in
-      if let s = self {
-        if s.connection === src {
-          s.onConnected()
-        }
-      }
-    }
-  }
-  
-  func onDisconnected(src: WebSocketApolloTransport) {
-    queue.async { [weak self] in
-      if let s = self {
-        if s.connection === src {
-          s.onDisconnected()
-        }
-      }
-    }
-  }
-  
-  func close() {
-    queue.async { [weak self] in
-      if let s = self {
-        s.connection?.close()
-        s.connection = nil
-      }
-    }
-  }
-}
-
-enum SpaceXQueryResult {
-  case result(data: JSON)
-  case error(error: JSON)
+enum FetchMode {
+  case cacheFirst
+  case networkOnly
+  case cacheAndNetwork
 }
 
 class SpaceXClient {
   
-  private var transport: SpaceXTransport
+  fileprivate var store: SpaceXStoreScheduler
+  fileprivate var transport: SpaceXTransportScheduler
+  fileprivate let normalizerQueue = DispatchQueue(label: "spacex-normalizer")
+  fileprivate let callbackQueue = DispatchQueue(label: "client")
   
   init(url: String, token: String?) {
-    transport = SpaceXTransport(url: url, params: ["x-openland-token": token])
-    transport.connect()
+    self.transport = SpaceXTransportScheduler(url: url, params: ["x-openland-token": token])
+    self.store = SpaceXStoreScheduler()
   }
   
-  func query(operation: OperationDefinition, variables: JSON, handler: @escaping  (SpaceXQueryResult)->Void) {
-    transport.operation(operation: operation, variables: variables) { (res) in
-      switch(res) {
-      case .result(let data):
-          handler(SpaceXQueryResult.result(data: data))
-      case .error(let error):
-          handler(SpaceXQueryResult.error(error: error))
-      case .completed:
-        break
-          // Do nothing
+  func query(operation: OperationDefinition, variables: JSON, fetchMode: FetchMode, handler: @escaping  (SpaceXOperationResult) -> Void) {
+    if operation.kind != .query {
+      fatalError("Only query operations are supported for querying")
+    }
+    
+    func doRequest() {
+      self.transport.operation(operation: operation, variables: variables, queue: self.callbackQueue) { (res) in
+        switch(res) {
+        case .result(let data):
+          self.normalizerQueue.async {
+            let normalized: RecordSet
+            do {
+              normalized = try normalizeData(id: "ROOT_QUERY", type: operation.selector, args: variables, data: data)
+            } catch {
+              fatalError("Normalization failed")
+            }
+            self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
+              handler(SpaceXOperationResult.result(data: data))
+            }
+          }
+        case .error(let error):
+          handler(SpaceXOperationResult.error(error: error))
+        }
       }
     }
-//    transport.post(message: JSON([
-//      "type": "start",
-//      "payload": [
-//        "query": operation.body,
-//        "name": operation.name,
-//        "variables":arguments
-//      ]]))
+    
+    callbackQueue.async {
+      
+      switch(fetchMode) {
+      case .cacheFirst:
+        self.store.readQueryFromCache(operation: operation, variables: variables, queue: self.callbackQueue) { res in
+          switch(res) {
+          case .missing:
+            doRequest()
+          case .success(let data):
+            handler(SpaceXOperationResult.result(data: data))
+          }
+        }
+        break
+      case .networkOnly:
+        doRequest()
+        break
+      default:
+        fatalError("Unsupported mode for query")
+      }
+    }
+  }
+  
+  func mutate(operation: OperationDefinition, variables: JSON, handler: @escaping  (SpaceXOperationResult)->Void) {
+    if operation.kind != .mutation {
+      fatalError("Only mutation operations are supported for mutating")
+    }
+    callbackQueue.async {
+      self.transport.operation(operation: operation, variables: variables, queue: self.callbackQueue) { (res) in
+        switch(res) {
+        case .result(let data):
+          self.normalizerQueue.async {
+            let normalized: RecordSet
+            do {
+              normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
+            } catch {
+              fatalError("Normalization failed")
+            }
+            self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
+              handler(SpaceXOperationResult.result(data: data))
+            }
+          }
+        case .error(let error):
+          handler(SpaceXOperationResult.error(error: error))
+        }
+      }
+    }
+  }
+  
+  func watch(operation: OperationDefinition, variables: JSON, fetchMode: FetchMode, handler: @escaping  (SpaceXOperationResult)->Void) -> (()->Void) {
+    let queryWatch = QueryWatch(client: self, operation: operation, variables: variables, fetchMode: fetchMode, handler: handler)
+    queryWatch.start()
+    return {
+      queryWatch.stop()
+    }
   }
   
   func dispose() {
-    transport.close()
+    self.transport.close()
+  }
+}
+
+
+fileprivate class QueryWatch {
+  let operation: OperationDefinition
+  let variables: JSON
+  let handler: (SpaceXOperationResult)->Void
+  let client: SpaceXClient
+  let fetchMode: FetchMode
+  private var completed = false
+  
+  init(client: SpaceXClient,
+       operation: OperationDefinition,
+       variables: JSON,
+       fetchMode: FetchMode,
+       handler: @escaping  (SpaceXOperationResult)->Void) {
+    self.client = client
+    self.operation = operation
+    self.variables = variables
+    self.handler = handler
+    self.fetchMode = fetchMode
+  }
+  
+  func start() {
+    client.callbackQueue.async {
+      if self.fetchMode == .cacheFirst || self.fetchMode == .cacheAndNetwork {
+        self.client.store.readQueryFromCache(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
+          switch(res) {
+          case .missing:
+            self.doRequest()
+          case .success(let data):
+            self.handler(SpaceXOperationResult.result(data: data))
+            if self.fetchMode == .cacheFirst {
+              self.doSubscribe(value: data)
+            } else {
+              self.doRequest()
+            }
+          }
+        }
+      } else {
+        self.doRequest()
+      }
+    }
+  }
+  
+  private func doSubscribe(value: JSON) {
+    // TODO: Implement
+  }
+  
+  private func doRequest() {
+    self.client.transport.operation(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
+      if self.completed {
+        return
+      }
+      switch(res) {
+      case .result(let data):
+        self.handler(SpaceXOperationResult.result(data: data))
+        self.doSubscribe(value: data)
+      case .error(let error):
+        self.handler(SpaceXOperationResult.error(error: error))
+      }
+    }
+  }
+  
+  func stop() {
+    client.callbackQueue.async {
+      if self.completed {
+        return
+      }
+      self.completed = true
+      // TODO: Cancel everything
+    }
   }
 }

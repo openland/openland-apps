@@ -9,24 +9,12 @@
 import Foundation
 import SwiftyJSON
 
-fileprivate class SharedDictionary<K : Hashable, V> {
-  var dict : Dictionary<K, V> = Dictionary()
-  subscript(key : K) -> V? {
-    get {
-      return dict[key]
-    }
-    set(newValue) {
-      dict[key] = newValue
-    }
-  }
-}
-
 fileprivate class NormalizedCollection {
   var records: [String: SharedDictionary<String, RecordValue>] = [:]
-  func build() -> [String: SRecord] {
-    var res: [String: SRecord] = [:]
+  func build() -> [String: Record] {
+    var res: [String: Record] = [:]
     for k in records.keys {
-      res[k] = SRecord(key: k, fields: records[k]!.dict)
+      res[k] = Record(key: k, fields: records[k]!.dict)
     }
     return res
   }
@@ -192,7 +180,7 @@ fileprivate func normalizeSelector(
   }
 }
 
-func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: SRecord] {
+func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: Record] {
   let collection = NormalizedCollection()
   let _ = try normalizeSelector(parentCacheKey: id, collection: collection, selectors: type.selectors, args: args, data: data)
   return collection.build()

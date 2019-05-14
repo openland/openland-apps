@@ -74,18 +74,24 @@ class RNGraphQL: RCTEventEmitter {
   // Implementation
   //
   
-//  func reportResult(key: String, id: String, result: NSDictionary?) {
-//    var dict:[String:Any] = [:]
-//    dict["key"] = key
-//    dict["id"] = id
-//    dict["type"] = "response"
-//    if result != nil {
-//      dict["data"] = result
-//    } else {
-//      dict["data"] = nil
-//    }
-//    self.sendEvent(withName: "apollo_client", body: dict)
-//  }
+  func reportResult(key: String, id: String, result: NSDictionary) {
+    var dict:[String:Any] = [:]
+    dict["key"] = key
+    dict["id"] = id
+    dict["type"] = "response"
+    dict["data"] = result
+    self.sendEvent(withName: "apollo_client", body: dict)
+  }
+  
+  func reportError(key: String, id: String, result: NSDictionary) {
+    var dict:[String:Any] = [:]
+    dict["key"] = key
+    dict["id"] = id
+    dict["type"] = "failure"
+    dict["kind"] = "graphql"
+    dict["data"] = result
+    self.sendEvent(withName: "apollo_client", body: dict)
+  }
   
 //  func reportStatus(key: String, status: String) {
 //    var dict:[String:Any] = [:]
@@ -94,36 +100,7 @@ class RNGraphQL: RCTEventEmitter {
 //    dict["status"] = status
 //    self.sendEvent(withName: "apollo_client", body: dict)
 //  }
-//
-//  func reportError(key: String, id: String) {
-//    var dict:[String:Any] = [:]
-//    dict["key"] = key
-//    dict["id"] = id
-//    dict["type"] = "failure"
-//    dict["kind"] = "network"
-//    self.sendEvent(withName: "apollo_client", body: dict)
-//  }
-//
-//  func reportGraphqlError(key: String, id: String, errors: [GraphQLError]) {
-//    var dict:[String:Any] = [:]
-//    dict["key"] = key
-//    dict["id"] = id
-//    dict["type"] = "failure"
-//    dict["kind"] = "graphql"
-//    var convertedErrors: [[String:Any]] = []
-//    for e in errors {
-//      var err: [String:Any] = [:]
-//      err["message"] = e.message ?? "Unknown error"
-//      err["uuid"] = e["uuid"]
-//      err["shouldRetry"] = e["shouldRetry"] ?? false
-//      if let f = e["invalidFields"] {
-//        err["invalidFields"] = f as! [[String:Any]]
-//      }
-//      convertedErrors.append(err)
-//    }
-//    dict["data"] = convertedErrors
-//    self.sendEvent(withName: "apollo_client", body: dict)
-//  }
+
   
   override var methodQueue: DispatchQueue! {
      get { return GraphQLQueue }

@@ -9,12 +9,43 @@
 import Foundation
 import SwiftyJSON
 
+func jsonToNSDictionary(src: JSON) -> NSDictionary {
+  let d = src.dictionary!
+  let res = NSMutableDictionary()
+  for kv in d {
+    res.setValue(jsonToNative(src: kv.value), forKey: kv.key)
+  }
+  return res
+}
+
+func jsonToNative(src: JSON) -> Any {
+  if src.type == Type.dictionary {
+    return jsonToNSDictionary(src: src)
+  } else if src.type == Type.array {
+    var res: [Any] = []
+    for i in src.arrayValue {
+      res.append(jsonToNative(src: i))
+    }
+    return res
+  } else if src.type == Type.bool {
+    return src.boolValue
+  } else if src.type == Type.number {
+    return src.doubleValue
+  } else if src.type == Type.string {
+    return src.stringValue
+  } else if src.type == Type.null {
+    return NSNull()
+  } else {
+    fatalError()
+  }
+}
+
 class RNGraphqlClient {
   
   let key: String
   let module: RNGraphQL
   let client: SpaceXClient
-//  var watches: [String: WatchCancel] = [:]
+  var watches: [String: ()->Void] = [:]
 //  var subscriptions: [String: ActiveSubscription] = [:]
   var connected: Bool = false
   var live = true
@@ -23,187 +54,78 @@ class RNGraphqlClient {
     self.module = module
     self.key = key
     self.client = SpaceXClient(url: "wss:" + endpoint, token: token)
-//    let configuration = URLSessionConfiguration.default
-//    if token != nil {
-//      configuration.httpAdditionalHeaders = ["x-openland-token": token]
-//    }
-//    var request = URLRequest(url: URL(string: "wss:"+endpoint)!)
-//    request.timeoutInterval = 15
-//    self.ws = WebSocketTransport(
-//      request: request,
-//      connectingPayload:["x-openland-token": token])
-//    let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!, configuration: configuration)
-//    let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: self.ws)
-//    do {
-//      let cache: NormalizedCache
-//      if let s = storage {
-//        let ex = sqlCaches[s]
-//        if ex != nil {
-//          cache = ex!
-//        } else {
-////           let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-////           let url = URL(fileURLWithPath: s + "-\(RNGraphQLPersistenceSQL.VERSION).sqlite", relativeTo: path)
-////           print("Loading storage: \(storage) at \(path.absoluteURL)")
-////           let engine = try RNGraphQLPersistenceSQL(fileURL:  url)
-//          let engine = try RNGraphQLPersistenceLevelDB(name: "\(s)-\(RNGraphQLPersistenceLevelDB.VERSION)")
-////           let engine = try RNGraphQLPersistenceSoyuz(name: "\(s)-\(RNGraphQLPersistenceLevelDB.VERSION)")
-//          // let c = try RNGraphqlSQLSQLCache(engine: engine)
-//          let c = try RNGraphqlSQLSQLCache(engine: engine)
-//          sqlCaches[s] = c
-//          cache = c
-//        }
-//      } else {
-//        cache = InMemoryNormalizedCache()
-//      }
-//      self.store = ApolloStore(cache: cache)
-//      self.store.cacheKeyForObject =  { it in
-//        if let id = it["id"], let typename = it["__typename"] {
-//          return (typename as! String) + ":" + (id as! String)
-//        } else {
-//          return nil
-//        }
-//      }
-//      self.client = ApolloClient(networkTransport: transport, store: self.store)
-//      self.ws.delegate = self
-//    } catch {
-//      fatalError()
-//    }
   }
+  
+  //
+  // Simple operations
+  //
   
   func query(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
     if !self.live {
       return
     }
     
-    self.client.query(operation: Operations.shared.operationByName(query), variables: JSON()) { res in
-      
+    let fetchMode = self.resolveFetchPolicy(parameters: parameters)
+    
+    self.client.query(operation: Operations.shared.operationByName(query), variables: JSON(arguments), fetchMode: fetchMode) { res in
+      switch(res) {
+      case .result(let data):
+        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      case .error(let data):
+        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+        break
+      }
     }
-
-//    let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
-//    let start = DispatchTime.now()
-//    self.factory.runQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      let end = DispatchTime.now()
-//      let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-//      let timeInterval = Double(nanoTime) / 1_000_000
-//      print("Query \(query) completed in \(timeInterval) ms")
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        if res != nil {
-//          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-//        } else {
-//          self.module.reportResult(key: self.key, id: id, result: nil)
-//        }
-//      }
-//    }
-  }
-  
-  func read(id: String, query: String, arguments: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    self.factory.readQuery(store: self.store, name: query, src: arguments) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        if res != nil {
-//          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-//        } else {
-//          self.module.reportResult(key: self.key, id: id, result: nil)
-//        }
-//      }
-//    }
-  }
-  
-  func write(id: String, data: NSDictionary, query: String, arguments: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        self.module.reportResult(key: self.key, id: id, result: nil)
-//      }
-//    }
-  }
-  
-  func writeFragment(id: String, data: NSDictionary, fragment: String) {
-//    if !self.live {
-//      return
-//    }
-//    self.factory.writeFragment(store: self.store, data: data, name: fragment) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        self.module.reportResult(key: self.key, id: id, result: nil)
-//      }
-//    }
-  }
-  
-  func watch(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
-//    // NSLog("Query: " + query)
-//    let c = self.factory.watchQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      // NSLog("Query(Result): " + query)
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        if res != nil {
-//          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-//        } else {
-//          self.module.reportResult(key: self.key, id: id, result: nil)
-//        }
-//      }
-//    }
-//    self.watches[id] = c
-  }
-  
-  func watchEnd(id: String) {
-//    if !self.live {
-//      return
-//    }
-//    self.watches.removeValue(forKey: id)?()
   }
   
   func mutate(id: String, mutation: String, arguments: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    self.factory.runMutation(client: self.client, name: mutation, src: arguments) { (res, err) in
-//      if !self.live {
-//        return
-//      }
-//      if err != nil {
-//        self.handleError(id: id, err: err!)
-//      } else {
-//        if res != nil {
-//          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-//        } else {
-//          self.module.reportResult(key: self.key, id: id, result: nil)
-//        }
-//      }
-//    }
+    if !self.live {
+      return
+    }
+    
+    self.client.mutate(operation: Operations.shared.operationByName(mutation), variables: JSON(arguments)) { res in
+      switch(res) {
+      case .result(let data):
+        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      case .error(let data):
+        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+        break
+      }
+    }
   }
   
+  //
+  // Watch operations
+  //
+  
+  func watch(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
+    if !self.live {
+      return
+    }
+    let fetchMode = self.resolveFetchPolicy(parameters: parameters)
+    let cancel = self.client.watch(operation: Operations.shared.operationByName(query), variables: JSON(arguments), fetchMode: fetchMode) { res in
+      switch(res) {
+      case .result(let data):
+        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      case .error(let data):
+        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+        break
+      }
+    }
+    self.watches[id] = cancel
+  }
+  
+  func watchEnd(id: String) {
+    if !self.live {
+      return
+    }
+    self.watches.removeValue(forKey: id)?()
+  }
+  
+  //
+  // Subscriptions
+  //
+
   func subscribe(id: String, subscription: String, arguments: NSDictionary) {
 //    if !self.live {
 //      return
@@ -228,6 +150,50 @@ class RNGraphqlClient {
 //    }
 //    self.subscriptions.removeValue(forKey: id)!.stop()
   }
+  
+  //
+  // Store Operations
+  //
+  
+  func read(id: String, query: String, arguments: NSDictionary) {
+    //    if !self.live {
+    //      return
+    //    }
+    //    self.factory.readQuery(store: self.store, name: query, src: arguments) { (res, err) in
+    //      if !self.live {
+    //        return
+    //      }
+    //      if err != nil {
+    //        self.handleError(id: id, err: err!)
+    //      } else {
+    //        if res != nil {
+    //          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+    //        } else {
+    //          self.module.reportResult(key: self.key, id: id, result: nil)
+    //        }
+    //      }
+    //    }
+  }
+  
+  func write(id: String, data: NSDictionary, query: String, arguments: NSDictionary) {
+    //    if !self.live {
+    //      return
+    //    }
+    //    self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
+    //      if !self.live {
+    //        return
+    //      }
+    //      if err != nil {
+    //        self.handleError(id: id, err: err!)
+    //      } else {
+    //        self.module.reportResult(key: self.key, id: id, result: nil)
+    //      }
+    //    }
+  }
+  
+  //
+  // Dispose
+  //
   
   func dispose() {
     self.live = false
@@ -298,24 +264,23 @@ class RNGraphqlClient {
 //    }
 //  }
 //
-//  private func resolveFetchPolicy(parameters: NSDictionary) -> CachePolicy {
-//    var cachePolicy = CachePolicy.returnCacheDataElseFetch
-//    var cp = parameters.value(forKey: "fetchPolicy")
-//    if cp != nil && !(cp is NSNull) {
-//      let cps = cp as! String
-//      if cps == "cache-first" {
-//        cachePolicy = CachePolicy.returnCacheDataElseFetch
-//      } else if cps == "network-only" {
-//        cachePolicy = CachePolicy.fetchIgnoringCacheData
-//      } else if cps == "cache-and-network" {
-//        cachePolicy = CachePolicy.returnCacheDataAndFetch
-//      } else if cps == "no-cache" {
-//        // cachePolicy = CachePolicy.returnCacheDataAndFetch
-//        fatalError("no-cache is not supported on iOS")
-//      } else {
-//        fatalError("Unsupported fetch policy: " + cps)
-//      }
-//    }
-//    return cachePolicy
-//  }
+  private func resolveFetchPolicy(parameters: NSDictionary) -> FetchMode {
+    var cachePolicy = FetchMode.cacheFirst
+    var cp = parameters.value(forKey: "fetchPolicy")
+    if cp != nil && !(cp is NSNull) {
+      let cps = cp as! String
+      if cps == "cache-first" {
+        cachePolicy = FetchMode.cacheFirst
+      } else if cps == "network-only" {
+        cachePolicy = FetchMode.networkOnly
+      } else if cps == "cache-and-network" {
+        cachePolicy = FetchMode.cacheAndNetwork
+      } else if cps == "no-cache" {
+        fatalError("no-cache is not supported on iOS")
+      } else {
+        fatalError("Unsupported fetch policy: " + cps)
+      }
+    }
+    return cachePolicy
+  }
 }

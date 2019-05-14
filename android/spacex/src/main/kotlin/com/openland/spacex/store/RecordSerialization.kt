@@ -3,7 +3,7 @@ package com.openland.spacex.store
 import org.json.JSONArray
 import org.json.JSONObject
 
-private fun serializeValue(value: RecordValue): Any? {
+private fun serializeValue(value: RecordValue): Any {
     return when (value) {
         is RecordValue.String -> value.value
         is RecordValue.Number -> value.value

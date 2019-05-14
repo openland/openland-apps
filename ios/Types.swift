@@ -274,7 +274,7 @@ open class RecordValue: Equatable {
   }
 }
 
-class SRecord {
+class Record {
   let key: String
   let fields: [String:RecordValue]
   init(key: String, fields: [String:RecordValue]) {
@@ -282,6 +282,21 @@ class SRecord {
     self.fields = fields
   }
 }
+
+typealias RecordSet = [String:Record]
+
+class SharedDictionary<K : Hashable, V> {
+  var dict : Dictionary<K, V> = Dictionary()
+  subscript(key : K) -> V? {
+    get {
+      return dict[key]
+    }
+    set(newValue) {
+      dict[key] = newValue
+    }
+  }
+}
+
 
 //
 // Basics
