@@ -7,7 +7,7 @@ function findActiveWordStart (content: string, selection: { start: number, end: 
             startIndex--;
         } else {
             break;
-        } 
+        }
     }
     return startIndex + 1;
 }

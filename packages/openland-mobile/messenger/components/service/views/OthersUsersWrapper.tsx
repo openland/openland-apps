@@ -8,7 +8,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';
 
 interface OthersUsersWrapperProps {
-    text: string;
+    children?: any;
     users: UserTiny[];
     onUserPress: (id: string) => void;
     useAsync: boolean;
@@ -42,7 +42,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                 marginRight={6}
                 onPress={() => this.handlePress()}
             >
-                {this.props.text}
+                {this.props.children}
             </ASText>
         ) : (
                 <Text
@@ -57,7 +57,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                     onPress={() => this.handlePress()}
                     allowFontScaling={false}
                 >
-                    {this.props.text}
+                    {this.props.children}
                 </Text>
             );
     }

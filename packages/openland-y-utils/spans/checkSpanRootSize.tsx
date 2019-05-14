@@ -1,5 +1,6 @@
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { emoji } from 'openland-y-utils/emoji';
+import { SpanType } from './Span';
 
 function emojiChecker(messageText: string) {
     if (isEmoji(messageText)) {
@@ -15,18 +16,19 @@ function emojiChecker(messageText: string) {
     return true;
 }
 
-export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: boolean }) => {
+interface CheckSpanRootSizeResult {
+    text: string;
+    type: SpanType;
+}
+
+export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
+
     let isRotating = text.startsWith('🔄') && text.endsWith('🔄');
     let isInsane = text.startsWith('🌈') && text.endsWith('🌈');
     let isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
-    let isBig =
-        isOnlyEmoji ||
-        isInsane ||
-        isRotating ||
-        isMouthpiece ||
-        (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
-    const isTextSticker = !isOnlyEmoji && isBig;
+    let isTextSticker = text.startsWith(':') && text.endsWith(':');
+
     if (isInsane || isMouthpiece || isRotating) {
         text = text
             .replace(/🌈/g, '')
@@ -35,23 +37,19 @@ export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: b
     } else if (isTextSticker) {
         text = text.slice(1, text.length - 1);
     }
-    if (opts && opts.disableBig) {
-        isBig = false;
-        isInsane = false;
-        isRotating = false;
-        isOnlyEmoji = false;
+
+    let type: SpanType = 'text';
+
+    type = isInsane ? 'insane' : type;
+    type = isRotating ? 'rotating' : type;
+    type = (isTextSticker || isMouthpiece) ? 'loud' : type;
+
+    if (type === 'text' && isOnlyEmoji) {
+        type = 'loud'
     }
-    let smileSize: 38 | 16 = isBig ? 38 : 16;
+
     return {
-        type: 'text' as 'text',
         text,
-        textEmoji: emoji({
-            src: text,
-            size: smileSize,
-        }),
-        isBig,
-        isInsane,
-        isRotating,
-        isOnlyEmoji,
+        type
     };
 };

@@ -85,6 +85,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     >
                         <Text
                             style={{
+                                color: this.props.theme.textColor,
                                 fontSize: 15,
                                 lineHeight: 18,
                             }}

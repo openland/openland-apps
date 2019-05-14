@@ -1,7 +1,10 @@
+import { backoff } from 'openland-y-utils/timer';
+
 export class SequenceHandler {
     private readonly handler: (src: any) => Promise<void>;
     private pending: any[] = [];
     private isHandling = false;
+    private after?: () => void = undefined;
 
     constructor(handler: (src: any) => Promise<void>) {
         this.handler = handler;
@@ -14,7 +17,8 @@ export class SequenceHandler {
             this.isHandling = true;
             (async () => {
                 try {
-                    await this.handler(item);
+                    // backoff in case of io error
+                    await backoff(async () => await this.handler(item), 3);
                 } finally {
                     this.isHandling = false;
                     this.afterHandled();
@@ -29,12 +33,26 @@ export class SequenceHandler {
             let item = this.pending.splice(0, 1)[0];
             (async () => {
                 try {
-                    await this.handler(item);
+                    // backoff in case of io error
+                    await backoff(async () => await this.handler(item), 3);
                 } finally {
                     this.isHandling = false;
                     this.afterHandled();
                 }
             })();
+        } else {
+            if (this.after) {
+                this.after();
+                this.after = undefined;
+            }
+        }
+    }
+
+    doAfter = (after: () => void) => {
+        if (this.pending.length || this.isHandling) {
+            this.after = after;
+        } else {
+            after();
         }
     }
 }

@@ -12,8 +12,9 @@ import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { MessageVideoComponent } from './MessageVideoComponent';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { UserPopper } from 'openland-web/components/UserPopper';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
@@ -27,15 +28,28 @@ interface ReplyMessageProps {
     compact?: boolean;
 }
 
-export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
+export const MessageReplyComponent = (props: ReplyMessageProps) => {
+    let userPopperRef = React.useRef<UserPopper>(null);
+
+    let onAvatarOrUserNameMouseEnter = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.showPopper();
+        }
+    };
+
+    let onAvatarOrUserNameMouseLeave = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.hidePopper();
+        }
+    };
+
     let date = <XDate value={props.date} format="time" />;
     let content = [];
 
     if (props.message) {
         content.push(
             <MessageTextComponent
-                spans={props.spans}
-                message={props.message}
+                spans={processSpans(props.message, props.spans)}
                 key={'reply-text'}
                 isService={false}
                 isEdited={props.edited}
@@ -123,14 +137,21 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             {!props.compact && (
                 <XView alignSelf="stretch" flexDirection="row" marginBottom={4}>
                     <XView marginRight={12}>
-                        <XAvatar
-                            size="small"
-                            style="colorus"
-                            objectName={props.sender!!.name}
-                            objectId={props.sender!!.id}
-                            cloudImageUuid={props.sender ? props.sender.photo : undefined}
-                            path={usrPath}
-                        />
+                        <UserPopper
+                            isMe={props.sender.isYou}
+                            startSelected={false}
+                            user={props.sender}
+                            ref={userPopperRef}
+                        >
+                            <XAvatar
+                                size="small"
+                                style="colorus"
+                                objectName={props.sender!!.name}
+                                objectId={props.sender!!.id}
+                                cloudImageUuid={props.sender ? props.sender.photo : undefined}
+                                path={usrPath}
+                            />
+                        </UserPopper>
                     </XView>
                     <XView flexGrow={1} width="100%" paddingTop={1}>
                         <XView alignItems="center" flexDirection="row" marginBottom={4}>
@@ -140,6 +161,8 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                                 fontWeight="600"
                                 lineHeight="16px"
                                 color="rgba(0, 0, 0, 0.8)"
+                                onMouseEnter={onAvatarOrUserNameMouseEnter}
+                                onMouseLeave={onAvatarOrUserNameMouseLeave}
                             >
                                 {emoji({
                                     src: props.sender!!.name,
@@ -182,4 +205,4 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             </XView>
         </XView>
     );
-});
+};

@@ -12738,6 +12738,7 @@ export interface RoomChat_room_SharedRoom {
   title: string;
   membership: SharedRoomMembershipStatus;
   isChannel: boolean;
+  role: RoomMemberRole;
   canEdit: boolean;
   photo: string;
   pinnedMessage: RoomChat_room_SharedRoom_pinnedMessage | null;
@@ -19920,12 +19921,13 @@ export interface SendMessage {
 }
 
 export interface SendMessageVariables {
+  chatId: string;
   message?: string | null;
-  file?: string | null;
-  repeatKey?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
-  room: string;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
+  repeatKey?: string | null;
 }
 
 /* tslint:disable */
@@ -19941,10 +19943,13 @@ export interface ReplyMessage {
 }
 
 export interface ReplyMessageVariables {
-  roomId: string;
+  chatId: string;
   message?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
+  repeatKey?: string | null;
 }
 
 /* tslint:disable */
@@ -29695,8 +29700,13 @@ export interface ResolvedInviteVariables {
 // GraphQL mutation operation: AddMessageComment
 // ====================================================
 
+export interface AddMessageComment_addMessageComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
 export interface AddMessageComment {
-  addMessageComment: boolean;
+  addMessageComment: AddMessageComment_addMessageComment;
 }
 
 export interface AddMessageCommentVariables {
@@ -29705,31 +29715,7 @@ export interface AddMessageCommentVariables {
   replyComment?: string | null;
   mentions?: MentionInput[] | null;
   fileAttachments?: FileAttachmentInput[] | null;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: BetaAddMessageComment
-// ====================================================
-
-export interface BetaAddMessageComment_betaAddMessageComment {
-  __typename: "CommentEntry";
-  id: string;
-}
-
-export interface BetaAddMessageComment {
-  betaAddMessageComment: BetaAddMessageComment_betaAddMessageComment;
-}
-
-export interface BetaAddMessageCommentVariables {
-  messageId: string;
-  message?: string | null;
-  replyComment?: string | null;
-  mentions?: MentionInput[] | null;
-  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
 }
 
 /* tslint:disable */
@@ -29749,6 +29735,7 @@ export interface EditCommentVariables {
   message?: string | null;
   mentions?: MentionInput[] | null;
   fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
 }
 
 /* tslint:disable */
@@ -30590,19 +30577,20 @@ export interface RoomDeleteUrlAugmentationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: RoomEditMessage
+// GraphQL mutation operation: EditMessage
 // ====================================================
 
-export interface RoomEditMessage {
-  betaMessageEdit: boolean;
+export interface EditMessage {
+  editMessage: boolean;
 }
 
-export interface RoomEditMessageVariables {
+export interface EditMessageVariables {
   messageId: string;
   message?: string | null;
-  file?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
 }
 
 /* tslint:disable */
@@ -52748,6 +52736,17 @@ export enum MessageReactionType {
   THUMB_UP = "THUMB_UP",
 }
 
+export enum MessageSpanType {
+  Bold = "Bold",
+  CodeBlock = "CodeBlock",
+  InlineCode = "InlineCode",
+  Insane = "Insane",
+  Irony = "Irony",
+  Italic = "Italic",
+  Loud = "Loud",
+  Rotating = "Rotating",
+}
+
 export enum ModernMessageButtonStyle {
   DEFAULT = "DEFAULT",
   LIGHT = "LIGHT",
@@ -52904,6 +52903,12 @@ export interface MentionInput {
   userIds?: string[] | null;
   offset: number;
   length: number;
+}
+
+export interface MessageSpanInput {
+  offset: number;
+  length: number;
+  type: MessageSpanType;
 }
 
 export interface ProfileInput {

@@ -2,6 +2,7 @@ import { convertToMentionInput } from 'openland-y-utils/mentionsConversion';
 import { FileAttachmentInput } from 'openland-api/Types';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { useClient } from 'openland-web/utils/useClient';
+import { findSpans } from 'openland-y-utils/findSpans';
 
 export type AddCommentParams = {
     messageId: string;
@@ -27,13 +28,14 @@ export const useAddComment = () => {
         });
 
         const {
-            betaAddMessageComment: { id },
-        } = await client.mutateBetaAddMessageComment({
+            addMessageComment: { id },
+        } = await client.mutateAddMessageComment({
             messageId,
             message,
             replyComment,
             mentions: finalMentions,
             fileAttachments,
+            spans: findSpans(message || '')
         });
 
         await client.refetchMessageComments({

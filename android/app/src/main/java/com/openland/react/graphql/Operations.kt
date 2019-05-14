@@ -1561,6 +1561,7 @@ private val RoomChatSelector = obj(listOf(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
                             ))),
+                        field("role","role", notNull(scalar("String"))),
                         field("title","title", notNull(scalar("String")))
                     )))
                 )))
@@ -1917,10 +1918,7 @@ private val AddAppToChatSelector = obj(listOf(
                 ))))
         ))
 private val AddMessageCommentSelector = obj(listOf(
-            field("addMessageComment","addMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(scalar("Boolean")))
-        ))
-private val BetaAddMessageCommentSelector = obj(listOf(
-            field("betaAddMessageComment","betaAddMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(obj(listOf(
+            field("betaAddMessageComment","addMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment"), "spans" to refValue("spans")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 ))))
@@ -2014,7 +2012,10 @@ private val DeleteUserSelector = obj(listOf(
             field("superDeleteUser","superDeleteUser", mapOf("id" to refValue("id")), notNull(scalar("Boolean")))
         ))
 private val EditCommentSelector = obj(listOf(
-            field("editComment","editComment", mapOf("fileAttachments" to refValue("fileAttachments"), "id" to refValue("id"), "mentions" to refValue("mentions"), "message" to refValue("message")), notNull(scalar("Boolean")))
+            field("editComment","editComment", mapOf("fileAttachments" to refValue("fileAttachments"), "id" to refValue("id"), "mentions" to refValue("mentions"), "message" to refValue("message"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
+        ))
+private val EditMessageSelector = obj(listOf(
+            field("editMessage","editMessage", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val EditPostMessageSelector = obj(listOf(
             field("alphaEditPostMessage","editPostMessage", mapOf("attachments" to refValue("attachments"), "messageId" to refValue("messageId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
@@ -2251,7 +2252,7 @@ private val RegisterWebPushSelector = obj(listOf(
             field("registerWebPush","registerWebPush", mapOf("endpoint" to refValue("endpoint")), notNull(scalar("String")))
         ))
 private val ReplyMessageSelector = obj(listOf(
-            field("betaMessageSend","replyMessage", mapOf("mentions" to refValue("mentions"), "message" to refValue("message"), "replyMessages" to refValue("replyMessages"), "room" to refValue("roomId")), notNull(scalar("Boolean")))
+            field("sendMessage","replyMessage", mapOf("chatId" to refValue("chatId"), "fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val ReportOnlineSelector = obj(listOf(
             field("presenceReportOnline","presenceReportOnline", mapOf("active" to refValue("active"), "platform" to refValue("platform"), "timeout" to intValue(5000)), notNull(scalar("String")))
@@ -2321,9 +2322,6 @@ private val RoomDeleteUrlAugmentationSelector = obj(listOf(
 private val RoomEditIntroSelector = obj(listOf(
             field("betaIntroEdit","intro", mapOf("about" to refValue("about"), "file" to refValue("file"), "message" to refValue("about"), "mid" to refValue("messageId"), "uid" to refValue("uid")), notNull(scalar("Boolean")))
         ))
-private val RoomEditMessageSelector = obj(listOf(
-            field("betaMessageEdit","betaMessageEdit", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "mid" to refValue("messageId"), "replyMessages" to refValue("replyMessages")), notNull(scalar("Boolean")))
-        ))
 private val RoomJoinSelector = obj(listOf(
             field("betaRoomJoin","join", mapOf("roomId" to refValue("roomId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2383,7 +2381,7 @@ private val SaveDraftMessageSelector = obj(listOf(
             field("conversationDraftUpdate","conversationDraftUpdate", mapOf("conversationId" to refValue("conversationId"), "message" to refValue("message")), notNull(scalar("String")))
         ))
 private val SendMessageSelector = obj(listOf(
-            field("betaMessageSend","sentMessage", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "room" to refValue("room")), notNull(scalar("Boolean")))
+            field("sendMessage","sentMessage", mapOf("chatId" to refValue("chatId"), "fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val SendPostMessageSelector = obj(listOf(
             field("alphaSendPostMessage","sendPostMessage", mapOf("attachments" to refValue("attachments"), "conversationId" to refValue("conversationId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
@@ -2883,7 +2881,7 @@ object Operations {
     val RoomChat = object: OperationDefinition {
         override val name = "RoomChat"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}role title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomChatSelector
     }
     val RoomHeader = object: OperationDefinition {
@@ -3045,14 +3043,8 @@ object Operations {
     val AddMessageComment = object: OperationDefinition {
         override val name = "AddMessageComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){addMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment)}"
+        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
-    }
-    val BetaAddMessageComment = object: OperationDefinition {
-        override val name = "BetaAddMessageComment"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BetaAddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment){__typename id}}"
-        override val selector = BetaAddMessageCommentSelector
     }
     val CancelTyping = object: OperationDefinition {
         override val name = "CancelTyping"
@@ -3153,8 +3145,14 @@ object Operations {
     val EditComment = object: OperationDefinition {
         override val name = "EditComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message)}"
+        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String,\$spans:[MessageSpanInput!]){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message,spans:\$spans)}"
         override val selector = EditCommentSelector
+    }
+    val EditMessage = object: OperationDefinition {
+        override val name = "EditMessage"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation EditMessage(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){editMessage(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyMessages:\$replyMessages,spans:\$spans)}"
+        override val selector = EditMessageSelector
     }
     val EditPostMessage = object: OperationDefinition {
         override val name = "EditPostMessage"
@@ -3327,7 +3325,7 @@ object Operations {
     val ReplyMessage = object: OperationDefinition {
         override val name = "ReplyMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ReplyMessage(\$mentions:[ID!],\$message:String,\$replyMessages:[ID!],\$roomId:ID!){replyMessage:betaMessageSend(mentions:\$mentions,message:\$message,replyMessages:\$replyMessages,room:\$roomId)}"
+        override val body = "mutation ReplyMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){replyMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = ReplyMessageSelector
     }
     val ReportOnline = object: OperationDefinition {
@@ -3414,12 +3412,6 @@ object Operations {
         override val body = "mutation RoomEditIntro(\$about:String,\$file:String,\$messageId:ID!,\$uid:ID!){intro:betaIntroEdit(about:\$about,file:\$file,message:\$about,mid:\$messageId,uid:\$uid)}"
         override val selector = RoomEditIntroSelector
     }
-    val RoomEditMessage = object: OperationDefinition {
-        override val name = "RoomEditMessage"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomEditMessage(\$file:String,\$mentions:[ID!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!]){betaMessageEdit(file:\$file,mentions:\$mentions,message:\$message,mid:\$messageId,replyMessages:\$replyMessages)}"
-        override val selector = RoomEditMessageSelector
-    }
     val RoomJoin = object: OperationDefinition {
         override val name = "RoomJoin"
         override val kind = OperationKind.MUTATION
@@ -3483,7 +3475,7 @@ object Operations {
     val SendMessage = object: OperationDefinition {
         override val name = "SendMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SendMessage(\$file:String,\$mentions:[ID!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$room:ID!){sentMessage:betaMessageSend(file:\$file,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,room:\$room)}"
+        override val body = "mutation SendMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = SendMessageSelector
     }
     val SendPostMessage = object: OperationDefinition {
@@ -3736,7 +3728,6 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddMessageComment") return AddMessageComment
-        if (name == "BetaAddMessageComment") return BetaAddMessageComment
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
@@ -3754,6 +3745,7 @@ object Operations {
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
         if (name == "EditComment") return EditComment
+        if (name == "EditMessage") return EditMessage
         if (name == "EditPostMessage") return EditPostMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
@@ -3797,7 +3789,6 @@ object Operations {
         if (name == "RoomDeleteMessages") return RoomDeleteMessages
         if (name == "RoomDeleteUrlAugmentation") return RoomDeleteUrlAugmentation
         if (name == "RoomEditIntro") return RoomEditIntro
-        if (name == "RoomEditMessage") return RoomEditMessage
         if (name == "RoomJoin") return RoomJoin
         if (name == "RoomJoinInviteLink") return RoomJoinInviteLink
         if (name == "RoomKick") return RoomKick

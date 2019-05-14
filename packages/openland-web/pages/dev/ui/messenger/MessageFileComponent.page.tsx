@@ -8,7 +8,7 @@ export default () => (
     <DevDocsScaffold title="MessageTextComponent">
         <XContent>
             <XVertical2>
-                <MessageTextComponent
+                {/* <MessageTextComponent
                     {...{
                         alphaMentions: [],
                         mentions: [],
@@ -16,7 +16,7 @@ export default () => (
                         isService: false,
                         isEdited: false,
                     }}
-                />
+                /> */}
             </XVertical2>
         </XContent>
     </DevDocsScaffold>

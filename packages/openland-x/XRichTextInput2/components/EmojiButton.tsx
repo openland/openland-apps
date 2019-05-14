@@ -32,6 +32,10 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
     return (
         <XPopper
             show={showPicker}
+            onClickOutside={() => {
+                setShowPicker(false);
+            }}
+            arrow={null}
             placement="top"
             content={
                 <NimblePicker

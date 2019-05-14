@@ -27,6 +27,10 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
+import { showModalBox } from 'openland-x/showModalBox';
+import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
+import { XShortcutsRoot } from 'openland-x/XShortcuts';
+import { RoomChat_room } from 'openland-api/Types';
 
 const CommentView = ({
     originalMessageId,
@@ -38,6 +42,7 @@ const CommentView = ({
     commentsMap,
     scrollRef,
     currentCommentsInputRef,
+    room,
 }: {
     originalMessageId: string;
     roomId: string;
@@ -48,6 +53,7 @@ const CommentView = ({
     commentsMap: any;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
+    room?: RoomChat_room;
 }) => {
     const messenger = React.useContext(MessengerContext);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
@@ -148,6 +154,7 @@ const CommentView = ({
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
                 <MessageComponent
+                    room={room}
                     conversationId={roomId}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                     usernameOfRepliedUser={usernameOfRepliedUser}
@@ -206,6 +213,7 @@ export const CommentsBlockView = ({
     getMentionsSuggestions,
     scrollRef,
     currentCommentsInputRef,
+    room,
 }: {
     roomId: string;
     setShowInputId: (a: string | null) => void;
@@ -214,6 +222,7 @@ export const CommentsBlockView = ({
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
+    room?: RoomChat_room;
 }) => {
     const client = useClient();
     const isMobile = React.useContext(IsMobileContext);
@@ -238,6 +247,7 @@ export const CommentsBlockView = ({
         .map(message => {
             return (
                 <CommentView
+                    room={room}
                     roomId={roomId}
                     originalMessageId={originalMessageId}
                     key={`comment_${message.id}`}
@@ -336,6 +346,8 @@ export const CommentsModalInnerNoRouter = ({
 }) => {
     const client = useClient();
 
+    let room = client.useRoomChat({ id: roomId })!!;
+
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
 
@@ -374,21 +386,18 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(
-        () => {
-            if (currentCommentsInputRef.current && scrollRef.current) {
-                const targetElem = currentCommentsInputRef.current.getElement()!!
-                    .parentNode as HTMLElement;
-                if (targetElem) {
-                    scrollRef.current.scrollToBottomOfElement({
-                        targetElem,
-                        offset: 10,
-                    });
-                }
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
             }
-        },
-        [showInputId],
-    );
+        }
+    }, [showInputId]);
 
     return (
         <UploadContextProvider>
@@ -398,7 +407,7 @@ export const CommentsModalInnerNoRouter = ({
                         useDefaultScroll
                         flexGrow={1}
                         flexShrink={1}
-                        maxHeight={700}
+                        maxHeight={'calc(100vh - 48px - 114px)'}
                         ref={scrollRef}
                     >
                         <XView position="absolute" zIndex={100} right={32} top={28}>
@@ -414,6 +423,7 @@ export const CommentsModalInnerNoRouter = ({
                             width="100%"
                         />
                         <CommentsBlockView
+                            room={room.room ? room.room : undefined}
                             roomId={roomId}
                             originalMessageId={messageId}
                             setShowInputId={setShowInputId}
@@ -479,15 +489,19 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    router.pushQuery('comments', `${messageId}&${conversationId}`);
-    // showModalBox(
-    //     {
-    //         width: 800,
-    //     },
-    //     () => (
-    //         <UploadContextProvider>
-    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-    //         </UploadContextProvider>
-    //     ),
-    // );
+    // router.pushQuery('comments', `${messageId}&${conversationId}`);
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => (
+            <UploadContextProvider>
+                <XShortcutsRoot>
+                    <MessageStateProviderComponent router={router}>
+                        <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+                    </MessageStateProviderComponent>
+                </XShortcutsRoot>
+            </UploadContextProvider>
+        ),
+    );
 };

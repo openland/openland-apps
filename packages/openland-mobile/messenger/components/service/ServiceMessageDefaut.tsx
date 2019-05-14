@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -15,22 +14,18 @@ export interface ServiceMessageDefaultProps {
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
-    let preprocessed = preprocessText(props.message.text || '', props.message.spans);
-
-    let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress, props.onGroupPress));
+    const { message, theme, onUserPress, onGroupPress } = props;
+    let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress);
 
     return (
         <ASFlex
             backgroundColor={props.theme.backgroundColor}
             flexDirection="column"
-
             alignItems="center"
         >
             <ASFlex
                 marginTop={16}
                 marginBottom={8}
-                // backgroundColor="rgba(153,162,176,0.6)"
-                // borderRadius={10}
                 marginLeft={10}
                 marginRight={10}
                 flexDirection="column"

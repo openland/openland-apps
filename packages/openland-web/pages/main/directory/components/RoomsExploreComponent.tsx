@@ -78,6 +78,8 @@ export const RoomsExploreComponent = () => {
             searchPlaceholder={'Search groups'}
             noQueryText={'Featured groups'}
             hasQueryText={'Groups'}
+            defaultSortOption="membersCount"
+            withoutFeatured
             sortOptions={{
                 label: 'Sort by',
                 values: [
@@ -85,7 +87,6 @@ export const RoomsExploreComponent = () => {
                     { label: 'Creation date', value: 'createdAt' },
                 ],
             }}
-            defaultSortOption="membersCount"
         />
     );
 };
