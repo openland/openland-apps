@@ -312,6 +312,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 return (
                                     <MessageReplyComponent
+                                        senderNameEmojify={message.replySenderNameEmojify[index]}
                                         attach={qfileAttach}
                                         spans={message.replyTextSpans[index]}
                                         sender={item.sender}

@@ -18,6 +18,7 @@ import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
+    senderNameEmojify?: string | JSX.Element;
     spans?: Span[];
     id: string;
     date: any;
@@ -165,7 +166,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                                 onMouseEnter={onAvatarOrUserNameMouseEnter}
                                 onMouseLeave={onAvatarOrUserNameMouseLeave}
                             >
-                                {emoji({
+                                {props.senderNameEmojify || emoji({
                                     src: props.sender!!.name,
                                     size: 16,
                                 })}

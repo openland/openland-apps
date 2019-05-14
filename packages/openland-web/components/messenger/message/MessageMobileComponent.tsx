@@ -115,6 +115,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         return (
                             <MessageReplyComponent
+                                senderNameEmojify={message.replySenderNameEmojify[index]}
                                 spans={message.replyTextSpans[index]}
                                 sender={item.sender}
                                 date={item.date}
@@ -273,7 +274,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
     if (!message.isService) {
         return (
-            <MobileMessageContainer sender={message.sender} date={props.message.date}>
+            <MobileMessageContainer senderNameEmojify={message.senderNameEmojify} sender={message.sender} date={props.message.date}>
                 {content}
                 <XView alignItems="flex-start">
                     <Reactions
