@@ -50,16 +50,15 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
 interface MessagesComponentState {
     hideInput: boolean;
     loading: boolean;
-    messages: ModelMessage[];
 }
 
 const DeleteMessageComponent = () => {
@@ -150,7 +149,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation = null;
         this.state = {
             hideInput: false,
-            messages: [],
             loading: true,
         };
     }
@@ -180,7 +178,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     onConversationUpdated = (state: ConversationState) => {
-        this.setState({ loading: state.loading, messages: state.messages });
+        this.setState({ loading: state.loading });
     };
 
     unsubscribe = () => {
@@ -209,7 +207,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             let convState = this.conversation.getState();
 
             this.setState({
-                messages: convState.messages,
                 loading: convState.loading,
             });
         }
@@ -269,9 +266,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         });
     };
 
-    getMessages = () => {
-        return this.state.messages;
-    };
 
     //
     // Rendering
@@ -302,7 +296,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     ref={this.messagesList}
                     key={this.props.conversationId}
                     me={this.props.me}
-                    messages={this.state.messages}
                     loading={this.state.loading}
                     conversation={this.conversation}
                     conversationId={this.props.conversationId}
@@ -316,7 +309,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         <UploadContextProvider>
                             <MessageComposeHandler
                                 isActive={this.props.isActive}
-                                getMessages={this.getMessages}
                                 conversation={this.conversation}
                                 onChange={this.handleChange}
                                 onSend={this.handleSend}
@@ -345,9 +337,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 

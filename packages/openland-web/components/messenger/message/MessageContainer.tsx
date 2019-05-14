@@ -144,6 +144,7 @@ const NotCompactMessageContainerWrapper = ({
     onClick,
     cursorPointer,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -170,6 +171,7 @@ const NotCompactModalMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -189,6 +191,7 @@ const NotCompactShortMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -255,6 +258,14 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 
+    let onClick = React.useCallback((e) => {
+        if (props.selecting) {
+            e.preventDefault();
+            e.stopPropagation();
+            props.onSelected();
+        }
+    }, [props.selecting]);
+
     let onAvatarOrUserNameMouseEnter = () => {
         if (userPopperRef.current) {
             userPopperRef.current.showPopper();
@@ -266,18 +277,12 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             userPopperRef.current.hidePopper();
         }
     };
-    let onMouseEnter = React.useMemo(
-        () => () => {
-            onHover(true);
-        },
-        [onHover],
-    );
-    let onMouseLeave = React.useMemo(
-        () => () => {
-            onHover(false);
-        },
-        [onHover],
-    );
+    let onMouseEnter = React.useCallback(() => {
+        onHover(true);
+    }, [])
+    let onMouseLeave = React.useCallback(() => {
+        onHover(false);
+    }, [])
 
     // Selector Icon
     let selector = (
@@ -509,24 +514,18 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     }
 
     return (
-        <MessageContainerWrapper
+        <CompactMessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             isEditView={props.isEditView}
             cursorPointer={props.selecting}
-            onClick={(e: any) => {
-                if (props.selecting) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    props.onSelected();
-                }
-            }}
+            onClick={onClick}
         >
             {!props.noSelector && selector}
             {preambula}
             {content}
             {props.isEditView ? null : actions}
-        </MessageContainerWrapper>
+        </CompactMessageContainerWrapper>
     );
 };
 

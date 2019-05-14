@@ -165,10 +165,16 @@ export const Menu = React.memo(
         selectMessage,
         room,
     }: MenuProps) => {
-        let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
+
+        const commentsClick = React.useCallback(() => {
+            openCommentsModal({
+                messageId: message.id!!,
+                conversationId,
+            });
+        }, [])
 
         const setEditMessage = (e: any) => {
             if (!message.isSending) {
@@ -242,13 +248,7 @@ export const Menu = React.memo(
                             )}
                             {hover && !isComment && !isChannel && (
                                 <CommentsIconWrapper
-                                    onClick={() => {
-                                        openCommentsModal({
-                                            router,
-                                            messageId: message.id!!,
-                                            conversationId,
-                                        });
-                                    }}
+                                    onClick={commentsClick}
                                 >
                                     <CommentIcon />
                                 </CommentsIconWrapper>
