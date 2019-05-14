@@ -14,6 +14,12 @@ enum SpaceXTransportOperationResult {
   case error(error: JSON)
 }
 
+enum SpaceXTransportSubscriptionResult {
+  case result(data: JSON)
+  case error(error: JSON)
+  case completed
+}
+
 class SpaceXTransportScheduler {
   let url: String
   let params: [String: String?]
@@ -31,11 +37,11 @@ class SpaceXTransportScheduler {
     operation: OperationDefinition,
     variables: JSON,
     queue: DispatchQueue,
-    handler: @escaping  (SpaceXTransportOperationResult)->Void
+    handler: @escaping  (SpaceXTransportOperationResult) -> Void
   ) {
     var isCompleted = false
     let _ = self.transport.operation(operation: operation, variables: variables) { (res) in
-      queue.async {
+      self.queue.async {
         switch(res) {
         case .result(let data):
           if !isCompleted {
@@ -54,6 +60,32 @@ class SpaceXTransportScheduler {
         case .completed:
           // Ignore
           break
+        }
+      }
+    }
+  }
+  
+  func subscription(
+    operation: OperationDefinition,
+    variables: JSON,
+    queue: DispatchQueue,
+    handler: @escaping (SpaceXTransportSubscriptionResult) -> Void
+  ) -> RunningOperation {
+    return self.transport.operation(operation: operation, variables: variables) { res in
+      self.queue.async {
+        switch(res) {
+        case .result(let data):
+          queue.async {
+            handler(SpaceXTransportSubscriptionResult.result(data: data))
+          }
+        case .error(let error):
+          queue.async {
+            handler(SpaceXTransportSubscriptionResult.error(error: error))
+          }
+        case .completed:
+          queue.async {
+            handler(SpaceXTransportSubscriptionResult.completed)
+          }
         }
       }
     }

@@ -17,19 +17,21 @@ enum TransportResult {
 
 protocol RunningOperation {
   func cancel()
-  func lazyUpdate(operation: JSON)
+  func updateVariables(variables: JSON)
 }
 
 fileprivate class PendingOperation: RunningOperation {
   let id: String
-  var query: JSON
+  let operation: OperationDefinition
+  var variables: JSON
   weak var parent: WebSocketTransport?
   let callback: (TransportResult) -> Void
   
-  init(parent: WebSocketTransport, id: String, query: JSON, callback: @escaping (TransportResult) -> Void) {
+  init(parent: WebSocketTransport, id: String, operation: OperationDefinition, variables: JSON, callback: @escaping (TransportResult) -> Void) {
     self.parent = parent
     self.id = id
-    self.query = query
+    self.operation = operation
+    self.variables = variables
     self.callback = callback
   }
   
@@ -43,8 +45,8 @@ fileprivate class PendingOperation: RunningOperation {
     }
   }
   
-  func lazyUpdate(operation: JSON) {
-    // TODO: Implement
+  func updateVariables(variables: JSON) {
+    self.variables = variables
   }
 }
 
@@ -86,10 +88,10 @@ class WebSocketTransport: WebSocketApolloTransportDelegate {
         "name": operation.name,
         "variables": variables
       ]])
-    let pending = PendingOperation(parent: self, id: id, query: q, callback: handler)
+    let pending = PendingOperation(parent: self, id: id, operation: operation, variables: variables, callback: handler)
     queue.sync {
       self.liveOperations[id] = pending
-      self.connection?.post(message: pending.query)
+      self.connection?.post(message: q)
     }
     return pending
   }
@@ -99,7 +101,15 @@ class WebSocketTransport: WebSocketApolloTransportDelegate {
     self.connection!.delegate = self
     self.connection!.connect()
     for l in liveOperations {
-      self.connection!.post(message: l.value.query)
+      let q =  JSON([
+        "type": "start",
+        "id": l.value.id,
+        "payload": [
+          "query": l.value.operation.body,
+          "name": l.value.operation.name,
+          "variables": l.value.variables
+        ]])
+      self.connection!.post(message: q)
     }
   }
   

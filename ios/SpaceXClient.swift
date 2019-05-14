@@ -14,10 +14,20 @@ enum SpaceXOperationResult {
   case error(error: JSON)
 }
 
+enum SpaceXReadResult {
+  case result(data: JSON)
+  case missing
+}
+
 enum FetchMode {
   case cacheFirst
   case networkOnly
   case cacheAndNetwork
+}
+
+protocol RunningSubscription {
+  func updateVariables(variables: JSON)
+  func close()
 }
 
 class SpaceXClient {
@@ -27,10 +37,14 @@ class SpaceXClient {
   fileprivate let normalizerQueue = DispatchQueue(label: "spacex-normalizer")
   fileprivate let callbackQueue = DispatchQueue(label: "client")
   
-  init(url: String, token: String?) {
+  init(url: String, token: String?, storage: String) {
     self.transport = SpaceXTransportScheduler(url: url, params: ["x-openland-token": token])
-    self.store = SpaceXStoreScheduler()
+    self.store = SpaceXStoreScheduler(name: storage)
   }
+  
+  //
+  // Simple Operations
+  //
   
   func query(operation: OperationDefinition, variables: JSON, fetchMode: FetchMode, handler: @escaping  (SpaceXOperationResult) -> Void) {
     if operation.kind != .query {
@@ -62,7 +76,7 @@ class SpaceXClient {
       
       switch(fetchMode) {
       case .cacheFirst:
-        self.store.readQueryFromCache(operation: operation, variables: variables, queue: self.callbackQueue) { res in
+        self.store.readQuery(operation: operation, variables: variables, queue: self.callbackQueue) { res in
           switch(res) {
           case .missing:
             doRequest()
@@ -106,11 +120,59 @@ class SpaceXClient {
     }
   }
   
+  //
+  // Watch
+  //
+  
   func watch(operation: OperationDefinition, variables: JSON, fetchMode: FetchMode, handler: @escaping  (SpaceXOperationResult)->Void) -> (()->Void) {
     let queryWatch = QueryWatch(client: self, operation: operation, variables: variables, fetchMode: fetchMode, handler: handler)
     queryWatch.start()
     return {
       queryWatch.stop()
+    }
+  }
+  
+  //
+  // Subscription
+  //
+  
+  func subscribe(operation: OperationDefinition, variables: JSON, handler: @escaping  (SpaceXOperationResult)->Void) -> RunningSubscription {
+    if operation.kind != .subscription {
+      fatalError("Only subscription operations are supported for subscribing")
+    }
+    let subscription = Subscription(client: self, operation: operation, variables: variables, handler: handler)
+    subscription.start()
+    return subscription
+  }
+  
+  //
+  // Store Modification
+  //
+  
+  func readQuery(operation: OperationDefinition, variables: JSON, callback: @escaping (SpaceXReadResult) -> Void) {
+    self.callbackQueue.async {
+      self.store.readQuery(operation: operation, variables: variables, queue: self.callbackQueue) { res in
+        switch(res) {
+        case .missing:
+          callback(SpaceXReadResult.missing)
+        case .success(let data):
+          callback(SpaceXReadResult.result(data: data))
+        }
+      }
+    }
+  }
+  
+  func writeQuery(operation: OperationDefinition, variables: JSON, data: JSON, callback: @escaping () -> Void) {
+    self.normalizerQueue.async {
+      let normalized: RecordSet
+      do {
+        normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
+      } catch {
+        fatalError("Normalization failed")
+      }
+      self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
+        callback()
+      }
     }
   }
   
@@ -143,27 +205,24 @@ fileprivate class QueryWatch {
   func start() {
     client.callbackQueue.async {
       if self.fetchMode == .cacheFirst || self.fetchMode == .cacheAndNetwork {
-        self.client.store.readQueryFromCache(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
-          switch(res) {
-          case .missing:
-            self.doRequest()
-          case .success(let data):
-            self.handler(SpaceXOperationResult.result(data: data))
-            if self.fetchMode == .cacheFirst {
-              self.doSubscribe(value: data)
-            } else {
-              self.doRequest()
-            }
-          }
-        }
+        self.doReloadFromCache()
       } else {
         self.doRequest()
       }
     }
   }
   
-  private func doSubscribe(value: JSON) {
-    // TODO: Implement
+  private func doReloadFromCache() {
+    self.client.store.readQueryAndWatch(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
+      switch(res) {
+      case .missing:
+        self.doRequest()
+      case .success(let data):
+        self.handler(SpaceXOperationResult.result(data: data))
+      case .updated:
+        self.doReloadFromCache()
+      }
+    }
   }
   
   private func doRequest() {
@@ -173,8 +232,16 @@ fileprivate class QueryWatch {
       }
       switch(res) {
       case .result(let data):
-        self.handler(SpaceXOperationResult.result(data: data))
-        self.doSubscribe(value: data)
+        
+        let normalized: RecordSet
+        do {
+          normalized = try normalizeData(id: "ROOT_QUERY", type: self.operation.selector, args: self.variables, data: data)
+        } catch {
+          fatalError("Normalization failed")
+        }
+        self.client.store.merge(recordSet: normalized, queue: self.client.callbackQueue) {
+          self.doReloadFromCache()
+        }
       case .error(let error):
         self.handler(SpaceXOperationResult.error(error: error))
       }
@@ -188,6 +255,78 @@ fileprivate class QueryWatch {
       }
       self.completed = true
       // TODO: Cancel everything
+    }
+  }
+}
+
+fileprivate class Subscription: RunningSubscription {
+  let client: SpaceXClient
+  let operation: OperationDefinition
+  var variables: JSON
+  let handler: (SpaceXOperationResult)->Void
+  private var runningOperation: RunningOperation?
+  private var stopped = false
+  
+  init(client: SpaceXClient,
+       operation: OperationDefinition,
+       variables: JSON,
+       handler: @escaping  (SpaceXOperationResult)->Void
+  ) {
+    self.client = client
+    self.operation = operation
+    self.variables = variables
+    self.handler = handler
+  }
+  
+  func start() {
+    self.client.callbackQueue.async {
+      self.doStart()
+    }
+  }
+  
+  private func doStart() {
+    self.runningOperation = self.client.transport.subscription(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
+      switch(res) {
+      case .completed:
+        self.doRestart()
+      case .error(let error):
+        self.doRestart()
+      case .result(let data):
+        let normalized: RecordSet
+        do {
+          normalized = try normalizeData(id: "SUBSCRIPTION_ROOT", type: self.operation.selector, args: self.variables, data: data)
+        } catch {
+          fatalError("Normalization failed")
+        }
+        self.client.store.merge(recordSet: normalized, queue: self.client.callbackQueue) {
+            self.handler(SpaceXOperationResult.result(data: data))
+        }
+        break
+      }
+    }
+  }
+  
+  private func doRestart() {
+    if !self.stopped {
+      self.runningOperation?.cancel()
+      self.runningOperation = nil
+      self.start()
+    }
+  }
+  
+  func updateVariables(variables: JSON) {
+    self.client.callbackQueue.async {
+       self.runningOperation?.updateVariables(variables: variables)
+    }
+  }
+  
+  func close() {
+    self.client.callbackQueue.async {
+      if !self.stopped {
+        self.stopped = true
+        self.runningOperation?.cancel()
+        self.runningOperation = nil
+      }
     }
   }
 }

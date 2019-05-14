@@ -131,7 +131,7 @@ fileprivate func normalizeSelector(
     if f is Selector.Field {
       let f2 = f as! Selector.Field
       if map != nil {
-        let storeKey = f2.name
+        let storeKey = selectorKey(name: f2.name, arguments: f2.arguments, variables: args)
         map![storeKey] = try normalizeValue(
           parentCacheKey: id!+"."+f2.name,
           collection: collection,

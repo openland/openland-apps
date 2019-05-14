@@ -46,14 +46,14 @@ class RNGraphqlClient {
   let module: RNGraphQL
   let client: SpaceXClient
   var watches: [String: ()->Void] = [:]
-//  var subscriptions: [String: ActiveSubscription] = [:]
+  var subscriptions: [String: RunningSubscription] = [:]
   var connected: Bool = false
   var live = true
   
   init(key: String, endpoint: String, token: String?, storage: String?, module: RNGraphQL) {
     self.module = module
     self.key = key
-    self.client = SpaceXClient(url: "wss:" + endpoint, token: token)
+    self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage!)
   }
   
   //
@@ -127,28 +127,28 @@ class RNGraphqlClient {
   //
 
   func subscribe(id: String, subscription: String, arguments: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    let s = ActiveSubscription(key: self.key, id: id, subscription: subscription, arguments: arguments, factory: self.factory, client: self.client, module: self.module)
-//    if self.connected {
-//      s.start()
-//    }
-//    self.subscriptions[id] = s
+    if !self.live {
+      return
+    }
+    let s = self.client.subscribe(operation: Operations.shared.operationByName(subscription), variables: JSON(arguments)) { res in
+      
+    }
+    
+    self.subscriptions[id] = s
   }
   
   func subscribeUpdate(id: String, arguments: NSDictionary) {
-//    if !self.live {
-//      return
-//    }
-//    self.subscriptions[id]!.update(arguments: arguments)
+    if !self.live {
+      return
+    }
+    self.subscriptions[id]!.updateVariables(variables: JSON(arguments))
   }
   
   func subscribeEnd(id: String) {
-//    if !self.live {
-//      return
-//    }
-//    self.subscriptions.removeValue(forKey: id)!.stop()
+    if !self.live {
+      return
+    }
+    self.subscriptions.removeValue(forKey: id)!.close()
   }
   
   //
@@ -156,39 +156,27 @@ class RNGraphqlClient {
   //
   
   func read(id: String, query: String, arguments: NSDictionary) {
-    //    if !self.live {
-    //      return
-    //    }
-    //    self.factory.readQuery(store: self.store, name: query, src: arguments) { (res, err) in
-    //      if !self.live {
-    //        return
-    //      }
-    //      if err != nil {
-    //        self.handleError(id: id, err: err!)
-    //      } else {
-    //        if res != nil {
-    //          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-    //        } else {
-    //          self.module.reportResult(key: self.key, id: id, result: nil)
-    //        }
-    //      }
-    //    }
+    if !self.live {
+      return
+    }
+    self.client.readQuery(operation: Operations.shared.operationByName(query), variables: JSON(arguments)) { res in
+      switch(res) {
+      case .missing:
+        self.module.reportResult(key: self.key, id: id, result: nil)
+      case .result(let data):
+        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      }
+    }
   }
   
   func write(id: String, data: NSDictionary, query: String, arguments: NSDictionary) {
-    //    if !self.live {
-    //      return
-    //    }
-    //    self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
-    //      if !self.live {
-    //        return
-    //      }
-    //      if err != nil {
-    //        self.handleError(id: id, err: err!)
-    //      } else {
-    //        self.module.reportResult(key: self.key, id: id, result: nil)
-    //      }
-    //    }
+    if !self.live {
+      return
+    }
+    
+    self.client.writeQuery(operation: Operations.shared.operationByName(query), variables: JSON(arguments), data: JSON(data)) {
+      self.module.reportResult(key: self.key, id: id, result: nil)
+    }
   }
   
   //
@@ -206,67 +194,9 @@ class RNGraphqlClient {
 //    self.ws.closeConnection()
   }
   
-//  private func handleError(id: String, err: Error) {
-//    if !self.live {
-//      return
-//    }
-//    if let n = err as? NativeGraphqlError {
-//      if n.src.count > 0 {
-//        self.module.reportGraphqlError(key: self.key, id: id, errors: n.src)
-//      } else {
-//        self.module.reportError(key: self.key, id: id)
-//      }
-//    } else {
-//      self.module.reportError(key: self.key, id: id)
-//    }
-//  }
-//
-//  func webSocketTransportDidConnect(_ webSocketTransport: WebSocketTransport) {
-//    GraphQLQueue.async {
-//      if !self.live {
-//        return
-//      }
-//      if !self.connected {
-//        self.connected = true
-//        self.module.reportStatus(key: self.key, status: "connected")
-//        for s in self.subscriptions.values {
-//          s.start()
-//        }
-//      }
-//    }
-//  }
-//  func webSocketTransportDidReconnect(_ webSocketTransport: WebSocketTransport) {
-//    GraphQLQueue.async {
-//      if !self.live {
-//        return
-//      }
-//      if !self.connected {
-//        self.connected = true
-//        self.module.reportStatus(key: self.key, status: "connected")
-//        for s in self.subscriptions.values {
-//          s.start()
-//        }
-//      }
-//    }
-//  }
-//  func webSocketTransport(_ webSocketTransport: WebSocketTransport, didDisconnectWithError error:Error?) {
-//    GraphQLQueue.async {
-//      if !self.live {
-//        return
-//      }
-//      if self.connected {
-//        self.connected = false
-//        self.module.reportStatus(key: self.key, status: "connecting")
-//        for s in self.subscriptions.values {
-//          s.stop()
-//        }
-//      }
-//    }
-//  }
-//
   private func resolveFetchPolicy(parameters: NSDictionary) -> FetchMode {
     var cachePolicy = FetchMode.cacheFirst
-    var cp = parameters.value(forKey: "fetchPolicy")
+    let cp = parameters.value(forKey: "fetchPolicy")
     if cp != nil && !(cp is NSNull) {
       let cps = cp as! String
       if cps == "cache-first" {

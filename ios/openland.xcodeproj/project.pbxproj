@@ -643,8 +643,6 @@
 				AAAA1DBD2289E4A40023A28F /* Networking */,
 				AA3DDA102284E14E0078A762 /* Types.swift */,
 				AA7B7BF922860E00001AA400 /* SpaceXClient.swift */,
-				AAAA1DB92289E2260023A28F /* SpaceXTransportScheduler.swift */,
-				AAAA1DBE2289E4BC0023A28F /* SpaceXStoreScheduler.swift */,
 			);
 			name = SpaceX;
 			sourceTree = "<group>";
@@ -729,6 +727,7 @@
 		AAAA1DBD2289E4A40023A28F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				AAAA1DB92289E2260023A28F /* SpaceXTransportScheduler.swift */,
 				AAAA1DAD2289E0C50023A28F /* WebSocketApolloTransport.swift */,
 				AAAA1DBB2289E2D70023A28F /* WebSocketTransport.swift */,
 			);
@@ -738,6 +737,7 @@
 		AAAA1DC02289E50D0023A28F /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				AAAA1DBE2289E4BC0023A28F /* SpaceXStoreScheduler.swift */,
 				AA7B7BF722860CA6001AA400 /* RecordStore.swift */,
 				AAB181772284EDE6008D3603 /* Normalize.swift */,
 				AAAA1DC12289FD8A0023A28F /* selectorKey.swift */,

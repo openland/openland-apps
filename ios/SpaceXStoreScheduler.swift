@@ -14,6 +14,12 @@ enum QueryReadResult {
   case missing
 }
 
+enum QueryReadAndWatchResult {
+  case success(data: JSON)
+  case missing
+  case updated
+}
+
 fileprivate class ReadRequest {
   var missingRecords: Set<String>
   let callback: ()->Void
@@ -24,9 +30,20 @@ fileprivate class ReadRequest {
   }
 }
 
+fileprivate class Subscription {
+  let ids: Set<String>
+  let callback: () -> Void
+  init(ids: Set<String>, callback: @escaping ()->Void) {
+    self.ids = ids
+    self.callback = callback
+  }
+}
+
 class SpaceXStoreScheduler {
   private static let ROOT_QUERY = "ROOT_QUERY"
   private let storeQueue = DispatchQueue(label: "spacex-store")
+  
+  // Store
   private let store = RecordStore()
   
   // Persistence
@@ -36,8 +53,13 @@ class SpaceXStoreScheduler {
   private var requested: Set<String> = Set()
   private let persistence: SpaceXPersistence
   
-  init() {
-    persistence = SpaceXPersistence(name: "storage")
+  // Bus
+  private var nextSubscriptionId = 1
+  private let nextSubscriptionIdQueue = DispatchQueue(label: "spacex-store-id")
+  private var subscriptions: [Int: Subscription] = [:]
+  
+  init(name: String) {
+    persistence = SpaceXPersistence(name: name)
   }
   
   func merge(recordSet: RecordSet, queue: DispatchQueue, callback: @escaping () -> Void) {
@@ -62,7 +84,7 @@ class SpaceXStoreScheduler {
     }
   }
   
-  func readQueryFromCache(operation: OperationDefinition, variables: JSON, queue: DispatchQueue, callback: @escaping (QueryReadResult) -> Void) {
+  func readQuery(operation: OperationDefinition, variables: JSON, queue: DispatchQueue, callback: @escaping (QueryReadResult) -> Void) {
     if operation.kind != .query {
       fatalError("Reading from cache is available only for queries")
     }
@@ -73,19 +95,66 @@ class SpaceXStoreScheduler {
         // Reading from store
         let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
         switch(res) {
-        case .missing:
-          queue.async {
-            callback(QueryReadResult.missing)
-          }
         case .success(let data):
           queue.async {
             callback(QueryReadResult.success(data: data))
+          }
+        case .missing:
+          queue.async {
+            callback(QueryReadResult.missing)
           }
         }
       }
     }
   }
   
+  func readQueryAndWatch(
+    operation: OperationDefinition,
+    variables: JSON,
+    queue: DispatchQueue,
+    callback: @escaping (QueryReadAndWatchResult) -> Void
+  ) {
+    self.storeQueue.async {
+      // Load required records before trying to denormalize data from in memory storage
+      self.prepareRead(operation: operation, variables: variables) {
+        
+        // Reading from store
+        let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        
+        switch(res) {
+        case .success(let data):
+          // Notify about data
+          queue.async {
+            callback(QueryReadAndWatchResult.success(data: data))
+          }
+          
+          // Calculate keys
+          let normalized = try! normalizeData(id: SpaceXStoreScheduler.ROOT_QUERY, type: operation.selector, args: variables, data: data)
+          var keys = Set<String>()
+          for r in normalized {
+            for f in r.value.fields {
+              keys.insert(r.key+"."+f.key)
+            }
+          }
+          
+          // Subscribe and notify once
+          let id = self.nextSubscriptionId
+          self.nextSubscriptionId += 1
+          self.subscriptions[id] = Subscription(ids: keys) {
+            self.subscriptions.removeValue(forKey: id)
+            queue.async {
+              callback(QueryReadAndWatchResult.updated)
+            }
+          }
+        case .missing:
+          queue.async {
+            callback(QueryReadAndWatchResult.missing)
+          }
+        }
+      }
+    }
+  }
+
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
     let missing = collectMissingKeys(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
     if missing.isEmpty {

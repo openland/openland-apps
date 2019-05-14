@@ -19,7 +19,7 @@ class LevelDBPersistenceProvider: PersistenceProvier {
   private let swiftStore: SwiftStore
   
   init(name: String) {
-    self.swiftStore = SwiftStore(storeName: name)
+    self.swiftStore = SwiftStore(storeName: name + "-v3")
   }
   
   func saveRecords(records: [String: String]) {

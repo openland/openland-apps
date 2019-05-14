@@ -74,12 +74,16 @@ class RNGraphQL: RCTEventEmitter {
   // Implementation
   //
   
-  func reportResult(key: String, id: String, result: NSDictionary) {
+  func reportResult(key: String, id: String, result: NSDictionary?) {
     var dict:[String:Any] = [:]
     dict["key"] = key
     dict["id"] = id
     dict["type"] = "response"
-    dict["data"] = result
+    if result != nil {
+      dict["data"] = result
+    } else {
+      dict["data"] = NSNull()
+    }
     self.sendEvent(withName: "apollo_client", body: dict)
   }
   
