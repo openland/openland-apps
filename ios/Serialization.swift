@@ -56,6 +56,8 @@ fileprivate func parseValue(src: JSON) -> RecordValue {
     return RecordValue.NumberValue(value: src.doubleValue)
   } else if src.type == Type.bool {
     return RecordValue.BooleanValue(value: src.boolValue)
+  } else if src.type == Type.string {
+    return RecordValue.StringValue(value: src.stringValue)
   } else if src.type == Type.dictionary {
     return RecordValue.ReferenceValue(key: src["key"].string!)
   } else if src.type == Type.array {

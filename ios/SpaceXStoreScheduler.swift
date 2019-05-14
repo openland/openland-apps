@@ -67,16 +67,32 @@ class SpaceXStoreScheduler {
       fatalError("Reading from cache is available only for queries")
     }
     self.storeQueue.async {
-      let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
-      switch(res) {
-      case .missing:
-        queue.async {
-          callback(QueryReadResult.missing)
+      // Load required records before trying to denormalize data from in memory storage
+      self.prepareRead(operation: operation, variables: variables) {
+        
+        // Reading from store
+        let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        switch(res) {
+        case .missing:
+          queue.async {
+            callback(QueryReadResult.missing)
+          }
+        case .success(let data):
+          queue.async {
+            callback(QueryReadResult.success(data: data))
+          }
         }
-      case .success(let data):
-        queue.async {
-          callback(QueryReadResult.success(data: data))
-        }
+      }
+    }
+  }
+  
+  private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
+    let missing = collectMissingKeys(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+    if missing.isEmpty {
+      callback()
+    } else {
+      self.persistenceRead(keys: missing) {
+        self.prepareRead(operation: operation, variables: variables, callback: callback)
       }
     }
   }

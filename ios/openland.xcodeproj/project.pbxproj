@@ -26,6 +26,7 @@
 		AA2281BE228A244800810848 /* RecordStoreReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */; };
 		AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C5228A37F900810848 /* SpaceXPersistence.swift */; };
 		AA2281C8228A3C0400810848 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C7228A3C0400810848 /* Serialization.swift */; };
+		AA2281CA228A4B7F00810848 /* collectMissingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */; };
 		AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */; };
 		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
 		AA2365772247CE87000AA3A7 /* RNGraphQL-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */; };
@@ -297,6 +298,7 @@
 		AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStoreReaderTests.swift; sourceTree = "<group>"; };
 		AA2281C5228A37F900810848 /* SpaceXPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXPersistence.swift; sourceTree = "<group>"; };
 		AA2281C7228A3C0400810848 /* Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
+		AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = collectMissingKeys.swift; sourceTree = "<group>"; };
 		AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlModule.swift; sourceTree = "<group>"; };
 		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
 		AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNGraphQL-Bridge.h"; sourceTree = "<group>"; };
@@ -740,6 +742,7 @@
 				AAB181772284EDE6008D3603 /* Normalize.swift */,
 				AAAA1DC12289FD8A0023A28F /* selectorKey.swift */,
 				AA2281BB228A1DD100810848 /* RecordStoreReader.swift */,
+				AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */,
 			);
 			name = Store;
 			sourceTree = "<group>";
@@ -1404,6 +1407,7 @@
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
 				AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
+				AA2281CA228A4B7F00810848 /* collectMissingKeys.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
 				AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
