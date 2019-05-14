@@ -108,6 +108,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             };
 
             if (!this.checkMixIsSame(this.state, target)) {
+                console.log('set state');
                 this.setState(target);
             }
         }
@@ -131,7 +132,8 @@ export class MessageStateProviderComponent extends React.PureComponent<
     };
 
     private checkMixIsSame = (state1: any, mix: any) => {
-        return this.checkIsSame(mix, state1);
+        const result = this.checkIsSame(mix, state1);
+        return result;
     };
 
     private switchMessageSelect = (message: DataSourceMessageItem) => {
@@ -147,6 +149,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -158,6 +161,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -174,6 +178,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -186,6 +191,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -200,6 +206,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -214,6 +221,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
@@ -233,11 +241,13 @@ export class MessageStateProviderComponent extends React.PureComponent<
         };
 
         if (!this.checkMixIsSame(this.state, target)) {
+            console.log('set state');
             this.setState(target);
         }
     };
 
     render() {
+        // console.log('render MessageStateProviderComponent', this.state);
         return (
             <MessagesStateContext.Provider value={this.state}>
                 {this.props.children}

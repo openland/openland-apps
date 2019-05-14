@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import {
-    FullMessage_GeneralMessage_spans,
     FullMessage_GeneralMessage_sender,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
 } from 'openland-api/Types';
@@ -15,6 +14,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { MessageVideoComponent } from './MessageVideoComponent';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { Span } from 'openland-y-utils/spans/Span';
+import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
@@ -28,7 +28,8 @@ interface ReplyMessageProps {
     compact?: boolean;
 }
 
-export const MessageReplyComponent = (props: ReplyMessageProps) => {
+export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
+    useCheckPerf({ name: 'MessageReplyComponent' });
     let userPopperRef = React.useRef<UserPopper>(null);
 
     let onAvatarOrUserNameMouseEnter = () => {
@@ -205,4 +206,4 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
             </XView>
         </XView>
     );
-};
+});

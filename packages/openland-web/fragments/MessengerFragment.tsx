@@ -14,7 +14,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActiveContext, useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
@@ -124,6 +124,8 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
+
+    useCheckPerf({ name: `MessengerFragment: ${props.id}` });
 
     return (
         <React.Suspense fallback={<XLoader loading={true} />}>

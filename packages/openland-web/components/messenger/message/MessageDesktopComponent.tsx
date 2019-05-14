@@ -127,6 +127,40 @@ interface DesktopMessageComponentInnerState {
     hideMenu: boolean;
 }
 
+const MessageImageComponentWrapper = React.memo(
+    ({
+        isComment,
+        message,
+        hideMenu,
+        fileAttach,
+    }: {
+        fileAttach: any;
+        isComment: boolean;
+        message: any;
+        hideMenu: any;
+    }) => {
+        const originalWidth = fileAttach.fileMetadata.imageWidth || 0;
+        const originalHeight = fileAttach.fileMetadata.imageHeight || 0;
+
+        const dimentions = {
+            originalWidth,
+            originalHeight,
+            width: isComment ? 180 : originalWidth,
+            height: isComment ? 120 : originalHeight,
+        };
+
+        return (
+            <MessageImageComponent
+                key={'file' + message.id}
+                file={fileAttach.fileId!}
+                fileName={fileAttach.fileMetadata.name}
+                dimentions={dimentions}
+                startSelected={hideMenu}
+            />
+        );
+    },
+);
+
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     DesktopMessageComponentInnerState
@@ -335,23 +369,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         } else {
-                            const originalWidth = fileAttach.fileMetadata.imageWidth || 0;
-                            const originalHeight = fileAttach.fileMetadata.imageHeight || 0;
-
-                            const dimentions = {
-                                originalWidth,
-                                originalHeight,
-                                width: this.props.isComment ? 180 : originalWidth,
-                                height: this.props.isComment ? 120 : originalHeight,
-                            };
-
                             content.push(
-                                <MessageImageComponent
-                                    key={'file' + message.id}
-                                    file={fileAttach.fileId!}
-                                    fileName={fileAttach.fileMetadata.name}
-                                    dimentions={dimentions}
-                                    startSelected={hideMenu}
+                                <MessageImageComponentWrapper
+                                    fileAttach={fileAttach}
+                                    isComment={!!this.props.isComment}
+                                    message={message}
+                                    hideMenu={hideMenu}
                                 />,
                             );
                         }

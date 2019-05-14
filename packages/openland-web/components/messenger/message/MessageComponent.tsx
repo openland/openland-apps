@@ -3,7 +3,7 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActiveContext, useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 
 const MessageComponentInner = React.memo(
     (
@@ -38,7 +38,6 @@ const MessageComponentInner = React.memo(
                     me={props.me}
                     conversationType={props.conversationType}
                     messagesContext={props.messagesContextProps}
-                    isActive={props.isActive}
                     room={props.room}
                 />
             </>
@@ -48,8 +47,9 @@ const MessageComponentInner = React.memo(
 
 export const MessageComponent = (props: MessageComponentProps) => {
     const messagesContextProps = React.useContext(MessagesStateContext);
-    const isActive = React.useContext(IsActiveContext);
     const isMobile = React.useContext(IsMobileContext);
+
+    // useCheckPerf({ name: `MessageComponent: ${props.message.text}` });
 
     return (
         <MessageComponentInner
@@ -71,7 +71,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
             conversationType={props.conversationType}
             messagesContextProps={messagesContextProps}
             isMobile={isMobile}
-            isActive={isActive}
             room={props.room}
         />
     );
