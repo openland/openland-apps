@@ -116,6 +116,7 @@ const CompactMessageContainerWrapper = ({
     onClick,
     cursorPointer,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"

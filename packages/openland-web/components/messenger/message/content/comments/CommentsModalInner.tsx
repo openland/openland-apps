@@ -484,7 +484,7 @@ const Modal = (props: { messageId: string, conversationId: string }) => {
     let router = React.useContext(XRouterContext)!;
     return <UploadContextProvider>
         <XShortcutsRoot>
-            <MessageStateProviderComponent router={router}>
+            <MessageStateProviderComponent router={router} cid={props.conversationId}>
                 <CommentsModalInnerNoRouter messageId={props.messageId} roomId={props.conversationId} />
             </MessageStateProviderComponent>
         </XShortcutsRoot>

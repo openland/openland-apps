@@ -111,7 +111,6 @@ export interface MessageComponentProps {
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
-    isActive?: boolean | null;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
     room?: RoomChat_room;
@@ -176,7 +175,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     }
 
     componentDidUpdate() {
-        const { message, messagesContext, isActive } = this.props;
+        const { message, messagesContext } = this.props;
 
         const isEditView = messagesContext.editMessageId === message.id;
 
@@ -187,7 +186,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             selected = forwardMessagesId.has(message.id || 'none');
         }
 
-        if (isActive) {
+        if (message.chatId === messagesContext.getChatId()) {
             this.setState({
                 selected: selected,
                 hideMenu: hideMenu,

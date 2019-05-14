@@ -22,7 +22,7 @@ export default withApp('Mail', 'viewer', () => {
 
     return (
         <XTrack event="mail_view">
-            <MessageStateProviderComponent router={router}>
+            <MessageStateProviderComponent router={router} cid={cid}>
                 <CheckContextRerender />
                 <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />
             </MessageStateProviderComponent>

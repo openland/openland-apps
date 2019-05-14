@@ -20,6 +20,7 @@ export interface MessagesStateContextProps {
     replyMessagesSender: Set<string>;
     setReplyMessages: (id: Set<string>, messages: Set<string>, sender: Set<string>) => void;
     resetAll: () => void;
+    getChatId: () => string;
 }
 
 export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
@@ -40,12 +41,15 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     setReplyMessages: () => null,
     resetAll: () => null,
     switchMessageSelect: () => null,
+    getChatId: () => '',
+
 });
 
 type MessagePageProps = {
     router: XRouter;
     userId?: string;
     organizationId?: string;
+    cid: string;
 };
 
 function eqSet(as: any, bs: any) {
@@ -63,7 +67,8 @@ function eqSet(as: any, bs: any) {
 export class MessageStateProviderComponent extends React.PureComponent<
     MessagePageProps,
     MessagesStateContextProps
-> {
+    > {
+    chatId = '';
     constructor(props: MessagePageProps) {
         super(props);
 
@@ -85,13 +90,17 @@ export class MessageStateProviderComponent extends React.PureComponent<
             changeForwardConverstion: this.changeForwardConverstion,
             switchMessageSelect: this.switchMessageSelect,
             resetAll: this.resetAll,
+            getChatId: this.getChatId,
         };
     }
 
+    getChatId = () => this.chatId;
+
     componentWillReceiveProps(nextProps: MessagePageProps) {
+        this.chatId = nextProps.cid;
         if (
             this.props.router.routeQuery.conversationId !==
-                nextProps.router.routeQuery.conversationId &&
+            nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
             let target = {
@@ -263,14 +272,14 @@ const getForwardText = ({ forwardMessagesId }: MessagesStateContextProps) => {
     return forwardMessagesId.size === 0
         ? null
         : `Forward ${forwardMessagesId.size} ` +
-              (forwardMessagesId.size === 1 ? 'message' : 'messages');
+        (forwardMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const getReplyText = ({ replyMessagesId }: MessagesStateContextProps) => {
     return replyMessagesId.size === 0
         ? null
         : `Reply to ${replyMessagesId.size} ` +
-              (replyMessagesId.size === 1 ? 'message' : 'messages');
+        (replyMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const hasReply = ({ replyMessagesSender, replyMessages }: MessagesStateContextProps) => {
