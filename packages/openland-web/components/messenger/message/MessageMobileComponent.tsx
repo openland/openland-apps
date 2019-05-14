@@ -107,15 +107,15 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         let qfileAttach = (item.__typename === 'GeneralMessage'
                             ? (item.attachments || []).filter(
-                                  a => a.__typename === 'MessageAttachmentFile',
-                              )[0]
+                                a => a.__typename === 'MessageAttachmentFile',
+                            )[0]
                             : undefined) as
                             | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                             | undefined;
 
                         return (
                             <MessageReplyComponent
-                                spans={message.spans}
+                                spans={message.replyTextSpans[index]}
                                 sender={item.sender}
                                 date={item.date}
                                 message={item.message}

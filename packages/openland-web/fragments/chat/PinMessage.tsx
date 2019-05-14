@@ -145,7 +145,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
 
                     return (
                         <MessageReplyComponent
-                            spans={pinMessage.spans}
+                            spans={processSpans(item.message || '', pinMessage.spans)}
                             sender={item.sender}
                             date={item.date}
                             message={item.message}
@@ -287,7 +287,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             hoverTextDecoration="none"
                             href={`https://ucarecdn.com/${attachment.fileId}/${
                                 attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                            }`}
+                                }`}
                         >
                             <XView
                                 alignItems="center"

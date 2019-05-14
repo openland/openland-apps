@@ -13,12 +13,12 @@ import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
 import { MessageVideoComponent } from './MessageVideoComponent';
-import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { UserPopper } from 'openland-web/components/UserPopper';
+import { Span } from 'openland-y-utils/spans/Span';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
-    spans?: FullMessage_GeneralMessage_spans[];
+    spans?: Span[];
     id: string;
     date: any;
     message: string | null;
@@ -49,7 +49,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
     if (props.message) {
         content.push(
             <MessageTextComponent
-                spans={processSpans(props.message, props.spans)}
+                spans={props.spans || []}
                 key={'reply-text'}
                 isService={false}
                 isEdited={props.edited}
