@@ -250,6 +250,9 @@ export const RoomChatQuery = gql`
                     id
                     name
                 }
+                pinnedMessage {
+                    ...FullMessage
+                }
             }
             ... on SharedRoom {
                 id

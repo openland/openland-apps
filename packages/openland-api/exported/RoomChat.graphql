@@ -3,6 +3,10 @@ query RoomChat($id: ID!) {
     __typename
     ... on PrivateRoom {
       id
+      pinnedMessage {
+        __typename
+        ...FullMessage
+      }
       user {
         __typename
         id

@@ -4,6 +4,7 @@ import { InviteLandingComponent } from './InviteLandingComponent';
 import {
     UserShort,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom,
     RoomChat_room_SharedRoom,
@@ -56,12 +57,24 @@ class MessagengerFragmentInner extends React.PureComponent<
             room.__typename === 'SharedRoom' ? room : null;
         let privateRoom: RoomChat_room_PrivateRoom | null =
             room.__typename === 'PrivateRoom' ? room : null;
-        let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
+        let pinMessage:
+            | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+            | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+            | null =
             sharedRoom &&
             sharedRoom.pinnedMessage &&
             sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
+
+        if (privateRoom) {
+            pinMessage =
+                privateRoom &&
+                privateRoom.pinnedMessage &&
+                privateRoom.pinnedMessage.__typename === 'GeneralMessage'
+                    ? privateRoom.pinnedMessage
+                    : null;
+        }
 
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
             if (sharedRoom.kind === 'PUBLIC') {
