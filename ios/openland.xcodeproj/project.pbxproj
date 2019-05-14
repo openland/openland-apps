@@ -27,6 +27,9 @@
 		AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C5228A37F900810848 /* SpaceXPersistence.swift */; };
 		AA2281C8228A3C0400810848 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C7228A3C0400810848 /* Serialization.swift */; };
 		AA2281CA228A4B7F00810848 /* collectMissingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */; };
+		AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281CB228B3C9200810848 /* SpaceXUtils.swift */; };
+		AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281CD228B3EF600810848 /* NetworkingDelegate.swift */; };
+		AA2281DC228B5E3300810848 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2281D1228B5E3300810848 /* CoreTelephony.framework */; };
 		AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */; };
 		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
 		AA2365772247CE87000AA3A7 /* RNGraphQL-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */; };
@@ -57,9 +60,9 @@
 		AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */; };
 		AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6122145CF800BB1781 /* ThreadManager.m */; };
 		AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */; };
-		AAAA1DAE2289E0C50023A28F /* WebSocketApolloTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DAD2289E0C50023A28F /* WebSocketApolloTransport.swift */; };
+		AAAA1DAE2289E0C50023A28F /* ApolloNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DAD2289E0C50023A28F /* ApolloNetworking.swift */; };
 		AAAA1DBA2289E2260023A28F /* SpaceXTransportScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DB92289E2260023A28F /* SpaceXTransportScheduler.swift */; };
-		AAAA1DBC2289E2D70023A28F /* WebSocketTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DBB2289E2D70023A28F /* WebSocketTransport.swift */; };
+		AAAA1DBC2289E2D70023A28F /* SpaceXTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DBB2289E2D70023A28F /* SpaceXTransport.swift */; };
 		AAAA1DBF2289E4BC0023A28F /* SpaceXStoreScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DBE2289E4BC0023A28F /* SpaceXStoreScheduler.swift */; };
 		AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DC12289FD8A0023A28F /* selectorKey.swift */; };
 		AAAA1DC42289FFDC0023A28F /* SelectorKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DC32289FFDC0023A28F /* SelectorKeyTests.swift */; };
@@ -299,6 +302,9 @@
 		AA2281C5228A37F900810848 /* SpaceXPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXPersistence.swift; sourceTree = "<group>"; };
 		AA2281C7228A3C0400810848 /* Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = collectMissingKeys.swift; sourceTree = "<group>"; };
+		AA2281CB228B3C9200810848 /* SpaceXUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXUtils.swift; sourceTree = "<group>"; };
+		AA2281CD228B3EF600810848 /* NetworkingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingDelegate.swift; sourceTree = "<group>"; };
+		AA2281D1228B5E3300810848 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlModule.swift; sourceTree = "<group>"; };
 		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
 		AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNGraphQL-Bridge.h"; sourceTree = "<group>"; };
@@ -344,9 +350,9 @@
 		AAA4DA6122145CF800BB1781 /* ThreadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadManager.m; sourceTree = "<group>"; };
 		AAA4DA6222145CF800BB1781 /* ThreadSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSelfManager.h; sourceTree = "<group>"; };
 		AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerSelfManager.m; sourceTree = "<group>"; };
-		AAAA1DAD2289E0C50023A28F /* WebSocketApolloTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketApolloTransport.swift; sourceTree = "<group>"; };
+		AAAA1DAD2289E0C50023A28F /* ApolloNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloNetworking.swift; sourceTree = "<group>"; };
 		AAAA1DB92289E2260023A28F /* SpaceXTransportScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXTransportScheduler.swift; sourceTree = "<group>"; };
-		AAAA1DBB2289E2D70023A28F /* WebSocketTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTransport.swift; sourceTree = "<group>"; };
+		AAAA1DBB2289E2D70023A28F /* SpaceXTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXTransport.swift; sourceTree = "<group>"; };
 		AAAA1DBE2289E4BC0023A28F /* SpaceXStoreScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXStoreScheduler.swift; sourceTree = "<group>"; };
 		AAAA1DC12289FD8A0023A28F /* selectorKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selectorKey.swift; sourceTree = "<group>"; };
 		AAAA1DC32289FFDC0023A28F /* SelectorKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorKeyTests.swift; sourceTree = "<group>"; };
@@ -419,6 +425,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA2281DC228B5E3300810848 /* CoreTelephony.framework in Frameworks */,
 				AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */,
 				AAD8F15A2208A60E007C4FE3 /* libc++.tbd in Frameworks */,
 				AAD8F1582208A60A007C4FE3 /* libc.tbd in Frameworks */,
@@ -519,6 +526,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA2281D1228B5E3300810848 /* CoreTelephony.framework */,
 				AA94929922126B9300E46917 /* AppCenter.framework */,
 				AA94929A22126B9300E46917 /* AppCenterAnalytics.framework */,
 				AA94929B22126B9300E46917 /* AppCenterCrashes.framework */,
@@ -643,6 +651,7 @@
 				AAAA1DBD2289E4A40023A28F /* Networking */,
 				AA3DDA102284E14E0078A762 /* Types.swift */,
 				AA7B7BF922860E00001AA400 /* SpaceXClient.swift */,
+				AA2281CB228B3C9200810848 /* SpaceXUtils.swift */,
 			);
 			name = SpaceX;
 			sourceTree = "<group>";
@@ -728,8 +737,9 @@
 			isa = PBXGroup;
 			children = (
 				AAAA1DB92289E2260023A28F /* SpaceXTransportScheduler.swift */,
-				AAAA1DAD2289E0C50023A28F /* WebSocketApolloTransport.swift */,
-				AAAA1DBB2289E2D70023A28F /* WebSocketTransport.swift */,
+				AAAA1DBB2289E2D70023A28F /* SpaceXTransport.swift */,
+				AA2281CD228B3EF600810848 /* NetworkingDelegate.swift */,
+				AAAA1DAD2289E0C50023A28F /* ApolloNetworking.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -963,6 +973,9 @@
 						LastSwiftMigration = 940;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
@@ -1282,6 +1295,7 @@
 				"${BUILT_PRODUCTS_DIR}/RNRate/RNRate.framework",
 				"${BUILT_PRODUCTS_DIR}/RNShare/RNShare.framework",
 				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactNativeIncallManager/ReactNativeIncallManager.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactNativePermissions/ReactNativePermissions.framework",
@@ -1324,6 +1338,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNRate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeIncallManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativePermissions.framework",
@@ -1415,6 +1430,8 @@
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
+				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
+				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */,
@@ -1423,7 +1440,7 @@
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
-				AAAA1DBC2289E2D70023A28F /* WebSocketTransport.swift in Sources */,
+				AAAA1DBC2289E2D70023A28F /* SpaceXTransport.swift in Sources */,
 				AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */,
 				AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
@@ -1452,7 +1469,7 @@
 				AA3DDA112284E14E0078A762 /* Types.swift in Sources */,
 				AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				AAAA1DAE2289E0C50023A28F /* WebSocketApolloTransport.swift in Sources */,
+				AAAA1DAE2289E0C50023A28F /* ApolloNetworking.swift in Sources */,
 				AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
 				AA7B7BE022851C3F001AA400 /* Normalize.swift in Sources */,

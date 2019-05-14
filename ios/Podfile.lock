@@ -45,6 +45,7 @@ PODS:
   - QBImagePickerController (3.4.0)
   - RCTRestart (0.0.8):
     - React
+  - ReachabilitySwift (4.3.1)
   - React (0.59.4):
     - React/Core (= 0.59.4)
   - react-native-background-timer (2.1.1):
@@ -172,6 +173,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
+  - ReachabilitySwift
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-blur (from `../node_modules/react-native-blur`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
@@ -221,6 +223,7 @@ SPEC REPOS:
     - PINOperation
     - PINRemoteImage
     - QBImagePickerController
+    - ReachabilitySwift
     - RSKImageCropper
     - SDWebImage
     - SimpleKeychain
@@ -298,6 +301,7 @@ SPEC CHECKSUMS:
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RCTRestart: 2f9ddcfd9abb887f123b6580cec64d72fb6cccaa
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
   react-native-background-timer: bb7a98c8e97fc7c290de2d423dd09ddb73dcbcbb
   react-native-blur: c35c1f6c2c76db7108bde7ed343bd2b01d64e0c0
@@ -323,6 +327,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: abf188832a17e7e26841ca41df9ae5776ffc3446
+PODFILE CHECKSUM: ee8411adff7777ae96c596c5c310d85243387332
 
 COCOAPODS: 1.5.3

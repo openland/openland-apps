@@ -24,13 +24,27 @@ class SpaceXTransportScheduler {
   let url: String
   let params: [String: String?]
   private let queue = DispatchQueue(label: "spacex-transport")
-  private let transport: WebSocketTransport
+  private let transport: SpaceXTransport
+  var connected: Bool = false
+  var onConnected: (() -> Void)?
+  var onDisconnected: (() -> Void)?
   
   init(url: String, params: [String: String?]) {
     self.url = url
     self.params = params
-    self.transport = WebSocketTransport(url: url, params: params)
-    self.transport.connect()
+    self.transport = SpaceXTransport(url: url, params: params)
+    self.transport.connectionCallback = { connected in
+      self.queue.async {
+        if self.connected != connected {
+          self.connected = connected
+          if connected {
+            self.onConnected?()
+          } else {
+            self.onDisconnected?()
+          }
+        }
+      }
+    }
   }
   
   func operation(

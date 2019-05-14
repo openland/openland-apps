@@ -33,6 +33,7 @@ target 'openland' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.14.2'
   pod 'Starscream', '~> 3.0.2'
+  pod 'ReachabilitySwift'
 
   pod 'AppCenter', '~> 1.13.0'
   pod 'AppCenter/Crashes', '~> 1.13.0'

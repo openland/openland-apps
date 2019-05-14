@@ -36,10 +36,26 @@ class SpaceXClient {
   fileprivate var transport: SpaceXTransportScheduler
   fileprivate let normalizerQueue = DispatchQueue(label: "spacex-normalizer")
   fileprivate let callbackQueue = DispatchQueue(label: "client")
+  var connected: Bool = false
+  var onConnected: (() -> Void)?
+  var onDisconnected: (() -> Void)?
   
   init(url: String, token: String?, storage: String) {
     self.transport = SpaceXTransportScheduler(url: url, params: ["x-openland-token": token])
     self.store = SpaceXStoreScheduler(name: storage)
+    self.connected = self.transport.connected
+    self.transport.onConnected = {
+      if !self.connected {
+        self.connected = true
+        self.onConnected?()
+      }
+    }
+    self.transport.onDisconnected = {
+      if self.connected {
+        self.connected = false
+        self.onDisconnected?()
+      }
+    }
   }
   
   //

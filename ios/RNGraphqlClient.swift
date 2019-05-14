@@ -54,6 +54,12 @@ class RNGraphqlClient {
     self.module = module
     self.key = key
     self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage!)
+    self.client.onConnected = {
+      self.module.reportStatus(key: key, status: "connected")
+    }
+    self.client.onDisconnected = {
+      self.module.reportStatus(key: key, status: "connecting")
+    }
   }
   
   //
