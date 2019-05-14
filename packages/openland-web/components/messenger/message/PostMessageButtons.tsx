@@ -23,7 +23,6 @@ const DiscussButton = React.memo(
         messageId: string;
         conversationId: string;
     }) => {
-        let router = React.useContext(XRouterContext)!;
 
         return (
             <XView
@@ -39,7 +38,6 @@ const DiscussButton = React.memo(
                 paddingRight={12}
                 onClick={() => {
                     openCommentsModal({
-                        router,
                         messageId: messageId,
                         conversationId,
                     });
@@ -53,10 +51,10 @@ const DiscussButton = React.memo(
                         </XView>
                     </XView>
                 ) : (
-                    <XView flexDirection="row">
-                        <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
-                    </XView>
-                )}
+                        <XView flexDirection="row">
+                            <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
+                        </XView>
+                    )}
             </XView>
         );
     },

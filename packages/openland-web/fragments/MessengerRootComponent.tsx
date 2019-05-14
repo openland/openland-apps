@@ -266,7 +266,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         });
     };
 
-
     //
     // Rendering
     //
