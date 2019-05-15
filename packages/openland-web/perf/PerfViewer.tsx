@@ -8,16 +8,16 @@ const compareCurrentMeasureWithSavedMeasure = ({
     savedMeasure: any;
     currentMeasure: any;
 }) => {
-    if (!savedMeasure || !currentMeasure) {
+    if (!currentMeasure) {
         return;
     }
 
     for (let key of Object.keys(currentMeasure)) {
-        const savedMeasureItem = savedMeasure[key];
+        // const savedMeasureItem = savedMeasure[key];
         const currentMeasureItem = currentMeasure[key];
-        if (!savedMeasureItem) {
-            continue;
-        }
+        // if (!savedMeasureItem) {
+        //     continue;
+        // }
 
         if (key === 'CacheComponent' && currentMeasureItem.measure > 300) {
             throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
@@ -94,6 +94,9 @@ export const PerfViewer = () => {
 
         setIntervalTimeout(intervalToSave);
     }
+
+    // console.log(`Max measure CacheComponent: ${maxMeasureCacheComponent}`);
+    // console.log(`Max measure DisplayNone: ${maxMeasureDisplayNone}`);
 
     return null;
 

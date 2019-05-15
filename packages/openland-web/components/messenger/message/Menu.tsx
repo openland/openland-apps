@@ -174,7 +174,7 @@ export const Menu = React.memo(
                 messageId: message.id!!,
                 conversationId,
             });
-        }, [])
+        }, []);
 
         const setEditMessage = (e: any) => {
             if (!message.isSending) {
@@ -247,9 +247,7 @@ export const Menu = React.memo(
                                 <MessageReactionButton messageId={message.id!} />
                             )}
                             {hover && !isComment && !isChannel && (
-                                <CommentsIconWrapper
-                                    onClick={commentsClick}
-                                >
+                                <CommentsIconWrapper onClick={commentsClick}>
                                     <CommentIcon />
                                 </CommentsIconWrapper>
                             )}
