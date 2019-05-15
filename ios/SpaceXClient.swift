@@ -83,7 +83,7 @@ class SpaceXClient {
           self.normalizerQueue.async {
             let normalized: RecordSet
             do {
-              normalized = try normalizeData(id: "ROOT_QUERY", type: operation.selector, args: variables, data: data)
+              normalized = try normalizeRootQuery(rootQueryKey: "ROOT_QUERY", type: operation.selector, args: variables, data: data)
             } catch {
               fatalError("Normalization failed")
             }
@@ -132,7 +132,7 @@ class SpaceXClient {
               s.normalizerQueue.async { [weak self] in
                 let normalized: RecordSet
                 do {
-                  normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
+                  normalized = try normalizeRootQuery(rootQueryKey: nil, type: operation.selector, args: variables, data: data)
                 } catch {
                   fatalError("Normalization failed")
                 }
@@ -199,7 +199,7 @@ class SpaceXClient {
     self.normalizerQueue.async { [weak self] in
       let normalized: RecordSet
       do {
-        normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
+        normalized = try normalizeRootQuery(rootQueryKey: nil, type: operation.selector, args: variables, data: data)
       } catch {
         fatalError("Normalization failed")
       }
@@ -275,7 +275,7 @@ fileprivate class QueryWatch {
         
         let normalized: RecordSet
         do {
-          normalized = try normalizeData(id: "ROOT_QUERY", type: self.operation.selector, args: self.variables, data: data)
+          normalized = try normalizeRootQuery(rootQueryKey: "ROOT_QUERY", type: self.operation.selector, args: self.variables, data: data)
         } catch {
           fatalError("Normalization failed")
         }
@@ -335,7 +335,7 @@ fileprivate class Subscription: RunningSubscription {
       case .result(let data):
         let normalized: RecordSet
         do {
-          normalized = try normalizeData(id: "SUBSCRIPTION_ROOT", type: self.operation.selector, args: self.variables, data: data)
+          normalized = try normalizeRootQuery(rootQueryKey: nil, type: self.operation.selector, args: self.variables, data: data)
         } catch {
           fatalError("Normalization failed")
         }

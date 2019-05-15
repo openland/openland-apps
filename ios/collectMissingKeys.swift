@@ -74,3 +74,28 @@ fileprivate func collectMissingKeys(value: RecordValue, type:OutputType, store:R
 func collectMissingKeys(cacheKey: String, store: RecordStore, type: OutputType.Object, variables: JSON) -> Set<String> {
   return collectMissingKeys(cacheKey: cacheKey, selectors: type.selectors, store: store, variables: variables)
 }
+
+func collectMissingKeysRoot(cacheKey: String, store: RecordStore, type: OutputType.Object, variables: JSON) -> Set<String> {
+  var res = Set<String>()
+  for f in type.selectors {
+    if !(f is Selector.Field) {
+      fatalError("Root query can't contain fragments")
+    }
+    
+    let sf = f as! Selector.Field
+    let key = selectorKey(name: sf.name, arguments: sf.arguments, variables: variables)
+    let refId = "\(cacheKey).$ref.\(key)"
+    if !store.isInMemory(key: refId) {
+      res.insert(refId)
+    } else {
+      let value = store.read(key: refId)
+      let ex = value.fields["data"]
+      if ex != nil {
+        for s in collectMissingKeys(value: ex!, type: sf.type, store: store, variables: variables) {
+          res.insert(s)
+        }
+      }
+    }
+  }
+  return res
+}

@@ -177,3 +177,28 @@ fileprivate func readSelector(
 func readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object, variables: JSON) -> StoreReadResult {
   return readSelector(cacheKey: cacheKey, store: store, selectors: type.selectors, variables: variables)
 }
+
+func readQueryFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object, variables: JSON) -> StoreReadResult {
+  var fields: [String: JSON] = [:]
+  for f in type.selectors {
+    if !(f is Selector.Field) {
+      fatalError("Root query can't contain fragments")
+    }
+    let sf = f as! Selector.Field
+    let key = selectorKey(name: sf.name, arguments: sf.arguments, variables: variables)
+    let refId = "\(cacheKey).$ref.\(key)"
+    let value = store.read(key: refId)
+    let ex = value.fields["data"]
+    if ex == nil {
+      return StoreReadResult.missing
+    }
+    let rv = readValue(value: ex!, type: sf.type, store: store, variables: variables)
+    switch(rv) {
+    case .missing:
+      return StoreReadResult.missing
+    case .success(let data):
+      fields[sf.alias] = data
+    }
+  }
+  return StoreReadResult.success(data: JSON(fields))
+}

@@ -74,17 +74,30 @@ fileprivate func normalizeValue(
   } else if value is OutputType.List {
     let ls = value as! OutputType.List
     let vals = data.arrayValue
-    var res: [RecordValue] = []
-    for i in 0..<vals.count {
-      res.append(try normalizeValue(
-        parentCacheKey: parentCacheKey! + "." + String(i),
-        collection: collection,
-        value: ls.inner,
-        args: args,
-        data:  vals[i]
-      )!)
+    if parentCacheKey != nil {
+      var res: [RecordValue] = []
+      for i in 0..<vals.count {
+        res.append(try normalizeValue(
+          parentCacheKey: parentCacheKey! + "." + String(i),
+          collection: collection,
+          value: ls.inner,
+          args: args,
+          data:  vals[i]
+          )!)
+      }
+      return RecordValue.ListValue(items: res)
+    } else {
+      for i in 0..<vals.count {
+        try normalizeValue(
+          parentCacheKey: nil,
+          collection: collection,
+          value: ls.inner,
+          args: args,
+          data:  vals[i]
+        )
+      }
+      return nil
     }
-    return RecordValue.ListValue(items: res)
   } else if value is OutputType.Object {
     let obj = value as! OutputType.Object
     return try normalizeSelector(
@@ -183,5 +196,33 @@ fileprivate func normalizeSelector(
 func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: Record] {
   let collection = NormalizedCollection()
   let _ = try normalizeSelector(parentCacheKey: id, collection: collection, selectors: type.selectors, args: args, data: data)
+  return collection.build()
+}
+
+func normalizeRootQuery(rootQueryKey: String?, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: Record] {
+  print(serializeJson(json: data))
+  let collection = NormalizedCollection()
+  if rootQueryKey != nil {
+    for f in type.selectors {
+      if !(f is Selector.Field) {
+        fatalError("Root query cant't contain fragments")
+      }
+      let sf = f as! Selector.Field
+      let key = selectorKey(name: sf.name, arguments: sf.arguments, variables: args)
+      let id = "\(rootQueryKey!).\(key)"
+      let refId = "\(rootQueryKey!).$ref.\(key)"
+      let ex = collection.records[refId]
+      let map: SharedDictionary<String, RecordValue>
+      if ex == nil {
+        map = SharedDictionary()
+        collection.records[refId] = map
+      } else {
+        map = ex!
+      }
+      map["data"] = try normalizeValue(parentCacheKey: id, collection: collection, value: sf.type, args: args, data: data[sf.alias])
+    }
+  } else {
+    let _ = try normalizeSelector(parentCacheKey: nil, collection: collection, selectors: type.selectors, args: args, data: data)
+  }
   return collection.build()
 }

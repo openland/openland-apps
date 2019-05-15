@@ -93,7 +93,7 @@ class SpaceXStoreScheduler {
       self.prepareRead(operation: operation, variables: variables) {
         
         // Reading from store
-        let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        let res = readQueryFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
         switch(res) {
         case .success(let data):
           queue.async {
@@ -119,7 +119,7 @@ class SpaceXStoreScheduler {
       self.prepareRead(operation: operation, variables: variables) {
         
         // Reading from store
-        let res = readFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        let res = readQueryFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
         
         switch(res) {
         case .success(let data):
@@ -129,7 +129,7 @@ class SpaceXStoreScheduler {
           }
           
           // Calculate keys
-          let normalized = try! normalizeData(id: SpaceXStoreScheduler.ROOT_QUERY, type: operation.selector, args: variables, data: data)
+          let normalized = try! normalizeRootQuery(rootQueryKey: SpaceXStoreScheduler.ROOT_QUERY, type: operation.selector, args: variables, data: data)
           var keys = Set<String>()
           for r in normalized {
             for f in r.value.fields {
@@ -160,7 +160,7 @@ class SpaceXStoreScheduler {
   }
 
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
-    let missing = collectMissingKeys(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+    let missing = collectMissingKeysRoot(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
     if missing.isEmpty {
       callback()
     } else {

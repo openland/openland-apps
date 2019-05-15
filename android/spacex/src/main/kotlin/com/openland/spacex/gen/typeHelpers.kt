@@ -20,8 +20,8 @@ fun list(inner: OutputType): OutputType {
     return OutputType.List(inner)
 }
 
-fun obj(selector: List<Selector>): OutputType.Object {
-    return OutputType.Object(selector)
+fun obj(vararg selector: Selector): OutputType.Object {
+    return OutputType.Object(selector.asList())
 }
 
 fun field(name: String, alias: String, type: OutputType): Selector.Field {
@@ -70,4 +70,12 @@ fun listValue(vararg inputValue: InputValue): InputValue.List {
 
 fun objectValue(vararg args: Pair<String, InputValue>): InputValue.Object {
     return InputValue.Object(args.toMap())
+}
+
+fun arguments(vararg args: Pair<String, InputValue>): Map<String, InputValue> {
+    return args.toMap()
+}
+
+fun fieldValue(name: String, value: InputValue): Pair<String, InputValue> {
+    return name to value
 }
