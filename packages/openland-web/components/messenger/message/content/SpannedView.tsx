@@ -10,7 +10,8 @@ import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRel
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { MentionComponentInnerText } from './service/views/MentionedUser';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { XModalContext } from 'openland-x-modal/XModalContext';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -90,28 +91,51 @@ const LinkText = css`
     }
 `;
 
+const LinkComponent = (props: { link: string; children?: any }) => {
+    const modal = React.useContext(XModalContext);
+    const modalBox = React.useContext(XModalBoxContext);
+
+    const onCloseModal = () => {
+        if (modal) {
+            modal.close();
+        }
+        if (modalBox) {
+            modalBox.close();
+        }
+    };
+    React.useEffect(() => undefined, [modal, modalBox]);
+
+    let href: string | undefined = props.link || undefined;
+    let path: string | undefined = undefined;
+
+    let internalLink = isInternalLink(href || '');
+
+    if (internalLink) {
+        path = makeInternalLinkRelative(href || '');
+        href = undefined;
+    }
+    let openlandLink: boolean = !!internalLink;
+
+    return (
+        <span className={LinkText}>
+            <XView
+                as="a"
+                target={openlandLink ? undefined : '_blank'}
+                href={href}
+                path={path}
+                onClick={onCloseModal}
+            >
+                {props.children}
+            </XView>
+        </span>
+    );
+};
+
 const SpanView = React.memo<{ span: Span; children?: any }>(props => {
     const { span, children } = props;
 
     if (span.type === 'link') {
-        let href: string | undefined = span.link || undefined;
-        let path: string | undefined = undefined;
-
-        let internalLink = isInternalLink(href || '');
-
-        if (internalLink) {
-            path = makeInternalLinkRelative(href || '');
-            href = undefined;
-        }
-        let openlandLink: boolean = !!internalLink;
-
-        return (
-            <span className={LinkText}>
-                <XView as="a" target={openlandLink ? undefined : '_blank'} href={href} path={path}>
-                    {children}
-                </XView>
-            </span>
-        );
+        return <LinkComponent link={span.link}>{children}</LinkComponent>;
     } else if (span.type === 'bold') {
         return <span className={boldTextClassName}>{children}</span>;
     } else if (span.type === 'italic') {
