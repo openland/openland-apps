@@ -107,15 +107,16 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         let qfileAttach = (item.__typename === 'GeneralMessage'
                             ? (item.attachments || []).filter(
-                                  a => a.__typename === 'MessageAttachmentFile',
-                              )[0]
+                                a => a.__typename === 'MessageAttachmentFile',
+                            )[0]
                             : undefined) as
                             | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                             | undefined;
 
                         return (
                             <MessageReplyComponent
-                                spans={message.spans}
+                                senderNameEmojify={message.replySenderNameEmojify[index]}
+                                spans={message.replyTextSpans[index]}
                                 sender={item.sender}
                                 date={item.date}
                                 message={item.message}
@@ -273,7 +274,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
     if (!message.isService) {
         return (
-            <MobileMessageContainer sender={message.sender} date={props.message.date}>
+            <MobileMessageContainer senderNameEmojify={message.senderNameEmojify} sender={message.sender} date={props.message.date}>
                 {content}
                 <XView alignItems="flex-start">
                     <Reactions

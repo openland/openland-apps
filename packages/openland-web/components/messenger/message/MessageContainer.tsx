@@ -6,7 +6,6 @@ import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { emoji } from 'openland-y-utils/emoji';
 import { Menu } from './Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
@@ -256,6 +255,17 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 
+    let onClick = React.useCallback(
+        e => {
+            if (props.selecting) {
+                e.preventDefault();
+                e.stopPropagation();
+                props.onSelected();
+            }
+        },
+        [props.selecting],
+    );
+
     let onAvatarOrUserNameMouseEnter = () => {
         if (userPopperRef.current) {
             userPopperRef.current.showPopper();
@@ -267,18 +277,12 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             userPopperRef.current.hidePopper();
         }
     };
-    let onMouseEnter = React.useMemo(
-        () => () => {
-            onHover(true);
-        },
-        [onHover],
-    );
-    let onMouseLeave = React.useMemo(
-        () => () => {
-            onHover(false);
-        },
-        [onHover],
-    );
+    let onMouseEnter = React.useCallback(() => {
+        onHover(true);
+    }, []);
+    let onMouseLeave = React.useCallback(() => {
+        onHover(false);
+    }, []);
 
     // Selector Icon
     let selector = (
@@ -510,24 +514,18 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     }
 
     return (
-        <MessageContainerWrapper
+        <CompactMessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             isEditView={props.isEditView}
             cursorPointer={props.selecting}
-            onClick={(e: any) => {
-                if (props.selecting) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    props.onSelected();
-                }
-            }}
+            onClick={onClick}
         >
             {!props.noSelector && selector}
             {preambula}
             {content}
             {props.isEditView ? null : actions}
-        </MessageContainerWrapper>
+        </CompactMessageContainerWrapper>
     );
 };
 
@@ -550,6 +548,7 @@ const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
 export interface MobileMessageContainerProps {
     children: any;
     sender: UserShort;
+    senderNameEmojify: any;
     date: number;
 }
 
@@ -580,10 +579,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                         fontWeight="600"
                         color="rgba(0, 0, 0, 0.8)"
                     >
-                        {emoji({
-                            src: props.sender.name,
-                            size: 16,
-                        })}
+                        {props.senderNameEmojify}
                     </XView>
                     {props.sender.primaryOrganization && (
                         <XView

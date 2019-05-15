@@ -13,6 +13,8 @@ import { buildClient } from 'openland-y-graphql/apolloClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 
+// const perfMeasure = require('../perf/measure.json');
+
 // let draftCss = require('draft-js/dist/Draft.css');
 // console.warn(draftCss);
 // Load Configuration
@@ -247,8 +249,16 @@ export default class OpenlandDocument extends Document {
                                 "'",
                         }}
                     />
+
+                    {/* <script
+                        dangerouslySetInnerHTML={{
+                            __html: "window.perfMeasure='" + JSON.stringify(perfMeasure) + "'",
+                        }}
+                    /> */}
+
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
+
                 <body>
                     <Main />
                     <div className="main_scripts">

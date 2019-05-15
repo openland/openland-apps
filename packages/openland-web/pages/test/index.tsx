@@ -5,14 +5,13 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 // import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const TestWrapper = ({ children }: { children: any }) => {
     const router = React.useContext(XRouterContext) as XRouter;
     return (
         <React.Suspense fallback={<div />}>
             <XShortcutsRoot>
-                <MessageStateProviderComponent router={router}>
+                <MessageStateProviderComponent router={router} cid="">
                     {children}
                 </MessageStateProviderComponent>
             </XShortcutsRoot>

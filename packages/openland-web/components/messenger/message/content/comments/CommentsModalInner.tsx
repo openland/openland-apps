@@ -17,7 +17,6 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentsInput } from './CommentsInput';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
@@ -31,6 +30,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 import { RoomChat_room } from 'openland-api/Types';
+import { IsActiveDualityContext, IsActiveContextState } from 'openland-web/pages/main/mail/components/Components';
 
 const CommentView = ({
     originalMessageId,
@@ -134,10 +134,10 @@ const CommentView = ({
     const onCommentBackToUserMessageClick = () => {
         return parentComment
             ? () => {
-                  scrollToComment({
-                      commentId: parentCommentId,
-                  });
-              }
+                scrollToComment({
+                    commentId: parentCommentId,
+                });
+            }
             : undefined;
     };
 
@@ -289,8 +289,8 @@ export const CommentsBlockView = ({
                     </XView>
                 </>
             ) : (
-                undefined
-            )}
+                    undefined
+                )}
         </>
     );
 };
@@ -401,7 +401,7 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <UploadContextProvider>
-            <IsActiveContext.Provider value={true}>
+            <IsActiveDualityContext.Provider value={new IsActiveContextState(true)}>
                 <XView>
                     <XScrollView3
                         useDefaultScroll
@@ -457,7 +457,7 @@ export const CommentsModalInnerNoRouter = ({
                         />
                     </XView>
                 </XView>
-            </IsActiveContext.Provider>
+            </IsActiveDualityContext.Provider>
         </UploadContextProvider>
     );
 };
@@ -480,28 +480,30 @@ export const openDeleteCommentsModal = ({
     router.pushQuery('deleteComment', `${commentId}`);
 };
 
+const Modal = (props: { messageId: string, conversationId: string }) => {
+    let router = React.useContext(XRouterContext)!;
+    return <UploadContextProvider>
+        <XShortcutsRoot>
+            <MessageStateProviderComponent router={router} cid={props.conversationId}>
+                <CommentsModalInnerNoRouter messageId={props.messageId} roomId={props.conversationId} />
+            </MessageStateProviderComponent>
+        </XShortcutsRoot>
+    </UploadContextProvider>
+}
+
 export const openCommentsModal = ({
-    router,
     messageId,
     conversationId,
 }: {
-    router: XRouter;
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
     showModalBox(
         {
             width: 800,
         },
         () => (
-            <UploadContextProvider>
-                <XShortcutsRoot>
-                    <MessageStateProviderComponent router={router}>
-                        <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-                    </MessageStateProviderComponent>
-                </XShortcutsRoot>
-            </UploadContextProvider>
+            <Modal messageId={messageId} conversationId={conversationId} />
         ),
     );
 };

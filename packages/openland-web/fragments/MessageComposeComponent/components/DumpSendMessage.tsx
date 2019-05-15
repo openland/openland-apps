@@ -66,7 +66,7 @@ export type TextInputComponentT = {
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
-    initialMentions: UserWithOffset[];
+    initialMentions?: UserWithOffset[];
     inputRef: any;
     placeholder?: string;
 };

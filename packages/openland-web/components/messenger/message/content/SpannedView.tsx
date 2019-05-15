@@ -10,7 +10,8 @@ import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRel
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { MentionComponentInnerText } from './service/views/MentionedUser';
-import { divide } from 'lodash-es';
+import { XModalContext } from 'openland-x-modal/XModalContext';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -90,96 +91,71 @@ const LinkText = css`
     }
 `;
 
-const SpanView = React.memo<{ span: Span, children?: any }>(props => {
+const LinkComponent = (props: { link: string; children?: any }) => {
+    const modal = React.useContext(XModalContext);
+    const modalBox = React.useContext(XModalBoxContext);
+
+    const onCloseModal = () => {
+        if (modal) {
+            modal.close();
+        }
+        if (modalBox) {
+            modalBox.close();
+        }
+    };
+    React.useEffect(() => undefined, [modal, modalBox]);
+
+    let href: string | undefined = props.link || undefined;
+    let path: string | undefined = undefined;
+
+    let internalLink = isInternalLink(href || '');
+
+    if (internalLink) {
+        path = makeInternalLinkRelative(href || '');
+        href = undefined;
+    }
+    let openlandLink: boolean = !!internalLink;
+
+    return (
+        <span className={LinkText}>
+            <XView
+                as="a"
+                target={openlandLink ? undefined : '_blank'}
+                href={href}
+                path={path}
+                onClick={onCloseModal}
+            >
+                {props.children}
+            </XView>
+        </span>
+    );
+};
+
+const SpanView = React.memo<{ span: Span; children?: any }>(props => {
     const { span, children } = props;
 
     if (span.type === 'link') {
-        let href: string | undefined = span.link || undefined;
-        let path: string | undefined = undefined;
-
-        let internalLink = isInternalLink(href || '');
-
-        if (internalLink) {
-            path = makeInternalLinkRelative(href || '');
-            href = undefined;
-        }
-        let openlandLink: boolean = !!internalLink;
-        
-        return (
-            <span className={LinkText}>
-                <XView
-                    as="a"
-                    target={openlandLink ? undefined : '_blank'}
-                    href={href}
-                    path={path}
-                >
-                    {children}
-                </XView>
-            </span>
-        );
+        return <LinkComponent link={span.link}>{children}</LinkComponent>;
     } else if (span.type === 'bold') {
-        return (
-            <span className={boldTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={boldTextClassName}>{children}</span>;
     } else if (span.type === 'italic') {
-        return (
-            <span className={italicTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={italicTextClassName}>{children}</span>;
     } else if (span.type === 'loud') {
-        return (
-            <span className={loudTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={loudTextClassName}>{children}</span>;
     } else if (span.type === 'rotating') {
-        return (
-            <span className={loudTextClassName + ' ' + rotatingTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={loudTextClassName + ' ' + rotatingTextClassName}>{children}</span>;
     } else if (span.type === 'insane') {
-        return (
-            <span className={loudTextClassName + ' ' + insaneTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={loudTextClassName + ' ' + insaneTextClassName}>{children}</span>;
     } else if (span.type === 'irony') {
-        return (
-            <span className={ironyTextClassName}>
-                {children}
-            </span>
-        );
+        return <span className={ironyTextClassName}>{children}</span>;
     } else if (span.type === 'code_inline') {
-        return (
-            <span className={codeInlineClassName}>
-                {children}
-            </span>
-        );
+        return <span className={codeInlineClassName}>{children}</span>;
     } else if (span.type === 'code_block') {
-        return (
-            <div className={codeBlockClassName}>
-                {children}
-            </div>
-        );
+        return <div className={codeBlockClassName}>{children}</div>;
     } else if (span.type === 'mention_room') {
-        return (
-            <LinkToRoom
-                text={children}
-                roomId={span.id}
-            />
-        );
+        return <LinkToRoom text={children} roomId={span.id} />;
     } else if (span.type === 'mention_user') {
-        return (
-            <MentionedUser
-                isYou={span.user.isYou}
-                text={children}
-                user={span.user}
-            />
-        );
+        return <MentionedUser isYou={span.user.isYou} text={children} user={span.user} />;
     } else if (span.type === 'mention_users') {
         let otherItems: JoinedUserPopperRowProps[] = [];
 
@@ -192,7 +168,7 @@ const SpanView = React.memo<{ span: Span, children?: any }>(props => {
             });
         });
 
-        return (<OthersPopper items={otherItems}>{children}</OthersPopper>);
+        return <OthersPopper items={otherItems}>{children}</OthersPopper>;
     } else if (span.type === 'new_line') {
         return <br />;
     } else if (span.type === 'text') {
@@ -203,9 +179,5 @@ const SpanView = React.memo<{ span: Span, children?: any }>(props => {
 });
 
 export const SpannedView = React.memo<{ spans: Span[] }>(props => {
-    return (
-        <>
-            {renderSpans(SpanView, props.spans)}
-        </>
-    );
+    return <>{renderSpans(SpanView, props.spans)}</>;
 });

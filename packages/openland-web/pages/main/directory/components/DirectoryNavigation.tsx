@@ -34,6 +34,7 @@ export const SearchCardsOrShowProfile = XMemo(
         defaultSortOption,
         withoutFeatured,
         page,
+        withoutSort,
     }: {
         id?: string | null;
         searchPlaceholder: string;
@@ -48,6 +49,7 @@ export const SearchCardsOrShowProfile = XMemo(
         defaultSortOption?: string;
         withoutFeatured?: boolean;
         page?: number;
+        withoutSort?: boolean;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
@@ -75,12 +77,14 @@ export const SearchCardsOrShowProfile = XMemo(
                             <XSubHeader
                                 title={noQueryText}
                                 right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                        options={sortOptions}
-                                    />
+                                    !withoutSort && (
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    )
                                 }
                             />
                         )}
@@ -90,12 +94,14 @@ export const SearchCardsOrShowProfile = XMemo(
                                     title={hasQueryText}
                                     counter={itemCount}
                                     right={
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                            options={sortOptions}
-                                        />
+                                        !withoutSort && (
+                                            <SortPicker
+                                                sort={sort}
+                                                onPick={setSort}
+                                                withoutFeatured={withoutFeatured}
+                                                options={sortOptions}
+                                            />
+                                        )
                                     }
                                 />
                             )}
@@ -132,6 +138,7 @@ export const DirectoryNavigation = XMemo(
         page,
         defaultSortOption,
         sortOptions,
+        withoutSort,
     }: {
         title: string;
         id?: string | null;
@@ -148,6 +155,7 @@ export const DirectoryNavigation = XMemo(
             label: string;
             values: { label: string; value: string }[];
         };
+        withoutSort?: boolean;
     }) => {
         const [isMobile] = useIsMobile();
         return (
@@ -230,6 +238,7 @@ export const DirectoryNavigation = XMemo(
                                             sortOptions={sortOptions}
                                             defaultSortOption={defaultSortOption}
                                             page={page}
+                                            withoutSort={withoutSort}
                                         />
                                     )}
                                 </React.Suspense>

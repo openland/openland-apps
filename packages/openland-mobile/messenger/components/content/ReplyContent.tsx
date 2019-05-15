@@ -11,7 +11,6 @@ import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessa
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
 import { AppTheme } from 'openland-mobile/themes/themes';
-import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
@@ -70,7 +69,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
-                                        {renderPreprocessedText(processSpans(generalMesage!.message!, generalMesage.spans), message, this.props.theme, this.props.onUserPress, this.props.onGroupPress)}
+                                        {renderPreprocessedText(message.replyTextSpans[i], message, this.props.theme, this.props.onUserPress, this.props.onGroupPress)}
                                         {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}

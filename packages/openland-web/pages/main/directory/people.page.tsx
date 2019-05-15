@@ -51,7 +51,7 @@ export const PeopleCards = ({ variables, error, tagsCount, notFoundText }: Peopl
                     />
                 </XContentWrapper>
             )}
-            {noData && <EmptySearchBlock text={`We couldn't find anything for ${notFoundText}`} />}
+            {noData && <EmptySearchBlock text={`We couldn't find anything for "${notFoundText}"`} />}
         </>
     );
 };

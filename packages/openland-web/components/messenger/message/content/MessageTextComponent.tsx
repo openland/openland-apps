@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
+import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 
 export interface MessageTextComponentProps {
     isComment?: boolean;
@@ -46,6 +47,7 @@ const EditLabelStyle = css`
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
     ({ shouldCrop, spans, isEdited, asPinMessage, isService, isComment }) => {
+        // useCheckPerf({ name: 'MessageTextComponent' });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
@@ -59,6 +61,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
 
 export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
     ({ shouldCrop, spans, isEdited, isService, isComment }) => {
+        // useCheckPerf({ name: 'MessageTextComponentSpanned' });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
@@ -67,5 +70,5 @@ export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>
                 </span>
             </div>
         );
-    }
+    },
 );

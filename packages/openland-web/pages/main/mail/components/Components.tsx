@@ -15,6 +15,8 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { RoomInviteFromLink } from './RoomInviteFromLink';
 import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
+import { PerfCollectorContext } from 'openland-web/perf/PerfCollectorContext';
+import { PerfViewer } from 'openland-web/perf/PerfViewer';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -64,7 +66,42 @@ type ShouldUpdateComponentT = {
     isActive: boolean;
 };
 
-export const IsActiveContext = React.createContext<boolean | null>(null);
+export class IsActiveContextState {
+    private isActive = false;
+
+    constructor(isActive: boolean) {
+        this.isActive = isActive;
+    }
+    private listenres = new Set<(isActive: boolean) => void>();
+    setIsActive = (isActive: boolean) => {
+        if (this.isActive === isActive) {
+            return;
+        }
+        this.isActive = isActive;
+        for (let l of this.listenres) {
+            l(this.isActive);
+        }
+    }
+    listen = (lisener: (isActive: boolean) => void) => {
+        this.listenres.add(lisener);
+        return () => {
+            this.listenres.delete(lisener);
+        }
+    }
+    getIsActive = () => this.isActive;
+    useIsActive = () => {
+        let [isActive, setIsActive] = React.useState(this.isActive);
+        React.useEffect(() => {
+            return this.listen((s) => {
+                setIsActive(s);
+            })
+        })
+        return isActive;
+    }
+}
+
+export const IsActiveDualityContext = React.createContext<IsActiveContextState>(new IsActiveContextState(true));
+const isActiveContextsMap = new Map();
 
 class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     shouldComponentUpdate(props: any) {
@@ -77,25 +114,61 @@ class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     }
 }
 
-const DisplayNone = ({
-    isActive,
-    Component,
-    componentProps,
-}: {
-    isActive: boolean;
-    Component: any;
-    componentProps: any;
-}) => {
-    return (
-        <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
-            <ShouldUpdateComponent
-                Component={Component}
-                componentProps={componentProps}
-                isActive={isActive}
-            />
-        </div>
-    );
+export const useCheckPerf = ({ name, id }: { name: string; id?: string }) => {
+    const perfCollector = React.useContext(PerfCollectorContext);
+
+    const isCached = id && perfCollector.getCachedChatsIds().indexOf(id) !== -1;
+    let t0 = performance.now();
+    React.useLayoutEffect(() => {
+        let t1 = performance.now();
+
+        const _map = perfCollector.getMap();
+
+        let finalName = name;
+        if (id) {
+            finalName = name + ' ' + id;
+        }
+
+        // if (isCached) {
+        //     finalName = name + ' ' + id + ' ' + 'cached';
+        // }
+
+        perfCollector.setMap({
+            ..._map,
+            [finalName]: {
+                measure: t1 - t0,
+                renderCount: _map[finalName] ? _map[finalName].renderCount + 1 : 1,
+            },
+        });
+    }, [Math.random()]);
 };
+
+const DisplayNone = React.memo(
+    ({
+        isActive,
+        Component,
+        componentProps,
+    }: {
+        isActive: boolean;
+        Component: any;
+        componentProps: any;
+    }) => {
+        useCheckPerf({
+            name: 'DisplayNone',
+            id: componentProps.id,
+        });
+
+        return (
+            <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
+                <ShouldUpdateComponent
+                    Component={Component}
+                    componentProps={componentProps}
+                    isActive={isActive}
+                />
+            </div>
+        );
+    },
+);
 
 const maybeRequestIdleCallback = (cb: Function) => {
     if (window && (window as any).requestIdleCallback) {
@@ -105,37 +178,62 @@ const maybeRequestIdleCallback = (cb: Function) => {
     }
 };
 
-const CacheComponent = ({
-    Component,
-    activeChat,
-    componentProps,
-}: {
-    Component: any;
-    isMobile: boolean;
-    activeChat: string | null;
-    componentProps: any;
-}) => {
-    let SIZE_OF_CACHE = 20;
+const CacheComponent = React.memo(
+    ({
+        Component,
+        activeChat,
+        componentProps,
+    }: {
+        Component: any;
+        isMobile: boolean;
+        activeChat: string | null;
+        componentProps: {
+            id?: string | null;
+        };
+    }) => {
+        const perfCollector = React.useContext(PerfCollectorContext);
+        useCheckPerf({ name: 'CacheComponent' });
+        let SIZE_OF_CACHE = 20;
 
-    if (canUseDOM && (window as any).safari !== undefined) {
-        SIZE_OF_CACHE = 10;
-    }
-
-    const [cachedPropsArray, setCachedProps] = React.useState<
-        {
-            chatId: string;
-            componentProps: Object;
-        }[]
-    >([]);
-
-    if (activeChat) {
-        if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {
-            setCachedProps([...cachedPropsArray, { chatId: activeChat, componentProps }]);
+        if (canUseDOM && (window as any).safari !== undefined) {
+            SIZE_OF_CACHE = 10;
         }
-    }
 
-    React.useEffect(
-        () => {
+        const [cachedPropsArray, setCachedProps] = React.useState<
+            {
+                chatId: string;
+                componentProps: {
+                    id?: string | null;
+                };
+            }[]
+        >([]);
+
+        React.useEffect(() => {
+            perfCollector.setCachedChatsIds(
+                cachedPropsArray.map(({ chatId }: { chatId: string }) => {
+                    return chatId;
+                }),
+            );
+        }, [cachedPropsArray]);
+
+        const setCachedPropsProc = (
+            componentPropsToCache: {
+                chatId: string;
+                componentProps: {
+                    id?: string | null;
+                };
+            }[],
+        ) => {
+            setCachedProps(componentPropsToCache);
+        };
+
+        if (activeChat) {
+            if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {
+                setCachedPropsProc([...cachedPropsArray, { chatId: activeChat, componentProps }]);
+            }
+        }
+
+        React.useEffect(() => {
             if (activeChat) {
                 if (
                     cachedPropsArray.length > SIZE_OF_CACHE &&
@@ -147,48 +245,54 @@ const CacheComponent = ({
                         cachedPropsArray[1].chatId !== activeChat
                     ) {
                         maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(2));
+                            setCachedPropsProc(cachedPropsArray.slice(2));
                         });
                     } else {
                         maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(1));
+                            setCachedPropsProc(cachedPropsArray.slice(1));
                         });
                     }
                 }
             }
-        },
-        [activeChat],
-    );
+        }, [activeChat]);
 
-    // if (true) {
-    //     return (
-    //         <IsActiveContext.Provider value={true}>
-    //             {activeChat && <Component {...componentProps} isActive={true} />}{' '}
-    //         </IsActiveContext.Provider>
-    //     );
-    // }
+        // if (true) {
+        //     return (
+        //         <IsActiveContext.Provider value={true}>
+        //             {activeChat && <Component {...componentProps} isActive={true} />}{' '}
+        //         </IsActiveContext.Provider>
+        //     );
+        // }
 
-    const renderedElements = [];
+        const renderedElements = [];
 
-    for (let i = 0; i < cachedPropsArray.length; i++) {
-        const cached = cachedPropsArray[i];
+        for (let i = 0; i < cachedPropsArray.length; i++) {
+            const cached = cachedPropsArray[i];
 
-        renderedElements.push(
-            <IsActiveContext.Provider
-                key={cached.chatId}
-                value={activeChat !== null && activeChat === cached.chatId}
-            >
-                <DisplayNone
-                    isActive={activeChat !== null && activeChat === cached.chatId}
-                    Component={Component}
-                    componentProps={cached.componentProps}
-                />
-            </IsActiveContext.Provider>,
-        );
-    }
+            let isActiveState = isActiveContextsMap.get(cached.chatId);
+            if (!isActiveState) {
+                isActiveState = new IsActiveContextState(false);
+                isActiveContextsMap.set(cached.chatId, isActiveState);
+            }
+            isActiveState.setIsActive(activeChat !== null && activeChat === cached.chatId);
 
-    return <>{renderedElements}</>;
-};
+            renderedElements.push(
+                <IsActiveDualityContext.Provider
+                    key={cached.chatId}
+                    value={isActiveState}
+                >
+                    <DisplayNone
+                        isActive={activeChat !== null && activeChat === cached.chatId}
+                        Component={Component}
+                        componentProps={cached.componentProps}
+                    />
+                </IsActiveDualityContext.Provider>,
+            );
+        }
+
+        return <>{renderedElements}</>;
+    },
+);
 
 export const ConversationContainerWrapper = ({
     tab,
@@ -216,6 +320,7 @@ export const ConversationContainerWrapper = ({
 
     return (
         <>
+            <PerfViewer />
             <ConversationContainerInner>
                 <CacheComponent
                     isMobile={isMobile}

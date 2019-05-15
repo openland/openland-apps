@@ -23,14 +23,15 @@ import { useKeydownHandler } from '../hooks/useKeydownHandler';
 import { useDraft } from '../hooks/useDraft/useDraft';
 import { useHandleSend } from '../hooks/useHandleSend';
 import { useInputMethods } from '../hooks/useInputMethods';
-import { useQuote } from '../hooks/useQuote';
+import { useQuote, QuoteStateT } from '../hooks/useQuote';
 import { useHandleChange } from '../hooks/useHandleChange';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
+import { XView } from 'react-mental';
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
@@ -52,35 +53,11 @@ export type MessageComposeComponentInnerProps = {
     draft?: string | null;
 } & MessageComposeComponentProps & { user: UserShort } & MessageComposeComponentT; // XWithRouter &
 
-const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
-    const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
-    const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
-    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
-    const { file } = React.useContext(UploadContext);
-    const isActive = React.useContext(IsActiveContext);
-
-    const [currentConversationId, setCurrentConversationId] = React.useState<string | undefined>(
-        undefined,
-    );
-    const [currentConversation, setCurrentConversation] = React.useState<
-        ConversationEngine | undefined
-    >(undefined);
-
-    React.useEffect(() => {
-        if (isActive && messageComposeProps.conversationId) {
-            setCurrentConversationId(messageComposeProps.conversationId);
-            setCurrentConversation(messageComposeProps.conversation);
-        }
-    });
-
-    if (file) {
-        inputMethodsState.focusIfNeeded();
-    }
-
-    const draftState = useDraft(messageComposeProps);
-
-    const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
-
+// TODO: get rid of any
+// TODO: extract only needed props
+const MessageComposeComponentInnerInner = React.memo((messageComposeProps: MessageComposeComponentInnerProps & { inputMethodsState: any, inputValue: string, setInputValue: (val: string) => void, draftState: any, inputRef: any }) => {
+    console.warn('render! MessageComposeComponentInnerInner');
+    let { inputMethodsState, inputValue, setInputValue, draftState, inputRef } = messageComposeProps;
     const quoteState = useQuote({
         inputMethodsState,
         conversationId: messageComposeProps.conversationId,
@@ -100,12 +77,11 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     });
 
     useKeydownHandler({
-        conversation: currentConversation,
+        conversation: messageComposeProps.conversation,
         user: messageComposeProps.user,
         inputValue,
         quoteState,
         inputMethodsState,
-        isActive,
     });
 
     const { handleChange } = useHandleChange({
@@ -113,6 +89,40 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         setInputValue,
         draftState,
     });
+
+    const getMentionsSuggestions = async () => {
+        return (await messageComposeProps.getMembers()).map(({ user }) => user);
+    };
+
+    const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
+
+    return (
+        <DumpSendMessage
+            initialMentions={initialMentions}
+            getMentionsSuggestions={getMentionsSuggestions}
+            TextInputComponent={
+                messageComposeProps.TextInputComponent || DesktopSendMessage
+            }
+            quoteState={quoteState}
+            handleChange={handleChange}
+            handleSend={handleSend}
+            inputRef={inputRef}
+            inputValue={inputValue}
+            enabled={messageComposeProps.enabled}
+            closeEditor={closeEditor}
+        />
+    );
+
+})
+
+const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
+    const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
+    const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
+    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const { file } = React.useContext(UploadContext);
+    const isActive = React.useContext(IsActiveDualityContext).useIsActive();
+    const draftState = useDraft(messageComposeProps);
+    const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 
     const hasReply = () => {
         return !(
@@ -132,34 +142,13 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
             draftState.setBeDrafted(hasReply());
             inputMethodsState.focusIfNeeded();
         }
-    }, [isActive, currentConversationId]);
+    }, [isActive]);
 
-    const getMentionsSuggestions = async () => {
-        return (await messageComposeProps.getMembers()).map(({ user }) => user);
-    };
+    if (file) {
+        inputMethodsState.focusIfNeeded();
+    }
 
-    const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
-
-    return (
-        <>
-            {isActive && (
-                <DumpSendMessage
-                    initialMentions={initialMentions}
-                    getMentionsSuggestions={getMentionsSuggestions}
-                    TextInputComponent={
-                        messageComposeProps.TextInputComponent || DesktopSendMessage
-                    }
-                    quoteState={quoteState}
-                    handleChange={handleChange}
-                    handleSend={handleSend}
-                    inputRef={inputRef}
-                    inputValue={inputValue}
-                    enabled={messageComposeProps.enabled}
-                    closeEditor={closeEditor}
-                />
-            )}
-        </>
-    );
+    return <MessageComposeComponentInnerInner {...messageComposeProps} inputValue={inputValue} setInputValue={setInputValue} inputMethodsState={inputMethodsState} inputRef={inputRef} draftState={draftState} />
 };
 
 type MessageComposeComponentT = MessageComposeWithDraft & {
