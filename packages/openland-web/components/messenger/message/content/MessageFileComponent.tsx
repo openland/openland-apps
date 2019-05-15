@@ -31,7 +31,7 @@ interface MessageFileComponentProps {
 }
 
 export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
-    useCheckPerf({ name: 'MessageFileComponent' });
+    // useCheckPerf({ name: 'MessageFileComponent' });
     let href = undefined;
     if (props.file) {
         href = `https://ucarecdn.com/${props.file}/${props.fileName ? props.fileName!! : ''}`;

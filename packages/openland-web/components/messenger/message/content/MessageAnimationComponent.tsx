@@ -8,7 +8,7 @@ export const MessageAnimationComponent = (props: {
     width: number;
     height: number;
 }) => {
-    useCheckPerf({ name: 'MessageAnimationComponent' });
+    // useCheckPerf({ name: 'MessageAnimationComponent' });
     let dimensions = layoutMedia(props.width, props.height);
     return (
         <video

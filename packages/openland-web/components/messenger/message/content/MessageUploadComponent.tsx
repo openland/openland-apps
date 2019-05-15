@@ -4,7 +4,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 
 export const MessageUploadComponent = XMemo((props: { title?: string; progress: number }) => {
-    useCheckPerf({ name: 'MessageUploadComponent' });
+    // useCheckPerf({ name: 'MessageUploadComponent' });
     return (
         <XView
             flexDirection="row"

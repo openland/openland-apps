@@ -30,7 +30,7 @@ interface ReplyMessageProps {
 }
 
 export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
-    useCheckPerf({ name: 'MessageReplyComponent' });
+    // useCheckPerf({ name: 'MessageReplyComponent' });
     let userPopperRef = React.useRef<UserPopper>(null);
 
     let onAvatarOrUserNameMouseEnter = () => {
@@ -166,10 +166,11 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                                 onMouseEnter={onAvatarOrUserNameMouseEnter}
                                 onMouseLeave={onAvatarOrUserNameMouseLeave}
                             >
-                                {props.senderNameEmojify || emoji({
-                                    src: props.sender!!.name,
-                                    size: 16,
-                                })}
+                                {props.senderNameEmojify ||
+                                    emoji({
+                                        src: props.sender!!.name,
+                                        size: 16,
+                                    })}
                             </XView>
                             {props.sender!!.primaryOrganization && (
                                 <XView
