@@ -74,11 +74,15 @@ const _findSpans = (text: string, from: number, to: number, nested?: boolean): M
                 currentSpecSymbol = mayBeSymbol;
                 lastPos = i;
             }
-        }
-
-        if (text.charAt(i) === '\n' && !isSpanMaster(currentSpecSymbol)) {
-            currentSpecSymbol = '';
-            lastPos = 0;
+        } else {
+            if (text.charAt(i) === '\n' && !isSpanMaster(currentSpecSymbol)) {
+                currentSpecSymbol = '';
+                lastPos = 0;
+            } else if (i === text.length - 1 && currentSpecSymbol !== '') {
+                if (nested) {
+                    res.push(..._findSpans(text, lastPos + currentSpecSymbol.length, text.length - 1, nested));
+                }
+            }
         }
     }
 
