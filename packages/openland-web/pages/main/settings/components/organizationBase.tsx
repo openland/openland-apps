@@ -76,7 +76,7 @@ const AdminTools = (props: AdminToolsT) => {
                 defaultData={{
                     input: {
                         activated: data && data.superAccount.state,
-                        published: props.published ? 'published' : 'unpublished',
+                        published: data.superAccount.published ? 'published' : 'unpublished',
                         editorial: props.editorial ? 'editorial' : 'noneditorial',
                         featured: props.featured ? 'featured' : 'nonfeatured',
                     },
