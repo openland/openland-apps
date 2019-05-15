@@ -1062,8 +1062,13 @@ export const MarkSequenceReadMutation = gql`
 export const TypingsWatchSubscription = gql`
     subscription TypingsWatch {
         typings {
-            conversation {
-                id
+            conversation: chat {
+                ... on PrivateRoom {
+                    id
+                }
+                ... on SharedRoom {
+                    id
+                }
             }
             user {
                 id

@@ -18,7 +18,7 @@ protocol PersistenceProvier: class {
 class LevelDBPersistenceProvider: PersistenceProvier {
   
   static let stores = LazyCollection<SwiftStore>() { name in
-    return SwiftStore(storeName: name + "-v3")
+    return SwiftStore(storeName: name + "-v4")
   }
   
   private let swiftStore: SwiftStore

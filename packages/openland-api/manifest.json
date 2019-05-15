@@ -646,10 +646,10 @@
       }
     },
     {
-      "signature": "862e9c5a9e271056e204a7dfef145b6df6cb642d56b077ea822b9125ffeb164e",
-      "document": "subscription TypingsWatch{typings{__typename cancel conversation{__typename id}user{__typename id name photo}}}",
+      "signature": "65b5dc52cef912306d241ab654f34ac7e2a3c78cfbce9651a11241ea44f31f43",
+      "document": "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename id name photo}}}",
       "metadata": {
-        "engineSignature": "subscription TypingsWatch{typings{__typename cancel conversation{__typename id}user{__typename id name photo}}}"
+        "engineSignature": "subscription TypingsWatch{typings{__typename cancel chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename id name photo}}}"
       }
     },
     {

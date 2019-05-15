@@ -30617,10 +30617,17 @@ export interface MarkSequenceReadVariables {
 // GraphQL subscription operation: TypingsWatch
 // ====================================================
 
-export interface TypingsWatch_typings_conversation {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "GroupConversation" | "PrivateConversation" | "SharedConversation";
+export interface TypingsWatch_typings_conversation_PrivateRoom {
+  __typename: "PrivateRoom";
   id: string;
 }
+
+export interface TypingsWatch_typings_conversation_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export type TypingsWatch_typings_conversation = TypingsWatch_typings_conversation_PrivateRoom | TypingsWatch_typings_conversation_SharedRoom;
 
 export interface TypingsWatch_typings_user {
   __typename: "User";

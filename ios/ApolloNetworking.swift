@@ -71,19 +71,24 @@ class ApolloNetworking {
   }
   
   func startRequest(id: String, body: JSON) {
+    NSLog("[SpaceX-Apollo]: Start Request " + id)
     queue.async {
       if self.state == .waiting || self.state == .connecting {
         // Add to pending buffer if we are not connected already
         self.pending[id] = body
+        NSLog("[SpaceX-Apollo]: Pending " + id)
       } else if self.state == .starting {
+        NSLog("[SpaceX-Apollo]: Starting " + id)
         // If we connected, but not started add to pending buffer (in case of failed start)
         // and send message to socket
         
         self.pending[id] = body
         self.writeToSocket(msg: JSON(["type": "start", "id": id, "payload": body]))
       } else if self.state == .started {
+        NSLog("[SpaceX-Apollo]: Started " + id)
         self.writeToSocket(msg: JSON(["type": "start", "id": id, "payload": body]))
       } else if self.state == .completed {
+        NSLog("[SpaceX-Apollo]: Completed " + id)
         // Silently ignore if connection is completed
       } else {
         fatalError()
@@ -92,6 +97,7 @@ class ApolloNetworking {
   }
   
   func stopRequest(id: String) {
+    NSLog("[SpaceX-Apollo]: Stop Request " + id)
     queue.async {
       if self.state == .waiting || self.state == .connecting {
         // Remove from pending buffer if we are not connected already
@@ -148,10 +154,13 @@ class ApolloNetworking {
     self.writeToSocket(msg: JSON([
       "type": "connection_init", "payload": self.params
     ]))
+    for p in self.pending {
+      self.writeToSocket(msg: JSON(["type": "start", "id": p.key, "payload": p.value]))
+    }
   }
   
   private func onReceived(message: String) {
-    // print("[SpaceX-Apollo]: << " + message)
+    print("[SpaceX-Apollo]: << " + message)
     
     let parsed = JSON(parseJSON: message)
     let type = parsed["type"].stringValue
@@ -273,7 +282,7 @@ class ApolloNetworking {
   
   private func writeToSocket(msg: JSON) {
     let txt = serializeJson(json: msg)
-    // print("[SpaceX-Apollo]: >> \(txt)")
+    print("[SpaceX-Apollo]: >> \(txt)")
     self.client!.write(string: txt)
   }
 }

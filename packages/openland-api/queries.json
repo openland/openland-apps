@@ -7794,7 +7794,7 @@
 			"operationType": "subscription",
 			"rootType": "Subscription",
 			"variables": [],
-			"source": "subscription TypingsWatch {\n  typings {\n    __typename\n    conversation {\n      __typename\n      id\n    }\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    cancel\n  }\n}",
+			"source": "subscription TypingsWatch {\n  typings {\n    __typename\n    conversation: chat {\n      __typename\n      ... on PrivateRoom {\n        id\n      }\n      ... on SharedRoom {\n        id\n      }\n    }\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    cancel\n  }\n}",
 			"fields": [
 				{
 					"responseName": "typings",
@@ -7811,8 +7811,8 @@
 						},
 						{
 							"responseName": "conversation",
-							"fieldName": "conversation",
-							"type": "Conversation!",
+							"fieldName": "chat",
+							"type": "Room!",
 							"isConditional": false,
 							"isDeprecated": false,
 							"fields": [
@@ -7821,17 +7821,55 @@
 									"fieldName": "__typename",
 									"type": "String!",
 									"isConditional": false
-								},
-								{
-									"responseName": "id",
-									"fieldName": "id",
-									"type": "ID!",
-									"isConditional": false,
-									"isDeprecated": false
 								}
 							],
 							"fragmentSpreads": [],
-							"inlineFragments": []
+							"inlineFragments": [
+								{
+									"typeCondition": "PrivateRoom",
+									"possibleTypes": [
+										"PrivateRoom"
+									],
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": []
+								},
+								{
+									"typeCondition": "SharedRoom",
+									"possibleTypes": [
+										"SharedRoom"
+									],
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": []
+								}
+							]
 						},
 						{
 							"responseName": "user",
@@ -7886,8 +7924,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "subscription TypingsWatch {\n  typings {\n    __typename\n    conversation {\n      __typename\n      id\n    }\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    cancel\n  }\n}",
-			"operationId": "04da3b3d737f1956129d22faa08dc677f35ff1b1fc9ab9118ddb982ad399fa5d"
+			"sourceWithFragments": "subscription TypingsWatch {\n  typings {\n    __typename\n    conversation: chat {\n      __typename\n      ... on PrivateRoom {\n        id\n      }\n      ... on SharedRoom {\n        id\n      }\n    }\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    cancel\n  }\n}",
+			"operationId": "d5bbf31cc85f514ff67ddf661a5a101ec7346159d5d380ff18fb40213be20653"
 		},
 		{
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/queries/Chats.ts",

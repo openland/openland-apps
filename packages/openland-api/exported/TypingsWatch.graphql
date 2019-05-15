@@ -2,9 +2,14 @@ subscription TypingsWatch {
   typings {
     __typename
     cancel
-    conversation {
+    conversation: chat {
       __typename
-      id
+      ... on PrivateRoom {
+        id
+      }
+      ... on SharedRoom {
+        id
+      }
     }
     user {
       __typename

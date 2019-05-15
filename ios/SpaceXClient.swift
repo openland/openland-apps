@@ -75,23 +75,28 @@ class SpaceXClient {
     if operation.kind != .query {
       fatalError("Only query operations are supported for querying")
     }
-    
+    NSLog("[SpaceX-Trace]: " + operation.name + ": query")
     func doRequest() {
+      NSLog("[SpaceX-Trace]: " + operation.name + ": request")
       self.transport.operation(operation: operation, variables: variables, queue: self.callbackQueue) { (res) in
         switch(res) {
         case .result(let data):
           self.normalizerQueue.async {
+            NSLog("[SpaceX-Trace]: " + operation.name + ": normalize")
             let normalized: RecordSet
             do {
               normalized = try normalizeRootQuery(rootQueryKey: "ROOT_QUERY", type: operation.selector, args: variables, data: data)
             } catch {
               fatalError("Normalization failed")
             }
+            NSLog("[SpaceX-Trace]: " + operation.name + ": merge")
             self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
+              NSLog("[SpaceX-Trace]: " + operation.name + ": result")
               handler(SpaceXOperationResult.result(data: data))
             }
           }
         case .error(let error):
+          NSLog("[SpaceX-Trace]: " + operation.name + ": error")
           handler(SpaceXOperationResult.error(error: error))
         }
       }
@@ -101,11 +106,13 @@ class SpaceXClient {
       
       switch(fetchMode) {
       case .cacheFirst:
+        NSLog("[SpaceX-Trace]: " + operation.name + ": read")
         self.store.readQuery(operation: operation, variables: variables, queue: self.callbackQueue) { res in
           switch(res) {
           case .missing:
             doRequest()
           case .success(let data):
+            NSLog("[SpaceX-Trace]: " + operation.name + ": result")
             handler(SpaceXOperationResult.result(data: data))
           }
         }
