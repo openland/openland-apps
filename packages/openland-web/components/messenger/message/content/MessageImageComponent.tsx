@@ -148,7 +148,8 @@ export const MessageImageComponent = React.memo<MessageImageComponentProps>(prop
         <>
             {!isMobile && (
                 <XModal
-                    useTopCloser={true}
+                    useTopCloser={false}
+                    footer={null}
                     width={finalDimensions2.width}
                     heading={null}
                     transparent={true}
