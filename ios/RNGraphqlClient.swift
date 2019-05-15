@@ -43,7 +43,7 @@ func jsonToNative(src: JSON) -> Any {
 class RNGraphqlClient {
   
   let key: String
-  let module: RNGraphQL
+  unowned let module: RNGraphQL
   let client: SpaceXClient
   var watches: [String: ()->Void] = [:]
   var subscriptions: [String: RunningSubscription] = [:]
@@ -54,11 +54,15 @@ class RNGraphqlClient {
     self.module = module
     self.key = key
     self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage!)
-    self.client.onConnected = {
-      self.module.reportStatus(key: key, status: "connected")
+    self.client.onConnected = { [weak self] in
+      if let s = self {
+        s.module.reportStatus(key: key, status: "connected")
+      }
     }
-    self.client.onDisconnected = {
-      self.module.reportStatus(key: key, status: "connecting")
+    self.client.onDisconnected = { [weak self] in
+      if let s = self {
+        s.module.reportStatus(key: key, status: "connecting")
+      }
     }
   }
   
@@ -73,13 +77,19 @@ class RNGraphqlClient {
     
     let fetchMode = self.resolveFetchPolicy(parameters: parameters)
     
-    self.client.query(operation: Operations.shared.operationByName(query), variables: JSON(arguments), fetchMode: fetchMode) { res in
-      switch(res) {
-      case .result(let data):
-        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-      case .error(let data):
-        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-        break
+    self.client.query(
+      operation: Operations.shared.operationByName(query),
+      variables: JSON(arguments),
+      fetchMode: fetchMode
+    ) { [weak self] res in
+      if let s = self {
+        switch(res) {
+        case .result(let data):
+          s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+        case .error(let data):
+          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+          break
+        }
       }
     }
   }
@@ -89,13 +99,18 @@ class RNGraphqlClient {
       return
     }
     
-    self.client.mutate(operation: Operations.shared.operationByName(mutation), variables: JSON(arguments)) { res in
-      switch(res) {
-      case .result(let data):
-        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-      case .error(let data):
-        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-        break
+    self.client.mutate(
+      operation: Operations.shared.operationByName(mutation),
+      variables: JSON(arguments)
+    ) { [weak self] res in
+      if let s = self {
+        switch(res) {
+        case .result(let data):
+          s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+        case .error(let data):
+          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+          break
+        }
       }
     }
   }
@@ -109,13 +124,19 @@ class RNGraphqlClient {
       return
     }
     let fetchMode = self.resolveFetchPolicy(parameters: parameters)
-    let cancel = self.client.watch(operation: Operations.shared.operationByName(query), variables: JSON(arguments), fetchMode: fetchMode) { res in
-      switch(res) {
-      case .result(let data):
-        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-      case .error(let error):
-        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: error))
-        break
+    let cancel = self.client.watch(
+      operation: Operations.shared.operationByName(query),
+      variables: JSON(arguments),
+      fetchMode: fetchMode
+    ) { [weak self] res in
+      if let s = self {
+        switch(res) {
+        case .result(let data):
+          s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+        case .error(let error):
+          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: error))
+          break
+        }
       }
     }
     self.watches[id] = cancel
@@ -136,12 +157,17 @@ class RNGraphqlClient {
     if !self.live {
       return
     }
-    let s = self.client.subscribe(operation: Operations.shared.operationByName(subscription), variables: JSON(arguments)) { res in
-      switch(res) {
-      case .result(let data):
-        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-      case .error(let error):
-        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: error))
+    let s = self.client.subscribe(
+      operation: Operations.shared.operationByName(subscription),
+      variables: JSON(arguments)
+    ) { [weak self] res in
+      if let s = self {
+        switch(res) {
+        case .result(let data):
+          s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+        case .error(let error):
+          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: error))
+        }
       }
     }
     
@@ -170,12 +196,17 @@ class RNGraphqlClient {
     if !self.live {
       return
     }
-    self.client.readQuery(operation: Operations.shared.operationByName(query), variables: JSON(arguments)) { res in
-      switch(res) {
-      case .missing:
-        self.module.reportResult(key: self.key, id: id, result: nil)
-      case .result(let data):
-        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+    self.client.readQuery(
+      operation: Operations.shared.operationByName(query),
+      variables: JSON(arguments)
+    ) { [weak self] res in
+      if let s = self {
+        switch(res) {
+        case .missing:
+          s.module.reportResult(key: s.key, id: id, result: nil)
+        case .result(let data):
+          s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+        }
       }
     }
   }
@@ -185,8 +216,14 @@ class RNGraphqlClient {
       return
     }
     
-    self.client.writeQuery(operation: Operations.shared.operationByName(query), variables: JSON(arguments), data: JSON(data)) {
-      self.module.reportResult(key: self.key, id: id, result: nil)
+    self.client.writeQuery(
+      operation: Operations.shared.operationByName(query),
+      variables: JSON(arguments),
+      data: JSON(data)
+    ) { [weak self] in
+      if let s = self {
+        s.module.reportResult(key: s.key, id: id, result: nil)
+      }
     }
   }
   

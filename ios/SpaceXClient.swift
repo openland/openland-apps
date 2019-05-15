@@ -123,23 +123,29 @@ class SpaceXClient {
     if operation.kind != .mutation {
       fatalError("Only mutation operations are supported for mutating")
     }
-    callbackQueue.async {
-      self.transport.operation(operation: operation, variables: variables, queue: self.callbackQueue) { (res) in
-        switch(res) {
-        case .result(let data):
-          self.normalizerQueue.async {
-            let normalized: RecordSet
-            do {
-              normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
-            } catch {
-              fatalError("Normalization failed")
+    callbackQueue.async { [weak self] in
+      if let s = self {
+        s.transport.operation(operation: operation, variables: variables, queue: s.callbackQueue) { [weak self] (res) in
+          switch(res) {
+          case .result(let data):
+            if let s = self {
+              s.normalizerQueue.async { [weak self] in
+                let normalized: RecordSet
+                do {
+                  normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
+                } catch {
+                  fatalError("Normalization failed")
+                }
+                if let s = self {
+                  s.store.merge(recordSet: normalized, queue: s.callbackQueue) {
+                    handler(SpaceXOperationResult.result(data: data))
+                  }
+                }
+              }
             }
-            self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
-              handler(SpaceXOperationResult.result(data: data))
-            }
+          case .error(let error):
+            handler(SpaceXOperationResult.error(error: error))
           }
-        case .error(let error):
-          handler(SpaceXOperationResult.error(error: error))
         }
       }
     }
@@ -175,28 +181,32 @@ class SpaceXClient {
   //
   
   func readQuery(operation: OperationDefinition, variables: JSON, callback: @escaping (SpaceXReadResult) -> Void) {
-    self.callbackQueue.async {
-      self.store.readQuery(operation: operation, variables: variables, queue: self.callbackQueue) { res in
-        switch(res) {
-        case .missing:
-          callback(SpaceXReadResult.missing)
-        case .success(let data):
-          callback(SpaceXReadResult.result(data: data))
+    self.callbackQueue.async { [weak self] in
+      if let s = self {
+        s.store.readQuery(operation: operation, variables: variables, queue: s.callbackQueue) { res in
+          switch(res) {
+          case .missing:
+            callback(SpaceXReadResult.missing)
+          case .success(let data):
+            callback(SpaceXReadResult.result(data: data))
+          }
         }
       }
     }
   }
   
   func writeQuery(operation: OperationDefinition, variables: JSON, data: JSON, callback: @escaping () -> Void) {
-    self.normalizerQueue.async {
+    self.normalizerQueue.async { [weak self] in
       let normalized: RecordSet
       do {
         normalized = try normalizeData(id: "ROOT_MUTATION", type: operation.selector, args: variables, data: data)
       } catch {
         fatalError("Normalization failed")
       }
-      self.store.merge(recordSet: normalized, queue: self.callbackQueue) {
-        callback()
+      if let s = self {
+        s.store.merge(recordSet: normalized, queue: s.callbackQueue) {
+          callback()
+        }
       }
     }
   }
@@ -216,7 +226,7 @@ fileprivate class QueryWatch {
   let operation: OperationDefinition
   let variables: JSON
   let handler: (SpaceXOperationResult) -> Void
-  let client: SpaceXClient!
+  var client: SpaceXClient!
   let fetchMode: FetchMode
   private var completed = false
   
@@ -291,7 +301,7 @@ fileprivate class QueryWatch {
 }
 
 fileprivate class Subscription: RunningSubscription {
-  let client: SpaceXClient!
+  var client: SpaceXClient!
   let operation: OperationDefinition
   var variables: JSON
   let handler: (SpaceXOperationResult)->Void
@@ -357,6 +367,7 @@ fileprivate class Subscription: RunningSubscription {
         self.stopped = true
         self.runningOperation?.cancel()
         self.runningOperation = nil
+        self.client = nil
       }
     }
   }
