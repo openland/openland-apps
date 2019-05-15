@@ -209,8 +209,8 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                                 src={imageUrl}
                             />
                         ) : (
-                            <img width={40} height={40} src="/static/img/img-thn@3x.png" />
-                        )}
+                                <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                            )}
                     </XView>
                     <XView flexDirection="column" justifyContent="space-between" height={40}>
                         <XView
@@ -263,14 +263,9 @@ const DomainNameClassName = css`
     overflow: hidden;
 `;
 
-interface MessageUrlAugmentationComponentInnerProps extends MessageUrlAugmentationComponentProps {
-    isMobile: boolean;
-}
-
-const MessageUrlAugmentationComponentInner = React.memo(
-    (props: MessageUrlAugmentationComponentInnerProps) => {
+export const MessageUrlAugmentationComponent = React.memo(
+    (props: MessageUrlAugmentationComponentProps) => {
         let {
-            isMobile,
             subTitle,
             titleLink,
             titleLinkHostname,
@@ -283,6 +278,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
             keyboard,
         } = props;
 
+        let isMobile = React.useContext(IsMobileContext);
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -400,13 +396,13 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             {isMobile ? (
                                                 linkImage
                                             ) : (
-                                                <ImagePreviewModal
-                                                    file={image.url}
-                                                    width={image.metadata!.imageWidth!}
-                                                    height={image.metadata!.imageWidth!}
-                                                    target={linkImage}
-                                                />
-                                            )}
+                                                    <ImagePreviewModal
+                                                        file={image.url}
+                                                        width={image.metadata!.imageWidth!}
+                                                        height={image.metadata!.imageWidth!}
+                                                        target={linkImage}
+                                                    />
+                                                )}
                                         </>
                                     )}
                                 </XView>
@@ -421,12 +417,12 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             src={image.url}
                                         />
                                     ) : (
-                                        <img
-                                            width={40}
-                                            height={40}
-                                            src="/static/img/img-thn@3x.png"
-                                        />
-                                    )}
+                                            <img
+                                                width={40}
+                                                height={40}
+                                                src="/static/img/img-thn@3x.png"
+                                            />
+                                        )}
                                 </XView>
                             )}
                         {!image &&
@@ -560,13 +556,5 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 {keyboard && <Keyboard keyboard={keyboard} />}
             </XView>
         );
-    },
-);
-
-export const MessageUrlAugmentationComponent = React.memo(
-    (props: MessageUrlAugmentationComponentProps) => {
-        const isMobile = React.useContext(IsMobileContext);
-
-        return <MessageUrlAugmentationComponentInner {...props} isMobile={isMobile} />;
     },
 );

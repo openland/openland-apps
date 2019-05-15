@@ -8,7 +8,6 @@ import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import RepliedIcon from 'openland-icons/ic-replied.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { RoomChat_room } from 'openland-api/Types';
@@ -24,6 +23,12 @@ const DiscussButton = React.memo(
         conversationId: string;
     }) => {
 
+        let openModal = React.useCallback(() => {
+            openCommentsModal({
+                messageId: messageId,
+                conversationId,
+            });
+        }, [])
         return (
             <XView
                 cursor="pointer"
@@ -36,12 +41,7 @@ const DiscussButton = React.memo(
                 color="#1790ff"
                 paddingLeft={12}
                 paddingRight={12}
-                onClick={() => {
-                    openCommentsModal({
-                        messageId: messageId,
-                        conversationId,
-                    });
-                }}
+                onClick={openModal}
             >
                 {commentsCount ? (
                     <XView flexDirection="row">
