@@ -142,6 +142,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     return (
         <DumpSendMessage
+            isActive={!!isActive}
             initialMentions={initialMentions}
             getMentionsSuggestions={getMentionsSuggestions}
             TextInputComponent={

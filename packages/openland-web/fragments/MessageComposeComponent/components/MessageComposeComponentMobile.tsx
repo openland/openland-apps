@@ -28,6 +28,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
     // TODO maybe some other pattern here
     return (
         <DumpSendMessage
+            isActive={true}
             TextInputComponent={MobileSendMessage}
             getMentionsSuggestions={async () => []}
             initialMentions={[]}

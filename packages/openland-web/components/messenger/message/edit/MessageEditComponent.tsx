@@ -94,6 +94,7 @@ class XRichTextInputStored extends React.PureComponent<
         return (
             <XRichTextInput2
                 {...other}
+                isActive={true}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
