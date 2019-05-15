@@ -266,13 +266,16 @@ fileprivate class QueryWatch {
         self.doRequest()
       case .success(let data):
         self.handler(SpaceXOperationResult.result(data: data))
+        if self.fetchMode == .cacheAndNetwork {
+          self.doRequest(reload: false)
+        }
       case .updated:
         self.doReloadFromCache()
       }
     }
   }
   
-  private func doRequest() {
+  private func doRequest(reload: Bool = true) {
     self.client.transport.operation(operation: self.operation, variables: self.variables, queue: self.client.callbackQueue) { res in
       if self.completed {
         return
@@ -287,10 +290,14 @@ fileprivate class QueryWatch {
           fatalError("Normalization failed")
         }
         self.client.store.merge(recordSet: normalized, queue: self.client.callbackQueue) {
-          self.doReloadFromCache()
+          if reload {
+            self.doReloadFromCache()
+          }
         }
       case .error(let error):
-        self.handler(SpaceXOperationResult.error(error: error))
+        if reload {
+          self.handler(SpaceXOperationResult.error(error: error))
+        }
       }
     }
   }
