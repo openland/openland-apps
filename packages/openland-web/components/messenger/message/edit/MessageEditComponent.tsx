@@ -92,6 +92,7 @@ class XRichTextInputStored extends React.PureComponent<
         return (
             <XRichTextInput2
                 {...other}
+                isActive={true}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
@@ -216,6 +217,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             await client.mutateEditComment({
                 id: message.id!!,
                 message: data.message.text,
+                spans: findSpans(data.message.text || ''),
                 mentions: data.message.mentions
                     ? data.message.mentions.map((mention: UserWithOffset) => ({
                           userId: mention.user.id,

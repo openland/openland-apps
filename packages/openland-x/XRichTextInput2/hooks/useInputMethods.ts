@@ -18,6 +18,7 @@ type useInputMethodsT = {
     editorState: EditorState;
     getMentions: () => UserWithOffset[];
     updateEditorStateFromTextAndMentions: (a: { text: string; mentions: UserWithOffset[] }) => void;
+    isActive: boolean
 };
 
 export function useInputMethods({
@@ -27,8 +28,13 @@ export function useInputMethods({
     editorState,
     getMentions,
     updateEditorStateFromTextAndMentions,
+    isActive,
+
 }: useInputMethodsT) {
     const focus = () => {
+        if (!isActive) {
+            return;
+        }
         window.requestAnimationFrame(() => {
             if (editorRef && editorRef.current) {
                 editorRef.current.focus();
@@ -37,6 +43,9 @@ export function useInputMethods({
     };
 
     const resetAndFocus = () => {
+        if (!isActive) {
+            return;
+        }
         window.requestAnimationFrame(() => {
             setEditorState(
                 EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),

@@ -6,7 +6,6 @@ import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { emoji } from 'openland-y-utils/emoji';
 import { Menu } from './Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
@@ -117,6 +116,7 @@ const CompactMessageContainerWrapper = ({
     onClick,
     cursorPointer,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -145,6 +145,7 @@ const NotCompactMessageContainerWrapper = ({
     onClick,
     cursorPointer,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -171,6 +172,7 @@ const NotCompactModalMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -190,6 +192,7 @@ const NotCompactShortMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
 }: MessageContainerWrapperProps) => {
+    console.warn('render ')
     return (
         <XView
             alignItems="center"
@@ -256,6 +259,14 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 
+    let onClick = React.useCallback((e) => {
+        if (props.selecting) {
+            e.preventDefault();
+            e.stopPropagation();
+            props.onSelected();
+        }
+    }, [props.selecting]);
+
     let onAvatarOrUserNameMouseEnter = () => {
         if (userPopperRef.current) {
             userPopperRef.current.showPopper();
@@ -267,18 +278,12 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             userPopperRef.current.hidePopper();
         }
     };
-    let onMouseEnter = React.useMemo(
-        () => () => {
-            onHover(true);
-        },
-        [onHover],
-    );
-    let onMouseLeave = React.useMemo(
-        () => () => {
-            onHover(false);
-        },
-        [onHover],
-    );
+    let onMouseEnter = React.useCallback(() => {
+        onHover(true);
+    }, [])
+    let onMouseLeave = React.useCallback(() => {
+        onHover(false);
+    }, [])
 
     // Selector Icon
     let selector = (
@@ -315,25 +320,25 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                     deleted ? (
                         <DeletedCommentAvatar />
                     ) : (
-                        <UserPopper
-                            isMe={props.sender.isYou}
-                            startSelected={false}
-                            user={props.sender}
-                            ref={userPopperRef}
-                        >
-                            <XAvatar2
-                                id={sender.id}
-                                title={sender.name}
-                                src={sender.photo}
-                                size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
-                            />
-                        </UserPopper>
-                    )
+                            <UserPopper
+                                isMe={props.sender.isYou}
+                                startSelected={false}
+                                user={props.sender}
+                                ref={userPopperRef}
+                            >
+                                <XAvatar2
+                                    id={sender.id}
+                                    title={sender.name}
+                                    src={sender.photo}
+                                    size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
+                                />
+                            </UserPopper>
+                        )
                 ) : (
-                    <XView lineHeight="23px">
-                        {hover && <XDate value={date.toString()} format="time" />}
-                    </XView>
-                )}
+                        <XView lineHeight="23px">
+                            {hover && <XDate value={date.toString()} format="time" />}
+                        </XView>
+                    )}
             </PreambulaContainer>
         ),
         [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
@@ -348,17 +353,17 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                         {deleted ? (
                             <DeletedCommentHeader />
                         ) : (
-                            <XView
-                                flexDirection="row"
-                                fontSize={14}
-                                fontWeight="600"
-                                color="rgba(0, 0, 0, 0.8)"
-                                onMouseEnter={onAvatarOrUserNameMouseEnter}
-                                onMouseLeave={onAvatarOrUserNameMouseLeave}
-                            >
-                                {props.senderNameEmojify}
-                            </XView>
-                        )}
+                                <XView
+                                    flexDirection="row"
+                                    fontSize={14}
+                                    fontWeight="600"
+                                    color="rgba(0, 0, 0, 0.8)"
+                                    onMouseEnter={onAvatarOrUserNameMouseEnter}
+                                    onMouseLeave={onAvatarOrUserNameMouseLeave}
+                                >
+                                    {props.senderNameEmojify}
+                                </XView>
+                            )}
                         {props.sender.primaryOrganization && (
                             <XView
                                 as="a"
@@ -439,40 +444,40 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             {props.compact ? (
                 props.children
             ) : (
-                <>
-                    {notCompactHeader}
-                    {props.isModal && (
-                        <XView
-                            marginBottom={8}
-                            flexDirection="row"
-                            alignItems="center"
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            fontSize={12}
-                        >
-                            <XDate value={props.date.toString()} format="datetime_short" />
-                            {props.isPinned && (
-                                <XView
-                                    width={3}
-                                    height={3}
-                                    opacity={0.3}
-                                    backgroundColor="#000"
-                                    borderRadius="100%"
-                                    flexShrink={0}
-                                    marginHorizontal={5}
-                                />
-                            )}
-                            {props.isPinned && <XView>Pinned</XView>}
-                        </XView>
-                    )}
-                    {props.isModal && (
-                        <XView flexDirection="column" marginLeft={-55}>
-                            {props.children}
-                        </XView>
-                    )}
-                    {!props.isModal && <XView flexDirection="column">{props.children}</XView>}
-                </>
-            )}
+                    <>
+                        {notCompactHeader}
+                        {props.isModal && (
+                            <XView
+                                marginBottom={8}
+                                flexDirection="row"
+                                alignItems="center"
+                                color="rgba(0, 0, 0, 0.4)"
+                                fontWeight="600"
+                                fontSize={12}
+                            >
+                                <XDate value={props.date.toString()} format="datetime_short" />
+                                {props.isPinned && (
+                                    <XView
+                                        width={3}
+                                        height={3}
+                                        opacity={0.3}
+                                        backgroundColor="#000"
+                                        borderRadius="100%"
+                                        flexShrink={0}
+                                        marginHorizontal={5}
+                                    />
+                                )}
+                                {props.isPinned && <XView>Pinned</XView>}
+                            </XView>
+                        )}
+                        {props.isModal && (
+                            <XView flexDirection="column" marginLeft={-55}>
+                                {props.children}
+                            </XView>
+                        )}
+                        {!props.isModal && <XView flexDirection="column">{props.children}</XView>}
+                    </>
+                )}
         </XView>
     );
 
@@ -510,24 +515,18 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     }
 
     return (
-        <MessageContainerWrapper
+        <CompactMessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             isEditView={props.isEditView}
             cursorPointer={props.selecting}
-            onClick={(e: any) => {
-                if (props.selecting) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    props.onSelected();
-                }
-            }}
+            onClick={onClick}
         >
             {!props.noSelector && selector}
             {preambula}
             {content}
             {props.isEditView ? null : actions}
-        </MessageContainerWrapper>
+        </CompactMessageContainerWrapper>
     );
 };
 
@@ -550,6 +549,7 @@ const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
 export interface MobileMessageContainerProps {
     children: any;
     sender: UserShort;
+    senderNameEmojify: any;
     date: number;
 }
 
@@ -580,10 +580,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                         fontWeight="600"
                         color="rgba(0, 0, 0, 0.8)"
                     >
-                        {emoji({
-                            src: props.sender.name,
-                            size: 16,
-                        })}
+                        {props.senderNameEmojify}
                     </XView>
                     {props.sender.primaryOrganization && (
                         <XView

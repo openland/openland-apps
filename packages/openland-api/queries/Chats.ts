@@ -250,6 +250,9 @@ export const RoomChatQuery = gql`
                     id
                     name
                 }
+                pinnedMessage {
+                    ...FullMessage
+                }
             }
             ... on SharedRoom {
                 id
@@ -928,31 +931,15 @@ export const AddMessageCommentMutation = gql`
         $replyComment: ID
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
     ) {
-        addMessageComment(
+        addMessageComment: betaAddMessageComment(
             messageId: $messageId
             message: $message
             replyComment: $replyComment
             mentions: $mentions
             fileAttachments: $fileAttachments
-        )
-    }
-`;
-
-export const BetaAddMessageCommentMutation = gql`
-    mutation BetaAddMessageComment(
-        $messageId: ID!
-        $message: String
-        $replyComment: ID
-        $mentions: [MentionInput!]
-        $fileAttachments: [FileAttachmentInput!]
-    ) {
-        betaAddMessageComment(
-            messageId: $messageId
-            message: $message
-            replyComment: $replyComment
-            mentions: $mentions
-            fileAttachments: $fileAttachments
+            spans: $spans
         ) {
             id
         }
@@ -967,12 +954,14 @@ export const EditCommentMutation = gql`
         $message: String
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
     ) {
         editComment(
             id: $id
             message: $message
             mentions: $mentions
             fileAttachments: $fileAttachments
+            spans: $spans
         )
     }
 `;

@@ -69,6 +69,7 @@ export type TextInputComponentT = {
     initialMentions: UserWithOffset[];
     inputRef: any;
     placeholder?: string;
+    isActive: boolean;
 };
 
 export type DumpSendMessagePropsT = TextInputComponentT & {
@@ -99,6 +100,7 @@ export const DumpSendMessage = React.memo(
         round,
         hideAttachments,
         placeholder,
+        isActive,
     }: DumpSendMessageT) => {
         const { fileSrc, fileName, fileSize, handleDrop } = React.useContext(UploadContext);
 
@@ -135,6 +137,7 @@ export const DumpSendMessage = React.memo(
                             round={round}
                             minimal={minimal}
                             hideAttachments={hideAttachments}
+                            isActive={isActive}
                         />
                         <XHorizontal
                             alignItems="center"

@@ -134,10 +134,10 @@ const CommentView = ({
     const onCommentBackToUserMessageClick = () => {
         return parentComment
             ? () => {
-                  scrollToComment({
-                      commentId: parentCommentId,
-                  });
-              }
+                scrollToComment({
+                    commentId: parentCommentId,
+                });
+            }
             : undefined;
     };
 
@@ -289,8 +289,8 @@ export const CommentsBlockView = ({
                     </XView>
                 </>
             ) : (
-                undefined
-            )}
+                    undefined
+                )}
         </>
     );
 };
@@ -407,7 +407,7 @@ export const CommentsModalInnerNoRouter = ({
                         useDefaultScroll
                         flexGrow={1}
                         flexShrink={1}
-                        maxHeight={700}
+                        maxHeight={'calc(100vh - 48px - 114px)'}
                         ref={scrollRef}
                     >
                         <XView position="absolute" zIndex={100} right={32} top={28}>
@@ -480,28 +480,30 @@ export const openDeleteCommentsModal = ({
     router.pushQuery('deleteComment', `${commentId}`);
 };
 
+const Modal = (props: { messageId: string, conversationId: string }) => {
+    let router = React.useContext(XRouterContext)!;
+    return <UploadContextProvider>
+        <XShortcutsRoot>
+            <MessageStateProviderComponent router={router} cid={props.conversationId}>
+                <CommentsModalInnerNoRouter messageId={props.messageId} roomId={props.conversationId} />
+            </MessageStateProviderComponent>
+        </XShortcutsRoot>
+    </UploadContextProvider>
+}
+
 export const openCommentsModal = ({
-    router,
     messageId,
     conversationId,
 }: {
-    router: XRouter;
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
     showModalBox(
         {
             width: 800,
         },
         () => (
-            <UploadContextProvider>
-                <XShortcutsRoot>
-                    <MessageStateProviderComponent router={router}>
-                        <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-                    </MessageStateProviderComponent>
-                </XShortcutsRoot>
-            </UploadContextProvider>
+            <Modal messageId={messageId} conversationId={conversationId} />
         ),
     );
 };

@@ -77,25 +77,46 @@ class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     }
 }
 
-const DisplayNone = ({
-    isActive,
-    Component,
-    componentProps,
-}: {
-    isActive: boolean;
-    Component: any;
-    componentProps: any;
-}) => {
-    return (
-        <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
-            <ShouldUpdateComponent
-                Component={Component}
-                componentProps={componentProps}
-                isActive={isActive}
-            />
-        </div>
-    );
+export const useCheckPerf = ({ name, props }: { name: string; props?: any }) => {
+    // let t0 = performance.now();
+    // React.useLayoutEffect(() => {
+    //     let t1 = performance.now();
+    //     console.log(`${name} rerender: ` + (t1 - t0) + ` milliseconds.`);
+    //     if (props) {
+    //         console.log(props);
+    //     }
+    // }, [Math.random()]);
 };
+
+const DisplayNone = React.memo(
+    ({
+        isActive,
+        Component,
+        componentProps,
+    }: {
+        isActive: boolean;
+        Component: any;
+        componentProps: any;
+    }) => {
+        useCheckPerf({
+            name: 'DisplayNone',
+            props: {
+                isActive,
+                Component,
+                componentProps,
+            },
+        });
+        return (
+            <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
+                <ShouldUpdateComponent
+                    Component={Component}
+                    componentProps={componentProps}
+                    isActive={isActive}
+                />
+            </div>
+        );
+    },
+);
 
 const maybeRequestIdleCallback = (cb: Function) => {
     if (window && (window as any).requestIdleCallback) {
@@ -115,6 +136,7 @@ const CacheComponent = ({
     activeChat: string | null;
     componentProps: any;
 }) => {
+    useCheckPerf({ name: 'CacheComponent' });
     let SIZE_OF_CACHE = 20;
 
     if (canUseDOM && (window as any).safari !== undefined) {
@@ -134,31 +156,28 @@ const CacheComponent = ({
         }
     }
 
-    React.useEffect(
-        () => {
-            if (activeChat) {
+    React.useEffect(() => {
+        if (activeChat) {
+            if (
+                cachedPropsArray.length > SIZE_OF_CACHE &&
+                cachedPropsArray[0].chatId !== activeChat
+            ) {
                 if (
-                    cachedPropsArray.length > SIZE_OF_CACHE &&
-                    cachedPropsArray[0].chatId !== activeChat
+                    cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                    cachedPropsArray[0].chatId !== activeChat &&
+                    cachedPropsArray[1].chatId !== activeChat
                 ) {
-                    if (
-                        cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
-                        cachedPropsArray[0].chatId !== activeChat &&
-                        cachedPropsArray[1].chatId !== activeChat
-                    ) {
-                        maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(2));
-                        });
-                    } else {
-                        maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(1));
-                        });
-                    }
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(2));
+                    });
+                } else {
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(1));
+                    });
                 }
             }
-        },
-        [activeChat],
-    );
+        }
+    }, [activeChat]);
 
     // if (true) {
     //     return (
@@ -197,6 +216,7 @@ export const ConversationContainerWrapper = ({
     uid,
     cid,
 }: PageInnerProps) => {
+    useCheckPerf({ name: 'ConversationContainerWrapper' });
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
 
     if (!canUseDOM) {

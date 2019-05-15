@@ -30,7 +30,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
     if (!data) {
         tagsCount(0);
 
-        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
+        return <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />;
     }
 
     if (
@@ -65,7 +65,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
     } else {
         tagsCount(0);
 
-        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
+        return <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />;
     }
 };
 

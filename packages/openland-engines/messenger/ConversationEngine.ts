@@ -52,6 +52,7 @@ export interface DataSourceMessageItem {
     commentsCount: number | null;
     fallback?: string;
     textSpans: Span[];
+    replyTextSpans: Span[][];
 }
 
 export interface DataSourceDateItem {
@@ -65,6 +66,9 @@ export interface DataSourceDateItem {
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+
+    let reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined;
+    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
 
     return {
         chatId: chaId,
@@ -85,7 +89,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined,
+        reply,
+        replyTextSpans,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
@@ -618,6 +623,9 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
         } else {
             let p = src as PendingMessage;
+            let reply = p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined;
+            let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
+
             conv = {
                 type: 'message',
                 chatId: this.conversationId,
@@ -651,7 +659,8 @@ export class ConversationEngine implements MessageSendHandler {
                         imageHeight: p.imageSize && p.imageSize.height || 0,
                     }
                 }] : undefined,
-                reply: p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
+                reply,
+                replyTextSpans,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : []
             };

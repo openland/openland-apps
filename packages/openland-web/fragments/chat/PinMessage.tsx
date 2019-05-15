@@ -11,6 +11,7 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
     RoomChat_room,
+    RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
@@ -93,7 +94,9 @@ const UnpinButton = (props: {
 type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
 export interface PinMessageComponentProps {
-    pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
+    pinMessage:
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
     chatId: string;
     room: RoomChat_room;
     target?: any;
@@ -103,6 +106,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { room, pinMessage } = props;
     const { sender, message } = pinMessage;
+    const privateRoom = room.__typename === 'PrivateRoom';
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
     let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
     let attachment: attachmentType | null = null;
@@ -112,6 +116,10 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         pinMessage.attachments[0].__typename === 'MessageAttachmentFile'
     ) {
         attachment = pinMessage.attachments[0] as attachmentType;
+    }
+
+    if (privateRoom) {
+        canMeUnpinMessage = true;
     }
 
     let quotedMessages = [];
@@ -145,7 +153,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
 
                     return (
                         <MessageReplyComponent
-                            spans={pinMessage.spans}
+                            spans={processSpans(item.message || '', pinMessage.spans)}
                             sender={item.sender}
                             date={item.date}
                             message={item.message}
@@ -265,58 +273,60 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                         isEdited={false}
                     />
                 )}
-                {attachment && attachment.fileMetadata.isImage && (
-                    <img
-                        src={'https://ucarecdn.com/' + attachment.fileId + '/'}
-                        className={ImageClassName}
-                    />
-                )}
-                {attachment && !attachment.fileMetadata.isImage && (
-                    <XView flexDirection="column">
-                        <XView
-                            height={1}
-                            backgroundColor="#ececec"
-                            width="100%"
-                            flexShrink={0}
-                            marginBottom={12}
+                {attachment &&
+                    attachment.fileMetadata.isImage && (
+                        <img
+                            src={'https://ucarecdn.com/' + attachment.fileId + '/'}
+                            className={ImageClassName}
                         />
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            as="a"
-                            hoverTextDecoration="none"
-                            href={`https://ucarecdn.com/${attachment.fileId}/${
-                                attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                            }`}
-                        >
+                    )}
+                {attachment &&
+                    !attachment.fileMetadata.isImage && (
+                        <XView flexDirection="column">
                             <XView
-                                alignItems="center"
-                                flexDirection="row"
+                                height={1}
+                                backgroundColor="#ececec"
+                                width="100%"
                                 flexShrink={0}
-                                marginRight={8}
+                                marginBottom={12}
+                            />
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                as="a"
+                                hoverTextDecoration="none"
+                                href={`https://ucarecdn.com/${attachment.fileId}/${
+                                    attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
+                                }`}
                             >
-                                <AttachIcon />
-                            </XView>
-                            <XView flexDirection="row" alignItems="center">
-                                <XView fontSize={13} color="#1790ff">
-                                    {attachment.fileMetadata.name}
-                                </XView>
                                 <XView
-                                    width={3}
-                                    height={3}
-                                    opacity={0.3}
-                                    backgroundColor="#000"
-                                    borderRadius="100%"
+                                    alignItems="center"
+                                    flexDirection="row"
                                     flexShrink={0}
-                                    marginHorizontal={5}
-                                />
-                                <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
-                                    {niceBytes(Number(attachment.fileMetadata.size))}
+                                    marginRight={8}
+                                >
+                                    <AttachIcon />
+                                </XView>
+                                <XView flexDirection="row" alignItems="center">
+                                    <XView fontSize={13} color="#1790ff">
+                                        {attachment.fileMetadata.name}
+                                    </XView>
+                                    <XView
+                                        width={3}
+                                        height={3}
+                                        opacity={0.3}
+                                        backgroundColor="#000"
+                                        borderRadius="100%"
+                                        flexShrink={0}
+                                        marginHorizontal={5}
+                                    />
+                                    <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
+                                        {niceBytes(Number(attachment.fileMetadata.size))}
+                                    </XView>
                                 </XView>
                             </XView>
                         </XView>
-                    </XView>
-                )}
+                    )}
                 {quotedMessages}
             </XView>
         </XView>
@@ -346,7 +356,11 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
     const attach = attachments[0];
-    const hideSender = room.__typename === 'SharedRoom' && room.kind === 'GROUP';
+    const privateRoom = room.__typename === 'PrivateRoom';
+    let hideSender = room.__typename === 'SharedRoom' && room.kind === 'GROUP';
+    if (privateRoom) {
+        hideSender = false;
+    }
     return (
         <XView
             flexDirection="column"
@@ -381,7 +395,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         <PinIcon />
                     </XView>
                     <XView flexDirection="column" maxWidth="calc(100% - 70px)">
-                        {hideSender && (
+                        {!hideSender && (
                             <XView flexDirection="row" maxWidth="100%">
                                 <XView
                                     as="a"
@@ -417,7 +431,11 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                 <XView fontSize={14} cursor="pointer">
                                     {pinMessage.message && (
                                         <MessageTextComponent
-                                            spans={processSpans(pinMessage.message, pinMessage.spans, true)}
+                                            spans={processSpans(
+                                                pinMessage.message,
+                                                pinMessage.spans,
+                                                true,
+                                            )}
                                             isEdited={false}
                                             asPinMessage={true}
                                             shouldCrop
@@ -433,28 +451,31 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                                 <XView color="rgba(0, 0, 0, 0.5)">Forward</XView>
                                             </XView>
                                         )}
-                                    {attach && attach.__typename === 'MessageAttachmentFile' && (
-                                        <>
-                                            {attach.fileMetadata.isImage && (
-                                                <XView flexDirection="row" alignItems="center">
-                                                    <XView marginRight={6}>
-                                                        <IconImage />
+                                    {attach &&
+                                        attach.__typename === 'MessageAttachmentFile' && (
+                                            <>
+                                                {attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconImage />
+                                                        </XView>
+                                                        <XView color="rgba(0, 0, 0, 0.5)">
+                                                            Image
+                                                        </XView>
                                                     </XView>
-                                                    <XView color="rgba(0, 0, 0, 0.5)">Image</XView>
-                                                </XView>
-                                            )}
-                                            {!attach.fileMetadata.isImage && (
-                                                <XView flexDirection="row" alignItems="center">
-                                                    <XView marginRight={6}>
-                                                        <IconFile />
+                                                )}
+                                                {!attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconFile />
+                                                        </XView>
+                                                        <XView color="rgba(0, 0, 0, 0.5)">
+                                                            Document
+                                                        </XView>
                                                     </XView>
-                                                    <XView color="rgba(0, 0, 0, 0.5)">
-                                                        Document
-                                                    </XView>
-                                                </XView>
-                                            )}
-                                        </>
-                                    )}
+                                                )}
+                                            </>
+                                        )}
                                 </XView>
                             }
                         />

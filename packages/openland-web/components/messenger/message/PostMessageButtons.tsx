@@ -8,7 +8,6 @@ import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import RepliedIcon from 'openland-icons/ic-replied.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { RoomChat_room } from 'openland-api/Types';
@@ -23,8 +22,13 @@ const DiscussButton = React.memo(
         messageId: string;
         conversationId: string;
     }) => {
-        let router = React.useContext(XRouterContext)!;
 
+        let openModal = React.useCallback(() => {
+            openCommentsModal({
+                messageId: messageId,
+                conversationId,
+            });
+        }, [])
         return (
             <XView
                 cursor="pointer"
@@ -37,13 +41,7 @@ const DiscussButton = React.memo(
                 color="#1790ff"
                 paddingLeft={12}
                 paddingRight={12}
-                onClick={() => {
-                    openCommentsModal({
-                        router,
-                        messageId: messageId,
-                        conversationId,
-                    });
-                }}
+                onClick={openModal}
             >
                 {commentsCount ? (
                     <XView flexDirection="row">
@@ -53,10 +51,10 @@ const DiscussButton = React.memo(
                         </XView>
                     </XView>
                 ) : (
-                    <XView flexDirection="row">
-                        <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
-                    </XView>
-                )}
+                        <XView flexDirection="row">
+                            <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
+                        </XView>
+                    )}
             </XView>
         );
     },
@@ -125,8 +123,6 @@ export const PostMessageButtons = React.memo(
         if (room && room.__typename === 'SharedRoom') {
             canDelete = room.role === 'ADMIN' || room.role === 'OWNER';
         }
-
-        console.log(room);
 
         const postMessageButtons = (
             <>

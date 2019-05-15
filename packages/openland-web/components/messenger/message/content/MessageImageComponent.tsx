@@ -8,6 +8,7 @@ import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
 
 const ModalBody = css`
     display: flex;
@@ -61,7 +62,9 @@ interface MessageImageComponentProps {
     dimentions: MessageImageComponentDimentions;
 }
 
-export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
+export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
+    console.log('MessageImageComponent rerender', props);
+    useCheckPerf({ name: 'MessageImageComponent' });
     let [isOpen, handleOpen] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
 

@@ -12,7 +12,7 @@ const TestWrapper = ({ children }: { children: any }) => {
     return (
         <React.Suspense fallback={<div />}>
             <XShortcutsRoot>
-                <MessageStateProviderComponent router={router}>
+                <MessageStateProviderComponent router={router} cid="">
                     {children}
                 </MessageStateProviderComponent>
             </XShortcutsRoot>

@@ -37,7 +37,6 @@ interface ConversationMessagesComponentProps {
     conversationId: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     loading: boolean;
-    messages: ModelMessage[];
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     scrollPosition?: (data: number) => void;
@@ -46,7 +45,7 @@ interface ConversationMessagesComponentProps {
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-> {
+    > {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {

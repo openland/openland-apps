@@ -165,10 +165,16 @@ export const Menu = React.memo(
         selectMessage,
         room,
     }: MenuProps) => {
-        let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
+
+        const commentsClick = React.useCallback(() => {
+            openCommentsModal({
+                messageId: message.id!!,
+                conversationId,
+            });
+        }, [])
 
         const setEditMessage = (e: any) => {
             if (!message.isSending) {
@@ -207,11 +213,14 @@ export const Menu = React.memo(
             }
         };
 
-        let out = message.isOut;
+        const out = message.isOut;
 
         const sharedRoom =
             room && room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
-        const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
+        let pinMessageAccess = sharedRoom && sharedRoom.canEdit && !message.isService;
+        if (room && room.__typename === 'PrivateRoom') {
+            pinMessageAccess = true;
+        }
         const isChannel = sharedRoom && sharedRoom.isChannel;
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
@@ -239,13 +248,7 @@ export const Menu = React.memo(
                             )}
                             {hover && !isComment && !isChannel && (
                                 <CommentsIconWrapper
-                                    onClick={() => {
-                                        openCommentsModal({
-                                            router,
-                                            messageId: message.id!!,
-                                            conversationId,
-                                        });
-                                    }}
+                                    onClick={commentsClick}
                                 >
                                     <CommentIcon />
                                 </CommentsIconWrapper>

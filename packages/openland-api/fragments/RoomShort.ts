@@ -12,6 +12,9 @@ export const RoomShort = gql`
                 id
                 mute
             }
+            pinnedMessage {
+                ...FullMessage
+            }
         } 
         ... on SharedRoom {
             id

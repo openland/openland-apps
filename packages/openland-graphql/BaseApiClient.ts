@@ -77,7 +77,11 @@ export class BaseApiClient {
             q = this.queries;
         }
         let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars) + '$' + cacheKey;
-        if (q.has(key)) {
+        if (q.has(key)) {            
+            if (opts && (opts.fetchPolicy === 'cache-and-network')) {
+                this.refetch(query, vars)
+            }
+            
             return q.get(key)!! as GraphqlQueryWatch<TQuery>
         } else {
             let res = this.client.queryWatch(query, vars, opts);

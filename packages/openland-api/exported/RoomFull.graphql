@@ -2,6 +2,10 @@ fragment RoomFull on Room {
   __typename
   ... on PrivateRoom {
     id
+    pinnedMessage {
+      __typename
+      ...FullMessage
+    }
     settings {
       __typename
       id
