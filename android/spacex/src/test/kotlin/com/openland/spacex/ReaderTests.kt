@@ -18,7 +18,7 @@ class ReaderTests {
 
     @Test
     fun `should read simple scalars`() {
-        val type = obj(listOf(
+        val type = obj(
                 field("field1", "alias1", emptyMap(), notNull(scalar("String"))),
                 field("field2", "alias2", emptyMap(), notNull(scalar("Int"))),
                 field("field3", "alias3", emptyMap(), scalar("Float")),
@@ -27,7 +27,7 @@ class ReaderTests {
                 field("field6", "alias6", emptyMap(), scalar("Date")),
                 field("field7", "alias7", emptyMap(), scalar("Boolean")),
                 field("field8", "alias8", emptyMap(), scalar("Boolean"))
-        ))
+        )
         val store = RecordStore()
         store.loaded(Record("1", mapOf(
                 "field1" to RecordValue.String("value1"),
