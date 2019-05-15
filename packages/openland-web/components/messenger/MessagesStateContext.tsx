@@ -92,6 +92,8 @@ export class MessageStateProviderComponent extends React.PureComponent<
             resetAll: this.resetAll,
             getChatId: this.getChatId,
         };
+        this.chatId = props.cid;
+
     }
 
     getChatId = () => this.chatId;
