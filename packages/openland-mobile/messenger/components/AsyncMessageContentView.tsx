@@ -62,7 +62,11 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {
-            return <ASText key={'loud'} fontSize={26} lineHeight={28} fontWeight={TextStyles.weight.medium}>{children}</ASText>;
+            if (Platform.OS === 'android') {
+                return <ASText key={'loud'} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
+            } else {
+                return <ASText key={'loud'} fontSize={26} lineHeight={28} fontWeight={TextStyles.weight.medium}>{children}</ASText>;
+            }
         } else if (span.type === 'rotating') {
             return <ASText key={'rotating'}>{children}</ASText>;
         } else if (span.type === 'new_line') {
