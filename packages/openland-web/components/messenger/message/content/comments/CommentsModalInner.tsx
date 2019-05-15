@@ -17,7 +17,6 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentsInput } from './CommentsInput';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
@@ -31,6 +30,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 import { RoomChat_room } from 'openland-api/Types';
+import { IsActiveDualityContext, IsActiveContextState } from 'openland-web/pages/main/mail/components/Components';
 
 const CommentView = ({
     originalMessageId,
@@ -401,7 +401,7 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <UploadContextProvider>
-            <IsActiveContext.Provider value={true}>
+            <IsActiveDualityContext.Provider value={new IsActiveContextState(true)}>
                 <XView>
                     <XScrollView3
                         useDefaultScroll
@@ -457,7 +457,7 @@ export const CommentsModalInnerNoRouter = ({
                         />
                     </XView>
                 </XView>
-            </IsActiveContext.Provider>
+            </IsActiveDualityContext.Provider>
         </UploadContextProvider>
     );
 };

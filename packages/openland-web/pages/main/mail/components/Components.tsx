@@ -66,7 +66,7 @@ type ShouldUpdateComponentT = {
     isActive: boolean;
 };
 
-class IsActiveContextState {
+export class IsActiveContextState {
     private isActive = false;
 
     constructor(isActive: boolean) {

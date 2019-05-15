@@ -64,7 +64,6 @@ export const CommentsInput = ({
 
     return (
         <DumpSendMessage
-            isActive={true}
             placeholder={'Write a comment...'}
             topLevelComment={topLevelComment}
             getMentionsSuggestions={getMentionsSuggestions}
