@@ -116,7 +116,6 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(invalidate)
   func invalidate() {
-    print("invalidate")
     for s in self.clients.values {
       s.dispose()
     }

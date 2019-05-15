@@ -33,7 +33,7 @@ protocol RunningSubscription {
 class SpaceXClient {
   
   fileprivate var store: SpaceXStoreScheduler
-  fileprivate var transport: SpaceXTransportScheduler
+  fileprivate var transport: SpaceXTransportScheduler!
   fileprivate let normalizerQueue = DispatchQueue(label: "spacex-normalizer")
   fileprivate let callbackQueue = DispatchQueue(label: "client")
   var connected: Bool = false
@@ -41,21 +41,30 @@ class SpaceXClient {
   var onDisconnected: (() -> Void)?
   
   init(url: String, token: String?, storage: String) {
+    NSLog("[SpaceX-Alloc]: init SpaceXClient")
     self.transport = SpaceXTransportScheduler(url: url, params: ["x-openland-token": token])
     self.store = SpaceXStoreScheduler(name: storage)
     self.connected = self.transport.connected
-    self.transport.onConnected = {
-      if !self.connected {
-        self.connected = true
-        self.onConnected?()
+    self.transport.onConnected = { [weak self] in
+      if let s = self {
+        if !s.connected {
+          s.connected = true
+          s.onConnected?()
+        }
       }
     }
-    self.transport.onDisconnected = {
-      if self.connected {
-        self.connected = false
-        self.onDisconnected?()
+    self.transport.onDisconnected = { [weak self] in
+      if let s = self {
+        if s.connected {
+          s.connected = false
+          s.onDisconnected?()
+        }
       }
     }
+  }
+  
+  deinit {
+    NSLog("[SpaceX-Alloc]: deinit SpaceXClient")
   }
   
   //
@@ -193,7 +202,12 @@ class SpaceXClient {
   }
   
   func dispose() {
+    NSLog("[SpaceX-Alloc]: dispose SpaceXClient")
+    self.store.close()
     self.transport.close()
+    self.transport.onDisconnected = nil
+    self.transport.onConnected = nil
+    self.transport = nil
   }
 }
 
@@ -201,8 +215,8 @@ class SpaceXClient {
 fileprivate class QueryWatch {
   let operation: OperationDefinition
   let variables: JSON
-  let handler: (SpaceXOperationResult)->Void
-  let client: SpaceXClient
+  let handler: (SpaceXOperationResult) -> Void
+  let client: SpaceXClient!
   let fetchMode: FetchMode
   private var completed = false
   
@@ -210,7 +224,7 @@ fileprivate class QueryWatch {
        operation: OperationDefinition,
        variables: JSON,
        fetchMode: FetchMode,
-       handler: @escaping  (SpaceXOperationResult)->Void) {
+       handler: @escaping  (SpaceXOperationResult) -> Void) {
     self.client = client
     self.operation = operation
     self.variables = variables
@@ -219,7 +233,7 @@ fileprivate class QueryWatch {
   }
   
   func start() {
-    client.callbackQueue.async {
+    self.client.callbackQueue.async {
       if self.fetchMode == .cacheFirst || self.fetchMode == .cacheAndNetwork {
         self.doReloadFromCache()
       } else {
@@ -270,13 +284,14 @@ fileprivate class QueryWatch {
         return
       }
       self.completed = true
+      self.client = nil
       // TODO: Cancel everything
     }
   }
 }
 
 fileprivate class Subscription: RunningSubscription {
-  let client: SpaceXClient
+  let client: SpaceXClient!
   let operation: OperationDefinition
   var variables: JSON
   let handler: (SpaceXOperationResult)->Void

@@ -154,6 +154,10 @@ class SpaceXStoreScheduler {
       }
     }
   }
+  
+  func close() {
+    
+  }
 
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
     let missing = collectMissingKeys(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)

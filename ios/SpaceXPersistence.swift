@@ -12,18 +12,23 @@ import SwiftStore
 protocol PersistenceProvier: class {
   func saveRecords(records: [String: String])
   func loadRecords(keys: Set<String>) -> [String: String]
+  func close()
 }
 
 class LevelDBPersistenceProvider: PersistenceProvier {
   
+  static let stores = LazyCollection<SwiftStore>() { name in
+    return SwiftStore(storeName: name + "-v3")
+  }
+  
   private let swiftStore: SwiftStore
   
   init(name: String) {
-    self.swiftStore = SwiftStore(storeName: name + "-v3")
+    self.swiftStore = LevelDBPersistenceProvider.stores.get(name)
   }
   
-  deinit {
-    self.swiftStore.close()
+  func close() {
+    // self.swiftStore.close()
   }
   
   func saveRecords(records: [String: String]) {
@@ -52,6 +57,10 @@ class SpaceXPersistence {
   
   init(name: String) {
     self.provider = LevelDBPersistenceProvider(name: name)
+  }
+  
+  func close() {
+    self.provider.close()
   }
   
   func saveRecords(records: RecordSet, queue: DispatchQueue, callback: @escaping () -> Void) {

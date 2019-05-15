@@ -196,13 +196,15 @@ class RNGraphqlClient {
   
   func dispose() {
     self.live = false
-//    for s in self.subscriptions.values {
-//      s.stop()
-//    }
-//    for w in self.watches.values {
-//      w()
-//    }
-//    self.ws.closeConnection()
+    for s in self.subscriptions.values {
+      s.close()
+    }
+    for w in self.watches.values {
+      w()
+    }
+    self.subscriptions.removeAll()
+    self.watches.removeAll()
+    self.client.dispose()
   }
   
   private func resolveFetchPolicy(parameters: NSDictionary) -> FetchMode {

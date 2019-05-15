@@ -30,6 +30,7 @@ class SpaceXTransportScheduler {
   var onDisconnected: (() -> Void)?
   
   init(url: String, params: [String: String?]) {
+    NSLog("[SpaceX-Alloc]: init SpaceXTransportScheduler")
     self.url = url
     self.params = params
     self.transport = SpaceXTransport(url: url, params: params)
@@ -45,6 +46,10 @@ class SpaceXTransportScheduler {
         }
       }
     }
+  }
+  
+  deinit {
+    NSLog("[SpaceX-Alloc]: deinit SpaceXTransportScheduler")
   }
   
   func operation(
@@ -106,6 +111,7 @@ class SpaceXTransportScheduler {
   }
   
   func close() {
+    self.transport.connectionCallback = nil
     self.transport.close()
   }
 }

@@ -22,6 +22,31 @@ func backoffDelay(currentFailureCount: Int, minDelay: Int, maxDelay: Int, maxFai
   return Int.random(in: 0..<maxDelayRet)
 }
 
+class LazyCollection<T> {
+  private let queue = DispatchQueue(label: "lazy")
+  private let factory: (String) -> T
+  private var instances: [String:T] = [:]
+  
+  init(factory: @escaping (String) -> T) {
+    self.factory = factory
+  }
+  
+  func get(_ name: String) -> T {
+    var res: T? = nil
+    queue.sync {
+      let ex = self.instances[name]
+      if ex == nil {
+        let rs = factory(name)
+        self.instances[name] = rs
+        res = rs
+      } else {
+        res = ex
+      }
+    }
+    return res!
+  }
+}
+
 class AtomicInteger {
   private let queue = DispatchQueue(label: "atomic")
   private var value: Int
