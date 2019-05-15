@@ -141,24 +141,20 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
 
     return (
-        <>
-            {isActive && (
-                <DumpSendMessage
-                    initialMentions={initialMentions}
-                    getMentionsSuggestions={getMentionsSuggestions}
-                    TextInputComponent={
-                        messageComposeProps.TextInputComponent || DesktopSendMessage
-                    }
-                    quoteState={quoteState}
-                    handleChange={handleChange}
-                    handleSend={handleSend}
-                    inputRef={inputRef}
-                    inputValue={inputValue}
-                    enabled={messageComposeProps.enabled}
-                    closeEditor={closeEditor}
-                />
-            )}
-        </>
+        <DumpSendMessage
+            initialMentions={initialMentions}
+            getMentionsSuggestions={getMentionsSuggestions}
+            TextInputComponent={
+                messageComposeProps.TextInputComponent || DesktopSendMessage
+            }
+            quoteState={quoteState}
+            handleChange={handleChange}
+            handleSend={handleSend}
+            inputRef={inputRef}
+            inputValue={inputValue}
+            enabled={messageComposeProps.enabled}
+            closeEditor={closeEditor}
+        />
     );
 };
 
