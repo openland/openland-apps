@@ -15,6 +15,8 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { RoomInviteFromLink } from './RoomInviteFromLink';
 import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
+import { PerfCollectorContext } from 'openland-web/perf/PerfCollectorContext';
+import { PerfViewer } from 'openland-web/perf/PerfViewer';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -77,15 +79,33 @@ class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     }
 }
 
-export const useCheckPerf = ({ name, props }: { name: string; props?: any }) => {
-    // let t0 = performance.now();
-    // React.useLayoutEffect(() => {
-    //     let t1 = performance.now();
-    //     console.log(`${name} rerender: ` + (t1 - t0) + ` milliseconds.`);
-    //     if (props) {
-    //         console.log(props);
-    //     }
-    // }, [Math.random()]);
+export const useCheckPerf = ({ name, id }: { name: string; id?: string }) => {
+    const perfCollector = React.useContext(PerfCollectorContext);
+
+    const isCached = id && perfCollector.getCachedChatsIds().indexOf(id) !== -1;
+    let t0 = performance.now();
+    React.useLayoutEffect(() => {
+        let t1 = performance.now();
+
+        const _map = perfCollector.getMap();
+
+        let finalName = name;
+        if (id) {
+            finalName = name + ' ' + id;
+        }
+
+        // if (isCached) {
+        //     finalName = name + ' ' + id + ' ' + 'cached';
+        // }
+
+        perfCollector.setMap({
+            ..._map,
+            [finalName]: {
+                measure: t1 - t0,
+                renderCount: _map[finalName] ? _map[finalName].renderCount + 1 : 1,
+            },
+        });
+    }, [Math.random()]);
 };
 
 const DisplayNone = React.memo(
@@ -100,12 +120,9 @@ const DisplayNone = React.memo(
     }) => {
         useCheckPerf({
             name: 'DisplayNone',
-            props: {
-                isActive,
-                Component,
-                componentProps,
-            },
+            id: componentProps.id,
         });
+
         return (
             <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
                 <ShouldUpdateComponent
@@ -126,88 +143,114 @@ const maybeRequestIdleCallback = (cb: Function) => {
     }
 };
 
-const CacheComponent = ({
-    Component,
-    activeChat,
-    componentProps,
-}: {
-    Component: any;
-    isMobile: boolean;
-    activeChat: string | null;
-    componentProps: any;
-}) => {
-    useCheckPerf({ name: 'CacheComponent' });
-    let SIZE_OF_CACHE = 20;
+const CacheComponent = React.memo(
+    ({
+        Component,
+        activeChat,
+        componentProps,
+    }: {
+        Component: any;
+        isMobile: boolean;
+        activeChat: string | null;
+        componentProps: {
+            id?: string | null;
+        };
+    }) => {
+        const perfCollector = React.useContext(PerfCollectorContext);
+        useCheckPerf({ name: 'CacheComponent' });
+        let SIZE_OF_CACHE = 20;
 
-    if (canUseDOM && (window as any).safari !== undefined) {
-        SIZE_OF_CACHE = 10;
-    }
-
-    const [cachedPropsArray, setCachedProps] = React.useState<
-        {
-            chatId: string;
-            componentProps: Object;
-        }[]
-    >([]);
-
-    if (activeChat) {
-        if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {
-            setCachedProps([...cachedPropsArray, { chatId: activeChat, componentProps }]);
+        if (canUseDOM && (window as any).safari !== undefined) {
+            SIZE_OF_CACHE = 10;
         }
-    }
 
-    React.useEffect(() => {
+        const [cachedPropsArray, setCachedProps] = React.useState<
+            {
+                chatId: string;
+                componentProps: {
+                    id?: string | null;
+                };
+            }[]
+        >([]);
+
+        React.useEffect(() => {
+            perfCollector.setCachedChatsIds(
+                cachedPropsArray.map(({ chatId }: { chatId: string }) => {
+                    return chatId;
+                }),
+            );
+        }, [cachedPropsArray]);
+
+        const setCachedPropsProc = (
+            componentPropsToCache: {
+                chatId: string;
+                componentProps: {
+                    id?: string | null;
+                };
+            }[],
+        ) => {
+            setCachedProps(componentPropsToCache);
+        };
+
         if (activeChat) {
-            if (
-                cachedPropsArray.length > SIZE_OF_CACHE &&
-                cachedPropsArray[0].chatId !== activeChat
-            ) {
-                if (
-                    cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
-                    cachedPropsArray[0].chatId !== activeChat &&
-                    cachedPropsArray[1].chatId !== activeChat
-                ) {
-                    maybeRequestIdleCallback(() => {
-                        setCachedProps(cachedPropsArray.slice(2));
-                    });
-                } else {
-                    maybeRequestIdleCallback(() => {
-                        setCachedProps(cachedPropsArray.slice(1));
-                    });
-                }
+            if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {
+                setCachedPropsProc([...cachedPropsArray, { chatId: activeChat, componentProps }]);
             }
         }
-    }, [activeChat]);
 
-    // if (true) {
-    //     return (
-    //         <IsActiveContext.Provider value={true}>
-    //             {activeChat && <Component {...componentProps} isActive={true} />}{' '}
-    //         </IsActiveContext.Provider>
-    //     );
-    // }
+        React.useEffect(() => {
+            if (activeChat) {
+                if (
+                    cachedPropsArray.length > SIZE_OF_CACHE &&
+                    cachedPropsArray[0].chatId !== activeChat
+                ) {
+                    if (
+                        cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                        cachedPropsArray[0].chatId !== activeChat &&
+                        cachedPropsArray[1].chatId !== activeChat
+                    ) {
+                        maybeRequestIdleCallback(() => {
+                            setCachedPropsProc(cachedPropsArray.slice(2));
+                        });
+                    } else {
+                        maybeRequestIdleCallback(() => {
+                            setCachedPropsProc(cachedPropsArray.slice(1));
+                        });
+                    }
+                }
+            }
+        }, [activeChat]);
 
-    const renderedElements = [];
+        // if (true) {
+        //     return (
+        //         <IsActiveContext.Provider value={true}>
+        //             {activeChat && <Component {...componentProps} isActive={true} />}{' '}
+        //         </IsActiveContext.Provider>
+        //     );
+        // }
 
-    for (let i = 0; i < cachedPropsArray.length; i++) {
-        const cached = cachedPropsArray[i];
+        const renderedElements = [];
 
-        renderedElements.push(
-            <IsActiveContext.Provider
-                key={cached.chatId}
-                value={activeChat !== null && activeChat === cached.chatId}
-            >
-                <DisplayNone
-                    isActive={activeChat !== null && activeChat === cached.chatId}
-                    Component={Component}
-                    componentProps={cached.componentProps}
-                />
-            </IsActiveContext.Provider>,
-        );
-    }
+        for (let i = 0; i < cachedPropsArray.length; i++) {
+            const cached = cachedPropsArray[i];
 
-    return <>{renderedElements}</>;
-};
+            renderedElements.push(
+                <IsActiveContext.Provider
+                    key={cached.chatId}
+                    value={activeChat !== null && activeChat === cached.chatId}
+                >
+                    <DisplayNone
+                        isActive={activeChat !== null && activeChat === cached.chatId}
+                        Component={Component}
+                        componentProps={cached.componentProps}
+                    />
+                </IsActiveContext.Provider>,
+            );
+        }
+
+        return <>{renderedElements}</>;
+    },
+);
 
 export const ConversationContainerWrapper = ({
     tab,
@@ -216,7 +259,6 @@ export const ConversationContainerWrapper = ({
     uid,
     cid,
 }: PageInnerProps) => {
-    useCheckPerf({ name: 'ConversationContainerWrapper' });
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
 
     if (!canUseDOM) {
@@ -236,6 +278,7 @@ export const ConversationContainerWrapper = ({
 
     return (
         <>
+            <PerfViewer />
             <ConversationContainerInner>
                 <CacheComponent
                     isMobile={isMobile}

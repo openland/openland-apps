@@ -63,8 +63,7 @@ interface MessageImageComponentProps {
 }
 
 export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
-    console.log('MessageImageComponent rerender', props);
-    useCheckPerf({ name: 'MessageImageComponent' });
+    // useCheckPerf({ name: 'MessageImageComponent' });
     let [isOpen, handleOpen] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
 

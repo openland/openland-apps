@@ -8,7 +8,7 @@ interface MessageVideoComponentProps {
 }
 
 export const MessageVideoComponent = React.memo((props: MessageVideoComponentProps) => {
-    useCheckPerf({ name: 'MessageVideoComponent' });
+    // useCheckPerf({ name: 'MessageVideoComponent' });
     let href = undefined;
 
     if (props.file) {

@@ -125,7 +125,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
 
-    useCheckPerf({ name: `MessengerFragment: ${props.id}` });
+    // useCheckPerf({ name: `MessengerFragment: ${props.id}` });
 
     return (
         <React.Suspense fallback={<XLoader loading={true} />}>
