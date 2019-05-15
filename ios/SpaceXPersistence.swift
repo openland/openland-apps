@@ -22,6 +22,10 @@ class LevelDBPersistenceProvider: PersistenceProvier {
     self.swiftStore = SwiftStore(storeName: name + "-v3")
   }
   
+  deinit {
+    self.swiftStore.close()
+  }
+  
   func saveRecords(records: [String: String]) {
     for k in records {
       self.swiftStore[k.key] = k.value

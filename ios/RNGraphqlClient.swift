@@ -113,8 +113,8 @@ class RNGraphqlClient {
       switch(res) {
       case .result(let data):
         self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
-      case .error(let data):
-        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      case .error(let error):
+        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: error))
         break
       }
     }
@@ -137,7 +137,12 @@ class RNGraphqlClient {
       return
     }
     let s = self.client.subscribe(operation: Operations.shared.operationByName(subscription), variables: JSON(arguments)) { res in
-      
+      switch(res) {
+      case .result(let data):
+        self.module.reportResult(key: self.key, id: id, result: jsonToNSDictionary(src: data))
+      case .error(let error):
+        self.module.reportError(key: self.key, id: id, result: jsonToNSDictionary(src: error))
+      }
     }
     
     self.subscriptions[id] = s
