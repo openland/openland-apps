@@ -25,7 +25,6 @@ export interface XRichTextInput2Props extends XFlexStyles {
     minimal?: boolean;
     round?: boolean;
     hideAttachments?: boolean;
-    isActive: boolean
 }
 
 export const XRichTextInput2 = React.memo(
@@ -42,7 +41,6 @@ export const XRichTextInput2 = React.memo(
                 getMentionsSuggestions,
                 initialMentions,
                 placeholder,
-                isActive,
             } = props;
 
             const editorRef = React.useRef<Editor>(null);
@@ -74,7 +72,6 @@ export const XRichTextInput2 = React.memo(
                 editorState,
                 setEditorState,
                 getMentions,
-                isActive
             });
 
             const { onPasteFiles } = usePasteFiles({

@@ -54,12 +54,12 @@ const TextInputWrapper = Glamorous.div({
 
 export type XTextInputProps =
     | {
-          kind: 'from_store';
-          valueStoreKey: string;
-      }
+        kind: 'from_store';
+        valueStoreKey: string;
+    }
     | {
-          kind: 'controlled';
-      } & XRichTextInput2Props;
+        kind: 'controlled';
+    } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
@@ -69,7 +69,7 @@ class XRichTextInputStored extends React.PureComponent<
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
-> {
+    > {
     onChangeHandler = (value: { text: string; mentions?: UserWithOffset[] }) => {
         if (this.props.kind === 'from_store') {
             const previosValue = this.props.store.readValue(this.props.valueStoreKey);
@@ -94,7 +94,6 @@ class XRichTextInputStored extends React.PureComponent<
         return (
             <XRichTextInput2
                 {...other}
-                isActive={true}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
@@ -113,7 +112,7 @@ class XTextInput extends React.PureComponent<
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
-> {
+    > {
     render() {
         if (this.props.kind === 'from_store') {
             const { valueStoreKey, ...other } = this.props;
@@ -222,17 +221,17 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 spans: findSpans(data.message.text || ''),
                 mentions: data.message.mentions
                     ? data.message.mentions.map((mention: UserWithOffset) => ({
-                          userId: mention.user.id,
-                          offset: mention.offset,
-                          length: mention.length,
-                      }))
+                        userId: mention.user.id,
+                        offset: mention.offset,
+                        length: mention.length,
+                    }))
                     : null,
                 fileAttachments: res
                     ? [
-                          {
-                              fileId: res,
-                          },
-                      ]
+                        {
+                            fileId: res,
+                        },
+                    ]
                     : [],
             });
 

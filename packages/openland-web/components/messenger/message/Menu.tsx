@@ -21,7 +21,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const DeleteMessageButton = ({ msgId, onSuccess }: { msgId: string; onSuccess: () => void }) => {
     const client = useClient();

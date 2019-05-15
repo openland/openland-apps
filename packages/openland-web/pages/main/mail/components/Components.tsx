@@ -66,7 +66,42 @@ type ShouldUpdateComponentT = {
     isActive: boolean;
 };
 
-export const IsActiveContext = React.createContext<boolean | null>(null);
+class IsActiveContextState {
+    private isActive = false;
+
+    constructor(isActive: boolean) {
+        this.isActive = isActive;
+    }
+    private listenres = new Set<(isActive: boolean) => void>();
+    setIsActive = (isActive: boolean) => {
+        if (this.isActive === isActive) {
+            return;
+        }
+        this.isActive = isActive;
+        for (let l of this.listenres) {
+            l(this.isActive);
+        }
+    }
+    listen = (lisener: (isActive: boolean) => void) => {
+        this.listenres.add(lisener);
+        return () => {
+            this.listenres.delete(lisener);
+        }
+    }
+    getIsActive = () => this.isActive;
+    useIsActive = () => {
+        let [isActive, setIsActive] = React.useState(this.isActive);
+        React.useEffect(() => {
+            return this.listen((s) => {
+                setIsActive(s);
+            })
+        })
+        return isActive;
+    }
+}
+
+export const IsActiveDualityContext = React.createContext<IsActiveContextState>(new IsActiveContextState(true));
+const isActiveContextsMap = new Map();
 
 class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     shouldComponentUpdate(props: any) {
@@ -234,17 +269,24 @@ const CacheComponent = React.memo(
         for (let i = 0; i < cachedPropsArray.length; i++) {
             const cached = cachedPropsArray[i];
 
+            let isActiveState = isActiveContextsMap.get(cached.chatId);
+            if (!isActiveState) {
+                isActiveState = new IsActiveContextState(false);
+                isActiveContextsMap.set(cached.chatId, isActiveState);
+            }
+            isActiveState.setIsActive(activeChat !== null && activeChat === cached.chatId);
+
             renderedElements.push(
-                <IsActiveContext.Provider
+                <IsActiveDualityContext.Provider
                     key={cached.chatId}
-                    value={activeChat !== null && activeChat === cached.chatId}
+                    value={isActiveState}
                 >
                     <DisplayNone
                         isActive={activeChat !== null && activeChat === cached.chatId}
                         Component={Component}
                         componentProps={cached.componentProps}
                     />
-                </IsActiveContext.Provider>,
+                </IsActiveDualityContext.Provider>,
             );
         }
 

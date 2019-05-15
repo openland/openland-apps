@@ -21,10 +21,10 @@ const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) =
             position: 'relative',
             ...(round
                 ? {
-                      '& .DraftEditor-root': {
-                          borderRadius: '20px !important',
-                      },
-                  }
+                    '& .DraftEditor-root': {
+                        borderRadius: '20px !important',
+                    },
+                }
                 : {}),
             '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
                 color: 'rgba(0, 0, 0, 0.5)',

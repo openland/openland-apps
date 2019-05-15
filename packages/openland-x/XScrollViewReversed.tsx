@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { XScrollView } from './XScrollView';
 import { XFlexStyles } from './basics/Flex';
 import throttle from 'lodash/throttle';
+import { IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
 
 interface Dimensions {
     scrollTop: number;
@@ -160,7 +160,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
 
 export const XScrollViewReversed = React.forwardRef<any, XScrollViewReversedProps>(
     (props: XScrollViewReversedProps, ref) => {
-        const isActive = React.useContext(IsActiveContext);
+        const isActive = React.useContext(IsActiveDualityContext).useIsActive();
 
         return <XScrollViewReversedInner {...props} isActive={isActive} ref={ref} />;
     },

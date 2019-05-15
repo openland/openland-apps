@@ -14,7 +14,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
-import { IsActiveContext, useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf, IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
@@ -31,7 +31,7 @@ interface MessengerComponentLoaderProps {
 }
 
 const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
-    const isActive = React.useContext(IsActiveContext);
+    const isActive = React.useContext(IsActiveDualityContext).useIsActive();
 
     if (isActive === false) {
         return null;
@@ -42,7 +42,7 @@ const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
 
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
-> {
+    > {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
     };

@@ -40,12 +40,10 @@ export const DesktopSendMessage = ({
     hideAttachments,
     round,
     placeholder,
-    isActive,
 }: TextInputComponentT) => {
     return (
         <TextInputWrapper minimal={minimal}>
             <XRichTextInput2
-                isActive={isActive}
                 minimal={minimal}
                 hideAttachments={hideAttachments}
                 round={round}
