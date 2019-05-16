@@ -69,6 +69,12 @@ export interface AppTheme {
 
     modalOverlay: string;
     modalBackground: string;
+
+    ironyBackgroundOut: string;
+    ironyBackground: string;
+    ironyColorOut: string;
+    ironyColor: string;
+    ironyPaddedText: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -136,6 +142,12 @@ export const DefaultTheme: AppTheme = {
 
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
     modalBackground: 'white',
+
+    ironyBackgroundOut: 'rgba(255, 56, 46, 0.9)',
+    ironyBackground: 'rgba(255, 56, 46, 0.1)',
+    ironyColorOut: 'white',
+    ironyColor: '#f6564e',
+    ironyPaddedText: '\u00a0',
 }
 
 export const DarkTheme: AppTheme = {
@@ -202,4 +214,10 @@ export const DarkTheme: AppTheme = {
 
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.4)' : 'rgba(4, 4, 15, 0.5)',
     modalBackground: '#1a1a1a',
+
+    ironyBackgroundOut: 'transparent',
+    ironyBackground: 'transparent',
+    ironyColorOut: '#f6564e',
+    ironyColor: '#f6564e',
+    ironyPaddedText: '',
 }

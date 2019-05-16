@@ -234,6 +234,10 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
   if spec.color != nil {
     innerAttributes[NSAttributedString.Key.foregroundColor] = spec.color
   }
+
+  if spec.backgroundColor != nil {
+    innerAttributes[NSAttributedString.Key.backgroundColor] = spec.backgroundColor
+  }
   
   if spec.textDecorationLine != nil {
     if spec.textDecorationLine == AsyncTextDecorationLine.none {

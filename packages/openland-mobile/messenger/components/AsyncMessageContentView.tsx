@@ -58,7 +58,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'insane') {
             return <ASText key={'insane'}>{children}</ASText>;
         } else if (span.type === 'irony') {
-            return <ASText key={'irony'}>{children}</ASText>;
+            return <ASText key={'irony'} fontStyle="italic" backgroundColor={(message.isOut && !message.isService) ? theme.ironyBackgroundOut : theme.ironyBackground} color={(message.isOut && !message.isService) ? theme.ironyColorOut : theme.ironyColor}>{theme.ironyPaddedText}{children}{theme.ironyPaddedText}</ASText>;
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {
@@ -70,7 +70,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'rotating') {
             return <ASText key={'rotating'}>{children}</ASText>;
         } else if (span.type === 'new_line') {
-            return <ASText key={'br'} >{'\n'}</ASText>;
+            return <ASText key={'br'}>{'\n'}</ASText>;
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }

@@ -19,6 +19,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.BackgroundColorSpan
 import android.text.style.TypefaceSpan
 import com.facebook.litho.widget.Text
 import com.facebook.react.uimanager.PixelUtil
@@ -68,8 +69,7 @@ object LithoTextSpec {
                     part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                 }
 
-                if (s.fontWeight !== null) {
-
+                if (s.fontWeight !== null || s.fontStyle !== null) {
                     val span = object : TypefaceSpan(s.fontWeight) {
 
                         override fun updateDrawState(ds: TextPaint?) {
@@ -82,6 +82,10 @@ object LithoTextSpec {
                     }
 
                     part.setSpan(span, 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+
+                if (s.backgroundColor != null) {
+                    part.setSpan(BackgroundColorSpan(s.backgroundColor!!), 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
 
                 if (s.color != Color.BLACK) {
@@ -106,6 +110,11 @@ object LithoTextSpec {
                 .textColor(spec.color)
                 .alpha(opacity)
                 .shouldIncludeFontPadding(false)
+
+        if (spec.backgroundColor != null) {
+            res.backgroundColor(spec.backgroundColor!!)
+        }
+
         if (spec.touchableKey != null) {
             res.clickHandler(LithoText.onClick(context))
         }
@@ -149,7 +158,7 @@ object LithoTextSpec {
     }
 
     private fun resolveFont(context: ComponentContext, weight: String?, style: String?): Typeface? {
-        val weightStyle = weight + (if (style == "italic") "-italic" else "")
+        val weightStyle = (if (weight !== null) weight else "400") + (if (style == "italic") "-italic" else "")
 
         return when (weightStyle) {
             "100" -> loadFromAsset(context, "fonts/Roboto-Thin.ttf")
