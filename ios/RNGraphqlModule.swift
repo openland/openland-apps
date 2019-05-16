@@ -87,7 +87,7 @@ class RNGraphQL: RCTEventEmitter {
     self.sendEvent(withName: "apollo_client", body: dict)
   }
   
-  func reportError(key: String, id: String, result: NSDictionary) {
+  func reportError(key: String, id: String, result: Any) {
     var dict:[String:Any] = [:]
     dict["key"] = key
     dict["id"] = id

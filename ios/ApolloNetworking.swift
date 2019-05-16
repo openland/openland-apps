@@ -188,12 +188,12 @@ class ApolloNetworking {
     } else if type == "data" {
       let id = parsed["id"].stringValue
       let payload = parsed["payload"]
-      let error = payload["error"]
+      let errors = payload["errors"]
       let data = payload["data"]
       NSLog("[SpaceX-Apollo]: Data (" + id + ")")
-      if error.exists() {
+      if errors.exists() {
         self.callbackQueue.async {
-          self.delegate?.onError(id: id, error: error)
+          self.delegate?.onError(id: id, error: errors)
         }
       } else {
         self.callbackQueue.async {

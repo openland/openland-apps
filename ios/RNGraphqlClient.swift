@@ -87,7 +87,7 @@ class RNGraphqlClient {
         case .result(let data):
           s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
         case .error(let data):
-          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+          s.module.reportError(key: s.key, id: id, result: jsonToNative(src: data))
           break
         }
       }
@@ -108,7 +108,7 @@ class RNGraphqlClient {
         case .result(let data):
           s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
         case .error(let data):
-          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: data))
+          s.module.reportError(key: s.key, id: id, result: jsonToNative(src: data))
           break
         }
       }
@@ -134,7 +134,7 @@ class RNGraphqlClient {
         case .result(let data):
           s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
         case .error(let error):
-          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: error))
+          s.module.reportError(key: s.key, id: id, result: jsonToNative(src: error))
           break
         }
       }
@@ -166,7 +166,7 @@ class RNGraphqlClient {
         case .result(let data):
           s.module.reportResult(key: s.key, id: id, result: jsonToNSDictionary(src: data))
         case .error(let error):
-          s.module.reportError(key: s.key, id: id, result: jsonToNSDictionary(src: error))
+          s.module.reportError(key: s.key, id: id, result: jsonToNative(src: error))
         }
       }
     }
