@@ -21,6 +21,7 @@ import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { emoji } from 'openland-y-utils/emoji';
 
 const MessageWrapper = Glamorous(XHorizontal)<{
     compact: boolean;
@@ -107,8 +108,8 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         let qfileAttach = (item.__typename === 'GeneralMessage'
                             ? (item.attachments || []).filter(
-                                a => a.__typename === 'MessageAttachmentFile',
-                            )[0]
+                                  a => a.__typename === 'MessageAttachmentFile',
+                              )[0]
                             : undefined) as
                             | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                             | undefined;
@@ -137,10 +138,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.text && message.text.length > 0) {
             if (message.isService) {
                 content.push(
-                    <ServiceMessageComponent
-                        spans={message.textSpans}
-                        key={'service_message'}
-                    />,
+                    <ServiceMessageComponent spans={message.textSpans} key={'service_message'} />,
                 );
             } else {
                 content.push(
@@ -273,8 +271,16 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
     // }
 
     if (!message.isService) {
+        const senderName = emoji({
+            src: message.senderName,
+            size: 16,
+        });
         return (
-            <MobileMessageContainer senderNameEmojify={message.senderNameEmojify} sender={message.sender} date={props.message.date}>
+            <MobileMessageContainer
+                senderNameEmojify={senderName}
+                sender={message.sender}
+                date={props.message.date}
+            >
                 {content}
                 <XView alignItems="flex-start">
                     <Reactions

@@ -105,7 +105,6 @@ interface MessageContainerWrapperProps {
     onMouseEnter: (event: React.MouseEvent<any>) => void;
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
-    cursorPointer: boolean;
     isEditView: boolean;
 }
 
@@ -114,7 +113,6 @@ const CompactMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
     onClick,
-    cursorPointer,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -130,7 +128,6 @@ const CompactMessageContainerWrapper = ({
             paddingRight={20}
             borderRadius={4}
             onClick={onClick}
-            cursor={cursorPointer ? 'pointer' : undefined}
         >
             {children}
         </XView>
@@ -142,7 +139,6 @@ const NotCompactMessageContainerWrapper = ({
     onMouseEnter,
     onMouseLeave,
     onClick,
-    cursorPointer,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -158,7 +154,6 @@ const NotCompactMessageContainerWrapper = ({
             paddingRight={20}
             borderRadius={4}
             onClick={onClick}
-            cursor={cursorPointer ? 'pointer' : undefined}
         >
             {children}
         </XView>
@@ -514,18 +509,17 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     }
 
     return (
-        <CompactMessageContainerWrapper
+        <MessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             isEditView={props.isEditView}
-            cursorPointer={props.selecting}
             onClick={onClick}
         >
             {!props.noSelector && selector}
             {preambula}
             {content}
             {props.isEditView ? null : actions}
-        </CompactMessageContainerWrapper>
+        </MessageContainerWrapper>
     );
 };
 
