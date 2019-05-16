@@ -200,7 +200,6 @@ func normalizeData(id: String, type: OutputType.Object, args: JSON, data: JSON) 
 }
 
 func normalizeRootQuery(rootQueryKey: String?, type: OutputType.Object, args: JSON, data: JSON) throws -> [String: Record] {
-  print(serializeJson(json: data))
   let collection = NormalizedCollection()
   if rootQueryKey != nil {
     for f in type.selectors {
