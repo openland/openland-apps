@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { isServerMessage } from 'openland-engines/messenger/types';
 import { UserShort } from 'openland-api/Types';
 import { QuoteStateT } from './useQuote';
 import {
@@ -29,7 +28,6 @@ export function useKeydownHandler({
     const isActive = React.useContext(IsActiveDualityContext);
 
     const keydownHandler = (e: any) => {
-
         if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
             return;
         }
@@ -48,12 +46,19 @@ export function useKeydownHandler({
 
             for (let i = 0; i < size; i++) {
                 const item = conversation.dataSource.getAt(i);
-                if (item.type === 'message' && item.isSending === false && user && item.senderId === user.id && item.id && item.text) {
+                if (
+                    item.type === 'message' &&
+                    item.isSending === false &&
+                    user &&
+                    item.senderId === user.id &&
+                    item.id &&
+                    item.text &&
+                    !item.isService
+                ) {
                     messagesContext.setEditMessage(item.id, item.text);
                     return;
                 }
             }
-
         }
     };
 
