@@ -50,13 +50,30 @@ class LevelDBPersistenceProvider: PersistenceProvier {
   }
 }
 
+class EmptyPersistenceProvier: PersistenceProvier {
+  func close() {
+    
+  }
+  
+  func saveRecords(records: [String: String]) {
+    //
+  }
+  func loadRecords(keys: Set<String>) -> [String: String] {
+    return [:]
+  }
+}
+
 class SpaceXPersistence {
   private let provider: PersistenceProvier
   private let writerQueue = DispatchQueue(label: "spacex-persistence-write")
   private let readerQueue = DispatchQueue(label: "spacex-persistence-read", attributes: .concurrent)
   
-  init(name: String) {
-    self.provider = LevelDBPersistenceProvider(name: name)
+  init(name: String?) {
+    if name != nil {
+      self.provider = LevelDBPersistenceProvider(name: name!)
+    } else {
+      self.provider = EmptyPersistenceProvier()
+    }
   }
   
   func close() {

@@ -58,7 +58,7 @@ class SpaceXStoreScheduler {
   private let nextSubscriptionIdQueue = DispatchQueue(label: "spacex-store-id")
   private var subscriptions: [Int: Subscription] = [:]
   
-  init(name: String) {
+  init(name: String?) {
     persistence = SpaceXPersistence(name: name)
   }
   

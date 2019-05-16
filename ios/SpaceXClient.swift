@@ -40,7 +40,7 @@ class SpaceXClient {
   var onConnected: (() -> Void)?
   var onDisconnected: (() -> Void)?
   
-  init(url: String, token: String?, storage: String) {
+  init(url: String, token: String?, storage: String?) {
     NSLog("[SpaceX-Alloc]: init SpaceXClient")
     self.transport = SpaceXTransportScheduler(url: url, params: ["x-openland-token": token])
     self.store = SpaceXStoreScheduler(name: storage)

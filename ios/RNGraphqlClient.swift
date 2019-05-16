@@ -53,7 +53,7 @@ class RNGraphqlClient {
   init(key: String, endpoint: String, token: String?, storage: String?, module: RNGraphQL) {
     self.module = module
     self.key = key
-    self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage!)
+    self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage)
     self.client.onConnected = { [weak self] in
       if let s = self {
         s.module.reportStatus(key: key, status: "connected")
