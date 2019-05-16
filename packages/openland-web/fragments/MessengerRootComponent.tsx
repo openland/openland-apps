@@ -202,7 +202,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     updateConversation = (props: MessagesComponentProps) => {
         this.unsubscribe();
 
-        if (props.isActive.getIsActive()) {
+        if (props.isActive.getValue()) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
 
@@ -342,8 +342,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    let isActive = React.useContext(IsActivePoliteContext).useValue();
-
+    let isActive = React.useContext(IsActivePoliteContext);
     // useCheckPerf({ name: `MessengerRootComponent: ${props.conversationId}` });
 
     return (

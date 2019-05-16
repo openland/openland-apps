@@ -153,7 +153,10 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                     : { text: '', mentions: [] };
                 messagesContext.changeForwardConverstion();
                 setInputValue(newInputValue.text);
+
+                // causes rerender!
                 draftState.setBeDrafted(hasReply());
+
                 inputMethodsState.focusIfNeeded();
             }
         })
