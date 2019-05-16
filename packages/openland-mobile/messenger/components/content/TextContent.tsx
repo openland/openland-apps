@@ -3,9 +3,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform } from 'react-native';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
-import { isEmoji } from 'openland-y-utils/isEmoji';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface TextContentProps {
