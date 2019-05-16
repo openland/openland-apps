@@ -71,13 +71,15 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
             });
         }
 
-        res.push({
-            type: 'text',
-            textRaw: p,
-            text: TextRenderProccessor.emojify(p, isBig),
-            length: p.length,
-            offset: startOffset + garbageString.length
-        });
+        if (p.length > 0) {
+            res.push({
+                type: 'text',
+                textRaw: p,
+                text: TextRenderProccessor.emojify(p, isBig),
+                length: p.length,
+                offset: startOffset + garbageString.length
+            });
+        }
 
         garbageString += p;
     }
@@ -112,7 +114,7 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     let symbolObject = SpanTypeToSymbol[parent.type];
 
     if (symbolObject) {
-        res = TextRenderProccessor.cropSpecSymbols(res, symbolObject.symbol, symbolObject.opened, isBigParent);
+        res = TextRenderProccessor.cropSpecSymbols(res, parent, symbolObject.symbol, symbolObject.opened);
     }
 
     return res;
