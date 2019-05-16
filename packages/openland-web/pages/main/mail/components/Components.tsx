@@ -17,6 +17,7 @@ import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
 import { PerfCollectorContext } from 'openland-web/perf/PerfCollectorContext';
 import { PerfViewer } from 'openland-web/perf/PerfViewer';
+import { createPoliteContext } from 'openland-x/createPoliteContext';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -66,41 +67,11 @@ type ShouldUpdateComponentT = {
     isActive: boolean;
 };
 
-export class IsActiveContextState {
-    private isActive = false;
+const { Context, ContextState } = createPoliteContext(true);
 
-    constructor(isActive: boolean) {
-        this.isActive = isActive;
-    }
-    private listenres = new Set<(isActive: boolean) => void>();
-    setIsActive = (isActive: boolean) => {
-        if (this.isActive === isActive) {
-            return;
-        }
-        this.isActive = isActive;
-        for (let l of this.listenres) {
-            l(this.isActive);
-        }
-    }
-    listen = (lisener: (isActive: boolean) => void) => {
-        this.listenres.add(lisener);
-        return () => {
-            this.listenres.delete(lisener);
-        }
-    }
-    getIsActive = () => this.isActive;
-    useIsActive = () => {
-        let [isActive, setIsActive] = React.useState(this.isActive);
-        React.useEffect(() => {
-            return this.listen((s) => {
-                setIsActive(s);
-            })
-        })
-        return isActive;
-    }
-}
+export const IsActivePoliteContext = Context;
+export const IsActiveContextState = ContextState;
 
-export const IsActiveDualityContext = React.createContext<IsActiveContextState>(new IsActiveContextState(true));
 const isActiveContextsMap = new Map();
 
 class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
@@ -277,16 +248,13 @@ const CacheComponent = React.memo(
             isActiveState.setIsActive(activeChat !== null && activeChat === cached.chatId);
 
             renderedElements.push(
-                <IsActiveDualityContext.Provider
-                    key={cached.chatId}
-                    value={isActiveState}
-                >
+                <IsActivePoliteContext.Provider key={cached.chatId} value={isActiveState}>
                     <DisplayNone
                         isActive={activeChat !== null && activeChat === cached.chatId}
                         Component={Component}
                         componentProps={cached.componentProps}
                     />
-                </IsActiveDualityContext.Provider>,
+                </IsActivePoliteContext.Provider>,
             );
         }
 

@@ -30,7 +30,10 @@ import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import { useCheckPerf, IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
+import {
+    useCheckPerf,
+    IsActivePoliteContext,
+} from 'openland-web/pages/main/mail/components/Components';
 import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
@@ -342,7 +345,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    let isActive = React.useContext(IsActiveDualityContext).useIsActive();
+    let isActive = React.useContext(IsActivePoliteContext).useIsActive();
 
     // useCheckPerf({ name: `MessengerRootComponent: ${props.conversationId}` });
 

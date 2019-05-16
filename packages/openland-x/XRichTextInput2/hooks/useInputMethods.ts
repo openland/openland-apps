@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
 
 export type XRichTextInput2RefMethods = {
     getElement: () => HTMLElement | null;
@@ -28,11 +28,10 @@ export function useInputMethods({
     editorState,
     getMentions,
     updateEditorStateFromTextAndMentions,
-
 }: useInputMethodsT) {
-    const activeChecker = React.useContext(IsActiveDualityContext);
+    const activeChecker = React.useContext(IsActivePoliteContext);
     const focus = () => {
-        if (!activeChecker.getIsActive()) {
+        if (!activeChecker.getValue()) {
             return;
         }
         window.requestAnimationFrame(() => {
@@ -43,7 +42,7 @@ export function useInputMethods({
     };
 
     const resetAndFocus = () => {
-        if (!activeChecker.getIsActive()) {
+        if (!activeChecker.getValue()) {
             return;
         }
         window.requestAnimationFrame(() => {

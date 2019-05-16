@@ -30,7 +30,10 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 import { RoomChat_room } from 'openland-api/Types';
-import { IsActiveDualityContext, IsActiveContextState } from 'openland-web/pages/main/mail/components/Components';
+import {
+    IsActivePoliteContext,
+    IsActiveContextState,
+} from 'openland-web/pages/main/mail/components/Components';
 
 const CommentView = ({
     originalMessageId,
@@ -134,10 +137,10 @@ const CommentView = ({
     const onCommentBackToUserMessageClick = () => {
         return parentComment
             ? () => {
-                scrollToComment({
-                    commentId: parentCommentId,
-                });
-            }
+                  scrollToComment({
+                      commentId: parentCommentId,
+                  });
+              }
             : undefined;
     };
 
@@ -289,8 +292,8 @@ export const CommentsBlockView = ({
                     </XView>
                 </>
             ) : (
-                    undefined
-                )}
+                undefined
+            )}
         </>
     );
 };
@@ -401,7 +404,7 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <UploadContextProvider>
-            <IsActiveDualityContext.Provider value={new IsActiveContextState(true)}>
+            <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>
                 <XView>
                     <XScrollView3
                         useDefaultScroll
@@ -457,7 +460,7 @@ export const CommentsModalInnerNoRouter = ({
                         />
                     </XView>
                 </XView>
-            </IsActiveDualityContext.Provider>
+            </IsActivePoliteContext.Provider>
         </UploadContextProvider>
     );
 };
@@ -480,16 +483,21 @@ export const openDeleteCommentsModal = ({
     router.pushQuery('deleteComment', `${commentId}`);
 };
 
-const Modal = (props: { messageId: string, conversationId: string }) => {
+const Modal = (props: { messageId: string; conversationId: string }) => {
     let router = React.useContext(XRouterContext)!;
-    return <UploadContextProvider>
-        <XShortcutsRoot>
-            <MessageStateProviderComponent router={router} cid={props.conversationId}>
-                <CommentsModalInnerNoRouter messageId={props.messageId} roomId={props.conversationId} />
-            </MessageStateProviderComponent>
-        </XShortcutsRoot>
-    </UploadContextProvider>
-}
+    return (
+        <UploadContextProvider>
+            <XShortcutsRoot>
+                <MessageStateProviderComponent router={router} cid={props.conversationId}>
+                    <CommentsModalInnerNoRouter
+                        messageId={props.messageId}
+                        roomId={props.conversationId}
+                    />
+                </MessageStateProviderComponent>
+            </XShortcutsRoot>
+        </UploadContextProvider>
+    );
+};
 
 export const openCommentsModal = ({
     messageId,
@@ -502,8 +510,6 @@ export const openCommentsModal = ({
         {
             width: 800,
         },
-        () => (
-            <Modal messageId={messageId} conversationId={conversationId} />
-        ),
+        () => <Modal messageId={messageId} conversationId={conversationId} />,
     );
 };

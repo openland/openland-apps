@@ -7,7 +7,7 @@ import {
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
 import { InputMethodsStateT } from './useInputMethods';
-import { IsActiveDualityContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
 
 type useKeydownHandlerT = {
     inputMethodsState: InputMethodsStateT;
@@ -25,7 +25,7 @@ export function useKeydownHandler({
     user,
 }: useKeydownHandlerT) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
-    const isActive = React.useContext(IsActiveDualityContext);
+    const isActive = React.useContext(IsActivePoliteContext);
 
     const keydownHandler = (e: any) => {
         if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
@@ -33,7 +33,7 @@ export function useKeydownHandler({
         }
 
         if (
-            isActive.getIsActive() &&
+            isActive.getValue() &&
             inputValue.length === 0 &&
             conversation &&
             ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.getHasFocus()) ||
