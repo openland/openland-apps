@@ -328,7 +328,19 @@ export class ConversationEngine implements MessageSendHandler {
         });
         let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
-        let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
+        let msgs = {
+            date,
+            key,
+            local: true,
+            message,
+            progress: 0,
+            file: null,
+            isImage: false,
+            failed: false,
+            spans,
+            quoted
+        };
+
         this.messages = [...this.messages, msgs];
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.onMessagesUpdated();
@@ -661,7 +673,7 @@ export class ConversationEngine implements MessageSendHandler {
                 }] : undefined,
                 reply,
                 replyTextSpans,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false,
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : []
             };
         }
