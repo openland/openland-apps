@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, Linking, Clipboard, Share, TextStyle } from 'react-native';
+import { Text, Linking, Clipboard, Share, TextStyle, Platform } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
@@ -95,11 +95,11 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         } else if (span.type === 'code_block') {
             return <Text key={'code-block'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'code_inline') {
-            return <Text key={'code-inline'} allowFontScaling={false}>{children}</Text>;
+            return <Text key={'code-inline'} style={{ fontFamily: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace', backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
         } else if (span.type === 'insane') {
             return <Text key={'insane'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'irony') {
-            return <Text key={'irony'} allowFontScaling={false}>{children}</Text>;
+            return <Text key={'irony'} style={{ fontStyle: 'italic', backgroundColor: theme.ironySpan.background, color: theme.ironySpan.color }} allowFontScaling={false}>{theme.ironySpan.paddedText}{children}{theme.ironySpan.paddedText}</Text>;
         } else if (span.type === 'italic') {
             return <Text key={'italic'} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{children}</Text>;
         } else if (span.type === 'loud') {
