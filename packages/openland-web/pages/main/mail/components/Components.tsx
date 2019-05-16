@@ -18,7 +18,7 @@ import { tabs } from '../tabs';
 import { PerfCollectorContext } from 'openland-web/perf/PerfCollectorContext';
 import { PerfViewer } from 'openland-web/perf/PerfViewer';
 import { DeleteUrlAugmentationComponent, DeleteMessageComponent, LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
-import { createPoliteContext } from 'openland-x/createPoliteContext';
+import { createPoliteContext, ContextStateInterface } from 'openland-x/createPoliteContext';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -75,7 +75,7 @@ const { Context, ContextState } = createPoliteContext({
 export const IsActivePoliteContext = Context;
 export const IsActiveContextState = ContextState;
 
-const isActiveContextsMap = new Map();
+const isActiveContextsMap = new Map<string, ContextStateInterface<boolean>>();
 
 class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     shouldComponentUpdate(props: any) {
@@ -248,7 +248,7 @@ const CacheComponent = React.memo(
                 isActiveState = new IsActiveContextState(false);
                 isActiveContextsMap.set(cached.chatId, isActiveState);
             }
-            isActiveState.setIsActive(activeChat !== null && activeChat === cached.chatId);
+            isActiveState.setValue(activeChat !== null && activeChat === cached.chatId);
 
             renderedElements.push(
                 <IsActivePoliteContext.Provider key={cached.chatId} value={isActiveState}>
