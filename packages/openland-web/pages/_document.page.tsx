@@ -200,19 +200,21 @@ export default class OpenlandDocument extends Document {
                     <link
                         rel="icon"
                         type="image/png"
-                        sizes="32x32"
-                        href="/static/img/favicon/favicon-32x32.png?v=2"
-                    />
-                    <link
-                        rel="icon"
-                        type="image/png"
                         sizes="96x96"
                         href="/static/img/favicon/favicon-96x96.png?v=2"
                     />
                     <link
                         rel="icon"
                         type="image/png"
+                        sizes="32x32"
+                        className="favicon"
+                        href="/static/img/favicon/favicon-32x32.png?v=2"
+                    />
+                    <link
+                        rel="icon"
+                        type="image/png"
                         sizes="16x16"
+                        className="favicon"
                         href="/static/img/favicon/favicon-16x16.png?v=2"
                     />
                     <link rel="manifest" href="/static/img/favicon/manifest.json?v=2" />
