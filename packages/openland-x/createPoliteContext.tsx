@@ -6,7 +6,7 @@ export function compareByReference<T>(a: T, b: T) {
 
 export interface ContextStateInterface<T> {
     setValue: (value: T) => void;
-    listen: (listener: (value: T) => void) => void;
+    listen: (listener: (value: T) => void) => () => void;
     getValue: () => T;
     useValue: () => T;
 }
@@ -39,6 +39,7 @@ export function createPoliteContext<T>({
 
         listen = (lisener: (isActive: K) => void) => {
             this.listeners.add(lisener);
+            lisener(this.value as any);
             return () => {
                 this.listeners.delete(lisener);
             };
