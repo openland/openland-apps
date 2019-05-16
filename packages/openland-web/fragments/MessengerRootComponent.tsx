@@ -147,6 +147,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         conversationId: string,
     }
 
+    activeSubscription: () => void;
+
     constructor(props: MessagesComponentProps) {
         super(props);
 
@@ -159,6 +161,27 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             roomId: this.props.conversationId,
             conversationId: this.props.conversationId,
         };
+
+        this.activeSubscription = props.isActive.listen(acitive => {
+            if (acitive) {
+                this.conversation = props.messenger.getConversation(props.conversationId);
+                this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
+
+                this.unmounter2 = this.conversation!.subscribe(this);
+
+                if (!this.conversation) {
+                    throw Error('conversation should be defined here');
+                }
+                let convState = this.conversation.getState();
+
+                this.setState({
+                    loading: convState.loading,
+                });
+            } else {
+                this.unsubscribe()
+            }
+
+        })
     }
 
     scrollToBottom = () => {
@@ -200,36 +223,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     };
 
-    updateConversation = (props: MessagesComponentProps) => {
-        this.unsubscribe();
-
-        if (props.isActive.getValue()) {
-            this.conversation = props.messenger.getConversation(props.conversationId);
-            this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
-
-            this.unmounter2 = this.conversation!.subscribe(this);
-
-            if (!this.conversation) {
-                throw Error('conversation should be defined here');
-            }
-            let convState = this.conversation.getState();
-
-            this.setState({
-                loading: convState.loading,
-            });
-        }
-    };
-
     componentWillUnmount() {
         this.unsubscribe();
-    }
-
-    componentWillMount() {
-        this.updateConversation(this.props);
-    }
-
-    componentWillReceiveProps(props: MessagesComponentProps) {
-        this.updateConversation(props);
+        if (this.activeSubscription) {
+            this.activeSubscription()
+        }
     }
 
     handleChange = async (text: string) => {
