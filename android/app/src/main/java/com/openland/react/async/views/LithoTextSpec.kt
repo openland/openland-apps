@@ -69,13 +69,13 @@ object LithoTextSpec {
                     part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                 }
 
-                if (s.fontWeight !== null || s.fontStyle !== null) {
+                if (s.fontWeight !== null || s.fontStyle !== null || s.fontType !== null) {
                     val span = object : TypefaceSpan(s.fontWeight) {
 
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
                             if (ds != null) {
-                                ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle)
+                                ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle, s.fontType)
                             }
 
                         }
@@ -106,7 +106,7 @@ object LithoTextSpec {
         val res = Text.create(context)
                 .key(spec.key)
                 .textSizeDip(fontSize)
-                .typeface(resolveFont(context, spec.fontWeight, spec.fontStyle))
+                .typeface(resolveFont(context, spec.fontWeight, spec.fontStyle, spec.fontType))
                 .textColor(spec.color)
                 .alpha(opacity)
                 .shouldIncludeFontPadding(false)
@@ -157,23 +157,27 @@ object LithoTextSpec {
                 .emit("async_on_press", map)
     }
 
-    private fun resolveFont(context: ComponentContext, weight: String?, style: String?): Typeface? {
-        val weightStyle = (if (weight !== null) weight else "400") + (if (style == "italic") "-italic" else "")
+    private fun resolveFont(context: ComponentContext, weight: String?, style: String?, type: String?): Typeface? {
+        if (type == "monospace") {
+            return loadFromAsset(context, "fonts/PT-Mono.ttf")
+        } else {
+            val weightStyle = (if (weight !== null) weight else "400") + (if (style == "italic") "-italic" else "")
 
-        return when (weightStyle) {
-            "100" -> loadFromAsset(context, "fonts/Roboto-Thin.ttf")
-            "300" -> loadFromAsset(context, "fonts/Roboto-Light.ttf")
-            "400" -> loadFromAsset(context, "fonts/Roboto-Regular.ttf")
-            "500" -> loadFromAsset(context, "fonts/Roboto-Medium.ttf")
-            "700" -> loadFromAsset(context, "fonts/Roboto-Bold.ttf")
-            "900" -> loadFromAsset(context, "fonts/Roboto-Black.ttf")
-            "100-italic" -> loadFromAsset(context, "fonts/Roboto-ThinItalic.ttf")
-            "300-italic" -> loadFromAsset(context, "fonts/Roboto-LightItalic.ttf")
-            "400-italic" -> loadFromAsset(context, "fonts/Roboto-Italic.ttf")
-            "500-italic" -> loadFromAsset(context, "fonts/Roboto-MediumItalic.ttf")
-            "700-italic" -> loadFromAsset(context, "fonts/Roboto-BoldItalic.ttf")
-            "900-italic" -> loadFromAsset(context, "fonts/Roboto-BlackItalic.ttf")
-            else -> null
+            return when (weightStyle) {
+                "100" -> loadFromAsset(context, "fonts/Roboto-Thin.ttf")
+                "300" -> loadFromAsset(context, "fonts/Roboto-Light.ttf")
+                "400" -> loadFromAsset(context, "fonts/Roboto-Regular.ttf")
+                "500" -> loadFromAsset(context, "fonts/Roboto-Medium.ttf")
+                "700" -> loadFromAsset(context, "fonts/Roboto-Bold.ttf")
+                "900" -> loadFromAsset(context, "fonts/Roboto-Black.ttf")
+                "100-italic" -> loadFromAsset(context, "fonts/Roboto-ThinItalic.ttf")
+                "300-italic" -> loadFromAsset(context, "fonts/Roboto-LightItalic.ttf")
+                "400-italic" -> loadFromAsset(context, "fonts/Roboto-Italic.ttf")
+                "500-italic" -> loadFromAsset(context, "fonts/Roboto-MediumItalic.ttf")
+                "700-italic" -> loadFromAsset(context, "fonts/Roboto-BoldItalic.ttf")
+                "900-italic" -> loadFromAsset(context, "fonts/Roboto-BlackItalic.ttf")
+                else -> null
+            }
         }
     }
 

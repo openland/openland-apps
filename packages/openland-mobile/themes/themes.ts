@@ -70,11 +70,19 @@ export interface AppTheme {
     modalOverlay: string;
     modalBackground: string;
 
-    ironyBackgroundOut: string;
-    ironyBackground: string;
-    ironyColorOut: string;
-    ironyColor: string;
-    ironyPaddedText: string;
+    ironySpan: {
+        backgroundOut: string,
+        background: string,
+        colorOut: string,
+        color: string,
+        paddedText: string,
+    };
+
+    codeSpan: {
+        backgroundOut: string,
+        background: string,
+        paddedText: string,
+    };
 }
 
 export const DefaultTheme: AppTheme = {
@@ -143,11 +151,19 @@ export const DefaultTheme: AppTheme = {
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
     modalBackground: 'white',
 
-    ironyBackgroundOut: 'rgba(255, 56, 46, 0.9)',
-    ironyBackground: 'rgba(255, 56, 46, 0.1)',
-    ironyColorOut: 'white',
-    ironyColor: '#f6564e',
-    ironyPaddedText: '\u00a0',
+    ironySpan: {
+        backgroundOut: 'rgba(255, 56, 46, 0.9)',
+        background: 'rgba(255, 56, 46, 0.1)',
+        colorOut: 'white',
+        color: '#f6564e',
+        paddedText: '\u00a0',
+    },
+
+    codeSpan: {
+        backgroundOut: 'rgba(0, 0, 0, 0.2)',
+        background: 'rgba(255, 170, 0, 0.2)',
+        paddedText: '\u202F',
+    }
 }
 
 export const DarkTheme: AppTheme = {
@@ -215,9 +231,17 @@ export const DarkTheme: AppTheme = {
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.4)' : 'rgba(4, 4, 15, 0.5)',
     modalBackground: '#1a1a1a',
 
-    ironyBackgroundOut: 'transparent',
-    ironyBackground: 'transparent',
-    ironyColorOut: '#f6564e',
-    ironyColor: '#f6564e',
-    ironyPaddedText: '',
+    ironySpan: {
+        backgroundOut: 'transparent',
+        background: 'transparent',
+        colorOut: '#f6564e',
+        color: '#f6564e',
+        paddedText: '',
+    },
+
+    codeSpan: {
+        backgroundOut: 'rgba(255, 170, 0, 0.3)',
+        background: 'rgba(255, 170, 0, 0.3)',
+        paddedText: '\u202F',
+    }
 }

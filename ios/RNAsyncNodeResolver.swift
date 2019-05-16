@@ -255,12 +255,21 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
   spec.fontSize = spec.fontSize != nil ? spec.fontSize! : (parent != nil && parent!.fontSize != nil) ? parent!.fontSize! : nil
   spec.fontWeight = spec.fontWeight != nil ? spec.fontWeight! : (parent != nil && parent!.fontWeight != nil) ? parent!.fontWeight! : nil
   spec.fontStyle = spec.fontStyle != nil ? spec.fontStyle! : (parent != nil && parent!.fontStyle != nil) ? parent!.fontStyle! : nil
+  spec.fontType = spec.fontType != nil ? spec.fontType! : (parent != nil && parent!.fontType != nil) ? parent!.fontType! : nil
 
   if spec.fontSize != nil || spec.fontWeight != nil {
     if spec.fontStyle == "italic" {
-      innerAttributes[NSAttributedString.Key.font] = UIFont.italicSystemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12))
+      if (spec.fontType == "monospace") {
+        innerAttributes[NSAttributedString.Key.font] = UIFont(name: "CourierNewPS-ItalicMT", size: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12))
+      } else {
+        innerAttributes[NSAttributedString.Key.font] = UIFont.italicSystemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12))
+      }
     } else {
-      innerAttributes[NSAttributedString.Key.font] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFont.Weight.regular)
+      if (spec.fontType == "monospace") {
+        innerAttributes[NSAttributedString.Key.font] = UIFont(name: "CourierNewPSMT", size: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12))
+      } else {
+        innerAttributes[NSAttributedString.Key.font] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFont.Weight.regular)
+      }
     }
   }
   

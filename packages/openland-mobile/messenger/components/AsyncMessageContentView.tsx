@@ -54,11 +54,11 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'}>{children}</ASText>;
         } else if (span.type === 'code_inline') {
-            return <ASText key={'code-inline'}>{children}</ASText>;
+            return <ASText key={'code-inline'} fontType="monospace" backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</ASText>;
         } else if (span.type === 'insane') {
             return <ASText key={'insane'}>{children}</ASText>;
         } else if (span.type === 'irony') {
-            return <ASText key={'irony'} fontStyle="italic" backgroundColor={(message.isOut && !message.isService) ? theme.ironyBackgroundOut : theme.ironyBackground} color={(message.isOut && !message.isService) ? theme.ironyColorOut : theme.ironyColor}>{theme.ironyPaddedText}{children}{theme.ironyPaddedText}</ASText>;
+            return <ASText key={'irony'} fontStyle="italic" backgroundColor={(message.isOut && !message.isService) ? theme.ironySpan.backgroundOut : theme.ironySpan.background} color={(message.isOut && !message.isService) ? theme.ironySpan.colorOut : theme.ironySpan.color}>{theme.ironySpan.paddedText}{children}{theme.ironySpan.paddedText}</ASText>;
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {

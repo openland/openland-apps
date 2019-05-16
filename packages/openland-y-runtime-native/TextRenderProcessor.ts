@@ -8,7 +8,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
     },
 
     cropSpecSymbols(spans: Span[], symbol: string, opened?: boolean, isBigParent?: boolean) {
-        if (['*', '_', ':', '@', '~'].includes(symbol)) {
+        if (['*', '_', ':', '@', '~', '`'].includes(symbol)) {
             return cropSpecSymbols(spans, symbol, opened, isBigParent);
         }
 
