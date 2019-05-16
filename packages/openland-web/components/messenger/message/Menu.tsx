@@ -12,7 +12,6 @@ import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../MessagesStateContext';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XOverflow, XOverflowDefalutTarget } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';

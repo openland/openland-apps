@@ -119,9 +119,13 @@ export const PostMessageButtons = React.memo(
 
         const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
 
-        let canDelete = !!(!deleted && me && message.senderId === me.id);
-        if (room && room.__typename === 'SharedRoom') {
-            canDelete = room.role === 'ADMIN' || room.role === 'OWNER';
+        let canDelete = !!(!deleted && message.isOut);
+        if (room && room.__typename === 'SharedRoom' && room.kind === "GROUP") {
+            canDelete = room.role === 'OWNER';
+        }
+
+        if (room && room.__typename === 'SharedRoom' && room.kind === "PUBLIC") {
+            canDelete = room.role === 'ADMIN' || room.role === 'OWNER' || room.canEdit;
         }
 
         const postMessageButtons = (
