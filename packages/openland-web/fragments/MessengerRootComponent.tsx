@@ -30,10 +30,7 @@ import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import {
-    useCheckPerf,
-    IsActivePoliteContext,
-} from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf, IsActivePoliteContext, IsActiveContextState } from 'openland-web/pages/main/mail/components/Components';
 import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
@@ -46,16 +43,16 @@ export interface File {
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
-    isActive: boolean;
+    isActive: any;
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -64,7 +61,7 @@ interface MessagesComponentState {
     loading: boolean;
 }
 
-const DeleteMessageComponent = () => {
+export const DeleteMessageComponent = () => {
     const router = useXRouter();
     const client = useClient();
     let id = router.routeQuery.deleteMessage;
@@ -83,7 +80,7 @@ const DeleteMessageComponent = () => {
     );
 };
 
-const DeleteUrlAugmentationComponent = withRouter(props => {
+export const DeleteUrlAugmentationComponent = withRouter(props => {
     const client = useClient();
     let id = props.router.query.deleteUrlAugmentation;
     return (
@@ -123,7 +120,6 @@ export const LeaveChatComponent = withRouter(props => {
 });
 
 interface ComposeHandlerProps extends MessageComposeComponentProps {
-    isActive: boolean;
     variables?: {
         roomId?: string;
         conversationId?: string;
@@ -138,13 +134,17 @@ const MessageComposeHandler = XMemo<ComposeHandlerProps>(props => {
     return <MessageComposeComponentDraft {...props} />;
 });
 
-class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState>
+class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
     messageText: string = '';
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
+    vars: {
+        roomId: string,
+        conversationId: string,
+    }
 
     constructor(props: MessagesComponentProps) {
         super(props);
@@ -153,6 +153,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.state = {
             hideInput: false,
             loading: true,
+        };
+        this.vars = {
+            roomId: this.props.conversationId,
+            conversationId: this.props.conversationId,
         };
     }
 
@@ -198,7 +202,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     updateConversation = (props: MessagesComponentProps) => {
         this.unsubscribe();
 
-        if (props.isActive) {
+        if (props.isActive.getIsActive()) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
 
@@ -308,7 +312,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideInput && this.conversation.canSendMessage && (
                     <UploadContextProvider>
                         <MessageComposeHandler
-                            isActive={this.props.isActive}
                             conversation={this.conversation}
                             onChange={this.handleChange}
                             onSend={this.handleSend}
@@ -317,16 +320,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             enabled={true}
                             conversationType={this.props.conversationType}
                             conversationId={this.props.conversationId}
-                            variables={{
-                                roomId: this.props.conversationId,
-                                conversationId: this.props.conversationId,
-                            }}
+                            variables={this.vars}
                         />
                     </UploadContextProvider>
                 )}
-                {this.props.isActive && <DeleteUrlAugmentationComponent />}
-                {this.props.isActive && <DeleteMessageComponent />}
-                {this.props.isActive && <LeaveChatComponent />}
             </XView>
         );
     }
@@ -337,9 +334,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 

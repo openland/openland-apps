@@ -17,6 +17,7 @@ import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
 import { PerfCollectorContext } from 'openland-web/perf/PerfCollectorContext';
 import { PerfViewer } from 'openland-web/perf/PerfViewer';
+import { DeleteUrlAugmentationComponent, DeleteMessageComponent, LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { createPoliteContext } from 'openland-x/createPoliteContext';
 
 export const OrganizationProfileContainer = Glamorous.div({
@@ -320,6 +321,9 @@ export const ConversationContainerWrapper = ({
                     </OrganizationProfileContainer>
                 )}
             </ConversationContainerInner>
+            <DeleteUrlAugmentationComponent />
+            <DeleteMessageComponent />
+            <LeaveChatComponent />
         </>
     );
 };

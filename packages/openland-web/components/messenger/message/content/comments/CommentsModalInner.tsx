@@ -465,14 +465,6 @@ export const CommentsModalInnerNoRouter = ({
     );
 };
 
-export const CommentsModalInner = () => {
-    let router = React.useContext(XRouterContext)!;
-
-    const [messageId, roomId] = router.routeQuery.comments.split('&');
-
-    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
-};
-
 export const openDeleteCommentsModal = ({
     router,
     commentId,

@@ -128,13 +128,13 @@ const MessageComposeComponentInnerInner = React.memo(
     },
 );
 
-const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
+const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) => {
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
-    const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
+    const inputMethodsState = useInputMethods({ inputRef, enabled: props.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const { file } = React.useContext(UploadContext);
-    const isActive = React.useContext(IsActivePoliteContext).useValue();
-    const draftState = useDraft(messageComposeProps);
+    const isActive = React.useContext(IsActivePoliteContext);
+    const draftState = useDraft(props);
     const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 
     const hasReply = () => {
@@ -146,16 +146,18 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     };
 
     React.useEffect(() => {
-        if (isActive) {
-            const newInputValue = hasReply()
-                ? draftState.getNextDraft()
-                : { text: '', mentions: [] };
-            messagesContext.changeForwardConverstion();
-            setInputValue(newInputValue.text);
-            draftState.setBeDrafted(hasReply());
-            inputMethodsState.focusIfNeeded();
-        }
-    }, [isActive]);
+        return isActive.listen(a => {
+            if (a) {
+                const newInputValue = hasReply()
+                    ? draftState.getNextDraft()
+                    : { text: '', mentions: [] };
+                messagesContext.changeForwardConverstion();
+                setInputValue(newInputValue.text);
+                draftState.setBeDrafted(hasReply());
+                inputMethodsState.focusIfNeeded();
+            }
+        })
+    }, []);
 
     if (file) {
         inputMethodsState.focusIfNeeded();
@@ -163,7 +165,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     return (
         <MessageComposeComponentInnerInner
-            {...messageComposeProps}
+            {...props}
             inputValue={inputValue}
             setInputValue={setInputValue}
             inputMethodsState={inputMethodsState}
@@ -180,9 +182,9 @@ type MessageComposeComponentT = MessageComposeWithDraft & {
 export const MessageComposeComponent = (props => {
     const ctx = React.useContext(UserInfoContext);
     let client = useClient();
-    const replyMessage = client.mutateReplyMessage.bind(client);
-    const editMessage = client.mutateEditPostMessage.bind(client);
-    const saveDraftMessage = client.mutateSaveDraftMessage.bind(client);
+    const replyMessage = React.useCallback(client.mutateReplyMessage.bind(client), []);
+    const editMessage = React.useCallback(client.mutateEditPostMessage.bind(client), []);
+    const saveDraftMessage = React.useCallback(client.mutateSaveDraftMessage.bind(client), []);
 
     return (
         <MessageComposeComponentInner
@@ -215,13 +217,13 @@ export const MessageComposeComponentDraft = (props: MessageComposeComponentDraft
         conversationId: props.conversationId!!,
     });
 
-    const getMembers = async () => {
+    const getMembers = React.useCallback(async () => {
         const data = await client.queryRoomMembersForMentionsPaginated({
             roomId: props.conversationId!!,
         });
 
         return data.members;
-    };
+    }, []);
 
     return (
         <MessageComposeComponent

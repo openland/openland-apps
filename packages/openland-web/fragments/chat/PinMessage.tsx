@@ -95,8 +95,8 @@ type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachme
 
 export interface PinMessageComponentProps {
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
     chatId: string;
     room: RoomChat_room;
     target?: any;
@@ -297,7 +297,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                }`}
+                                    }`}
                             >
                                 <XView
                                     alignItems="center"
@@ -351,7 +351,7 @@ const ForwardIconClassName = css`
     }
 `;
 
-export const PinMessageComponent = (props: PinMessageComponentProps) => {
+export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
@@ -486,4 +486,4 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
         </XView>
     );
-};
+});
