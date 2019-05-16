@@ -508,7 +508,6 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
     }
 
-    console.warn('render!!');
     return (
         <MessageContainerWrapper
             onMouseEnter={onMouseEnter}

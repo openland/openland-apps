@@ -65,7 +65,6 @@ const MessageComposeComponentInnerInner = React.memo(
             inputRef: any;
         },
     ) => {
-        console.warn('render! MessageComposeComponentInnerInner');
         let {
             inputMethodsState,
             inputValue,
@@ -153,10 +152,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                     : { text: '', mentions: [] };
                 messagesContext.changeForwardConverstion();
                 setInputValue(newInputValue.text);
-
-                // causes rerender!
                 draftState.setBeDrafted(hasReply());
-
                 inputMethodsState.focusIfNeeded();
             }
         })
