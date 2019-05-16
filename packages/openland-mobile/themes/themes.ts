@@ -49,7 +49,10 @@ export interface AppTheme {
     bubbleColorIn: string;
     bubbleGradientOut: string[];
 
-    reactionBackground: string;
+    reactionsBackground: string;
+    reactionsColor: string;
+    commentsBackground: string;
+    commentsColor: string;
 
     inputIconsColor: string;
     inputIconsColorInactive: string;
@@ -130,7 +133,10 @@ export const DefaultTheme: AppTheme = {
     bubbleColorIn: '#f3f5f7',
     bubbleGradientOut: ['#1970ff', '#11b2ff'],
 
-    reactionBackground: '#f3f5f7',
+    reactionsBackground: '#f3f5f7',
+    reactionsColor: '#99a2b0',
+    commentsBackground: 'rgba(0, 132, 254, 0.1)',
+    commentsColor: '#0084fe',
 
     inputIconsColor: '#b9c1cd',
     inputIconsColorInactive: '#b0b0b0',
@@ -211,7 +217,10 @@ export const DarkTheme: AppTheme = {
     bubbleColorIn: '#333333',
     bubbleGradientOut: ['#4d4d4d', '#6d6d6d'],
 
-    reactionBackground: '#020202',
+    reactionsBackground: 'rgba(255, 255, 255, 0.2)',
+    reactionsColor: 'rgba(255, 255, 255, 0.8)',
+    commentsBackground: 'rgba(255, 255, 255, 0.2)',
+    commentsColor: 'rgba(255, 255, 255, 0.8)',
 
     inputIconsColor: '#767676',
     inputIconsColorInactive: '#b0b0b0',
