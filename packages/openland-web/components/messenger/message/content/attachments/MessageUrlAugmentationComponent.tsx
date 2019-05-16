@@ -209,8 +209,8 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                                 src={imageUrl}
                             />
                         ) : (
-                                <img width={40} height={40} src="/static/img/img-thn@3x.png" />
-                            )}
+                            <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                        )}
                     </XView>
                     <XView flexDirection="column" justifyContent="space-between" height={40}>
                         <XView
@@ -277,6 +277,19 @@ export const MessageUrlAugmentationComponent = React.memo(
             messageId,
             keyboard,
         } = props;
+
+        const modal = React.useContext(XModalContext);
+        const modalBox = React.useContext(XModalBoxContext);
+
+        const onCloseModal = () => {
+            if (modal) {
+                modal.close();
+            }
+            if (modalBox) {
+                modalBox.close();
+            }
+        };
+        React.useEffect(() => undefined, [modal, modalBox]);
 
         let isMobile = React.useContext(IsMobileContext);
         let href: string | undefined = props.titleLink || undefined;
@@ -396,13 +409,13 @@ export const MessageUrlAugmentationComponent = React.memo(
                                             {isMobile ? (
                                                 linkImage
                                             ) : (
-                                                    <ImagePreviewModal
-                                                        file={image.url}
-                                                        width={image.metadata!.imageWidth!}
-                                                        height={image.metadata!.imageWidth!}
-                                                        target={linkImage}
-                                                    />
-                                                )}
+                                                <ImagePreviewModal
+                                                    file={image.url}
+                                                    width={image.metadata!.imageWidth!}
+                                                    height={image.metadata!.imageWidth!}
+                                                    target={linkImage}
+                                                />
+                                            )}
                                         </>
                                     )}
                                 </XView>
@@ -417,12 +430,12 @@ export const MessageUrlAugmentationComponent = React.memo(
                                             src={image.url}
                                         />
                                     ) : (
-                                            <img
-                                                width={40}
-                                                height={40}
-                                                src="/static/img/img-thn@3x.png"
-                                            />
-                                        )}
+                                        <img
+                                            width={40}
+                                            height={40}
+                                            src="/static/img/img-thn@3x.png"
+                                        />
+                                    )}
                                 </XView>
                             )}
                         {!image &&
@@ -487,6 +500,7 @@ export const MessageUrlAugmentationComponent = React.memo(
                                             color="#000"
                                             hoverColor={'#1790ff'}
                                             hoverTextDecoration="none"
+                                            onClick={onCloseModal}
                                         >
                                             <span
                                                 className={cx(
