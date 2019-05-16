@@ -6,6 +6,7 @@ import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { Platform } from 'react-native';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
@@ -69,25 +70,27 @@ export class NotificationsEngine {
     // };
 
     private blinkDocumentFavicon = () => {
-        let favicons: any = document.getElementsByClassName('favicon');
-        const favIconPath16 = '/static/img/favicon/favicon-16x16.png?v=2';
-        const favIconPath32 = '/static/img/favicon/favicon-32x32.png?v=2';
-        const favIconNotifyPath16 = '/static/img/favicon/favicon-notify-16x16.png?v=2';
-        const favIconNotifyPath32 = '/static/img/favicon/favicon-notify-32x32.png?v=2';
+        if (canUseDOM) {
+            let favicons: any = document.getElementsByClassName('favicon');
+            const favIconPath16 = '/static/img/favicon/favicon-16x16.png?v=2';
+            const favIconPath32 = '/static/img/favicon/favicon-32x32.png?v=2';
+            const favIconNotifyPath16 = '/static/img/favicon/favicon-notify-16x16.png?v=2';
+            const favIconNotifyPath32 = '/static/img/favicon/favicon-notify-32x32.png?v=2';
 
-        if (!document.hasFocus() && !this.blinkFaviconAlreadyStarted && favicons) {
-            this.blinkFaviconAlreadyStarted = true;
+            if (!document.hasFocus() && !this.blinkFaviconAlreadyStarted && favicons) {
+                this.blinkFaviconAlreadyStarted = true;
 
-            let interval = setInterval(() => {
-                favicons[0].href = favIconNotifyPath32;
-                favicons[1].href = favIconNotifyPath16;
-                if (document.hasFocus()) {
-                    this.blinkFaviconAlreadyStarted = false;
-                    clearInterval(interval);
-                    favicons[0].href = favIconPath32;
-                    favicons[1].href = favIconPath16;
-                }
-            }, 1000);
+                let interval = setInterval(() => {
+                    favicons[0].href = favIconNotifyPath32;
+                    favicons[1].href = favIconNotifyPath16;
+                    if (document.hasFocus()) {
+                        this.blinkFaviconAlreadyStarted = false;
+                        clearInterval(interval);
+                        favicons[0].href = favIconPath32;
+                        favicons[1].href = favIconPath16;
+                    }
+                }, 1000);
+            }
         }
     };
 

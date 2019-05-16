@@ -76,6 +76,28 @@ class SpaceXStoreScheduler {
           self.persistenceWrite(records: toWrite)
         }
         
+        // Notify watchers
+        if changed.count > 0 {
+          var keys = Set<String>()
+          for r in changed {
+            for f in r.value.fields {
+              keys.insert(r.key+"."+f)
+            }
+          }
+          var triggered: [Subscription] = []
+          for s in self.subscriptions {
+            for k in keys {
+              if s.value.ids.contains(k) {
+                triggered.append(s.value)
+                break
+              }
+            }
+          }
+          for t in triggered {
+            t.callback()
+          }
+        }
+        
         // Invoke calback
         queue.async {
           callback()
