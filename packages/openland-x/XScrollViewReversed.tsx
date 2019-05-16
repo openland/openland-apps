@@ -160,7 +160,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
 
 export const XScrollViewReversed = React.forwardRef<any, XScrollViewReversedProps>(
     (props: XScrollViewReversedProps, ref) => {
-        const isActive = React.useContext(IsActivePoliteContext).useIsActive();
+        const isActive = React.useContext(IsActivePoliteContext).useValue();
 
         return <XScrollViewReversedInner {...props} isActive={isActive} ref={ref} />;
     },

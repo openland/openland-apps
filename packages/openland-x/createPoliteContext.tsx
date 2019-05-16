@@ -1,10 +1,23 @@
 import * as React from 'react';
 
-function compare<T>(a: T, b: T) {
+export function compareByReference<T>(a: T, b: T) {
     return a === b;
 }
 
-export function createPoliteContext<T>(defaultValue: T) {
+export interface ContextStateInterface<T> {
+    setValue: (value: T) => void;
+    listen: (listener: (value: T) => void) => void;
+    getValue: () => T;
+    useValue: () => T;
+}
+
+export function createPoliteContext<T>({
+    defaultValue,
+    comparator = compareByReference,
+}: {
+    defaultValue: T;
+    comparator?: (a: T, b: T) => boolean;
+}) {
     class ContextState<K extends T> {
         private value = defaultValue;
 
@@ -14,8 +27,8 @@ export function createPoliteContext<T>(defaultValue: T) {
 
         private listeners = new Set<(value: T) => void>();
 
-        setIsActive = (value: K) => {
-            if (compare(this.value, value)) {
+        setValue = (value: K) => {
+            if (comparator(this.value, value)) {
                 return;
             }
             this.value = value;
@@ -32,7 +45,7 @@ export function createPoliteContext<T>(defaultValue: T) {
         };
 
         getValue = () => this.value;
-        useIsActive = () => {
+        useValue = () => {
             let [value, setValue] = React.useState(this.value);
             React.useEffect(() => {
                 return this.listen(s => {
@@ -43,7 +56,7 @@ export function createPoliteContext<T>(defaultValue: T) {
         };
     }
     const contextState = new ContextState(defaultValue);
-    const Context = React.createContext<ContextState<T>>(contextState);
+    const Context = React.createContext<ContextStateInterface<T>>(contextState);
 
     return {
         Context,

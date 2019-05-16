@@ -345,7 +345,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    let isActive = React.useContext(IsActivePoliteContext).useIsActive();
+    let isActive = React.useContext(IsActivePoliteContext).useValue();
 
     // useCheckPerf({ name: `MessengerRootComponent: ${props.conversationId}` });
 

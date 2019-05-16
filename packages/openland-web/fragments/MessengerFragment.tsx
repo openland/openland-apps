@@ -34,7 +34,7 @@ interface MessengerComponentLoaderProps {
 }
 
 const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
-    const isActive = React.useContext(IsActivePoliteContext).useIsActive();
+    const isActive = React.useContext(IsActivePoliteContext).useValue();
 
     if (isActive === false) {
         return null;

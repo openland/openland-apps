@@ -133,7 +133,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const { file } = React.useContext(UploadContext);
-    const isActive = React.useContext(IsActivePoliteContext).useIsActive();
+    const isActive = React.useContext(IsActivePoliteContext).useValue();
     const draftState = useDraft(messageComposeProps);
     const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 

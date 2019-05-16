@@ -67,7 +67,9 @@ type ShouldUpdateComponentT = {
     isActive: boolean;
 };
 
-const { Context, ContextState } = createPoliteContext(true);
+const { Context, ContextState } = createPoliteContext({
+    defaultValue: true,
+});
 
 export const IsActivePoliteContext = Context;
 export const IsActiveContextState = ContextState;
