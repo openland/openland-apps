@@ -13,7 +13,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SRouter } from 'react-native-s/SRouter';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
-function PageError(props: { router: SRouter }) {
+function PageError(props: { refresh: () => void }) {
     let theme = React.useContext(ThemeContext);
     return (
         <>
@@ -28,9 +28,9 @@ function PageError(props: { router: SRouter }) {
                     <View width={118}>
                         <ZRoundedButton
                             size="large"
-                            title="Go back"
+                            title="Try again"
                             uppercase={false}
-                            onPress={() => props.router.back()}
+                            onPress={props.refresh}
                         />
                     </View>
                 </View>
@@ -39,25 +39,29 @@ function PageError(props: { router: SRouter }) {
     )
 }
 
-class PageErrorBoundary extends React.Component<{ router: SRouter }, { isError: boolean }> {
+class PageErrorBoundary extends React.Component<{}, { isError: boolean, retry: number }> {
 
-    constructor(props: { router: SRouter }) {
+    constructor(props: {}) {
         super(props)
 
-        this.state = { isError: false };
+        this.state = { isError: false, retry: 0 };
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         this.setState({ isError: true });
     }
 
+    private refresh = () => {
+        this.setState({ isError: false, retry: this.state.retry + 1 });
+    }
+
     render() {
         if (this.state.isError) {
             return (
-                <PageError router={this.props.router} />
+                <PageError refresh={this.refresh} />
             )
         }
-        return <>{this.props.children}</>
+        return <View key={'try-' + this.state.retry} width="100%" height="100%">{this.props.children}</View>
     }
 }
 
