@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
+import { css } from 'linaria';
 
 const DropdownItem = ({ title, label }: { title: string; label: string }) => {
     return (
@@ -22,6 +23,29 @@ export interface SelectWithDropdownOption<T> {
     labelShort: string;
     subtitle: string;
 }
+
+const SelectGroupTypeClassName = css`
+    position: relative;
+    cursor: pointer;
+    & .Select-control > *,
+    & .Select-control > *:focus,
+    & .Select-control > *:active {
+        box-shadow: none !important;
+        border: none !important;
+        cursor: pointer !important;
+    }
+    & > .x {
+        position: absolute;
+        width: 100%;
+        top: 0px;
+        pointer-events: none;
+        cursor: pointer !important;
+    }
+    & .Select-control {
+        height: 52px !important;
+        opacity: 0;
+    }
+`;
 
 export function SelectWithDropdown<T>({
     title,
@@ -51,7 +75,7 @@ export function SelectWithDropdown<T>({
     )!!;
 
     return (
-        <>
+        <div className={SelectGroupTypeClassName}>
             <XSelect
                 searchable={false}
                 clearable={false}
@@ -79,6 +103,6 @@ export function SelectWithDropdown<T>({
                 />
                 <ArrowIcon />
             </XView>
-        </>
+        </div>
     );
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { SharedRoomKind } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -79,29 +78,6 @@ const MainWrapper = ({
         </XView>
     );
 };
-
-const SelectGroupTypeClassName = css`
-    position: relative;
-    cursor: pointer;
-    & .Select-control > *,
-    & .Select-control > *:focus,
-    & .Select-control > *:active {
-        box-shadow: none !important;
-        border: none !important;
-        cursor: pointer !important;
-    }
-    & > .x {
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        pointer-events: none;
-        cursor: pointer !important;
-    }
-    & .Select-control {
-        height: 52px !important;
-        opacity: 0;
-    }
-`;
 
 const AddMembers = ({
     onSkip,
@@ -333,27 +309,26 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                             <XView flexGrow={1} flexShrink={0} marginBottom={16}>
                                 <InputField field={titleField} title={`${chatTypeStr} name`} />
                             </XView>
-                            <div className={SelectGroupTypeClassName}>
-                                <SelectWithDropdown
-                                    title={`${chatTypeStr} type`}
-                                    value={typeField.value}
-                                    onChange={handleChatTypeChange}
-                                    selectOptions={[
-                                        {
-                                            value: SharedRoomKind.GROUP,
-                                            label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
-                                            labelShort: 'Secret',
-                                            subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
-                                        },
-                                        {
-                                            value: SharedRoomKind.PUBLIC,
-                                            label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
-                                            labelShort: 'Shared',
-                                            subtitle: `${chatTypeStr} where your organization or community members communicate`,
-                                        },
-                                    ]}
-                                />
-                            </div>
+
+                            <SelectWithDropdown
+                                title={`${chatTypeStr} type`}
+                                value={typeField.value}
+                                onChange={handleChatTypeChange}
+                                selectOptions={[
+                                    {
+                                        value: SharedRoomKind.GROUP,
+                                        label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
+                                        labelShort: 'Secret',
+                                        subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
+                                    },
+                                    {
+                                        value: SharedRoomKind.PUBLIC,
+                                        label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
+                                        labelShort: 'Shared',
+                                        subtitle: `${chatTypeStr} where your organization or community members communicate`,
+                                    },
+                                ]}
+                            />
                         </XView>
                     </XView>
                     {typeField.value === SharedRoomKind.PUBLIC && (
