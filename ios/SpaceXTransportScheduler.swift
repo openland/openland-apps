@@ -90,20 +90,29 @@ class SpaceXTransportScheduler {
     queue: DispatchQueue,
     handler: @escaping (SpaceXTransportSubscriptionResult) -> Void
   ) -> RunningOperation {
+    var isCompleted = false
     return self.transport.operation(operation: operation, variables: variables) { res in
       self.queue.async {
         switch(res) {
         case .result(let data):
           queue.async {
-            handler(SpaceXTransportSubscriptionResult.result(data: data))
+            if !isCompleted {
+              handler(SpaceXTransportSubscriptionResult.result(data: data))
+            }
           }
         case .error(let error):
           queue.async {
-            handler(SpaceXTransportSubscriptionResult.error(error: error))
+            if !isCompleted {
+              isCompleted = true
+              handler(SpaceXTransportSubscriptionResult.error(error: error))
+            }
           }
         case .completed:
           queue.async {
-            handler(SpaceXTransportSubscriptionResult.completed)
+            if !isCompleted {
+              isCompleted = true
+              handler(SpaceXTransportSubscriptionResult.completed)
+            }
           }
         }
       }

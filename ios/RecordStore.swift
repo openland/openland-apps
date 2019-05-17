@@ -48,10 +48,7 @@ class RecordStore {
   func read(key: String) -> Record {
     let res = self.inMemory[key]
     if res == nil {
-      let rs = Record(key: key, fields: [:])
-      self.inMemory[key] = rs
-      return rs
-      // fatalError("Record " + key + " is not loaded yet")
+      fatalError("Record " + key + " is not loaded yet")
     } else {
       return res!
     }

@@ -178,7 +178,7 @@ class SpaceXStoreScheduler {
   }
   
   func close() {
-    
+   self.persistence.close()
   }
 
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {

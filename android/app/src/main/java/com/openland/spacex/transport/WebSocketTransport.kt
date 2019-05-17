@@ -82,7 +82,7 @@ class WebSocketTransport {
             // Handle data and resolver level errors
             val id = response.getString("id")
             val payload = response.getJSONObject("payload")
-            val errors = payload.optJSONObject("error")
+            val errors = payload.optJSONObject("errors")
             val data = payload.optJSONObject("data")
             if (this.liveOperations.containsKey(id)) {
                 if (errors != null) {
