@@ -5,7 +5,6 @@ import { SharedRoomKind } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
-import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
@@ -20,6 +19,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SelectWithDropdown } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
+import { InputField } from './InputField';
 
 const MainWrapper = ({
     isChannel,
@@ -79,49 +79,6 @@ const MainWrapper = ({
         </XView>
     );
 };
-
-const InputStyledClassName = css`
-    height: 52px !important;
-    border-radius: 8px !important;
-    background-color: #f2f3f4 !important;
-    border-color: transparent !important;
-    &:focus-within {
-        border-color: transparent !important;
-        border-bottom: 1px solid #1790ff !important;
-        box-shadow: none !important;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-        & .input-placeholder {
-            color: #1488f3 !important;
-        }
-    }
-    & input {
-        padding-top: 11px !important;
-    }
-    & .input-placeholder {
-        top: -11px !important;
-        left: 0 !important;
-        background-color: transparent !important;
-        color: #696c6e !important;
-        padding-left: 16px !important;
-        height: 100% !important;
-        width: 100% !important;
-        font-size: 12px !important;
-        font-weight: normal !important;
-        font-style: normal !important;
-        font-stretch: normal !important;
-        line-height: normal !important;
-        pointer-events: none !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-`;
-
-const InputValueStyledClassName = css`
-    & .input-placeholder {
-        color: #1488f3 !important;
-    }
-`;
 
 const SelectGroupTypeClassName = css`
     position: relative;
@@ -218,19 +175,7 @@ interface CreateGroupInnerProps {
     isChannel: boolean;
 }
 
-// 0) support errors
-// 1) extract input with title
-// 2) check everything is working
-
-const InputInvalidStyledClassName = css`
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-color: transparent !important;
-    border-bottom: 1px solid #d75454 !important;
-    & .input-placeholder {
-        color: #d75454 !important;
-    }
-`;
+// 1) check everything is working
 
 const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInnerProps) => {
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
@@ -386,25 +331,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                         <CoverUpload onCoverSelect={setCoverSrc} />
                         <XView flexGrow={1} flexShrink={0} flexDirection="column" marginLeft={20}>
                             <XView flexGrow={1} flexShrink={0} marginBottom={16}>
-                                <XInput
-                                    {...titleField.input}
-                                    title={`${chatTypeStr} name`}
-                                    className={cx(
-                                        InputStyledClassName,
-                                        titleField.value !== '' && InputValueStyledClassName,
-                                        titleField.input.invalid && InputInvalidStyledClassName,
-                                    )}
-                                />
-                                {titleField.input.invalid && (
-                                    <XView
-                                        color="#d75454"
-                                        paddingLeft={16}
-                                        marginTop={8}
-                                        fontSize={12}
-                                    >
-                                        {titleField.input.errorText}
-                                    </XView>
-                                )}
+                                <InputField field={titleField} title={`${chatTypeStr} name`} />
                             </XView>
                             <div className={SelectGroupTypeClassName}>
                                 <SelectWithDropdown

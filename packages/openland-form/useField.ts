@@ -1,5 +1,14 @@
 import * as React from 'react';
 import { SForm } from './SForm';
+export interface FormField<T> {
+    value: T;
+    input: {
+        value: T;
+        onChange: (value: T) => void;
+        invalid: boolean;
+        errorText: string;
+    };
+}
 
 export function useField<T>(
     name: string,
