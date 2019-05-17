@@ -23,6 +23,43 @@ import { SearchPeopleBox } from './SearchPeopleBox';
 import { CreateRoomButton } from './CreateRoomButton';
 import { OrganizationsList } from './OrganizationsList';
 
+const LeaveAndDeleteModal = ({ chatTypeStr }: { chatTypeStr: string }) => {
+    return (
+        <XModal
+            title={`Leave and delete ${chatTypeStr}`}
+            width={380}
+            body={
+                <XModalBody>
+                    <XView paddingBottom={30}>
+                        {`If you leave now, this ${chatTypeStr} will be deleted.`}
+                    </XView>
+                </XModalBody>
+            }
+            footer={
+                <XModalFooter>
+                    <XButton text="Cancel" style="primary" autoClose={true} />
+                    <XView width={12} flexShrink={0} />
+                    <XButton text="Leave and delete" style="ghost" path="/mail" />
+                </XModalFooter>
+            }
+            target={
+                <XView
+                    cursor="pointer"
+                    alignItems="center"
+                    justifyContent="center"
+                    padding={8}
+                    width={32}
+                    height={32}
+                    borderRadius={50}
+                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                >
+                    <CloseIcon />
+                </XView>
+            }
+        />
+    );
+};
+
 const MainWrapper = ({
     isChannel,
     back,
@@ -65,38 +102,7 @@ const MainWrapper = ({
                         <span>Back</span>
                     </XView>
                 )}
-                <XModal
-                    title={`Leave and delete ${chatTypeStr}`}
-                    width={380}
-                    body={
-                        <XModalBody>
-                            <XView paddingBottom={30}>
-                                {`If you leave now, this ${chatTypeStr} will be deleted.`}
-                            </XView>
-                        </XModalBody>
-                    }
-                    footer={
-                        <XModalFooter>
-                            <XButton text="Cancel" style="primary" autoClose={true} />
-                            <XView width={12} flexShrink={0} />
-                            <XButton text="Leave and delete" style="ghost" path="/mail" />
-                        </XModalFooter>
-                    }
-                    target={
-                        <XView
-                            cursor="pointer"
-                            alignItems="center"
-                            justifyContent="center"
-                            padding={8}
-                            width={32}
-                            height={32}
-                            borderRadius={50}
-                            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                        >
-                            <CloseIcon />
-                        </XView>
-                    }
-                />
+                <LeaveAndDeleteModal chatTypeStr={chatTypeStr} />
             </XView>
             <XView
                 flexDirection="row"
@@ -189,6 +195,58 @@ const SelectGroupTypeClassName = css`
     }
 `;
 
+const GroupTypeSelect = ({
+    value,
+    onChange,
+    chatTypeStr,
+}: {
+    value: any;
+    onChange: any;
+    chatTypeStr: string;
+}) => {
+    return (
+        <>
+            <XSelect
+                searchable={false}
+                clearable={false}
+                withSubtitle={true}
+                value={value}
+                onChange={onChange}
+                options={[
+                    {
+                        value: SharedRoomKind.GROUP,
+                        label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
+                        subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
+                    },
+                    {
+                        value: SharedRoomKind.PUBLIC,
+                        label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
+                        subtitle: `${chatTypeStr} where your organization or community members communicate`,
+                    },
+                ]}
+            />
+            <XView
+                height={52}
+                paddingHorizontal={16}
+                backgroundColor="#f2f3f4"
+                borderRadius={8}
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+            >
+                <XView flexDirection="column" marginTop={-3}>
+                    <XView color="#1488f3" fontSize={12}>
+                        {`${chatTypeStr} type`}
+                    </XView>
+                    <XView fontSize={14} color="#000" marginTop={-4}>
+                        {value === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
+                    </XView>
+                </XView>
+                <ArrowIcon />
+            </XView>
+        </>
+    );
+};
 interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
@@ -196,340 +254,239 @@ interface CreateGroupInnerProps {
     isChannel: boolean;
 }
 
-interface CreateGroupInnerState {
-    settingsPage: boolean;
-    title: string;
-    titleError: boolean;
-    type: SharedRoomKind;
-    coverSrc: string | null;
-    coverUploading: boolean;
-    selectedOrg: string | null;
-    searchPeopleQuery: string;
-    selectedUsers: Map<string, string> | null;
-}
+const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInnerProps) => {
+    const [settingsPage, setSettingsPage] = React.useState(true);
+    const [title, setTitle] = React.useState('');
+    const [titleError, setTitleError] = React.useState(false);
+    const [type, setType] = React.useState<SharedRoomKind>(
+        inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
+    );
+    const [coverSrc, setCoverSrc] = React.useState<string | null>('');
+    const [coverUploading, setCoverUploading] = React.useState(false);
+    const [selectedOrg, setSelectedOrg] = React.useState<string | null>(inOrgId ? inOrgId : null);
+    const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
+    const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
 
-class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGroupInnerState> {
-    constructor(props: CreateGroupInnerProps) {
-        super(props);
-
-        this.state = {
-            settingsPage: true,
-            title: '',
-            titleError: false,
-            type: props.inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
-            coverSrc: '',
-            coverUploading: false,
-            selectedOrg: props.inOrgId ? props.inOrgId : null,
-            searchPeopleQuery: '',
-            selectedUsers: null,
-        };
-    }
-
-    handleTitleChange = (data: string) => {
-        this.setState({
-            title: data,
-            titleError: false,
-        });
+    const handleTitleChange = (data: string) => {
+        setTitle(data);
+        setTitleError(false);
     };
 
-    handleChatTypeChange = (data: SharedRoomKind) => {
-        const { inOrgId } = this.props;
+    const handleChatTypeChange = (data: SharedRoomKind) => {
         if (data === SharedRoomKind.GROUP && !inOrgId) {
-            this.setState({
-                selectedOrg: null,
-            });
+            setSelectedOrg(null);
         }
-        this.setState({
-            selectedOrg: inOrgId ? inOrgId : null,
-            type: data,
-        });
+        setSelectedOrg(inOrgId ? inOrgId : null);
+        setType(data);
     };
 
-    handleSetCover = () => {
+    const handleSetCover = () => {
         let dialog = UploadCare.openDialog(null, {
             publicKey: getConfig().uploadcareKey!!,
         });
         dialog.done(res => {
             res.progress(r => {
-                this.setState({
-                    coverSrc: '',
-                    coverUploading: true,
-                });
+                setCoverSrc('');
+                setCoverUploading(true);
             });
             res.done(r => {
-                this.setState({
-                    coverSrc: r.uuid,
-                    coverUploading: false,
-                });
+                setCoverSrc(r.uuid);
+                setCoverUploading(false);
             });
         });
     };
 
-    onOrganizationSelect = (v: string) => {
-        this.setState({
-            selectedOrg: v,
-        });
+    const onOrganizationSelect = (v: string) => {
+        setSelectedOrg(v);
     };
 
-    handleAddMembers = () => {
-        if (this.state.title) {
-            this.setState({
-                settingsPage: false,
-            });
+    const handleAddMembers = () => {
+        if (title) {
+            setSettingsPage(false);
         } else {
-            this.setState({
-                titleError: true,
-            });
+            setSettingsPage(true);
         }
     };
 
-    handleBackClick = () => {
-        this.setState({
-            settingsPage: true,
-            searchPeopleQuery: '',
-            selectedUsers: null,
-        });
+    const handleBackClick = () => {
+        setSettingsPage(true);
+        setSearchPeopleQuery('');
+        setSelectedUsers(null);
     };
 
-    onSearchPeopleInputChange = (data: string) => {
-        this.setState({
-            searchPeopleQuery: data,
-        });
+    const onSearchPeopleInputChange = (data: string) => {
+        setSearchPeopleQuery(data);
         return data;
     };
 
-    handleSearchPeopleInputChange = (data: { label: string; value: string }[]) => {
+    const handleSearchPeopleInputChange = (data: { label: string; value: string }[]) => {
         let newSelected = new Map();
         data.map(i => {
             newSelected.set(i.value, i.label);
         });
 
-        this.setState({
-            selectedUsers: newSelected,
-        });
+        setSelectedUsers(newSelected);
     };
 
-    selectMembers = (label: string, value: string) => {
-        let selected = this.state.selectedUsers || new Map();
+    const selectMembers = (label: string, value: string) => {
+        let selected = selectedUsers || new Map();
 
         selected.set(value, label);
 
-        this.setState({
-            selectedUsers: selected,
-        });
+        setSelectedUsers(selected);
     };
 
-    render() {
-        const {
-            settingsPage,
-            title,
-            titleError,
-            type,
-            coverSrc,
-            coverUploading,
-            selectedOrg,
-            searchPeopleQuery,
-            selectedUsers,
-        } = this.state;
+    let chatTypeStr = isChannel ? 'Channel' : 'Group';
 
-        const { myId, myOrgId, isChannel, inOrgId } = this.props;
-
-        let chatTypeStr = isChannel ? 'Channel' : 'Group';
-
-        let options: { label: string; value: string }[] = [];
-        let membersIds: string[] = [];
-        membersIds.push(myId);
-        if (selectedUsers) {
-            selectedUsers.forEach((l, v) => {
-                options.push({
-                    label: l,
-                    value: v,
-                });
-
-                membersIds.push(v);
+    let options: { label: string; value: string }[] = [];
+    let membersIds: string[] = [];
+    membersIds.push(myId);
+    if (selectedUsers) {
+        selectedUsers.forEach((l, v) => {
+            options.push({
+                label: l,
+                value: v,
             });
-        }
-        return (
-            <MainWrapper
-                back={!settingsPage}
-                onBackClick={this.handleBackClick}
-                isChannel={this.props.isChannel}
-            >
-                {settingsPage && (
-                    <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
-                        <XView
-                            flexShrink={0}
-                            flexDirection="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            marginBottom={40}
-                            paddingHorizontal={16}
-                        >
-                            <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                                {`New ${chatTypeStr.toLocaleLowerCase()}`}
-                            </XView>
-                            <XButton style="primary" text="Next" onClick={this.handleAddMembers} />
+
+            membersIds.push(v);
+        });
+    }
+    return (
+        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} isChannel={isChannel}>
+            {settingsPage && (
+                <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
+                    <XView
+                        flexShrink={0}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        marginBottom={40}
+                        paddingHorizontal={16}
+                    >
+                        <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
+                            {`New ${chatTypeStr.toLocaleLowerCase()}`}
                         </XView>
-                        <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
-                            <CoverUpload
-                                src={coverSrc}
-                                coverUploading={coverUploading}
-                                onClick={this.handleSetCover}
-                            />
-                            <XView
-                                flexGrow={1}
-                                flexShrink={0}
-                                flexDirection="column"
-                                marginLeft={20}
-                            >
-                                <XView flexGrow={1} flexShrink={0} marginBottom={16}>
-                                    <XInput
-                                        title={`${chatTypeStr} name`}
-                                        onChange={this.handleTitleChange}
-                                        value={title}
-                                        invalid={titleError}
-                                        className={cx(
-                                            InputStyledClassName,
-                                            titleError && InputInvalidStyledClassName,
-                                            title !== '' && InputValueStyledClassName,
-                                        )}
-                                    />
-                                    {titleError && (
-                                        <XView
-                                            color="#d75454"
-                                            paddingLeft={16}
-                                            marginTop={8}
-                                            fontSize={12}
-                                        >
-                                            {`Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`}
-                                        </XView>
-                                    )}
-                                </XView>
-                                <div className={SelectGroupTypeClassName}>
-                                    <XSelect
-                                        searchable={false}
-                                        clearable={false}
-                                        withSubtitle={true}
-                                        value={type}
-                                        onChange={value =>
-                                            this.handleChatTypeChange((value as any).value)
-                                        }
-                                        options={[
-                                            {
-                                                value: SharedRoomKind.GROUP,
-                                                label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
-                                                subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
-                                            },
-                                            {
-                                                value: SharedRoomKind.PUBLIC,
-                                                label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
-                                                subtitle: `${chatTypeStr} where your organization or community members communicate`,
-                                            },
-                                        ]}
-                                    />
-                                    <XView
-                                        height={52}
-                                        paddingHorizontal={16}
-                                        backgroundColor="#f2f3f4"
-                                        borderRadius={8}
-                                        flexDirection="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                    >
-                                        <XView flexDirection="column" marginTop={-3}>
-                                            <XView color="#1488f3" fontSize={12}>
-                                                {`${chatTypeStr} type`}
-                                            </XView>
-                                            <XView fontSize={14} color="#000" marginTop={-4}>
-                                                {type === SharedRoomKind.GROUP
-                                                    ? 'Secret'
-                                                    : 'Shared'}
-                                            </XView>
-                                        </XView>
-                                        <ArrowIcon />
-                                    </XView>
-                                </div>
-                            </XView>
-                        </XView>
-                        {type === SharedRoomKind.PUBLIC && (
-                            <OrganizationsList
-                                onSelect={this.onOrganizationSelect}
-                                selectedOrg={selectedOrg}
-                                inOrgId={inOrgId}
-                            />
-                        )}
+                        <XButton style="primary" text="Next" onClick={handleAddMembers} />
                     </XView>
-                )}
-                {!settingsPage && (
-                    <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
-                        <XView
-                            flexShrink={0}
-                            flexDirection="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            marginBottom={40}
-                            paddingHorizontal={16}
-                        >
-                            <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                                Add members
-                            </XView>
-                            <XView flexShrink={0} flexDirection="row" alignItems="center">
-                                <XView
-                                    flexShrink={0}
-                                    flexDirection="row"
-                                    alignItems="center"
-                                    marginRight={12}
-                                >
-                                    <CreateRoomButton
-                                        title={title}
-                                        kind={type}
-                                        members={[myId]}
-                                        organizationId={selectedOrg ? selectedOrg : myOrgId}
-                                        imageUuid={coverSrc}
-                                        isChannel={isChannel}
+                    <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
+                        <CoverUpload
+                            src={coverSrc}
+                            coverUploading={coverUploading}
+                            onClick={handleSetCover}
+                        />
+                        <XView flexGrow={1} flexShrink={0} flexDirection="column" marginLeft={20}>
+                            <XView flexGrow={1} flexShrink={0} marginBottom={16}>
+                                <XInput
+                                    title={`${chatTypeStr} name`}
+                                    onChange={handleTitleChange}
+                                    value={title}
+                                    invalid={titleError}
+                                    className={cx(
+                                        InputStyledClassName,
+                                        titleError && InputInvalidStyledClassName,
+                                        title !== '' && InputValueStyledClassName,
+                                    )}
+                                />
+                                {titleError && (
+                                    <XView
+                                        color="#d75454"
+                                        paddingLeft={16}
+                                        marginTop={8}
+                                        fontSize={12}
                                     >
-                                        <XButton style="ghost" text="Skip" />
-                                    </CreateRoomButton>
-                                </XView>
+                                        {`Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`}
+                                    </XView>
+                                )}
+                            </XView>
+                            <div className={SelectGroupTypeClassName}>
+                                <GroupTypeSelect
+                                    value={type}
+                                    chatTypeStr={chatTypeStr}
+                                    onChange={(value: any) =>
+                                        handleChatTypeChange((value as any).value)
+                                    }
+                                />
+                            </div>
+                        </XView>
+                    </XView>
+                    {type === SharedRoomKind.PUBLIC && (
+                        <OrganizationsList
+                            onSelect={onOrganizationSelect}
+                            selectedOrg={selectedOrg}
+                            inOrgId={inOrgId}
+                        />
+                    )}
+                </XView>
+            )}
+            {!settingsPage && (
+                <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
+                    <XView
+                        flexShrink={0}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        marginBottom={40}
+                        paddingHorizontal={16}
+                    >
+                        <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
+                            Add members
+                        </XView>
+                        <XView flexShrink={0} flexDirection="row" alignItems="center">
+                            <XView
+                                flexShrink={0}
+                                flexDirection="row"
+                                alignItems="center"
+                                marginRight={12}
+                            >
                                 <CreateRoomButton
                                     title={title}
                                     kind={type}
-                                    members={membersIds}
+                                    members={[myId]}
                                     organizationId={selectedOrg ? selectedOrg : myOrgId}
                                     imageUuid={coverSrc}
                                     isChannel={isChannel}
                                 >
-                                    <XButton style="primary" text="Add" />
+                                    <XButton style="ghost" text="Skip" />
                                 </CreateRoomButton>
                             </XView>
+                            <CreateRoomButton
+                                title={title}
+                                kind={type}
+                                members={membersIds}
+                                organizationId={selectedOrg ? selectedOrg : myOrgId}
+                                imageUuid={coverSrc}
+                                isChannel={isChannel}
+                            >
+                                <XButton style="primary" text="Add" />
+                            </CreateRoomButton>
                         </XView>
-                        <XView paddingHorizontal={16} flexShrink={0}>
-                            <SearchPeopleBox
-                                onInputChange={this.onSearchPeopleInputChange}
-                                value={options}
-                                onChange={this.handleSearchPeopleInputChange}
-                            />
-                        </XView>
-                        <React.Suspense
-                            fallback={
-                                <XView flexGrow={1} flexShrink={0}>
-                                    <XLoader loading={true} />
-                                </XView>
-                            }
-                        >
-                            <ExplorePeople
-                                variables={{ query: searchPeopleQuery }}
-                                searchQuery={searchPeopleQuery}
-                                onPick={this.selectMembers}
-                                selectedUsers={selectedUsers}
-                            />
-                        </React.Suspense>
                     </XView>
-                )}
-            </MainWrapper>
-        );
-    }
-}
+                    <XView paddingHorizontal={16} flexShrink={0}>
+                        <SearchPeopleBox
+                            onInputChange={onSearchPeopleInputChange}
+                            value={options}
+                            onChange={handleSearchPeopleInputChange}
+                        />
+                    </XView>
+                    <React.Suspense
+                        fallback={
+                            <XView flexGrow={1} flexShrink={0}>
+                                <XLoader loading={true} />
+                            </XView>
+                        }
+                    >
+                        <ExplorePeople
+                            variables={{ query: searchPeopleQuery }}
+                            searchQuery={searchPeopleQuery}
+                            onPick={selectMembers}
+                            selectedUsers={selectedUsers}
+                        />
+                    </React.Suspense>
+                </XView>
+            )}
+        </MainWrapper>
+    );
+};
 
 export default withApp(
     'Create Room',
