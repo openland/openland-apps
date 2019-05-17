@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 interface MessageVideoComponentProps {
     file?: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export const MessageUploadComponent = XMemo((props: { title?: string; progress: number }) => {
     // useCheckPerf({ name: 'MessageUploadComponent' });

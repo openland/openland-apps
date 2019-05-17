@@ -14,10 +14,6 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
-import {
-    useCheckPerf,
-    IsActivePoliteContext,
-} from 'openland-web/pages/main/mail/components/Components';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
@@ -26,6 +22,7 @@ import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarCompone
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 interface MessengerComponentLoaderProps {
     state: MessagesStateContextProps;

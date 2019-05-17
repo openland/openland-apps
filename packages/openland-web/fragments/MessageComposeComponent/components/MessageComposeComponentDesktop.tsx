@@ -23,15 +23,15 @@ import { useKeydownHandler } from '../hooks/useKeydownHandler';
 import { useDraft } from '../hooks/useDraft/useDraft';
 import { useHandleSend } from '../hooks/useHandleSend';
 import { useInputMethods } from '../hooks/useInputMethods';
-import { useQuote, QuoteStateT } from '../hooks/useQuote';
+import { useQuote } from '../hooks/useQuote';
 import { useHandleChange } from '../hooks/useHandleChange';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
-import { XView } from 'react-mental';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
@@ -155,7 +155,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                 draftState.setBeDrafted(hasReply());
                 inputMethodsState.focusIfNeeded();
             }
-        })
+        });
     }, []);
 
     if (file) {

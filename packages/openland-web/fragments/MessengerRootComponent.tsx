@@ -5,7 +5,6 @@ import {
     ConversationEngine,
     ConversationStateHandler,
 } from 'openland-engines/messenger/ConversationEngine';
-import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
@@ -30,10 +29,10 @@ import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import { useCheckPerf, IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
 import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 export interface File {
     uuid: string;
@@ -51,9 +50,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
@@ -143,9 +142,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
     vars: {
-        roomId: string,
-        conversationId: string,
-    }
+        roomId: string;
+        conversationId: string;
+    };
 
     activeSubscription: () => void;
 
@@ -178,10 +177,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     loading: convState.loading,
                 });
             } else {
-                this.unsubscribe()
+                this.unsubscribe();
             }
-
-        })
+        });
     }
 
     scrollToBottom = () => {
@@ -226,7 +224,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     componentWillUnmount() {
         this.unsubscribe();
         if (this.activeSubscription) {
-            this.activeSubscription()
+            this.activeSubscription();
         }
     }
 
@@ -333,9 +331,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 

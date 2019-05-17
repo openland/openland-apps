@@ -1,85 +1,40 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
-import {
-    MyOrganizations_myOrganizations,
-    SharedRoomKind,
-    Organization_organization,
-    OrganizationWithoutMembersFragment,
-} from 'openland-api/Types';
+import { SharedRoomKind } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
-import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
+import { withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
-import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModal, XModalBody, XModalFooter } from 'openland-x-modal/XModal';
-import { XUserCard } from 'openland-x/cards/XUserCard';
-import { XMutation } from 'openland-x/XMutation';
 import { XInput } from 'openland-x/XInput';
 import { XSelect } from 'openland-x/XSelect';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XAvatar } from 'openland-x/XAvatar';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
-import AddPhotoIcon from 'openland-icons/ic-photo-create-room.svg';
-import CheckIcon from 'openland-icons/check-form.svg';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { useClient } from 'openland-web/utils/useClient';
+import { CoverUpload } from './CoverUpload';
+import { ExplorePeople } from './ExplorePeople';
+import { SearchPeopleBox } from './SearchPeopleBox';
+import { CreateRoomButton } from './CreateRoomButton';
+import { OrganizationsList } from './OrganizationsList';
 
-interface CreateRoomButtonProps {
-    title: string;
-    kind: SharedRoomKind;
-    members: string[];
-    organizationId: string | null;
-    imageUuid: string | null;
-    isChannel: boolean;
-    children: any;
-}
-
-const CreateRoomButton = (props: CreateRoomButtonProps) => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-
-    let photoRef: { uuid: string } | null;
-    if ((props as any).imageUuid) {
-        photoRef = {
-            uuid: (props as any).imageUuid,
-        };
-    }
-
-    return (
-        <XMutation
-            action={async () => {
-                const returnedData = await client.mutateRoomCreate({
-                    title: props.title,
-                    kind: props.kind,
-                    members: [...props.members],
-                    organizationId: props.organizationId || '',
-                    photoRef: photoRef,
-                    channel: (props as any).isChannel,
-                });
-
-                const roomId: string = returnedData.room.id as string;
-                router.replace('/mail/' + roomId);
-            }}
-        >
-            {props.children}
-        </XMutation>
-    );
-};
-
-const MainWrapper = (props: {
+const MainWrapper = ({
+    isChannel,
+    back,
+    onBackClick,
+    children,
+}: {
     back: boolean;
     onBackClick: () => void;
     children: any;
     isChannel: boolean;
 }) => {
-    let chatTypeStr = props.isChannel ? 'channel' : 'group';
+    let chatTypeStr = isChannel ? 'channel' : 'group';
     return (
         <XView
             flexGrow={1}
@@ -91,13 +46,13 @@ const MainWrapper = (props: {
             <XView
                 flexDirection="row"
                 alignItems="center"
-                justifyContent={props.back ? 'space-between' : 'flex-end'}
+                justifyContent={back ? 'space-between' : 'flex-end'}
                 marginBottom={30}
                 padding={20}
             >
-                {props.back && (
+                {back && (
                     <XView
-                        onClick={props.onBackClick}
+                        onClick={onBackClick}
                         flexDirection="row"
                         cursor="pointer"
                         fontSize={14}
@@ -151,393 +106,9 @@ const MainWrapper = (props: {
                 maxHeight="calc(100% - 102px)"
             >
                 <XView maxWidth={500} flexGrow={1} flexShrink={0} paddingHorizontal={20}>
-                    {props.children}
+                    {children}
                 </XView>
             </XView>
-        </XView>
-    );
-};
-
-const CoverWrapperClassName = css`
-    width: 120px;
-    height: 120px;
-    border-radius: 62px;
-    background-color: #f2f3f4;
-    color: #696c6e;
-    cursor: pointer;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    &:hover {
-        & .edit-photo {
-            opacity: 1;
-            color: #fff;
-        }
-        & svg path {
-            fill: #fff;
-        }
-        &::before {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.4;
-            background-color: #000000;
-            content: '';
-            z-index: 0;
-        }
-    }
-`;
-
-const AddPhotoClassName = css`
-    position: absolute;
-    top: calc(50% - 24px);
-    left: calc(50% - 32px);
-    pointer-events: none;
-    font-size: 14px;
-    line-height: 1.29;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    & span {
-        display: block;
-        margin-top: 9px;
-    }
-`;
-
-const EditPhotoClassName = css`
-    opacity: 0;
-`;
-
-const CoverImgClassName = css`
-    width: 100%;
-    height: 100%;
-    display: block;
-`;
-
-interface CoverUploadProps {
-    src: string | null;
-    onClick: () => void;
-    coverUploading: boolean;
-}
-
-const CoverUpload = (props: CoverUploadProps) => {
-    const { src, coverUploading, onClick } = props;
-    return (
-        <div className={CoverWrapperClassName} onClick={onClick}>
-            {coverUploading && <XLoadingCircular color="#373754" />}
-            {!coverUploading && (
-                <>
-                    {src && (
-                        <>
-                            <img
-                                className={CoverImgClassName}
-                                src={
-                                    'https://ucarecdn.com/' +
-                                    src +
-                                    '/-/format/jpeg/-/scale_crop/200x200/center/-/progressive/yes/'
-                                }
-                            />
-                            <div
-                                className={`${cx(
-                                    AddPhotoClassName,
-                                    EditPhotoClassName,
-                                )} edit-photo`}
-                            >
-                                <AddPhotoIcon />
-                                <span>Edit photo</span>
-                            </div>
-                        </>
-                    )}
-                    {!src && (
-                        <div className={`${AddPhotoClassName} edit-photo`}>
-                            <AddPhotoIcon />
-                            <span>Add photo</span>
-                        </div>
-                    )}
-                </>
-            )}
-        </div>
-    );
-};
-
-interface OrganizationItemProps {
-    organization:
-        | MyOrganizations_myOrganizations
-        | Organization_organization
-        | OrganizationWithoutMembersFragment;
-    onSelect: (v: string) => void;
-    isSelected: boolean;
-}
-
-const CheckIconClassName = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 18px;
-    background-color: #1790ff;
-`;
-
-const OrganizationItem = (props: OrganizationItemProps) => {
-    const { isSelected, organization } = props;
-    return (
-        <XView
-            cursor="pointer"
-            flexShrink={0}
-            flexDirection="row"
-            alignItems="center"
-            paddingLeft={16}
-            paddingRight={20}
-            paddingVertical={8}
-            borderRadius={8}
-            backgroundColor={isSelected ? '#F5F5F6' : '#fff'}
-            hoverBackgroundColor="#F5F5F6"
-            onClick={() => props.onSelect(organization.id)}
-        >
-            <XAvatar
-                src={organization.photo || undefined}
-                objectName={organization.name}
-                objectId={organization.id}
-                style="colorus"
-            />
-            <XView flexDirection="column" flexGrow={1} marginLeft={16}>
-                <XView fontSize={15} fontWeight="600">
-                    {organization.name}
-                </XView>
-                <XView fontSize={14} color="rgba(0, 0, 0, 0.6)">
-                    {organization.isCommunity ? 'Community' : 'Organization'}
-                </XView>
-            </XView>
-            {isSelected && (
-                <div className={CheckIconClassName}>
-                    <CheckIcon />
-                </div>
-            )}
-        </XView>
-    );
-};
-
-const SelectOrganizationWrapperClassName = css`
-    display: flex;
-    position: relative;
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-direction: column;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-`;
-
-const InOtherOrganization = (props: { inOrgId: string }) => {
-    const client = useClient();
-    const data = client.useOrganizationWithoutMembers({ organizationId: props.inOrgId });
-    if (!data.organization) {
-        return (
-            <XView
-                flexShrink={0}
-                flexGrow={1}
-                flexDirection="column"
-                justifyContent="center"
-                marginTop={40}
-            >
-                <XLoader loading={true} height={40} />
-            </XView>
-        );
-    }
-
-    return (
-        <XView flexShrink={1} flexGrow={1} flexDirection="column">
-            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
-                Share with
-            </XView>
-            <div className={SelectOrganizationWrapperClassName}>
-                <OrganizationItem
-                    organization={data.organization}
-                    isSelected={true}
-                    onSelect={() => null}
-                />
-            </div>
-        </XView>
-    );
-};
-
-const OrganizationsList = (props: {
-    // organizations?: MyOrganizations_myOrganizations[];
-    onSelect: (v: string) => void;
-    selectedOrg: string | null;
-    inOrgId?: string;
-}) => {
-    const client = useClient();
-    const orgs = client.useWithoutLoaderMyOrganizations();
-    const userContext = React.useContext(UserInfoContext);
-    if (!orgs) {
-        return (
-            <XView
-                flexShrink={0}
-                flexGrow={1}
-                flexDirection="column"
-                justifyContent="center"
-                marginTop={40}
-            >
-                <XLoader loading={true} height={40} />
-            </XView>
-        );
-    }
-    let primaryOrganizationId = '';
-    if (userContext && userContext.organization) {
-        primaryOrganizationId = userContext.organization.id;
-    }
-
-    const inOrgId = props.inOrgId ? props.inOrgId : null;
-    let selectedOrg: MyOrganizations_myOrganizations | undefined | null = null;
-    let primaryOrg: MyOrganizations_myOrganizations | undefined | null = null;
-    if (inOrgId) {
-        selectedOrg = orgs.myOrganizations.find(a => a.id === inOrgId);
-        if (!selectedOrg) {
-            return <InOtherOrganization inOrgId={inOrgId} />;
-        }
-    }
-    if (primaryOrganizationId) {
-        primaryOrg = orgs.myOrganizations.find(a => a.id === primaryOrganizationId);
-    }
-
-    return (
-        <XView flexShrink={1} flexGrow={1} flexDirection="column">
-            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
-                Share with
-            </XView>
-            <div className={SelectOrganizationWrapperClassName}>
-                {inOrgId && selectedOrg && (
-                    <OrganizationItem
-                        organization={selectedOrg}
-                        onSelect={props.onSelect}
-                        isSelected={
-                            props.selectedOrg
-                                ? props.selectedOrg === inOrgId
-                                : primaryOrganizationId === inOrgId
-                        }
-                    />
-                )}
-                {!inOrgId && primaryOrg && (
-                    <OrganizationItem
-                        organization={primaryOrg}
-                        onSelect={props.onSelect}
-                        isSelected={
-                            props.selectedOrg ? props.selectedOrg === primaryOrganizationId : true
-                        }
-                    />
-                )}
-                {orgs.myOrganizations
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(i => {
-                        if (inOrgId && i.id === inOrgId) {
-                            return;
-                        }
-                        if (primaryOrganizationId === i.id && !inOrgId) {
-                            return;
-                        }
-                        return (
-                            <OrganizationItem
-                                organization={i}
-                                key={'org_' + i.id}
-                                onSelect={props.onSelect}
-                                isSelected={
-                                    props.selectedOrg
-                                        ? props.selectedOrg === i.id
-                                        : primaryOrganizationId === i.id
-                                }
-                            />
-                        );
-                    })}
-            </div>
-        </XView>
-    );
-};
-
-interface SearchPeopleBoxProps {
-    value: { label: string; value: string }[] | null;
-    onInputChange: (data: string) => string;
-    onChange: (data: { label: string; value: string }[] | null) => void;
-}
-
-const SearchPeopleBox = (props: SearchPeopleBoxProps) => (
-    <XSelect
-        multi={true}
-        render={
-            <XSelectCustomUsersRender
-                popper={false}
-                placeholder="Search"
-                onInputChange={props.onInputChange}
-                onChange={data => props.onChange(data as any)}
-                options={props.value || []}
-                value={props.value || []}
-            />
-        }
-    />
-);
-
-interface ExplorePeopleProps {
-    variables: { query?: string };
-    searchQuery: string;
-    selectedUsers: Map<string, string> | null;
-    onPick: (label: string, value: string) => void;
-}
-
-const UsersPickerWrapperClassName = css`
-    display: flex;
-    position: relative;
-    flex-grow: 1;
-    flex-shrink: 1;
-    margin-top: 16px;
-    overflow: scroll;
-    padding-left: 16px;
-    padding-right: 16px;
-    flex-direction: column;
-    -webkit-overflow-scrolling: touch;
-`;
-
-const ExplorePeople = (props: ExplorePeopleProps) => {
-    const client = useClient();
-
-    const data = client.useExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
-
-    if (!data.items) {
-        return (
-            <XView flexGrow={1} flexShrink={0}>
-                <XLoader loading={true} />
-            </XView>
-        );
-    }
-
-    return (
-        <XView flexGrow={1} flexShrink={1} paddingHorizontal={16} marginTop={16} overflow="hidden">
-            <div className={UsersPickerWrapperClassName}>
-                {data.items.edges.map(i => {
-                    if (
-                        (props as any).selectedUsers &&
-                        (props as any).selectedUsers.has(i.node.id)
-                    ) {
-                        return null;
-                    }
-                    return (
-                        <XView
-                            key={i.node.id}
-                            flexShrink={0}
-                            onClick={() => (props as any).onPick(i.node.name, i.node.id)}
-                        >
-                            <XUserCard user={i.node} noPath={true} customButton={null} />
-                        </XView>
-                    );
-                })}
-            </div>
         </XView>
     );
 };
