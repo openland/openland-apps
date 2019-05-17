@@ -113,11 +113,14 @@ const InOtherOrganization = (props: { inOrgId: string }) => {
     );
 };
 
-export const OrganizationsList = (props: {
-    // organizations?: MyOrganizations_myOrganizations[];
-    onSelect: (v: string) => void;
-    selectedOrg: string | null;
-    inOrgId?: string;
+export const OrganizationsList = ({
+    onChange,
+    value,
+    inOrgId = null,
+}: {
+    onChange: (v: string) => void;
+    value: string | null;
+    inOrgId?: string | null;
 }) => {
     const client = useClient();
     const orgs = client.useWithoutLoaderMyOrganizations();
@@ -140,7 +143,6 @@ export const OrganizationsList = (props: {
         primaryOrganizationId = userContext.organization.id;
     }
 
-    const inOrgId = props.inOrgId ? props.inOrgId : null;
     let selectedOrg: MyOrganizations_myOrganizations | undefined | null = null;
     let primaryOrg: MyOrganizations_myOrganizations | undefined | null = null;
     if (inOrgId) {
@@ -162,21 +164,15 @@ export const OrganizationsList = (props: {
                 {inOrgId && selectedOrg && (
                     <OrganizationItem
                         organization={selectedOrg}
-                        onSelect={props.onSelect}
-                        isSelected={
-                            props.selectedOrg
-                                ? props.selectedOrg === inOrgId
-                                : primaryOrganizationId === inOrgId
-                        }
+                        onSelect={onChange}
+                        isSelected={value ? value === inOrgId : primaryOrganizationId === inOrgId}
                     />
                 )}
                 {!inOrgId && primaryOrg && (
                     <OrganizationItem
                         organization={primaryOrg}
-                        onSelect={props.onSelect}
-                        isSelected={
-                            props.selectedOrg ? props.selectedOrg === primaryOrganizationId : true
-                        }
+                        onSelect={onChange}
+                        isSelected={value ? value === primaryOrganizationId : true}
                     />
                 )}
                 {orgs.myOrganizations
@@ -192,12 +188,8 @@ export const OrganizationsList = (props: {
                             <OrganizationItem
                                 organization={i}
                                 key={'org_' + i.id}
-                                onSelect={props.onSelect}
-                                isSelected={
-                                    props.selectedOrg
-                                        ? props.selectedOrg === i.id
-                                        : primaryOrganizationId === i.id
-                                }
+                                onSelect={onChange}
+                                isSelected={value ? value === i.id : primaryOrganizationId === i.id}
                             />
                         );
                     })}

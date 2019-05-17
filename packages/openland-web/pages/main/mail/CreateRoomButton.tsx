@@ -14,14 +14,22 @@ interface CreateRoomButtonProps {
     children: any;
 }
 
-export const CreateRoomButton = (props: CreateRoomButtonProps) => {
+export const CreateRoomButton = ({
+    imageUuid,
+    title,
+    kind,
+    members,
+    organizationId,
+    isChannel,
+    children,
+}: CreateRoomButtonProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
     let photoRef: { uuid: string } | null;
-    if ((props as any).imageUuid) {
+    if (imageUuid) {
         photoRef = {
-            uuid: (props as any).imageUuid,
+            uuid: imageUuid,
         };
     }
 
@@ -29,19 +37,19 @@ export const CreateRoomButton = (props: CreateRoomButtonProps) => {
         <XMutation
             action={async () => {
                 const returnedData = await client.mutateRoomCreate({
-                    title: props.title,
-                    kind: props.kind,
-                    members: [...props.members],
-                    organizationId: props.organizationId || '',
-                    photoRef: photoRef,
-                    channel: (props as any).isChannel,
+                    title,
+                    kind,
+                    photoRef,
+                    members: [...members],
+                    organizationId: organizationId || '',
+                    channel: isChannel,
                 });
 
                 const roomId: string = returnedData.room.id as string;
                 router.replace('/mail/' + roomId);
             }}
         >
-            {props.children}
+            {children}
         </XMutation>
     );
 };
