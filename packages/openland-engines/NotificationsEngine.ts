@@ -1,6 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
-import { SettingsQuery, RoomQuery } from 'openland-api';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { SettingsQuery, RoomTinyQuery } from 'openland-api';
+import { RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
@@ -97,10 +97,10 @@ export class NotificationsEngine {
     handleIncomingMessage = async (cid: string, msg: any) => {
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
 
-        let room = (await this.engine.client.client.query(RoomQuery, { id: cid })).room!;
-        let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
+        let room = (await this.engine.client.client.query(RoomTinyQuery, { id: cid })).room!;
+        let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
         let privateRoom =
-            room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
+            room.__typename === 'PrivateRoom' ? (room as RoomTiny_room_PrivateRoom) : null;
 
         if (settings.desktopNotifications === 'NONE') {
             return;

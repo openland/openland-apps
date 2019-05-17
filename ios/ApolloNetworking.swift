@@ -71,7 +71,7 @@ class ApolloNetworking {
   }
   
   func startRequest(id: String, body: JSON) {
-    NSLog("[SpaceX-Apollo]: Start Request " + id)
+    NSLog("[SpaceX-Apollo]: Start Request " + id + " [" + body["name"].stringValue + "]")
     queue.async {
       if self.state == .waiting || self.state == .connecting {
         // Add to pending buffer if we are not connected already
