@@ -222,26 +222,15 @@ interface CreateGroupInnerProps {
 // 1) extract input with title
 // 2) check everything is working
 
-// {titleError && (
-//     <XView
-//         color="#d75454"
-//         paddingLeft={16}
-//         marginTop={8}
-//         fontSize={12}
-//     >
-//         {`Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`}
-//     </XView>
-// )}
-
-// const InputInvalidStyledClassName = css`
-//     border-bottom-left-radius: 0 !important;
-//     border-bottom-right-radius: 0 !important;
-//     border-color: transparent !important;
-//     border-bottom: 1px solid #d75454 !important;
-//     & .input-placeholder {
-//         color: #d75454 !important;
-//     }
-// `;
+const InputInvalidStyledClassName = css`
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-color: transparent !important;
+    border-bottom: 1px solid #d75454 !important;
+    & .input-placeholder {
+        color: #d75454 !important;
+    }
+`;
 
 const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInnerProps) => {
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
@@ -250,8 +239,15 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
     const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
     let options: { label: string; value: string }[] = [];
 
+    let chatTypeStr = isChannel ? 'Channel' : 'Group';
+
     let form = useForm();
-    let titleField = useField('input.title', '', form);
+    let titleField = useField('input.title', '', form, [
+        {
+            checkIsValid: value => !!value,
+            text: `Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`,
+        },
+    ]);
     let typeField = useField<SharedRoomKind>(
         'input.type',
         inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
@@ -303,7 +299,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                 });
             }
 
-            doSubmit({
+            await doSubmit({
                 membersToAdd: membersIds,
             });
         });
@@ -311,7 +307,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
 
     const onSkip = React.useCallback(() => {
         form.doAction(async () => {
-            doSubmit({
+            await doSubmit({
                 membersToAdd: [myId],
             });
         });
@@ -325,7 +321,15 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
         typeField.input.onChange(data);
     };
 
-    const handleAddMembers = () => {
+    const onNext = async () => {
+        await form.doAction(() => {
+            //
+        });
+
+        if (titleField.input.errorText) {
+            return;
+        }
+
         if (typeField.value) {
             setSettingsPage(false);
         } else {
@@ -361,8 +365,6 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
         setSelectedUsers(selected);
     };
 
-    let chatTypeStr = isChannel ? 'Channel' : 'Group';
-
     return (
         <MainWrapper back={!settingsPage} onBackClick={handleBackClick} isChannel={isChannel}>
             {settingsPage && (
@@ -378,7 +380,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                         <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
                             {`New ${chatTypeStr.toLocaleLowerCase()}`}
                         </XView>
-                        <XButton style="primary" text="Next" onClick={handleAddMembers} />
+                        <XButton style="primary" text="Next" onClick={onNext} />
                     </XView>
                     <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
                         <CoverUpload onCoverSelect={setCoverSrc} />
@@ -390,8 +392,19 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                                     className={cx(
                                         InputStyledClassName,
                                         titleField.value !== '' && InputValueStyledClassName,
+                                        titleField.input.invalid && InputInvalidStyledClassName,
                                     )}
                                 />
+                                {titleField.input.invalid && (
+                                    <XView
+                                        color="#d75454"
+                                        paddingLeft={16}
+                                        marginTop={8}
+                                        fontSize={12}
+                                    >
+                                        {titleField.input.errorText}
+                                    </XView>
+                                )}
                             </XView>
                             <div className={SelectGroupTypeClassName}>
                                 <SelectWithDropdown
