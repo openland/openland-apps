@@ -8,6 +8,7 @@ import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
+import { RoomNano } from 'openland-api/fragments/RoomNano';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -239,6 +240,15 @@ export const RoomQuery = gql`
     ${RoomFull}
     ${UserShort}
     ${OrganizationMedium}
+`;
+
+export const RoomPicoQuery = gql`
+    query RoomPico($id: ID!) {
+        room(id: $id) {
+            ...RoomNano
+        }
+    }
+    ${RoomNano}
 `;
 
 export const RoomChatQuery = gql`

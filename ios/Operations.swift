@@ -952,6 +952,36 @@ private let RoomFullWithoutMembersSelector = obj(
             ))
         )
 
+private let RoomNanoSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("user","user", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("name","name", notNull(scalar("String"))),
+                        field("photo","photo", scalar("String"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("isChannel","isChannel", notNull(scalar("Boolean"))),
+                field("kind","kind", notNull(scalar("String"))),
+                field("photo","photo", notNull(scalar("String"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("title","title", notNull(scalar("String")))
+            ))
+        )
+
 private let SessionStateFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("isAccountActivated","isAccountActivated", notNull(scalar("Boolean"))),
@@ -1713,6 +1743,12 @@ private let RoomMembersShortSelector = obj(
                             field("id","id", notNull(scalar("ID")))
                         )))
                 )))))
+        )
+private let RoomPicoSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("Room", RoomNanoSelector)
+                ))
         )
 private let RoomSearchSelector = obj(
             field("betaRoomSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
@@ -2946,6 +2982,12 @@ class Operations {
         "query RoomMembersShort($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id}}}",
         RoomMembersShortSelector
     )
+    let RoomPico = OperationDefinition(
+        "RoomPico",
+        .query, 
+        "query RoomPico($id:ID!){room(id:$id){__typename ...RoomNano}}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}",
+        RoomPicoSelector
+    )
     let RoomSearch = OperationDefinition(
         "RoomSearch",
         .query, 
@@ -3724,6 +3766,7 @@ class Operations {
         if name == "RoomMembersForMentionsPaginated" { return RoomMembersForMentionsPaginated }
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
         if name == "RoomMembersShort" { return RoomMembersShort }
+        if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
         if name == "RoomSearchText" { return RoomSearchText }
         if name == "RoomSuper" { return RoomSuper }

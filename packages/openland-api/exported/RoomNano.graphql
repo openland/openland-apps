@@ -1,0 +1,29 @@
+fragment RoomNano on Room {
+  __typename
+  ... on PrivateRoom {
+    id
+    settings {
+      __typename
+      id
+      mute
+    }
+    user {
+      __typename
+      id
+      name
+      photo
+    }
+  }
+  ... on SharedRoom {
+    id
+    isChannel
+    kind
+    photo
+    settings {
+      __typename
+      id
+      mute
+    }
+    title
+  }
+}
