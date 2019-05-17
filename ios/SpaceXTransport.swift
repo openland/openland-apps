@@ -111,10 +111,12 @@ class SpaceXTransport: NetworkingDelegate {
   
   func onError(id: String, error: JSON) {
     self.liveOperations[id]?.callback(TransportResult.error(error: error))
+    self.liveOperations.removeValue(forKey: id)
   }
   
   func onCompleted(id: String) {
     self.liveOperations[id]?.callback(TransportResult.completed)
+    self.liveOperations.removeValue(forKey: id)
   }
   
   func onSessiontRestart() {
