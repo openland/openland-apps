@@ -22,6 +22,7 @@ protocol RunningOperation {
 
 fileprivate class PendingOperation: RunningOperation {
   let id: String
+  var requestId: String
   let operation: OperationDefinition
   var variables: JSON
   weak var parent: SpaceXTransport?
@@ -30,47 +31,25 @@ fileprivate class PendingOperation: RunningOperation {
   init(
     parent: SpaceXTransport,
     id: String,
+    requestId: String,
     operation: OperationDefinition,
     variables: JSON,
     callback: @escaping (TransportResult) -> Void
   ) {
     self.parent = parent
     self.id = id
+    self.requestId = requestId
     self.operation = operation
     self.variables = variables
     self.callback = callback
   }
   
-  func start() {
-    self.parent!.queue.async {
-      self.parent!.liveOperations[self.id] = self
-      self.parent!.connection.startRequest(id: self.id, body: JSON([
-        "query": self.operation.body,
-        "name": self.operation.name,
-        "variables": self.variables
-      ]))
-    }
-  }
-  
-  func restart() {
-    self.parent!.queue.async {
-      self.parent!.connection.startRequest(id: self.id, body: JSON([
-        "query": self.operation.body,
-        "name": self.operation.name,
-        "variables": self.variables
-      ]))
-    }
-  }
-  
   func cancel() {
-    self.parent!.queue.async {
-      self.parent!.liveOperations.removeValue(forKey: self.id)
-      self.parent!.connection.stopRequest(id: self.id)
-    }
+    self.parent?.onClose(id: self.id)
   }
   
   func updateVariables(variables: JSON) {
-    self.variables = variables
+    self.parent?.onUpdateVariables(id: self.id, variables: variables)
   }
 }
 
@@ -81,7 +60,10 @@ class SpaceXTransport: NetworkingDelegate {
   var connectionCallback: ((Bool) -> Void)?
   private let nextId = AtomicInteger(value: 1)
   fileprivate var connection: ApolloNetworking
+  
+  fileprivate var liveOperationsIds: [String: String] = [:]
   fileprivate var liveOperations: [String: PendingOperation] = [:]
+  
   fileprivate var connected = false
   fileprivate let queue = DispatchQueue(label: "transport")
   
@@ -100,28 +82,113 @@ class SpaceXTransport: NetworkingDelegate {
     handler: @escaping (TransportResult) -> Void
   ) -> RunningOperation {
     let id: String = "\(nextId.getAndIncrement())"
-    let pending = PendingOperation(parent: self, id: id, operation: operation, variables: variables, callback: handler)
-    pending.start()
+    let pending = PendingOperation(parent: self, id: id, requestId: id, operation: operation, variables: variables, callback: handler)
+    self.queue.async {
+      
+      // Save operation
+      self.liveOperations[id] = pending
+      self.liveOperationsIds[id] = id
+      
+      // Start operation
+      self.flushQueryStart(operation: pending)
+    }
     return pending
   }
   
+  func close() {
+    queue.sync {
+      self.connection.close()
+    }
+  }
+  
+  //
+  // Operation control
+  //
+  
+  func onUpdateVariables(id: String, variables: JSON) {
+    self.queue.async {
+      if let op = self.liveOperations[id] {
+        op.variables = variables
+      }
+    }
+  }
+  
+  func onClose(id: String) {
+    self.queue.async {
+      if let op = self.liveOperations[id] {
+        
+        // Stop Query
+        self.flushQueryStop(operation: op)
+        
+        // Remove from callbacks
+        self.liveOperations.removeValue(forKey: id)
+        self.liveOperationsIds.removeValue(forKey: op.requestId)
+      }
+    }
+  }
+  
+  //
+  // Operation Callbacks
+  //
+  
   func onResponse(id: String, data: JSON) {
-    self.liveOperations[id]?.callback(TransportResult.result(data: data))
+    if let rid = self.liveOperationsIds[id] {
+      if let op = self.liveOperations[rid] {
+        op.callback(TransportResult.result(data: data))
+      }
+    }
   }
   
   func onError(id: String, error: JSON) {
-    self.liveOperations[id]?.callback(TransportResult.error(error: error))
-    self.liveOperations.removeValue(forKey: id)
+    if let rid = self.liveOperationsIds[id] {
+      if let op = self.liveOperations[rid] {
+        op.callback(TransportResult.error(error: error))
+        self.liveOperations.removeValue(forKey: rid)
+        self.liveOperationsIds.removeValue(forKey: id)
+      }
+    }
   }
   
   func onCompleted(id: String) {
-    self.liveOperations[id]?.callback(TransportResult.completed)
-    self.liveOperations.removeValue(forKey: id)
+    if let rid = self.liveOperationsIds[id] {
+      if let op = self.liveOperations[rid] {
+        op.callback(TransportResult.completed)
+        self.liveOperations.removeValue(forKey: rid)
+        self.liveOperationsIds.removeValue(forKey: id)
+      }
+    }
   }
+  
+  func onTryAgain(id: String, delay: Int) {
+    if let rid = self.liveOperationsIds[id] {
+      if let op = self.liveOperations[rid] {
+        
+        // Stop existing
+        self.flushQueryStop(operation: op)
+        
+        // Regenerate ID
+        let retryId = "\(nextId.getAndIncrement())"
+        op.requestId = retryId
+        self.liveOperationsIds.removeValue(forKey: id)
+        self.liveOperationsIds[retryId] = rid
+        
+        // Schedule restart
+        self.queue.asyncAfter(deadline: .now() + Double(delay)) {
+          if self.liveOperationsIds[retryId] != nil {
+            self.flushQueryStart(operation: op)
+          }
+        }
+      }
+    }
+  }
+  
+  //
+  // Session Callbacks
+  //
   
   func onSessiontRestart() {
     for l in self.liveOperations {
-      l.value.restart()
+      self.flushQueryStart(operation: l.value)
     }
   }
   
@@ -133,9 +200,15 @@ class SpaceXTransport: NetworkingDelegate {
     self.connectionCallback?(false)
   }
   
-  func close() {
-    queue.async {
-      self.connection.close()
-    }
+  private func flushQueryStart(operation: PendingOperation) {
+    self.connection.startRequest(id: operation.requestId, body: JSON([
+      "query": operation.operation.body,
+      "name": operation.operation.name,
+      "variables": operation.variables
+    ]))
+  }
+  
+  private func flushQueryStop(operation: PendingOperation) {
+     self.connection.stopRequest(id: operation.requestId)
   }
 }

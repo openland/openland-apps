@@ -160,7 +160,7 @@ class ApolloNetworking {
   }
   
   private func onReceived(message: String) {
-    print("[SpaceX-Apollo]: << " + message)
+    // print("[SpaceX-Apollo]: << " + message)
     
     let parsed = JSON(parseJSON: message)
     let type = parsed["type"].stringValue
@@ -190,22 +190,35 @@ class ApolloNetworking {
       let payload = parsed["payload"]
       let errors = payload["errors"]
       let data = payload["data"]
-      NSLog("[SpaceX-Apollo]: Data (" + id + ")")
       if errors.exists() {
+        var shouldRetry = false
+        if let arr = errors.array {
+          for a in arr {
+            if a["shouldRetry"].bool == true {
+              shouldRetry = true
+            }
+          }
+        }
         self.callbackQueue.async {
-          self.delegate?.onError(id: id, error: errors)
+          if shouldRetry {
+            NSLog("[SpaceX-Apollo]: Should Retry (" + id + ")")
+            self.delegate?.onTryAgain(id: id, delay: 5)
+          } else {
+            NSLog("[SpaceX-Apollo]: Error (" + id + ")")
+            self.delegate?.onError(id: id, error: errors)
+          }
         }
       } else {
+        NSLog("[SpaceX-Apollo]: Data (" + id + ")")
         self.callbackQueue.async {
           self.delegate?.onResponse(id: id, data: data)
         }
       }
     } else if type == "error" {
       let id = parsed["id"].stringValue
-      NSLog("[SpaceX-Apollo]: Error (" + id + ")")
-      let payload = parsed["payload"]
+      NSLog("[SpaceX-Apollo]: Critical Error (" + id + "): Retrying")
       self.callbackQueue.async {
-        self.delegate?.onError(id: id, error: payload)
+        self.delegate?.onTryAgain(id: id, delay: 5)
       }
     } else if type == "complete" {
       let id = parsed["id"].stringValue
@@ -282,7 +295,7 @@ class ApolloNetworking {
   
   private func writeToSocket(msg: JSON) {
     let txt = serializeJson(json: msg)
-    print("[SpaceX-Apollo]: >> \(txt)")
+    // print("[SpaceX-Apollo]: >> \(txt)")
     self.client!.write(string: txt)
   }
 }
