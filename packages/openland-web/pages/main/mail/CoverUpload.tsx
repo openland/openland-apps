@@ -2,6 +2,8 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import AddPhotoIcon from 'openland-icons/ic-photo-create-room.svg';
+import UploadCare from 'uploadcare-widget';
+import { getConfig } from '../../../config';
 
 const CoverWrapperClassName = css`
     width: 120px;
@@ -65,26 +67,42 @@ const CoverImgClassName = css`
     display: block;
 `;
 
-interface CoverUploadProps {
-    src: string | null;
-    onClick: () => void;
-    coverUploading: boolean;
-}
+export const CoverUpload = ({ onCoverSelect }: { onCoverSelect: (a: string | null) => void }) => {
+    const [coverSrc, setCoverSrc] = React.useState<string | null>('');
+    const [coverUploading, setCoverUploading] = React.useState(false);
 
-export const CoverUpload = (props: CoverUploadProps) => {
-    const { src, coverUploading, onClick } = props;
+    const handleSetCover = () => {
+        let dialog = UploadCare.openDialog(null, {
+            publicKey: getConfig().uploadcareKey!!,
+        });
+        dialog.done(res => {
+            res.progress(r => {
+                setCoverUploading(true);
+
+                setCoverSrc('');
+                onCoverSelect('');
+            });
+            res.done(r => {
+                setCoverUploading(false);
+
+                setCoverSrc(r.uuid);
+                onCoverSelect(r.uuid);
+            });
+        });
+    };
+
     return (
-        <div className={CoverWrapperClassName} onClick={onClick}>
+        <div className={CoverWrapperClassName} onClick={handleSetCover}>
             {coverUploading && <XLoadingCircular color="#373754" />}
             {!coverUploading && (
                 <>
-                    {src && (
+                    {coverSrc && (
                         <>
                             <img
                                 className={CoverImgClassName}
                                 src={
                                     'https://ucarecdn.com/' +
-                                    src +
+                                    coverSrc +
                                     '/-/format/jpeg/-/scale_crop/200x200/center/-/progressive/yes/'
                                 }
                             />
@@ -99,7 +117,7 @@ export const CoverUpload = (props: CoverUploadProps) => {
                             </div>
                         </>
                     )}
-                    {!src && (
+                    {!coverSrc && (
                         <div className={`${AddPhotoClassName} edit-photo`}>
                             <AddPhotoIcon />
                             <span>Add photo</span>

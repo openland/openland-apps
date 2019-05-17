@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import UploadCare from 'uploadcare-widget';
-import { getConfig } from '../../../config';
 import { SharedRoomKind } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withUserInfo } from 'openland-web/components/UserInfo';
@@ -255,14 +253,13 @@ interface CreateGroupInnerProps {
 }
 
 const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInnerProps) => {
+    const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [title, setTitle] = React.useState('');
     const [titleError, setTitleError] = React.useState(false);
     const [type, setType] = React.useState<SharedRoomKind>(
         inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
     );
-    const [coverSrc, setCoverSrc] = React.useState<string | null>('');
-    const [coverUploading, setCoverUploading] = React.useState(false);
     const [selectedOrg, setSelectedOrg] = React.useState<string | null>(inOrgId ? inOrgId : null);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
     const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
@@ -278,26 +275,6 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
         }
         setSelectedOrg(inOrgId ? inOrgId : null);
         setType(data);
-    };
-
-    const handleSetCover = () => {
-        let dialog = UploadCare.openDialog(null, {
-            publicKey: getConfig().uploadcareKey!!,
-        });
-        dialog.done(res => {
-            res.progress(r => {
-                setCoverSrc('');
-                setCoverUploading(true);
-            });
-            res.done(r => {
-                setCoverSrc(r.uuid);
-                setCoverUploading(false);
-            });
-        });
-    };
-
-    const onOrganizationSelect = (v: string) => {
-        setSelectedOrg(v);
     };
 
     const handleAddMembers = () => {
@@ -369,11 +346,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                         <XButton style="primary" text="Next" onClick={handleAddMembers} />
                     </XView>
                     <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
-                        <CoverUpload
-                            src={coverSrc}
-                            coverUploading={coverUploading}
-                            onClick={handleSetCover}
-                        />
+                        <CoverUpload onCoverSelect={setCoverSrc} />
                         <XView flexGrow={1} flexShrink={0} flexDirection="column" marginLeft={20}>
                             <XView flexGrow={1} flexShrink={0} marginBottom={16}>
                                 <XInput
@@ -411,7 +384,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
                     </XView>
                     {type === SharedRoomKind.PUBLIC && (
                         <OrganizationsList
-                            onSelect={onOrganizationSelect}
+                            onSelect={setSelectedOrg}
                             selectedOrg={selectedOrg}
                             inOrgId={inOrgId}
                         />
