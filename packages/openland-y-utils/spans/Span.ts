@@ -82,7 +82,9 @@ export const WhiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
 export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
     '*': { type: MessageSpanType.Bold },
     '```': { type: MessageSpanType.CodeBlock, master: true },
+    '\'\'\'': { type: MessageSpanType.CodeBlock, master: true },
     '`': { type: MessageSpanType.InlineCode },
+    '\'': { type: MessageSpanType.InlineCode },
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
     '_': { type: MessageSpanType.Italic },
@@ -90,14 +92,14 @@ export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?
     '🔄': { type: MessageSpanType.Rotating },
 };
 
-export const SpanTypeToSymbol: { [key: string]: { symbol: string, opened?: boolean }} = {
-    'bold': { symbol: '*' },
-    'code_block': { symbol: '```' },
-    'code_inline': { symbol: '`' },
-    'insane': { symbol: '🌈' },
-    'irony': { symbol: '~' },
-    'italic': { symbol: '_' },
-    'loud': { symbol: ':' },
-    'rotating': { symbol: '🔄' },
-    'mention_user': { symbol: '@', opened: true },
+export const SpanTypeToSymbol: { [key: string]: { symbol: string[], opened?: boolean }} = {
+    'bold': { symbol: ['*'] },
+    'code_block': { symbol: ['```', '\'\'\''] },
+    'code_inline': { symbol: ['`', '\''] },
+    'insane': { symbol: ['🌈'] },
+    'irony': { symbol: ['~'] },
+    'italic': { symbol: ['_'] },
+    'loud': { symbol: [':'] },
+    'rotating': { symbol: ['🔄'] },
+    'mention_user': { symbol: ['@'], opened: true },
 };
