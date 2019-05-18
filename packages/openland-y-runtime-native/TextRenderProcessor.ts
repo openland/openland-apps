@@ -7,8 +7,16 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbol: string, opened?: boolean) {
-        if (['*', '_', ':', '@', '~', '`', '```'].includes(symbol)) {
+    cropSpecSymbols(spans: Span[], parent: Span, symbol: string[], opened?: boolean) {
+        let needCrop = false;
+
+        symbol.map(s => {
+            if (['*', '_', ':', '@', '~', '`', '\'', '```', '\'\'\''].includes(s)) {
+                needCrop = true;
+            }
+        });
+
+        if (needCrop) {
             return cropSpecSymbols(spans, parent, symbol, opened);
         }
 

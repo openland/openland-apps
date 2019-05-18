@@ -11,7 +11,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         });
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbol: string, opened?: boolean) {
+    cropSpecSymbols(spans: Span[], parent: Span, symbol: string[], opened?: boolean) {
         return cropSpecSymbols(spans, parent, symbol, opened);
     }
 };
