@@ -197,10 +197,15 @@ export abstract class BridgedClient implements GraphqlClient {
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         let id = this.nextKey();
         let queue = new Queue();
-        this.handlersMap.set(id, id);
+        var variables = vars
+        var currentId = id
+        this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
             if (error) {
-                throwFatalError('Subscriptions can\'t throw errors');
+                log.warn('Received subscription error: restarting');
+                this.handlersMap.delete(currentId);
+                currentId = this.nextKey()
+                this.postSubscribe(currentId, subscription, variables);
             } else {
                 queue.post(data);
             }
@@ -211,9 +216,12 @@ export abstract class BridgedClient implements GraphqlClient {
                 return queue.get()
             },
             updateVariables: (vars2: TVars) => {
+                variables = vars2
                 this.postSubscribeUpdate(id, vars2);
             },
             destroy: () => {
+                this.handlersMap.delete(currentId);
+                this.handlers.delete(id);
                 this.postUnsubscribe(id);
             }
         }

@@ -17,6 +17,8 @@ func serializeJson(json: JSON) -> String {
   }
 }
 
+typealias AbortFunc = () -> Void
+
 func measure<A>(_ name: String, _ f: @autoclosure () -> A) -> A {
   let startTime = CFAbsoluteTimeGetCurrent()
   let result = f()

@@ -1,5 +1,5 @@
 //
-//  WebSocketTransport.swift
+//  SpaceXTransportScheduler.swift
 //  openland
 //
 //  Created by Steve Kite on 5/13/19.
@@ -9,206 +9,117 @@
 import Foundation
 import SwiftyJSON
 
-enum TransportResult {
+enum SpaceXTransportOperationResult {
   case result(data: JSON)
   case error(error: JSON)
-  case completed
 }
 
-protocol RunningOperation {
-  func cancel()
-  func updateVariables(variables: JSON)
+enum SpaceXTransportSubscriptionResult {
+  case result(data: JSON)
+  case error(error: JSON)
 }
 
-fileprivate class PendingOperation: RunningOperation {
-  let id: String
-  var requestId: String
-  let operation: OperationDefinition
-  var variables: JSON
-  weak var parent: SpaceXTransport?
-  let callback: (TransportResult) -> Void
-  
-  init(
-    parent: SpaceXTransport,
-    id: String,
-    requestId: String,
-    operation: OperationDefinition,
-    variables: JSON,
-    callback: @escaping (TransportResult) -> Void
-  ) {
-    self.parent = parent
-    self.id = id
-    self.requestId = requestId
-    self.operation = operation
-    self.variables = variables
-    self.callback = callback
-  }
-  
-  func cancel() {
-    self.parent?.onClose(id: self.id)
-  }
-  
-  func updateVariables(variables: JSON) {
-    self.parent?.onUpdateVariables(id: self.id, variables: variables)
-  }
-}
-
-class SpaceXTransport: NetworkingDelegate {
-  
+class SpaceXTransport {
   let url: String
   let params: [String: String?]
-  var connectionCallback: ((Bool) -> Void)?
-  private let nextId = AtomicInteger(value: 1)
-  fileprivate var connection: ApolloNetworking
-  
-  fileprivate var liveOperationsIds: [String: String] = [:]
-  fileprivate var liveOperations: [String: PendingOperation] = [:]
-  
-  fileprivate var connected = false
-  fileprivate let queue = DispatchQueue(label: "transport")
+  private let queue = DispatchQueue(label: "spacex-transport")
+  private let transport: TransportState
+  var connected: Bool = false
+  var onConnected: (() -> Void)?
+  var onDisconnected: (() -> Void)?
   
   init(url: String, params: [String: String?]) {
+    NSLog("[SpaceX-Alloc]: init SpaceXTransportScheduler")
     self.url = url
     self.params = params
-    self.connection = ApolloNetworking(url: self.url, params: self.params)
-    self.connection.delegate = self
-    self.connection.callbackQueue = queue
-    self.connection.connect()
-  }
-  
-  func operation(
-    operation: OperationDefinition,
-    variables: JSON,
-    handler: @escaping (TransportResult) -> Void
-  ) -> RunningOperation {
-    let id: String = "\(nextId.getAndIncrement())"
-    let pending = PendingOperation(parent: self, id: id, requestId: id, operation: operation, variables: variables, callback: handler)
-    self.queue.async {
-      
-      // Save operation
-      self.liveOperations[id] = pending
-      self.liveOperationsIds[id] = id
-      
-      // Start operation
-      self.flushQueryStart(operation: pending)
-    }
-    return pending
-  }
-  
-  func close() {
-    queue.sync {
-      self.connection.close()
-    }
-  }
-  
-  //
-  // Operation control
-  //
-  
-  func onUpdateVariables(id: String, variables: JSON) {
-    self.queue.async {
-      if let op = self.liveOperations[id] {
-        op.variables = variables
-      }
-    }
-  }
-  
-  func onClose(id: String) {
-    self.queue.async {
-      if let op = self.liveOperations[id] {
-        
-        // Stop Query
-        self.flushQueryStop(operation: op)
-        
-        // Remove from callbacks
-        self.liveOperations.removeValue(forKey: id)
-        self.liveOperationsIds.removeValue(forKey: op.requestId)
-      }
-    }
-  }
-  
-  //
-  // Operation Callbacks
-  //
-  
-  func onResponse(id: String, data: JSON) {
-    if let rid = self.liveOperationsIds[id] {
-      if let op = self.liveOperations[rid] {
-        op.callback(TransportResult.result(data: data))
-      }
-    }
-  }
-  
-  func onError(id: String, error: JSON) {
-    if let rid = self.liveOperationsIds[id] {
-      if let op = self.liveOperations[rid] {
-        op.callback(TransportResult.error(error: error))
-        self.liveOperations.removeValue(forKey: rid)
-        self.liveOperationsIds.removeValue(forKey: id)
-      }
-    }
-  }
-  
-  func onCompleted(id: String) {
-    if let rid = self.liveOperationsIds[id] {
-      if let op = self.liveOperations[rid] {
-        op.callback(TransportResult.completed)
-        self.liveOperations.removeValue(forKey: rid)
-        self.liveOperationsIds.removeValue(forKey: id)
-      }
-    }
-  }
-  
-  func onTryAgain(id: String, delay: Int) {
-    if let rid = self.liveOperationsIds[id] {
-      if let op = self.liveOperations[rid] {
-        
-        // Stop existing
-        self.flushQueryStop(operation: op)
-        
-        // Regenerate ID
-        let retryId = "\(nextId.getAndIncrement())"
-        op.requestId = retryId
-        self.liveOperationsIds.removeValue(forKey: id)
-        self.liveOperationsIds[retryId] = rid
-        
-        // Schedule restart
-        self.queue.asyncAfter(deadline: .now() + Double(delay)) {
-          if self.liveOperationsIds[retryId] != nil {
-            self.flushQueryStart(operation: op)
+    self.transport = TransportState(url: url, params: params)
+    self.transport.connectionCallback = { connected in
+      self.queue.async {
+        if self.connected != connected {
+          self.connected = connected
+          if connected {
+            self.onConnected?()
+          } else {
+            self.onDisconnected?()
           }
         }
       }
     }
   }
   
-  //
-  // Session Callbacks
-  //
+  deinit {
+    NSLog("[SpaceX-Alloc]: deinit SpaceXTransportScheduler")
+  }
   
-  func onSessiontRestart() {
-    for l in self.liveOperations {
-      self.flushQueryStart(operation: l.value)
+  func operation(
+    operation: OperationDefinition,
+    variables: JSON,
+    queue: DispatchQueue,
+    handler: @escaping  (SpaceXTransportOperationResult) -> Void
+  ) {
+    var isCompleted = false
+    let _ = self.transport.operation(operation: operation, variables: variables) { (res) in
+      self.queue.async {
+        switch(res) {
+        case .result(let data):
+          if !isCompleted {
+            isCompleted = true
+            queue.async {
+              handler(SpaceXTransportOperationResult.result(data: data))
+            }
+          }
+        case .error(let data):
+          if !isCompleted {
+            isCompleted = true
+            queue.async {
+              handler(SpaceXTransportOperationResult.error(error: data))
+            }
+          }
+        case .completed:
+          // Ignore
+          break
+        }
+      }
     }
   }
   
-  func onConnected() {
-    self.connectionCallback?(true)
+  func subscription(
+    operation: OperationDefinition,
+    variables: JSON,
+    queue: DispatchQueue,
+    handler: @escaping (SpaceXTransportSubscriptionResult) -> Void
+  ) -> RunningOperation {
+    var isCompleted = false
+    return self.transport.operation(operation: operation, variables: variables) { res in
+      self.queue.async {
+        switch(res) {
+        case .result(let data):
+          queue.async {
+            if !isCompleted {
+              handler(SpaceXTransportSubscriptionResult.result(data: data))
+            }
+          }
+        case .error(let error):
+          queue.async {
+            if !isCompleted {
+              isCompleted = true
+              handler(SpaceXTransportSubscriptionResult.error(error: error))
+            }
+          }
+        case .completed:
+          queue.async {
+            if !isCompleted {
+              isCompleted = true
+              handler(SpaceXTransportSubscriptionResult.error(error: JSON([])))
+            }
+          }
+        }
+      }
+    }
   }
   
-  func onDisconnected() {
-    self.connectionCallback?(false)
-  }
-  
-  private func flushQueryStart(operation: PendingOperation) {
-    self.connection.startRequest(id: operation.requestId, body: JSON([
-      "query": operation.operation.body,
-      "name": operation.operation.name,
-      "variables": operation.variables
-    ]))
-  }
-  
-  private func flushQueryStop(operation: PendingOperation) {
-     self.connection.stopRequest(id: operation.requestId)
+  func close() {
+    self.transport.connectionCallback = nil
+    self.transport.close()
   }
 }

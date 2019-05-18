@@ -46,7 +46,7 @@ class RNGraphqlClient {
   unowned let module: RNGraphQL
   let client: SpaceXClient
   var watches: [String: ()->Void] = [:]
-  var subscriptions: [String: RunningSubscription] = [:]
+  var subscriptions: [String: AbortFunc] = [:]
   var connected: Bool = false
   var live = true
   
@@ -174,18 +174,11 @@ class RNGraphqlClient {
     self.subscriptions[id] = s
   }
   
-  func subscribeUpdate(id: String, arguments: NSDictionary) {
-    if !self.live {
-      return
-    }
-    self.subscriptions[id]!.updateVariables(variables: JSON(arguments))
-  }
-  
   func subscribeEnd(id: String) {
     if !self.live {
       return
     }
-    self.subscriptions.removeValue(forKey: id)!.close()
+    self.subscriptions.removeValue(forKey: id)?()
   }
   
   //
@@ -234,7 +227,7 @@ class RNGraphqlClient {
   func dispose() {
     self.live = false
     for s in self.subscriptions.values {
-      s.close()
+      s()
     }
     for w in self.watches.values {
       w()
