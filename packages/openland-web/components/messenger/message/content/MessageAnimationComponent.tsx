@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export const MessageAnimationComponent = (props: {
     file: string;

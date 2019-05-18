@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XScrollView } from './XScrollView';
 import { XFlexStyles } from './basics/Flex';
 import throttle from 'lodash/throttle';
-import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 interface Dimensions {
     scrollTop: number;

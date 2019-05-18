@@ -5,7 +5,7 @@ import { tabs, tabsT } from '../tabs';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
 import { TextDirectory } from 'openland-text/TextDirectory';
-import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/Components';
+import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/ConversationContainerWrapper';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';

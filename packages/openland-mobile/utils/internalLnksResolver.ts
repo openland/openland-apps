@@ -236,7 +236,8 @@ export let saveLinkIfInvite = async (srcLink: string) => {
 
 export const joinInviteIfHave = async () => {
     let srcLink = await AsyncStorage.getItem('initial_invite_link');
-    let link = srcLink.toLowerCase();
+
+    let link = srcLink;
     if (link.includes('?')) {
         link = link.split('?')[0]
     }
@@ -319,19 +320,18 @@ export const joinInviteIfHave = async () => {
     if (matchGlobal && matchGlobal.invite) {
         try {
             startLoader();
-
-            let info = await getMessenger().engine.client.queryResolvedInvite({ key: match.invite });
+            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite });
             if (info.invite) {
                 if (info.invite.__typename === 'AppInvite') {
                     await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
                     await next(getMessenger().history.navigationManager);
                     stopLoader();
                 } else if (info.invite.__typename === 'InviteInfo') {
-                    stopLoader();
                     await joinOraganizaion(info.invite, matchGlobal.invite);
-                } else if (info.invite.__typename === 'RoomInvite') {
                     stopLoader();
+                } else if (info.invite.__typename === 'RoomInvite') {
                     await joinRoom(info.invite, matchGlobal.invite);
+                    stopLoader();
                 }
             } else {
                 stopLoader();

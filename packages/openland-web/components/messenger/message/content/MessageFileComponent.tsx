@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import IcClose from 'openland-icons/ic-close.svg';
 import IcFile from 'openland-icons/ic-file-blue.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 

@@ -17,6 +17,17 @@ func serializeJson(json: JSON) -> String {
   }
 }
 
+typealias AbortFunc = () -> Void
+
+func measure<A>(_ name: String, _ f: @autoclosure () -> A) -> A {
+  let startTime = CFAbsoluteTimeGetCurrent()
+  let result = f()
+  let endTime = CFAbsoluteTimeGetCurrent()
+  let ms = Int((endTime - startTime) * 1000)
+  print(name + " completed in \(ms) ms")
+  return result
+}
+
 func backoffDelay(currentFailureCount: Int, minDelay: Int, maxDelay: Int, maxFailureCount: Int) -> Int {
   let maxDelayRet = Int(Double(minDelay) + ((Double(maxDelay) - Double(minDelay))/Double(maxFailureCount)) * Double(currentFailureCount))
   return Int.random(in: 0..<maxDelayRet)

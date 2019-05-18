@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
-import { useCheckPerf } from 'openland-web/pages/main/mail/components/Components';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export interface MessageTextComponentProps {
     isComment?: boolean;

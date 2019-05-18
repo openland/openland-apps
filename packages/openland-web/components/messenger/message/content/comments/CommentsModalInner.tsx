@@ -33,7 +33,7 @@ import { RoomChat_room } from 'openland-api/Types';
 import {
     IsActivePoliteContext,
     IsActiveContextState,
-} from 'openland-web/pages/main/mail/components/Components';
+} from 'openland-web/pages/main/mail/components/CacheComponent';
 
 const CommentView = ({
     originalMessageId,

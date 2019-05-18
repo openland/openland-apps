@@ -958,6 +958,36 @@ private val RoomFullWithoutMembersSelector = obj(
             ))
         )
 
+private val RoomNanoSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("user","user", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("name","name", notNull(scalar("String"))),
+                        field("photo","photo", scalar("String"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("isChannel","isChannel", notNull(scalar("Boolean"))),
+                field("kind","kind", notNull(scalar("String"))),
+                field("photo","photo", notNull(scalar("String"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("title","title", notNull(scalar("String")))
+            ))
+        )
+
 private val SessionStateFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("isAccountActivated","isAccountActivated", notNull(scalar("Boolean"))),
@@ -1719,6 +1749,12 @@ private val RoomMembersShortSelector = obj(
                             field("id","id", notNull(scalar("ID")))
                         )))
                 )))))
+        )
+private val RoomPicoSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("Room", RoomNanoSelector)
+                ))
         )
 private val RoomSearchSelector = obj(
             field("betaRoomSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
@@ -2949,6 +2985,12 @@ object Operations {
         override val body = "query RoomMembersShort(\$roomId:ID!){members:roomMembers(roomId:\$roomId){__typename user{__typename id}}}"
         override val selector = RoomMembersShortSelector
     }
+    val RoomPico = object: OperationDefinition {
+        override val name = "RoomPico"
+        override val kind = OperationKind.QUERY
+        override val body = "query RoomPico(\$id:ID!){room(id:\$id){__typename ...RoomNano}}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}"
+        override val selector = RoomPicoSelector
+    }
     val RoomSearch = object: OperationDefinition {
         override val name = "RoomSearch"
         override val kind = OperationKind.QUERY
@@ -3726,6 +3768,7 @@ object Operations {
         if (name == "RoomMembersForMentionsPaginated") return RoomMembersForMentionsPaginated
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
+        if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSearchText") return RoomSearchText
         if (name == "RoomSuper") return RoomSuper

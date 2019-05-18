@@ -39,8 +39,9 @@ fileprivate class Subscription {
   }
 }
 
-class SpaceXStoreScheduler {
+class SpaceXStore {
   private static let ROOT_QUERY = "ROOT_QUERY"
+  private let normalizationQueue = DispatchQueue(label: "spacex-store-normalization")
   private let storeQueue = DispatchQueue(label: "spacex-store")
   
   // Store
@@ -62,6 +63,24 @@ class SpaceXStoreScheduler {
     persistence = SpaceXPersistence(name: name)
   }
   
+  func mergeResponse(operation: OperationDefinition, variables: JSON, data: JSON, queue: DispatchQueue, callback: @escaping () -> Void) {
+    self.normalizationQueue.async {
+      let rootCacheKey: String?
+      if operation.kind == .query {
+        rootCacheKey = SpaceXStore.ROOT_QUERY
+      } else {
+        rootCacheKey = nil
+      }
+      let normalized: RecordSet
+      do {
+        normalized = try normalizeRootQuery(rootQueryKey: rootCacheKey, type: operation.selector, args: variables, data: data)
+      } catch {
+        fatalError("Normalization failed")
+      }
+      self.merge(recordSet: normalized, queue: queue, callback: callback)
+    }
+  }
+  
   func merge(recordSet: RecordSet, queue: DispatchQueue, callback: @escaping () -> Void) {
     self.storeQueue.async {
       // Prepare merging (load required data from disk if needed)
@@ -74,6 +93,28 @@ class SpaceXStoreScheduler {
         if changed.count > 0 {
           let toWrite: [String: Record] = changed.mapValues { it in self.store.read(key: it.key) }
           self.persistenceWrite(records: toWrite)
+        }
+        
+        // Notify watchers
+        if changed.count > 0 {
+          var keys = Set<String>()
+          for r in changed {
+            for f in r.value.fields {
+              keys.insert(r.key+"."+f)
+            }
+          }
+          var triggered: [Subscription] = []
+          for s in self.subscriptions {
+            for k in keys {
+              if s.value.ids.contains(k) {
+                triggered.append(s.value)
+                break
+              }
+            }
+          }
+          for t in triggered {
+            t.callback()
+          }
         }
         
         // Invoke calback
@@ -93,7 +134,7 @@ class SpaceXStoreScheduler {
       self.prepareRead(operation: operation, variables: variables) {
         
         // Reading from store
-        let res = readQueryFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        let res = readQueryFromStore(cacheKey: SpaceXStore.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
         switch(res) {
         case .success(let data):
           queue.async {
@@ -119,7 +160,7 @@ class SpaceXStoreScheduler {
       self.prepareRead(operation: operation, variables: variables) {
         
         // Reading from store
-        let res = readQueryFromStore(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+        let res = readQueryFromStore(cacheKey: SpaceXStore.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
         
         switch(res) {
         case .success(let data):
@@ -129,7 +170,7 @@ class SpaceXStoreScheduler {
           }
           
           // Calculate keys
-          let normalized = try! normalizeRootQuery(rootQueryKey: SpaceXStoreScheduler.ROOT_QUERY, type: operation.selector, args: variables, data: data)
+          let normalized = try! normalizeRootQuery(rootQueryKey: SpaceXStore.ROOT_QUERY, type: operation.selector, args: variables, data: data)
           var keys = Set<String>()
           for r in normalized {
             for f in r.value.fields {
@@ -156,11 +197,11 @@ class SpaceXStoreScheduler {
   }
   
   func close() {
-    
+   self.persistence.close()
   }
 
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
-    let missing = collectMissingKeysRoot(cacheKey: SpaceXStoreScheduler.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
+    let missing = collectMissingKeysRoot(cacheKey: SpaceXStore.ROOT_QUERY, store: self.store, type: operation.selector, variables: variables)
     if missing.isEmpty {
       callback()
     } else {

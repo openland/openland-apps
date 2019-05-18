@@ -30,6 +30,7 @@ import * as OrganizationSearch from './fragments/OrganizationSearch';
 import * as OrganizationShort from './fragments/OrganizationShort';
 import * as OrganizationWithoutMembersFragment from './fragments/OrganizationWithoutMembersFragment';
 import * as RoomFull from './fragments/RoomFull';
+import * as RoomNano from './fragments/RoomNano';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
@@ -68,6 +69,7 @@ export const CommentWatchSubscription = typedSubscription<Types.CommentWatch, Ty
 export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
 export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
+export const RoomPicoQuery = typedQuery<Types.RoomPico, Types.RoomPicoVariables>(Chats.RoomPicoQuery);
 export const RoomChatQuery = typedQuery<Types.RoomChat, Types.RoomChatVariables>(Chats.RoomChatQuery);
 export const RoomHeaderQuery = typedQuery<Types.RoomHeader, Types.RoomHeaderVariables>(Chats.RoomHeaderQuery);
 export const RoomWithoutMembersQuery = typedQuery<Types.RoomWithoutMembers, Types.RoomWithoutMembersVariables>(Chats.RoomWithoutMembersQuery);
@@ -226,6 +228,7 @@ export const OrganizationShortFragment = typedFragment<Types.OrganizationShort>(
 export const OrganizationWithoutMembersFragmentFragment = typedFragment<Types.OrganizationWithoutMembersFragment>(OrganizationWithoutMembersFragment.OrganizationWithoutMembersFragment);
 export const RoomFullFragment = typedFragment<Types.RoomFull>(RoomFull.RoomFull);
 export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithoutMembers>(RoomFull.RoomFullWithoutMembers);
+export const RoomNanoFragment = typedFragment<Types.RoomNano>(RoomNano.RoomNano);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);

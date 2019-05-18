@@ -7,7 +7,7 @@ import {
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
 import { InputMethodsStateT } from './useInputMethods';
-import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/Components';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 type useKeydownHandlerT = {
     inputMethodsState: InputMethodsStateT;
