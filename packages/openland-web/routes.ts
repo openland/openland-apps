@@ -264,6 +264,8 @@ routes.add('/super/debug/', '/dev/debug');
 
 routes.add('/super', '/dev/orgs');
 routes.add('/super/', '/dev/orgs');
+routes.add('/super/users', '/dev/users');
+routes.add('/super/users/', '/dev/users');
 routes.add('/super/orgs/:accountId', '/dev/orgView');
 routes.add('/super/orgs/:accountId/', '/dev/orgView');
 

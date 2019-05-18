@@ -13,7 +13,7 @@ import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
-import { XInput } from '../../../openland-x/XInput';
+import { XInput } from 'openland-x/XInput';
 import { SuperAccounts_superAccounts } from 'openland-api/Types';
 
 const AddAccountForm = () => {
