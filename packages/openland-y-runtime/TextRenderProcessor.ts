@@ -6,7 +6,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbol: string, opened?: boolean) {
+    cropSpecSymbols(spans: Span[], parent: Span, symbol: string[], opened?: boolean) {
         return spans;
     }
 };
