@@ -59,6 +59,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                                 key={'code-' + i}
                                 marginLeft={-contentInsetsHorizontal}
                                 marginRight={-contentInsetsHorizontal}
+                                marginTop={i === 0 ? 8 : undefined}
                                 backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
                             >
                                 <ASFlex marginLeft={contentInsetsHorizontal} marginRight={contentInsetsHorizontal} marginTop={5} marginBottom={5}>
