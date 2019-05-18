@@ -86,7 +86,7 @@ export abstract class BridgedClient implements GraphqlClient {
             // Special retry action
             if (error) {
                 if (!(error instanceof ApiError)) {
-                    
+
                     log.warn('Received unknown error: retrying watch');
 
                     // Stop old watch
@@ -203,8 +203,10 @@ export abstract class BridgedClient implements GraphqlClient {
         this.handlers.set(id, (data, error) => {
             if (error) {
                 log.warn('Received subscription error: restarting');
+                log.warn(variables);
                 this.handlersMap.delete(currentId);
                 currentId = this.nextKey()
+                this.handlersMap.set(currentId, id);
                 this.postSubscribe(currentId, subscription, variables);
             } else {
                 queue.post(data);
