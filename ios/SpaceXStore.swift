@@ -41,7 +41,7 @@ fileprivate class Subscription {
 
 class SpaceXStore {
   private static let ROOT_QUERY = "ROOT_QUERY"
-  private let normalizationQueue = DispatchQueue(label: "spacex-store", attributes: .concurrent)
+  private let normalizationQueue = DispatchQueue(label: "spacex-store-normalization")
   private let storeQueue = DispatchQueue(label: "spacex-store")
   
   // Store

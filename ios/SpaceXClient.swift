@@ -33,7 +33,6 @@ class SpaceXClient {
   
   fileprivate var store: SpaceXStore
   fileprivate var transport: SpaceXTransport!
-  fileprivate let normalizerQueue = DispatchQueue(label: "spacex-normalizer")
   fileprivate let callbackQueue = DispatchQueue(label: "client")
   var connected: Bool = false
   var onConnected: (() -> Void)?
