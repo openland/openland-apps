@@ -14,14 +14,7 @@ enum SpaceXTransportOperationResult {
   case error(error: JSON)
 }
 
-enum SpaceXTransportSubscriptionResult {
-  case result(data: JSON)
-  case error(error: JSON)
-}
-
 class SpaceXTransport {
-  let url: String
-  let params: [String: String?]
   private let queue = DispatchQueue(label: "spacex-transport")
   private let transport: TransportState
   var connected: Bool = false
@@ -30,8 +23,6 @@ class SpaceXTransport {
   
   init(url: String, params: [String: String?]) {
     NSLog("[SpaceX-Alloc]: init SpaceXTransportScheduler")
-    self.url = url
-    self.params = params
     self.transport = TransportState(url: url, params: params)
     self.transport.connectionCallback = { connected in
       self.queue.async {
@@ -87,7 +78,7 @@ class SpaceXTransport {
     operation: OperationDefinition,
     variables: JSON,
     queue: DispatchQueue,
-    handler: @escaping (SpaceXTransportSubscriptionResult) -> Void
+    handler: @escaping (SpaceXTransportOperationResult) -> Void
   ) -> RunningOperation {
     var isCompleted = false
     return self.transport.operation(operation: operation, variables: variables) { res in
@@ -96,21 +87,21 @@ class SpaceXTransport {
         case .result(let data):
           queue.async {
             if !isCompleted {
-              handler(SpaceXTransportSubscriptionResult.result(data: data))
+              handler(SpaceXTransportOperationResult.result(data: data))
             }
           }
         case .error(let error):
           queue.async {
             if !isCompleted {
               isCompleted = true
-              handler(SpaceXTransportSubscriptionResult.error(error: error))
+              handler(SpaceXTransportOperationResult.error(error: error))
             }
           }
         case .completed:
           queue.async {
             if !isCompleted {
               isCompleted = true
-              handler(SpaceXTransportSubscriptionResult.error(error: JSON([])))
+              handler(SpaceXTransportOperationResult.error(error: JSON([])))
             }
           }
         }
