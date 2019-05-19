@@ -307,7 +307,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     let messenger = getMessenger();
     let client = getClient();
 
-    let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
+    let message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message as FullMessage_GeneralMessage;
     let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
     let room = client.useRoomTiny({ id: chatId }).room;
