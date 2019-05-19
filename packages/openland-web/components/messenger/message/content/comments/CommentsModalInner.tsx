@@ -248,6 +248,7 @@ export const CommentsBlockView = ({
             return { ...res, depth: getDepthOfComment(item, commentsMap) };
         })
         .map(message => {
+            message.chatId = roomId;
             return (
                 <CommentView
                     room={room}
@@ -311,6 +312,8 @@ const OriginalMessageComponent = ({ messageId, roomId }: { messageId: string; ro
     }
 
     const finalMessage = convertDsMessage(convertMessage(maybeGeneralMessage));
+
+    finalMessage.chatId = roomId;
 
     return (
         <MessageComponent
