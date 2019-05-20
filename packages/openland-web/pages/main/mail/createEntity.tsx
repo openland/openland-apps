@@ -187,7 +187,11 @@ export const CreateEntity = ({
 
     let typeField = useField<SharedRoomKind | CommunityType>(
         'input.type',
-        inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
+        isDialog(entityKind)
+            ? inOrgId
+                ? SharedRoomKind.PUBLIC
+                : SharedRoomKind.GROUP
+            : CommunityType.COMMUNITY_PUBLIC,
         form,
     );
 

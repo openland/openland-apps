@@ -489,7 +489,7 @@ export const DesktopScaffold = ({
                                     >
                                         {TextGlobal.addOrganization}
                                     </XMenuItem>
-                                    <XMenuItem onClick={() => showCreateOrganization('community')}>
+                                    <XMenuItem path="/mail/createOrganization?community=true">
                                         {TextGlobal.addCommunity}
                                     </XMenuItem>
                                 </>

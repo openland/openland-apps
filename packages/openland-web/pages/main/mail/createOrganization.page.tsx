@@ -7,7 +7,7 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { EntityKind, CommunityType, CreateEntity } from './createEntity';
 
 export default withApp(
-    'Create Community',
+    'Create Organization',
     'viewer',
     withUserInfo(({ user, organization }) => {
         const router = React.useContext(XRouterContext) as XRouter;
@@ -17,6 +17,7 @@ export default withApp(
         return (
             <>
                 <XDocumentHead title={'Create Community'} />
+
                 <CreateEntity
                     myId={user ? user.id : ''}
                     myOrgId={organization ? organization.id : ''}
