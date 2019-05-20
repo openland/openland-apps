@@ -142,7 +142,6 @@ const CommentView = ({
             ? parentComment.comment.sender.name
             : undefined;
 
-    console.log(message, commentsMap);
     return (
         <div data-comment-id={message.id}>
             <XView
