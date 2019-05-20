@@ -27,15 +27,21 @@ interface TextContentProps {
     fontStyle?: 'italic' | 'normal';
     isSmall?: boolean;
     theme: AppTheme;
+    inReply?: boolean;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
 }
 
 export const TextContent = (props: TextContentProps) => {
-    const { theme, message, onUserPress, onGroupPress } = props;
+    const { theme, message, inReply, isSmall, fontStyle, onUserPress, onGroupPress } = props;
     const preprocessed = processSpans(message.message || '', message.spans);
     const content = getCodeSlices(preprocessed);
+
+    const codeMarginLeft = isSmall ? 0 : (inReply ? 8 : 16);
+    const codeMarginRight = isSmall ? 0 : (inReply ? 8 : 16);
+    const codePaddingLeft = isSmall ? 10 : -codeMarginLeft;
+    const codePaddingRight = isSmall ? 10 : -codeMarginRight;
 
     return (
         <>
@@ -45,7 +51,8 @@ export const TextContent = (props: TextContentProps) => {
                         <TextWrapper
                             key={'slice-' + i}
                             color={theme.textColor}
-                            fontStyle={props.fontStyle}
+                            fontStyle={fontStyle}
+                            isSmall={isSmall}
                         >
                             {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                         </TextWrapper>
@@ -54,8 +61,11 @@ export const TextContent = (props: TextContentProps) => {
                         <View
                             key={'code-' + i}
                             backgroundColor={theme.codeSpan.background}
-                            marginHorizontal={-16}
-                            paddingHorizontal={16}
+                            marginTop={i === 0 && inReply ? 4 : undefined}
+                            marginLeft={codeMarginLeft}
+                            marginRight={codeMarginRight}
+                            paddingLeft={codePaddingLeft}
+                            paddingRight={codePaddingRight}
                             paddingVertical={6}
                         >
                             <TextWrapper fontSize={14} color={theme.textColor}>
