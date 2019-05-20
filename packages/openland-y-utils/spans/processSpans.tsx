@@ -64,7 +64,30 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
     
         spans = [...rootSpan as any, ...sortedSpans];
     
-        res = recursiveProcessing(text, spans)[0].childrens!;
+        let preprocessedRes = recursiveProcessing(text, spans)[0].childrens!;
+
+        // REMOVE LINE_BREAKERS BEFORE AND AFTER CODE_BLOCK
+
+        while (preprocessedRes.findIndex((v) => v.type === 'code_block') >= 0) {
+            let index = preprocessedRes.findIndex((v) => v.type === 'code_block');
+
+            if (index > 0) {
+                let sliceStart = preprocessedRes[0].type === 'new_line' ? 1 : 0;
+                let sliceEnd = preprocessedRes[index - 1].type === 'new_line' ? (index - 1) : index;
+    
+                res.push(...preprocessedRes.slice(sliceStart, sliceEnd));
+            }
+    
+            // current code-block
+            res.push(preprocessedRes[index]);
+    
+            preprocessedRes = preprocessedRes.slice(index + 1);
+        }
+    
+        // after all code-blocks
+        let lastSliceStart = (preprocessedRes.length > 0 && preprocessedRes[0].type === 'new_line') ? 1 : 0;
+
+        res.push(...preprocessedRes.slice(lastSliceStart));
     }
 
     return res;

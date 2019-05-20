@@ -59,18 +59,10 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
 
 export const preprocessRawText = (text: string, startOffset: number, isBig?: boolean): Span[] => {
     let res: Span[] = [];
-
     let garbageString = '';
+    let rows = text.split('\n');
 
-    for (let p of text.split('\n')) {
-        if (res.length > 0) {
-            res.push({
-                type: 'new_line',
-                length: 0,
-                offset: startOffset + garbageString.length
-            });
-        }
-
+    rows.map((p, i) => {
         if (p.length > 0) {
             res.push({
                 type: 'text',
@@ -81,8 +73,18 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
             });
         }
 
+        if (i !== rows.length - 1) {
+            console.warn('boom', i, rows.length);
+
+            res.push({
+                type: 'new_line',
+                length: 0,
+                offset: startOffset + garbageString.length
+            });
+        }
+
         garbageString += p;
-    }
+    });
 
     return res;
 }
@@ -128,23 +130,29 @@ export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'sli
 
         // before current code-block
         if (index > 0) {
-            let sliceEnd = index;
-
-            if (spans[index - 1].type === 'new_line') {
-                sliceEnd = index - 1;
-            }
-
-            res.push({ type: 'slice', spans: spans.slice(0, sliceEnd), padded: false });
+            res.push({
+                type: 'slice',
+                spans: spans.slice(0, index),
+                padded: false
+            });
         }
 
         // current code-block
-        res.push({ type: 'code', spans: [spans[index]], padded: false });
+        res.push({
+            type: 'code',
+            spans: [spans[index]],
+            padded: false
+        });
 
         spans = spans.slice(index + 1);
     }
 
     // after all code-blocks
-    res.push({ type: 'slice', spans, padded: usePadded !== false });
+    res.push({
+        type: 'slice',
+        spans: spans,
+        padded: usePadded !== false
+    });
 
     return res;
 }
