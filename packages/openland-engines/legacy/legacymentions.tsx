@@ -1,6 +1,7 @@
 import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,
     UserShort,
+    MentionInput,
 } from 'openland-api/Types';
 
 export const prepareLegacyMentions = (message: string, intermediateMentions: UserShort[]) => {
@@ -37,7 +38,7 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
                     __typename: 'User',
                     name: mention.name,
                     id: mention.id,
-                    isYou: true,
+                    isYou: false,
                     firstName: mention.firstName,
                     lastName: mention.lastName,
                     shortname: mention.shortname,
@@ -53,4 +54,33 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
     }
 
     return spans;
+};
+
+export const prepareMentionsToSend = (mentions: FullMessage_GeneralMessage_spans_MessageSpanUserMention[]): MentionInput[] => {
+    let preparedMentions: MentionInput[] = [];
+
+    mentions.map(m => {
+        preparedMentions.push({
+            offset: m.offset,
+            length: m.length,
+            userId: m.user.id
+        })
+    });
+
+    return preparedMentions;
+};
+
+export const prepareLegacyMentionsForSend = (message: string, intermediateMentions: UserShort[]): MentionInput[] => {
+    let preparedMentions: MentionInput[] = [];
+    let legacyMentions = prepareLegacyMentions(message, intermediateMentions);
+
+    legacyMentions.map(m => {
+        preparedMentions.push({
+            offset: m.offset,
+            length: m.length,
+            userId: m.user.id
+        })
+    });
+
+    return preparedMentions;
 };

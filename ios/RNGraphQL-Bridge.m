@@ -28,5 +28,4 @@ RCT_EXTERN_METHOD(unsubscribe: (NSString *)key id: (NSString *)id)
 
 RCT_EXTERN_METHOD(read: (NSString *)key id: (NSString *)id query: (NSString *)query arguments: (NSDictionary *)arguments)
 RCT_EXTERN_METHOD(write: (NSString *)key id: (NSString *)id data: (NSDictionary *)data query: (NSString *)query arguments: (NSDictionary *)arguments)
-RCT_EXTERN_METHOD(writeFragment: (NSString *)key id: (NSString *)id data: (NSDictionary *)data fragment: (NSString *)fragment)
 @end

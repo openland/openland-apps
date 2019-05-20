@@ -4,52 +4,52 @@ import com.openland.spacex.*
 import com.openland.spacex.gen.*
 import org.json.*
 
-private val AppChatSelector = obj(listOf(
+private val AppChatSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("chat","chat", notNull(obj(listOf(
+            field("chat","chat", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(listOf(
+                    inline("PrivateRoom", obj(
                         field("id","id", notNull(scalar("ID")))
-                    ))),
-                    inline("SharedRoom", obj(listOf(
+                    )),
+                    inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID")))
-                    )))
-                )))),
+                    ))
+                ))),
             field("webhook","webhook", notNull(scalar("String")))
-        ))
+        )
 
-private val AppFullSelector = obj(listOf(
+private val AppFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("name","name", notNull(scalar("String"))),
-            field("photoRef","photoRef", obj(listOf(
+            field("photoRef","photoRef", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("crop","crop", obj(listOf(
+                    field("crop","crop", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("h","h", notNull(scalar("Int"))),
                             field("w","w", notNull(scalar("Int"))),
                             field("x","x", notNull(scalar("Int"))),
                             field("y","y", notNull(scalar("Int")))
-                        ))),
+                        )),
                     field("uuid","uuid", notNull(scalar("String")))
-                ))),
+                )),
             field("shortname","shortname", scalar("String")),
-            field("token","token", notNull(obj(listOf(
+            field("token","token", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("salt","salt", notNull(scalar("String")))
-                ))))
-        ))
+                )))
+        )
 
-private val OrganizationShortSelector = obj(listOf(
+private val OrganizationShortSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
             field("id","id", notNull(scalar("ID"))),
             field("name","name", notNull(scalar("String"))),
             field("photo","photo", scalar("String"))
-        ))
+        )
 
-private val UserShortSelector = obj(listOf(
+private val UserShortSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("email","email", scalar("String")),
             field("firstName","firstName", notNull(scalar("String"))),
@@ -61,14 +61,14 @@ private val UserShortSelector = obj(listOf(
             field("name","name", notNull(scalar("String"))),
             field("online","online", notNull(scalar("Boolean"))),
             field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(listOf(
+            field("primaryOrganization","primaryOrganization", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
-                ))),
+                )),
             field("shortname","shortname", scalar("String"))
-        ))
+        )
 
-private val UserTinySelector = obj(listOf(
+private val UserTinySelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("firstName","firstName", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
@@ -76,70 +76,70 @@ private val UserTinySelector = obj(listOf(
             field("lastName","lastName", scalar("String")),
             field("name","name", notNull(scalar("String"))),
             field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(listOf(
+            field("primaryOrganization","primaryOrganization", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
-                ))),
+                )),
             field("shortname","shortname", scalar("String"))
-        ))
+        )
 
-private val FullMessageSelector = obj(listOf(
+private val FullMessageSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("date","date", notNull(scalar("Date"))),
             field("fallback","fallback", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
             field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(listOf(
+            field("sender","sender", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
-                )))),
-            field("spans","spans", notNull(list(notNull(obj(listOf(
+                ))),
+            field("spans","spans", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("length","length", notNull(scalar("Int"))),
                     field("offset","offset", notNull(scalar("Int"))),
-                    inline("MessageSpanUserMention", obj(listOf(
-                        field("user","user", notNull(obj(listOf(
+                    inline("MessageSpanUserMention", obj(
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))
-                    ))),
-                    inline("MessageSpanMultiUserMention", obj(listOf(
-                        field("users","users", notNull(list(notNull(obj(listOf(
+                            )))
+                    )),
+                    inline("MessageSpanMultiUserMention", obj(
+                        field("users","users", notNull(list(notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))))
-                    ))),
-                    inline("MessageSpanRoomMention", obj(listOf(
-                        field("room","room", notNull(obj(listOf(
+                            )))))
+                    )),
+                    inline("MessageSpanRoomMention", obj(
+                        field("room","room", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
-                                inline("PrivateRoom", obj(listOf(
+                                inline("PrivateRoom", obj(
                                     field("id","id", notNull(scalar("ID"))),
-                                    field("user","user", notNull(obj(listOf(
+                                    field("user","user", notNull(obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             field("id","id", notNull(scalar("ID"))),
                                             field("name","name", notNull(scalar("String")))
-                                        ))))
-                                ))),
-                                inline("SharedRoom", obj(listOf(
+                                        )))
+                                )),
+                                inline("SharedRoom", obj(
                                     field("id","id", notNull(scalar("ID"))),
                                     field("title","title", notNull(scalar("String")))
-                                )))
-                            ))))
-                    ))),
-                    inline("MessageSpanLink", obj(listOf(
+                                ))
+                            )))
+                    )),
+                    inline("MessageSpanLink", obj(
                         field("url","url", notNull(scalar("String")))
-                    ))),
-                    inline("MessageSpanDate", obj(listOf(
+                    )),
+                    inline("MessageSpanDate", obj(
                         field("date","date", notNull(scalar("Date")))
-                    )))
-                )))))),
-            inline("GeneralMessage", obj(listOf(
-                field("attachments","attachments", notNull(list(notNull(obj(listOf(
+                    ))
+                ))))),
+            inline("GeneralMessage", obj(
+                field("attachments","attachments", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("fallback","fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(listOf(
+                        inline("MessageAttachmentFile", obj(
                             field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(listOf(
+                            field("fileMetadata","fileMetadata", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("imageFormat","imageFormat", scalar("String")),
                                     field("imageHeight","imageHeight", scalar("Int")),
@@ -148,15 +148,15 @@ private val FullMessageSelector = obj(listOf(
                                     field("mimeType","mimeType", scalar("String")),
                                     field("name","name", notNull(scalar("String"))),
                                     field("size","size", notNull(scalar("Int")))
-                                )))),
+                                ))),
                             field("filePreview","filePreview", scalar("String")),
                             field("id","id", notNull(scalar("ID")))
-                        ))),
-                        inline("MessageRichAttachment", obj(listOf(
+                        )),
+                        inline("MessageRichAttachment", obj(
                             field("fallback","fallback", notNull(scalar("String"))),
-                            field("icon","icon", obj(listOf(
+                            field("icon","icon", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(listOf(
+                                    field("metadata","metadata", obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             field("imageFormat","imageFormat", scalar("String")),
                                             field("imageHeight","imageHeight", scalar("Int")),
@@ -165,13 +165,13 @@ private val FullMessageSelector = obj(listOf(
                                             field("mimeType","mimeType", scalar("String")),
                                             field("name","name", notNull(scalar("String"))),
                                             field("size","size", notNull(scalar("Int")))
-                                        ))),
+                                        )),
                                     field("url","url", notNull(scalar("String")))
-                                ))),
+                                )),
                             field("id","id", notNull(scalar("ID"))),
-                            field("image","image", obj(listOf(
+                            field("image","image", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(listOf(
+                                    field("metadata","metadata", obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             field("imageFormat","imageFormat", scalar("String")),
                                             field("imageHeight","imageHeight", scalar("Int")),
@@ -180,87 +180,87 @@ private val FullMessageSelector = obj(listOf(
                                             field("mimeType","mimeType", scalar("String")),
                                             field("name","name", notNull(scalar("String"))),
                                             field("size","size", notNull(scalar("Int")))
-                                        ))),
+                                        )),
                                     field("url","url", notNull(scalar("String")))
-                                ))),
-                            field("keyboard","keyboard", obj(listOf(
+                                )),
+                            field("keyboard","keyboard", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
-                                    field("buttons","buttons", notNull(list(list(notNull(obj(listOf(
+                                    field("buttons","buttons", notNull(list(list(notNull(obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             field("id","id", notNull(scalar("ID"))),
                                             field("style","style", notNull(scalar("String"))),
                                             field("title","title", notNull(scalar("String"))),
                                             field("url","url", scalar("String"))
-                                        )))))))
-                                ))),
+                                        ))))))
+                                )),
                             field("subTitle","subTitle", scalar("String")),
                             field("text","text", scalar("String")),
                             field("title","title", scalar("String")),
                             field("titleLink","titleLink", scalar("String")),
                             field("titleLinkHostname","titleLinkHostname", scalar("String"))
-                        )))
-                    )))))),
+                        ))
+                    ))))),
                 field("commentsCount","commentsCount", notNull(scalar("Int"))),
                 field("edited","edited", notNull(scalar("Boolean"))),
                 field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
+                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("date","date", notNull(scalar("Date"))),
                         field("fallback","fallback", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("message","message", scalar("String")),
                         field("message","message", scalar("String")),
-                        field("sender","sender", notNull(obj(listOf(
+                        field("sender","sender", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            )))),
-                        field("spans","spans", notNull(list(notNull(obj(listOf(
+                            ))),
+                        field("spans","spans", notNull(list(notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("length","length", notNull(scalar("Int"))),
                                 field("offset","offset", notNull(scalar("Int"))),
-                                inline("MessageSpanUserMention", obj(listOf(
-                                    field("user","user", notNull(obj(listOf(
+                                inline("MessageSpanUserMention", obj(
+                                    field("user","user", notNull(obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             fragment("User", UserShortSelector)
-                                        ))))
-                                ))),
-                                inline("MessageSpanMultiUserMention", obj(listOf(
-                                    field("users","users", notNull(list(notNull(obj(listOf(
+                                        )))
+                                )),
+                                inline("MessageSpanMultiUserMention", obj(
+                                    field("users","users", notNull(list(notNull(obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
                                             fragment("User", UserShortSelector)
-                                        ))))))
-                                ))),
-                                inline("MessageSpanRoomMention", obj(listOf(
-                                    field("room","room", notNull(obj(listOf(
+                                        )))))
+                                )),
+                                inline("MessageSpanRoomMention", obj(
+                                    field("room","room", notNull(obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
-                                            inline("PrivateRoom", obj(listOf(
+                                            inline("PrivateRoom", obj(
                                                 field("id","id", notNull(scalar("ID"))),
-                                                field("user","user", notNull(obj(listOf(
+                                                field("user","user", notNull(obj(
                                                         field("__typename","__typename", notNull(scalar("String"))),
                                                         field("id","id", notNull(scalar("ID"))),
                                                         field("name","name", notNull(scalar("String")))
-                                                    ))))
-                                            ))),
-                                            inline("SharedRoom", obj(listOf(
+                                                    )))
+                                            )),
+                                            inline("SharedRoom", obj(
                                                 field("id","id", notNull(scalar("ID"))),
                                                 field("title","title", notNull(scalar("String")))
-                                            )))
-                                        ))))
-                                ))),
-                                inline("MessageSpanLink", obj(listOf(
+                                            ))
+                                        )))
+                                )),
+                                inline("MessageSpanLink", obj(
                                     field("url","url", notNull(scalar("String")))
-                                ))),
-                                inline("MessageSpanDate", obj(listOf(
+                                )),
+                                inline("MessageSpanDate", obj(
                                     field("date","date", notNull(scalar("Date")))
-                                )))
-                            )))))),
-                        inline("GeneralMessage", obj(listOf(
-                            field("attachments","attachments", notNull(list(notNull(obj(listOf(
+                                ))
+                            ))))),
+                        inline("GeneralMessage", obj(
+                            field("attachments","attachments", notNull(list(notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("fallback","fallback", notNull(scalar("String"))),
-                                    inline("MessageAttachmentFile", obj(listOf(
+                                    inline("MessageAttachmentFile", obj(
                                         field("fileId","fileId", notNull(scalar("String"))),
-                                        field("fileMetadata","fileMetadata", notNull(obj(listOf(
+                                        field("fileMetadata","fileMetadata", notNull(obj(
                                                 field("__typename","__typename", notNull(scalar("String"))),
                                                 field("imageFormat","imageFormat", scalar("String")),
                                                 field("imageHeight","imageHeight", scalar("Int")),
@@ -269,15 +269,15 @@ private val FullMessageSelector = obj(listOf(
                                                 field("mimeType","mimeType", scalar("String")),
                                                 field("name","name", notNull(scalar("String"))),
                                                 field("size","size", notNull(scalar("Int")))
-                                            )))),
+                                            ))),
                                         field("filePreview","filePreview", scalar("String")),
                                         field("id","id", notNull(scalar("ID")))
-                                    ))),
-                                    inline("MessageRichAttachment", obj(listOf(
+                                    )),
+                                    inline("MessageRichAttachment", obj(
                                         field("fallback","fallback", notNull(scalar("String"))),
-                                        field("icon","icon", obj(listOf(
+                                        field("icon","icon", obj(
                                                 field("__typename","__typename", notNull(scalar("String"))),
-                                                field("metadata","metadata", obj(listOf(
+                                                field("metadata","metadata", obj(
                                                         field("__typename","__typename", notNull(scalar("String"))),
                                                         field("imageFormat","imageFormat", scalar("String")),
                                                         field("imageHeight","imageHeight", scalar("Int")),
@@ -286,13 +286,13 @@ private val FullMessageSelector = obj(listOf(
                                                         field("mimeType","mimeType", scalar("String")),
                                                         field("name","name", notNull(scalar("String"))),
                                                         field("size","size", notNull(scalar("Int")))
-                                                    ))),
+                                                    )),
                                                 field("url","url", notNull(scalar("String")))
-                                            ))),
+                                            )),
                                         field("id","id", notNull(scalar("ID"))),
-                                        field("image","image", obj(listOf(
+                                        field("image","image", obj(
                                                 field("__typename","__typename", notNull(scalar("String"))),
-                                                field("metadata","metadata", obj(listOf(
+                                                field("metadata","metadata", obj(
                                                         field("__typename","__typename", notNull(scalar("String"))),
                                                         field("imageFormat","imageFormat", scalar("String")),
                                                         field("imageHeight","imageHeight", scalar("Int")),
@@ -301,82 +301,86 @@ private val FullMessageSelector = obj(listOf(
                                                         field("mimeType","mimeType", scalar("String")),
                                                         field("name","name", notNull(scalar("String"))),
                                                         field("size","size", notNull(scalar("Int")))
-                                                    ))),
+                                                    )),
                                                 field("url","url", notNull(scalar("String")))
-                                            ))),
+                                            )),
                                         field("subTitle","subTitle", scalar("String")),
                                         field("text","text", scalar("String")),
                                         field("title","title", scalar("String")),
                                         field("titleLink","titleLink", scalar("String")),
                                         field("titleLinkHostname","titleLinkHostname", scalar("String"))
-                                    )))
-                                )))))),
+                                    ))
+                                ))))),
                             field("commentsCount","commentsCount", notNull(scalar("Int"))),
                             field("edited","edited", notNull(scalar("Boolean"))),
                             field("id","id", notNull(scalar("ID")))
-                        )))
-                    )))))),
-                field("reactions","reactions", notNull(list(notNull(obj(listOf(
+                        ))
+                    ))))),
+                field("reactions","reactions", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("reaction","reaction", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(listOf(
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))
-                    ))))))
-            ))),
-            inline("ServiceMessage", obj(listOf(
+                            )))
+                    )))))
+            )),
+            inline("ServiceMessage", obj(
                 field("id","id", notNull(scalar("ID"))),
-                field("serviceMetadata","serviceMetadata", obj(listOf(
+                field("serviceMetadata","serviceMetadata", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        inline("InviteServiceMetadata", obj(listOf(
-                            field("invitedBy","invitedBy", notNull(obj(listOf(
+                        inline("InviteServiceMetadata", obj(
+                            field("invitedBy","invitedBy", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
-                                )))),
-                            field("users","users", list(notNull(obj(listOf(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
-                                )))))
-                        ))),
-                        inline("KickServiceMetadata", obj(listOf(
-                            field("kickedBy","kickedBy", notNull(obj(listOf(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
-                                )))),
-                            field("user","user", notNull(obj(listOf(
+                                ))),
+                            field("users","users", list(notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 ))))
-                        ))),
-                        inline("TitleChangeServiceMetadata", obj(listOf(
+                        )),
+                        inline("KickServiceMetadata", obj(
+                            field("kickedBy","kickedBy", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    fragment("User", UserTinySelector)
+                                ))),
+                            field("user","user", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    fragment("User", UserTinySelector)
+                                )))
+                        )),
+                        inline("TitleChangeServiceMetadata", obj(
                             field("title","title", notNull(scalar("String")))
-                        ))),
-                        inline("PhotoChangeServiceMetadata", obj(listOf(
+                        )),
+                        inline("PhotoChangeServiceMetadata", obj(
                             field("photo","photo", scalar("String"))
-                        ))),
-                        inline("PostRespondServiceMetadata", obj(listOf(
+                        )),
+                        inline("PostRespondServiceMetadata", obj(
                             field("respondType","respondType", notNull(scalar("ID")))
-                        )))
-                    )))
-            )))
-        ))
+                        ))
+                    ))
+            ))
+        )
 
-private val RoomShortSelector = obj(listOf(
+private val RoomShortSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(listOf(
+            inline("PrivateRoom", obj(
                 field("id","id", notNull(scalar("ID"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("pinnedMessage","pinnedMessage", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", FullMessageSelector)
+                    )),
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
-                field("user","user", notNull(obj(listOf(
+                    ))),
+                field("user","user", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
-                    ))))
-            ))),
-            inline("SharedRoom", obj(listOf(
+                    )))
+            )),
+            inline("SharedRoom", obj(
                 field("canEdit","canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
                 field("id","id", notNull(scalar("ID"))),
@@ -384,93 +388,93 @@ private val RoomShortSelector = obj(listOf(
                 field("kind","kind", notNull(scalar("String"))),
                 field("membersCount","membersCount", scalar("Int")),
                 field("membership","membership", notNull(scalar("String"))),
-                field("organization","organization", obj(listOf(
+                field("organization","organization", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationShortSelector)
-                    ))),
+                    )),
                 field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(listOf(
+                field("pinnedMessage","pinnedMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    ))),
+                    )),
                 field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
+                    ))),
                 field("title","title", notNull(scalar("String")))
-            )))
-        ))
+            ))
+        )
 
-private val ChatUpdateFragmentSelector = obj(listOf(
+private val ChatUpdateFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("ChatMessageReceived", obj(listOf(
-                field("message","message", notNull(obj(listOf(
+            inline("ChatMessageReceived", obj(
+                field("message","message", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    )))),
+                    ))),
                 field("repeatKey","repeatKey", scalar("String"))
-            ))),
-            inline("ChatMessageUpdated", obj(listOf(
-                field("message","message", notNull(obj(listOf(
+            )),
+            inline("ChatMessageUpdated", obj(
+                field("message","message", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    ))))
-            ))),
-            inline("ChatMessageDeleted", obj(listOf(
-                field("message","message", notNull(obj(listOf(
+                    )))
+            )),
+            inline("ChatMessageDeleted", obj(
+                field("message","message", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID")))
-                    ))))
-            ))),
-            inline("ChatUpdated", obj(listOf(
-                field("chat","chat", notNull(obj(listOf(
+                    )))
+            )),
+            inline("ChatUpdated", obj(
+                field("chat","chat", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("Room", RoomShortSelector)
-                    ))))
-            ))),
-            inline("ChatLostAccess", obj(listOf(
+                    )))
+            )),
+            inline("ChatLostAccess", obj(
                 field("lostAccess","lostAccess", notNull(scalar("Boolean")))
-            )))
-        ))
+            ))
+        )
 
-private val CommentEntryFragmentSelector = obj(listOf(
+private val CommentEntryFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("childComments","childComments", notNull(list(notNull(obj(listOf(
+            field("childComments","childComments", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                )))))),
-            field("comment","comment", notNull(obj(listOf(
+                ))))),
+            field("comment","comment", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     fragment("ModernMessage", FullMessageSelector)
-                )))),
+                ))),
             field("deleted","deleted", notNull(scalar("Boolean"))),
             field("id","id", notNull(scalar("ID"))),
-            field("parentComment","parentComment", obj(listOf(
+            field("parentComment","parentComment", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                )))
-        ))
+                ))
+        )
 
-private val CommentUpdateFragmentSelector = obj(listOf(
+private val CommentUpdateFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("CommentReceived", obj(listOf(
-                field("comment","comment", notNull(obj(listOf(
+            inline("CommentReceived", obj(
+                field("comment","comment", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("CommentEntry", CommentEntryFragmentSelector)
-                    ))))
-            ))),
-            inline("CommentUpdated", obj(listOf(
-                field("comment","comment", notNull(obj(listOf(
+                    )))
+            )),
+            inline("CommentUpdated", obj(
+                field("comment","comment", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("CommentEntry", CommentEntryFragmentSelector)
-                    ))))
-            )))
-        ))
+                    )))
+            ))
+        )
 
-private val CommunitySearchSelector = obj(listOf(
+private val CommunitySearchSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
@@ -481,189 +485,189 @@ private val CommunitySearchSelector = obj(listOf(
             field("photo","photo", scalar("String")),
             field("status","status", notNull(scalar("String"))),
             field("superAccountId","superAccountId", notNull(scalar("ID")))
-        ))
+        )
 
-private val ConferenceFullSelector = obj(listOf(
+private val ConferenceFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("iceServers","iceServers", notNull(list(notNull(obj(listOf(
+            field("iceServers","iceServers", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("credential","credential", scalar("String")),
                     field("urls","urls", notNull(list(notNull(scalar("String"))))),
                     field("username","username", scalar("String"))
-                )))))),
+                ))))),
             field("id","id", notNull(scalar("ID"))),
-            field("peers","peers", notNull(list(notNull(obj(listOf(
+            field("peers","peers", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("connection","connection", obj(listOf(
+                    field("connection","connection", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("id","id", notNull(scalar("ID"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))
-                )))))),
+                        )))
+                ))))),
             field("startTime","startTime", scalar("Date"))
-        ))
+        )
 
-private val ConferenceShortSelector = obj(listOf(
+private val ConferenceShortSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("iceServers","iceServers", notNull(list(notNull(obj(listOf(
+            field("iceServers","iceServers", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("credential","credential", scalar("String")),
                     field("urls","urls", notNull(list(notNull(scalar("String"))))),
                     field("username","username", scalar("String"))
-                )))))),
+                ))))),
             field("id","id", notNull(scalar("ID"))),
             field("startTime","startTime", scalar("Date"))
-        ))
+        )
 
-private val DaialogListMessageSelector = obj(listOf(
+private val DaialogListMessageSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("date","date", notNull(scalar("Date"))),
             field("fallback","fallback", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
             field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(listOf(
+            field("sender","sender", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("firstName","firstName", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("name","name", notNull(scalar("String")))
-                )))),
-            inline("GeneralMessage", obj(listOf(
-                field("attachments","attachments", notNull(list(notNull(obj(listOf(
+                ))),
+            inline("GeneralMessage", obj(
+                field("attachments","attachments", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("fallback","fallback", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
-                        inline("MessageAttachmentFile", obj(listOf(
+                        inline("MessageAttachmentFile", obj(
                             field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(listOf(
+                            field("fileMetadata","fileMetadata", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("imageFormat","imageFormat", scalar("String")),
                                     field("isImage","isImage", notNull(scalar("Boolean")))
-                                )))),
+                                ))),
                             field("id","id", notNull(scalar("ID")))
-                        )))
-                    )))))),
+                        ))
+                    ))))),
                 field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
+                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID")))
-                    ))))))
-            )))
-        ))
+                    )))))
+            ))
+        )
 
-private val TinyMessageSelector = obj(listOf(
+private val TinyMessageSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("date","date", notNull(scalar("Date"))),
             field("fallback","fallback", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
             field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(listOf(
+            field("sender","sender", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserTinySelector)
-                )))),
-            inline("GeneralMessage", obj(listOf(
-                field("attachments","attachments", notNull(list(notNull(obj(listOf(
+                ))),
+            inline("GeneralMessage", obj(
+                field("attachments","attachments", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("fallback","fallback", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
-                        inline("MessageAttachmentFile", obj(listOf(
+                        inline("MessageAttachmentFile", obj(
                             field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(listOf(
+                            field("fileMetadata","fileMetadata", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("imageFormat","imageFormat", scalar("String")),
                                     field("isImage","isImage", notNull(scalar("Boolean")))
-                                )))),
+                                ))),
                             field("filePreview","filePreview", scalar("String")),
                             field("id","id", notNull(scalar("ID")))
-                        )))
-                    )))))),
+                        ))
+                    ))))),
                 field("commentsCount","commentsCount", notNull(scalar("Int"))),
                 field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
+                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID")))
-                    ))))))
-            )))
-        ))
+                    )))))
+            ))
+        )
 
-private val DialogUpdateFragmentSelector = obj(listOf(
+private val DialogUpdateFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("DialogMessageReceived", obj(listOf(
-                field("alphaMessage","message", notNull(obj(listOf(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
-                    )))),
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("unread","unread", notNull(scalar("Int")))
-            ))),
-            inline("DialogMessageUpdated", obj(listOf(
-                field("alphaMessage","message", notNull(obj(listOf(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
-                    )))),
-                field("cid","cid", notNull(scalar("ID")))
-            ))),
-            inline("DialogMessageDeleted", obj(listOf(
-                field("alphaMessage","message", notNull(obj(listOf(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
-                    )))),
-                field("alphaPrevMessage","prevMessage", obj(listOf(
+            inline("DialogMessageReceived", obj(
+                field("alphaMessage","message", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     ))),
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
                 field("unread","unread", notNull(scalar("Int")))
-            ))),
-            inline("DialogMessageRead", obj(listOf(
+            )),
+            inline("DialogMessageUpdated", obj(
+                field("alphaMessage","message", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", TinyMessageSelector)
+                    ))),
+                field("cid","cid", notNull(scalar("ID")))
+            )),
+            inline("DialogMessageDeleted", obj(
+                field("alphaMessage","message", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", TinyMessageSelector)
+                    ))),
+                field("alphaPrevMessage","prevMessage", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", TinyMessageSelector)
+                    )),
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
                 field("unread","unread", notNull(scalar("Int")))
-            ))),
-            inline("DialogMessageRead", obj(listOf(
+            )),
+            inline("DialogMessageRead", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
                 field("unread","unread", notNull(scalar("Int")))
-            ))),
-            inline("DialogTitleUpdated", obj(listOf(
+            )),
+            inline("DialogMessageRead", obj(
+                field("cid","cid", notNull(scalar("ID"))),
+                field("globalUnread","globalUnread", notNull(scalar("Int"))),
+                field("unread","unread", notNull(scalar("Int")))
+            )),
+            inline("DialogTitleUpdated", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("title","title", notNull(scalar("String")))
-            ))),
-            inline("DialogMuteChanged", obj(listOf(
+            )),
+            inline("DialogMuteChanged", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("mute","mute", notNull(scalar("Boolean")))
-            ))),
-            inline("DialogMentionedChanged", obj(listOf(
+            )),
+            inline("DialogMentionedChanged", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("haveMention","haveMention", notNull(scalar("Boolean")))
-            ))),
-            inline("DialogPhotoUpdated", obj(listOf(
+            )),
+            inline("DialogPhotoUpdated", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("photo","photo", scalar("String"))
-            ))),
-            inline("DialogDeleted", obj(listOf(
+            )),
+            inline("DialogDeleted", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int")))
-            ))),
-            inline("DialogBump", obj(listOf(
+            )),
+            inline("DialogBump", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("topMessage","topMessage", obj(listOf(
+                field("topMessage","topMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
-                    ))),
+                    )),
                 field("unread","unread", notNull(scalar("Int")))
-            )))
-        ))
+            ))
+        )
 
-private val UserFullSelector = obj(listOf(
+private val UserFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("email","email", scalar("String")),
@@ -679,42 +683,42 @@ private val UserFullSelector = obj(listOf(
             field("online","online", notNull(scalar("Boolean"))),
             field("phone","phone", scalar("String")),
             field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(listOf(
+            field("primaryOrganization","primaryOrganization", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
-                ))),
+                )),
             field("shortname","shortname", scalar("String")),
             field("twitter","twitter", scalar("String")),
             field("website","website", scalar("String"))
-        ))
+        )
 
-private val OrganizationFullSelector = obj(listOf(
+private val OrganizationFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
             field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(listOf(
+            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
-                        ))))
-                )))))),
-            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(listOf(
+                        )))
+                ))))),
+            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
-                        ))))
-                )))))),
+                        )))
+                ))))),
             field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
             field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms","rooms", notNull(list(notNull(obj(listOf(
+            field("betaPublicRooms","rooms", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                )))))),
+                ))))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("isMine","isMine", notNull(scalar("Boolean"))),
@@ -726,19 +730,19 @@ private val OrganizationFullSelector = obj(listOf(
             field("superAccountId","superAccountId", notNull(scalar("ID"))),
             field("twitter","twitter", scalar("String")),
             field("website","website", scalar("String"))
-        ))
+        )
 
-private val OrganizationMediumSelector = obj(listOf(
+private val OrganizationMediumSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("alphaOrganizationAdminMembers","adminMembers", notNull(list(notNull(obj(listOf(
+            field("alphaOrganizationAdminMembers","adminMembers", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
-                        ))))
-                )))))),
+                        )))
+                ))))),
             field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
             field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
             field("id","id", notNull(scalar("ID"))),
@@ -746,9 +750,9 @@ private val OrganizationMediumSelector = obj(listOf(
             field("membersCount","membersCount", notNull(scalar("Int"))),
             field("name","name", notNull(scalar("String"))),
             field("photo","photo", scalar("String"))
-        ))
+        )
 
-private val OrganizationProfileFullSelector = obj(listOf(
+private val OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
@@ -756,36 +760,36 @@ private val OrganizationProfileFullSelector = obj(listOf(
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
             field("name","name", notNull(scalar("String"))),
-            field("photoRef","photoRef", obj(listOf(
+            field("photoRef","photoRef", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("crop","crop", obj(listOf(
+                    field("crop","crop", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("h","h", notNull(scalar("Int"))),
                             field("w","w", notNull(scalar("Int"))),
                             field("x","x", notNull(scalar("Int"))),
                             field("y","y", notNull(scalar("Int")))
-                        ))),
+                        )),
                     field("uuid","uuid", notNull(scalar("String")))
-                ))),
+                )),
             field("shortname","shortname", scalar("String")),
             field("twitter","twitter", scalar("String")),
             field("website","website", scalar("String")),
             field("websiteTitle","websiteTitle", scalar("String"))
-        ))
+        )
 
-private val OrganizationSearchSelector = obj(listOf(
+private val OrganizationSearchSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(listOf(
+            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String"))),
                             field("photo","photo", scalar("String"))
-                        ))))
-                )))))),
+                        )))
+                ))))),
             field("id","id", notNull(scalar("ID"))),
             field("isMine","isMine", notNull(scalar("Boolean"))),
             field("membersCount","membersCount", notNull(scalar("Int"))),
@@ -793,27 +797,27 @@ private val OrganizationSearchSelector = obj(listOf(
             field("photo","photo", scalar("String")),
             field("status","status", notNull(scalar("String"))),
             field("superAccountId","superAccountId", notNull(scalar("ID")))
-        ))
+        )
 
-private val OrganizationWithoutMembersFragmentSelector = obj(listOf(
+private val OrganizationWithoutMembersFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
             field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(listOf(
+            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
-                        ))))
-                )))))),
+                        )))
+                ))))),
             field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
             field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms","rooms", notNull(list(notNull(obj(listOf(
+            field("betaPublicRooms","rooms", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                )))))),
+                ))))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("isMine","isMine", notNull(scalar("Boolean"))),
@@ -825,93 +829,97 @@ private val OrganizationWithoutMembersFragmentSelector = obj(listOf(
             field("superAccountId","superAccountId", notNull(scalar("ID"))),
             field("twitter","twitter", scalar("String")),
             field("website","website", scalar("String"))
-        ))
+        )
 
-private val RoomFullSelector = obj(listOf(
+private val RoomFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(listOf(
+            inline("PrivateRoom", obj(
                 field("id","id", notNull(scalar("ID"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("pinnedMessage","pinnedMessage", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", FullMessageSelector)
+                    )),
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
-                field("user","user", notNull(obj(listOf(
+                    ))),
+                field("user","user", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
-                    ))))
-            ))),
-            inline("SharedRoom", obj(listOf(
+                    )))
+            )),
+            inline("SharedRoom", obj(
                 field("canEdit","canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
                 field("description","description", scalar("String")),
                 field("id","id", notNull(scalar("ID"))),
                 field("isChannel","isChannel", notNull(scalar("Boolean"))),
                 field("kind","kind", notNull(scalar("String"))),
-                field("members","members", notNull(list(notNull(obj(listOf(
+                field("members","members", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("canKick","canKick", notNull(scalar("Boolean"))),
                         field("membership","membership", notNull(scalar("String"))),
                         field("role","role", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(listOf(
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))
-                    )))))),
+                            )))
+                    ))))),
                 field("membersCount","membersCount", scalar("Int")),
                 field("membership","membership", notNull(scalar("String"))),
-                field("organization","organization", obj(listOf(
+                field("organization","organization", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
-                    ))),
+                    )),
                 field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(listOf(
+                field("pinnedMessage","pinnedMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    ))),
-                field("requests","requests", list(notNull(obj(listOf(
+                    )),
+                field("requests","requests", list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(listOf(
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))
-                    ))))),
+                            )))
+                    )))),
                 field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
+                    ))),
                 field("socialImage","socialImage", scalar("String")),
                 field("title","title", notNull(scalar("String"))),
-                field("welcomeMessage","welcomeMessage", obj(listOf(
+                field("welcomeMessage","welcomeMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("isOn","isOn", notNull(scalar("Boolean"))),
                         field("message","message", scalar("String")),
-                        field("sender","sender", obj(listOf(
+                        field("sender","sender", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String")))
-                            )))
-                    )))
-            )))
-        ))
+                            ))
+                    ))
+            ))
+        )
 
-private val RoomFullWithoutMembersSelector = obj(listOf(
+private val RoomFullWithoutMembersSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(listOf(
+            inline("PrivateRoom", obj(
                 field("id","id", notNull(scalar("ID"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
-                field("user","user", notNull(obj(listOf(
+                    ))),
+                field("user","user", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
-                    ))))
-            ))),
-            inline("SharedRoom", obj(listOf(
+                    )))
+            )),
+            inline("SharedRoom", obj(
                 field("canEdit","canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
                 field("description","description", scalar("String")),
@@ -920,37 +928,67 @@ private val RoomFullWithoutMembersSelector = obj(listOf(
                 field("kind","kind", notNull(scalar("String"))),
                 field("membersCount","membersCount", scalar("Int")),
                 field("membership","membership", notNull(scalar("String"))),
-                field("organization","organization", obj(listOf(
+                field("organization","organization", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
-                    ))),
+                    )),
                 field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(listOf(
+                field("pinnedMessage","pinnedMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    ))),
+                    )),
                 field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(listOf(
+                field("settings","settings", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("mute","mute", scalar("Boolean"))
-                    )))),
+                    ))),
                 field("socialImage","socialImage", scalar("String")),
                 field("title","title", notNull(scalar("String"))),
-                field("welcomeMessage","welcomeMessage", obj(listOf(
+                field("welcomeMessage","welcomeMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("isOn","isOn", notNull(scalar("Boolean"))),
                         field("message","message", scalar("String")),
-                        field("sender","sender", obj(listOf(
+                        field("sender","sender", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String")))
-                            )))
-                    )))
-            )))
-        ))
+                            ))
+                    ))
+            ))
+        )
 
-private val SessionStateFullSelector = obj(listOf(
+private val RoomNanoSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("user","user", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("name","name", notNull(scalar("String"))),
+                        field("photo","photo", scalar("String"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("isChannel","isChannel", notNull(scalar("Boolean"))),
+                field("kind","kind", notNull(scalar("String"))),
+                field("photo","photo", notNull(scalar("String"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("title","title", notNull(scalar("String")))
+            ))
+        )
+
+private val SessionStateFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("isAccountActivated","isAccountActivated", notNull(scalar("Boolean"))),
             field("isAccountExists","isAccountExists", notNull(scalar("Boolean"))),
@@ -959,9 +997,9 @@ private val SessionStateFullSelector = obj(listOf(
             field("isCompleted","isCompleted", notNull(scalar("Boolean"))),
             field("isLoggedIn","isLoggedIn", notNull(scalar("Boolean"))),
             field("isProfileCreated","isProfileCreated", notNull(scalar("Boolean")))
-        ))
+        )
 
-private val SettingsFullSelector = obj(listOf(
+private val SettingsFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("desktopNotifications","desktopNotifications", notNull(scalar("String"))),
             field("emailFrequency","emailFrequency", notNull(scalar("String"))),
@@ -970,61 +1008,61 @@ private val SettingsFullSelector = obj(listOf(
             field("mobileIncludeText","mobileIncludeText", notNull(scalar("Boolean"))),
             field("mobileNotifications","mobileNotifications", notNull(scalar("String"))),
             field("primaryEmail","primaryEmail", notNull(scalar("String")))
-        ))
+        )
 
-private val UserForMentionSelector = obj(listOf(
+private val UserForMentionSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
             field("name","name", notNull(scalar("String"))),
             field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(listOf(
+            field("primaryOrganization","primaryOrganization", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("name","name", notNull(scalar("String")))
-                )))
-        ))
+                ))
+        )
 
-private val AccountSelector = obj(listOf(
-            field("me","me", obj(listOf(
+private val AccountSelector = obj(
+            field("me","me", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
-                ))),
-            field("myPermissions","myPermissions", notNull(obj(listOf(
+                )),
+            field("myPermissions","myPermissions", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("roles","roles", notNull(list(notNull(scalar("String")))))
-                )))),
-            field("sessionState","sessionState", notNull(obj(listOf(
+                ))),
+            field("sessionState","sessionState", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("SessionState", SessionStateFullSelector)
-                ))))
-        ))
-private val AccountAppInviteSelector = obj(listOf(
-            field("appInvite","invite", notNull(scalar("String")))
-        ))
-private val AccountAppInviteInfoSelector = obj(listOf(
-            field("alphaInviteInfo","invite", mapOf("key" to refValue("inviteKey")), obj(listOf(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("creator","creator", obj(listOf(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
-                        ))),
-                    field("id","id", notNull(scalar("ID")))
-                ))),
-            field("appInviteInfo","appInvite", mapOf("key" to refValue("inviteKey")), obj(listOf(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("inviter","inviter", notNull(obj(listOf(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
-                        ))))
                 )))
-        ))
-private val AccountInviteInfoSelector = obj(listOf(
-            field("alphaInviteInfo","invite", mapOf("key" to refValue("inviteKey")), obj(listOf(
+        )
+private val AccountAppInviteSelector = obj(
+            field("appInvite","invite", notNull(scalar("String")))
+        )
+private val AccountAppInviteInfoSelector = obj(
+            field("alphaInviteInfo","invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("creator","creator", obj(listOf(
+                    field("creator","creator", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))),
+                        )),
+                    field("id","id", notNull(scalar("ID")))
+                )),
+            field("appInviteInfo","appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("inviter","inviter", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("User", UserShortSelector)
+                        )))
+                ))
+        )
+private val AccountInviteInfoSelector = obj(
+            field("alphaInviteInfo","invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("creator","creator", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("User", UserShortSelector)
+                        )),
                     field("forEmail","forEmail", scalar("String")),
                     field("forName","forName", scalar("String")),
                     field("id","id", notNull(scalar("ID"))),
@@ -1032,136 +1070,153 @@ private val AccountInviteInfoSelector = obj(listOf(
                     field("key","key", notNull(scalar("String"))),
                     field("membersCount","membersCount", scalar("Int")),
                     field("orgId","orgId", notNull(scalar("ID"))),
-                    field("organization","organization", obj(listOf(
+                    field("organization","organization", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("about","about", scalar("String")),
                             field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
                             field("id","id", notNull(scalar("ID")))
-                        ))),
+                        )),
                     field("photo","photo", scalar("String")),
                     field("title","title", notNull(scalar("String")))
-                )))
-        ))
-private val AccountInvitesSelector = obj(listOf(
-            field("alphaInvites","invites", list(notNull(obj(listOf(
+                ))
+        )
+private val AccountInvitesSelector = obj(
+            field("alphaInvites","invites", list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String")))
-                )))))
-        ))
-private val AccountInvitesHistorySelector = obj(listOf(
-            field("alphaInvitesHistory","invites", list(notNull(obj(listOf(
+                ))))
+        )
+private val AccountInvitesHistorySelector = obj(
+            field("alphaInvitesHistory","invites", list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("acceptedBy","acceptedBy", obj(listOf(
+                    field("acceptedBy","acceptedBy", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String"))),
                             field("picture","picture", scalar("String"))
-                        ))),
+                        )),
                     field("forEmail","forEmail", notNull(scalar("String"))),
                     field("isGlobal","isGlobal", notNull(scalar("Boolean")))
-                )))))
-        ))
-private val AccountSettingsSelector = obj(listOf(
-            field("me","me", obj(listOf(
+                ))))
+        )
+private val AccountSettingsSelector = obj(
+            field("me","me", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
-                ))),
-            field("myOrganizations","organizations", notNull(list(notNull(obj(listOf(
+                )),
+            field("myOrganizations","organizations", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
-                ))))))
-        ))
-private val AvailableRoomsSelector = obj(listOf(
-            field("betaAvailableRooms","rooms", notNull(list(notNull(obj(listOf(
+                )))))
+        )
+private val AvailableRoomsSelector = obj(
+            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(listOf(
+                    inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
                         field("kind","kind", notNull(scalar("String"))),
                         field("membersCount","membersCount", scalar("Int")),
                         field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(listOf(
+                        field("organization","organization", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String"))),
                                 field("photo","photo", scalar("String"))
-                            ))),
+                            )),
                         field("photo","photo", notNull(scalar("String"))),
                         field("title","title", notNull(scalar("String")))
-                    )))
-                ))))))
-        ))
-private val ChatHistorySelector = obj(listOf(
-            field("conversationState","state", mapOf("id" to refValue("chatId")), notNull(obj(listOf(
+                    ))
+                ))))),
+            field("betaUserRooms","userRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
+private val ChatHistorySelector = obj(
+            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("state","state", scalar("String"))
-                )))),
-            field("messages","messages", mapOf("before" to refValue("before"), "chatId" to refValue("chatId"), "first" to refValue("first")), notNull(list(notNull(obj(listOf(
+                ))),
+            field("messages","messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", FullMessageSelector)
-                ))))))
-        ))
-private val ChatInitSelector = obj(listOf(
-            field("conversationState","state", mapOf("id" to refValue("chatId")), notNull(obj(listOf(
+                )))))
+        )
+private val ChatInitSelector = obj(
+            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("state","state", scalar("String"))
-                )))),
-            field("messages","messages", mapOf("before" to refValue("before"), "chatId" to refValue("chatId"), "first" to refValue("first")), notNull(list(notNull(obj(listOf(
+                ))),
+            field("messages","messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", FullMessageSelector)
-                )))))),
-            field("room","room", mapOf("id" to refValue("chatId")), obj(listOf(
+                ))))),
+            field("room","room", arguments(fieldValue("id", refValue("chatId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                )))
-        ))
-private val ChatSearchGroupSelector = obj(listOf(
-            field("alphaChatSearch","group", mapOf("members" to refValue("members")), obj(listOf(
+                ))
+        )
+private val ChatSearchGroupSelector = obj(
+            field("alphaChatSearch","group", arguments(fieldValue("members", refValue("members"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("flexibleId","flexibleId", notNull(scalar("ID"))),
                     field("id","id", notNull(scalar("ID")))
-                )))
-        ))
-private val ConferenceSelector = obj(listOf(
-            field("conference","conference", mapOf("id" to refValue("id")), notNull(obj(listOf(
+                ))
+        )
+private val ConferenceSelector = obj(
+            field("conference","conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceFullSelector)
-                ))))
-        ))
-private val ConferenceMediaSelector = obj(listOf(
-            field("conferenceMedia","conferenceMedia", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceMediaSelector = obj(
+            field("conferenceMedia","conferenceMedia", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("iceServers","iceServers", notNull(list(notNull(obj(listOf(
+                    field("iceServers","iceServers", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("credential","credential", scalar("String")),
                             field("urls","urls", notNull(list(notNull(scalar("String"))))),
                             field("username","username", scalar("String"))
-                        )))))),
+                        ))))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val DialogsSelector = obj(listOf(
-            field("alphaNotificationCounter","counter", notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val DialogsSelector = obj(
+            field("alphaNotificationCounter","counter", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("unreadCount","unreadCount", notNull(scalar("Int")))
-                )))),
-            field("dialogs","dialogs", mapOf("after" to refValue("after"), "first" to intValue(20)), notNull(obj(listOf(
+                ))),
+            field("dialogs","dialogs", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(20))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(listOf(
+                    field("items","items", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("alphaTopMessage","topMessage", obj(listOf(
+                            field("alphaTopMessage","topMessage", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("ModernMessage", DaialogListMessageSelector)
-                                ))),
+                                )),
                             field("cid","cid", notNull(scalar("ID"))),
                             field("fid","fid", notNull(scalar("ID"))),
                             field("haveMention","haveMention", notNull(scalar("Boolean"))),
@@ -1172,25 +1227,25 @@ private val DialogsSelector = obj(listOf(
                             field("photo","photo", notNull(scalar("String"))),
                             field("title","title", notNull(scalar("String"))),
                             field("unreadCount","unreadCount", notNull(scalar("Int")))
-                        ))))))
-                )))),
-            field("dialogsState","state", notNull(obj(listOf(
+                        )))))
+                ))),
+            field("dialogsState","state", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("state","state", scalar("String"))
-                ))))
-        ))
-private val ExploreCommunitySelector = obj(listOf(
-            field("alphaComunityPrefixSearch","items", mapOf("first" to intValue(25), "page" to refValue("page"), "query" to refValue("query"), "sort" to refValue("sort")), notNull(obj(listOf(
+                )))
+        )
+private val ExploreCommunitySelector = obj(
+            field("alphaComunityPrefixSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(listOf(
+                    field("edges","edges", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(listOf(
+                            field("node","node", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("Organization", CommunitySearchSelector)
-                                ))))
-                        )))))),
-                    field("pageInfo","pageInfo", notNull(obj(listOf(
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("currentPage","currentPage", notNull(scalar("Int"))),
                             field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
@@ -1198,21 +1253,21 @@ private val ExploreCommunitySelector = obj(listOf(
                             field("itemsCount","itemsCount", notNull(scalar("Int"))),
                             field("openEnded","openEnded", notNull(scalar("Boolean"))),
                             field("pagesCount","pagesCount", notNull(scalar("Int")))
-                        ))))
-                ))))
-        ))
-private val ExploreOrganizationsSelector = obj(listOf(
-            field("alphaOrganizations","items", mapOf("after" to refValue("after"), "all" to refValue("all"), "first" to intValue(25), "page" to refValue("page"), "prefix" to refValue("prefix"), "query" to refValue("query"), "sort" to refValue("sort")), notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val ExploreOrganizationsSelector = obj(
+            field("alphaOrganizations","items", arguments(fieldValue("after", refValue("after")), fieldValue("all", refValue("all")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("prefix", refValue("prefix")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(listOf(
+                    field("edges","edges", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(listOf(
+                            field("node","node", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("Organization", OrganizationSearchSelector)
-                                ))))
-                        )))))),
-                    field("pageInfo","pageInfo", notNull(obj(listOf(
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("currentPage","currentPage", notNull(scalar("Int"))),
                             field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
@@ -1220,22 +1275,22 @@ private val ExploreOrganizationsSelector = obj(listOf(
                             field("itemsCount","itemsCount", notNull(scalar("Int"))),
                             field("openEnded","openEnded", notNull(scalar("Boolean"))),
                             field("pagesCount","pagesCount", notNull(scalar("Int")))
-                        ))))
-                ))))
-        ))
-private val ExplorePeopleSelector = obj(listOf(
-            field("userSearch","items", mapOf("after" to refValue("after"), "first" to intValue(25), "page" to refValue("page"), "query" to refValue("query"), "sort" to refValue("sort")), notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val ExplorePeopleSelector = obj(
+            field("userSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(listOf(
+                    field("edges","edges", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(listOf(
+                            field("node","node", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("isYou","isYou", notNull(scalar("Boolean"))),
                                     fragment("User", UserShortSelector)
-                                ))))
-                        )))))),
-                    field("pageInfo","pageInfo", notNull(obj(listOf(
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("currentPage","currentPage", notNull(scalar("Int"))),
                             field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
@@ -1243,191 +1298,191 @@ private val ExplorePeopleSelector = obj(listOf(
                             field("itemsCount","itemsCount", notNull(scalar("Int"))),
                             field("openEnded","openEnded", notNull(scalar("Boolean"))),
                             field("pagesCount","pagesCount", notNull(scalar("Int")))
-                        ))))
-                ))))
-        ))
-private val FeatureFlagsSelector = obj(listOf(
-            field("featureFlags","featureFlags", notNull(list(notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val FeatureFlagsSelector = obj(
+            field("featureFlags","featureFlags", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
-                ))))))
-        ))
-private val FeedHomeSelector = obj(listOf(
-            field("alphaHomeFeed","homeFeed", notNull(list(notNull(obj(listOf(
+                )))))
+        )
+private val FeedHomeSelector = obj(
+            field("alphaHomeFeed","homeFeed", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaBy","by", notNull(obj(listOf(
+                    field("alphaBy","by", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )))),
+                        ))),
                     field("date","date", notNull(scalar("Date"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("text","text", notNull(scalar("String")))
-                ))))))
-        ))
-private val FetchPushSettingsSelector = obj(listOf(
-            field("pushSettings","pushSettings", notNull(obj(listOf(
+                )))))
+        )
+private val FetchPushSettingsSelector = obj(
+            field("pushSettings","pushSettings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("webPushKey","webPushKey", scalar("String"))
-                ))))
-        ))
-private val GetDraftMessageSelector = obj(listOf(
-            field("conversationDraft","message", mapOf("conversationId" to refValue("conversationId")), scalar("String"))
-        ))
-private val GlobalCounterSelector = obj(listOf(
-            field("alphaNotificationCounter","alphaNotificationCounter", notNull(obj(listOf(
+                )))
+        )
+private val GetDraftMessageSelector = obj(
+            field("conversationDraft","message", arguments(fieldValue("conversationId", refValue("conversationId"))), scalar("String"))
+        )
+private val GlobalCounterSelector = obj(
+            field("alphaNotificationCounter","alphaNotificationCounter", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("unreadCount","unreadCount", notNull(scalar("Int")))
-                ))))
-        ))
-private val GlobalSearchSelector = obj(listOf(
-            field("alphaGlobalSearch","items", mapOf("query" to refValue("query")), notNull(list(notNull(obj(listOf(
+                )))
+        )
+private val GlobalSearchSelector = obj(
+            field("alphaGlobalSearch","items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("Organization", obj(listOf(
+                    inline("Organization", obj(
                         fragment("Organization", OrganizationShortSelector)
-                    ))),
-                    inline("User", obj(listOf(
+                    )),
+                    inline("User", obj(
                         fragment("User", UserShortSelector)
-                    ))),
-                    inline("SharedRoom", obj(listOf(
+                    )),
+                    inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
                         field("kind","kind", notNull(scalar("String"))),
                         field("membersCount","membersCount", scalar("Int")),
                         field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(listOf(
+                        field("organization","organization", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String"))),
                                 field("photo","photo", scalar("String"))
-                            ))),
+                            )),
                         field("photo","roomPhoto", notNull(scalar("String"))),
                         field("title","title", notNull(scalar("String")))
-                    )))
-                ))))))
-        ))
-private val MessageSelector = obj(listOf(
-            field("message","message", mapOf("messageId" to refValue("messageId")), obj(listOf(
+                    ))
+                )))))
+        )
+private val MessageSelector = obj(
+            field("message","message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", FullMessageSelector)
-                )))
-        ))
-private val MessageCommentsSelector = obj(listOf(
-            field("messageComments","messageComments", mapOf("messageId" to refValue("messageId")), notNull(obj(listOf(
+                ))
+        )
+private val MessageCommentsSelector = obj(
+            field("messageComments","messageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("comments","comments", notNull(list(notNull(obj(listOf(
+                    field("comments","comments", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("CommentEntry", CommentEntryFragmentSelector)
-                        )))))),
+                        ))))),
                     field("count","count", notNull(scalar("Int"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(obj(listOf(
+                    field("state","state", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("state","state", scalar("String"))
-                        ))))
-                ))))
-        ))
-private val MyAppsSelector = obj(listOf(
-            field("myApps","apps", notNull(list(notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val MyAppsSelector = obj(
+            field("myApps","apps", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
-                ))))))
-        ))
-private val MyOrganizationsSelector = obj(listOf(
-            field("myOrganizations","myOrganizations", notNull(list(notNull(obj(listOf(
+                )))))
+        )
+private val MyOrganizationsSelector = obj(
+            field("myOrganizations","myOrganizations", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("betaIsPrimary","isPrimary", notNull(scalar("Boolean"))),
                     fragment("Organization", OrganizationShortSelector)
-                ))))))
-        ))
-private val OnlineSelector = obj(listOf(
-            field("user","user", mapOf("id" to refValue("userId")), notNull(obj(listOf(
+                )))))
+        )
+private val OnlineSelector = obj(
+            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("lastSeen","lastSeen", scalar("String")),
                     field("online","online", notNull(scalar("Boolean")))
-                ))))
-        ))
-private val OrganizationSelector = obj(listOf(
-            field("organization","organization", mapOf("id" to refValue("organizationId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationSelector = obj(
+            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationFullSelector)
-                ))))
-        ))
-private val OrganizationByPrefixSelector = obj(listOf(
-            field("alphaOrganizationByPrefix","organizationByPrefix", mapOf("query" to refValue("query")), obj(listOf(
+                )))
+        )
+private val OrganizationByPrefixSelector = obj(
+            field("alphaOrganizationByPrefix","organizationByPrefix", arguments(fieldValue("query", refValue("query"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationSearchSelector)
-                )))
-        ))
-private val OrganizationMembersShortSelector = obj(listOf(
-            field("organization","organization", mapOf("id" to refValue("organizationId")), notNull(obj(listOf(
+                ))
+        )
+private val OrganizationMembersShortSelector = obj(
+            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", notNull(list(notNull(obj(listOf(
+                    field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(listOf(
+                            field("user","user", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("id","id", notNull(scalar("ID")))
-                                ))))
-                        )))))),
+                                )))
+                        ))))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
-                ))))
-        ))
-private val OrganizationMembersShortPaginatedSelector = obj(listOf(
-            field("organization","organization", mapOf("id" to refValue("organizationId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationMembersShortPaginatedSelector = obj(
+            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", mapOf("after" to refValue("after"), "first" to refValue("first")), notNull(list(notNull(obj(listOf(
+                    field("alphaOrganizationMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("role","role", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(listOf(
+                            field("user","user", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     fragment("User", UserFullSelector)
-                                ))))
-                        )))))),
+                                )))
+                        ))))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
-                ))))
-        ))
-private val OrganizationProfileSelector = obj(listOf(
-            field("organizationProfile","organizationProfile", mapOf("id" to refValue("organizationId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationProfileSelector = obj(
+            field("organizationProfile","organizationProfile", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("OrganizationProfile", OrganizationProfileFullSelector)
-                ))))
-        ))
-private val OrganizationPublicInviteSelector = obj(listOf(
-            field("alphaOrganizationInviteLink","publicInvite", mapOf("organizationId" to refValue("organizationId")), obj(listOf(
+                )))
+        )
+private val OrganizationPublicInviteSelector = obj(
+            field("alphaOrganizationInviteLink","publicInvite", arguments(fieldValue("organizationId", refValue("organizationId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("ttl","ttl", scalar("String"))
-                )))
-        ))
-private val OrganizationWithoutMembersSelector = obj(listOf(
-            field("organization","organization", mapOf("id" to refValue("organizationId")), notNull(obj(listOf(
+                ))
+        )
+private val OrganizationWithoutMembersSelector = obj(
+            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
-                ))))
-        ))
-private val PermissionsSelector = obj(listOf(
-            field("myPermissions","myPermissions", notNull(obj(listOf(
+                )))
+        )
+private val PermissionsSelector = obj(
+            field("myPermissions","myPermissions", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("roles","roles", notNull(list(notNull(scalar("String")))))
-                ))))
-        ))
-private val ProfileSelector = obj(listOf(
-            field("me","user", obj(listOf(
+                )))
+        )
+private val ProfileSelector = obj(
+            field("me","user", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("shortname","shortname", scalar("String"))
-                ))),
-            field("myProfile","profile", obj(listOf(
+                )),
+            field("myProfile","profile", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("about","about", scalar("String")),
-                    field("alphaInvitedBy","invitedBy", obj(listOf(
+                    field("alphaInvitedBy","invitedBy", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("alphaJoinedAt","joinedAt", scalar("String")),
                     field("alphaLinkedin","linkedin", scalar("String")),
                     field("alphaRole","role", scalar("String")),
@@ -1437,71 +1492,71 @@ private val ProfileSelector = obj(listOf(
                     field("lastName","lastName", scalar("String")),
                     field("location","location", scalar("String")),
                     field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(listOf(
+                    field("photoRef","photoRef", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(listOf(
+                            field("crop","crop", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("h","h", notNull(scalar("Int"))),
                                     field("w","w", notNull(scalar("Int"))),
                                     field("x","x", notNull(scalar("Int"))),
                                     field("y","y", notNull(scalar("Int")))
-                                ))),
+                                )),
                             field("uuid","uuid", notNull(scalar("String")))
-                        ))),
-                    field("primaryOrganization","primaryOrganization", obj(listOf(
+                        )),
+                    field("primaryOrganization","primaryOrganization", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("website","website", scalar("String"))
-                )))
-        ))
-private val ProfilePrefillSelector = obj(listOf(
-            field("myProfilePrefill","prefill", obj(listOf(
+                ))
+        )
+private val ProfilePrefillSelector = obj(
+            field("myProfilePrefill","prefill", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("firstName","firstName", scalar("String")),
                     field("lastName","lastName", scalar("String")),
                     field("picture","picture", scalar("String"))
-                )))
-        ))
-private val ResolveShortNameSelector = obj(listOf(
-            field("alphaResolveShortName","item", mapOf("shortname" to refValue("shortname")), obj(listOf(
+                ))
+        )
+private val ResolveShortNameSelector = obj(
+            field("alphaResolveShortName","item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(listOf(
+                    inline("User", obj(
                         fragment("User", UserFullSelector)
-                    ))),
-                    inline("Organization", obj(listOf(
+                    )),
+                    inline("Organization", obj(
                         fragment("Organization", OrganizationFullSelector)
-                    )))
-                )))
-        ))
-private val ResolvedInviteSelector = obj(listOf(
-            field("alphaResolveInvite","invite", mapOf("key" to refValue("key")), obj(listOf(
+                    ))
+                ))
+        )
+private val ResolvedInviteSelector = obj(
+            field("alphaResolveInvite","invite", arguments(fieldValue("key", refValue("key"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("InviteInfo", obj(listOf(
-                        field("creator","creator", obj(listOf(
+                    inline("InviteInfo", obj(
+                        field("creator","creator", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))),
+                            )),
                         field("id","id", notNull(scalar("ID"))),
                         field("orgId","orgId", notNull(scalar("ID"))),
                         field("title","title", notNull(scalar("String")))
-                    ))),
-                    inline("AppInvite", obj(listOf(
-                        field("inviter","inviter", notNull(obj(listOf(
+                    )),
+                    inline("AppInvite", obj(
+                        field("inviter","inviter", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            ))))
-                    ))),
-                    inline("RoomInvite", obj(listOf(
+                            )))
+                    )),
+                    inline("RoomInvite", obj(
                         field("id","id", notNull(scalar("ID"))),
-                        field("invitedByUser","invitedByUser", notNull(obj(listOf(
+                        field("invitedByUser","invitedByUser", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
-                            )))),
-                        field("room","room", notNull(obj(listOf(
+                            ))),
+                        field("room","room", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
-                                inline("SharedRoom", obj(listOf(
+                                inline("SharedRoom", obj(
                                     field("description","description", scalar("String")),
                                     field("id","id", notNull(scalar("ID"))),
                                     field("isChannel","isChannel", notNull(scalar("Boolean"))),
@@ -1511,211 +1566,222 @@ private val ResolvedInviteSelector = obj(listOf(
                                     field("photo","photo", notNull(scalar("String"))),
                                     field("socialImage","socialImage", scalar("String")),
                                     field("title","title", notNull(scalar("String")))
-                                )))
-                            ))))
-                    )))
-                )))
-        ))
-private val RoomSelector = obj(listOf(
-            field("room","room", mapOf("id" to refValue("id")), obj(listOf(
+                                ))
+                            )))
+                    ))
+                ))
+        )
+private val RoomSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                )))
-        ))
-private val RoomChatSelector = obj(listOf(
-            field("room","room", mapOf("id" to refValue("id")), obj(listOf(
+                ))
+        )
+private val RoomChatSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(listOf(
+                    inline("PrivateRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
-                        field("user","user", notNull(obj(listOf(
+                        field("pinnedMessage","pinnedMessage", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("ModernMessage", FullMessageSelector)
+                            )),
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String")))
-                            ))))
-                    ))),
-                    inline("SharedRoom", obj(listOf(
+                            )))
+                    )),
+                    inline("SharedRoom", obj(
                         field("canEdit","canEdit", notNull(scalar("Boolean"))),
                         field("id","id", notNull(scalar("ID"))),
                         field("isChannel","isChannel", notNull(scalar("Boolean"))),
                         field("kind","kind", notNull(scalar("String"))),
                         field("membership","membership", notNull(scalar("String"))),
                         field("photo","photo", notNull(scalar("String"))),
-                        field("pinnedMessage","pinnedMessage", obj(listOf(
+                        field("pinnedMessage","pinnedMessage", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
-                            ))),
+                            )),
+                        field("role","role", notNull(scalar("String"))),
                         field("title","title", notNull(scalar("String")))
-                    )))
-                )))
-        ))
-private val RoomHeaderSelector = obj(listOf(
-            field("room","room", mapOf("id" to refValue("id")), obj(listOf(
+                    ))
+                ))
+        )
+private val RoomHeaderSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(listOf(
+                    inline("PrivateRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
-                        field("settings","settings", notNull(obj(listOf(
+                        field("settings","settings", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("mute","mute", scalar("Boolean"))
-                            )))),
-                        field("user","user", notNull(obj(listOf(
+                            ))),
+                        field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String"))),
                                 field("photo","photo", scalar("String")),
-                                field("primaryOrganization","primaryOrganization", obj(listOf(
+                                field("primaryOrganization","primaryOrganization", obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
                                         field("id","id", notNull(scalar("ID"))),
                                         field("name","name", notNull(scalar("String")))
-                                    )))
-                            ))))
-                    ))),
-                    inline("SharedRoom", obj(listOf(
+                                    ))
+                            )))
+                    )),
+                    inline("SharedRoom", obj(
                         field("canEdit","canEdit", notNull(scalar("Boolean"))),
                         field("description","description", scalar("String")),
                         field("id","id", notNull(scalar("ID"))),
                         field("isChannel","isChannel", notNull(scalar("Boolean"))),
                         field("kind","kind", notNull(scalar("String"))),
                         field("membersCount","membersCount", scalar("Int")),
-                        field("organization","organization", obj(listOf(
+                        field("organization","organization", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
                                 field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("name","name", notNull(scalar("String")))
-                            ))),
+                            )),
                         field("photo","photo", notNull(scalar("String"))),
                         field("role","role", notNull(scalar("String"))),
-                        field("settings","settings", notNull(obj(listOf(
+                        field("settings","settings", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("mute","mute", scalar("Boolean"))
-                            )))),
+                            ))),
                         field("socialImage","socialImage", scalar("String")),
                         field("title","title", notNull(scalar("String"))),
-                        field("welcomeMessage","welcomeMessage", obj(listOf(
+                        field("welcomeMessage","welcomeMessage", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("isOn","isOn", notNull(scalar("Boolean"))),
                                 field("message","message", scalar("String")),
-                                field("sender","sender", obj(listOf(
+                                field("sender","sender", obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
                                         field("id","id", notNull(scalar("ID"))),
                                         field("name","name", notNull(scalar("String")))
-                                    )))
-                            )))
-                    )))
-                )))
-        ))
-private val RoomInviteInfoSelector = obj(listOf(
-            field("betaRoomInviteInfo","invite", mapOf("invite" to refValue("invite")), obj(listOf(
+                                    ))
+                            ))
+                    ))
+                ))
+        )
+private val RoomInviteInfoSelector = obj(
+            field("betaRoomInviteInfo","invite", arguments(fieldValue("invite", refValue("invite"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("invitedByUser","invitedByUser", notNull(obj(listOf(
+                    field("invitedByUser","invitedByUser", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )))),
-                    field("room","room", notNull(obj(listOf(
+                        ))),
+                    field("room","room", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            inline("SharedRoom", obj(listOf(
+                            inline("SharedRoom", obj(
                                 field("description","description", scalar("String")),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("isChannel","isChannel", notNull(scalar("Boolean"))),
                                 field("kind","kind", notNull(scalar("String"))),
                                 field("membersCount","membersCount", scalar("Int")),
                                 field("membership","membership", notNull(scalar("String"))),
-                                field("organization","organization", obj(listOf(
+                                field("organization","organization", obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
                                         fragment("Organization", OrganizationShortSelector)
-                                    ))),
+                                    )),
                                 field("photo","photo", notNull(scalar("String"))),
                                 field("socialImage","socialImage", scalar("String")),
                                 field("title","title", notNull(scalar("String")))
-                            )))
-                        ))))
-                )))
-        ))
-private val RoomInviteLinkSelector = obj(listOf(
-            field("betaRoomInviteLink","link", mapOf("roomId" to refValue("roomId")), notNull(scalar("String")))
-        ))
-private val RoomMemberShortSelector = obj(listOf(
-            field("roomMember","member", mapOf("memberId" to refValue("memberId"), "roomId" to refValue("roomId")), obj(listOf(
+                            ))
+                        )))
+                ))
+        )
+private val RoomInviteLinkSelector = obj(
+            field("betaRoomInviteLink","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+        )
+private val RoomMemberShortSelector = obj(
+            field("roomMember","member", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("roomId", refValue("roomId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("firstName","firstName", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))))
-                )))
-        ))
-private val RoomMembersSelector = obj(listOf(
-            field("roomMembers","members", mapOf("roomId" to refValue("roomId")), notNull(list(notNull(obj(listOf(
+                        )))
+                ))
+        )
+private val RoomMembersSelector = obj(
+            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("canKick","canKick", notNull(scalar("Boolean"))),
                     field("membership","membership", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))
-                ))))))
-        ))
-private val RoomMembersForMentionsPaginatedSelector = obj(listOf(
-            field("roomMembers","members", mapOf("after" to refValue("after"), "first" to refValue("first"), "roomId" to refValue("roomId")), notNull(list(notNull(obj(listOf(
+                        )))
+                )))))
+        )
+private val RoomMembersForMentionsPaginatedSelector = obj(
+            field("roomMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserForMentionSelector)
-                        ))))
-                ))))))
-        ))
-private val RoomMembersPaginatedSelector = obj(listOf(
-            field("roomMembers","members", mapOf("after" to refValue("after"), "first" to refValue("first"), "roomId" to refValue("roomId")), notNull(list(notNull(obj(listOf(
+                        )))
+                )))))
+        )
+private val RoomMembersPaginatedSelector = obj(
+            field("roomMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("canKick","canKick", notNull(scalar("Boolean"))),
                     field("membership","membership", notNull(scalar("String"))),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))
-                ))))))
-        ))
-private val RoomMembersShortSelector = obj(listOf(
-            field("roomMembers","members", mapOf("roomId" to refValue("roomId")), notNull(list(notNull(obj(listOf(
+                        )))
+                )))))
+        )
+private val RoomMembersShortSelector = obj(
+            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID")))
-                        ))))
-                ))))))
-        ))
-private val RoomSearchSelector = obj(listOf(
-            field("betaRoomSearch","items", mapOf("first" to intValue(25), "page" to refValue("page"), "query" to refValue("query"), "sort" to refValue("sort")), notNull(obj(listOf(
+                        )))
+                )))))
+        )
+private val RoomPicoSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(listOf(
+                    fragment("Room", RoomNanoSelector)
+                ))
+        )
+private val RoomSearchSelector = obj(
+            field("betaRoomSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("edges","edges", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(listOf(
+                            field("node","node", notNull(obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
-                                    inline("SharedRoom", obj(listOf(
+                                    inline("SharedRoom", obj(
                                         field("id","id", notNull(scalar("ID"))),
                                         field("isChannel","isChannel", notNull(scalar("Boolean"))),
                                         field("kind","kind", notNull(scalar("String"))),
                                         field("membersCount","membersCount", scalar("Int")),
                                         field("membership","membership", notNull(scalar("String"))),
-                                        field("organization","organization", obj(listOf(
+                                        field("organization","organization", obj(
                                                 field("__typename","__typename", notNull(scalar("String"))),
                                                 field("id","id", notNull(scalar("ID"))),
                                                 field("name","name", notNull(scalar("String"))),
                                                 field("photo","photo", scalar("String"))
-                                            ))),
+                                            )),
                                         field("photo","photo", notNull(scalar("String"))),
                                         field("title","title", notNull(scalar("String")))
-                                    )))
-                                ))))
-                        )))))),
-                    field("pageInfo","pageInfo", notNull(obj(listOf(
+                                    ))
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("currentPage","currentPage", notNull(scalar("Int"))),
                             field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
@@ -1723,11 +1789,11 @@ private val RoomSearchSelector = obj(listOf(
                             field("itemsCount","itemsCount", notNull(scalar("Int"))),
                             field("openEnded","openEnded", notNull(scalar("Boolean"))),
                             field("pagesCount","pagesCount", notNull(scalar("Int")))
-                        ))))
-                ))))
-        ))
-private val RoomSearchTextSelector = obj(listOf(
-            field("betaDialogTextSearch","items", mapOf("query" to refValue("query")), notNull(list(notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val RoomSearchTextSelector = obj(
+            field("betaDialogTextSearch","items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("cid","id", notNull(scalar("ID"))),
                     field("fid","flexibleId", notNull(scalar("ID"))),
@@ -1735,399 +1801,437 @@ private val RoomSearchTextSelector = obj(listOf(
                     field("kind","kind", notNull(scalar("String"))),
                     field("photo","photo", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
-                ))))))
-        ))
-private val RoomSuperSelector = obj(listOf(
-            field("roomSuper","roomSuper", mapOf("id" to refValue("id")), obj(listOf(
+                )))))
+        )
+private val RoomSuperSelector = obj(
+            field("roomSuper","roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("featured","featured", notNull(scalar("Boolean"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("listed","listed", notNull(scalar("Boolean")))
-                )))
-        ))
-private val RoomTinySelector = obj(listOf(
-            field("room","room", mapOf("id" to refValue("id")), obj(listOf(
+                ))
+        )
+private val RoomTinySelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                )))
-        ))
-private val RoomWithoutMembersSelector = obj(listOf(
-            field("room","room", mapOf("id" to refValue("id")), obj(listOf(
+                ))
+        )
+private val RoomWithoutMembersSelector = obj(
+            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullWithoutMembersSelector)
-                )))
-        ))
-private val SettingsSelector = obj(listOf(
-            field("settings","settings", notNull(obj(listOf(
+                ))
+        )
+private val SettingsSelector = obj(
+            field("settings","settings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
-                ))))
-        ))
-private val SuperAccountSelector = obj(listOf(
-            field("superAccount","superAccount", mapOf("id" to refValue("accountId"), "viaOrgId" to refValue("viaOrgId")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountSelector = obj(
+            field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("alphaPublished","published", notNull(scalar("Boolean"))),
                     field("createdAt","createdAt", scalar("String")),
-                    field("createdBy","createdBy", obj(listOf(
+                    field("createdBy","createdBy", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))),
-                    field("features","features", notNull(list(notNull(obj(listOf(
+                        )),
+                    field("features","features", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("key","key", notNull(scalar("String"))),
                             field("title","title", notNull(scalar("String")))
-                        )))))),
+                        ))))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(listOf(
+                    field("members","members", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )))))),
+                        ))))),
                     field("orgId","orgId", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
-                ))))
-        ))
-private val SuperAccountsSelector = obj(listOf(
-            field("superAccounts","superAccounts", notNull(list(notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountsSelector = obj(
+            field("superAccounts","superAccounts", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("orgId","orgId", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
-                ))))))
-        ))
-private val SuperAdminsSelector = obj(listOf(
-            field("superAdmins","superAdmins", notNull(list(notNull(obj(listOf(
+                )))))
+        )
+private val SuperAdminsSelector = obj(
+            field("superAdmins","superAdmins", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("email","email", scalar("String")),
                     field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))
-                ))))))
-        ))
-private val UserSelector = obj(listOf(
-            field("room","conversation", mapOf("id" to refValue("userId")), obj(listOf(
+                        )))
+                )))))
+        )
+private val UserSelector = obj(
+            field("room","conversation", arguments(fieldValue("id", refValue("userId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(listOf(
+                    inline("PrivateRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
-                        field("settings","settings", notNull(obj(listOf(
+                        field("settings","settings", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
                                 field("mute","mute", scalar("Boolean"))
-                            ))))
-                    )))
-                ))),
-            field("user","user", mapOf("id" to refValue("userId")), notNull(obj(listOf(
+                            )))
+                    ))
+                )),
+            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("User", UserFullSelector)
-                ))))
-        ))
-private val UserStorageSelector = obj(listOf(
-            field("userStorage","userStorage", mapOf("keys" to refValue("keys"), "namespace" to refValue("namespace")), notNull(list(notNull(obj(listOf(
+                )))
+        )
+private val UserAvailableRoomsSelector = obj(
+            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
+private val UserRoomsSelector = obj(
+            field("betaUserRooms","betaUserRooms", arguments(fieldValue("after", refValue("after")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
+private val UserStorageSelector = obj(
+            field("userStorage","userStorage", arguments(fieldValue("keys", refValue("keys")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("value","value", scalar("String"))
-                ))))))
-        ))
-private val UsersSelector = obj(listOf(
-            field("users","items", mapOf("query" to refValue("query")), notNull(list(notNull(obj(listOf(
+                )))))
+        )
+private val UsersSelector = obj(
+            field("users","items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("email","subtitle", scalar("String")),
                     field("id","id", notNull(scalar("ID"))),
                     field("name","title", notNull(scalar("String")))
-                ))))))
-        ))
-private val AccountCreateInviteSelector = obj(listOf(
-            field("alphaCreateInvite","alphaCreateInvite", notNull(obj(listOf(
+                )))))
+        )
+private val AccountCreateInviteSelector = obj(
+            field("alphaCreateInvite","alphaCreateInvite", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String")))
-                ))))
-        ))
-private val AccountDestroyInviteSelector = obj(listOf(
-            field("alphaDeleteInvite","alphaDeleteInvite", mapOf("id" to refValue("id")), notNull(scalar("String")))
-        ))
-private val AccountInviteJoinSelector = obj(listOf(
-            field("alphaJoinInvite","alphaJoinInvite", mapOf("key" to refValue("inviteKey")), notNull(scalar("ID")))
-        ))
-private val AddAppToChatSelector = obj(listOf(
-            field("addAppToChat","addAppToChat", mapOf("appId" to refValue("appId"), "chatId" to refValue("chatId")), notNull(obj(listOf(
+                )))
+        )
+private val AccountDestroyInviteSelector = obj(
+            field("alphaDeleteInvite","alphaDeleteInvite", arguments(fieldValue("id", refValue("id"))), notNull(scalar("String")))
+        )
+private val AccountInviteJoinSelector = obj(
+            field("alphaJoinInvite","alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
+        )
+private val AddAppToChatSelector = obj(
+            field("addAppToChat","addAppToChat", arguments(fieldValue("appId", refValue("appId")), fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("AppChat", AppChatSelector)
-                ))))
-        ))
-private val AddMessageCommentSelector = obj(listOf(
-            field("addMessageComment","addMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(scalar("Boolean")))
-        ))
-private val BetaAddMessageCommentSelector = obj(listOf(
-            field("betaAddMessageComment","betaAddMessageComment", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyComment" to refValue("replyComment")), notNull(obj(listOf(
+                )))
+        )
+private val AddMessageCommentSelector = obj(
+            field("betaAddMessageComment","addMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val CancelTypingSelector = obj(listOf(
-            field("typingCancel","typingCancel", mapOf("conversationId" to refValue("conversationId")), notNull(scalar("String")))
-        ))
-private val CommentSetReactionSelector = obj(listOf(
-            field("commentReactionAdd","commentReactionAdd", mapOf("commentId" to refValue("commentId"), "reaction" to refValue("reaction")), notNull(scalar("Boolean")))
-        ))
-private val CommentUnsetReactionSelector = obj(listOf(
-            field("commentReactionRemove","commentReactionRemove", mapOf("commentId" to refValue("commentId"), "reaction" to refValue("reaction")), notNull(scalar("Boolean")))
-        ))
-private val ConferenceAnswerSelector = obj(listOf(
-            field("peerConnectionAnswer","peerConnectionAnswer", mapOf("answer" to refValue("answer"), "id" to refValue("id"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val CancelTypingSelector = obj(
+            field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
+        )
+private val CommentSetReactionSelector = obj(
+            field("commentReactionAdd","commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val CommentUnsetReactionSelector = obj(
+            field("commentReactionRemove","commentReactionRemove", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val ConferenceAnswerSelector = obj(
+            field("peerConnectionAnswer","peerConnectionAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
-                ))))
-        ))
-private val ConferenceCandidateSelector = obj(listOf(
-            field("peerConnectionCandidate","peerConnectionCandidate", mapOf("candidate" to refValue("candidate"), "id" to refValue("id"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceCandidateSelector = obj(
+            field("peerConnectionCandidate","peerConnectionCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
-                ))))
-        ))
-private val ConferenceJoinSelector = obj(listOf(
-            field("conferenceJoin","conferenceJoin", mapOf("id" to refValue("id")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceJoinSelector = obj(
+            field("conferenceJoin","conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("conference","conference", notNull(obj(listOf(
+                    field("conference","conference", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("Conference", ConferenceShortSelector)
-                        )))),
+                        ))),
                     field("peerId","peerId", notNull(scalar("ID")))
-                ))))
-        ))
-private val ConferenceKeepAliveSelector = obj(listOf(
-            field("conferenceKeepAlive","conferenceKeepAlive", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceKeepAliveSelector = obj(
+            field("conferenceKeepAlive","conferenceKeepAlive", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
-                ))))
-        ))
-private val ConferenceLeaveSelector = obj(listOf(
-            field("conferenceLeave","conferenceLeave", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceLeaveSelector = obj(
+            field("conferenceLeave","conferenceLeave", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
-                ))))
-        ))
-private val ConferenceOfferSelector = obj(listOf(
-            field("peerConnectionOffer","peerConnectionOffer", mapOf("id" to refValue("id"), "offer" to refValue("offer"), "ownPeerId" to refValue("ownPeerId"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val ConferenceOfferSelector = obj(
+            field("peerConnectionOffer","peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
-                ))))
-        ))
-private val CreateAppSelector = obj(listOf(
-            field("createApp","createApp", mapOf("about" to refValue("about"), "name" to refValue("name"), "photoRef" to refValue("photoRef"), "shortname" to refValue("shortname")), notNull(obj(listOf(
+                )))
+        )
+private val CreateAppSelector = obj(
+            field("createApp","createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
-                ))))
-        ))
-private val CreateOrganizationSelector = obj(listOf(
-            field("createOrganization","organization", mapOf("input" to refValue("input")), notNull(obj(listOf(
+                )))
+        )
+private val CreateOrganizationSelector = obj(
+            field("createOrganization","organization", arguments(fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("name","name", notNull(scalar("String")))
-                ))))
-        ))
-private val CreateUserProfileAndOrganizationSelector = obj(listOf(
-            field("alphaCreateUserProfileAndOrganization","alphaCreateUserProfileAndOrganization", mapOf("organization" to refValue("organization"), "user" to refValue("user")), notNull(obj(listOf(
+                )))
+        )
+private val CreateUserProfileAndOrganizationSelector = obj(
+            field("alphaCreateUserProfileAndOrganization","alphaCreateUserProfileAndOrganization", arguments(fieldValue("organization", refValue("organization")), fieldValue("user", refValue("user"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("organization","organization", obj(listOf(
+                    field("organization","organization", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))),
-                    field("user","user", obj(listOf(
+                        )),
+                    field("user","user", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
-                        )))
-                ))))
-        ))
-private val DebugMailsSelector = obj(listOf(
-            field("debugSendEmail","debugSendEmail", mapOf("type" to refValue("type")), scalar("Boolean"))
-        ))
-private val DeleteCommentSelector = obj(listOf(
-            field("deleteComment","deleteComment", mapOf("id" to refValue("id")), notNull(scalar("Boolean")))
-        ))
-private val DeleteOrganizationSelector = obj(listOf(
-            field("deleteOrganization","deleteOrganization", mapOf("id" to refValue("organizationId")), notNull(scalar("Boolean")))
-        ))
-private val DeleteUserSelector = obj(listOf(
-            field("superDeleteUser","superDeleteUser", mapOf("id" to refValue("id")), notNull(scalar("Boolean")))
-        ))
-private val EditCommentSelector = obj(listOf(
-            field("editComment","editComment", mapOf("id" to refValue("id"), "message" to refValue("message")), notNull(scalar("Boolean")))
-        ))
-private val EditPostMessageSelector = obj(listOf(
-            field("alphaEditPostMessage","editPostMessage", mapOf("attachments" to refValue("attachments"), "messageId" to refValue("messageId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
+                        ))
+                )))
+        )
+private val DebugMailsSelector = obj(
+            field("debugSendEmail","debugSendEmail", arguments(fieldValue("type", refValue("type"))), scalar("Boolean"))
+        )
+private val DeleteCommentSelector = obj(
+            field("deleteComment","deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private val DeleteOrganizationSelector = obj(
+            field("deleteOrganization","deleteOrganization", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
+        )
+private val DeleteUserSelector = obj(
+            field("superDeleteUser","superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private val EditCommentSelector = obj(
+            field("editComment","editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+        )
+private val EditMessageSelector = obj(
+            field("editMessage","editMessage", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+        )
+private val EditPostMessageSelector = obj(
+            field("alphaEditPostMessage","editPostMessage", arguments(fieldValue("attachments", refValue("attachments")), fieldValue("messageId", refValue("messageId")), fieldValue("postType", refValue("postType")), fieldValue("text", refValue("text")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("seq","seq", notNull(scalar("Int")))
-                ))))
-        ))
-private val FeatureFlagAddSelector = obj(listOf(
-            field("featureFlagAdd","featureFlagAdd", mapOf("key" to refValue("key"), "title" to refValue("title")), notNull(obj(listOf(
+                )))
+        )
+private val FeatureFlagAddSelector = obj(
+            field("featureFlagAdd","featureFlagAdd", arguments(fieldValue("key", refValue("key")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
-                ))))
-        ))
-private val FeatureFlagDisableSelector = obj(listOf(
-            field("superAccountFeatureRemove","superAccountFeatureRemove", mapOf("featureId" to refValue("featureId"), "id" to refValue("accountId")), notNull(obj(listOf(
+                )))
+        )
+private val FeatureFlagDisableSelector = obj(
+            field("superAccountFeatureRemove","superAccountFeatureRemove", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("features","features", notNull(list(notNull(obj(listOf(
+                    field("features","features", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("key","key", notNull(scalar("String"))),
                             field("title","title", notNull(scalar("String")))
-                        )))))),
+                        ))))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val FeatureFlagEnableSelector = obj(listOf(
-            field("superAccountFeatureAdd","superAccountFeatureAdd", mapOf("featureId" to refValue("featureId"), "id" to refValue("accountId")), notNull(obj(listOf(
+                )))
+        )
+private val FeatureFlagEnableSelector = obj(
+            field("superAccountFeatureAdd","superAccountFeatureAdd", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("features","features", notNull(list(notNull(obj(listOf(
+                    field("features","features", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("key","key", notNull(scalar("String"))),
                             field("title","title", notNull(scalar("String")))
-                        )))))),
+                        ))))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val FeedPostSelector = obj(listOf(
-            field("alphaCreateFeedPost","alphaCreateFeedPost", mapOf("message" to refValue("message")), notNull(obj(listOf(
+                )))
+        )
+private val FeedPostSelector = obj(
+            field("alphaCreateFeedPost","alphaCreateFeedPost", arguments(fieldValue("message", refValue("message"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val MarkSequenceReadSelector = obj(listOf(
-            field("alphaGlobalRead","alphaGlobalRead", mapOf("toSeq" to refValue("seq")), notNull(scalar("String")))
-        ))
-private val MediaAnswerSelector = obj(listOf(
-            field("mediaStreamAnswer","mediaStreamAnswer", mapOf("answer" to refValue("answer"), "id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                )))
+        )
+private val MarkSequenceReadSelector = obj(
+            field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
+        )
+private val MediaAnswerSelector = obj(
+            field("mediaStreamAnswer","mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val MediaCandidateSelector = obj(listOf(
-            field("mediaStreamCandidate","mediaStreamCandidate", mapOf("candidate" to refValue("candidate"), "id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val MediaCandidateSelector = obj(
+            field("mediaStreamCandidate","mediaStreamCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val MediaFailedSelector = obj(listOf(
-            field("mediaStreamFailed","mediaStreamFailed", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val MediaFailedSelector = obj(
+            field("mediaStreamFailed","mediaStreamFailed", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val MediaNegotiationNeededSelector = obj(listOf(
-            field("mediaStreamNegotiationNeeded","mediaStreamNegotiationNeeded", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val MediaNegotiationNeededSelector = obj(
+            field("mediaStreamNegotiationNeeded","mediaStreamNegotiationNeeded", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val MediaOfferSelector = obj(listOf(
-            field("mediaStreamOffer","mediaStreamOffer", mapOf("id" to refValue("id"), "offer" to refValue("offer"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val MediaOfferSelector = obj(
+            field("mediaStreamOffer","mediaStreamOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val MessageSetReactionSelector = obj(listOf(
-            field("betaReactionSet","betaReactionSet", mapOf("mid" to refValue("messageId"), "reaction" to refValue("reaction")), notNull(scalar("Boolean")))
-        ))
-private val MessageUnsetReactionSelector = obj(listOf(
-            field("betaReactionRemove","betaReactionRemove", mapOf("mid" to refValue("messageId"), "reaction" to refValue("reaction")), notNull(scalar("Boolean")))
-        ))
-private val OrganizationActivateByInviteSelector = obj(listOf(
-            field("joinAppInvite","joinAppInvite", mapOf("key" to refValue("inviteKey")), notNull(scalar("ID")))
-        ))
-private val OrganizationAddMemberSelector = obj(listOf(
-            field("betaOrganizationMemberAdd","betaOrganizationMemberAdd", mapOf("organizationId" to refValue("organizationId"), "userIds" to refValue("userIds")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val MessageSetReactionSelector = obj(
+            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val MessageUnsetReactionSelector = obj(
+            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val OrganizationActivateByInviteSelector = obj(
+            field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
+        )
+private val OrganizationAddMemberSelector = obj(
+            field("betaOrganizationMemberAdd","betaOrganizationMemberAdd", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userIds", refValue("userIds"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationFullSelector)
-                ))))
-        ))
-private val OrganizationAlterPublishedSelector = obj(listOf(
-            field("alphaAlterPublished","alphaAlterPublished", mapOf("id" to refValue("organizationId"), "published" to refValue("published")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationAlterPublishedSelector = obj(
+            field("alphaAlterPublished","alphaAlterPublished", arguments(fieldValue("id", refValue("organizationId")), fieldValue("published", refValue("published"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationSearchSelector)
-                ))))
-        ))
-private val OrganizationChangeMemberRoleSelector = obj(listOf(
-            field("alphaOrganizationChangeMemberRole","alphaOrganizationChangeMemberRole", mapOf("memberId" to refValue("memberId"), "newRole" to refValue("newRole"), "organizationId" to refValue("organizationId")), notNull(scalar("String")))
-        ))
-private val OrganizationCreatePublicInviteSelector = obj(listOf(
-            field("alphaOrganizationRefreshInviteLink","alphaOrganizationRefreshInviteLink", mapOf("expirationDays" to refValue("expirationDays"), "organizationId" to refValue("organizationId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationChangeMemberRoleSelector = obj(
+            field("alphaOrganizationChangeMemberRole","alphaOrganizationChangeMemberRole", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("newRole", refValue("newRole")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
+        )
+private val OrganizationCreatePublicInviteSelector = obj(
+            field("alphaOrganizationRefreshInviteLink","alphaOrganizationRefreshInviteLink", arguments(fieldValue("expirationDays", refValue("expirationDays")), fieldValue("organizationId", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("ttl","ttl", scalar("String"))
-                ))))
-        ))
-private val OrganizationInviteMembersSelector = obj(listOf(
-            field("alphaOrganizationInviteMembers","alphaOrganizationInviteMembers", mapOf("inviteRequests" to refValue("inviteRequests"), "organizationId" to refValue("organizationId")), notNull(scalar("String")))
-        ))
-private val OrganizationMemberRemoveSelector = obj(listOf(
-            field("betaOrganizationMemberRemove","betaOrganizationMemberRemove", mapOf("organizationId" to refValue("organizationId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationInviteMembersSelector = obj(
+            field("alphaOrganizationInviteMembers","alphaOrganizationInviteMembers", arguments(fieldValue("inviteRequests", refValue("inviteRequests")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
+        )
+private val OrganizationMemberRemoveSelector = obj(
+            field("betaOrganizationMemberRemove","betaOrganizationMemberRemove", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val OrganizationRemoveMemberSelector = obj(listOf(
-            field("alphaOrganizationRemoveMember","alphaOrganizationRemoveMember", mapOf("memberId" to refValue("memberId"), "organizationId" to refValue("organizationId")), notNull(scalar("String")))
-        ))
-private val PersistEventsSelector = obj(listOf(
-            field("track","track", mapOf("did" to refValue("did"), "events" to refValue("events"), "isProd" to refValue("isProd"), "platform" to refValue("platform")), notNull(scalar("String")))
-        ))
-private val PinMessageSelector = obj(listOf(
-            field("betaPinMessage","pinMessage", mapOf("chatId" to refValue("chatId"), "messageId" to refValue("messageId")), notNull(obj(listOf(
+                )))
+        )
+private val OrganizationRemoveMemberSelector = obj(
+            field("alphaOrganizationRemoveMember","alphaOrganizationRemoveMember", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
+        )
+private val PersistEventsSelector = obj(
+            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd")), fieldValue("platform", refValue("platform"))), notNull(scalar("String")))
+        )
+private val PinMessageSelector = obj(
+            field("betaPinMessage","pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                ))))
-        ))
-private val ProfileCreateSelector = obj(listOf(
-            field("createProfile","createProfile", mapOf("input" to refValue("input")), notNull(obj(listOf(
+                )))
+        )
+private val ProfileCreateSelector = obj(
+            field("createProfile","createProfile", arguments(fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("about","about", scalar("String")),
                     field("email","email", scalar("String")),
@@ -2136,29 +2240,29 @@ private val ProfileCreateSelector = obj(listOf(
                     field("lastName","lastName", scalar("String")),
                     field("location","location", scalar("String")),
                     field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(listOf(
+                    field("photoRef","photoRef", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(listOf(
+                            field("crop","crop", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("h","h", notNull(scalar("Int"))),
                                     field("w","w", notNull(scalar("Int"))),
                                     field("x","x", notNull(scalar("Int"))),
                                     field("y","y", notNull(scalar("Int")))
-                                ))),
+                                )),
                             field("uuid","uuid", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("website","website", scalar("String"))
-                ))))
-        ))
-private val ProfileUpdateSelector = obj(listOf(
-            field("updateProfile","updateProfile", mapOf("input" to refValue("input"), "uid" to refValue("uid")), notNull(obj(listOf(
+                )))
+        )
+private val ProfileUpdateSelector = obj(
+            field("updateProfile","updateProfile", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("about","about", scalar("String")),
-                    field("alphaInvitedBy","invitedBy", obj(listOf(
+                    field("alphaInvitedBy","invitedBy", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("alphaJoinedAt","joinedAt", scalar("String")),
                     field("alphaLinkedin","linkedin", scalar("String")),
                     field("alphaPrimaryOrganizationId","primaryOrganizationId", scalar("ID")),
@@ -2169,414 +2273,416 @@ private val ProfileUpdateSelector = obj(listOf(
                     field("lastName","lastName", scalar("String")),
                     field("location","location", scalar("String")),
                     field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(listOf(
+                    field("photoRef","photoRef", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(listOf(
+                            field("crop","crop", obj(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("h","h", notNull(scalar("Int"))),
                                     field("w","w", notNull(scalar("Int"))),
                                     field("x","x", notNull(scalar("Int"))),
                                     field("y","y", notNull(scalar("Int")))
-                                ))),
+                                )),
                             field("uuid","uuid", notNull(scalar("String")))
-                        ))),
+                        )),
                     field("website","website", scalar("String"))
-                ))))
-        ))
-private val RefreshAppTokenSelector = obj(listOf(
-            field("refreshAppToken","refreshAppToken", mapOf("appId" to refValue("appId")), notNull(obj(listOf(
+                )))
+        )
+private val RefreshAppTokenSelector = obj(
+            field("refreshAppToken","refreshAppToken", arguments(fieldValue("appId", refValue("appId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
-                ))))
-        ))
-private val RegisterPushSelector = obj(listOf(
-            field("registerPush","registerPush", mapOf("endpoint" to refValue("endpoint"), "type" to refValue("type")), notNull(scalar("String")))
-        ))
-private val RegisterWebPushSelector = obj(listOf(
-            field("registerWebPush","registerWebPush", mapOf("endpoint" to refValue("endpoint")), notNull(scalar("String")))
-        ))
-private val ReplyMessageSelector = obj(listOf(
-            field("betaMessageSend","replyMessage", mapOf("mentions" to refValue("mentions"), "message" to refValue("message"), "replyMessages" to refValue("replyMessages"), "room" to refValue("roomId")), notNull(scalar("Boolean")))
-        ))
-private val ReportOnlineSelector = obj(listOf(
-            field("presenceReportOnline","presenceReportOnline", mapOf("active" to refValue("active"), "platform" to refValue("platform"), "timeout" to intValue(5000)), notNull(scalar("String")))
-        ))
-private val RespondPostMessageSelector = obj(listOf(
-            field("alphaRespondPostMessage","alphaRespondPostMessage", mapOf("buttonId" to refValue("buttonId"), "messageId" to refValue("messageId")), scalar("Boolean")),
-            field("betaReactionSet","betaReactionSet", mapOf("mid" to refValue("messageId"), "reaction" to refValue("reaction")), notNull(scalar("Boolean")))
-        ))
-private val RoomAddMemberSelector = obj(listOf(
-            field("betaRoomInvite","betaRoomInvite", mapOf("invites" to listValue(objectValue("userId" to refValue("userId"),"role" to stringValue("MEMBER"))), "roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RegisterPushSelector = obj(
+            field("registerPush","registerPush", arguments(fieldValue("endpoint", refValue("endpoint")), fieldValue("type", refValue("type"))), notNull(scalar("String")))
+        )
+private val RegisterWebPushSelector = obj(
+            field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
+        )
+private val ReplyMessageSelector = obj(
+            field("sendMessage","replyMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+        )
+private val ReportOnlineSelector = obj(
+            field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
+        )
+private val RespondPostMessageSelector = obj(
+            field("alphaRespondPostMessage","alphaRespondPostMessage", arguments(fieldValue("buttonId", refValue("buttonId")), fieldValue("messageId", refValue("messageId"))), scalar("Boolean")),
+            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val RoomAddMemberSelector = obj(
+            field("betaRoomInvite","betaRoomInvite", arguments(fieldValue("invites", listValue(objectValue(fieldValue("userId", refValue("userId")),fieldValue("role", stringValue("MEMBER"))))), fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomAddMembersSelector = obj(listOf(
-            field("betaRoomInvite","betaRoomInvite", mapOf("invites" to refValue("invites"), "roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomAddMembersSelector = obj(
+            field("betaRoomInvite","betaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomAlterFeaturedSelector = obj(listOf(
-            field("betaRoomAlterFeatured","betaRoomAlterFeatured", mapOf("featured" to refValue("featured"), "roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomAlterFeaturedSelector = obj(
+            field("betaRoomAlterFeatured","betaRoomAlterFeatured", arguments(fieldValue("featured", refValue("featured")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("featured","featured", notNull(scalar("Boolean"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("listed","listed", notNull(scalar("Boolean")))
-                ))))
-        ))
-private val RoomAlterHiddenSelector = obj(listOf(
-            field("betaRoomAlterListed","betaRoomAlterListed", mapOf("listed" to refValue("listed"), "roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomAlterHiddenSelector = obj(
+            field("betaRoomAlterListed","betaRoomAlterListed", arguments(fieldValue("listed", refValue("listed")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("featured","featured", notNull(scalar("Boolean"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("listed","listed", notNull(scalar("Boolean")))
-                ))))
-        ))
-private val RoomChangeRoleSelector = obj(listOf(
-            field("betaRoomChangeRole","betaRoomChangeRole", mapOf("newRole" to refValue("newRole"), "roomId" to refValue("roomId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomChangeRoleSelector = obj(
+            field("betaRoomChangeRole","betaRoomChangeRole", arguments(fieldValue("newRole", refValue("newRole")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomCreateSelector = obj(listOf(
-            field("betaRoomCreate","room", mapOf("channel" to refValue("channel"), "description" to refValue("description"), "kind" to refValue("kind"), "members" to refValue("members"), "message" to refValue("message"), "organizationId" to refValue("organizationId"), "photoRef" to refValue("photoRef"), "title" to refValue("title")), notNull(obj(listOf(
+                )))
+        )
+private val RoomCreateSelector = obj(
+            field("betaRoomCreate","room", arguments(fieldValue("channel", refValue("channel")), fieldValue("description", refValue("description")), fieldValue("kind", refValue("kind")), fieldValue("members", refValue("members")), fieldValue("message", refValue("message")), fieldValue("organizationId", refValue("organizationId")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val RoomCreateIntroSelector = obj(listOf(
-            field("betaIntroSend","intro", mapOf("about" to refValue("about"), "file" to refValue("file"), "message" to refValue("about"), "room" to refValue("roomId"), "uid" to refValue("uid")), notNull(scalar("Boolean")))
-        ))
-private val RoomDeclineJoinReuestSelector = obj(listOf(
-            field("betaRoomDeclineJoinRequest","betaRoomDeclineJoinRequest", mapOf("roomId" to refValue("roomId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomCreateIntroSelector = obj(
+            field("betaIntroSend","intro", arguments(fieldValue("about", refValue("about")), fieldValue("file", refValue("file")), fieldValue("message", refValue("about")), fieldValue("room", refValue("roomId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private val RoomDeclineJoinReuestSelector = obj(
+            field("betaRoomDeclineJoinRequest","betaRoomDeclineJoinRequest", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomDeleteMessageSelector = obj(listOf(
-            field("betaMessageDelete","betaMessageDelete", mapOf("mid" to refValue("messageId")), notNull(scalar("Boolean")))
-        ))
-private val RoomDeleteMessagesSelector = obj(listOf(
-            field("betaMessageDelete","betaMessageDelete", mapOf("mids" to refValue("mids")), notNull(scalar("Boolean")))
-        ))
-private val RoomDeleteUrlAugmentationSelector = obj(listOf(
-            field("betaMessageDeleteAugmentation","betaMessageDeleteAugmentation", mapOf("mid" to refValue("messageId")), notNull(scalar("Boolean")))
-        ))
-private val RoomEditIntroSelector = obj(listOf(
-            field("betaIntroEdit","intro", mapOf("about" to refValue("about"), "file" to refValue("file"), "message" to refValue("about"), "mid" to refValue("messageId"), "uid" to refValue("uid")), notNull(scalar("Boolean")))
-        ))
-private val RoomEditMessageSelector = obj(listOf(
-            field("betaMessageEdit","betaMessageEdit", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "mid" to refValue("messageId"), "replyMessages" to refValue("replyMessages")), notNull(scalar("Boolean")))
-        ))
-private val RoomJoinSelector = obj(listOf(
-            field("betaRoomJoin","join", mapOf("roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomDeleteMessageSelector = obj(
+            field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
+        )
+private val RoomDeleteMessagesSelector = obj(
+            field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mids", refValue("mids"))), notNull(scalar("Boolean")))
+        )
+private val RoomDeleteUrlAugmentationSelector = obj(
+            field("betaMessageDeleteAugmentation","betaMessageDeleteAugmentation", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
+        )
+private val RoomEditIntroSelector = obj(
+            field("betaIntroEdit","intro", arguments(fieldValue("about", refValue("about")), fieldValue("file", refValue("file")), fieldValue("message", refValue("about")), fieldValue("mid", refValue("messageId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private val RoomJoinSelector = obj(
+            field("betaRoomJoin","join", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomJoinInviteLinkSelector = obj(listOf(
-            field("betaRoomInviteLinkJoin","join", mapOf("invite" to refValue("invite")), notNull(obj(listOf(
+                )))
+        )
+private val RoomJoinInviteLinkSelector = obj(
+            field("betaRoomInviteLinkJoin","join", arguments(fieldValue("invite", refValue("invite"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomKickSelector = obj(listOf(
-            field("betaRoomKick","betaRoomKick", mapOf("roomId" to refValue("roomId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomKickSelector = obj(
+            field("betaRoomKick","betaRoomKick", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomLeaveSelector = obj(listOf(
-            field("betaRoomLeave","betaRoomLeave", mapOf("roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomLeaveSelector = obj(
+            field("betaRoomLeave","betaRoomLeave", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
-                ))))
-        ))
-private val RoomReadSelector = obj(listOf(
-            field("roomRead","roomRead", mapOf("id" to refValue("id"), "mid" to refValue("mid")), notNull(scalar("Boolean")))
-        ))
-private val RoomRenewInviteLinkSelector = obj(listOf(
-            field("betaRoomInviteLinkRenew","link", mapOf("roomId" to refValue("roomId")), notNull(scalar("String")))
-        ))
-private val RoomSendEmailInviteSelector = obj(listOf(
-            field("betaRoomInviteLinkSendEmail","betaRoomInviteLinkSendEmail", mapOf("inviteRequests" to refValue("inviteRequests"), "roomId" to refValue("roomId")), notNull(scalar("String")))
-        ))
-private val RoomSettingsUpdateSelector = obj(listOf(
-            field("betaRoomUpdateUserNotificationSettings","betaRoomUpdateUserNotificationSettings", mapOf("roomId" to refValue("roomId"), "settings" to refValue("settings")), notNull(obj(listOf(
+                )))
+        )
+private val RoomReadSelector = obj(
+            field("roomRead","roomRead", arguments(fieldValue("id", refValue("id")), fieldValue("mid", refValue("mid"))), notNull(scalar("Boolean")))
+        )
+private val RoomRenewInviteLinkSelector = obj(
+            field("betaRoomInviteLinkRenew","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+        )
+private val RoomSendEmailInviteSelector = obj(
+            field("betaRoomInviteLinkSendEmail","betaRoomInviteLinkSendEmail", arguments(fieldValue("inviteRequests", refValue("inviteRequests")), fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+        )
+private val RoomSettingsUpdateSelector = obj(
+            field("betaRoomUpdateUserNotificationSettings","betaRoomUpdateUserNotificationSettings", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("settings", refValue("settings"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("mute","mute", scalar("Boolean"))
-                ))))
-        ))
-private val RoomUpdateSelector = obj(listOf(
-            field("betaRoomUpdate","betaRoomUpdate", mapOf("input" to refValue("input"), "roomId" to refValue("roomId")), notNull(obj(listOf(
+                )))
+        )
+private val RoomUpdateSelector = obj(
+            field("betaRoomUpdate","betaRoomUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(listOf(
+                    inline("PrivateRoom", obj(
                         field("id","id", notNull(scalar("ID")))
-                    ))),
-                    inline("SharedRoom", obj(listOf(
+                    )),
+                    inline("SharedRoom", obj(
                         field("description","description", scalar("String")),
                         field("id","id", notNull(scalar("ID"))),
                         field("photo","photo", notNull(scalar("String"))),
                         field("socialImage","socialImage", scalar("String")),
                         field("title","title", notNull(scalar("String")))
-                    )))
-                ))))
-        ))
-private val SaveDraftMessageSelector = obj(listOf(
-            field("conversationDraftUpdate","conversationDraftUpdate", mapOf("conversationId" to refValue("conversationId"), "message" to refValue("message")), notNull(scalar("String")))
-        ))
-private val SendMessageSelector = obj(listOf(
-            field("betaMessageSend","sentMessage", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "room" to refValue("room")), notNull(scalar("Boolean")))
-        ))
-private val SendPostMessageSelector = obj(listOf(
-            field("alphaSendPostMessage","sendPostMessage", mapOf("attachments" to refValue("attachments"), "conversationId" to refValue("conversationId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
+                    ))
+                )))
+        )
+private val SaveDraftMessageSelector = obj(
+            field("conversationDraftUpdate","conversationDraftUpdate", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("message", refValue("message"))), notNull(scalar("String")))
+        )
+private val SendMessageSelector = obj(
+            field("sendMessage","sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+        )
+private val SendPostMessageSelector = obj(
+            field("alphaSendPostMessage","sendPostMessage", arguments(fieldValue("attachments", refValue("attachments")), fieldValue("conversationId", refValue("conversationId")), fieldValue("postType", refValue("postType")), fieldValue("text", refValue("text")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("seq","seq", notNull(scalar("Int")))
-                ))))
-        ))
-private val SetOrgShortnameSelector = obj(listOf(
-            field("alphaSetOrgShortName","alphaSetOrgShortName", mapOf("id" to refValue("organizationId"), "shortname" to refValue("shortname")), scalar("String"))
-        ))
-private val SetTypingSelector = obj(listOf(
-            field("typingSend","typingSend", mapOf("conversationId" to refValue("conversationId"), "type" to stringValue("TEXT")), notNull(scalar("String")))
-        ))
-private val SetUserShortnameSelector = obj(listOf(
-            field("alphaSetUserShortName","alphaSetUserShortName", mapOf("shortname" to refValue("shortname")), scalar("String"))
-        ))
-private val SettingsUpdateSelector = obj(listOf(
-            field("updateSettings","updateSettings", mapOf("settings" to refValue("input")), notNull(obj(listOf(
+                )))
+        )
+private val SetOrgShortnameSelector = obj(
+            field("alphaSetOrgShortName","alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
+        )
+private val SetTypingSelector = obj(
+            field("typingSend","typingSend", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("type", stringValue("TEXT"))), notNull(scalar("String")))
+        )
+private val SetUserShortnameSelector = obj(
+            field("alphaSetUserShortName","alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
+        )
+private val SettingsUpdateSelector = obj(
+            field("updateSettings","updateSettings", arguments(fieldValue("settings", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
-                ))))
-        ))
-private val SuperAccountActivateSelector = obj(listOf(
-            field("superAccountActivate","superAccountActivate", mapOf("id" to refValue("accountId")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountActivateSelector = obj(
+            field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String")))
-                ))))
-        ))
-private val SuperAccountAddSelector = obj(listOf(
-            field("superAccountAdd","superAccountAdd", mapOf("title" to refValue("title")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountAddSelector = obj(
+            field("superAccountAdd","superAccountAdd", arguments(fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
-                ))))
-        ))
-private val SuperAccountMemberAddSelector = obj(listOf(
-            field("superAccountMemberAdd","superAccountMemberAdd", mapOf("id" to refValue("accountId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountMemberAddSelector = obj(
+            field("superAccountMemberAdd","superAccountMemberAdd", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(listOf(
+                    field("members","members", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))))
-                ))))
-        ))
-private val SuperAccountMemberRemoveSelector = obj(listOf(
-            field("superAccountMemberRemove","superAccountMemberRemove", mapOf("id" to refValue("accountId"), "userId" to refValue("userId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val SuperAccountMemberRemoveSelector = obj(
+            field("superAccountMemberRemove","superAccountMemberRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(listOf(
+                    field("members","members", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))))))
-                ))))
-        ))
-private val SuperAccountPendSelector = obj(listOf(
-            field("superAccountPend","superAccountPend", mapOf("id" to refValue("accountId")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val SuperAccountPendSelector = obj(
+            field("superAccountPend","superAccountPend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String")))
-                ))))
-        ))
-private val SuperAccountRenameSelector = obj(listOf(
-            field("superAccountRename","superAccountRename", mapOf("id" to refValue("accountId"), "title" to refValue("title")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountRenameSelector = obj(
+            field("superAccountRename","superAccountRename", arguments(fieldValue("id", refValue("accountId")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("title","title", notNull(scalar("String")))
-                ))))
-        ))
-private val SuperAccountSuspendSelector = obj(listOf(
-            field("superAccountSuspend","superAccountSuspend", mapOf("id" to refValue("accountId")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAccountSuspendSelector = obj(
+            field("superAccountSuspend","superAccountSuspend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String")))
-                ))))
-        ))
-private val SuperAdminAddSelector = obj(listOf(
-            field("superAdminAdd","superAdminAdd", mapOf("role" to refValue("role"), "userId" to refValue("userId")), notNull(scalar("String")))
-        ))
-private val SuperAdminRemoveSelector = obj(listOf(
-            field("superAdminRemove","superAdminRemove", mapOf("userId" to refValue("userId")), notNull(scalar("String")))
-        ))
-private val SwitchReactionSelector = obj(listOf(
-            field("betaReactionRemove","betaReactionRemove", mapOf("mid" to refValue("messageId"), "reaction" to refValue("from")), notNull(scalar("Boolean"))),
-            field("betaReactionSet","betaReactionSet", mapOf("mid" to refValue("messageId"), "reaction" to refValue("to")), notNull(scalar("Boolean")))
-        ))
-private val UnpinMessageSelector = obj(listOf(
-            field("betaUnpinMessage","unpinMessage", mapOf("chatId" to refValue("chatId")), notNull(obj(listOf(
+                )))
+        )
+private val SuperAdminAddSelector = obj(
+            field("superAdminAdd","superAdminAdd", arguments(fieldValue("role", refValue("role")), fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+        )
+private val SuperAdminRemoveSelector = obj(
+            field("superAdminRemove","superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+        )
+private val SwitchReactionSelector = obj(
+            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
+            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean")))
+        )
+private val UnpinMessageSelector = obj(
+            field("betaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
-                ))))
-        ))
-private val UpdateAppSelector = obj(listOf(
-            field("updateAppProfile","updateAppProfile", mapOf("appId" to refValue("appId"), "input" to refValue("input")), notNull(obj(listOf(
+                )))
+        )
+private val UpdateAppSelector = obj(
+            field("updateAppProfile","updateAppProfile", arguments(fieldValue("appId", refValue("appId")), fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
-                ))))
-        ))
-private val UpdateOrganizationSelector = obj(listOf(
-            field("updateOrganizationProfile","updateOrganizationProfile", mapOf("id" to refValue("organizationId"), "input" to refValue("input")), notNull(obj(listOf(
+                )))
+        )
+private val UpdateOrganizationSelector = obj(
+            field("updateOrganizationProfile","updateOrganizationProfile", arguments(fieldValue("id", refValue("organizationId")), fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("OrganizationProfile", OrganizationProfileFullSelector)
-                ))))
-        ))
-private val UpdateWelcomeMessageSelector = obj(listOf(
-            field("updateWelcomeMessage","updateWelcomeMessage", mapOf("roomId" to refValue("roomId"), "welcomeMessageIsOn" to refValue("welcomeMessageIsOn"), "welcomeMessageSender" to refValue("welcomeMessageSender"), "welcomeMessageText" to refValue("welcomeMessageText")), notNull(scalar("Boolean")))
-        ))
-private val UserStorageSetSelector = obj(listOf(
-            field("userStorageSet","userStorageSet", mapOf("data" to refValue("data"), "namespace" to refValue("namespace")), notNull(list(notNull(obj(listOf(
+                )))
+        )
+private val UpdateWelcomeMessageSelector = obj(
+            field("updateWelcomeMessage","updateWelcomeMessage", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("welcomeMessageIsOn", refValue("welcomeMessageIsOn")), fieldValue("welcomeMessageSender", refValue("welcomeMessageSender")), fieldValue("welcomeMessageText", refValue("welcomeMessageText"))), notNull(scalar("Boolean")))
+        )
+private val UserStorageSetSelector = obj(
+            field("userStorageSet","userStorageSet", arguments(fieldValue("data", refValue("data")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("key","key", notNull(scalar("String"))),
                     field("value","value", scalar("String"))
-                ))))))
-        ))
-private val ChatOnlinesCountWatchSelector = obj(listOf(
-            field("chatOnlinesCount","chatOnlinesCount", mapOf("chatId" to refValue("chatId")), notNull(obj(listOf(
+                )))))
+        )
+private val ChatOnlinesCountWatchSelector = obj(
+            field("chatOnlinesCount","chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("onlineMembers","onlineMembers", notNull(scalar("Int")))
-                ))))
-        ))
-private val ChatWatchSelector = obj(listOf(
-            field("chatUpdates","event", mapOf("chatId" to refValue("chatId"), "fromState" to refValue("state")), notNull(obj(listOf(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("ChatUpdateSingle", obj(listOf(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(listOf(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("ChatUpdate", ChatUpdateFragmentSelector)
-                            ))))
-                    ))),
-                    inline("ChatUpdateBatch", obj(listOf(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(listOf(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("ChatUpdate", ChatUpdateFragmentSelector)
-                            ))))))
-                    )))
-                ))))
-        ))
-private val CommentWatchSelector = obj(listOf(
-            field("commentUpdates","event", mapOf("fromState" to refValue("fromState"), "peerId" to refValue("peerId")), obj(listOf(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("CommentUpdateSingle", obj(listOf(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(listOf(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("CommentUpdate", CommentUpdateFragmentSelector)
-                            ))))
-                    ))),
-                    inline("CommentUpdateBatch", obj(listOf(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(listOf(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("CommentUpdate", CommentUpdateFragmentSelector)
-                            ))))))
-                    )))
                 )))
-        ))
-private val ConferenceMediaWatchSelector = obj(listOf(
-            field("alphaConferenceMediaWatch","media", mapOf("id" to refValue("id"), "peerId" to refValue("peerId")), notNull(obj(listOf(
+        )
+private val ChatWatchSelector = obj(
+            field("chatUpdates","event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("ChatUpdateSingle", obj(
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("update","update", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("ChatUpdate", ChatUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("ChatUpdateBatch", obj(
+                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("updates","updates", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("ChatUpdate", ChatUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
+private val CommentWatchSelector = obj(
+            field("commentUpdates","event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("CommentUpdateSingle", obj(
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("update","update", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("CommentUpdate", CommentUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("CommentUpdateBatch", obj(
+                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("updates","updates", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("CommentUpdate", CommentUpdateFragmentSelector)
+                            )))))
+                    ))
+                ))
+        )
+private val ConferenceMediaWatchSelector = obj(
+            field("alphaConferenceMediaWatch","media", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(listOf(
+                    field("streams","streams", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("ice","ice", notNull(list(notNull(scalar("String"))))),
                             field("id","id", notNull(scalar("ID"))),
                             field("sdp","sdp", scalar("String")),
                             field("state","state", notNull(scalar("String")))
-                        ))))))
-                ))))
-        ))
-private val ConferenceWatchSelector = obj(listOf(
-            field("alphaConferenceWatch","alphaConferenceWatch", mapOf("id" to refValue("id")), notNull(obj(listOf(
+                        )))))
+                )))
+        )
+private val ConferenceWatchSelector = obj(
+            field("alphaConferenceWatch","alphaConferenceWatch", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceFullSelector)
-                ))))
-        ))
-private val DebugEventsWatchSelector = obj(listOf(
-            field("debugEvents","debugEvents", mapOf("eventsCount" to refValue("eventsCount"), "fromState" to refValue("fromState"), "randomDelays" to refValue("randomDelays"), "seed" to refValue("seed")), notNull(obj(listOf(
+                )))
+        )
+private val DebugEventsWatchSelector = obj(
+            field("debugEvents","debugEvents", arguments(fieldValue("eventsCount", refValue("eventsCount")), fieldValue("fromState", refValue("fromState")), fieldValue("randomDelays", refValue("randomDelays")), fieldValue("seed", refValue("seed"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("key","key", notNull(scalar("String"))),
                     field("seq","seq", notNull(scalar("Int")))
-                ))))
-        ))
-private val DialogsWatchSelector = obj(listOf(
-            field("dialogsUpdates","event", mapOf("fromState" to refValue("state")), notNull(obj(listOf(
+                )))
+        )
+private val DialogsWatchSelector = obj(
+            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("DialogUpdateSingle", obj(listOf(
+                    inline("DialogUpdateSingle", obj(
                         field("seq","seq", notNull(scalar("Int"))),
                         field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(listOf(
+                        field("update","update", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
-                            ))))
-                    ))),
-                    inline("DialogUpdateBatch", obj(listOf(
+                            )))
+                    )),
+                    inline("DialogUpdateBatch", obj(
                         field("fromSeq","fromSeq", notNull(scalar("Int"))),
                         field("seq","seq", notNull(scalar("Int"))),
                         field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(listOf(
+                        field("updates","updates", notNull(list(notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
-                            ))))))
-                    )))
-                ))))
-        ))
-private val OnlineWatchSelector = obj(listOf(
-            field("alphaSubscribeChatOnline","alphaSubscribeChatOnline", mapOf("conversations" to refValue("conversations")), notNull(obj(listOf(
+                            )))))
+                    ))
+                )))
+        )
+private val OnlineWatchSelector = obj(
+            field("alphaSubscribeChatOnline","alphaSubscribeChatOnline", arguments(fieldValue("conversations", refValue("conversations"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("timeout","timeout", notNull(scalar("Int"))),
                     field("type","type", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(listOf(
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("lastSeen","lastSeen", scalar("String")),
                             field("online","online", notNull(scalar("Boolean")))
-                        ))))
-                ))))
-        ))
-private val SettingsWatchSelector = obj(listOf(
-            field("watchSettings","watchSettings", notNull(obj(listOf(
+                        )))
+                )))
+        )
+private val SettingsWatchSelector = obj(
+            field("watchSettings","watchSettings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
-                ))))
-        ))
-private val TypingsWatchSelector = obj(listOf(
-            field("typings","typings", notNull(obj(listOf(
+                )))
+        )
+private val TypingsWatchSelector = obj(
+            field("typings","typings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("cancel","cancel", notNull(scalar("Boolean"))),
-                    field("conversation","conversation", notNull(obj(listOf(
+                    field("chat","conversation", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID")))
-                        )))),
-                    field("user","user", notNull(obj(listOf(
+                            inline("PrivateRoom", obj(
+                                field("id","id", notNull(scalar("ID")))
+                            )),
+                            inline("SharedRoom", obj(
+                                field("id","id", notNull(scalar("ID")))
+                            ))
+                        ))),
+                    field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String"))),
                             field("photo","photo", scalar("String"))
-                        ))))
-                ))))
-        ))
+                        )))
+                )))
+        )
 
 object Operations {
     val Account = object: OperationDefinition {
@@ -2624,7 +2730,7 @@ object Operations {
     val AvailableRooms = object: OperationDefinition {
         override val name = "AvailableRooms"
         override val kind = OperationKind.QUERY
-        override val body = "query AvailableRooms{rooms:betaAvailableRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val body = "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
         override val selector = AvailableRoomsSelector
     }
     val ChatHistory = object: OperationDefinition {
@@ -2636,7 +2742,7 @@ object Operations {
     val ChatInit = object: OperationDefinition {
         override val name = "ChatInit"
         override val kind = OperationKind.QUERY
-        override val body = "query ChatInit(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}room(id:\$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
+        override val body = "query ChatInit(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}room(id:\$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = ChatInitSelector
     }
     val ChatSearchGroup = object: OperationDefinition {
@@ -2750,7 +2856,7 @@ object Operations {
     val Organization = object: OperationDefinition {
         override val name = "Organization"
         override val kind = OperationKind.QUERY
-        override val body = "query Organization(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query Organization(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationSelector
     }
     val OrganizationByPrefix = object: OperationDefinition {
@@ -2762,13 +2868,13 @@ object Operations {
     val OrganizationMembersShort = object: OperationDefinition {
         override val name = "OrganizationMembersShort"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortSelector
     }
     val OrganizationMembersShortPaginated = object: OperationDefinition {
         override val name = "OrganizationMembersShortPaginated"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationMembersShortPaginated(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationMembersShortPaginated(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortPaginatedSelector
     }
     val OrganizationProfile = object: OperationDefinition {
@@ -2786,7 +2892,7 @@ object Operations {
     val OrganizationWithoutMembers = object: OperationDefinition {
         override val name = "OrganizationWithoutMembers"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationWithoutMembers(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationWithoutMembers(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationWithoutMembersSelector
     }
     val Permissions = object: OperationDefinition {
@@ -2810,7 +2916,7 @@ object Operations {
     val ResolveShortName = object: OperationDefinition {
         override val name = "ResolveShortName"
         override val kind = OperationKind.QUERY
-        override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{...UserFull}... on Organization{...OrganizationFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{...UserFull}... on Organization{...OrganizationFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = ResolveShortNameSelector
     }
     val ResolvedInvite = object: OperationDefinition {
@@ -2822,13 +2928,13 @@ object Operations {
     val Room = object: OperationDefinition {
         override val name = "Room"
         override val kind = OperationKind.QUERY
-        override val body = "query Room(\$id:ID!){room(id:\$id){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query Room(\$id:ID!){room(id:\$id){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomSelector
     }
     val RoomChat = object: OperationDefinition {
         override val name = "RoomChat"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}role title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomChatSelector
     }
     val RoomHeader = object: OperationDefinition {
@@ -2879,6 +2985,12 @@ object Operations {
         override val body = "query RoomMembersShort(\$roomId:ID!){members:roomMembers(roomId:\$roomId){__typename user{__typename id}}}"
         override val selector = RoomMembersShortSelector
     }
+    val RoomPico = object: OperationDefinition {
+        override val name = "RoomPico"
+        override val kind = OperationKind.QUERY
+        override val body = "query RoomPico(\$id:ID!){room(id:\$id){__typename ...RoomNano}}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}"
+        override val selector = RoomPicoSelector
+    }
     val RoomSearch = object: OperationDefinition {
         override val name = "RoomSearch"
         override val kind = OperationKind.QUERY
@@ -2900,7 +3012,7 @@ object Operations {
     val RoomTiny = object: OperationDefinition {
         override val name = "RoomTiny"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomTiny(\$id:ID!){room(id:\$id){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomTiny(\$id:ID!){room(id:\$id){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomTinySelector
     }
     val RoomWithoutMembers = object: OperationDefinition {
@@ -2938,6 +3050,18 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query User(\$userId:ID!){conversation:room(id:\$userId){__typename ... on PrivateRoom{id settings{__typename id mute}}}user:user(id:\$userId){__typename ...UserFull}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = UserSelector
+    }
+    val UserAvailableRooms = object: OperationDefinition {
+        override val name = "UserAvailableRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query UserAvailableRooms(\$after:ID,\$limit:Int!){betaUserAvailableRooms(after:\$after,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = UserAvailableRoomsSelector
+    }
+    val UserRooms = object: OperationDefinition {
+        override val name = "UserRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query UserRooms(\$after:ID,\$limit:Int!){betaUserRooms(after:\$after,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = UserRoomsSelector
     }
     val UserStorage = object: OperationDefinition {
         override val name = "UserStorage"
@@ -2978,14 +3102,8 @@ object Operations {
     val AddMessageComment = object: OperationDefinition {
         override val name = "AddMessageComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){addMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment)}"
+        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
-    }
-    val BetaAddMessageComment = object: OperationDefinition {
-        override val name = "BetaAddMessageComment"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BetaAddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment){__typename id}}"
-        override val selector = BetaAddMessageCommentSelector
     }
     val CancelTyping = object: OperationDefinition {
         override val name = "CancelTyping"
@@ -3086,8 +3204,14 @@ object Operations {
     val EditComment = object: OperationDefinition {
         override val name = "EditComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation EditComment(\$id:ID!,\$message:String){editComment(id:\$id,message:\$message)}"
+        override val body = "mutation EditComment(\$fileAttachments:[FileAttachmentInput!],\$id:ID!,\$mentions:[MentionInput!],\$message:String,\$spans:[MessageSpanInput!]){editComment(fileAttachments:\$fileAttachments,id:\$id,mentions:\$mentions,message:\$message,spans:\$spans)}"
         override val selector = EditCommentSelector
+    }
+    val EditMessage = object: OperationDefinition {
+        override val name = "EditMessage"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation EditMessage(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){editMessage(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyMessages:\$replyMessages,spans:\$spans)}"
+        override val selector = EditMessageSelector
     }
     val EditPostMessage = object: OperationDefinition {
         override val name = "EditPostMessage"
@@ -3176,7 +3300,7 @@ object Operations {
     val OrganizationAddMember = object: OperationDefinition {
         override val name = "OrganizationAddMember"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation OrganizationAddMember(\$organizationId:ID!,\$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:\$organizationId,userIds:\$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation OrganizationAddMember(\$organizationId:ID!,\$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:\$organizationId,userIds:\$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationAddMemberSelector
     }
     val OrganizationAlterPublished = object: OperationDefinition {
@@ -3224,7 +3348,7 @@ object Operations {
     val PinMessage = object: OperationDefinition {
         override val name = "PinMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation PinMessage(\$chatId:ID!,\$messageId:ID!){pinMessage:betaPinMessage(chatId:\$chatId,messageId:\$messageId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation PinMessage(\$chatId:ID!,\$messageId:ID!){pinMessage:betaPinMessage(chatId:\$chatId,messageId:\$messageId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = PinMessageSelector
     }
     val ProfileCreate = object: OperationDefinition {
@@ -3260,7 +3384,7 @@ object Operations {
     val ReplyMessage = object: OperationDefinition {
         override val name = "ReplyMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ReplyMessage(\$mentions:[ID!],\$message:String,\$replyMessages:[ID!],\$roomId:ID!){replyMessage:betaMessageSend(mentions:\$mentions,message:\$message,replyMessages:\$replyMessages,room:\$roomId)}"
+        override val body = "mutation ReplyMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){replyMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = ReplyMessageSelector
     }
     val ReportOnline = object: OperationDefinition {
@@ -3278,13 +3402,13 @@ object Operations {
     val RoomAddMember = object: OperationDefinition {
         override val name = "RoomAddMember"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomAddMember(\$roomId:ID!,\$userId:ID!){betaRoomInvite(invites:[{userId:\$userId,role:MEMBER}],roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomAddMember(\$roomId:ID!,\$userId:ID!){betaRoomInvite(invites:[{userId:\$userId,role:MEMBER}],roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomAddMemberSelector
     }
     val RoomAddMembers = object: OperationDefinition {
         override val name = "RoomAddMembers"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomAddMembers(\$invites:[RoomInviteInput!]!,\$roomId:ID!){betaRoomInvite(invites:\$invites,roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomAddMembers(\$invites:[RoomInviteInput!]!,\$roomId:ID!){betaRoomInvite(invites:\$invites,roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomAddMembersSelector
     }
     val RoomAlterFeatured = object: OperationDefinition {
@@ -3302,7 +3426,7 @@ object Operations {
     val RoomChangeRole = object: OperationDefinition {
         override val name = "RoomChangeRole"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomChangeRole(\$newRole:RoomMemberRole!,\$roomId:ID!,\$userId:ID!){betaRoomChangeRole(newRole:\$newRole,roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomChangeRole(\$newRole:RoomMemberRole!,\$roomId:ID!,\$userId:ID!){betaRoomChangeRole(newRole:\$newRole,roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomChangeRoleSelector
     }
     val RoomCreate = object: OperationDefinition {
@@ -3320,7 +3444,7 @@ object Operations {
     val RoomDeclineJoinReuest = object: OperationDefinition {
         override val name = "RoomDeclineJoinReuest"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomDeclineJoinReuest(\$roomId:ID!,\$userId:ID!){betaRoomDeclineJoinRequest(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomDeclineJoinReuest(\$roomId:ID!,\$userId:ID!){betaRoomDeclineJoinRequest(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomDeclineJoinReuestSelector
     }
     val RoomDeleteMessage = object: OperationDefinition {
@@ -3347,34 +3471,28 @@ object Operations {
         override val body = "mutation RoomEditIntro(\$about:String,\$file:String,\$messageId:ID!,\$uid:ID!){intro:betaIntroEdit(about:\$about,file:\$file,message:\$about,mid:\$messageId,uid:\$uid)}"
         override val selector = RoomEditIntroSelector
     }
-    val RoomEditMessage = object: OperationDefinition {
-        override val name = "RoomEditMessage"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomEditMessage(\$file:String,\$mentions:[ID!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!]){betaMessageEdit(file:\$file,mentions:\$mentions,message:\$message,mid:\$messageId,replyMessages:\$replyMessages)}"
-        override val selector = RoomEditMessageSelector
-    }
     val RoomJoin = object: OperationDefinition {
         override val name = "RoomJoin"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomJoin(\$roomId:ID!){join:betaRoomJoin(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomJoin(\$roomId:ID!){join:betaRoomJoin(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomJoinSelector
     }
     val RoomJoinInviteLink = object: OperationDefinition {
         override val name = "RoomJoinInviteLink"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomJoinInviteLink(\$invite:String!){join:betaRoomInviteLinkJoin(invite:\$invite){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomJoinInviteLink(\$invite:String!){join:betaRoomInviteLinkJoin(invite:\$invite){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomJoinInviteLinkSelector
     }
     val RoomKick = object: OperationDefinition {
         override val name = "RoomKick"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomKick(\$roomId:ID!,\$userId:ID!){betaRoomKick(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomKick(\$roomId:ID!,\$userId:ID!){betaRoomKick(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomKickSelector
     }
     val RoomLeave = object: OperationDefinition {
         override val name = "RoomLeave"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomLeave(\$roomId:ID!){betaRoomLeave(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomLeave(\$roomId:ID!){betaRoomLeave(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}"
         override val selector = RoomLeaveSelector
     }
     val RoomRead = object: OperationDefinition {
@@ -3416,7 +3534,7 @@ object Operations {
     val SendMessage = object: OperationDefinition {
         override val name = "SendMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SendMessage(\$file:String,\$mentions:[ID!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$room:ID!){sentMessage:betaMessageSend(file:\$file,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,room:\$room)}"
+        override val body = "mutation SendMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = SendMessageSelector
     }
     val SendPostMessage = object: OperationDefinition {
@@ -3512,7 +3630,7 @@ object Operations {
     val UnpinMessage = object: OperationDefinition {
         override val name = "UnpinMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UnpinMessage(\$chatId:ID!){unpinMessage:betaUnpinMessage(chatId:\$chatId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation UnpinMessage(\$chatId:ID!){unpinMessage:betaUnpinMessage(chatId:\$chatId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = UnpinMessageSelector
     }
     val UpdateApp = object: OperationDefinition {
@@ -3548,7 +3666,7 @@ object Operations {
     val ChatWatch = object: OperationDefinition {
         override val name = "ChatWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
+        override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = ChatWatchSelector
     }
     val CommentWatch = object: OperationDefinition {
@@ -3596,7 +3714,7 @@ object Operations {
     val TypingsWatch = object: OperationDefinition {
         override val name = "TypingsWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription TypingsWatch{typings{__typename cancel conversation{__typename id}user{__typename id name photo}}}"
+        override val body = "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename id name photo}}}"
         override val selector = TypingsWatchSelector
     }
     fun operationByName(name: String): OperationDefinition {
@@ -3650,6 +3768,7 @@ object Operations {
         if (name == "RoomMembersForMentionsPaginated") return RoomMembersForMentionsPaginated
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
+        if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSearchText") return RoomSearchText
         if (name == "RoomSuper") return RoomSuper
@@ -3660,6 +3779,8 @@ object Operations {
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "User") return User
+        if (name == "UserAvailableRooms") return UserAvailableRooms
+        if (name == "UserRooms") return UserRooms
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
         if (name == "AccountCreateInvite") return AccountCreateInvite
@@ -3667,7 +3788,6 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddMessageComment") return AddMessageComment
-        if (name == "BetaAddMessageComment") return BetaAddMessageComment
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
@@ -3685,6 +3805,7 @@ object Operations {
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
         if (name == "EditComment") return EditComment
+        if (name == "EditMessage") return EditMessage
         if (name == "EditPostMessage") return EditPostMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
@@ -3728,7 +3849,6 @@ object Operations {
         if (name == "RoomDeleteMessages") return RoomDeleteMessages
         if (name == "RoomDeleteUrlAugmentation") return RoomDeleteUrlAugmentation
         if (name == "RoomEditIntro") return RoomEditIntro
-        if (name == "RoomEditMessage") return RoomEditMessage
         if (name == "RoomJoin") return RoomJoin
         if (name == "RoomJoinInviteLink") return RoomJoinInviteLink
         if (name == "RoomKick") return RoomKick
@@ -3770,6 +3890,6 @@ object Operations {
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch
-        error("Unknown operation: \$name")
+        error("Unknown operation: $name")
     }
 }

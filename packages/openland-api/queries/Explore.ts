@@ -4,7 +4,62 @@ import { UserShort } from 'openland-api/fragments/UserShort';
 
 export const AvailableRoomsQuery = gql`
     query AvailableRooms {
-        rooms: betaAvailableRooms {
+        userRooms: betaUserRooms(limit: 3) {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+        availableRooms: betaUserAvailableRooms(limit: 3) {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+    }
+`;
+
+export const UserRoomsQuery = gql`
+    query UserRooms($limit: Int!, $after: ID) {
+        betaUserRooms(limit: $limit, after: $after) {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+    }
+`;
+
+export const UserAvailableRoomsQuery = gql`
+    query UserAvailableRooms($limit: Int!, $after: ID) {
+        betaUserAvailableRooms(limit: $limit, after: $after) {
             ... on SharedRoom {
                 id
                 kind

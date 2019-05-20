@@ -21,9 +21,11 @@ export const ReplyContent = (props: ReplyContentProps) => {
     const maxWidth = Dimensions.get('screen').width - 100;
     const { theme } = props;
 
+    const quoted = props.quotedMessages.sort((a, b) => a.date - b.date);
+
     return (
         <>
-            {props.quotedMessages.map((quote) => {
+            {quoted.map((quote) => {
                 let generalMesage = quote.__typename === 'GeneralMessage' ? quote as FullMessage_GeneralMessage : undefined;
 
                 if (generalMesage) {

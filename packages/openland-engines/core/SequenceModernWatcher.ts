@@ -38,12 +38,12 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
         (async () => {
             while (true) {
                 let update = await this.subscription.get();
-                await this.handleUpdate(update);
+                this.handleUpdate(update);
             }
         })();
     }
 
-    private handleUpdate = async (update: TSubscription) => {
+    private handleUpdate = (update: TSubscription) => {
         // if (update.errors && update.errors.length > 0) {
         //     throw update.errors;
         // }
@@ -56,23 +56,28 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
             for (let u of event.updates) {
                 this.sequenceHandler.push(u);
             }
-            if (this.seqHandler) {
-                await this.seqHandler(event.seq);
-            }
-            if (this.stateHandler) {
-                await this.stateHandler(event.state);
-            }
+            this.sequenceHandler.doAfter(() => {
+                if (this.seqHandler) {
+                    this.seqHandler(event.seq);
+                }
+                if (this.stateHandler) {
+                    this.stateHandler(event.state);
+                }
+            });
         } else {
             // Do single update
             this.currentState = event.state;
             this.subscription.updateVariables({ ...this.variables, state: this.currentState });
             this.sequenceHandler.push(event.update);
-            if (this.seqHandler) {
-                await this.seqHandler(event.seq);
-            }
-            if (this.stateHandler) {
-                await this.stateHandler(event.state);
-            }
+            this.sequenceHandler.doAfter(() => {
+                if (this.seqHandler) {
+                    this.seqHandler(event.seq);
+                }
+                if (this.stateHandler) {
+                    this.stateHandler(event.state);
+                }
+            });
+
         }
     }
 

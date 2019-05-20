@@ -30,6 +30,7 @@ import * as OrganizationSearch from './fragments/OrganizationSearch';
 import * as OrganizationShort from './fragments/OrganizationShort';
 import * as OrganizationWithoutMembersFragment from './fragments/OrganizationWithoutMembersFragment';
 import * as RoomFull from './fragments/RoomFull';
+import * as RoomNano from './fragments/RoomNano';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
@@ -68,6 +69,7 @@ export const CommentWatchSubscription = typedSubscription<Types.CommentWatch, Ty
 export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
 export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
+export const RoomPicoQuery = typedQuery<Types.RoomPico, Types.RoomPicoVariables>(Chats.RoomPicoQuery);
 export const RoomChatQuery = typedQuery<Types.RoomChat, Types.RoomChatVariables>(Chats.RoomChatQuery);
 export const RoomHeaderQuery = typedQuery<Types.RoomHeader, Types.RoomHeaderVariables>(Chats.RoomHeaderQuery);
 export const RoomWithoutMembersQuery = typedQuery<Types.RoomWithoutMembers, Types.RoomWithoutMembersVariables>(Chats.RoomWithoutMembersQuery);
@@ -119,7 +121,6 @@ export const RoomInviteLinkQuery = typedQuery<Types.RoomInviteLink, Types.RoomIn
 export const RoomInviteInfoQuery = typedQuery<Types.RoomInviteInfo, Types.RoomInviteInfoVariables>(Chats.RoomInviteInfoQuery);
 export const ResolvedInviteQuery = typedQuery<Types.ResolvedInvite, Types.ResolvedInviteVariables>(Chats.ResolvedInviteQuery);
 export const AddMessageCommentMutation = typedMutation<Types.AddMessageComment, Types.AddMessageCommentVariables>(Chats.AddMessageCommentMutation);
-export const BetaAddMessageCommentMutation = typedMutation<Types.BetaAddMessageComment, Types.BetaAddMessageCommentVariables>(Chats.BetaAddMessageCommentMutation);
 export const EditCommentMutation = typedMutation<Types.EditComment, Types.EditCommentVariables>(Chats.EditCommentMutation);
 export const DeleteCommentMutation = typedMutation<Types.DeleteComment, Types.DeleteCommentVariables>(Chats.DeleteCommentMutation);
 export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Chats.MessageCommentsQuery);
@@ -129,7 +130,7 @@ export const RoomUpdateMutation = typedMutation<Types.RoomUpdate, Types.RoomUpda
 export const RoomDeleteMessageMutation = typedMutation<Types.RoomDeleteMessage, Types.RoomDeleteMessageVariables>(Chats.RoomDeleteMessageMutation);
 export const RoomDeleteMessagesMutation = typedMutation<Types.RoomDeleteMessages, Types.RoomDeleteMessagesVariables>(Chats.RoomDeleteMessagesMutation);
 export const RoomDeleteUrlAugmentationMutation = typedMutation<Types.RoomDeleteUrlAugmentation, Types.RoomDeleteUrlAugmentationVariables>(Chats.RoomDeleteUrlAugmentationMutation);
-export const RoomEditMessageMutation = typedMutation<Types.RoomEditMessage, Types.RoomEditMessageVariables>(Chats.RoomEditMessageMutation);
+export const EditMessageMutation = typedMutation<Types.EditMessage, Types.EditMessageVariables>(Chats.EditMessageMutation);
 export const MarkSequenceReadMutation = typedMutation<Types.MarkSequenceRead, Types.MarkSequenceReadVariables>(Chats.MarkSequenceReadMutation);
 export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}>(Chats.TypingsWatchSubscription);
 export const ChatOnlinesCountWatchSubscription = typedSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables>(Chats.ChatOnlinesCountWatchSubscription);
@@ -151,6 +152,8 @@ export const MediaCandidateMutation = typedMutation<Types.MediaCandidate, Types.
 export const ConferenceMediaWatchSubscription = typedSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables>(Conferences.ConferenceMediaWatchSubscription);
 export const ConferenceWatchSubscription = typedSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables>(Conferences.ConferenceWatchSubscription);
 export const AvailableRoomsQuery = typedQuery<Types.AvailableRooms, {}>(Explore.AvailableRoomsQuery);
+export const UserRoomsQuery = typedQuery<Types.UserRooms, Types.UserRoomsVariables>(Explore.UserRoomsQuery);
+export const UserAvailableRoomsQuery = typedQuery<Types.UserAvailableRooms, Types.UserAvailableRoomsVariables>(Explore.UserAvailableRoomsQuery);
 export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
@@ -225,6 +228,7 @@ export const OrganizationShortFragment = typedFragment<Types.OrganizationShort>(
 export const OrganizationWithoutMembersFragmentFragment = typedFragment<Types.OrganizationWithoutMembersFragment>(OrganizationWithoutMembersFragment.OrganizationWithoutMembersFragment);
 export const RoomFullFragment = typedFragment<Types.RoomFull>(RoomFull.RoomFull);
 export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithoutMembers>(RoomFull.RoomFullWithoutMembers);
+export const RoomNanoFragment = typedFragment<Types.RoomNano>(RoomNano.RoomNano);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);

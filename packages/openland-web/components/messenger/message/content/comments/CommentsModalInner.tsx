@@ -17,7 +17,6 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentsInput } from './CommentsInput';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
@@ -27,6 +26,14 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
+import { showModalBox } from 'openland-x/showModalBox';
+import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
+import { XShortcutsRoot } from 'openland-x/XShortcuts';
+import { RoomChat_room } from 'openland-api/Types';
+import {
+    IsActivePoliteContext,
+    IsActiveContextState,
+} from 'openland-web/pages/main/mail/components/CacheComponent';
 
 const CommentView = ({
     originalMessageId,
@@ -39,6 +46,7 @@ const CommentView = ({
     commentsMap,
     scrollRef,
     currentCommentsInputRef,
+    room,
 }: {
     originalMessageId: string;
     commentEntryId: string;
@@ -50,6 +58,7 @@ const CommentView = ({
     commentsMap: any;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
+    room?: RoomChat_room;
 }) => {
     const messenger = React.useContext(MessengerContext);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
@@ -150,6 +159,7 @@ const CommentView = ({
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
                 <MessageComponent
+                    room={room}
                     conversationId={roomId}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                     usernameOfRepliedUser={usernameOfRepliedUser}
@@ -208,6 +218,7 @@ export const CommentsBlockView = ({
     getMentionsSuggestions,
     scrollRef,
     currentCommentsInputRef,
+    room,
 }: {
     roomId: string;
     setShowInputId: (a: string | null) => void;
@@ -216,6 +227,7 @@ export const CommentsBlockView = ({
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
+    room?: RoomChat_room;
 }) => {
     const client = useClient();
     const isMobile = React.useContext(IsMobileContext);
@@ -238,8 +250,10 @@ export const CommentsBlockView = ({
             return { ...res, depth: getDepthOfComment(item, commentsMap), entryId: item.id };
         })
         .map(message => {
+            message.chatId = roomId;
             return (
                 <CommentView
+                    room={room}
                     roomId={roomId}
                     commentEntryId={message.entryId}
                     originalMessageId={originalMessageId}
@@ -302,6 +316,8 @@ const OriginalMessageComponent = ({ messageId, roomId }: { messageId: string; ro
 
     const finalMessage = convertDsMessage(convertMessage(maybeGeneralMessage));
 
+    finalMessage.chatId = roomId;
+
     return (
         <MessageComponent
             noSelector
@@ -338,6 +354,8 @@ export const CommentsModalInnerNoRouter = ({
     roomId: string;
 }) => {
     const client = useClient();
+
+    let room = client.useRoomChat({ id: roomId })!!;
 
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
@@ -377,31 +395,28 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(
-        () => {
-            if (currentCommentsInputRef.current && scrollRef.current) {
-                const targetElem = currentCommentsInputRef.current.getElement()!!
-                    .parentNode as HTMLElement;
-                if (targetElem) {
-                    scrollRef.current.scrollToBottomOfElement({
-                        targetElem,
-                        offset: 10,
-                    });
-                }
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
             }
-        },
-        [showInputId],
-    );
+        }
+    }, [showInputId]);
 
     return (
         <UploadContextProvider>
-            <IsActiveContext.Provider value={true}>
+            <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>
                 <XView>
                     <XScrollView3
                         useDefaultScroll
                         flexGrow={1}
                         flexShrink={1}
-                        maxHeight={700}
+                        maxHeight={'calc(100vh - 48px - 114px)'}
                         ref={scrollRef}
                     >
                         <XView position="absolute" zIndex={100} right={32} top={28}>
@@ -417,6 +432,7 @@ export const CommentsModalInnerNoRouter = ({
                             width="100%"
                         />
                         <CommentsBlockView
+                            room={room.room ? room.room : undefined}
                             roomId={roomId}
                             originalMessageId={messageId}
                             setShowInputId={setShowInputId}
@@ -450,17 +466,9 @@ export const CommentsModalInnerNoRouter = ({
                         />
                     </XView>
                 </XView>
-            </IsActiveContext.Provider>
+            </IsActivePoliteContext.Provider>
         </UploadContextProvider>
     );
-};
-
-export const CommentsModalInner = () => {
-    let router = React.useContext(XRouterContext)!;
-
-    const [messageId, roomId] = router.routeQuery.comments.split('&');
-
-    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
 };
 
 export const openDeleteCommentsModal = ({
@@ -473,24 +481,33 @@ export const openDeleteCommentsModal = ({
     router.pushQuery('deleteComment', `${commentId}`);
 };
 
+const Modal = (props: { messageId: string; conversationId: string }) => {
+    let router = React.useContext(XRouterContext)!;
+    return (
+        <UploadContextProvider>
+            <XShortcutsRoot>
+                <MessageStateProviderComponent router={router} cid={props.conversationId}>
+                    <CommentsModalInnerNoRouter
+                        messageId={props.messageId}
+                        roomId={props.conversationId}
+                    />
+                </MessageStateProviderComponent>
+            </XShortcutsRoot>
+        </UploadContextProvider>
+    );
+};
+
 export const openCommentsModal = ({
-    router,
     messageId,
     conversationId,
 }: {
-    router: XRouter;
     messageId: string;
     conversationId: string;
 }) => {
-    router.pushQuery('comments', `${messageId}&${conversationId}`);
-    // showModalBox(
-    //     {
-    //         width: 800,
-    //     },
-    //     () => (
-    //         <UploadContextProvider>
-    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-    //         </UploadContextProvider>
-    //     ),
-    // );
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => <Modal messageId={messageId} conversationId={conversationId} />,
+    );
 };

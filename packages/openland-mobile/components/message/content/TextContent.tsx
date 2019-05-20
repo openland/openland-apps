@@ -1,11 +1,25 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Text, TextStyle } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { isEmoji } from 'openland-y-utils/isEmoji';
+import { Text, TextStyle, View } from 'react-native';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { getCodeSlices } from 'openland-y-utils/spans/utils';
+
+const TextWrapper = (props: { isSmall?: boolean; fontSize?: number; color: string; fontStyle?: 'italic' | 'normal'; children?: any }) => (
+    <Text
+        style={{
+            color: props.color,
+            fontSize: props.fontSize || (props.isSmall ? 15 : 16),
+            fontWeight: TextStyles.weight.regular,
+            fontStyle: props.fontStyle,
+        } as TextStyle}
+        allowFontScaling={false}
+    >
+        {props.children}
+    </Text>
+)
 
 interface TextContentProps {
     message: FullMessage_GeneralMessage | FullMessage_GeneralMessage_quotedMessages;
@@ -19,41 +33,38 @@ interface TextContentProps {
 }
 
 export const TextContent = (props: TextContentProps) => {
-    let { theme, message } = props;
-    let text = message.message;
+    const { theme, message, onUserPress, onGroupPress } = props;
+    const preprocessed = processSpans(message.message || '', message.spans);
+    const content = getCodeSlices(preprocessed);
 
-    let singleEmoji = false;
-    let textSticker = false;
-
-    if (text) {
-        singleEmoji = isEmoji(text);
-        textSticker = (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
-    }
-    let big = singleEmoji || textSticker;
-
-    if (textSticker) {
-        message = { ...message, message: text!.slice(1, text!.length - 1) };
-    }
-
-    let preprocessed = preprocessText(message.message || '', message.spans as any);
-    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, props.onGroupPress, theme));
-
-    if (message.message) {
-        return (
-            <Text
-                style={{
-                    color: theme.textColor,
-                    lineHeight: big ? 28 : (props.isSmall ? 20 : 22),
-                    fontSize: big ? 26 : (props.isSmall ? 15 : 16),
-                    fontWeight: big ? TextStyles.weight.medium : TextStyles.weight.regular,
-                    fontStyle: props.fontStyle,
-                } as TextStyle}
-                allowFontScaling={false}
-            >
-                {parts}
-            </Text>
-        );
-    }
-
-    return null;
+    return (
+        <>
+            {content.map((c, i) => (
+                <>
+                    {c.type === 'slice' && (
+                        <TextWrapper
+                            key={'slice-' + i}
+                            color={theme.textColor}
+                            fontStyle={props.fontStyle}
+                        >
+                            {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
+                        </TextWrapper>
+                    )}
+                    {c.type === 'code' && (
+                        <View
+                            key={'code-' + i}
+                            backgroundColor={theme.codeSpan.background}
+                            marginHorizontal={-16}
+                            paddingHorizontal={16}
+                            paddingVertical={6}
+                        >
+                            <TextWrapper fontSize={14} color={theme.textColor}>
+                                {renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
+                            </TextWrapper>
+                        </View>
+                    )}
+                </>
+            ))}
+        </>
+    );
 }

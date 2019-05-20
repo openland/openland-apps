@@ -30,7 +30,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
     if (!data) {
         tagsCount(0);
 
-        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
+        return <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />;
     }
 
     if (
@@ -65,7 +65,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
     } else {
         tagsCount(0);
 
-        return <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />;
+        return <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />;
     }
 };
 
@@ -78,6 +78,8 @@ export const RoomsExploreComponent = () => {
             searchPlaceholder={'Search groups'}
             noQueryText={'Featured groups'}
             hasQueryText={'Groups'}
+            defaultSortOption="membersCount"
+            withoutFeatured
             sortOptions={{
                 label: 'Sort by',
                 values: [
@@ -85,7 +87,6 @@ export const RoomsExploreComponent = () => {
                     { label: 'Creation date', value: 'createdAt' },
                 ],
             }}
-            defaultSortOption="membersCount"
         />
     );
 };

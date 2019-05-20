@@ -111,7 +111,6 @@ export interface MessageComponentProps {
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
-    isActive?: boolean | null;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
     room?: RoomChat_room;
@@ -127,10 +126,44 @@ interface DesktopMessageComponentInnerState {
     hideMenu: boolean;
 }
 
+const MessageImageComponentWrapper = React.memo(
+    ({
+        isComment,
+        message,
+        hideMenu,
+        fileAttach,
+    }: {
+        fileAttach: any;
+        isComment: boolean;
+        message: any;
+        hideMenu: any;
+    }) => {
+        const originalWidth = fileAttach.fileMetadata.imageWidth || 0;
+        const originalHeight = fileAttach.fileMetadata.imageHeight || 0;
+
+        const dimentions = {
+            originalWidth,
+            originalHeight,
+            width: isComment ? 180 : originalWidth,
+            height: isComment ? 120 : originalHeight,
+        };
+
+        return (
+            <MessageImageComponent
+                key={'file' + message.id}
+                file={fileAttach.fileId!}
+                fileName={fileAttach.fileMetadata.name}
+                dimentions={dimentions}
+                startSelected={hideMenu}
+            />
+        );
+    },
+);
+
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     DesktopMessageComponentInnerState
-> {
+    > {
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
@@ -142,7 +175,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     }
 
     componentDidUpdate() {
-        const { message, messagesContext, isActive } = this.props;
+        const { message, messagesContext } = this.props;
 
         const isEditView = messagesContext.editMessageId === message.id;
 
@@ -153,7 +186,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             selected = forwardMessagesId.has(message.id || 'none');
         }
 
-        if (isActive) {
+        if (message.chatId === messagesContext.getChatId()) {
             this.setState({
                 selected: selected,
                 hideMenu: hideMenu,
@@ -270,16 +303,17 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                          a => a.__typename === 'MessageAttachmentFile',
-                                      )[0]
+                                        a => a.__typename === 'MessageAttachmentFile',
+                                    )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
 
                                 return (
                                     <MessageReplyComponent
+                                        senderNameEmojify={message.replySenderNameEmojify[index]}
                                         attach={qfileAttach}
-                                        spans={item.spans as any}
+                                        spans={message.replyTextSpans[index]}
                                         sender={item.sender}
                                         date={item.date}
                                         message={item.message}
@@ -298,11 +332,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     if (message.isService) {
                         content.push(
                             <ServiceMessageComponent
-                                senderUser={{ id: message.senderId, name: message.senderName }}
-                                myUserId={this.props.me ? this.props.me.id : ''}
-                                serviceMetadata={message.serviceMetaData!}
-                                message={message.text || ''}
-                                spans={message.spans || []}
+                                spans={message.textSpans}
                                 key={'service_message' + message.id}
                             />,
                         );
@@ -317,7 +347,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             content.push(
                                 <MessageTextComponentSpanned
                                     isComment={this.props.isComment}
-                                    spannedString={message.textSpannedString!}
+                                    spans={message.textSpans}
                                     key={'text' + message.id}
                                     isEdited={!!message.isEdited}
                                 />,
@@ -339,23 +369,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         } else {
-                            const originalWidth = fileAttach.fileMetadata.imageWidth || 0;
-                            const originalHeight = fileAttach.fileMetadata.imageHeight || 0;
-
-                            const dimentions = {
-                                originalWidth,
-                                originalHeight,
-                                width: this.props.isComment ? 180 : originalWidth,
-                                height: this.props.isComment ? 120 : originalHeight,
-                            };
-
                             content.push(
-                                <MessageImageComponent
-                                    key={'file' + message.id}
-                                    file={fileAttach.fileId!}
-                                    fileName={fileAttach.fileMetadata.name}
-                                    dimentions={dimentions}
-                                    startSelected={hideMenu}
+                                <MessageImageComponentWrapper
+                                    fileAttach={fileAttach}
+                                    isComment={!!this.props.isComment}
+                                    message={message}
+                                    hideMenu={hideMenu}
                                 />,
                             );
                         }
@@ -404,8 +423,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 content.push(
                     <MessageTextComponent
                         isComment={this.props.isComment}
-                        message={message.text}
-                        spans={message.spans}
+                        spans={message.textSpans}
                         key={'text' + message.id}
                         isService={false}
                         isEdited={!!message.isEdited}
@@ -446,7 +464,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (content.length === 0) {
             content.push(
                 <MessageTextComponent
-                    message={''}
                     spans={[]}
                     key={'text' + message.id}
                     isService={false}
@@ -471,6 +488,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={usernameOfRepliedUser}
                         commentProps={commentProps}
+                        room={this.props.room}
                     />
                 );
 

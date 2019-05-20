@@ -8,6 +8,7 @@ import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
+import { RoomNano } from 'openland-api/fragments/RoomNano';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -241,6 +242,15 @@ export const RoomQuery = gql`
     ${OrganizationMedium}
 `;
 
+export const RoomPicoQuery = gql`
+    query RoomPico($id: ID!) {
+        room(id: $id) {
+            ...RoomNano
+        }
+    }
+    ${RoomNano}
+`;
+
 export const RoomChatQuery = gql`
     query RoomChat($id: ID!) {
         room(id: $id) {
@@ -250,6 +260,9 @@ export const RoomChatQuery = gql`
                     id
                     name
                 }
+                pinnedMessage {
+                    ...FullMessage
+                }
             }
             ... on SharedRoom {
                 id
@@ -257,6 +270,7 @@ export const RoomChatQuery = gql`
                 title
                 membership
                 isChannel
+                role
                 canEdit
                 photo
                 pinnedMessage {
@@ -493,31 +507,44 @@ export const ChatInitQuery = gql`
 
 export const SendMessageMutation = gql`
     mutation SendMessage(
+        $chatId: ID!
         $message: String
-        $file: String
-        $repeatKey: String
         $replyMessages: [ID!]
-        $mentions: [ID!]
-        $room: ID!
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+        $repeatKey: String
     ) {
-        sentMessage: betaMessageSend(
+        sentMessage: sendMessage(
+            chatId: $chatId
             message: $message
-            file: $file
-            repeatKey: $repeatKey
             replyMessages: $replyMessages
             mentions: $mentions
-            room: $room
+            fileAttachments: $fileAttachments
+            spans: $spans
+            repeatKey: $repeatKey
         )
     }
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {
-        replyMessage: betaMessageSend(
-            room: $roomId
+    mutation ReplyMessage(
+        $chatId: ID!
+        $message: String
+        $replyMessages: [ID!]
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+        $repeatKey: String
+    ) {
+        replyMessage: sendMessage(
+            chatId: $chatId
             message: $message
             replyMessages: $replyMessages
             mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+            repeatKey: $repeatKey
         )
     }
 `;
@@ -914,31 +941,15 @@ export const AddMessageCommentMutation = gql`
         $replyComment: ID
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
     ) {
-        addMessageComment(
+        addMessageComment: betaAddMessageComment(
             messageId: $messageId
             message: $message
             replyComment: $replyComment
             mentions: $mentions
             fileAttachments: $fileAttachments
-        )
-    }
-`;
-
-export const BetaAddMessageCommentMutation = gql`
-    mutation BetaAddMessageComment(
-        $messageId: ID!
-        $message: String
-        $replyComment: ID
-        $mentions: [MentionInput!]
-        $fileAttachments: [FileAttachmentInput!]
-    ) {
-        betaAddMessageComment(
-            messageId: $messageId
-            message: $message
-            replyComment: $replyComment
-            mentions: $mentions
-            fileAttachments: $fileAttachments
+            spans: $spans
         ) {
             id
         }
@@ -948,8 +959,20 @@ export const BetaAddMessageCommentMutation = gql`
 `;
 
 export const EditCommentMutation = gql`
-    mutation EditComment($id: ID!, $message: String) {
-        editComment(id: $id, message: $message)
+    mutation EditComment(
+        $id: ID!
+        $message: String
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+    ) {
+        editComment(
+            id: $id
+            message: $message
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+        )
     }
 `;
 
@@ -1023,20 +1046,22 @@ export const RoomDeleteUrlAugmentationMutation = gql`
     }
 `;
 
-export const RoomEditMessageMutation = gql`
-    mutation RoomEditMessage(
+export const EditMessageMutation = gql`
+    mutation EditMessage(
         $messageId: ID!
         $message: String
-        $file: String
         $replyMessages: [ID!]
-        $mentions: [ID!]
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
     ) {
-        betaMessageEdit(
-            mid: $messageId
+        editMessage(
+            messageId: $messageId
             message: $message
-            file: $file
             replyMessages: $replyMessages
             mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
         )
     }
 `;
@@ -1050,8 +1075,13 @@ export const MarkSequenceReadMutation = gql`
 export const TypingsWatchSubscription = gql`
     subscription TypingsWatch {
         typings {
-            conversation {
-                id
+            conversation: chat {
+                ... on PrivateRoom {
+                    id
+                }
+                ... on SharedRoom {
+                    id
+                }
             }
             user {
                 id

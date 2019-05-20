@@ -6,9 +6,14 @@ import android.util.Log
 import java.util.concurrent.Executors
 
 class DispatchQueue(val name: String) {
-    private companion object {
+    companion object {
         private val thread = HandlerThread("timer")
-        val handler: Handler by lazy { Handler(thread.looper) }
+        private val handler: Handler by lazy { Handler(thread.looper) }
+        private val currentQueueName = ThreadLocal<String>()
+        val currentQueue: String?
+            get() {
+                return currentQueueName.get()
+            }
 
         init {
             thread.start()
@@ -51,6 +56,7 @@ class DispatchQueue(val name: String) {
             val start = System.currentTimeMillis()
             try {
                 currentQueueLocal.set(true)
+                currentQueueName.set(this.name)
                 op()
                 val delta = (System.currentTimeMillis() - start)
                 if (delta > 20) {
@@ -59,6 +65,7 @@ class DispatchQueue(val name: String) {
             } catch (t: Throwable) {
                 t.printStackTrace()
             } finally {
+                currentQueueName.remove()
                 currentQueueLocal.remove()
             }
         }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { AppFull } from 'openland-api/Types';
+import { AppFull, UpdateAppVariables } from 'openland-api/Types';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -17,7 +17,7 @@ export const EditAppModal = ({ apps }: { apps: AppFull[] }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const updateApp = async (variables: any) => {
+    const updateApp = async (variables: UpdateAppVariables) => {
         await client.mutateUpdateApp(variables);
     };
 
@@ -43,19 +43,17 @@ export const EditAppModal = ({ apps }: { apps: AppFull[] }) => {
             }}
             defaultAction={async ({ input }) => {
                 await updateApp({
-                    variables: {
-                        appId: app.id,
-                        input: {
-                            name: input.name,
-                            shortname:
-                                input.shortname === ''
-                                    ? null
-                                    : input.shortname === shortname
-                                    ? undefined
-                                    : input.shortname,
-                            photoRef: input.photoRef,
-                            about: input.about,
-                        },
+                    appId: app.id,
+                    input: {
+                        name: input.name,
+                        shortname:
+                            input.shortname === ''
+                                ? null
+                                : input.shortname === shortname
+                                ? undefined
+                                : input.shortname,
+                        photoRef: input.photoRef,
+                        about: input.about,
                     },
                 });
             }}

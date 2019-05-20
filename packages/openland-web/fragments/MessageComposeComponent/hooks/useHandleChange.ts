@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
@@ -17,7 +18,7 @@ export function useHandleChange({ setInputValue, onChange, draftState }: useHand
         return !!draftState;
     };
 
-    const handleChange = ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
+    const handleChange = React.useCallback(({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
         setInputValue(text);
 
         if (onChange) {
@@ -29,7 +30,8 @@ export function useHandleChange({ setInputValue, onChange, draftState }: useHand
                 draftState!!.changeDraft(text, mentions);
             }
         }
-    };
+    }
+        , [])
 
     return { handleChange };
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 export type XRichTextInput2RefMethods = {
     getElement: () => HTMLElement | null;
@@ -28,7 +29,11 @@ export function useInputMethods({
     getMentions,
     updateEditorStateFromTextAndMentions,
 }: useInputMethodsT) {
+    const activeChecker = React.useContext(IsActivePoliteContext);
     const focus = () => {
+        if (!activeChecker.getValue()) {
+            return;
+        }
         window.requestAnimationFrame(() => {
             if (editorRef && editorRef.current) {
                 editorRef.current.focus();
@@ -37,6 +42,9 @@ export function useInputMethods({
     };
 
     const resetAndFocus = () => {
+        if (!activeChecker.getValue()) {
+            return;
+        }
         window.requestAnimationFrame(() => {
             setEditorState(
                 EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),

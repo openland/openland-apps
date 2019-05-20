@@ -21,6 +21,7 @@ import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { emoji } from 'openland-y-utils/emoji';
 
 const MessageWrapper = Glamorous(XHorizontal)<{
     compact: boolean;
@@ -115,7 +116,8 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         return (
                             <MessageReplyComponent
-                                spans={message.spans}
+                                senderNameEmojify={message.replySenderNameEmojify[index]}
+                                spans={message.replyTextSpans[index]}
                                 sender={item.sender}
                                 date={item.date}
                                 message={item.message}
@@ -136,20 +138,12 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.text && message.text.length > 0) {
             if (message.isService) {
                 content.push(
-                    <ServiceMessageComponent
-                        senderUser={message.sender}
-                        myUserId={props.me ? props.me.id : ''}
-                        serviceMetadata={message.serviceMetaData!}
-                        message={message.text || ''}
-                        spans={message.spans}
-                        key={'service_message'}
-                    />,
+                    <ServiceMessageComponent spans={message.textSpans} key={'service_message'} />,
                 );
             } else {
                 content.push(
                     <MessageTextComponent
-                        message={message.text || ''}
-                        spans={message.spans}
+                        spans={message.textSpans}
                         key={'text'}
                         isEdited={!!message.isEdited}
                     />,
@@ -235,8 +229,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.text && message.text.length > 0) {
             content.push(
                 <MessageTextComponent
-                    message={message.text}
-                    spans={message.spans}
+                    spans={message.textSpans}
                     key={'text'}
                     isService={false}
                     isEdited={!!message.isEdited}
@@ -278,8 +271,16 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
     // }
 
     if (!message.isService) {
+        const senderName = emoji({
+            src: message.senderName,
+            size: 16,
+        });
         return (
-            <MobileMessageContainer sender={message.sender} date={props.message.date}>
+            <MobileMessageContainer
+                senderNameEmojify={senderName}
+                sender={message.sender}
+                date={props.message.date}
+            >
                 {content}
                 <XView alignItems="flex-start">
                     <Reactions

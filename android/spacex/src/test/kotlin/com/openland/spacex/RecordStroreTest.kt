@@ -18,7 +18,7 @@ class RecordStoreTests {
                 "field3" to RecordValue.Boolean(false),
                 "field4" to RecordValue.String("value3"),
                 "field5" to RecordValue.Number(0.0),
-                "field5" to RecordValue.Null
+                "field6" to RecordValue.Null
         )
         )
         val record2 = Record(
@@ -37,7 +37,7 @@ class RecordStoreTests {
         store.loaded(Record("key1", mapOf()))
         var changes = store.merge(record1)
         assertEquals(1, changes.size)
-        assertEquals(setOf("field1", "field2", "field2", "field3", "field4", "field5"), changes.getValue("key1").fields)
+        assertEquals(setOf("field1", "field2", "field3", "field4", "field5", "field6"), changes.getValue("key1").fields)
 
         // Double merge
         changes = store.merge(record1)

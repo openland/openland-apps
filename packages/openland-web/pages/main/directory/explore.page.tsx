@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
-import { AvailableRooms_rooms } from 'openland-api/Types';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
@@ -18,21 +17,23 @@ export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
     const data = client.useAvailableRooms();
 
-    let noData = data === undefined || data.rooms === undefined || data.rooms === null;
+    let noData = data === undefined || (data.availableRooms === undefined && data.userRooms === undefined);
 
-    props.tagsCount(noData ? 0 : data.rooms.length);
+    let rooms = data ? [...data.availableRooms || [], ...data.userRooms || []] : []
+
+    props.tagsCount(rooms.length);
 
     return (
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {data.rooms.map((room: AvailableRooms_rooms, key) => {
+                    {rooms.map(r => {
                         return (
                             <XRoomCard
-                                key={key}
-                                room={room as any}
-                                path={'/directory/p/' + room.id}
-                                isMember={room.membership === 'MEMBER'}
+                                key={r.id}
+                                room={r as any}
+                                path={'/directory/p/' + r.id}
+                                isMember={r.membership === 'MEMBER'}
                             />
                         );
                     })}
@@ -43,7 +44,7 @@ export const RoomsCards = (props: RoomsCardsProps) => {
                 </XContentWrapper>
             )}
             {noData && (
-                <EmptySearchBlock text={`We couldn't find anything for ${props.notFoundText}`} />
+                <EmptySearchBlock text={`We couldn't find anything for "${props.notFoundText}"`} />
             )}
         </>
     );
@@ -59,6 +60,7 @@ export default withApp('Explore', 'viewer', () => {
             searchPlaceholder={'Search groups'}
             noQueryText={'All groups'}
             hasQueryText={'Groups'}
+            withoutFeatured
         />
     );
 });

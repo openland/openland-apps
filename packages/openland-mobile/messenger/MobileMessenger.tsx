@@ -30,10 +30,11 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
     getMessenger().history.navigationManager.push('HomeDialogs', {
         title: 'Forward to', pressCallback: (id: string) => {
             let selectedActionsState = getMessenger().engine.getConversation(id).messagesActionsState;
-
-            selectedActionsState.setState({ ...actionsState.getState(), action: 'forward' });
+            let stateToForward = actionsState.getState();
 
             actionsState.clear();
+
+            selectedActionsState.setState({ ...stateToForward, action: 'forward' });
 
             getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
         }

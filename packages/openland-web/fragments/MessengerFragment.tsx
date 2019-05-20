@@ -4,6 +4,7 @@ import { InviteLandingComponent } from './InviteLandingComponent';
 import {
     UserShort,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom,
     RoomChat_room_SharedRoom,
@@ -13,7 +14,6 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
@@ -22,6 +22,7 @@ import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarCompone
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 interface MessengerComponentLoaderProps {
     state: MessagesStateContextProps;
@@ -30,7 +31,7 @@ interface MessengerComponentLoaderProps {
 }
 
 const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
-    const isActive = React.useContext(IsActiveContext);
+    const isActive = React.useContext(IsActivePoliteContext).useValue();
 
     if (isActive === false) {
         return null;
@@ -56,12 +57,24 @@ class MessagengerFragmentInner extends React.PureComponent<
             room.__typename === 'SharedRoom' ? room : null;
         let privateRoom: RoomChat_room_PrivateRoom | null =
             room.__typename === 'PrivateRoom' ? room : null;
-        let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
+        let pinMessage:
+            | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+            | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+            | null =
             sharedRoom &&
             sharedRoom.pinnedMessage &&
             sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
+
+        if (privateRoom) {
+            pinMessage =
+                privateRoom &&
+                privateRoom.pinnedMessage &&
+                privateRoom.pinnedMessage.__typename === 'GeneralMessage'
+                    ? privateRoom.pinnedMessage
+                    : null;
+        }
 
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
             if (sharedRoom.kind === 'PUBLIC') {
@@ -111,6 +124,8 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
+
+    // useCheckPerf({ name: `MessengerFragment: ${props.id}` });
 
     return (
         <React.Suspense fallback={<XLoader loading={true} />}>

@@ -7,7 +7,6 @@ import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { AvailableRooms_rooms } from 'openland-api/Types';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -16,37 +15,17 @@ import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 
 const RoomsList = () => {
     let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
-    let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
-    let featureds = getClient()
-        .useRoomSearch({
-            sort: JSON.stringify([
-                { featured: { order: 'desc' } },
-                { createdAt: { order: 'desc' } },
-            ]),
-        })
-        .items.edges.map(v => v.node);
-
-    let src = rooms
-        .filter(v => !!v.membersCount)
-        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
-
-    let newRooms = src.filter(v => v.membership === 'NONE' || v.membership === 'REQUESTED');
-    let newRoomsLimited = newRooms.length > 3 ? [newRooms[0], newRooms[1], newRooms[2]] : newRooms;
-    let existingRooms = src.filter(v => v.membership === 'MEMBER');
-    let existingRoomsLimited = existingRooms.length > 3 ? [existingRooms[0], existingRooms[1], existingRooms[2]] : existingRooms;
-
-    let featured = featureds
-        .filter(v => !newRooms.find(v2 => v.id !== v2.id))
-        .filter(v => !existingRooms.find(v2 => v.id !== v2.id))
-        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
-
     let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
+
+    let rooms = getClient().useAvailableRooms();
+    let availableRooms = rooms.availableRooms || [];
+    let myRooms = rooms.userRooms || [];
     return (
         <>
             {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
             {isSuper && <ZListItem text="Tasks" path="Apps/Tasks" />}
             <ZListItemGroup header="Available Groups" divider={false}>
-                {newRoomsLimited.map(v => (
+                {availableRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -55,19 +34,20 @@ const RoomsList = () => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization!.name}
+                        title={v.organization ? v.organization.name : undefined}
                         description={v.membersCount + ' members'}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-                {(newRoomsLimited.length < newRooms.length) && (
+                {(availableRooms.length >= 3) && (
                     <ZListItem
                         leftIcon={require('assets/ic-more-24.png')}
                         text="All groups"
                         path="GroupList"
                         pathParams={{
-                            groups: newRooms,
+                            query: 'available',
+                            initial: availableRooms,
                             title: 'Available groups',
                         }}
                         navigationIcon={false}
@@ -76,7 +56,7 @@ const RoomsList = () => {
             </ZListItemGroup>
 
             <ZListItemGroup header="Your Groups" divider={false}>
-                {existingRoomsLimited.map(v => (
+                {myRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -91,13 +71,14 @@ const RoomsList = () => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-                {(existingRoomsLimited.length < existingRooms.length) && (
+                {(myRooms.length >= 3) && (
                     <ZListItem
                         leftIcon={require('assets/ic-more-24.png')}
                         text="All groups"
                         path="GroupList"
                         pathParams={{
-                            groups: existingRooms,
+                            initial: myRooms,
+                            query: 'rooms',
                             title: 'Your groups',
                         }}
                         navigationIcon={false}
@@ -105,7 +86,7 @@ const RoomsList = () => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Featured" divider={false}>
+            {/* <ZListItemGroup header="Featured" divider={false}>
                 {featured.map(v => (
                     <ZListItem
                         key={v.id}
@@ -115,13 +96,13 @@ const RoomsList = () => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization!.name}
+                        title={v.organization ? v.organization.name : undefined}
                         description={v.membersCount + ' members'}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListItemGroup> */}
         </>
     );
 };

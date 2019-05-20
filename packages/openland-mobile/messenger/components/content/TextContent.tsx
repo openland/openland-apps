@@ -3,11 +3,26 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
-import { isEmoji } from 'openland-y-utils/isEmoji';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming } from '../AsyncBubbleView';
+import { getCodeSlices } from 'openland-y-utils/spans/utils';
+
+const TextWrapper = (props: { maxWidth?: number; fontSize?: number; color: string; fontStyle?: 'italic' | 'normal'; children?: any }) => (
+    <ASText
+        key={'text-' + props.color}
+        color={props.color}
+        letterSpacing={-0.3}
+        fontSize={props.fontSize || 16}
+        fontWeight={TextStyles.weight.regular}
+        fontStyle={props.fontStyle}
+        maxWidth={props.maxWidth}
+    >
+        {props.children}
+    </ASText>
+)
+
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -18,44 +33,44 @@ interface TextContentProps {
     fontStyle?: 'italic' | 'normal';
     theme: AppTheme;
 }
+
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        let mainTextColor = this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
-
-        let singleEmoji = false;
-        let textSticker = false;
-        if (this.props.message.text) {
-            singleEmoji = isEmoji(this.props.message.text);
-            textSticker = (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
-        }
-        let big = singleEmoji || textSticker;
-
-        let message = this.props.message;
-        if (textSticker) {
-            message = { ...message, text: message.text!.slice(1, message.text!.length - 1) };
-        }
-        let preprocessed = preprocessText(message.text || '', message.spans);
-
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress, this.props.onGroupPress));
-        if (message.title) {
-            parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
-            parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
-        }
+        const { message, theme, onUserPress, onGroupPress } = this.props;
+        const mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
+        const content = getCodeSlices(message.textSpans, this.props.padded);
 
         return (
             <>
-                {!!message.text && <ASText
-                    key={'text-' + mainTextColor}
-                    color={mainTextColor}
-                    lineHeight={big ? 28 : 20}
-                    letterSpacing={-0.3}
-                    fontSize={big ? 26 : 16}
-                    fontWeight={big ? TextStyles.weight.medium : TextStyles.weight.regular}
-                    fontStyle={this.props.fontStyle}
-                >
-                    {parts}
-                    {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
-                </ASText>}
+                {content.map((c, i) => (
+                    <>
+                        {c.type === 'slice' && (
+                            <TextWrapper
+                                key={'slice-' + i}
+                                color={mainTextColor}
+                                fontStyle={this.props.fontStyle}
+                            >
+                                {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                            </TextWrapper>
+                        )}
+                        {c.type === 'code' && (
+                            <ASFlex
+                                key={'code-' + i}
+                                marginLeft={-contentInsetsHorizontal}
+                                marginRight={-contentInsetsHorizontal}
+                                marginTop={i === 0 ? 8 : undefined}
+                                backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
+                            >
+                                <ASFlex marginLeft={contentInsetsHorizontal} marginRight={contentInsetsHorizontal} marginTop={5} marginBottom={5}>
+                                    <TextWrapper fontSize={14} color={mainTextColor} maxWidth={message.isOut ? bubbleMaxWidth - 40 : bubbleMaxWidthIncoming - 40}>
+                                        {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                    </TextWrapper>
+                                </ASFlex>
+                            </ASFlex>
+                        )}
+                    </>
+                ))}
             </>
         )
     }

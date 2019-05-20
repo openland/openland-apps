@@ -3,22 +3,17 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
-const MessageComponentInner = React.memo(
-    (
-        props: MessageComponentProps & {
-            isMobile: boolean;
-            messagesContextProps: MessagesStateContextProps;
-        },
-    ) => {
-        return props.isMobile ? (
-            <MobileMessageComponentInner
-                message={props.message}
-                me={props.me}
-                conversationType={props.conversationType}
-            />
-        ) : (
+export const MessageComponent = React.memo<MessageComponentProps>((props) => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
+    const isMobile = React.useContext(IsMobileContext);
+    return isMobile ? (
+        <MobileMessageComponentInner
+            message={props.message}
+            me={props.me}
+            conversationType={props.conversationType}
+        />
+    ) : (
             <>
                 <DesktopMessageComponentInner
                     onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
@@ -37,44 +32,10 @@ const MessageComponentInner = React.memo(
                     onlyLikes={props.onlyLikes}
                     me={props.me}
                     conversationType={props.conversationType}
-                    messagesContext={props.messagesContextProps}
-                    isActive={props.isActive}
+                    messagesContext={messagesContextProps}
                     room={props.room}
                 />
             </>
         );
-    },
+},
 );
-
-export const MessageComponent = (props: MessageComponentProps) => {
-    const messagesContextProps = React.useContext(MessagesStateContext);
-    const isActive = React.useContext(IsActiveContext);
-    const isMobile = React.useContext(IsMobileContext);
-
-    React.useEffect(() => undefined, [messagesContextProps]);
-
-    return (
-        <MessageComponentInner
-            onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
-            usernameOfRepliedUser={props.usernameOfRepliedUser}
-            deleted={props.deleted}
-            showNumberOfComments={props.showNumberOfComments}
-            commentDepth={props.commentDepth}
-            isModal={props.isModal}
-            isPinned={props.isPinned}
-            isComment={props.isComment}
-            commentProps={props.commentProps}
-            noSelector={props.noSelector}
-            onlyLikes={props.onlyLikes}
-            isChannel={props.isChannel}
-            message={props.message}
-            conversationId={props.conversationId}
-            me={props.me}
-            conversationType={props.conversationType}
-            messagesContextProps={messagesContextProps}
-            isMobile={isMobile}
-            isActive={isActive}
-            room={props.room}
-        />
-    );
-};

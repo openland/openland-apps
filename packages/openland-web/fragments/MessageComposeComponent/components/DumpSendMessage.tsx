@@ -12,6 +12,7 @@ import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import Glamorous from 'glamorous';
 import { XThemeDefault } from 'openland-x/XTheme';
+import { XView } from 'react-mental';
 
 const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
     return {
@@ -65,7 +66,7 @@ export type TextInputComponentT = {
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
-    initialMentions: UserWithOffset[];
+    initialMentions?: UserWithOffset[];
     inputRef: any;
     placeholder?: string;
 };
@@ -99,7 +100,8 @@ export const DumpSendMessage = React.memo(
         hideAttachments,
         placeholder,
     }: DumpSendMessageT) => {
-        const { handleDrop } = React.useContext(UploadContext);
+        const { fileSrc, fileName, fileSize, handleDrop } = React.useContext(UploadContext);
+
         return (
             <SendMessageWrapper
                 fullWidth={fullWidth}
@@ -116,7 +118,11 @@ export const DumpSendMessage = React.memo(
                                 onCancel={closeEditor}
                             />
                         )}
-                        <FileUploader />
+                        {(fileSrc || (fileName && fileSize)) && (
+                            <XView marginLeft={14}>
+                                <FileUploader />
+                            </XView>
+                        )}
                         <TextInputComponent
                             initialMentions={initialMentions}
                             getMentionsSuggestions={getMentionsSuggestions}

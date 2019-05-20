@@ -34,6 +34,7 @@ export const SearchCardsOrShowProfile = XMemo(
         defaultSortOption,
         withoutFeatured,
         page,
+        withoutSort,
     }: {
         id?: string | null;
         searchPlaceholder: string;
@@ -48,6 +49,7 @@ export const SearchCardsOrShowProfile = XMemo(
         defaultSortOption?: string;
         withoutFeatured?: boolean;
         page?: number;
+        withoutSort?: boolean;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
@@ -75,28 +77,34 @@ export const SearchCardsOrShowProfile = XMemo(
                             <XSubHeader
                                 title={noQueryText}
                                 right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                        options={sortOptions}
-                                    />
+                                    !withoutSort && (
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    )
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        !withoutSort && (
+                                            <SortPicker
+                                                sort={sort}
+                                                onPick={setSort}
+                                                withoutFeatured={withoutFeatured}
+                                                options={sortOptions}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -128,6 +136,9 @@ export const DirectoryNavigation = XMemo(
         children,
         withoutFeatured,
         page,
+        defaultSortOption,
+        sortOptions,
+        withoutSort,
     }: {
         title: string;
         id?: string | null;
@@ -139,6 +150,12 @@ export const DirectoryNavigation = XMemo(
         children?: any;
         withoutFeatured?: boolean;
         page?: number;
+        defaultSortOption?: string;
+        sortOptions?: {
+            label: string;
+            values: { label: string; value: string }[];
+        };
+        withoutSort?: boolean;
     }) => {
         const [isMobile] = useIsMobile();
         return (
@@ -218,7 +235,10 @@ export const DirectoryNavigation = XMemo(
                                             noQueryText={noQueryText || ''}
                                             hasQueryText={hasQueryText || ''}
                                             withoutFeatured={withoutFeatured}
+                                            sortOptions={sortOptions}
+                                            defaultSortOption={defaultSortOption}
                                             page={page}
+                                            withoutSort={withoutSort}
                                         />
                                     )}
                                 </React.Suspense>

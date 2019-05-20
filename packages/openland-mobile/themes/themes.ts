@@ -49,7 +49,10 @@ export interface AppTheme {
     bubbleColorIn: string;
     bubbleGradientOut: string[];
 
-    reactionBackground: string;
+    reactionsBackground: string;
+    reactionsColor: string;
+    commentsBackground: string;
+    commentsColor: string;
 
     inputIconsColor: string;
     inputIconsColorInactive: string;
@@ -69,6 +72,20 @@ export interface AppTheme {
 
     modalOverlay: string;
     modalBackground: string;
+
+    ironySpan: {
+        backgroundOut: string,
+        background: string,
+        colorOut: string,
+        color: string,
+        paddedText: string,
+    };
+
+    codeSpan: {
+        backgroundOut: string,
+        background: string,
+        paddedText: string,
+    };
 }
 
 export const DefaultTheme: AppTheme = {
@@ -116,7 +133,10 @@ export const DefaultTheme: AppTheme = {
     bubbleColorIn: '#f3f5f7',
     bubbleGradientOut: ['#1970ff', '#11b2ff'],
 
-    reactionBackground: '#f3f5f7',
+    reactionsBackground: '#f3f5f7',
+    reactionsColor: '#99a2b0',
+    commentsBackground: 'rgba(0, 132, 254, 0.1)',
+    commentsColor: '#0084fe',
 
     inputIconsColor: '#b9c1cd',
     inputIconsColorInactive: '#b0b0b0',
@@ -136,6 +156,20 @@ export const DefaultTheme: AppTheme = {
 
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
     modalBackground: 'white',
+
+    ironySpan: {
+        backgroundOut: 'rgba(255, 56, 46, 0.9)',
+        background: 'rgba(255, 56, 46, 0.1)',
+        colorOut: 'white',
+        color: '#f6564e',
+        paddedText: '\u00a0',
+    },
+
+    codeSpan: {
+        backgroundOut: 'rgba(0, 0, 0, 0.2)',
+        background: 'rgba(255, 170, 0, 0.2)',
+        paddedText: '\u202F',
+    }
 }
 
 export const DarkTheme: AppTheme = {
@@ -183,7 +217,10 @@ export const DarkTheme: AppTheme = {
     bubbleColorIn: '#333333',
     bubbleGradientOut: ['#4d4d4d', '#6d6d6d'],
 
-    reactionBackground: '#020202',
+    reactionsBackground: 'rgba(255, 255, 255, 0.2)',
+    reactionsColor: 'rgba(255, 255, 255, 0.8)',
+    commentsBackground: 'rgba(255, 255, 255, 0.2)',
+    commentsColor: 'rgba(255, 255, 255, 0.8)',
 
     inputIconsColor: '#767676',
     inputIconsColorInactive: '#b0b0b0',
@@ -202,4 +239,18 @@ export const DarkTheme: AppTheme = {
 
     modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.4)' : 'rgba(4, 4, 15, 0.5)',
     modalBackground: '#1a1a1a',
+
+    ironySpan: {
+        backgroundOut: 'transparent',
+        background: 'transparent',
+        colorOut: '#f6564e',
+        color: '#f6564e',
+        paddedText: '',
+    },
+
+    codeSpan: {
+        backgroundOut: 'rgba(255, 170, 0, 0.3)',
+        background: 'rgba(255, 170, 0, 0.3)',
+        paddedText: '\u202F',
+    }
 }

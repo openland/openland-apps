@@ -10,6 +10,8 @@ import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
+import { findSpans } from 'openland-y-utils/findSpans';
+import { getUploadCareFile } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -65,17 +67,15 @@ export function useHandleSend({
         return quoteState!!.getQuote();
     };
 
-    const onUploadCareSendFile = async (fileForUc: UploadCare.File) => {
+    const onUploadCareSendFile = async (fileForUc: any) => {
         let uploadedFileKey = undefined;
-        const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
-            uploadedFileKey = await onSendFile(ucFile);
+            uploadedFileKey = await onSendFile(getUploadCareFile(fileForUc));
             dropZoneContext.fileRemover();
         }
 
         return uploadedFileKey;
     };
-
     const closeEditor = () => {
         messagesContext.resetAll();
         setInputValue('');
@@ -111,10 +111,11 @@ export function useHandleSend({
                 mentions = inputMethodsState.getMentions().map((user: any) => user);
             }
             await replyMessage({
-                roomId: conversationId!!,
+                chatId: conversationId!!,
                 message: inputValue,
-                mentions: mentions.map(m => m.user.id),
+                mentions: mentions,
                 replyMessages: finalQuoteMessagesId,
+                spans: findSpans(inputValue),
             });
         } else if (onSend && (inputValue || uploadedFileKey)) {
             if (inputMethodsState) {

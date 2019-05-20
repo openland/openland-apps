@@ -11,6 +11,7 @@ export interface ASTextProps extends ASViewStyle {
     fontSize?: number;
     fontWeight?: string;
     fontStyle?: 'italic' | 'normal';
+    fontType?: 'monospace' | 'normal';
     lineHeight?: number;
     letterSpacing?: number;
     numberOfLines?: number;

@@ -5,7 +5,6 @@ import {
     ConversationEngine,
     ConversationStateHandler,
 } from 'openland-engines/messenger/ConversationEngine';
-import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
@@ -18,9 +17,9 @@ import { UploadCareUploading } from '../utils/UploadCareUploading';
 import {
     UserShort,
     SharedRoomKind,
-    PostMessageType,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
+    RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -30,9 +29,10 @@ import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { ContextStateInterface } from 'openland-x/createPoliteContext';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 export interface File {
     uuid: string;
@@ -41,33 +41,27 @@ export interface File {
     isImage: boolean;
 }
 
-export interface EditPostProps {
-    title: string;
-    text: string;
-    postTipe: PostMessageType | null;
-    files: Set<File> | null;
-    messageId: string;
-}
-
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
-    isActive: boolean;
+    isActive: ContextStateInterface<boolean>;
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
-    pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    pinMessage:
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
 interface MessagesComponentState {
     hideInput: boolean;
     loading: boolean;
-    messages: ModelMessage[];
 }
 
-const DeleteMessageComponent = () => {
+export const DeleteMessageComponent = () => {
     const router = useXRouter();
     const client = useClient();
     let id = router.routeQuery.deleteMessage;
@@ -86,7 +80,7 @@ const DeleteMessageComponent = () => {
     );
 };
 
-const DeleteUrlAugmentationComponent = withRouter(props => {
+export const DeleteUrlAugmentationComponent = withRouter(props => {
     const client = useClient();
     let id = props.router.query.deleteUrlAugmentation;
     return (
@@ -126,7 +120,6 @@ export const LeaveChatComponent = withRouter(props => {
 });
 
 interface ComposeHandlerProps extends MessageComposeComponentProps {
-    isActive: boolean;
     variables?: {
         roomId?: string;
         conversationId?: string;
@@ -141,13 +134,19 @@ const MessageComposeHandler = XMemo<ComposeHandlerProps>(props => {
     return <MessageComposeComponentDraft {...props} />;
 });
 
-class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState>
+class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
     messageText: string = '';
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
+    vars: {
+        roomId: string;
+        conversationId: string;
+    };
+
+    activeSubscription: () => void;
 
     constructor(props: MessagesComponentProps) {
         super(props);
@@ -155,9 +154,32 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation = null;
         this.state = {
             hideInput: false,
-            messages: [],
             loading: true,
         };
+        this.vars = {
+            roomId: this.props.conversationId,
+            conversationId: this.props.conversationId,
+        };
+
+        this.activeSubscription = props.isActive.listen(acitive => {
+            if (acitive) {
+                this.conversation = props.messenger.getConversation(props.conversationId);
+                this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
+
+                this.unmounter2 = this.conversation!.subscribe(this);
+
+                if (!this.conversation) {
+                    throw Error('conversation should be defined here');
+                }
+                let convState = this.conversation.getState();
+
+                this.setState({
+                    loading: convState.loading,
+                });
+            } else {
+                this.unsubscribe();
+            }
+        });
     }
 
     scrollToBottom = () => {
@@ -185,7 +207,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     onConversationUpdated = (state: ConversationState) => {
-        this.setState({ loading: state.loading, messages: state.messages });
+        this.setState({ loading: state.loading });
     };
 
     unsubscribe = () => {
@@ -199,37 +221,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
     };
 
-    updateConversation = (props: MessagesComponentProps) => {
-        this.unsubscribe();
-
-        if (props.isActive) {
-            this.conversation = props.messenger.getConversation(props.conversationId);
-            this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
-
-            this.unmounter2 = this.conversation!.subscribe(this);
-
-            if (!this.conversation) {
-                throw Error('conversation should be defined here');
-            }
-            let convState = this.conversation.getState();
-
-            this.setState({
-                messages: convState.messages,
-                loading: convState.loading,
-            });
-        }
-    };
-
     componentWillUnmount() {
         this.unsubscribe();
-    }
-
-    componentWillMount() {
-        this.updateConversation(this.props);
-    }
-
-    componentWillReceiveProps(props: MessagesComponentProps) {
-        this.updateConversation(props);
+        if (this.activeSubscription) {
+            this.activeSubscription();
+        }
     }
 
     handleChange = async (text: string) => {
@@ -274,10 +270,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         });
     };
 
-    getMessages = () => {
-        return this.state.messages;
-    };
-
     //
     // Rendering
     //
@@ -306,7 +298,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     ref={this.messagesList}
                     key={this.props.conversationId}
                     me={this.props.me}
-                    messages={this.state.messages}
                     loading={this.state.loading}
                     conversation={this.conversation}
                     conversationId={this.props.conversationId}
@@ -318,8 +309,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideInput && this.conversation.canSendMessage && (
                     <UploadContextProvider>
                         <MessageComposeHandler
-                            isActive={this.props.isActive}
-                            getMessages={this.getMessages}
                             conversation={this.conversation}
                             onChange={this.handleChange}
                             onSend={this.handleSend}
@@ -328,16 +317,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             enabled={true}
                             conversationType={this.props.conversationType}
                             conversationId={this.props.conversationId}
-                            variables={{
-                                roomId: this.props.conversationId,
-                                conversationId: this.props.conversationId,
-                            }}
+                            variables={this.vars}
                         />
                     </UploadContextProvider>
                 )}
-                {this.props.isActive && <DeleteUrlAugmentationComponent />}
-                {this.props.isActive && <DeleteMessageComponent />}
-                {this.props.isActive && <LeaveChatComponent />}
             </XView>
         );
     }
@@ -347,18 +330,22 @@ interface MessengerRootComponentProps {
     onChatLostAccess?: Function;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
-    pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    pinMessage:
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    let isActive = React.useContext(IsActiveContext);
+    let isActive = React.useContext(IsActivePoliteContext);
+    // useCheckPerf({ name: `MessengerRootComponent: ${props.conversationId}` });
 
     return (
         <MessagesComponent
             onChatLostAccess={props.onChatLostAccess}
-            isActive={!!isActive}
+            isActive={isActive}
             me={messenger.user}
             loading={false}
             conversationId={props.conversationId}

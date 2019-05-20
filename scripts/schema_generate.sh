@@ -29,9 +29,6 @@ yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openlan
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateTypes.ts
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateApi.ts
 
-# Android Client
+# SpaceX support data
  ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target kotlin --package com.openland.react.graphql -output ./android/app/src/main/java/com/openland/react/graphql/Operations.kt
-
-# iOS Client
-yarn apollo codegen:generate --queries="$(find . -name './packages/openland-api/exported/*.graphql')" --target swift ./ios/API.swift
-./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateNativeApi.ts
+ ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target swift -output ./ios/Operations.swift

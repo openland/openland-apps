@@ -31,7 +31,7 @@ const log = createLogger('GraphQL-Native');
 export class NativeApolloClient extends BridgedClient {
     private key: string = randomKey();
 
-    constructor(storageKey: string, token?: string) {
+    constructor(storageKey?: string, token?: string) {
         super();
         if (Platform.OS === 'ios') {
             RNGraphQLEmitter.addListener('apollo_client', (src) => {
@@ -72,7 +72,11 @@ export class NativeApolloClient extends BridgedClient {
                 }
             });
         }
-        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
+        if (storageKey) {
+            NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
+        } else {
+            NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, undefined);
+        }
     }
 
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {

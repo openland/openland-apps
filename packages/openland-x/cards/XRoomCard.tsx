@@ -43,7 +43,7 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
     const { room, path, extraMenu, isMember } = noCustomizationProps;
     const isMobile = React.useContext(IsMobileContext);
     let [isHovered, onHover] = React.useState(false);
-    // debugger;
+
     let onMouseEnter = React.useMemo(
         () => () => {
             onHover(true);
@@ -115,8 +115,8 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                 )}
             </>
         ) : (
-            customMenu
-        );
+                customMenu
+            );
 
     return (
         <XView

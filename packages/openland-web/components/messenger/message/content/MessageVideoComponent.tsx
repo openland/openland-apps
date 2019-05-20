@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 interface MessageVideoComponentProps {
     file?: string;
     fileName?: string;
 }
 
-export const MessageVideoComponent = (props: MessageVideoComponentProps) => {
+export const MessageVideoComponent = React.memo((props: MessageVideoComponentProps) => {
+    // useCheckPerf({ name: 'MessageVideoComponent' });
     let href = undefined;
 
     if (props.file) {
@@ -26,4 +28,4 @@ export const MessageVideoComponent = (props: MessageVideoComponentProps) => {
             </video>
         </XView>
     );
-};
+});

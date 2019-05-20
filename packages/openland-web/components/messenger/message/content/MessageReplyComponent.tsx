@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import {
-    FullMessage_GeneralMessage_spans,
     FullMessage_GeneralMessage_sender,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
 } from 'openland-api/Types';
@@ -12,12 +11,15 @@ import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { MessageVideoComponent } from './MessageVideoComponent';
+import { UserPopper } from 'openland-web/components/UserPopper';
+import { Span } from 'openland-y-utils/spans/Span';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
-    spans?: FullMessage_GeneralMessage_spans[];
+    senderNameEmojify?: string | JSX.Element;
+    spans?: Span[];
     id: string;
     date: any;
     message: string | null;
@@ -27,15 +29,29 @@ interface ReplyMessageProps {
     compact?: boolean;
 }
 
-export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
+export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
+    // useCheckPerf({ name: 'MessageReplyComponent' });
+    let userPopperRef = React.useRef<UserPopper>(null);
+
+    let onAvatarOrUserNameMouseEnter = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.showPopper();
+        }
+    };
+
+    let onAvatarOrUserNameMouseLeave = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.hidePopper();
+        }
+    };
+
     let date = <XDate value={props.date} format="time" />;
     let content = [];
 
     if (props.message) {
         content.push(
             <MessageTextComponent
-                spans={props.spans}
-                message={props.message}
+                spans={props.spans || []}
                 key={'reply-text'}
                 isService={false}
                 isEdited={props.edited}
@@ -119,18 +135,26 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             width="100%"
             borderRadius={6}
             overflow="hidden"
+            marginTop={props.compact ? undefined : 12}
         >
             {!props.compact && (
                 <XView alignSelf="stretch" flexDirection="row" marginBottom={4}>
                     <XView marginRight={12}>
-                        <XAvatar
-                            size="small"
-                            style="colorus"
-                            objectName={props.sender!!.name}
-                            objectId={props.sender!!.id}
-                            cloudImageUuid={props.sender ? props.sender.photo : undefined}
-                            path={usrPath}
-                        />
+                        <UserPopper
+                            isMe={props.sender.isYou}
+                            startSelected={false}
+                            user={props.sender}
+                            ref={userPopperRef}
+                        >
+                            <XAvatar
+                                size="small"
+                                style="colorus"
+                                objectName={props.sender!!.name}
+                                objectId={props.sender!!.id}
+                                cloudImageUuid={props.sender ? props.sender.photo : undefined}
+                                path={usrPath}
+                            />
+                        </UserPopper>
                     </XView>
                     <XView flexGrow={1} width="100%" paddingTop={1}>
                         <XView alignItems="center" flexDirection="row" marginBottom={4}>
@@ -140,11 +164,14 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                                 fontWeight="600"
                                 lineHeight="16px"
                                 color="rgba(0, 0, 0, 0.8)"
+                                onMouseEnter={onAvatarOrUserNameMouseEnter}
+                                onMouseLeave={onAvatarOrUserNameMouseLeave}
                             >
-                                {emoji({
-                                    src: props.sender!!.name,
-                                    size: 16,
-                                })}
+                                {props.senderNameEmojify ||
+                                    emoji({
+                                        src: props.sender!!.name,
+                                        size: 16,
+                                    })}
                             </XView>
                             {props.sender!!.primaryOrganization && (
                                 <XView

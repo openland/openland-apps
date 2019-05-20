@@ -29,7 +29,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
-import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const inviteButtonClass = css`
@@ -246,7 +245,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
                     />
                 )}
-                <CommentsModal />
                 <RoomEditModal
                     title={sharedRoom.title}
                     description={sharedRoom.description}
@@ -277,13 +275,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-        <HeaderTitle
-            key={privateRoom!!.user.id}
-            value={privateRoom!!.user.name}
-            path={'/mail/u/' + privateRoom!!.user.id}
-            organization={privateRoom!!.user.primaryOrganization}
-        />
-    );
+            <HeaderTitle
+                key={privateRoom!!.user.id}
+                value={privateRoom!!.user.name}
+                path={'/mail/u/' + privateRoom!!.user.id}
+                organization={privateRoom!!.user.primaryOrganization}
+            />
+        );
 
     return (
         <ChatHeaderViewAbstract

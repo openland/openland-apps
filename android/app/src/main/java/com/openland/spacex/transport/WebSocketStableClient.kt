@@ -37,6 +37,7 @@ class WebSocketStableClient(val context: Context,
     private var attempt = 0
     private var networkAvailable = false
     private var existingFlush: (() -> Unit)? = null
+    private var keepAliveTimeout: (() -> Unit)? = null
     private var connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
             queue.async {
@@ -147,7 +148,7 @@ class WebSocketStableClient(val context: Context,
         ws.onMessage {
             queue.async {
                 if (ws == this.connection) {
-                    Log.d(tag, "Message: $it")
+                    Log.d(tag, "<<: $it")
                     onMessage(it)
                 }
             }
@@ -176,7 +177,11 @@ class WebSocketStableClient(val context: Context,
             val parsed = JSONObject(message)
             val type = parsed.getString("type")
             if (type == "ka") {
-                // TODO: Handle
+                // Default keep-alive interval on server is 10 seconds.
+                this.keepAliveTimeout?.invoke()
+                this.keepAliveTimeout = queue.asyncDelayed(15000) {
+                    onFailure()
+                }
             } else if (type == "connection_ack") {
                 if (this.state == ConnectionState.STARTING) {
                     this.state = ConnectionState.STARTED
@@ -194,7 +199,9 @@ class WebSocketStableClient(val context: Context,
 
     private fun sendMessage(message: JSONObject) {
         try {
-            this.connection!!.postMessage(message.toString())
+            val serialized = message.toString()
+            Log.d(tag, ">>: $serialized")
+            this.connection!!.postMessage(serialized)
         } catch (t: Throwable) {
             t.printStackTrace()
             onFailure()
@@ -202,9 +209,11 @@ class WebSocketStableClient(val context: Context,
     }
 
     private fun onFailure() {
-        val c = this.connection!!
-        this.connection = null
-        c.close()
+        if (this.connection != null) {
+            val c = this.connection!!
+            this.connection = null
+            c.close()
+        }
 
         if (this.state === ConnectionState.STARTED) {
             this.state = ConnectionState.COMPLETED

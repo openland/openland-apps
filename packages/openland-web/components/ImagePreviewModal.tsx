@@ -8,7 +8,6 @@ import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { XLink2 } from 'openland-x/XLink2';
 import { MessagesStateContext } from './messenger/MessagesStateContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const ModalBody = css`
     display: flex;
@@ -34,24 +33,8 @@ interface ImagePreviewModal extends XModalProps {
 }
 
 export const ImagePreviewModal = (props: ImagePreviewModal) => {
-    const [showModal, setShowModal] = React.useState<boolean>(true);
-
     const messagesContextProps = React.useContext(MessagesStateContext);
-    const isActive = React.useContext(IsActiveContext);
-    const doRerender = messagesContextProps.useForwardHeader && isActive;
-
-    React.useEffect(
-        () => {
-            if (!doRerender) {
-                return;
-            } else {
-                setShowModal(doRerender);
-            }
-        },
-        [doRerender],
-    );
-
-    if (!showModal) {
+    if (messagesContextProps.useForwardHeader) {
         return props.target as React.ReactElement;
     }
 

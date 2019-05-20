@@ -3,18 +3,15 @@ import {
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { SpannedString } from './SpannedString';
-import { spansPreprocess } from './spansPreprocess';
 import { emoji } from 'openland-y-utils/emoji';
 
 export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderNameEmojify?: any;
-    textSpannedString?: SpannedString;
+    replySenderNameEmojify: (string | JSX.Element)[];
 }
 
 export interface DataSourceWebDateItem extends DataSourceDateItem {
     senderNameEmojify?: any;
-    textSpannedString?: SpannedString;
 }
 
 export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessageItem {
@@ -23,12 +20,14 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
         senderNameEmojify:
             src.type === 'message' && !src.attachTop
                 ? emoji({
-                      src: src.sender.name,
-                      size: 16,
-                  })
+                    src: src.sender.name,
+                    size: 16,
+                })
                 : undefined,
-        textSpannedString:
-            src.type === 'message' && src.text ? spansPreprocess(src.text!, src.spans) : undefined,
+        replySenderNameEmojify: (src.reply || []).map(r => emoji({
+            src: r.sender.name,
+            size: 16,
+        }))
     };
 }
 

@@ -14,7 +14,7 @@ export interface PendingMessage {
     isImage: boolean;
     imageSize?: { width: number, height: number };
     failed?: boolean;
-    quoted?: DataSourceMessageItem[]
+    quoted?: DataSourceMessageItem[];
 }
 
 export type ModelMessage = PendingMessage | FullMessage;

@@ -13,6 +13,8 @@ import { buildClient } from 'openland-y-graphql/apolloClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 
+// const perfMeasure = require('../perf/measure.json');
+
 // let draftCss = require('draft-js/dist/Draft.css');
 // console.warn(draftCss);
 // Load Configuration
@@ -198,19 +200,21 @@ export default class OpenlandDocument extends Document {
                     <link
                         rel="icon"
                         type="image/png"
-                        sizes="32x32"
-                        href="/static/img/favicon/favicon-32x32.png?v=2"
-                    />
-                    <link
-                        rel="icon"
-                        type="image/png"
                         sizes="96x96"
                         href="/static/img/favicon/favicon-96x96.png?v=2"
                     />
                     <link
                         rel="icon"
                         type="image/png"
+                        sizes="32x32"
+                        className="favicon"
+                        href="/static/img/favicon/favicon-32x32.png?v=2"
+                    />
+                    <link
+                        rel="icon"
+                        type="image/png"
                         sizes="16x16"
+                        className="favicon"
                         href="/static/img/favicon/favicon-16x16.png?v=2"
                     />
                     <link rel="manifest" href="/static/img/favicon/manifest.json?v=2" />
@@ -247,8 +251,16 @@ export default class OpenlandDocument extends Document {
                                 "'",
                         }}
                     />
+
+                    {/* <script
+                        dangerouslySetInnerHTML={{
+                            __html: "window.perfMeasure='" + JSON.stringify(perfMeasure) + "'",
+                        }}
+                    /> */}
+
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
+
                 <body>
                     <Main />
                     <div className="main_scripts">

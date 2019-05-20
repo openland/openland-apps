@@ -6,7 +6,6 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
-import { DefaultConversationTheme } from './themes/ConversationThemeResolver';
 import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
@@ -27,6 +26,7 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
+import { findSpans } from 'openland-y-utils/findSpans';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -72,14 +72,19 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             }
 
             if (edited) {
-                await getClient().mutateEditComment({ id: edited.id, message: text });
+                await getClient().mutateEditComment({
+                    id: edited.id,
+                    message: text,
+                    spans: findSpans(text)
+                });
             } else {
                 await getClient().mutateAddMessageComment({
                     messageId: message.id,
                     message: text,
                     replyComment: replied ? replied.id : null,
                     mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
-                    fileAttachments: attachment ? [attachment] : null
+                    fileAttachments: attachment ? [attachment] : null,
+                    spans: findSpans(text)
                 });
             }
 
@@ -302,7 +307,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     let messenger = getMessenger();
     let client = getClient();
 
-    let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
+    let message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message as FullMessage_GeneralMessage;
     let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
     let room = client.useRoomTiny({ id: chatId }).room;

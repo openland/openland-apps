@@ -1,15 +1,6 @@
 PODS:
   - A0Auth0 (1.3.1):
     - React
-  - Apollo (0.10.1):
-    - Apollo/Core (= 0.10.1)
-  - Apollo/Core (0.10.1)
-  - Apollo/SQLite (0.10.1):
-    - Apollo/Core
-    - SQLite.swift (~> 0.11.4)
-  - Apollo/WebSocket (0.10.1):
-    - Apollo/Core
-    - Starscream (~> 3.1.0)
   - AppCenter (1.13.2):
     - AppCenter/Analytics (= 1.13.2)
     - AppCenter/Crashes (= 1.13.2)
@@ -54,6 +45,7 @@ PODS:
   - QBImagePickerController (3.4.0)
   - RCTRestart (0.0.8):
     - React
+  - ReachabilitySwift (4.3.1)
   - React (0.59.4):
     - React/Core (= 0.59.4)
   - react-native-background-timer (2.1.1):
@@ -157,10 +149,7 @@ PODS:
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - SimpleKeychain (0.8.1)
-  - SQLite.swift (0.11.5):
-    - SQLite.swift/standard (= 0.11.5)
-  - SQLite.swift/standard (0.11.5)
-  - Starscream (3.1.0)
+  - Starscream (3.0.6)
   - SwiftyJSON (4.3.0)
   - Texture (2.7):
     - Texture/PINRemoteImage (= 2.7)
@@ -173,9 +162,6 @@ PODS:
 
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
-  - Apollo (~> 0.10.1)
-  - Apollo/SQLite (~> 0.10.1)
-  - Apollo/WebSocket (~> 0.10.1)
   - AppCenter (~> 1.13.0)
   - AppCenter/Analytics (~> 1.13.0)
   - AppCenter/Crashes (~> 1.13.0)
@@ -187,6 +173,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
+  - ReachabilitySwift
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-blur (from `../node_modules/react-native-blur`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
@@ -219,13 +206,13 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNShare (from `../node_modules/react-native-share`)
+  - Starscream (~> 3.0.2)
   - SwiftyJSON (~> 4.0)
   - Texture (= 2.7)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Apollo
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
@@ -236,10 +223,10 @@ SPEC REPOS:
     - PINOperation
     - PINRemoteImage
     - QBImagePickerController
+    - ReachabilitySwift
     - RSKImageCropper
     - SDWebImage
     - SimpleKeychain
-    - SQLite.swift
     - Starscream
     - SwiftyJSON
     - Texture
@@ -298,7 +285,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   A0Auth0: 5cc6d8281f6315742b25d0c2475cc33df6066a22
-  Apollo: 4d690a9b2e48e8820182df4b988d7a253e1ee589
   AppCenter: bce7fe1098e8e8aeb70aaae1898600534069f549
   AppCenterReactNativeShared: 6c0750b874f3242c47cb64083e23b835975c6aa2
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
@@ -315,6 +301,7 @@ SPEC CHECKSUMS:
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RCTRestart: 2f9ddcfd9abb887f123b6580cec64d72fb6cccaa
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
   react-native-background-timer: bb7a98c8e97fc7c290de2d423dd09ddb73dcbcbb
   react-native-blur: c35c1f6c2c76db7108bde7ed343bd2b01d64e0c0
@@ -335,12 +322,11 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
-  SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
-  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 9db2572f6b54a549f3f958deb494e2d3b875e41e
+PODFILE CHECKSUM: ee8411adff7777ae96c596c5c310d85243387332
 
 COCOAPODS: 1.5.3

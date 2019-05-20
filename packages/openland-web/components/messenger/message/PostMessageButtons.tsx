@@ -8,8 +8,9 @@ import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import RepliedIcon from 'openland-icons/ic-replied.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { RoomChat_room } from 'openland-api/Types';
 
 const DiscussButton = React.memo(
     ({
@@ -21,8 +22,12 @@ const DiscussButton = React.memo(
         messageId: string;
         conversationId: string;
     }) => {
-        let router = React.useContext(XRouterContext)!;
-
+        let openModal = React.useCallback(() => {
+            openCommentsModal({
+                messageId: messageId,
+                conversationId,
+            });
+        }, []);
         return (
             <XView
                 cursor="pointer"
@@ -35,13 +40,7 @@ const DiscussButton = React.memo(
                 color="#1790ff"
                 paddingLeft={12}
                 paddingRight={12}
-                onClick={() => {
-                    openCommentsModal({
-                        router,
-                        messageId: messageId,
-                        conversationId,
-                    });
-                }}
+                onClick={openModal}
             >
                 {commentsCount ? (
                     <XView flexDirection="row">
@@ -80,6 +79,7 @@ type PostMessageButtonsT = {
     conversationId: string | null;
     me?: UserShort | null;
     commentProps?: CommentPropsT;
+    room?: RoomChat_room;
 };
 
 export const PostMessageButtons = React.memo(
@@ -96,6 +96,7 @@ export const PostMessageButtons = React.memo(
         conversationId,
         me,
         showNumberOfComments,
+        room,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -116,6 +117,15 @@ export const PostMessageButtons = React.memo(
             (!message.isSending && message.reactions && message.reactions.length !== 0);
 
         const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
+
+        let canDelete = !!(!deleted && message.isOut);
+        if (room && room.__typename === 'SharedRoom' && room.kind === 'GROUP') {
+            canDelete = room.role === 'OWNER';
+        }
+
+        if (room && room.__typename === 'SharedRoom' && room.kind === 'PUBLIC') {
+            canDelete = room.role === 'ADMIN' || room.role === 'OWNER' || room.canEdit;
+        }
 
         const postMessageButtons = (
             <>
@@ -143,20 +153,22 @@ export const PostMessageButtons = React.memo(
                                         Reply
                                     </XView>
 
-                                    {!deleted && (
-                                        <XView
-                                            marginLeft={12}
-                                            color="rgba(0, 0, 0, 0.4)"
-                                            fontWeight="600"
-                                            fontSize={12}
-                                            cursor="pointer"
-                                            onClick={commentProps.onCommentEditClick}
-                                        >
-                                            Edit
-                                        </XView>
-                                    )}
+                                    {!deleted &&
+                                        me &&
+                                        message.senderId === me.id && (
+                                            <XView
+                                                marginLeft={12}
+                                                color="rgba(0, 0, 0, 0.4)"
+                                                fontWeight="600"
+                                                fontSize={12}
+                                                cursor="pointer"
+                                                onClick={commentProps.onCommentEditClick}
+                                            >
+                                                Edit
+                                            </XView>
+                                        )}
 
-                                    {!deleted && (
+                                    <XWithRole role="super-admin" or={canDelete}>
                                         <XView
                                             marginLeft={12}
                                             color="rgba(0, 0, 0, 0.4)"
@@ -167,7 +179,7 @@ export const PostMessageButtons = React.memo(
                                         >
                                             Delete
                                         </XView>
-                                    )}
+                                    </XWithRole>
                                 </>
                             )}
 
@@ -189,40 +201,40 @@ export const PostMessageButtons = React.memo(
                         </XView>
                     </>
                 )}
-                {!isComment && (showReactionsButton || showDiscussButton) && (
-                    <XView flexDirection="row">
-                        <XHorizontal alignItems="center" separator={5}>
-                            {showDiscussButton && (
-                                <XView paddingTop={6}>
-                                    <DiscussButton
-                                        commentsCount={message.commentsCount}
-                                        messageId={message.id!!}
-                                        conversationId={conversationId!!}
-                                    />
-                                </XView>
-                            )}
+                {!isComment &&
+                    (showReactionsButton || showDiscussButton) && (
+                        <XView flexDirection="row">
+                            <XHorizontal alignItems="center" separator={5}>
+                                {showDiscussButton && (
+                                    <XView paddingTop={6}>
+                                        <DiscussButton
+                                            commentsCount={message.commentsCount}
+                                            messageId={message.id!!}
+                                            conversationId={conversationId!!}
+                                        />
+                                    </XView>
+                                )}
 
-                            {showReactionsButton ? (
-                                <XView paddingTop={isModal ? 0 : 4}>
-                                    <Reactions
-                                        onlyLikes={onlyLikes}
-                                        messageId={message.id!}
-                                        reactions={message.reactions || []}
-                                        meId={(me && me.id) || ''}
-                                    />
-                                </XView>
-                            ) : null}
-                        </XHorizontal>
-                    </XView>
-                )}
+                                {showReactionsButton ? (
+                                    <XView paddingTop={isModal ? 0 : 4}>
+                                        <Reactions
+                                            onlyLikes={onlyLikes}
+                                            messageId={message.id!}
+                                            reactions={message.reactions || []}
+                                            meId={(me && me.id) || ''}
+                                        />
+                                    </XView>
+                                ) : null}
+                            </XHorizontal>
+                        </XView>
+                    )}
             </>
         );
 
         return (
             <>
-                {isModal && showPostMessageButtons && (
-                    <XView paddingTop={12}>{postMessageButtons}</XView>
-                )}
+                {isModal &&
+                    showPostMessageButtons && <XView paddingTop={12}>{postMessageButtons}</XView>}
                 {!isModal && showPostMessageButtons && postMessageButtons}
             </>
         );

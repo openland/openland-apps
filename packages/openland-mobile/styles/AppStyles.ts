@@ -17,5 +17,8 @@ export const TextStyles = {
         medium: Platform.OS === 'ios' ? '600' : '500' as ('600' | '500'),
         bold: '700',
         black: '900',
+    },
+    family: {
+        monospace: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace'
     }
 }

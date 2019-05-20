@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export const MessageAnimationComponent = (props: {
     file: string;
@@ -7,6 +8,7 @@ export const MessageAnimationComponent = (props: {
     width: number;
     height: number;
 }) => {
+    // useCheckPerf({ name: 'MessageAnimationComponent' });
     let dimensions = layoutMedia(props.width, props.height);
     return (
         <video

@@ -128,6 +128,8 @@ routes.add('/mail', '/main/mail/root');
 routes.add('/mail/', '/main/mail/root');
 routes.add('/mail/create', '/main/mail/createGroup');
 routes.add('/mail/create/', '/main/mail/createGroup');
+routes.add('/mail/createOrganization', '/main/mail/createOrganization');
+routes.add('/mail/createOrganization/', '/main/mail/createOrganization');
 routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
@@ -249,6 +251,8 @@ routes.add('/ui/signin/create-profile', '/dev/ui/signin/create-profile');
 routes.add('/ui/signin/create-organization', '/dev/ui/signin/create-organization');
 routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
+routes.add('/ui/spans', '/dev/ui/spans');
+routes.add('/ui/spans/', '/dev/ui/spans');
 
 //
 // Dev Tools
@@ -262,6 +266,8 @@ routes.add('/super/debug/', '/dev/debug');
 
 routes.add('/super', '/dev/orgs');
 routes.add('/super/', '/dev/orgs');
+routes.add('/super/users', '/dev/users');
+routes.add('/super/users/', '/dev/users');
 routes.add('/super/orgs/:accountId', '/dev/orgView');
 routes.add('/super/orgs/:accountId/', '/dev/orgView');
 

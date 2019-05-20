@@ -39,6 +39,8 @@ import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
+import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { findSpans } from 'openland-y-utils/findSpans';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -169,10 +171,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
             startLoader();
             try {
-                await getClient().mutateRoomEditMessage({
+                await getClient().mutateEditMessage({
                     messageId: messageToEdit.id,
                     message: tx,
-                    mentions: (mentions || []).map(m => m.id)
+                    mentions: prepareLegacyMentionsForSend(tx, mentions || []),
+                    spans: findSpans(tx)
                 });
             } catch (e) {
                 Alert.alert(e.message);

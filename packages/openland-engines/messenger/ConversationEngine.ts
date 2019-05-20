@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -11,6 +11,9 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
+import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
+import { Span } from 'openland-y-utils/spans/Span';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const log = createLogger('Engine-Messages');
 
@@ -39,7 +42,7 @@ export interface DataSourceMessageItem {
     reply?: FullMessage_GeneralMessage_quotedMessages[];
     reactions?: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
-    spans?: FullMessage_ServiceMessage_spans[];
+    spans?: FullMessage_GeneralMessage_spans[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -48,6 +51,8 @@ export interface DataSourceMessageItem {
     progress?: number;
     commentsCount: number | null;
     fallback?: string;
+    textSpans: Span[];
+    replyTextSpans: Span[][];
 }
 
 export interface DataSourceDateItem {
@@ -61,6 +66,9 @@ export interface DataSourceDateItem {
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+
+    let reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined;
+    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
 
     return {
         chatId: chaId,
@@ -81,11 +89,13 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined,
+        reply,
+        replyTextSpans,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
         fallback: src.fallback || undefined,
+        textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }
 
@@ -306,16 +316,31 @@ export class ConversationEngine implements MessageSendHandler {
             this.messagesActionsState.clear();
         }
 
+        let styledSpans = findSpans(message);
+
         let key = this.engine.sender.sendMessage({
             conversationId: this.conversationId,
             message,
             mentions,
             callback: this,
             quoted: (quoted || []).map(q => q.id!),
+            spans: styledSpans
         });
-        let spans = prepareLegacyMentions(message, mentions || []);
+        let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
-        let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
+        let msgs = {
+            date,
+            key,
+            local: true,
+            message,
+            progress: 0,
+            file: null,
+            isImage: false,
+            failed: false,
+            spans,
+            quoted
+        };
+
         this.messages = [...this.messages, msgs];
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.onMessagesUpdated();
@@ -607,9 +632,12 @@ export class ConversationEngine implements MessageSendHandler {
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
+            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && (src.__typename === 'ServiceMessage') : false;
         } else {
             let p = src as PendingMessage;
+            let reply = p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined;
+            let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
+
             conv = {
                 type: 'message',
                 chatId: this.conversationId,
@@ -643,8 +671,10 @@ export class ConversationEngine implements MessageSendHandler {
                         imageHeight: p.imageSize && p.imageSize.height || 0,
                     }
                 }] : undefined,
-                reply: p.quoted ? (p.quoted.map(convertMessageBack) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
+                reply,
+                replyTextSpans,
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
+                textSpans: src.message ? processSpans(src.message, src.spans) : []
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
