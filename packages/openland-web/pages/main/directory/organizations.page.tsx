@@ -82,12 +82,13 @@ export default withApp('Organizations', 'viewer', () => {
 
     return (
         <DirectoryNavigation
+            onlyFeatured
             id={getOrganizationProfile(router.path)}
             title={'Organizations'}
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
             searchPlaceholder={'Search organizations'}
-            noQueryText={'All organizations'}
+            noQueryText={'Featured organizations'}
             hasQueryText={'Organizations'}
             page={page}
             withoutFeatured

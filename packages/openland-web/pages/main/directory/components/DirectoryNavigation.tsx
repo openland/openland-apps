@@ -25,6 +25,7 @@ import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganiz
 export const SearchCardsOrShowProfile = XMemo(
     ({
         id,
+        onlyFeatured,
         searchPlaceholder,
         noQueryText,
         hasQueryText,
@@ -37,6 +38,7 @@ export const SearchCardsOrShowProfile = XMemo(
         withoutSort,
     }: {
         id?: string | null;
+        onlyFeatured?: boolean;
         searchPlaceholder: string;
         noQueryText: string;
         hasQueryText: string;
@@ -88,24 +90,24 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        !withoutSort && (
-                                            <SortPicker
-                                                sort={sort}
-                                                onPick={setSort}
-                                                withoutFeatured={withoutFeatured}
-                                                options={sortOptions}
-                                            />
-                                        )
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    !withoutSort && (
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    )
+                                }
+                            />
+                        )}
                         <CardsComponent
+                            onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
                             tagsCount={tagsCount}
@@ -127,6 +129,7 @@ export const SearchCardsOrShowProfile = XMemo(
 export const DirectoryNavigation = XMemo(
     ({
         title,
+        onlyFeatured,
         id,
         ProfileComponent,
         CardsComponent,
@@ -141,6 +144,7 @@ export const DirectoryNavigation = XMemo(
         withoutSort,
     }: {
         title: string;
+        onlyFeatured?: boolean; 
         id?: string | null;
         ProfileComponent?: any;
         CardsComponent?: any;
@@ -228,6 +232,7 @@ export const DirectoryNavigation = XMemo(
                                         children
                                     ) : (
                                         <SearchCardsOrShowProfile
+                                            onlyFeatured={onlyFeatured}
                                             id={id}
                                             ProfileComponent={ProfileComponent}
                                             CardsComponent={CardsComponent}
@@ -260,6 +265,7 @@ export const ComponentWithSort = ({
     queryToPrefix?: boolean;
     noSort?: boolean;
 }) => ({
+    onlyFeatured,
     featuredFirst,
     orderBy,
     variables,
@@ -268,6 +274,7 @@ export const ComponentWithSort = ({
     notFoundText,
     CustomButtonComponent,
 }: {
+    onlyFeatured?: boolean;
     featuredFirst: boolean;
     orderBy: string;
     variables: {
@@ -291,6 +298,7 @@ export const ComponentWithSort = ({
                 tagsCount={tagsCount}
                 variables={{
                     ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                    ...(onlyFeatured ? {  query: JSON.stringify({featured: 'true'}) } : {  }),
                     sort: noSort
                         ? ''
                         : JSON.stringify([
