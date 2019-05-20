@@ -52,7 +52,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'date') {
             return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'code_block') {
-            return <ASText key={'code-block'}>{children}</ASText>;
+            return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {
             return <ASText key={'code-inline'} fontType="monospace" backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</ASText>;
         } else if (span.type === 'insane') {

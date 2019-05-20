@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
-import { ASText } from 'react-native-async-view/ASText';
 
 export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50 - 10, 400);
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);

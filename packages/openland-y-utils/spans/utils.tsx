@@ -71,13 +71,15 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
             });
         }
 
-        res.push({
-            type: 'text',
-            textRaw: p,
-            text: TextRenderProccessor.emojify(p, isBig),
-            length: p.length,
-            offset: startOffset + garbageString.length
-        });
+        if (p.length > 0) {
+            res.push({
+                type: 'text',
+                textRaw: p,
+                text: TextRenderProccessor.emojify(p, isBig),
+                length: p.length,
+                offset: startOffset + garbageString.length
+            });
+        }
 
         garbageString += p;
     }
@@ -112,8 +114,37 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     let symbolObject = SpanTypeToSymbol[parent.type];
 
     if (symbolObject) {
-        res = TextRenderProccessor.cropSpecSymbols(res, symbolObject.symbol, symbolObject.opened, isBigParent);
+        res = TextRenderProccessor.cropSpecSymbols(res, parent, symbolObject.symbol, symbolObject.opened);
     }
+
+    return res;
+}
+
+export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'slice' | 'code', spans: Span[], padded: boolean })[] => {
+    let res: { type: 'slice' | 'code', spans: Span[], padded: boolean }[] = [];
+
+    while (spans.findIndex((v) => v.type === 'code_block') >= 0) {
+        let index = spans.findIndex((v) => v.type === 'code_block');
+
+        // before current code-block
+        if (index > 0) {
+            let sliceEnd = index;
+
+            if (spans[index - 1].type === 'new_line') {
+                sliceEnd = index - 1;
+            }
+
+            res.push({ type: 'slice', spans: spans.slice(0, sliceEnd), padded: false });
+        }
+
+        // current code-block
+        res.push({ type: 'code', spans: [spans[index]], padded: false });
+
+        spans = spans.slice(index + 1);
+    }
+
+    // after all code-blocks
+    res.push({ type: 'slice', spans, padded: usePadded !== false });
 
     return res;
 }

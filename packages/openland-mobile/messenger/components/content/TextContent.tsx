@@ -5,6 +5,23 @@ import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming } from '../AsyncBubbleView';
+import { getCodeSlices } from 'openland-y-utils/spans/utils';
+
+const TextWrapper = (props: { maxWidth?: number; fontSize?: number; color: string; fontStyle?: 'italic' | 'normal'; children?: any }) => (
+    <ASText
+        key={'text-' + props.color}
+        color={props.color}
+        letterSpacing={-0.3}
+        fontSize={props.fontSize || 16}
+        fontWeight={TextStyles.weight.regular}
+        fontStyle={props.fontStyle}
+        maxWidth={props.maxWidth}
+    >
+        {props.children}
+    </ASText>
+)
 
 interface TextContentProps {
     message: DataSourceMessageItem;
@@ -20,30 +37,40 @@ interface TextContentProps {
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
         const { message, theme, onUserPress, onGroupPress } = this.props;
-
-        let mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
-        let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress);
-
-        if (message.title) {
-            parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
-            parts.unshift(<ASText key={'text-title'} fontWeight={TextStyles.weight.medium}>{message.title}</ASText>);
-        }
+        const mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
+        const content = getCodeSlices(message.textSpans, this.props.padded);
 
         return (
             <>
-                {!!message.text && (
-                    <ASText
-                        key={'text-' + mainTextColor}
-                        color={mainTextColor}
-                        letterSpacing={-0.3}
-                        fontSize={16}
-                        fontWeight={TextStyles.weight.regular}
-                        fontStyle={this.props.fontStyle}
-                    >
-                        {parts}
-                        {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
-                    </ASText>
-                )}
+                {content.map((c, i) => (
+                    <>
+                        {c.type === 'slice' && (
+                            <TextWrapper
+                                key={'slice-' + i}
+                                color={mainTextColor}
+                                fontStyle={this.props.fontStyle}
+                            >
+                                {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                            </TextWrapper>
+                        )}
+                        {c.type === 'code' && (
+                            <ASFlex
+                                key={'code-' + i}
+                                marginLeft={-contentInsetsHorizontal}
+                                marginRight={-contentInsetsHorizontal}
+                                marginTop={i === 0 ? 8 : undefined}
+                                backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
+                            >
+                                <ASFlex marginLeft={contentInsetsHorizontal} marginRight={contentInsetsHorizontal} marginTop={5} marginBottom={5}>
+                                    <TextWrapper fontSize={14} color={mainTextColor} maxWidth={message.isOut ? bubbleMaxWidth - 40 : bubbleMaxWidthIncoming - 40}>
+                                        {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                    </TextWrapper>
+                                </ASFlex>
+                            </ASFlex>
+                        )}
+                    </>
+                ))}
             </>
         )
     }

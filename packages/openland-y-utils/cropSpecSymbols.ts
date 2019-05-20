@@ -1,7 +1,9 @@
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { Span } from './spans/Span';
 
-export const cropSpecSymbols = (spans: Span[], symbol: string[], opened?: boolean, isBigParent?: boolean): Span[] => {
+export const cropSpecSymbols = (spans: Span[], parent: Span, symbol: string[], opened?: boolean): Span[] => {
+    const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+
     // remove first symbol
     if (spans[0] && spans[0].type === 'text' && spans[0].textRaw) {
         let currentSymbol: string | undefined = undefined;
@@ -51,6 +53,14 @@ export const cropSpecSymbols = (spans: Span[], symbol: string[], opened?: boolea
                 } else {
                     spans[last].text = TextRenderProccessor.emojify(spans[last].textRaw!, isBigParent)
                 }
+            }
+        }
+
+        if (parent.type === 'code_block') {
+            const lastInCode = spans.length - 1;
+
+            if (spans[lastInCode] && spans[lastInCode].type === 'new_line') {
+                spans.pop();
             }
         }
     }
