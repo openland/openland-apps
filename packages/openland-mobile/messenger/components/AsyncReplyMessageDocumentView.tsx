@@ -11,6 +11,7 @@ import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -21,7 +22,7 @@ interface AsyncReplyMessageDocumentViewProps {
     parent: DataSourceMessageItem;
     onPress: (document: DataSourceMessageItem) => void;
     theme: AppTheme;
-
+    maxWidth: number;
 }
 
 export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncReplyMessageDocumentViewProps, { downloadState?: DownloadState }> {
@@ -106,6 +107,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncRepl
                         fontSize={15}
                         lineHeight={18}
                         numberOfLines={1}
+                        maxWidth={this.props.maxWidth}
                     >
                         {this.props.attach!!.fileMetadata.name}{this.props.message.isOut ? paddedTextOut : paddedText}
                     </ASText>
@@ -117,6 +119,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncRepl
                         marginTop={3}
                         numberOfLines={1}
                         opacity={0.7}
+                        maxWidth={this.props.maxWidth}
                     >
                         {formatBytes(this.props.attach!!.fileMetadata.size)}
                     </ASText>

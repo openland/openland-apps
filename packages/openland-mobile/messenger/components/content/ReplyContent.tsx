@@ -11,6 +11,9 @@ import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessa
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { TextContent } from './TextContent';
+import { RenderSpans } from './AsyncRenderSpans';
+import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
@@ -26,13 +29,13 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
         let { message } = this.props;
         let mainTextColor = message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
 
-        let lineBAckgroundPatch: any;
+        let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
         if (message.reply) {
             // for left accent line
             let image = require('assets/chat-link-line-my.png');
-            lineBAckgroundPatch = Image.resolveAssetSource(image);
+            lineBackgroundPatch = Image.resolveAssetSource(image);
         }
 
         return (
@@ -45,12 +48,11 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
-                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
                                     <ASText
-                                        key={'asd' + m.id}
+                                        key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
-                                        textAlign="center"
                                         lineHeight={15}
                                         marginLeft={10}
                                         color={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}
@@ -63,17 +65,41 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         {generalMesage!.sender.name || ''}
                                     </ASText>
 
-                                    {!!generalMesage!.message && <ASText
-                                        marginLeft={10}
-                                        color={mainTextColor}
-                                        fontSize={16}
-                                        fontWeight={TextStyles.weight.regular}
-                                    >
-                                        {renderPreprocessedText(message.replyTextSpans[i], message, this.props.theme, this.props.onUserPress, this.props.onGroupPress)}
-                                        {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
-                                    </ASText>}
-                                    {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
-                                    {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView theme={this.props.theme} attach={attachFile} onPress={this.props.onDocumentPress} parent={message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
+                                    {message.replyTextSpans[i].length > 0 && (
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                            <RenderSpans
+                                                spans={message.replyTextSpans[i]}
+                                                message={message}
+                                                padded={(!message.text && (i + 1 === message.reply!!.length))}
+                                                theme={this.props.theme}
+                                                maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                insetLeft={8}
+                                                insetRight={contentInsetsHorizontal}
+                                                insetTop={4}
+
+                                                onUserPress={this.props.onUserPress}
+                                                onGroupPress={this.props.onGroupPress}
+                                            />
+                                        </ASFlex>
+                                    )}
+
+                                    {attachFile && attachFile.fileMetadata.isImage ? (
+                                        <AsyncReplyMessageMediaView
+                                            attach={attachFile}
+                                            onPress={this.props.onMediaPress}
+                                            message={convertMessage(m as any, '', getMessenger().engine)}
+                                        />
+                                    ) : null}
+                                    {attachFile && !attachFile.fileMetadata.isImage ? (
+                                        <AsyncReplyMessageDocumentView
+                                            maxWidth={message.isOut ? bubbleMaxWidth - 100 : bubbleMaxWidthIncoming - 80}
+                                            theme={this.props.theme}
+                                            attach={attachFile}
+                                            onPress={this.props.onDocumentPress}
+                                            parent={message}
+                                            message={convertMessage(m as any, '', getMessenger().engine)}
+                                        />
+                                    ) : null}
                                 </ASFlex>
                             )
                         } else {
