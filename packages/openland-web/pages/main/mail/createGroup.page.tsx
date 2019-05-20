@@ -20,7 +20,7 @@ import { SelectWithDropdown } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from './InputField';
 
-enum DialogKind {
+enum EntityKind {
     GROUP = 'GROUP',
     CHANNEL = 'CHANNEL',
     COMMUNITY = 'COMMUNITY',
@@ -30,11 +30,11 @@ type MainWrapperT = {
     back: boolean;
     onBackClick: () => void;
     children: any;
-    dialogKind: DialogKind;
+    entityKind: EntityKind;
 };
 
-const MainWrapper = ({ dialogKind, back, onBackClick, children }: MainWrapperT) => {
-    let chatTypeStr = dialogKind.toLowerCase();
+const MainWrapper = ({ entityKind, back, onBackClick, children }: MainWrapperT) => {
+    let chatTypeStr = entityKind.toLowerCase();
     return (
         <XView
             flexGrow={1}
@@ -153,17 +153,17 @@ interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
     inOrgId?: string;
-    dialogKind: DialogKind;
+    entityKind: EntityKind;
 }
 
-const CreateGroupInner = ({ myId, myOrgId, dialogKind, inOrgId }: CreateGroupInnerProps) => {
+const CreateGroupInner = ({ myId, myOrgId, entityKind, inOrgId }: CreateGroupInnerProps) => {
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
     const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
     let options: { label: string; value: string }[] = [];
 
-    let chatTypeStr = dialogKind.charAt(0).toUpperCase() + dialogKind.slice(1).toLowerCase();
+    let chatTypeStr = entityKind.charAt(0).toUpperCase() + entityKind.slice(1).toLowerCase();
 
     let form = useForm();
     let titleField = useField('input.title', '', form, [
@@ -201,7 +201,7 @@ const CreateGroupInner = ({ myId, myOrgId, dialogKind, inOrgId }: CreateGroupInn
             photoRef,
             members: membersToAdd,
             organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
-            channel: dialogKind === DialogKind.CHANNEL,
+            channel: entityKind === EntityKind.CHANNEL,
         });
 
         const roomId: string = returnedData.room.id as string;
@@ -290,7 +290,7 @@ const CreateGroupInner = ({ myId, myOrgId, dialogKind, inOrgId }: CreateGroupInn
     };
 
     return (
-        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} dialogKind={dialogKind}>
+        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} entityKind={entityKind}>
             {settingsPage && (
                 <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                     <XView
@@ -370,7 +370,7 @@ export default withApp(
                     myId={props.user ? props.user.id : ''}
                     myOrgId={props.organization ? props.organization.id : ''}
                     inOrgId={inOrganization}
-                    dialogKind={isChannel !== undefined ? DialogKind.CHANNEL : DialogKind.GROUP}
+                    entityKind={isChannel !== undefined ? EntityKind.CHANNEL : EntityKind.GROUP}
                 />
             </>
         );
