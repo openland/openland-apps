@@ -93,9 +93,9 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 </Text>
             );
         } else if (span.type === 'code_block') {
-            return <Text key={'code-block'} style={{ fontFamily: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace' }} allowFontScaling={false}>{children}</Text>;
+            return <Text key={'code-block'} style={{ fontFamily: TextStyles.family.monospace }} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'code_inline') {
-            return <Text key={'code-inline'} style={{ fontFamily: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace', backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
+            return <Text key={'code-inline'} style={{ fontFamily: TextStyles.family.monospace, backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
         } else if (span.type === 'insane') {
             return <Text key={'insane'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'irony') {
