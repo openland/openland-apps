@@ -25,7 +25,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
             <RenderSpans
                 spans={message.textSpans}
                 message={message}
-                padded={padded}
+                padded={padded !== false}
                 fontStyle={fontStyle}
                 theme={theme}
                 maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 40}

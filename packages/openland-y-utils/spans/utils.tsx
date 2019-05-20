@@ -146,11 +146,13 @@ export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'sli
     }
 
     // after all code-blocks
-    res.push({
-        type: 'slice',
-        spans: spans,
-        padded: usePadded !== false
-    });
+    if (spans.length > 0 || !!usePadded) {
+        res.push({
+            type: 'slice',
+            spans: spans,
+            padded: !!usePadded
+        });
+    }
 
     return res;
 }
