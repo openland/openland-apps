@@ -13,6 +13,7 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -40,6 +41,21 @@ let SettingsContent = ((props: PageProps) => {
         secondaryFiltered.push(secondary[i]);
     }
     let status = useOnlineState();
+
+    const handleGlobalInvitePress = React.useCallback(async () => {
+        startLoader();
+
+        try {
+            const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
+            const inviteLink = 'https://openland.com/invite/' + inviteCode.invite;
+    
+            Share.share({ message: inviteLink });
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            stopLoader();
+        }
+    }, []);
 
     return (
         <SScrollView>
@@ -73,7 +89,7 @@ let SettingsContent = ((props: PageProps) => {
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-invite-fill-24.png')}
                     appearance="default"
                     text="Invite friends"
-                    onPress={() => Share.share({ message: 'https://openland.com' })}
+                    onPress={handleGlobalInvitePress}
                 />
                 <ZListItem
                     leftIconColor={theme.settingsHelpIcon}
