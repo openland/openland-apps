@@ -20,18 +20,21 @@ import { SelectWithDropdown } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from './InputField';
 
-const MainWrapper = ({
-    isChannel,
-    back,
-    onBackClick,
-    children,
-}: {
+enum DialogKind {
+    GROUP = 'GROUP',
+    CHANNEL = 'CHANNEL',
+    COMMUNITY = 'COMMUNITY',
+}
+
+type MainWrapperT = {
     back: boolean;
     onBackClick: () => void;
     children: any;
-    isChannel: boolean;
-}) => {
-    let chatTypeStr = isChannel ? 'channel' : 'group';
+    dialogKind: DialogKind;
+};
+
+const MainWrapper = ({ dialogKind, back, onBackClick, children }: MainWrapperT) => {
+    let chatTypeStr = dialogKind.toLowerCase();
     return (
         <XView
             flexGrow={1}
@@ -79,6 +82,17 @@ const MainWrapper = ({
     );
 };
 
+type AddMembersT = {
+    onSkip: (event: React.MouseEvent) => void;
+    onSubmit: (event: React.MouseEvent) => void;
+    onSearchPeopleInputChange: (data: string) => string;
+    options: { label: string; value: string }[];
+    handleSearchPeopleInputChange: (data: { label: string; value: string }[] | null) => void;
+    searchPeopleQuery: string;
+    selectMembers: (label: string, value: string) => void;
+    selectedUsers: Map<string, string> | null;
+};
+
 const AddMembers = ({
     onSkip,
     onSubmit,
@@ -88,16 +102,7 @@ const AddMembers = ({
     searchPeopleQuery,
     selectMembers,
     selectedUsers,
-}: {
-    onSkip: (event: React.MouseEvent) => void;
-    onSubmit: (event: React.MouseEvent) => void;
-    onSearchPeopleInputChange: (data: string) => string;
-    options: { label: string; value: string }[];
-    handleSearchPeopleInputChange: (data: { label: string; value: string }[] | null) => void;
-    searchPeopleQuery: string;
-    selectMembers: (label: string, value: string) => void;
-    selectedUsers: Map<string, string> | null;
-}) => {
+}: AddMembersT) => {
     return (
         <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
             <XView
@@ -148,19 +153,17 @@ interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
     inOrgId?: string;
-    isChannel: boolean;
+    dialogKind: DialogKind;
 }
 
-// 1) check everything is working
-
-const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInnerProps) => {
+const CreateGroupInner = ({ myId, myOrgId, dialogKind, inOrgId }: CreateGroupInnerProps) => {
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
     const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
     let options: { label: string; value: string }[] = [];
 
-    let chatTypeStr = isChannel ? 'Channel' : 'Group';
+    let chatTypeStr = dialogKind.charAt(0).toUpperCase() + dialogKind.slice(1).toLowerCase();
 
     let form = useForm();
     let titleField = useField('input.title', '', form, [
@@ -198,7 +201,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
             photoRef,
             members: membersToAdd,
             organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
-            channel: isChannel,
+            channel: dialogKind === DialogKind.CHANNEL,
         });
 
         const roomId: string = returnedData.room.id as string;
@@ -287,7 +290,7 @@ const CreateGroupInner = ({ myId, myOrgId, isChannel, inOrgId }: CreateGroupInne
     };
 
     return (
-        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} isChannel={isChannel}>
+        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} dialogKind={dialogKind}>
             {settingsPage && (
                 <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                     <XView
@@ -367,7 +370,7 @@ export default withApp(
                     myId={props.user ? props.user.id : ''}
                     myOrgId={props.organization ? props.organization.id : ''}
                     inOrgId={inOrganization}
-                    isChannel={isChannel !== undefined}
+                    dialogKind={isChannel !== undefined ? DialogKind.CHANNEL : DialogKind.GROUP}
                 />
             </>
         );
