@@ -222,7 +222,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
             v = '';
         }
         return (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', ...extractFlexProps(this.props) }}>
                 {title && (
                     <>
                         <Title

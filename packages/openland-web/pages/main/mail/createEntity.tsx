@@ -15,6 +15,7 @@ import { useField } from 'openland-form/useField';
 import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from './InputField';
+import { XTextArea } from 'openland-x/XTextArea';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -197,6 +198,8 @@ export const CreateEntity = ({
         form,
     );
 
+    let aboutField = useField<string>('input.type', '', form);
+
     let selectedOrgField = useField<string | null>(
         'input.selectedOrg',
         inOrgId ? inOrgId : null,
@@ -230,11 +233,19 @@ export const CreateEntity = ({
                 input: {
                     personal: false,
                     name: titleField.value,
-                    about: '',
+                    about: aboutField.value,
                     photoRef,
                     isCommunity,
                 },
             });
+
+            if (membersToAdd.length) {
+                await client.mutateOrganizationAddMember({
+                    organizationId: res.organization.id,
+                    userIds: membersToAdd,
+                });
+            }
+
             let redirect = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
             router.push(redirect);
         }
@@ -351,6 +362,25 @@ export const CreateEntity = ({
                             />
                         </XView>
                     </XView>
+
+                    {entityKind === EntityKind.COMMUNITY && (
+                        <XView
+                            marginTop={16}
+                            flexGrow={1}
+                            flexDirection="row"
+                            paddingHorizontal={16}
+                        >
+                            <XTextArea
+                                flexGrow={1}
+                                height={140}
+                                resize={false}
+                                title="Short description"
+                                mode="modern"
+                                {...aboutField.input}
+                            />
+                        </XView>
+                    )}
+
                     {typeField.value === SharedRoomKind.PUBLIC && (
                         <OrganizationsList {...selectedOrgField.input} inOrgId={inOrgId} />
                     )}
