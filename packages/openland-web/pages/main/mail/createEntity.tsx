@@ -169,6 +169,8 @@ export const CreateEntity = ({
     inOrgId,
     selectOptions,
 }: CreateEntityProps) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
@@ -202,9 +204,6 @@ export const CreateEntity = ({
     );
 
     const doSubmit = async ({ membersToAdd }: { membersToAdd: string[] }) => {
-        const client = useClient();
-        let router = React.useContext(XRouterContext)!;
-
         let photoRef: { uuid: string } | null = null;
         if (coverSrc) {
             photoRef = {
@@ -226,6 +225,7 @@ export const CreateEntity = ({
             router.replace('/mail/' + roomId);
         } else {
             const isCommunity = true;
+
             let res = await client.mutateCreateOrganization({
                 input: {
                     personal: false,
@@ -240,7 +240,7 @@ export const CreateEntity = ({
         }
     };
 
-    const onSubmit = React.useCallback(() => {
+    const onSubmit = () =>
         form.doAction(async () => {
             let membersIds: string[] = [myId];
 
@@ -259,15 +259,13 @@ export const CreateEntity = ({
                 membersToAdd: membersIds,
             });
         });
-    }, []);
 
-    const onSkip = React.useCallback(() => {
+    const onSkip = () =>
         form.doAction(async () => {
             await doSubmit({
                 membersToAdd: [myId],
             });
         });
-    }, []);
 
     const handleChatTypeChange = (data: SharedRoomKind) => {
         if (data === SharedRoomKind.GROUP && !inOrgId) {
