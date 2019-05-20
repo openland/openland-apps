@@ -16,7 +16,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { OrganizationsList } from './OrganizationsList';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SelectWithDropdown } from './SelectWithDropdown';
+import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from './InputField';
 
@@ -25,6 +25,15 @@ enum EntityKind {
     CHANNEL = 'CHANNEL',
     COMMUNITY = 'COMMUNITY',
 }
+
+enum CommunityType {
+    COMMUNITY_PUBLIC = 'COMMUNITY_PUBLIC',
+    COMMUNITY_PRIVATE = 'COMMUNITY_PRIVATE',
+}
+
+const isDialog = (entityKind: EntityKind) => {
+    return entityKind === EntityKind.CHANNEL || entityKind === EntityKind.GROUP;
+};
 
 type MainWrapperT = {
     back: boolean;
@@ -154,9 +163,16 @@ interface CreateGroupInnerProps {
     myOrgId: string;
     inOrgId?: string;
     entityKind: EntityKind;
+    selectOptions: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
 }
 
-const CreateGroupInner = ({ myId, myOrgId, entityKind, inOrgId }: CreateGroupInnerProps) => {
+const CreateGroupInner = ({
+    myId,
+    myOrgId,
+    entityKind,
+    inOrgId,
+    selectOptions,
+}: CreateGroupInnerProps) => {
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
@@ -172,7 +188,8 @@ const CreateGroupInner = ({ myId, myOrgId, entityKind, inOrgId }: CreateGroupInn
             text: `Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`,
         },
     ]);
-    let typeField = useField<SharedRoomKind>(
+
+    let typeField = useField<SharedRoomKind | CommunityType>(
         'input.type',
         inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
         form,
@@ -195,17 +212,32 @@ const CreateGroupInner = ({ myId, myOrgId, entityKind, inOrgId }: CreateGroupInn
             };
         }
 
-        const returnedData = await client.mutateRoomCreate({
-            title: titleField.value,
-            kind: typeField.value,
-            photoRef,
-            members: membersToAdd,
-            organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
-            channel: entityKind === EntityKind.CHANNEL,
-        });
+        if (typeField.value === SharedRoomKind.GROUP || typeField.value === SharedRoomKind.PUBLIC) {
+            const returnedData = await client.mutateRoomCreate({
+                title: titleField.value,
+                kind: typeField.value,
+                photoRef,
+                members: membersToAdd,
+                organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
+                channel: entityKind === EntityKind.CHANNEL,
+            });
 
-        const roomId: string = returnedData.room.id as string;
-        router.replace('/mail/' + roomId);
+            const roomId: string = returnedData.room.id as string;
+            router.replace('/mail/' + roomId);
+        } else {
+            const isCommunity = true;
+            let res = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: titleField.value,
+                    about: '',
+                    photoRef,
+                    isCommunity,
+                },
+            });
+            let redirect = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
+            router.push(redirect);
+        }
     };
 
     const onSubmit = React.useCallback(() => {
@@ -317,20 +349,7 @@ const CreateGroupInner = ({ myId, myOrgId, entityKind, inOrgId }: CreateGroupInn
                                 title={`${chatTypeStr} type`}
                                 value={typeField.value}
                                 onChange={handleChatTypeChange}
-                                selectOptions={[
-                                    {
-                                        value: SharedRoomKind.GROUP,
-                                        label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
-                                        labelShort: 'Secret',
-                                        subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
-                                    },
-                                    {
-                                        value: SharedRoomKind.PUBLIC,
-                                        label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
-                                        labelShort: 'Shared',
-                                        subtitle: `${chatTypeStr} where your organization or community members communicate`,
-                                    },
-                                ]}
+                                selectOptions={selectOptions}
                             />
                         </XView>
                     </XView>
@@ -363,6 +382,44 @@ export default withApp(
         const { routeQuery } = router;
         const isChannel = routeQuery.channel || routeQuery.orgchannel;
         const inOrganization = routeQuery.orgchannel || routeQuery.org;
+        const entityKind = isChannel !== undefined ? EntityKind.CHANNEL : EntityKind.GROUP;
+
+        let chatTypeStr = entityKind.toLowerCase();
+
+        let selectOptions;
+
+        if (isDialog(entityKind)) {
+            selectOptions = [
+                {
+                    value: SharedRoomKind.GROUP,
+                    label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
+                    labelShort: 'Secret',
+                    subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
+                },
+                {
+                    value: SharedRoomKind.PUBLIC,
+                    label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
+                    labelShort: 'Shared',
+                    subtitle: `${chatTypeStr} where your organization or community members communicate`,
+                },
+            ];
+        } else {
+            selectOptions = [
+                {
+                    value: CommunityType.COMMUNITY_PUBLIC,
+                    label: `Public community`,
+                    labelShort: 'Public',
+                    subtitle: `Anyone can find and join this community`,
+                },
+                {
+                    value: CommunityType.COMMUNITY_PRIVATE,
+                    label: `Private community`,
+                    labelShort: 'Private',
+                    subtitle: `Only invited people can join community and view chats`,
+                },
+            ];
+        }
+
         return (
             <>
                 <XDocumentHead title="Create Room" />
@@ -370,7 +427,8 @@ export default withApp(
                     myId={props.user ? props.user.id : ''}
                     myOrgId={props.organization ? props.organization.id : ''}
                     inOrgId={inOrganization}
-                    entityKind={isChannel !== undefined ? EntityKind.CHANNEL : EntityKind.GROUP}
+                    entityKind={entityKind}
+                    selectOptions={selectOptions}
                 />
             </>
         );
