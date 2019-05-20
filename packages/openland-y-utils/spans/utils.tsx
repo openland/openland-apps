@@ -74,8 +74,6 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
         }
 
         if (i !== rows.length - 1) {
-            console.warn('boom', i, rows.length);
-
             res.push({
                 type: 'new_line',
                 length: 0,
