@@ -251,6 +251,20 @@ export const CreateEntity = ({
         }
     };
 
+    const getOptions = (map: Map<string, string>| null) => {
+        const result: { label: string; value: string }[] = [];
+        if (!map) {
+            return [];
+        }
+        map.forEach((l: string, v: string) => {
+            result.push({
+                label: l,
+                value: v,
+            });
+        });
+        return result;
+    };
+
     const onSubmit = () =>
         form.doAction(async () => {
             let membersIds: string[] = [myId];
@@ -319,7 +333,7 @@ export const CreateEntity = ({
             newSelected.set(i.value, i.label);
         });
 
-        setSelectedUsers(newSelected);
+        setSelectedUsers(new Map(newSelected));
     };
 
     const selectMembers = (label: string, value: string) => {
@@ -327,7 +341,7 @@ export const CreateEntity = ({
 
         selected.set(value, label);
 
-        setSelectedUsers(selected);
+        setSelectedUsers(new Map(selected));
     };
 
     return (
@@ -391,7 +405,7 @@ export const CreateEntity = ({
                     onSkip={onSkip}
                     onSubmit={onSubmit}
                     onSearchPeopleInputChange={onSearchPeopleInputChange}
-                    options={options}
+                    options={getOptions(selectedUsers)}
                     handleSearchPeopleInputChange={handleSearchPeopleInputChange}
                     searchPeopleQuery={searchPeopleQuery}
                     selectMembers={selectMembers}
