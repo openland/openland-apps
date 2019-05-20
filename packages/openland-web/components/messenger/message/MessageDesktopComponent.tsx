@@ -163,7 +163,7 @@ const MessageImageComponentWrapper = React.memo(
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     DesktopMessageComponentInnerState
-    > {
+> {
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
@@ -264,6 +264,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             usernameOfRepliedUser,
             onCommentBackToUserMessageClick,
         } = this.props;
+
         const { isEditView, selected, hideMenu } = this.state;
 
         let content: any[] = [];
@@ -303,14 +304,15 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                        a => a.__typename === 'MessageAttachmentFile',
-                                    )[0]
+                                          a => a.__typename === 'MessageAttachmentFile',
+                                      )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
 
                                 return (
                                     <MessageReplyComponent
+                                        isChannel={!!this.props.isChannel}
                                         senderNameEmojify={message.replySenderNameEmojify[index]}
                                         attach={qfileAttach}
                                         spans={message.replyTextSpans[index]}
@@ -346,6 +348,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageTextComponentSpanned
+                                    isChannel={!!this.props.isChannel}
                                     isComment={this.props.isComment}
                                     spans={message.textSpans}
                                     key={'text' + message.id}
@@ -422,6 +425,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             if (message.text && message.text.length > 0) {
                 content.push(
                     <MessageTextComponent
+                        isChannel={!!this.props.isChannel}
                         isComment={this.props.isComment}
                         spans={message.textSpans}
                         key={'text' + message.id}
@@ -467,6 +471,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     spans={[]}
                     key={'text' + message.id}
                     isService={false}
+                    isChannel={!!this.props.isChannel}
                     isEdited={!!edited}
                 />,
             );

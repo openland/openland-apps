@@ -116,6 +116,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
                         return (
                             <MessageReplyComponent
+                                isChannel={false}
                                 senderNameEmojify={message.replySenderNameEmojify[index]}
                                 spans={message.replyTextSpans[index]}
                                 sender={item.sender}
@@ -143,6 +144,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             } else {
                 content.push(
                     <MessageTextComponent
+                        isChannel={false}
                         spans={message.textSpans}
                         key={'text'}
                         isEdited={!!message.isEdited}
@@ -229,6 +231,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.text && message.text.length > 0) {
             content.push(
                 <MessageTextComponent
+                    isChannel={false}
                     spans={message.textSpans}
                     key={'text'}
                     isService={false}

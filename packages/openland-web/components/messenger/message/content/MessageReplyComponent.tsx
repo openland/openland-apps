@@ -27,6 +27,7 @@ interface ReplyMessageProps {
     attach?: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
     startSelected: boolean;
     compact?: boolean;
+    isChannel: boolean;
 }
 
 export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
@@ -51,6 +52,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
     if (props.message) {
         content.push(
             <MessageTextComponent
+                isChannel={!!props.isChannel}
                 spans={props.spans || []}
                 key={'reply-text'}
                 isService={false}

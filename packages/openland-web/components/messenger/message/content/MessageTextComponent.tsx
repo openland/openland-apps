@@ -6,6 +6,7 @@ import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export interface MessageTextComponentProps {
     isComment?: boolean;
+    isChannel: boolean;
     spans: Span[];
     isEdited: boolean;
     isService?: boolean;
@@ -46,13 +47,15 @@ const EditLabelStyle = css`
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited, asPinMessage, isService, isComment }) => {
+    ({ shouldCrop, spans, isEdited, asPinMessage, isService, isComment, isChannel }) => {
         // useCheckPerf({ name: 'MessageTextComponent' });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
+                    {isEdited && !isComment && !isChannel && (
+                        <span className={EditLabelStyle}>(Edited)</span>
+                    )}
                 </span>
             </div>
         );
@@ -60,13 +63,15 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
 );
 
 export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited, isService, isComment }) => {
+    ({ shouldCrop, spans, isEdited, isService, isComment, isChannel }) => {
         // useCheckPerf({ name: 'MessageTextComponentSpanned' });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {isEdited && !isComment && <span className={EditLabelStyle}>(Edited)</span>}
+                    {isEdited && !isComment && !isChannel && (
+                        <span className={EditLabelStyle}>(Edited)</span>
+                    )}
                 </span>
             </div>
         );
