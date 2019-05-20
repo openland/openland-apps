@@ -30,6 +30,7 @@ import {
 
 const CommentView = ({
     originalMessageId,
+    commentEntryId,
     roomId,
     message,
     setShowInputId,
@@ -40,6 +41,7 @@ const CommentView = ({
     currentCommentsInputRef,
 }: {
     originalMessageId: string;
+    commentEntryId: string;
     roomId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
@@ -120,8 +122,8 @@ const CommentView = ({
     }
 
     const parentCommentId =
-        message.id && commentsMap[message.id] && commentsMap[message.id].parentComment
-            ? commentsMap[message.id].parentComment.id
+        commentEntryId && commentsMap[commentEntryId] && commentsMap[commentEntryId].parentComment
+            ? commentsMap[commentEntryId].parentComment.id
             : null;
     const parentComment = commentsMap[parentCommentId];
 
@@ -140,6 +142,7 @@ const CommentView = ({
             ? parentComment.comment.sender.name
             : undefined;
 
+    console.log(message, commentsMap);
     return (
         <div data-comment-id={message.id}>
             <XView
@@ -151,7 +154,7 @@ const CommentView = ({
                     conversationId={roomId}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
                     usernameOfRepliedUser={usernameOfRepliedUser}
-                    deleted={message.id ? commentsMap[message.id].deleted : false}
+                    deleted={commentEntryId ? commentsMap[commentEntryId].deleted : false}
                     commentDepth={message.depth}
                     noSelector
                     isComment
@@ -233,12 +236,13 @@ export const CommentsBlockView = ({
     const commentsElements = sortComments(messageComments.messageComments.comments, commentsMap)
         .map(item => {
             const res = convertDsMessage(convertMessage(item.comment));
-            return { ...res, depth: getDepthOfComment(item, commentsMap) };
+            return { ...res, depth: getDepthOfComment(item, commentsMap), entryId: item.id };
         })
         .map(message => {
             return (
                 <CommentView
                     roomId={roomId}
+                    commentEntryId={message.entryId}
                     originalMessageId={originalMessageId}
                     key={`comment_${message.id}`}
                     scrollRef={scrollRef}
