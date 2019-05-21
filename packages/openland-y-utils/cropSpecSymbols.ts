@@ -3,11 +3,10 @@ import { Span } from './spans/Span';
 
 export const cropSpecSymbols = (spans: Span[], parent: Span, symbol: string[], opened?: boolean): Span[] => {
     const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+    let currentSymbol: string | undefined = undefined;
 
     // remove first symbol
     if (spans[0] && spans[0].type === 'text' && spans[0].textRaw) {
-        let currentSymbol: string | undefined = undefined;
-
         symbol.map(s => {
             if (spans[0].textRaw!.startsWith(s)) {
                 currentSymbol = s;
@@ -35,15 +34,7 @@ export const cropSpecSymbols = (spans: Span[], parent: Span, symbol: string[], o
         const last = spans.length - 1;
 
         if (spans[last] && spans[last].type === 'text' && spans[last].textRaw) {
-            let currentSymbol: string | undefined = undefined;
-
-            symbol.map(s => {
-                if (spans[last].textRaw!.endsWith(s)) {
-                    currentSymbol = s;
-                }
-            });
-
-            if (typeof currentSymbol === 'string') {
+            if (typeof currentSymbol === 'string' && spans[last].textRaw!.endsWith(currentSymbol)) {
                 const text = spans[last].textRaw!;
 
                 spans[last].textRaw = text.substr(0, text.lastIndexOf(currentSymbol));
