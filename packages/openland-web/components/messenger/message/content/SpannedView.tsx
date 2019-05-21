@@ -52,6 +52,11 @@ const loudTextClassName = css`
     margin-bottom: 6px;
 `;
 
+const onlyEmojiClassName = css`
+    font-size: 38px;
+    line-height: 38px;
+`;
+
 const rotatingTextClassName = css`
     animation: rotate 1s linear infinite;
     display: inline-block;
@@ -172,6 +177,8 @@ const SpanView = React.memo<{ span: Span; children?: any }>(props => {
         return <OthersPopper items={otherItems}>{children}</OthersPopper>;
     } else if (span.type === 'new_line') {
         return <br />;
+    } else if (span.type === 'emoji') {
+        return <span className={onlyEmojiClassName}>{children}</span>;
     } else if (span.type === 'text') {
         return <span>{span.text}</span>;
     }
