@@ -159,8 +159,8 @@ export class DialogListEngine {
                         if (this.useOnlines.has(i.flexibleId)) {
                             onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
                         }
+                        this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     }
-                    this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     this.loadedConversations.add(i.key);
                 }
             },
