@@ -5,10 +5,19 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { getCodeSlices } from 'openland-y-utils/spans/utils';
+import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
 
-const TextWrapper = (props: { maxWidth?: number; fontSize?: number; color: string; fontStyle?: 'italic' | 'normal'; children?: any }) => (
+interface TextWrapperProps {
+    marginBottom?: number;
+    maxWidth?: number;
+    fontSize?: number;
+    color: string;
+    fontStyle?: 'italic' | 'normal';
+    children?: any;
+}
+
+const TextWrapper = (props: TextWrapperProps) => (
     <ASText
         key={'text-' + props.color}
         color={props.color}
@@ -17,6 +26,7 @@ const TextWrapper = (props: { maxWidth?: number; fontSize?: number; color: strin
         fontWeight={TextStyles.weight.regular}
         fontStyle={props.fontStyle}
         maxWidth={props.maxWidth}
+        marginBottom={props.marginBottom}
     >
         {props.children}
     </ASText>
@@ -41,25 +51,27 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
         const mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
-        const content = getCodeSlices(spans, padded);
+        const content = getSpansSlices(spans, padded);
 
         return (
             <>
                 {content.map((c, i) => (
                     <>
-                        {c.type === 'slice' && (
+                        {(c.type === 'slice' || c.type === 'loud') && (
                             <TextWrapper
-                                key={'slice-' + i}
+                                key={c.type + '-' + i}
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
+                                fontSize={c.type === 'loud' ? 20 : undefined}
+                                marginBottom={c.type === 'loud' ? 4 : undefined}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                 {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
                             </TextWrapper>
                         )}
-                        {c.type === 'code' && (
+                        {c.type === 'code_block' && (
                             <ASFlex
-                                key={'code-' + i}
+                                key={c.type + '-' + i}
                                 marginLeft={-insetLeft}
                                 marginRight={-insetRight}
                                 marginTop={i === 0 ? insetTop : undefined}

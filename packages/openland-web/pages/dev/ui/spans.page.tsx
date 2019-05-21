@@ -7,7 +7,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
-import { parseSpans } from 'openland-y-utils/spans/parseSpans';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { SpannedView } from 'openland-web/components/messenger/message/content/SpannedView';
 

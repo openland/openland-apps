@@ -114,19 +114,25 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     let symbolObject = SpanTypeToSymbol[parent.type];
 
     if (symbolObject) {
-        res = TextRenderProccessor.cropSpecSymbols(res, parent, symbolObject.symbol, symbolObject.opened);
+        res = TextRenderProccessor.cropSpecSymbols(res, parent, symbolObject);
     }
 
     return res;
 }
 
-export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'slice' | 'code', spans: Span[], padded: boolean })[] => {
-    let res: { type: 'slice' | 'code', spans: Span[], padded: boolean }[] = [];
+interface SpansSlice {
+    type: 'slice' | 'code_block' | 'loud';
+    spans: Span[];
+    padded: boolean;
+}
 
-    while (spans.findIndex((v) => v.type === 'code_block') >= 0) {
-        let index = spans.findIndex((v) => v.type === 'code_block');
+export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[] => {
+    let res: SpansSlice[] = [];
 
-        // before current code-block
+    while (spans.findIndex((v) => ['code_block', 'loud'].includes(v.type)) >= 0) {
+        let index = spans.findIndex((v) => ['code_block', 'loud'].includes(v.type));
+
+        // before current code-block/loud
         if (index > 0) {
             res.push({
                 type: 'slice',
@@ -135,9 +141,9 @@ export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'sli
             });
         }
 
-        // current code-block
+        // current code-block/loud
         res.push({
-            type: 'code',
+            type: spans[index].type as any,
             spans: [spans[index]],
             padded: false
         });
@@ -145,7 +151,7 @@ export const getCodeSlices = (spans: Span[], usePadded?: boolean): ({ type: 'sli
         spans = spans.slice(index + 1);
     }
 
-    // after all code-blocks
+    // after all code-blocks/louds
     if (spans.length > 0 || !!usePadded) {
         res.push({
             type: 'slice',

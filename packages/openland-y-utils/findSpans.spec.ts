@@ -92,4 +92,14 @@ describe('Spans Parser', () => {
         expect(res[0].offset).toBe(7);
         expect(res[0].length).toBe(5);
     });
+
+    it('should parse lined span', () => {
+        let res = findSpans('123\n# 123 *123*\n123');
+
+        expect(res.length).toBe(1);
+
+        expect(res[0].type).toBe("Loud");
+        expect(res[0].offset).toBe(4);
+        expect(res[0].length).toBe(11);
+    });
 });

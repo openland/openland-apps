@@ -1,6 +1,6 @@
 import { TextRenderProccessorApi } from 'openland-y-runtime-api/TextRenderProcessorApi';
 import { emoji } from 'openland-y-utils/emoji';
-import { Span } from 'openland-y-utils/spans/Span';
+import { Span, SpecSymbolsType } from 'openland-y-utils/spans/Span';
 import { cropSpecSymbols } from 'openland-y-utils/cropSpecSymbols';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
@@ -11,7 +11,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         });
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbol: string[], opened?: boolean) {
-        return cropSpecSymbols(spans, parent, symbol, opened);
+    cropSpecSymbols(spans: Span[], parent: Span, symbols: SpecSymbolsType[]) {
+        return cropSpecSymbols(spans, parent, symbols);
     }
 };

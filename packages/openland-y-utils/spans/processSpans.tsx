@@ -66,10 +66,10 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
     
         let preprocessedRes = recursiveProcessing(text, spans)[0].childrens!;
 
-        // REMOVE LINE_BREAKERS BEFORE AND AFTER CODE_BLOCK
+        // REMOVE LINE_BREAKERS BEFORE AND AFTER CODE_BLOCK/LOUD
 
-        while (preprocessedRes.findIndex((v) => v.type === 'code_block') >= 0) {
-            let index = preprocessedRes.findIndex((v) => v.type === 'code_block');
+        while (preprocessedRes.findIndex((v) => ['code_block', 'loud'].includes(v.type)) >= 0) {
+            let index = preprocessedRes.findIndex((v) => ['code_block', 'loud'].includes(v.type));
 
             if (index > 0) {
                 let sliceStart = preprocessedRes[0].type === 'new_line' ? 1 : 0;

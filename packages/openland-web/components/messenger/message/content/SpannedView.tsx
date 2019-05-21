@@ -45,10 +45,12 @@ const codeBlockClassName = css`
 `;
 
 const loudTextClassName = css`
-    font-size: 36px;
-    line-height: 40px;
+    display: block;
+    font-size: 20px;
+    line-height: 28px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 6px;
 `;
 
 const rotatingTextClassName = css`

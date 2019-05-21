@@ -103,7 +103,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         } else if (span.type === 'italic') {
             return <Text key={'italic'} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{children}</Text>;
         } else if (span.type === 'loud') {
-            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium, fontSize: 26, lineHeight: 28}}>{children}</Text>;
+            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium, fontSize: 20, lineHeight: 24 }}>{children}</Text>;
         } else if (span.type === 'rotating') {
             return <Text key={'rotating'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'new_line') {

@@ -5,15 +5,25 @@ import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages }
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { getCodeSlices } from 'openland-y-utils/spans/utils';
+import { getSpansSlices } from 'openland-y-utils/spans/utils';
 
-const TextWrapper = (props: { isSmall?: boolean; fontSize?: number; color: string; fontStyle?: 'italic' | 'normal'; children?: any }) => (
+interface TextWrapperProps {
+    marginBottom?: number;
+    isSmall?: boolean;
+    fontSize?: number;
+    color: string;
+    fontStyle?: 'italic' | 'normal';
+    children?: any;
+}
+
+const TextWrapper = (props: TextWrapperProps) => (
     <Text
         style={{
             color: props.color,
             fontSize: props.fontSize || (props.isSmall ? 15 : 16),
             fontWeight: TextStyles.weight.regular,
             fontStyle: props.fontStyle,
+            marginBottom: props.marginBottom,
         } as TextStyle}
         allowFontScaling={false}
     >
@@ -36,7 +46,7 @@ interface TextContentProps {
 export const TextContent = (props: TextContentProps) => {
     const { theme, message, inReply, isSmall, fontStyle, onUserPress, onGroupPress } = props;
     const preprocessed = processSpans(message.message || '', message.spans);
-    const content = getCodeSlices(preprocessed);
+    const content = getSpansSlices(preprocessed);
 
     const codeMarginLeft = isSmall ? 0 : (inReply ? 8 : 16);
     const codeMarginRight = isSmall ? 0 : (inReply ? 8 : 16);
@@ -47,19 +57,20 @@ export const TextContent = (props: TextContentProps) => {
         <>
             {content.map((c, i) => (
                 <>
-                    {c.type === 'slice' && (
+                    {(c.type === 'slice' || c.type === 'loud') && (
                         <TextWrapper
-                            key={'slice-' + i}
+                            key={c.type + '-' + i}
                             color={theme.textColor}
                             fontStyle={fontStyle}
                             isSmall={isSmall}
+                            marginBottom={c.type === 'loud' ? 4 : undefined}
                         >
                             {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                         </TextWrapper>
                     )}
-                    {c.type === 'code' && (
+                    {c.type === 'code_block' && (
                         <View
-                            key={'code-' + i}
+                            key={c.type + '-' + i}
                             backgroundColor={theme.codeSpan.background}
                             marginTop={i === 0 && inReply ? 4 : undefined}
                             marginLeft={codeMarginLeft}

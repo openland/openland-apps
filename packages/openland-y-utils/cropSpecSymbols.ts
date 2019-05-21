@@ -1,15 +1,18 @@
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
-import { Span } from './spans/Span';
+import { Span, SpecSymbolsType } from './spans/Span';
 
-export const cropSpecSymbols = (spans: Span[], parent: Span, symbol: string[], opened?: boolean): Span[] => {
+export const cropSpecSymbols = (spans: Span[], parent: Span, symbols: SpecSymbolsType[]): Span[] => {
     const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+
     let currentSymbol: string | undefined = undefined;
+    let isOpened: boolean | undefined = undefined;
 
     // remove first symbol
     if (spans[0] && spans[0].type === 'text' && spans[0].textRaw) {
-        symbol.map(s => {
-            if (spans[0].textRaw!.startsWith(s)) {
-                currentSymbol = s;
+        symbols.map(symbol => {
+            if (spans[0].textRaw!.startsWith(symbol.s)) {
+                currentSymbol = symbol.s;
+                isOpened = symbol.opened;
             }
         });
 
@@ -29,7 +32,7 @@ export const cropSpecSymbols = (spans: Span[], parent: Span, symbol: string[], o
         }
     }
 
-    if (!opened) {
+    if (!isOpened) {
         // remove last symbol
         const last = spans.length - 1;
 

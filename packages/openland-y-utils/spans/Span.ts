@@ -77,9 +77,7 @@ export interface SpanRoom extends SpanAbs {
 
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
 
-export const WhiteListAroundSpec = ['', ' ', '\n', ',', '.', '(', ')'];
-
-export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
+export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?: boolean, lined?: boolean }} = {
     '*': { type: MessageSpanType.Bold },
     '```': { type: MessageSpanType.CodeBlock, master: true },
     '\'\'\'': { type: MessageSpanType.CodeBlock, master: true },
@@ -88,18 +86,44 @@ export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
     '_': { type: MessageSpanType.Italic },
-    ':': { type: MessageSpanType.Loud },
+    '# ': { type: MessageSpanType.Loud, lined: true },
     '🔄': { type: MessageSpanType.Rotating },
 };
 
-export const SpanTypeToSymbol: { [key: string]: { symbol: string[], opened?: boolean }} = {
-    'bold': { symbol: ['*'] },
-    'code_block': { symbol: ['```', '\'\'\''] },
-    'code_inline': { symbol: ['`', '\''] },
-    'insane': { symbol: ['🌈'] },
-    'irony': { symbol: ['~'] },
-    'italic': { symbol: ['_'] },
-    'loud': { symbol: [':'] },
-    'rotating': { symbol: ['🔄'] },
-    'mention_user': { symbol: ['@'], opened: true },
+export interface SpecSymbolsType {
+    s: string;
+    opened?: boolean;
+}
+
+export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType[] } = {
+    'bold': [
+        { s: '*' }
+    ],
+    'code_block': [
+        { s: '```' },
+        { s: '\'\'\'' }
+    ],
+    'code_inline': [
+        { s: '`' },
+        { s: '\'' }
+    ],
+    'insane': [
+        { s: '🌈' }
+    ],
+    'irony': [
+        { s: '~' }
+    ],
+    'italic': [
+        { s: '_' }
+    ],
+    'loud': [
+        { s: ':' }, // DEPRECATED
+        { s: '# ', opened: true }
+    ],
+    'rotating': [
+        { s: '🔄' }
+    ],
+    'mention_user': [
+        { s: '@', opened: true }
+    ],
 };
