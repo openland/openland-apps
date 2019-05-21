@@ -47607,6 +47607,7 @@ export interface OrganizationWithoutMembers_organization {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -48643,6 +48644,7 @@ export interface OrganizationMembersShort_organization {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -49706,6 +49708,7 @@ export interface OrganizationMembersShortPaginated_organization {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -57402,6 +57405,7 @@ export interface OrganizationWithoutMembersFragment {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
