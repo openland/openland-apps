@@ -144,7 +144,7 @@ export const DirectoryNavigation = XMemo(
         withoutSort,
     }: {
         title: string;
-        onlyFeatured?: boolean; 
+        onlyFeatured?: boolean;
         id?: string | null;
         ProfileComponent?: any;
         CardsComponent?: any;
@@ -286,6 +286,31 @@ export const ComponentWithSort = ({
     notFoundText: string;
     CustomButtonComponent: any;
 }) => {
+    const finalQuery = variables.query
+        ? variables.query
+        : onlyFeatured
+        ? JSON.stringify({ featured: 'true' })
+        : variables.query;
+
+    const finalVariables = {
+        ...(queryToPrefix
+            ? {
+                  prefix: variables.query,
+                  query: !variables.query && onlyFeatured ? finalQuery : undefined,
+              }
+            : {
+                  query: finalQuery,
+              }),
+        sort: noSort
+            ? ''
+            : JSON.stringify([
+                  ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                  { [orderBy]: { order: 'desc' } },
+              ]),
+        ...(variables.page ? { page: variables.page } : {}),
+    };
+
+    console.log(finalVariables);
     return (
         <React.Suspense
             fallback={
@@ -296,19 +321,7 @@ export const ComponentWithSort = ({
         >
             <Component
                 tagsCount={tagsCount}
-                variables={{
-                    ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                    ...(onlyFeatured ? {  query: JSON.stringify({featured: 'true'}) } : {  }),
-                    sort: noSort
-                        ? ''
-                        : JSON.stringify([
-                              ...(featuredFirst
-                                  ? [{ ['featured']: { order: 'desc' } } as any]
-                                  : []),
-                              { [orderBy]: { order: 'desc' } },
-                          ]),
-                    ...(variables.page ? { page: variables.page } : {}),
-                }}
+                variables={finalVariables}
                 customMenu={customMenu}
                 CustomButtonComponent={CustomButtonComponent}
                 notFoundText={notFoundText}
