@@ -68577,6 +68577,7 @@ export interface CreateOrganizationInput {
   photoRef?: ImageRefInput | null;
   about?: string | null;
   isCommunity?: boolean | null;
+  isPrivate?: boolean | null;
 }
 
 /**
@@ -68694,6 +68695,7 @@ export interface UpdateOrganizationProfileInput {
   alphaPublished?: boolean | null;
   alphaEditorial?: boolean | null;
   alphaFeatured?: boolean | null;
+  alphaIsPrivate?: boolean | null;
 }
 
 /**

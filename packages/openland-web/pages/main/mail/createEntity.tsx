@@ -236,6 +236,7 @@ export const CreateEntity = ({
                     about: aboutField.value,
                     photoRef,
                     isCommunity,
+                    isPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE
                 },
             });
 

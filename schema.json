@@ -4990,6 +4990,22 @@
             "deprecationReason": null
           },
           {
+            "name": "alphaIsPrivate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "betaPublicRooms",
             "description": null,
             "args": [],
@@ -11652,6 +11668,22 @@
           },
           {
             "name": "alphaIsCommunity",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alphaIsPrivate",
             "description": null,
             "args": [],
             "type": {
@@ -21166,6 +21198,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "isPrivate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -22197,6 +22239,16 @@
           },
           {
             "name": "alphaFeatured",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "alphaIsPrivate",
             "description": null,
             "type": {
               "kind": "SCALAR",
