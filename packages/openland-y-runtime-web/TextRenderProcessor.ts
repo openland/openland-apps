@@ -7,7 +7,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
     emojify(text: string, isBig?: boolean) {
         return emoji({
             src: text,
-            size: isBig ? 38 : 16
+            size: isBig ? 20 : 16
         });
     },
 
