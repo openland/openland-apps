@@ -54,7 +54,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {
-            return <ASText key={'code-inline'} fontType="monospace" backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</ASText>;
+            return <ASText key={'code-inline'} fontType="monospace" fontSize={14} backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</ASText>;
         } else if (span.type === 'insane') {
             return <ASText key={'insane'}>{children}</ASText>;
         } else if (span.type === 'irony') {
