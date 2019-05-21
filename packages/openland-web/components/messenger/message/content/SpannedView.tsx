@@ -46,10 +46,20 @@ const codeBlockClassName = css`
 
 const loudTextClassName = css`
     font-size: 20px;
-    line-height: 28px;
+    line-height: 26px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.8);
-    margin-bottom: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: inline-block;
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+    }
 `;
 
 const onlyEmojiClassName = css`
@@ -58,6 +68,10 @@ const onlyEmojiClassName = css`
 `;
 
 const rotatingTextClassName = css`
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
     animation: rotate 1s linear infinite;
     display: inline-block;
 
@@ -72,6 +86,10 @@ const rotatingTextClassName = css`
 `;
 
 const insaneTextClassName = css`
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
     background: url(https://cdn.openland.com/shared/web/insane.gif);
     background-clip: text, border;
     -webkit-background-clip: text;
@@ -149,9 +167,9 @@ const SpanView = React.memo<{ span: Span; children?: any }>(props => {
     } else if (span.type === 'loud') {
         return <span className={loudTextClassName}>{children}</span>;
     } else if (span.type === 'rotating') {
-        return <span className={loudTextClassName + ' ' + rotatingTextClassName}>{children}</span>;
+        return <span className={rotatingTextClassName}>{children}</span>;
     } else if (span.type === 'insane') {
-        return <span className={loudTextClassName + ' ' + insaneTextClassName}>{children}</span>;
+        return <span className={insaneTextClassName}>{children}</span>;
     } else if (span.type === 'irony') {
         return <span className={ironyTextClassName}>{children}</span>;
     } else if (span.type === 'code_inline') {
