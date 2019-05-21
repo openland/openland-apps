@@ -19,10 +19,10 @@ enum SpaceXReadResult {
   case missing
 }
 
-enum FetchMode {
-  case cacheFirst
-  case networkOnly
-  case cacheAndNetwork
+enum FetchMode: String {
+  case cacheFirst = "cache-first"
+  case networkOnly = "network-only"
+  case cacheAndNetwork = "cache-and-network"
 }
 
 protocol RunningSubscription {
@@ -79,6 +79,8 @@ class SpaceXClient {
       fatalError("Only query operations are supported for querying")
     }
     
+    NSLog("[SpaceX-Client]: Query \(operation.name) with \(fetchMode)")
+    
     /*
      * There are two modes supported for query operation:
      * Cache First: Try to read data from cache and if it fails - read from network
@@ -104,8 +106,10 @@ class SpaceXClient {
         self.store.readQuery(operation: operation, variables: variables, queue: self.callbackQueue) { res in
           switch(res) {
           case .missing:
+            NSLog("[SpaceX-Client]: Query \(operation.name) is missing")
             doRequest()
           case .success(let data):
+            NSLog("[SpaceX-Client]: Query \(operation.name) success")
             handler(SpaceXOperationResult.result(data: data))
           }
         }
@@ -151,6 +155,9 @@ class SpaceXClient {
     fetchMode: FetchMode,
     handler: @escaping (SpaceXOperationResult) -> Void
   ) -> AbortFunc {
+    if operation.kind != .query {
+      fatalError("Only query operations are supported for watching")
+    }
     let queryWatch = QueryWatch(client: self, operation: operation, variables: variables, fetchMode: fetchMode, handler: handler)
     queryWatch.start()
     return {
@@ -165,7 +172,7 @@ class SpaceXClient {
   func subscribe(
     operation: OperationDefinition,
     variables: JSON,
-    handler: @escaping (SpaceXOperationResult)->Void
+    handler: @escaping (SpaceXOperationResult) -> Void
   ) -> AbortFunc {
     if operation.kind != .subscription {
       fatalError("Only subscription operations are supported for subscribing")
@@ -235,7 +242,7 @@ fileprivate class QueryWatch {
        operation: OperationDefinition,
        variables: JSON,
        fetchMode: FetchMode,
-       handler: @escaping  (SpaceXOperationResult) -> Void) {
+       handler: @escaping (SpaceXOperationResult) -> Void) {
     self.client = client
     self.operation = operation
     self.variables = variables

@@ -32,21 +32,21 @@ class LevelDBPersistenceProvider: PersistenceProvier {
   }
   
   func saveRecords(records: [String: String]) {
-    let _ = measure("leveldb:save (" + String(records.count) + ")") {
-      for k in records {
-        self.swiftStore[k.key] = k.value
-      }
+    for k in records {
+      NSLog("[SpaceX-Persistence]: Save \(k)")
+    }
+    for k in records {
+      self.swiftStore[k.key] = k.value
     }
   }
   
   func loadRecords(keys: Set<String>) -> [String: String] {
     var res: [String: String] = [:]
-    let _ = measure("leveldb:load (" + String(keys.count) + ")") {
-      for k in keys {
-        if let e = self.swiftStore[k] {
-          if !e.isEmpty {
-            res[k] = e
-          }
+    for k in keys {
+      if let e = self.swiftStore[k] {
+        if !e.isEmpty {
+          NSLog("[SpaceX-Persistence]: Loaded \(k)")
+          res[k] = e
         }
       }
     }
@@ -99,6 +99,7 @@ class SpaceXPersistence {
   
   func loadRecors(keys: Set<String>, queue: DispatchQueue, callback: @escaping (RecordSet) -> Void) {
     readerQueue.async {
+      
       let loaded = self.provider.loadRecords(keys: keys)
       var res: RecordSet = [:]
       for l in loaded {

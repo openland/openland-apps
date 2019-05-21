@@ -190,11 +190,13 @@ func readQueryFromStore(cacheKey: String, store: RecordStore, type: OutputType.O
     let value = store.read(key: refId)
     let ex = value.fields["data"]
     if ex == nil {
+      // NSLog("[SpaceX-Store]: Missing query \(refId)")
       return StoreReadResult.missing
     }
     let rv = readValue(value: ex!, type: sf.type, store: store, variables: variables)
     switch(rv) {
     case .missing:
+      // NSLog("[SpaceX-Store]: Missing value")
       return StoreReadResult.missing
     case .success(let data):
       fields[sf.alias] = data
