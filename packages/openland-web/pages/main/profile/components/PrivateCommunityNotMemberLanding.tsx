@@ -17,27 +17,31 @@ export const PrivateCommunityNotMemberLanding = ({
     return (
         <>
             <XView
-                flexDirection="row"
-                justifyContent={isMobile ? 'space-between' : 'flex-end'}
-                alignItems="center"
-            >
-                <XView
-                    zIndex={100}
-                    hoverCursor="pointer"
-                    height={52}
-                    flexDirection="row"
-                    marginRight={16}
-                    alignItems="center"
-                >
-                    <ClosingCross />
-                </XView>
-            </XView>
-            <XView
                 flexDirection="column"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
                 alignItems="center"
                 paddingTop={61}
+                position="relative"
             >
+                <XView
+                    flexDirection="row"
+                    justifyContent={isMobile ? 'space-between' : 'flex-end'}
+                    alignItems="center"
+                    position="absolute"
+                    top={0}
+                    right={0}
+                >
+                    <XView
+                        zIndex={100}
+                        hoverCursor="pointer"
+                        height={52}
+                        flexDirection="row"
+                        marginRight={16}
+                        alignItems="center"
+                    >
+                        <ClosingCross />
+                    </XView>
+                </XView>
                 <XView
                     backgroundColor={'rgba(244, 244, 244, 0.7)'}
                     borderRadius={10}
