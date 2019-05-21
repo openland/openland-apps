@@ -39,7 +39,7 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
                 offset: 0,
                 length: rootText.length,
                 textRaw: text,
-                text: TextRenderProccessor.emojify(rootText, true)
+                text: TextRenderProccessor.emojify(rootText, (rootType === 'emoji') ? 'huge' : 'big')
             }]
         });
     } else {

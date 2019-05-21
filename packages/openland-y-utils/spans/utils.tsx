@@ -67,7 +67,7 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
             res.push({
                 type: 'text',
                 textRaw: p,
-                text: TextRenderProccessor.emojify(p, isBig),
+                text: TextRenderProccessor.emojify(p, isBig ? 'big' : 'default'),
                 length: p.length,
                 offset: startOffset + garbageString.length
             });
@@ -120,8 +120,10 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     return res;
 }
 
+type SpansSliceType = 'slice' | 'code_block' | 'loud' | 'emoji';
+
 interface SpansSlice {
-    type: 'slice' | 'code_block' | 'loud';
+    type: SpansSliceType;
     spans: Span[];
     padded: boolean;
 }
@@ -129,8 +131,9 @@ interface SpansSlice {
 export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[] => {
     let res: SpansSlice[] = [];
 
-    while (spans.findIndex((v) => ['code_block', 'loud'].includes(v.type)) >= 0) {
-        let index = spans.findIndex((v) => ['code_block', 'loud'].includes(v.type));
+    while (spans.findIndex((v) => ['code_block', 'loud', 'emoji'].includes(v.type)) >= 0) {
+        let index = spans.findIndex((v) => ['code_block', 'loud', 'emoji'].includes(v.type));
+        let type: SpansSliceType = spans[index].type as any;
 
         // before current code-block/loud
         if (index > 0) {
@@ -143,16 +146,16 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
 
         // current code-block/loud
         res.push({
-            type: spans[index].type as any,
+            type: type,
             spans: [spans[index]],
-            padded: false
+            padded: ((index === spans.length - 1) && (type !== 'code_block')) ? !!usePadded : false
         });
 
         spans = spans.slice(index + 1);
     }
 
     // after all code-blocks/louds
-    if (spans.length > 0 || !!usePadded) {
+    if (spans.length > 0 || (!!usePadded && res[res.length - 1].type === 'code_block')) {
         res.push({
             type: 'slice',
             spans: spans,

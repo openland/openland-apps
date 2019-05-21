@@ -67,6 +67,8 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
             return <ASText key={'rotating'}>{children}</ASText>;
         } else if (span.type === 'new_line') {
             return <ASText key={'br'}>{'\n'}</ASText>;
+        } else if (span.type === 'emoji') {
+            return <ASText key={'emoji'} fontSize={30} lineHeight={34}>{children}</ASText>;
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }

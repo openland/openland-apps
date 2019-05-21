@@ -22,7 +22,7 @@ const TextWrapper = (props: TextWrapperProps) => (
         key={'text-' + props.color}
         color={props.color}
         letterSpacing={-0.3}
-        fontSize={props.fontSize || 16}
+        fontSize={props.fontSize}
         fontWeight={TextStyles.weight.regular}
         fontStyle={props.fontStyle}
         maxWidth={props.maxWidth}
@@ -57,12 +57,12 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
             <>
                 {content.map((c, i) => (
                     <>
-                        {(c.type === 'slice' || c.type === 'loud') && (
+                        {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
-                                fontSize={c.type === 'loud' ? 20 : undefined}
+                                fontSize={c.type === 'emoji' ? 30 : (c.type === 'loud' ? 20 : 16)}
                                 marginBottom={c.type === 'loud' ? 4 : undefined}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}

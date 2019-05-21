@@ -4,7 +4,7 @@ import { cropSpecSymbols } from 'openland-y-utils/spans/cropSpecSymbols';
 import { removeLineBreakers } from 'openland-y-utils/spans/removeLineBreakers';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
-    emojify(text: string, isBig?: boolean) {
+    emojify(text: string, size?: 'default' | 'big' | 'huge') {
         return text;
     },
 

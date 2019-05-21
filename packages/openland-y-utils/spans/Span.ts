@@ -1,7 +1,7 @@
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, MessageSpanType } from "openland-api/Types";
 
-export type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating';
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate | SpanCodeBlock | SpanCodeInline | SpanInsane | SpanIrony | SpanItalic | SpanLoud | SpanRotating;
+export type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating' | 'emoji';
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate | SpanCodeBlock | SpanCodeInline | SpanInsane | SpanIrony | SpanItalic | SpanLoud | SpanRotating | SpanEmoji;
 
 interface SpanAbs {
     type: SpanType;
@@ -15,6 +15,10 @@ interface SpanAbs {
 
 export interface SpanText extends SpanAbs {
     type: 'text' | 'new_line';
+}
+
+export interface SpanEmoji extends SpanAbs {
+    type: 'emoji';
 }
 
 export interface SpanBold extends SpanAbs {

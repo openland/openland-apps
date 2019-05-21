@@ -5,10 +5,20 @@ import { removeLineBreakers } from 'openland-y-utils/spans/removeLineBreakers';
 import { cropSpecSymbols } from 'openland-y-utils/spans/cropSpecSymbols';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
-    emojify(text: string, isBig?: boolean) {
+    emojify(text: string, size?: 'default' | 'big' | 'huge') {
+        let emojiSize: 16 | 20 | 38 = 16;
+
+        if (size === 'big') {
+            emojiSize = 20;
+        }
+
+        if (size === 'huge') {
+            emojiSize = 38;
+        }
+
         return emoji({
             src: text,
-            size: isBig ? 20 : 16
+            size: emojiSize
         });
     },
 

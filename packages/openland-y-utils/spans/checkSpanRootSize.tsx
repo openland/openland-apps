@@ -1,5 +1,4 @@
 import { isEmoji } from 'openland-y-utils/isEmoji';
-import { emoji } from 'openland-y-utils/emoji';
 import { SpanType } from './Span';
 
 function emojiChecker(messageText: string) {
@@ -24,29 +23,31 @@ interface CheckSpanRootSizeResult {
 export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
 
-    let isRotating = text.startsWith('🔄') && text.endsWith('🔄');
-    let isInsane = text.startsWith('🌈') && text.endsWith('🌈');
-    let isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
-    let isTextSticker = text.startsWith(':') && text.endsWith(':');
+    // DEPRECATED - START
+        let isRotating = (text.length > '🔄'.length * 2) && text.startsWith('🔄') && text.endsWith('🔄');
+        let isInsane = (text.length > '🌈'.length * 2) && text.startsWith('🌈') && text.endsWith('🌈');
+        let isTextSticker = (text.length > ':'.length * 2) && text.startsWith(':') && text.endsWith(':');
 
-    if (isInsane || isMouthpiece || isRotating) {
-        text = text
-            .replace(/🌈/g, '')
-            .replace(/📣/g, '')
-            .replace(/🔄/g, '');
-    } else if (isTextSticker) {
-        text = text.slice(1, text.length - 1);
-    }
+        if (isRotating) {
+            text = text.slice('🔄'.length, text.length - '🔄'.length);
+        }
 
-    let type: SpanType = 'text';
+        if (isInsane) {
+            text = text.slice('🌈'.length, text.length - '🌈'.length);
+        }
 
-    type = isInsane ? 'insane' : type;
-    type = isRotating ? 'rotating' : type;
-    type = (isTextSticker || isMouthpiece) ? 'loud' : type;
+        if (isTextSticker) {
+            text = text.slice(':'.length, text.length - ':'.length);
+        }
 
-    if (type === 'text' && isOnlyEmoji) {
-        type = 'loud'
-    }
+        let type: SpanType = 'text';
+
+        type = isInsane ? 'insane' : type;
+        type = isRotating ? 'rotating' : type;
+        type = isTextSticker ? 'loud' : type;
+    // DEPRECATED - END
+
+    type = isOnlyEmoji ? 'emoji' : type;
 
     return {
         text,

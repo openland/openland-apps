@@ -108,7 +108,9 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return <Text key={'rotating'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'new_line') {
             return <Text key={'br'}>{'\n'}</Text>;
-        } else if (span.type === 'text') {
+        } else if (span.type === 'emoji') {
+            return <Text key={'emoji'} style={{ fontSize: 30, lineHeight: 34 }}>{children}</Text>;
+        }  if (span.type === 'text') {
             return <Text key={'text'}>{span.text}</Text>;
         }
     

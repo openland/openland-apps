@@ -2,7 +2,7 @@ import { TextRenderProccessorApi } from 'openland-y-runtime-api/TextRenderProces
 import { Span, SpecSymbolsType } from 'openland-y-utils/spans/Span';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
-    emojify(text: string, isBig?: boolean) {
+    emojify(text: string, size?: 'default' | 'big' | 'huge') {
         return text;
     },
 
