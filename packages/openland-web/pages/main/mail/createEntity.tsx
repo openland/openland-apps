@@ -247,8 +247,10 @@ export const CreateEntity = ({
                 });
             }
 
+            await client.refetchAccount();
+
             let redirect = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
-            router.push(redirect);
+            window.location.href = redirect;
         }
     };
 
