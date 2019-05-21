@@ -8,5 +8,9 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
 
     cropSpecSymbols(spans: Span[], parent: Span, symbols: SpecSymbolsType[]) {
         return spans;
+    },
+
+    removeLineBreakers(spans: Span[]) {
+        return spans;
     }
 };

@@ -1,7 +1,8 @@
 import { TextRenderProccessorApi } from 'openland-y-runtime-api/TextRenderProcessorApi';
 import { emoji } from 'openland-y-utils/emoji';
 import { Span, SpecSymbolsType } from 'openland-y-utils/spans/Span';
-import { cropSpecSymbols } from 'openland-y-utils/cropSpecSymbols';
+import { removeLineBreakers } from 'openland-y-utils/spans/removeLineBreakers';
+import { cropSpecSymbols } from 'openland-y-utils/spans/cropSpecSymbols';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
     emojify(text: string, isBig?: boolean) {
@@ -13,5 +14,9 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
 
     cropSpecSymbols(spans: Span[], parent: Span, symbols: SpecSymbolsType[]) {
         return cropSpecSymbols(spans, parent, symbols);
+    },
+
+    removeLineBreakers(spans: Span[]) {
+        return removeLineBreakers(spans, ['code_block']);
     }
 };

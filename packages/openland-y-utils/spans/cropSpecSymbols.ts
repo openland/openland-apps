@@ -1,5 +1,5 @@
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
-import { Span, SpecSymbolsType } from './spans/Span';
+import { Span, SpecSymbolsType } from './Span';
 
 export const cropSpecSymbols = (spans: Span[], parent: Span, symbols: SpecSymbolsType[]): Span[] => {
     const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';

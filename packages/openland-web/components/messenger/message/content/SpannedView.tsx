@@ -45,7 +45,6 @@ const codeBlockClassName = css`
 `;
 
 const loudTextClassName = css`
-    display: block;
     font-size: 20px;
     line-height: 28px;
     font-weight: 600;
