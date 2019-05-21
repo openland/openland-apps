@@ -37,7 +37,7 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XSocialButton } from 'openland-x/XSocialButton';
-import { XMoreCards, XMoreCardsButton, XMoreCardsWrapper } from 'openland-x/cards/XMoreCards';
+import { XMoreCards, XMoreCardsButton } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XSwitcher } from 'openland-x/XSwitcher';
@@ -51,6 +51,7 @@ import { AvatarModal } from './UserProfileComponent';
 import { XPopper } from 'openland-x/XPopper';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { showLeaveConfirmation } from 'openland-web/fragments/showLeaveConfirmation';
+import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -718,12 +719,9 @@ const Members = ({ organization, router }: MembersProps) => {
         },
     );
 
-    React.useEffect(
-        () => {
-            setJoinedMembers(data.organization.members);
-        },
-        [organization.id],
-    );
+    React.useEffect(() => {
+        setJoinedMembers(data.organization.members);
+    }, [organization.id]);
 
     const toggleShown = async () => {
         const loaded = await client.queryOrganizationMembersShortPaginated({
@@ -997,9 +995,14 @@ const OrganizationProvider = ({
     onDirectory?: boolean;
 }) => {
     const client = useClient();
+
     let router = React.useContext(XRouterContext)!;
 
     const data = client.useOrganizationWithoutMembers(variables);
+
+    if (!data.organization.isMine && data.organization.isPrivate) {
+        return <PrivateCommunityNotMemberLanding organization={data.organization} />;
+    }
 
     return (
         <OrganizationProfileInner

@@ -3,6 +3,7 @@ fragment OrganizationFull on Organization {
   about
   featured: alphaFeatured
   isCommunity: alphaIsCommunity
+  isPrivate: alphaIsPrivate
   requests: alphaOrganizationMemberRequests {
     __typename
     role

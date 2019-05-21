@@ -66,6 +66,14 @@ const Close = Glamorous(XLink)({
     },
 });
 
+export const ClosingCross = ({ path = '/mail/' }: { path?: string }) => {
+    return (
+        <Close path={path}>
+            <CloseIcon />
+        </Close>
+    );
+};
+
 const UserInfoWrapper = Glamorous(XHorizontal)({
     marginTop: 50,
     flexShrink: 0,
@@ -124,6 +132,14 @@ const Image = Glamorous.div({
         marginLeft: -500,
     },
 });
+
+export const FooterImage = () => {
+    return (
+        <ImageWrapper hasFooter={true}>
+            <Image />
+        </ImageWrapper>
+    );
+};
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
@@ -364,9 +380,7 @@ export const InviteLandingComponentLayout = ({
                         marginRight={16}
                         alignItems="center"
                     >
-                        <Close path="/mail/">
-                            <CloseIcon />
-                        </Close>
+                        <ClosingCross />
                     </XView>
                 )}
             </XView>
