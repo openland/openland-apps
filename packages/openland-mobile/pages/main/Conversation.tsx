@@ -41,6 +41,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
+import throttle from 'lodash/throttle';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -63,6 +64,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     private themeSub?: () => void;
+
+    private setTyping = throttle(() => {
+        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
+    }, 1000);
 
     constructor(props: ConversationRootProps) {
         super(props);
@@ -124,8 +129,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleTextChange = (src: string) => {
-        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
-
+        this.setTyping();
         this.setState({ text: src }, () => {
             this.saveDraft();
         });

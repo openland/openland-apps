@@ -33,7 +33,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
-import { randomTag } from 'react-native-async-view/internals/randomTag';
+import throttle from 'lodash/throttle';
 
 export interface File {
     uuid: string;
@@ -147,6 +147,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         conversationId: string;
     };
 
+    private setTyping = throttle(() => {
+        this.props.messenger.client.mutateSetTyping({
+            conversationId: this.props.conversationId,
+        });
+    }, 1000);
+
     activeSubscription?: () => void;
 
     constructor(props: MessagesComponentProps) {
@@ -228,9 +234,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         let curLength = text.length;
 
         if (prevLength < curLength) {
-            await this.props.messenger.client.mutateSetTyping({
-                conversationId: this.props.conversationId,
-            });
+            this.setTyping();
         }
 
         if (prevLength > 0 && curLength <= 0) {
