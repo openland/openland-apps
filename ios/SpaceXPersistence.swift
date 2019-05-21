@@ -24,7 +24,7 @@ class LevelDBPersistenceProvider: PersistenceProvier {
   private let swiftStore: SwiftStore
   
   init(name: String) {
-    self.swiftStore = measure("leveldb:open", LevelDBPersistenceProvider.stores.get(name))
+    self.swiftStore = measure("leveldb:open", { return LevelDBPersistenceProvider.stores.get(name) })
   }
   
   func close() {
@@ -42,11 +42,13 @@ class LevelDBPersistenceProvider: PersistenceProvier {
   
   func loadRecords(keys: Set<String>) -> [String: String] {
     var res: [String: String] = [:]
-    for k in keys {
-      if let e = self.swiftStore[k] {
-        if !e.isEmpty {
-          NSLog("[SpaceX-Persistence]: Loaded \(k)")
-          res[k] = e
+    let _ = measure("[SpaceX-LevelDB]: save") {
+      for k in keys {
+        if let e = self.swiftStore[k] {
+          if !e.isEmpty {
+            NSLog("[SpaceX-Persistence]: Loaded \(k)")
+            res[k] = e
+          }
         }
       }
     }
