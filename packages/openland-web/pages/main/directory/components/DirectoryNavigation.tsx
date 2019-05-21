@@ -180,7 +180,7 @@ export const DirectoryNavigation = XMemo(
                                     {TextDirectory.create.organization}
                                 </XMenuItem>
                                 <XMenuItem
-                                    onClick={() => showCreateOrganization('community')}
+                                    path="/mail/createOrganization?community=true"
                                     icon="x-dropdown-community"
                                 >
                                     {TextDirectory.create.community}
