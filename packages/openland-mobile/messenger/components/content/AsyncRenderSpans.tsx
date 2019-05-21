@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { ASText } from 'react-native-async-view/ASText';
+import { ASText, ASTextProps } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -8,29 +8,25 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
 
-interface TextWrapperProps {
-    marginBottom?: number;
-    maxWidth?: number;
-    fontSize?: number;
+interface TextWrapperProps extends ASTextProps {
     color: string;
-    fontStyle?: 'italic' | 'normal';
     children?: any;
 }
 
-const TextWrapper = (props: TextWrapperProps) => (
-    <ASText
-        key={'text-' + props.color}
-        color={props.color}
-        letterSpacing={-0.3}
-        fontSize={props.fontSize}
-        fontWeight={TextStyles.weight.regular}
-        fontStyle={props.fontStyle}
-        maxWidth={props.maxWidth}
-        marginBottom={props.marginBottom}
-    >
-        {props.children}
-    </ASText>
-)
+const TextWrapper = (props: TextWrapperProps) => {
+    const { children, ...other } = props;
+
+    return (
+        <ASText
+            key={'text-' + props.color}
+            {...other}
+            letterSpacing={-0.3}
+            fontWeight={TextStyles.weight.regular}
+        >
+            {children}
+        </ASText>
+    );
+};
 
 interface RenderSpansProps {
     spans: Span[];
@@ -63,7 +59,8 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
                                 fontSize={c.type === 'emoji' ? 30 : (c.type === 'loud' ? 20 : 16)}
-                                marginBottom={c.type === 'loud' ? 4 : undefined}
+                                marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
+                                marginBottom={(c.type === 'loud' && i !== content.length - 1) ? 8 : undefined}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                 {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
