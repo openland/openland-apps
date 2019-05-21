@@ -112,11 +112,9 @@ export class DialogListEngine {
     private userConversationMap = new Map<string, string>();
     private useOnlines = new Map<string, boolean>();
     private loadedConversations = new Set<string>();
-    private dialogListCallback: (convs: string[]) => void;
 
-    constructor(engine: MessengerEngine, cb: (convs: string[]) => void) {
+    constructor(engine: MessengerEngine) {
         this.engine = engine;
-        this.dialogListCallback = cb;
 
         let provider: DataSourceStoredProvider<DialogDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
@@ -149,10 +147,10 @@ export class DialogListEngine {
                         if (this.useOnlines.has(i.flexibleId)) {
                             onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
                         }
+                        this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     }
                     this.loadedConversations.add(i.key);
                 }
-                this.dialogListCallback(Array.from(this.loadedConversations))
             },
             onDataSourceLoadedMore: (items) => {
                 for (let i of items) {
@@ -162,9 +160,9 @@ export class DialogListEngine {
                             onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
                         }
                     }
+                    this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     this.loadedConversations.add(i.key);
                 }
-                this.dialogListCallback(Array.from(this.loadedConversations))
             },
             onDataSourceItemAdded: (item) => {
                 if (item.kind === 'PRIVATE') {
@@ -172,13 +170,13 @@ export class DialogListEngine {
                     if (this.useOnlines.has(item.flexibleId)) {
                         onlineAugmentator.setAugmentation(item.flexibleId, { online: this.useOnlines.get(item.flexibleId)!! })
                     }
+                    this.engine.getOnlines().onPrivateChatAppears(item.flexibleId);
+
                 }
                 this.loadedConversations.add(item.key);
-                this.dialogListCallback(Array.from(this.loadedConversations))
             },
             onDataSourceItemRemoved: (item) => {
                 this.loadedConversations.delete(item.key);
-                this.dialogListCallback(Array.from(this.loadedConversations))
             },
             onDataSourceItemMoved: () => {
                 // Nothing to do

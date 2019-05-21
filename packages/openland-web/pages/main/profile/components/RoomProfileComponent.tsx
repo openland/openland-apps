@@ -60,6 +60,7 @@ import { canUseDOM } from '../../../../../openland-y-utils/canUseDOM';
 import { XIcon } from '../../../../../openland-x/XIcon';
 import { TextProfiles } from '../../../../../openland-text/TextProfiles';
 import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -505,6 +506,7 @@ const RoomGroupProfileProvider = ({
 }) => {
     let router = React.useContext(XRouterContext)!;
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
 
     const data = client.useRoomWithoutMembers(variables);
 
@@ -543,6 +545,33 @@ const RoomGroupProfileProvider = ({
             });
         },
     });
+
+    React.useEffect(() => {
+        return dataSource.watch({
+            onDataSourceInited(members: RoomMembersPaginated_members[], completed: boolean) {
+                members.map(u => u.user.id).map(messenger.getOnlines().onUserAppears);
+
+            },
+            onDataSourceItemAdded(item: RoomMembersPaginated_members, index: number) {
+                messenger.getOnlines().onUserAppears(item.user.id);
+            },
+            onDataSourceLoadedMore(members: RoomMembersPaginated_members[], completed: boolean) {
+                members.map(u => u.user.id).map(messenger.getOnlines().onUserAppears);
+            },
+            onDataSourceItemUpdated(item: RoomMembersPaginated_members, index: number) {
+                // Nothing to do
+            },
+            onDataSourceItemRemoved(item: RoomMembersPaginated_members, index: number) {
+                // Nothing to do
+            },
+            onDataSourceItemMoved(item: RoomMembersPaginated_members, fromIndex: number, toIndex: number) {
+                // Nothing to do
+            },
+            onDataSourceCompleted() {
+                // Nothing to do
+            }
+        })
+    }, [])
 
     const renderItem = React.useMemo(() => {
         return (member: any) => {

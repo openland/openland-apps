@@ -10,6 +10,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { XViewRouterContext } from 'react-mental';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
@@ -47,8 +48,8 @@ const Status = (({ variables }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={user.lastSeen} format="humanize_cute" />
+                    )}
             </StatusWrapper>
         );
     } else if (user && user.online) {
@@ -101,6 +102,10 @@ const UserPopperContent = XMemo(
             );
         } else {
             const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
+            const messenger = React.useContext(MessengerContext);
+            React.useEffect(() => {
+                messenger.getOnlines().onUserAppears(user.id!);
+            }, [])
             return (
                 <Wrapper>
                     <XHorizontal>

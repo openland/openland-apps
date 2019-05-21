@@ -53,9 +53,7 @@ export class MessengerEngine {
         // Onlines
         this.onlineWatcher = new OnlineWatcher(this.client);
 
-        this.dialogList = new DialogListEngine(this, data => {
-            this.onlineWatcher.onDialogListChange(data);
-        });
+        this.dialogList = new DialogListEngine(this);
 
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);

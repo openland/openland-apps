@@ -29,121 +29,125 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomWithoutMembers_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated({ roomId: roomId, first: 10 }, { fetchPolicy: 'cache-and-network' }).members;
 
-    const [ members, setMembers ] = React.useState(initialMembers);
-    const [ loading, setLoading ] = React.useState(false);
+    const [members, setMembers] = React.useState(initialMembers);
+    const [loading, setLoading] = React.useState(false);
 
-    const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
+    const [onlineCount, setOnlineCount] = React.useState<number>(0);
+
+    React.useEffect(() => {
+        members.map(u => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
+    }, members);
 
     getChatOnlinesCount(roomId, client, (count) => setOnlineCount(count));
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
     // callbacks
-        const handleSend = React.useCallback(() => {
-            props.router.pushAndReset('Conversation', { flexibleId: roomId });
-        }, [ roomId ]);
+    const handleSend = React.useCallback(() => {
+        props.router.pushAndReset('Conversation', { flexibleId: roomId });
+    }, [roomId]);
 
-        const handleLeave = React.useCallback(() => {
-            Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
-                .button('Cancel', 'cancel')
-                .action('Leave and delete', 'destructive', async () => {
-                    await client.mutateRoomLeave({ roomId });
-                    props.router.pushAndResetRoot('Home');
-                })
-                .show();
-        }, [ roomId ]);
+    const handleLeave = React.useCallback(() => {
+        Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
+            .button('Cancel', 'cancel')
+            .action('Leave and delete', 'destructive', async () => {
+                await client.mutateRoomLeave({ roomId });
+                props.router.pushAndResetRoot('Home');
+            })
+            .show();
+    }, [roomId]);
 
-        const handleKick = React.useCallback((user: UserShort) => {
-            Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
-                .button('Cancel', 'cancel')
-                .action('Kick', 'destructive', async () => {
-                    await client.mutateRoomKick({ userId: user.id, roomId });
-                })
-                .show();
-        }, [ roomId ]);
+    const handleKick = React.useCallback((user: UserShort) => {
+        Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
+            .button('Cancel', 'cancel')
+            .action('Kick', 'destructive', async () => {
+                await client.mutateRoomKick({ userId: user.id, roomId });
+            })
+            .show();
+    }, [roomId]);
 
-        const handleMakeAdmin = React.useCallback((user: UserShort) => {
-            Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
-                .button('Cancel', 'cancel')
-                .action('Promote', 'destructive', async () => {
-                    await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
-                })
-                .show();
-        }, [ roomId ]);
+    const handleMakeAdmin = React.useCallback((user: UserShort) => {
+        Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
+            .button('Cancel', 'cancel')
+            .action('Promote', 'destructive', async () => {
+                await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
+            })
+            .show();
+    }, [roomId]);
 
-        const handleMemberLongPress = React.useCallback((member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean) => {
-            let builder = ActionSheet.builder();
+    const handleMemberLongPress = React.useCallback((member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean) => {
+        let builder = ActionSheet.builder();
 
-            let user = member.user;
+        let user = member.user;
 
-            if (user.id !== getMessenger().engine.user.id) {
-                builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
+        if (user.id !== getMessenger().engine.user.id) {
+            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
 
-                if (canEdit) {
-                    if (member.role === RoomMemberRole.MEMBER) {
-                        builder.action('Make admin', () => handleMakeAdmin(user));
-                    }
+            if (canEdit) {
+                if (member.role === RoomMemberRole.MEMBER) {
+                    builder.action('Make admin', () => handleMakeAdmin(user));
                 }
-                if (canKick) {
-                    builder.action('Kick', () => handleKick(user), true);
-                }
-            } else {
-                builder.action('Leave', handleLeave, true);
             }
+            if (canKick) {
+                builder.action('Kick', () => handleKick(user), true);
+            }
+        } else {
+            builder.action('Leave', handleLeave, true);
+        }
 
-            builder.show();
-        }, [ roomId ]);
+        builder.show();
+    }, [roomId]);
 
-        const handleAddMember = React.useCallback(() => {
-            Modals.showUserMuptiplePicker(props.router,
-                {
-                    title: 'Add', action: async (users) => {
-                        startLoader();
-                        try {
-                            await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
-                            props.router.back();
-                        } catch (e) {
-                            Alert.alert(e.message);
-                        }
-                        stopLoader();
+    const handleAddMember = React.useCallback(() => {
+        Modals.showUserMuptiplePicker(props.router,
+            {
+                title: 'Add', action: async (users) => {
+                    startLoader();
+                    try {
+                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
+                        props.router.back();
+                    } catch (e) {
+                        Alert.alert(e.message);
                     }
-                },
-                'Add members',
-                members.map(m => m.user.id),
-                { path: 'ProfileGroupLink', pathParams: { id: room.id } }
-            );
-        }, [ members ]);
+                    stopLoader();
+                }
+            },
+            'Add members',
+            members.map(m => m.user.id),
+            { path: 'ProfileGroupLink', pathParams: { id: room.id } }
+        );
+    }, [members]);
 
-        const handleManageClick = React.useCallback(() => {
-            let builder = new ActionSheetBuilder();
+    const handleManageClick = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
 
-            if (room.canEdit) {
-                builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
-            }
+        if (room.canEdit) {
+            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
+        }
 
-            if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
-                builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
-            }
+        if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
+            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
+        }
 
-            builder.action('Leave and delete', handleLeave, true);
+        builder.action('Leave and delete', handleLeave, true);
 
-            builder.show();
-        }, [ room ]);
+        builder.show();
+    }, [room]);
 
-        const handleLoadMore = React.useCallback(async () => {
-            if (members.length < (room.membersCount || 0) && !loading) {
-                setLoading(true);
+    const handleLoadMore = React.useCallback(async () => {
+        if (members.length < (room.membersCount || 0) && !loading) {
+            setLoading(true);
 
-                const loaded = await client.queryRoomMembersPaginated({
-                    roomId,
-                    first: 10,
-                    after: members[members.length - 1].user.id,
-                });
+            const loaded = await client.queryRoomMembersPaginated({
+                roomId,
+                first: 10,
+                after: members[members.length - 1].user.id,
+            });
 
-                setMembers([...members, ...loaded.members]);
-                setLoading(false);
-            }
-        }, [ room, roomId, members, loading ]);
+            setMembers([...members, ...loaded.members]);
+            setLoading(false);
+        }
+    }, [room, roomId, members, loading]);
 
     let subtitle = (
         <>

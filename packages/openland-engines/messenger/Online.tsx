@@ -2,10 +2,14 @@ import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
 import { forever } from 'openland-engines/utils/forever';
+import { subscribe } from 'graphql';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
     private sub?: GraphqlActiveSubscription<OnlineWatch, OnlineWatchVariables> = undefined;
+
+    private users: string[] = [];
+    private privateChats: string[] = [];
 
     private listeners: ((data: {}) => void)[] = [];
     private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
@@ -14,10 +18,11 @@ export class OnlineWatcher {
         this.client = client;
     }
 
-    onDialogListChange(conversations: string[]) {
+    subscribe() {
         this.destroy();
+        let toSubscrive = [...this.users, ...this.privateChats.filter(uid => !this.users.includes(uid))]
 
-        let s = this.client.subscribeOnlineWatch({ conversations });
+        let s = this.client.subscribeOnlineWatch({ users: toSubscrive });
         this.sub = s;
 
         forever(async () => {
@@ -25,7 +30,7 @@ export class OnlineWatcher {
             // if (!event) {
             //     continue;
             // }
-            let evData = event.alphaSubscribeChatOnline;
+            let evData = event.alphaSubscribeOnline;
 
             let userId = evData.user.id;
 
@@ -34,6 +39,23 @@ export class OnlineWatcher {
 
             this.listeners.forEach(l => l(this.onlinesData));
         });
+    }
+
+    onPrivateChatAppears = (uid: string) => {
+        if (!this.privateChats.includes(uid)) {
+            this.privateChats.unshift(uid);
+            this.subscribe();
+        }
+    }
+
+    onUserAppears = (uid: string) => {
+        if (!this.users.includes(uid)) {
+            this.users.unshift(uid);
+            if (this.users.length > 50) {
+                this.users.pop()
+            }
+            this.subscribe();
+        }
     }
 
     onChange(cb: (onlines: Map<string, boolean>) => void) {

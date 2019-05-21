@@ -14548,22 +14548,22 @@
 			"rootType": "Subscription",
 			"variables": [
 				{
-					"name": "conversations",
+					"name": "users",
 					"type": "[ID!]!"
 				}
 			],
-			"source": "subscription OnlineWatch($conversations: [ID!]!) {\n  alphaSubscribeChatOnline(conversations: $conversations) {\n    __typename\n    user: user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    type\n    timeout\n  }\n}",
+			"source": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    user: user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    type\n    timeout\n  }\n}",
 			"fields": [
 				{
-					"responseName": "alphaSubscribeChatOnline",
-					"fieldName": "alphaSubscribeChatOnline",
+					"responseName": "alphaSubscribeOnline",
+					"fieldName": "alphaSubscribeOnline",
 					"type": "OnlineEvent!",
 					"args": [
 						{
-							"name": "conversations",
+							"name": "users",
 							"value": {
 								"kind": "Variable",
-								"variableName": "conversations"
+								"variableName": "users"
 							},
 							"type": "[ID!]!"
 						}
@@ -14637,8 +14637,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "subscription OnlineWatch($conversations: [ID!]!) {\n  alphaSubscribeChatOnline(conversations: $conversations) {\n    __typename\n    user: user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    type\n    timeout\n  }\n}",
-			"operationId": "2b432ff5475f23cdc3456d8e4f4a34c1a7e7cdb39faf4fc41438575b57454624"
+			"sourceWithFragments": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    user: user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    type\n    timeout\n  }\n}",
+			"operationId": "67a6a82eeebeea4950a9aeec12655dabb468bdf339aec7bbc33b8aa8e1b4933f"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/User.ts",

@@ -1,5 +1,5 @@
-subscription OnlineWatch($conversations: [ID!]!) {
-  alphaSubscribeChatOnline(conversations: $conversations) {
+subscription OnlineWatch($users: [ID!]!) {
+  alphaSubscribeOnline(users: $users) {
     __typename
     timeout
     type

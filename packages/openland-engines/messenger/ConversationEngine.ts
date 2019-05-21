@@ -678,7 +678,6 @@ export class ConversationEngine implements MessageSendHandler {
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
-            console.warn('boom', 'updateItem', conv.key)
             let ex = this.dataSource.getItem(conv.key) as DataSourceMessageItem;
             let converted = {
                 ...conv,
@@ -711,7 +710,6 @@ export class ConversationEngine implements MessageSendHandler {
                     conv.attachTop = false;
                 }
             }
-            console.warn('boom', 'addItem', conv.key)
 
             this.dataSource.addItem(conv, 0);
         }

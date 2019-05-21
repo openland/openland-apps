@@ -52028,26 +52028,26 @@ export interface OnlineVariables {
 // GraphQL subscription operation: OnlineWatch
 // ====================================================
 
-export interface OnlineWatch_alphaSubscribeChatOnline_user {
+export interface OnlineWatch_alphaSubscribeOnline_user {
   __typename: "User";
   id: string;
   online: boolean;
   lastSeen: string | null;
 }
 
-export interface OnlineWatch_alphaSubscribeChatOnline {
+export interface OnlineWatch_alphaSubscribeOnline {
   __typename: "OnlineEvent";
-  user: OnlineWatch_alphaSubscribeChatOnline_user;
+  user: OnlineWatch_alphaSubscribeOnline_user;
   type: string;
   timeout: number;
 }
 
 export interface OnlineWatch {
-  alphaSubscribeChatOnline: OnlineWatch_alphaSubscribeChatOnline;
+  alphaSubscribeOnline: OnlineWatch_alphaSubscribeOnline;
 }
 
 export interface OnlineWatchVariables {
-  conversations: string[];
+  users: string[];
 }
 
 /* tslint:disable */

@@ -1178,10 +1178,10 @@
       }
     },
     {
-      "signature": "a80c51844f2a86bb5bd298d51d2385deafbe760599ef3ebb5e55cee05acdc30e",
-      "document": "subscription OnlineWatch($conversations:[ID!]!){alphaSubscribeChatOnline(conversations:$conversations){__typename timeout type user:user{__typename id lastSeen online}}}",
+      "signature": "587226c89190425a4fca34c93c2f2defdfd419010208735168f895df7e0b93d7",
+      "document": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename timeout type user:user{__typename id lastSeen online}}}",
       "metadata": {
-        "engineSignature": "subscription OnlineWatch($conversations:[ID!]!){alphaSubscribeChatOnline(conversations:$conversations){__typename timeout type user{__typename id lastSeen online}}}"
+        "engineSignature": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename timeout type user{__typename id lastSeen online}}}"
       }
     },
     {

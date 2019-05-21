@@ -26,7 +26,6 @@ const GroupListComponent = React.memo<PageProps>((props) => {
             } else {
                 res = (await getClient().queryUserRooms({ after: rooms[rooms.length - 1].id, limit: 10 }, { fetchPolicy: 'network-only' })).betaUserRooms;
             }
-            console.warn('boom', res);
             if (!res.length) {
                 setNeedMore(false);
             }

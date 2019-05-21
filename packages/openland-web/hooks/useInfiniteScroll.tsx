@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XLoader } from 'openland-x/XLoader';
-import { DataSource } from 'openland-y-utils/DataSource';
+import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
 import { XView } from 'react-mental';
 
-export function useInfiniteScroll<FetchDataT, DataSourseT>({
+export function useInfiniteScroll<FetchDataT, DataSourseT extends DataSourceItem>({
     initialLoadFunction,
     queryOnNeedMore,
     convertToDataSource,
@@ -31,7 +31,7 @@ export function useInfiniteScroll<FetchDataT, DataSourseT>({
     }, []);
 
     let dataSource = React.useMemo(() => {
-        const ds = new DataSource<any>(() => setCurrentPage((curPage: number) => curPage + 1));
+        const ds = new DataSource<DataSourseT>(() => setCurrentPage((curPage: number) => curPage + 1));
         ds.initialize(convertToDataSource(data), false);
 
         return ds;
