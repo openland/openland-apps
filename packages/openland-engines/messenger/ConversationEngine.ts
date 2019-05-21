@@ -632,7 +632,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && (src.__typename === 'ServiceMessage') : false;
+            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
         } else {
             let p = src as PendingMessage;
             let reply = p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined;
