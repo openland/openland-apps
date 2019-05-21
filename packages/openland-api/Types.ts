@@ -46580,6 +46580,7 @@ export interface Organization_organization {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -50965,6 +50966,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -53180,6 +53182,7 @@ export interface ResolveShortName_item_Organization {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;
@@ -56239,6 +56242,7 @@ export interface OrganizationFull {
    */
   superAccountId: string;
   isMine: boolean;
+  isPrivate: boolean;
   isOwner: boolean;
   isAdmin: boolean;
   featured: boolean;

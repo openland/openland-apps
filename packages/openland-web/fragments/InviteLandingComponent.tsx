@@ -100,14 +100,6 @@ const RoomAvatar = Glamorous(XAvatar2)({
     },
 });
 
-export const FooterImage = () => {
-    return (
-        <ImageWrapper hasFooter={true}>
-            <Image />
-        </ImageWrapper>
-    );
-};
-
 const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
     return {
         height: 367,
@@ -140,6 +132,14 @@ const Image = Glamorous.div({
         marginLeft: -500,
     },
 });
+
+export const FooterImage = () => {
+    return (
+        <ImageWrapper hasFooter={true}>
+            <Image />
+        </ImageWrapper>
+    );
+};
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
