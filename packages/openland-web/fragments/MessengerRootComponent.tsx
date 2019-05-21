@@ -33,6 +33,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+import { randomTag } from 'react-native-async-view/internals/randomTag';
 
 export interface File {
     uuid: string;
@@ -50,9 +51,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -146,36 +147,30 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         conversationId: string;
     };
 
-    activeSubscription: () => void;
+    activeSubscription?: () => void;
 
     constructor(props: MessagesComponentProps) {
         super(props);
 
         this.conversation = null;
-        this.state = {
-            hideInput: false,
-            loading: true,
-        };
+
         this.vars = {
             roomId: this.props.conversationId,
             conversationId: this.props.conversationId,
         };
 
-        this.activeSubscription = props.isActive.listen(acitive => {
+        this.conversation = props.messenger.getConversation(props.conversationId);
+        this.state = { hideInput: false, loading: this.conversation.getState().loading };
+    }
+
+    componentDidMount() {
+        this.activeSubscription = this.props.isActive.listen(acitive => {
             if (acitive) {
-                this.conversation = props.messenger.getConversation(props.conversationId);
-                this.unmounter = this.conversation!.engine.mountConversation(props.conversationId);
-
+                this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
                 this.unmounter2 = this.conversation!.subscribe(this);
-
                 if (!this.conversation) {
                     throw Error('conversation should be defined here');
                 }
-                let convState = this.conversation.getState();
-
-                this.setState({
-                    loading: convState.loading,
-                });
             } else {
                 this.unsubscribe();
             }
@@ -331,9 +326,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
