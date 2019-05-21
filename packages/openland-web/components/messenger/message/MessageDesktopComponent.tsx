@@ -25,6 +25,7 @@ import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { PostMessageButtons, CommentPropsT } from './PostMessageButtons';
 import { XView } from 'react-mental';
+import { ContextStateInterface } from 'openland-x/createPoliteContext';
 
 const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
     flexShrink: 0,
@@ -118,6 +119,7 @@ export interface MessageComponentProps {
 
 interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
+    isActive: ContextStateInterface<boolean>;
 }
 
 interface DesktopMessageComponentInnerState {
@@ -186,7 +188,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             selected = forwardMessagesId.has(message.id || 'none');
         }
 
-        if (message.chatId === messagesContext.getChatId()) {
+        if (this.props.isActive.getValue()) {
             this.setState({
                 selected: selected,
                 hideMenu: hideMenu,
