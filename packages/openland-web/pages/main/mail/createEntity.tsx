@@ -236,7 +236,7 @@ export const CreateEntity = ({
                     about: aboutField.value,
                     photoRef,
                     isCommunity,
-                    isPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE
+                    isPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE,
                 },
             });
 
@@ -252,7 +252,7 @@ export const CreateEntity = ({
         }
     };
 
-    const getOptions = (map: Map<string, string>| null) => {
+    const getOptions = (map: Map<string, string> | null) => {
         const result: { label: string; value: string }[] = [];
         if (!map) {
             return [];
@@ -363,7 +363,7 @@ export const CreateEntity = ({
                         <XButton style="primary" text="Next" onClick={onNext} />
                     </XView>
                     <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
-                        <CoverUpload onCoverSelect={setCoverSrc} />
+                        <CoverUpload value={coverSrc} onChange={setCoverSrc} />
                         <XView flexGrow={1} flexShrink={0} flexDirection="column" marginLeft={20}>
                             <XView flexGrow={1} flexShrink={0} marginBottom={16}>
                                 <InputField field={titleField} title={`${chatTypeStr} name`} />

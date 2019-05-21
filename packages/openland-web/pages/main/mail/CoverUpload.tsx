@@ -67,8 +67,14 @@ const CoverImgClassName = css`
     display: block;
 `;
 
-export const CoverUpload = ({ onCoverSelect }: { onCoverSelect: (a: string | null) => void }) => {
-    const [coverSrc, setCoverSrc] = React.useState<string | null>('');
+export const CoverUpload = ({
+    value,
+    onChange,
+}: {
+    value: string | null;
+    onChange: (a: string | null) => void;
+}) => {
+    const [coverSrc, setCoverSrc] = React.useState<string | null>(value);
     const [coverUploading, setCoverUploading] = React.useState(false);
 
     const handleSetCover = () => {
@@ -80,13 +86,13 @@ export const CoverUpload = ({ onCoverSelect }: { onCoverSelect: (a: string | nul
                 setCoverUploading(true);
 
                 setCoverSrc('');
-                onCoverSelect('');
+                onChange('');
             });
             res.done(r => {
                 setCoverUploading(false);
 
                 setCoverSrc(r.uuid);
-                onCoverSelect(r.uuid);
+                onChange(r.uuid);
             });
         });
     };
