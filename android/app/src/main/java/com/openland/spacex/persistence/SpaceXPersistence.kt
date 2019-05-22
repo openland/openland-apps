@@ -3,7 +3,6 @@ package com.openland.spacex.persistence
 import android.content.Context
 import android.util.Log
 import com.openland.spacex.persistence.snappy.SnappyDBPersistenceProvider
-import com.openland.spacex.persistence.sqlite.SQLitePersistenceProvider
 import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.parseRecord

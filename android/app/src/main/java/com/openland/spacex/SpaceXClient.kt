@@ -3,16 +3,18 @@ package com.openland.spacex
 import android.content.Context
 import com.openland.spacex.scheduler.*
 import com.openland.spacex.store.*
-import com.openland.spacex.transport.RunningOperation
-import com.openland.spacex.transport.WebSocketTransport
+import com.openland.spacex.transport.TransportOperationResult
+import com.openland.spacex.transport.TransportScheduler
+import com.openland.spacex.transport.TransportState
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.trace
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicInteger
 
 interface OperationCallback {
     fun onResult(result: JSONObject)
-    fun onError(result: JSONObject)
+    fun onError(result: JSONArray)
 }
 
 interface StoreReadCallback {
@@ -26,7 +28,7 @@ interface StoreWriteCallback {
 
 class SpaceXClient(url: String, token: String?, context: Context, name: String) {
     private var isConnected = false
-    private val transport: WebSocketTransport = WebSocketTransport(context, url, token) {
+    private val transport: TransportState = TransportState(context, url, token) {
         isConnected = it
         this.connectionStateListener?.invoke(it)
     }
@@ -59,7 +61,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                             if (r is TransportOperationResult.Value) {
                                 callback.onResult(r.data)
                             } else if (r is TransportOperationResult.Error) {
-                                callback.onError(r.data)
+                                callback.onError(r.error)
                             }
                         }
                     }
@@ -71,7 +73,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                     if (r is TransportOperationResult.Value) {
                         callback.onResult(r.data)
                     } else if (r is TransportOperationResult.Error) {
-                        callback.onError(r.data)
+                        callback.onError(r.error)
                     }
                 }
             }
@@ -123,7 +125,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
             if (it is TransportOperationResult.Value) {
                 callback.onResult(it.data)
             } else if (it is TransportOperationResult.Error) {
-                callback.onError(it.data)
+                callback.onError(it.error)
             }
         }
     }
@@ -145,17 +147,15 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     ) {
 
         private var completed = false
-        private var runningOperation: (RunningOperation)? = null
+        private var runningOperation: (() -> Unit)? = null
 
         fun start() {
             queue.async {
                 runningOperation = transportScheduler.subscription(operation, arguments, queue) {
-                    if (it is TransportSubscriptionResult.Value) {
+                    if (it is TransportOperationResult.Value) {
                         callback.onResult(it.data)
-                    } else if (it is TransportSubscriptionResult.Error) {
-                        restart()
-                    } else if (it is TransportSubscriptionResult.Completed) {
-                        restart()
+                    } else if (it is TransportOperationResult.Error) {
+                        callback.onError(it.error)
                     }
                 }
             }
@@ -163,28 +163,16 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
 
         private fun restart() {
             queue.async {
-                this.runningOperation?.cancel()
+                this.runningOperation?.invoke()
                 this.runningOperation = null
                 start()
-            }
-        }
-
-        fun updateArguments(arguments: JSONObject) {
-            queue.async {
-                this.runningOperation?.lazyUpdate(JSONObject(
-                        mapOf(
-                                "query" to operation.body,
-                                "name" to operation.name,
-                                "variables" to arguments
-                        )
-                ))
             }
         }
 
         fun stop() {
             queue.async {
                 this.completed = true
-                this.runningOperation?.cancel()
+                this.runningOperation?.invoke()
                 this.runningOperation = null
             }
         }
@@ -267,7 +255,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                     callback.onResult(it.data)
                     doSubscribe(it.data)
                 } else if (it is TransportOperationResult.Error) {
-                    callback.onError(it.data)
+                    callback.onError(it.error)
                 }
             }
         }

@@ -103,13 +103,12 @@ class TransportState: NetworkingDelegate {
   func onClose(id: String) {
     self.queue.async {
       if let op = self.liveOperations[id] {
-        
-        // Stop Query
-        self.flushQueryStop(operation: op)
-        
         // Remove from callbacks
         self.liveOperations.removeValue(forKey: id)
         self.liveOperationsIds.removeValue(forKey: op.requestId)
+        
+        // Stop Query
+        self.flushQueryStop(operation: op)
       }
     }
   }
