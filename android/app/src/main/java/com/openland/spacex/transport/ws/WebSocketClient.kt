@@ -1,4 +1,4 @@
-package com.openland.spacex.transport
+package com.openland.spacex.transport.ws
 
 import okhttp3.*
 import okhttp3.WebSocket

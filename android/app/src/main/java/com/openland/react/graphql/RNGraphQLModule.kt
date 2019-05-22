@@ -81,15 +81,6 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     }
 
     @ReactMethod
-    fun subscribeUpdate(key: String, id: String, arguments: ReadableMap) {
-        Log.d("RNGraphQLModule", "subscribeUpdate")
-        if (!this.clients.containsKey(key)) {
-            throw Error("Client with key $key does not exists")
-        }
-        this.clients[key]!!.subscribeUpdate(id, arguments)
-    }
-
-    @ReactMethod
     fun unsubscribe(key: String, id: String) {
         Log.d("RNGraphQLModule", "unsubscribe")
         if (!this.clients.containsKey(key)) {

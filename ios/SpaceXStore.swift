@@ -170,6 +170,7 @@ class SpaceXStore {
           }
           
           // Calculate keys
+          // TODO: Optimize
           let normalized = try! normalizeRootQuery(rootQueryKey: SpaceXStore.ROOT_QUERY, type: operation.selector, args: variables, data: data)
           var keys = Set<String>()
           for r in normalized {

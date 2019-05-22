@@ -4,6 +4,7 @@ import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.spacex.*
 import com.openland.spacex.utils.trace
+import org.json.JSONArray
 import org.json.JSONObject
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
@@ -11,7 +12,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private var connected = false
     private val client = SpaceXClient("wss:$endpoint", token, context, storage ?: "storage")
     private val watches = mutableMapOf<String, () -> Unit>()
-    private val subscriptions = mutableMapOf<String, SpaceXClient.SpaceXSubscription>()
+    private val subscriptions = mutableMapOf<String, () -> Unit>()
 
     //
     // Init and Destroy
@@ -65,14 +66,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JSONObject) {
+            override fun onError(result: JSONArray) {
                 val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
                 map.putString("id", id)
                 map.putString("kind", "graphql")
-                map.putMap("data", res)
+                map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                         .emit("apollo_client", map)
             }
@@ -108,14 +109,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JSONObject) {
+            override fun onError(result: JSONArray) {
                 val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
                 map.putString("id", id)
                 map.putString("kind", "graphql")
-                map.putMap("data", res)
+                map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                         .emit("apollo_client", map)
             }
@@ -147,14 +148,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JSONObject) {
+            override fun onError(result: JSONArray) {
                 val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
                 map.putString("id", id)
                 map.putString("kind", "graphql")
-                map.putMap("data", res)
+                map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                         .emit("apollo_client", map)
             }
@@ -181,26 +182,22 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JSONObject) {
+            override fun onError(result: JSONArray) {
                 val res = trace("toReact") { result.toReact() }
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
                 map.putString("id", id)
                 map.putString("kind", "graphql")
-                map.putMap("data", res)
+                map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                         .emit("apollo_client", map)
             }
         })
     }
 
-    fun subscribeUpdate(id: String, arguments: ReadableMap) {
-        subscriptions[id]?.updateArguments(arguments.toKotlinX())
-    }
-
     fun unsubscribe(id: String) {
-        subscriptions.remove(id)?.stop()
+        subscriptions.remove(id)?.invoke()
     }
 
     //
