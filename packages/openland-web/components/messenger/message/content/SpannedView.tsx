@@ -54,7 +54,7 @@ const loudTextClassName = css`
     display: inline-block;
 
     &:first-child {
-        padding-top: 0;
+        padding-top: 4px;
     }
 
     &:last-child {
