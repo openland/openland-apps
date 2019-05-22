@@ -12,7 +12,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private var connected = false
     private val client = SpaceXClient("wss:$endpoint", token, context, storage ?: "storage")
     private val watches = mutableMapOf<String, () -> Unit>()
-    private val subscriptions = mutableMapOf<String, SpaceXClient.SpaceXSubscription>()
+    private val subscriptions = mutableMapOf<String, () -> Unit>()
 
     //
     // Init and Destroy
@@ -196,12 +196,8 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         })
     }
 
-    fun subscribeUpdate(id: String, arguments: ReadableMap) {
-//        subscriptions[id]?.updateArguments(arguments.toKotlinX())
-    }
-
     fun unsubscribe(id: String) {
-        subscriptions.remove(id)?.stop()
+        subscriptions.remove(id)?.invoke()
     }
 
     //

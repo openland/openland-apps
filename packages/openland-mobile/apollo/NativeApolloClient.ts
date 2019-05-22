@@ -106,8 +106,7 @@ export class NativeApolloClient extends BridgedClient {
         NativeGraphQL.subscribe(this.key, id, name, vars ? vars : {});
     }
     protected postSubscribeUpdate(id: string, vars: any) {
-        log.log('postSubscribeUpdate');
-        NativeGraphQL.subscribeUpdate(this.key, id, vars ? vars : {});
+        // Not supported
     }
     protected postUnsubscribe(id: string) {
         log.log('postUnsubscribe');

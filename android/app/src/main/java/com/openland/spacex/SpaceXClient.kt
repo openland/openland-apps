@@ -1,16 +1,13 @@
 package com.openland.spacex
 
 import android.content.Context
-import com.openland.spacex.scheduler.*
 import com.openland.spacex.store.*
 import com.openland.spacex.transport.TransportOperationResult
 import com.openland.spacex.transport.SpaceXTransport
 import com.openland.spacex.transport.TransportState
 import com.openland.spacex.utils.DispatchQueue
-import com.openland.spacex.utils.trace
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.concurrent.atomic.AtomicInteger
 
 interface OperationCallback {
     fun onResult(result: JSONObject)
@@ -26,24 +23,22 @@ interface StoreWriteCallback {
     fun onError()
 }
 
-class SpaceXClient(url: String, token: String?, context: Context, name: String) {
+class SpaceXClient(url: String, token: String?, context: Context, name: String?) {
     private var isConnected = false
-    private val transport: TransportState = TransportState(context, url, token) {
+    private val store = SpaceXStore(context, name)
+    private val transport = SpaceXTransport(TransportState(context, url, token) {
         isConnected = it
         this.connectionStateListener?.invoke(it)
-    }
-    private val scheduler = StoreScheduler(name, context)
-    private val transportScheduler = SpaceXTransport(transport, scheduler)
+    })
     private val queue = DispatchQueue("client")
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
-    private var nextId = AtomicInteger(1)
 
     fun setConnectionStateListener(handler: (connected: Boolean) -> Unit) {
         this.connectionStateListener = handler
         handler(isConnected)
     }
 
-    fun query(operation: OperationDefinition, arguments: JSONObject, policy: FetchPolicy, callback: OperationCallback) {
+    fun query(operation: OperationDefinition, variables: JSONObject, policy: FetchPolicy, callback: OperationCallback) {
         if (operation.kind != OperationKind.QUERY) {
             throw Error("Invalid operation kind")
         }
@@ -52,80 +47,135 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         }
 
         if (policy == FetchPolicy.CACHE_FIRST) {
-            scheduler.readQueryFromCache(operation, arguments, queue) {
+            store.readQuery(operation, variables, queue) {
                 if (it is QueryReadResult.Value) {
                     callback.onResult(it.value)
                 } else {
-                    transportScheduler.operation(operation, arguments, queue) { r ->
-                        trace("query:operation") {
-                            if (r is TransportOperationResult.Value) {
+                    transport.operation(operation, variables, queue) { r ->
+                        if (r is TransportOperationResult.Value) {
+                            store.mergeResponse(operation, variables, r.data, queue) {
                                 callback.onResult(r.data)
-                            } else if (r is TransportOperationResult.Error) {
-                                callback.onError(r.error)
                             }
+                        } else if (r is TransportOperationResult.Error) {
+                            callback.onError(r.error)
                         }
                     }
                 }
             }
         } else {
-            transportScheduler.operation(operation, arguments, queue) { r ->
-                trace("query:operation") {
-                    if (r is TransportOperationResult.Value) {
+            transport.operation(operation, variables, queue) { r ->
+                if (r is TransportOperationResult.Value) {
+                    store.mergeResponse(operation, variables, r.data, queue) {
                         callback.onResult(r.data)
-                    } else if (r is TransportOperationResult.Error) {
-                        callback.onError(r.error)
                     }
+                } else if (r is TransportOperationResult.Error) {
+                    callback.onError(r.error)
                 }
             }
         }
     }
 
-    fun read(operation: OperationDefinition, arguments: JSONObject, callback: StoreReadCallback) {
-        scheduler.readQueryFromCache(operation, arguments, queue) {
-            if (it is QueryReadResult.Value) {
-                callback.onResult(it.value)
-            } else {
-                callback.onResult(null)
+    //
+    // Mutation
+    //
+
+    fun mutation(operation: OperationDefinition, variables: JSONObject, callback: OperationCallback) {
+        if (operation.kind != OperationKind.MUTATION) {
+            throw Error("Invalid operation kind")
+        }
+        transport.operation(operation, variables, queue) {
+            if (it is TransportOperationResult.Value) {
+                store.mergeResponse(operation, variables, it.data, queue) {
+                    callback.onResult(it.data)
+                }
+            } else if (it is TransportOperationResult.Error) {
+                callback.onError(it.error)
             }
         }
     }
 
-    fun write(operation: OperationDefinition, arguments: JSONObject, data: JSONObject, callback: StoreWriteCallback) {
-        queue.async {
-            val normalized: RecordSet
-            try {
-                normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                callback.onError()
-                return@async
-            }
-            scheduler.merge(normalized, queue) {
-                callback.onResult()
-            }
-        }
-    }
+    //
+    // Watch
+    //
 
-    fun watch(operation: OperationDefinition, arguments: JSONObject, policy: FetchPolicy, callback: OperationCallback): () -> Unit {
+    fun watch(operation: OperationDefinition, variables: JSONObject, policy: FetchPolicy, callback: OperationCallback): () -> Unit {
         if (operation.kind != OperationKind.QUERY) {
             throw Error("Invalid operation kind")
         }
-        val watchQueryWatch = QueryWatch(nextId.getAndIncrement(), operation, arguments, policy, callback)
+        val watchQueryWatch = QueryWatch(operation, variables, policy, callback)
         watchQueryWatch.start()
         return {
             watchQueryWatch.stop()
         }
     }
 
-    fun mutation(operation: OperationDefinition, arguments: JSONObject, callback: OperationCallback) {
-        if (operation.kind != OperationKind.MUTATION) {
-            throw Error("Invalid operation kind")
+    private inner class QueryWatch(
+            val operation: OperationDefinition,
+            val variables: JSONObject,
+            val policy: FetchPolicy,
+            val callback: OperationCallback
+    ) {
+        private var completed = false
+        private var storeSubscription: (() -> Unit)? = null
+        private var wasLoadedFromNetwork = false
+
+        fun start() {
+            queue.async {
+                if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
+                    this.doReloadFromCache()
+                } else {
+                    this.doRequest()
+                }
+            }
         }
-        transportScheduler.operation(operation, arguments, queue) {
-            if (it is TransportOperationResult.Value) {
-                callback.onResult(it.data)
-            } else if (it is TransportOperationResult.Error) {
-                callback.onError(it.error)
+
+        private fun doReloadFromCache() {
+            store.readQueryAndWatch(operation, variables, queue) {
+                if (this.completed) {
+                    return@readQueryAndWatch
+                }
+                if (it is QueryReadAndWatchResult.Value) {
+                    callback.onResult(it.value)
+                    if (policy == FetchPolicy.CACHE_AND_NETWORK && !wasLoadedFromNetwork) {
+                        doRequest(false)
+                    }
+                } else if (it == QueryReadAndWatchResult.Missing) {
+                    doRequest()
+                } else if (it == QueryReadAndWatchResult.Updated) {
+                    doReloadFromCache()
+                }
+            }
+        }
+
+
+        private fun doRequest(reload: Boolean = true) {
+            this.wasLoadedFromNetwork = true
+            transport.operation(operation, variables, queue) {
+                if (this.completed) {
+                    return@operation
+                }
+                if (it is TransportOperationResult.Value) {
+                    store.mergeResponse(operation, variables, it.data, queue) {
+                        if (this.completed) {
+                            return@mergeResponse
+                        }
+                        if (reload) {
+                            doReloadFromCache()
+                        }
+                    }
+                } else if (it is TransportOperationResult.Error) {
+                    if (reload) {
+                        callback.onError(it.error)
+                    }
+                }
+            }
+        }
+
+        fun stop() {
+            queue.async {
+                this.completed = true
+                this.storeSubscription?.invoke()
+                this.storeSubscription = null
             }
         }
     }
@@ -134,15 +184,15 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     // Subscription
     //
 
-    fun subscribe(operation: OperationDefinition, arguments: JSONObject, callback: OperationCallback): SpaceXSubscription {
-        val res = SpaceXSubscription(operation, arguments, callback)
+    fun subscribe(operation: OperationDefinition, variables: JSONObject, callback: OperationCallback): () -> Unit {
+        val res = SpaceXSubscription(operation, variables, callback)
         res.start()
-        return res
+        return { res.stop() }
     }
 
-    inner class SpaceXSubscription(
+    private inner class SpaceXSubscription(
             val operation: OperationDefinition,
-            val arguments: JSONObject,
+            val variables: JSONObject,
             val callback: OperationCallback
     ) {
 
@@ -151,9 +201,11 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
 
         fun start() {
             queue.async {
-                runningOperation = transportScheduler.subscription(operation, arguments, queue) {
+                runningOperation = transport.subscription(operation, variables, queue) {
                     if (it is TransportOperationResult.Value) {
-                        callback.onResult(it.data)
+                        store.mergeResponse(operation, variables, it.data, queue) {
+                            callback.onResult(it.data)
+                        }
                     } else if (it is TransportOperationResult.Error) {
                         callback.onError(it.error)
                     }
@@ -171,94 +223,22 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
     }
 
     //
-    // Watch
+    // Store Operations
     //
 
-    private inner class QueryWatch(
-            val id: Int,
-            val operation: OperationDefinition,
-            val arguments: JSONObject,
-            val policy: FetchPolicy,
-            val callback: OperationCallback
-    ) {
-        private var completed = false
-        private var storeSubscription: (() -> Unit)? = null
-
-        fun start() {
-            queue.async {
-                // Log.d("SpaceX", "[$id] Start")
-                if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                    // Log.d("SpaceX", "[$id] Read")
-                    scheduler.readQueryFromCache(operation, arguments, queue) {
-                        if (it is QueryReadResult.Value) {
-                            callback.onResult(it.value)
-                            if (policy == FetchPolicy.CACHE_FIRST) {
-                                doSubscribe(it.value)
-                            } else {
-                                doRequest()
-                            }
-                        } else {
-                            doRequest()
-                        }
-                    }
-                } else {
-                    doRequest()
-                }
+    fun read(operation: OperationDefinition, variables: JSONObject, callback: StoreReadCallback) {
+        store.readQuery(operation, variables, queue) {
+            if (it is QueryReadResult.Value) {
+                callback.onResult(it.value)
+            } else {
+                callback.onResult(null)
             }
         }
+    }
 
-        private fun doReload() {
-            if (this.completed) {
-                return
-            }
-            // Log.d("SpaceX", "[$id] Read")
-            scheduler.readQueryFromCache(operation, arguments, queue) {
-                if (this.completed) {
-                    return@readQueryFromCache
-                }
-                if (it is QueryReadResult.Value) {
-                    callback.onResult(it.value)
-                    doSubscribe(it.value)
-                } else {
-                    doRequest()
-                }
-            }
-        }
-
-        private fun doSubscribe(data: JSONObject) {
-            // Log.d("SpaceX", "[$id] Subscribe")
-            // TODO: Optimize!!
-            val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
-            storeSubscription = scheduler.subscribe(normalized, queue) {
-                storeSubscription?.invoke()
-                storeSubscription = null
-                doReload()
-            }
-        }
-
-        private fun doRequest() {
-            // Log.d("SpaceX", "[$id] Request")
-            transportScheduler.operation(operation, arguments, queue) {
-                // Log.d("SpaceX", "[$id] Response")
-                if (this.completed) {
-                    return@operation
-                }
-                if (it is TransportOperationResult.Value) {
-                    callback.onResult(it.data)
-                    doSubscribe(it.data)
-                } else if (it is TransportOperationResult.Error) {
-                    callback.onError(it.error)
-                }
-            }
-        }
-
-        fun stop() {
-            queue.async {
-                // Log.d("SpaceX", "[$id] Stop")
-                this.completed = true
-                this.storeSubscription?.invoke()
-                this.storeSubscription = null
-            }
+    fun write(operation: OperationDefinition, variables: JSONObject, data: JSONObject, callback: StoreWriteCallback) {
+        store.mergeResponse(operation, variables, data, queue) {
+            callback.onResult()
         }
     }
 }

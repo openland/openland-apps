@@ -50,11 +50,6 @@ class RNGraphQL: RCTEventEmitter {
     self.clients[key]!.subscribe(id: id, subscription: query, arguments: arguments)
   }
   
-  @objc(subscribeUpdate:id:arguments:)
-  func subscribeUpdate(key: String, id: String, arguments: NSDictionary) {
-    // self.clients[key]!.subscribeUpdate(id: id, arguments: arguments)
-  }
-  
   @objc(unsubscribe:id:)
   func unsubscribe(key: String, id: String) {
     self.clients[key]!.subscribeEnd(id: id)

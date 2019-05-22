@@ -2,19 +2,62 @@ package com.openland.spacex.persistence
 
 import android.content.Context
 import android.util.Log
-import com.openland.spacex.persistence.snappy.SnappyDBPersistenceProvider
 import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.parseRecord
 import com.openland.spacex.store.serializeRecord
 import com.openland.spacex.utils.DispatchQueue
+import com.snappydb.DBFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
+interface PersistenceProvider {
+    fun saveRecords(records: Map<String, String>)
+    fun loadRecords(keys: Set<String>): Map<String, String>
+}
 
-class SpaceXPersistence(val context: Context, val name: String) {
+class EmptyPersistenceProvider : PersistenceProvider {
+    override fun saveRecords(records: Map<String, String>) {
+        // Nothing to do
+    }
+
+    override fun loadRecords(keys: Set<String>): Map<String, String> {
+        return emptyMap()
+    }
+}
+
+class SnappyDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
+
+    private val db by lazy { DBFactory.open(context, name) }
+
+    override fun saveRecords(records: Map<String, String>) {
+        val start = System.currentTimeMillis()
+        for (kv in records) {
+            db.put(kv.key, kv.value)
+        }
+        Log.d("SpaceX-Persistence", records.size.toString() + " written in " + (System.currentTimeMillis() - start) + " ms")
+    }
+
+    override fun loadRecords(keys: Set<String>): Map<String, String> {
+        val start = System.currentTimeMillis()
+        val res = mutableMapOf<String, String>()
+        for (k in keys) {
+            if (db.exists(k)) {
+                val ex = db.get(k)
+                if (ex != null && ex != "") {
+                    res.put(k, ex)
+                }
+            }
+        }
+        Log.d("SpaceX-Persistence", res.size.toString() + " loaded in " + (System.currentTimeMillis() - start) + " ms")
+        return res
+    }
+}
+
+
+class SpaceXPersistence(val context: Context, val name: String?) {
 
     private val writerExecutor = Executors.newSingleThreadExecutor()
 
@@ -24,7 +67,7 @@ class SpaceXPersistence(val context: Context, val name: String) {
             SynchronousQueue<Runnable>()
     )
 
-    private val persistenceProvider = SnappyDBPersistenceProvider(context, name)
+    private val persistenceProvider = if (name != null) SnappyDBPersistenceProvider(context, name) else EmptyPersistenceProvider()
 
     fun saveRecords(records: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
         writerExecutor.submit {

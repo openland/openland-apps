@@ -1,7 +1,6 @@
 package com.openland.spacex.transport
 
 import com.openland.spacex.OperationDefinition
-import com.openland.spacex.scheduler.StoreScheduler
 import com.openland.spacex.utils.DispatchQueue
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,7 +11,7 @@ sealed class TransportOperationResult {
     class Error(val error: JSONArray) : TransportOperationResult()
 }
 
-class SpaceXTransport(val transport: TransportState, val store: StoreScheduler) {
+class SpaceXTransport(val transport: TransportState) {
     fun operation(operation: OperationDefinition, variables: JSONObject, queue: DispatchQueue, callback: (result: TransportOperationResult) -> Unit) {
         var completed = false
         transport.operation(operation, variables) { res ->
