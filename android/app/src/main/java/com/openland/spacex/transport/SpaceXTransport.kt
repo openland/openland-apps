@@ -12,7 +12,7 @@ sealed class TransportOperationResult {
     class Error(val error: JSONArray) : TransportOperationResult()
 }
 
-class TransportScheduler(val transport: TransportState, val store: StoreScheduler) {
+class SpaceXTransport(val transport: TransportState, val store: StoreScheduler) {
     fun operation(operation: OperationDefinition, variables: JSONObject, queue: DispatchQueue, callback: (result: TransportOperationResult) -> Unit) {
         var completed = false
         transport.operation(operation, variables) { res ->

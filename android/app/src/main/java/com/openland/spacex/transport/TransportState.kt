@@ -2,6 +2,7 @@ package com.openland.spacex.transport
 
 import android.content.Context
 import com.openland.spacex.OperationDefinition
+import com.openland.spacex.OperationKind
 import com.openland.spacex.utils.DispatchQueue
 import org.json.JSONArray
 import org.json.JSONObject
@@ -15,7 +16,7 @@ sealed class TransportResult {
 
 private class PendingOperation(
         val id: String,
-        val requestId: String,
+        var requestId: String,
         val operation: OperationDefinition,
         val variables: JSONObject,
         val handler: (TransportResult) -> Unit
@@ -114,7 +115,28 @@ class TransportState : NetworkingHandler {
     }
 
     override fun onTryAgain(id: String, delay: Int) {
-        // TODO: Implement
+        val rid = this.liveOperationsIds[id]
+        if (rid != null) {
+            val op = liveOperations[rid]
+            if (op != null) {
+
+                // Stop existing
+                this.flushQueryStop(op)
+
+                // Regenerate ID
+                val nid = nextId.getAndIncrement().toString()
+                op.requestId = nid
+                this.liveOperationsIds.remove(id)
+                this.liveOperationsIds[nid] = op.id
+
+                // Schedule restart
+                this.queue.asyncDelayed(delay * 1000) {
+                    if (this.liveOperationsIds.containsKey(nid)) {
+                        this.flushQueryStart(op)
+                    }
+                }
+            }
+        }
     }
 
     //
@@ -122,7 +144,17 @@ class TransportState : NetworkingHandler {
     //
 
     override fun onSessionRestart() {
+        for (op in this.liveOperations.values) {
+            if (op.operation.kind == OperationKind.SUBSCRIPTION) {
 
+                // Stop subscriptions
+                op.handler(TransportResult.Completed)
+                this.liveOperations.remove(op.id)
+                this.liveOperationsIds.remove(op.requestId)
+            } else {
+                this.flushQueryStart(op)
+            }
+        }
     }
 
     override fun onConnected() {

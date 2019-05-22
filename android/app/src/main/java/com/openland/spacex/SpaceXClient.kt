@@ -4,7 +4,7 @@ import android.content.Context
 import com.openland.spacex.scheduler.*
 import com.openland.spacex.store.*
 import com.openland.spacex.transport.TransportOperationResult
-import com.openland.spacex.transport.TransportScheduler
+import com.openland.spacex.transport.SpaceXTransport
 import com.openland.spacex.transport.TransportState
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.trace
@@ -33,7 +33,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
         this.connectionStateListener?.invoke(it)
     }
     private val scheduler = StoreScheduler(name, context)
-    private val transportScheduler = TransportScheduler(transport, scheduler)
+    private val transportScheduler = SpaceXTransport(transport, scheduler)
     private val queue = DispatchQueue("client")
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
     private var nextId = AtomicInteger(1)
@@ -158,14 +158,6 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String) 
                         callback.onError(it.error)
                     }
                 }
-            }
-        }
-
-        private fun restart() {
-            queue.async {
-                this.runningOperation?.invoke()
-                this.runningOperation = null
-                start()
             }
         }
 
