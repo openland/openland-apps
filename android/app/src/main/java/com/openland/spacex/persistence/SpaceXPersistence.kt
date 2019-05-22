@@ -30,7 +30,7 @@ class EmptyPersistenceProvider : PersistenceProvider {
 
 class SnappyDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
 
-    private val db by lazy { DBFactory.open(context, name) }
+    private val db by lazy { DBFactory.open(context, name + "-v2") }
 
     override fun saveRecords(records: Map<String, String>) {
         val start = System.currentTimeMillis()
