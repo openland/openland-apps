@@ -10,9 +10,11 @@ import {
     MentionSuggestions,
     SizeT,
 } from '../modules/mentions/MentionSuggestions/MentionSuggestions';
-import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
+import {
+    MentionSuggestionsStateT,
+    SuggestionTypeT,
+} from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { XRichTextInput2Props } from '..';
-import { UserShort } from 'openland-api/Types';
 import { Icons } from './Icons';
 
 const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) => {
@@ -21,10 +23,10 @@ const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) =
             position: 'relative',
             ...(round
                 ? {
-                    '& .DraftEditor-root': {
-                        borderRadius: '20px !important',
-                    },
-                }
+                      '& .DraftEditor-root': {
+                          borderRadius: '20px !important',
+                      },
+                  }
                 : {}),
             '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
                 color: 'rgba(0, 0, 0, 0.5)',
@@ -49,7 +51,7 @@ type EditorContainerContainer = XRichTextInput2Props & {
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
-    onMentionPicked: (mention: UserShort) => void;
+    onMentionPicked: (mention: SuggestionTypeT) => void;
     onSubmit?: () => Promise<void>;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;

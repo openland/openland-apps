@@ -17,6 +17,25 @@ type MentionEntryT = MentionData & {
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
+export const ToSelect = ({ isFocused }: { isFocused: boolean }) => {
+    return (
+        <XView
+            flexDirection="column"
+            alignSelf={'center'}
+            opacity={0.4}
+            fontSize={12}
+            fontWeight={'400'}
+            lineHeight={1.5}
+            color={isFocused ? '#000000' : 'transparent'}
+        >
+            <div style={{ position: 'relative' }}>
+                <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
+                <span>to select</span>
+            </div>
+        </XView>
+    );
+};
+
 export const MentionEntry = ({
     avatar,
     name,
@@ -71,7 +90,6 @@ export const MentionEntry = ({
                     objectId={id}
                     online={online}
                 />
-
                 <XView
                     flexDirection="column"
                     alignSelf="center"
@@ -83,7 +101,6 @@ export const MentionEntry = ({
                 >
                     {emojifiedName}
                 </XView>
-
                 <XView
                     flexDirection="column"
                     alignSelf={'center'}
@@ -96,23 +113,8 @@ export const MentionEntry = ({
                 >
                     {title}
                 </XView>
-
                 <XView flexGrow={1} />
-
-                <XView
-                    flexDirection="column"
-                    alignSelf={'center'}
-                    opacity={0.4}
-                    fontSize={12}
-                    fontWeight={'400'}
-                    lineHeight={1.5}
-                    color={isFocused ? '#000000' : 'transparent'}
-                >
-                    <div style={{ position: 'relative' }}>
-                        <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
-                        <span>to select</span>
-                    </div>
-                </XView>
+                <ToSelect isFocused={isFocused} />
             </XView>
         </div>
     );

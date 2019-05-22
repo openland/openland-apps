@@ -7,7 +7,7 @@ import { mentionDecorator } from '../../modules/mentions/decorator';
 import { emojiDecorator } from '../../modules/emoji/decorator';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
-import { UserShort } from 'openland-api/Types';
+import { SuggestionTypeT } from '../../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import { EmojiDataT } from '../../modules/emoji/EmojiSuggestions/useEmojiSuggestions';
 
@@ -126,7 +126,7 @@ export function useHandleEditorChange({
         );
     };
 
-    const finalAddMention = (mention: UserShort) => {
+    const finalAddMention = (mention: SuggestionTypeT) => {
         if (mention) {
             const newEditorState = addMention({
                 editorState,
