@@ -29,6 +29,7 @@ export const AboutPlaceholder = (props: { target?: any }) => {
             }}
             defaultAction={async submitData => {
                 await client.mutateUpdateOrganization({
+                    organizationId: organizationId,
                     input: {
                         about: submitData.input.about,
                     },
@@ -172,6 +173,7 @@ export const SocialPlaceholder = (props: { target?: any }) => {
             }}
             defaultAction={async submitData => {
                 await client.mutateUpdateOrganization({
+                    organizationId: organizationId,
                     input: {
                         linkedin: submitData.input.linkedin,
                         twitter: submitData.input.twitter,
@@ -234,6 +236,7 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
             }}
             defaultAction={async submitData => {
                 await client.mutateUpdateOrganization({
+                    organizationId: organizationId,
                     input: {
                         website: submitData.input.website,
                     },
