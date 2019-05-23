@@ -4,6 +4,7 @@ import { MentionEntry, ToSelect } from './MentionSuggestionsEntry';
 import { MentionSuggestionsStateT, SuggestionTypeT } from './useMentionSuggestions';
 export type SizeT = { width: number; height: number };
 import { XView } from 'react-mental';
+import CellChannelIcon from 'openland-icons/ic-cell-channel.svg';
 
 const mentionSuggestionsShow = css`
     transform: scale(1);
@@ -71,10 +72,11 @@ export const AllEntry = ({
                 backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
                 hoverBackgroundColor={'#f9f9f9'}
             >
+                <CellChannelIcon />
                 <XView
                     flexDirection="column"
                     alignSelf="center"
-                    marginLeft={12}
+                    marginLeft={15}
                     fontSize={13}
                     fontWeight={'600'}
                     lineHeight={1.54}
@@ -86,13 +88,14 @@ export const AllEntry = ({
                 <XView
                     flexDirection="column"
                     alignSelf="center"
-                    marginLeft={12}
+                    marginLeft={6}
                     fontSize={13}
                     fontWeight={'600'}
-                    lineHeight={1.54}
+                    lineHeight={1.5}
+                    opacity={0.4}
                     color={'#000000'}
                 >
-                    Notify everyone in this channel
+                    Notify everyone in this group
                 </XView>
 
                 <XView flexGrow={1} />
