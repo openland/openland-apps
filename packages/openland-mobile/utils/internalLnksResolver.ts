@@ -130,7 +130,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         //
         // PROFILE ORGANIZATION
         //
-        let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)/o/:id');
+        let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)/(o)(c)/:id');
         let matchOrgProfile = profileOrgPattern.match(link);
         if (matchOrgProfile && matchOrgProfile.id) {
             resolved = true;
