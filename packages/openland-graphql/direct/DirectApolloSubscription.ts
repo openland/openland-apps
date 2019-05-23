@@ -1,6 +1,8 @@
 import { Observable } from "apollo-link";
 import { DirectApollolClient } from './DirectApolloClient';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { delay } from 'openland-y-utils/timer';
+import { exponentialBackoffDelay } from 'openland-y-utils/exponentialBackoffDelay';
 
 export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscription<TSubscription, TVars> {
     private readonly client: DirectApollolClient;
@@ -12,6 +14,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
     private queue: any[] = [];
     private pending?: (src: any) => void;
     private stopped = false;
+    private errorsCount = 0;
 
     constructor(client: DirectApollolClient, subscription: any, vars?: any) {
         this.client = client;
@@ -84,12 +87,15 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
         } else {
             this.queue.push(src.data);
         }
+        this.errorsCount = 0;
     }
 
-    private handleError = (err?: any) => {
+    private handleError = async (err?: any) => {
+        this.errorsCount++;
         // console.log('error');
         console.log(err);
         this.tryStop();
+        await delay(exponentialBackoffDelay(this.errorsCount, 200, 10000, 10));
         this.tryStart();
     }
 
