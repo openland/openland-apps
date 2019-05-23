@@ -5,7 +5,12 @@ import {
 } from 'openland-api/Types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
-export const prepareLegacyMentions = (message: string, intermediateMentions: MentionToSend[]) => {
+export const prepareLegacyMentions = (
+    message: string,
+    intermediateMentions: MentionToSend[],
+): (
+    | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+    | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] => {
     if (message.length === 0) {
         return [];
     }
@@ -66,16 +71,26 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Men
 };
 
 export const prepareMentionsToSend = (
-    mentions: FullMessage_GeneralMessage_spans_MessageSpanUserMention[],
+    mentions: (
+        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[],
 ): MentionInput[] => {
     let preparedMentions: MentionInput[] = [];
 
     mentions.map(m => {
-        preparedMentions.push({
-            offset: m.offset,
-            length: m.length,
-            userId: m.user.id,
-        });
+        if (m.__typename === 'MessageSpanUserMention') {
+            preparedMentions.push({
+                offset: m.offset,
+                length: m.length,
+                userId: m.user.id,
+            });
+        } else if (m.__typename === 'MessageSpanAllMention') {
+            preparedMentions.push({
+                offset: m.offset,
+                length: m.length,
+                all: true,
+            });
+        }
     });
 
     return preparedMentions;

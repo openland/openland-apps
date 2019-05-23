@@ -55,28 +55,6 @@ export const convertToMentionInputNoText2 = (
     }
 };
 
-export const convertToMentionInput = ({
-    mentions,
-    text,
-}: {
-    mentions: UserWithOffset[];
-    text: string;
-}) => {
-    let mentionsCleared: MentionInput[] = [];
-
-    if (mentions.length > 0) {
-        mentions.map(mention => {
-            if (mention.typename === 'UserWithOffset') {
-                if (text.indexOf(mention.user.name) >= 0) {
-                    mentionsCleared.push(convertToMentionInputNoText(mention));
-                }
-            }
-        });
-    }
-
-    return mentionsCleared.length > 0 ? mentionsCleared : null;
-};
-
 export const convertToMentionInput2 = ({
     mentions,
     text,

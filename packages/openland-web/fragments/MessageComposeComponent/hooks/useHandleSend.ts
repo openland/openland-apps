@@ -16,6 +16,7 @@ import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { getUploadCareFile } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
+import { prepareMentionsToSend } from 'openland-engines/legacy/legacymentions';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -118,14 +119,18 @@ export function useHandleSend({
         }
         if (replyMessage && hasQuoteInState()) {
             const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
-            let mentions: UserWithOffset[] = [];
+            let mentions: (
+                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] = [];
+
             if (inputMethodsState) {
-                mentions = inputMethodsState.getMentions().map((user: any) => user);
+                mentions = inputMethodsState.getMentions();
             }
+
             await replyMessage({
                 chatId: conversationId!!,
                 message: inputValue,
-                mentions: mentions,
+                mentions: prepareMentionsToSend(mentions),
                 replyMessages: finalQuoteMessagesId,
                 spans: findSpans(inputValue),
             });
