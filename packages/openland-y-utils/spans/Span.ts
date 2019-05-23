@@ -156,4 +156,5 @@ export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType[] } = {
     ],
     rotating: [{ s: '🔄' }],
     mention_user: [{ s: '@', opened: true }],
+    mention_all: [{ s: '@', opened: true }],
 };
