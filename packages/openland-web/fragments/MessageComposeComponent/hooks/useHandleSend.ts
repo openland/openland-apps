@@ -89,6 +89,7 @@ export function useHandleSend({
         return uploadedFileKey;
     };
     const closeEditor = () => {
+        console.log('closeEditor');
         messagesContext.resetAll();
         setInputValue('');
         if (supportQuote()) {

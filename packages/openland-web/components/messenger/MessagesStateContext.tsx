@@ -42,7 +42,6 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     resetAll: () => null,
     switchMessageSelect: () => null,
     getChatId: () => '',
-
 });
 
 type MessagePageProps = {
@@ -67,7 +66,7 @@ function eqSet(as: any, bs: any) {
 export class MessageStateProviderComponent extends React.PureComponent<
     MessagePageProps,
     MessagesStateContextProps
-    > {
+> {
     chatId = '';
     constructor(props: MessagePageProps) {
         super(props);
@@ -93,7 +92,6 @@ export class MessageStateProviderComponent extends React.PureComponent<
             getChatId: this.getChatId,
         };
         this.chatId = props.cid;
-
     }
 
     getChatId = () => this.chatId;
@@ -102,7 +100,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
         this.chatId = nextProps.cid;
         if (
             this.props.router.routeQuery.conversationId !==
-            nextProps.router.routeQuery.conversationId &&
+                nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
             let target = {
@@ -238,6 +236,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
     };
 
     private resetAll = () => {
+        console.log('resetAll');
         let target = {
             editMessageId: null,
             editMessage: null,
@@ -274,14 +273,14 @@ const getForwardText = ({ forwardMessagesId }: MessagesStateContextProps) => {
     return forwardMessagesId.size === 0
         ? null
         : `Forward ${forwardMessagesId.size} ` +
-        (forwardMessagesId.size === 1 ? 'message' : 'messages');
+              (forwardMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const getReplyText = ({ replyMessagesId }: MessagesStateContextProps) => {
     return replyMessagesId.size === 0
         ? null
         : `Reply to ${replyMessagesId.size} ` +
-        (replyMessagesId.size === 1 ? 'message' : 'messages');
+              (replyMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const hasReply = ({ replyMessagesSender, replyMessages }: MessagesStateContextProps) => {
