@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         lineHeight: 22,
-        opacity: 0.6,
         marginTop: 15,
         textAlign: 'center',
     } as TextStyle
@@ -90,7 +89,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     </View>
 
                     {typeof room.description === 'string' && (
-                        <Text style={[styles.description, { color: theme.textColor }]}>{room.description}</Text>
+                        <Text style={[styles.description, { color: theme.textLabelColor }]}>{room.description}</Text>
                     )}
                 </View>
 

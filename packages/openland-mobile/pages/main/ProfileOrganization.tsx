@@ -12,17 +12,66 @@ import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text, Dimensions } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { Organization_organization_members, Organization_organization_members_user } from 'openland-api/Types';
+import { Organization_organization_members, Organization_organization_members_user, OrganizationMembersShortPaginated_organization } from 'openland-api/Types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+
+const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShortPaginated_organization }>((props) => {
+    const { router, organization } = props;
+    const theme = React.useContext(ThemeContext);
+    const typeString = organization.isCommunity ? 'community' : 'organization';
+    const screenHeight = Dimensions.get('screen').height;
+
+    return (
+        <>
+            <SHeader title={'Cannot view ' + typeString} />
+            <ASSafeAreaView flexGrow={1}>
+                <View flexGrow={1}>
+                    <View paddingHorizontal={16} paddingVertical={15} backgroundColor={theme.subHeaderColor}>
+                        <Text style={{ color: theme.textColor, textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
+                        <Text style={{ color: theme.textColor, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
+                    </View>
+                    <View paddingTop={screenHeight <= 640 ? 60 : 100} paddingHorizontal={16} alignItems="center" flexDirection="column">
+                        <ZAvatar size={86} src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
+                        <Text style={{ color: theme.textColor, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: TextStyles.weight.medium }}>{organization.name}</Text>
+
+                        {!!organization.about && (
+                            <Text style={{ color: theme.textLabelColor, fontSize: 15, lineHeight: 22, marginTop: 8, textAlign: 'center' }}>{organization.about}</Text>
+                        )}
+                    </View>
+                    <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
+                        <View width={126}>
+                            <ZRoundedButton
+                                size="large"
+                                style="secondary"
+                                uppercase={false}
+                                title="Go back"
+                                onPress={() => router.back()}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </ASSafeAreaView>
+        </>
+    )
+});
 
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const settings = getClient().useAccountSettings();
     const organization = getClient().useOrganizationMembersShortPaginated({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization;
+
+    if (!organization.isMine && organization.isPrivate) {
+        return <PrivateProfile {...props} organization={organization} />
+    }
 
     const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
 
