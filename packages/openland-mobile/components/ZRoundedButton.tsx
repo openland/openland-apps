@@ -7,7 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-type ZRoundedButtonStyle = 'default' | 'flat' | 'danger' | 'flat-danger';
+type ZRoundedButtonStyle = 'default' | 'flat' | 'secondary' | 'danger' | 'flat-danger';
 type ZRoundedButtonSize = 'default' | 'big' | 'large';
 
 const stylesDefault = StyleSheet.create({
@@ -116,6 +116,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
         }
     }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
     let size = props.size || 'default';
+    let themeStyle = props.style === 'secondary' ? 'secondary' : 'default';
     let styles = resolveStylesBySize[size];
 
     return (
@@ -124,7 +125,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                 <View
                     style={[
                         styles.container,
-                        { backgroundColor: theme.roundButtonBackground },
+                        { backgroundColor: theme.roundButtonBackground[themeStyle] },
                         {
                             ...props.style === 'flat' ? { backgroundColor: 'transparent' } :
                                 props.style === 'danger' ? { backgroundColor: '#ff3b30' } :
@@ -136,7 +137,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                         <Text
                             style={[
                                 styles.title,
-                                { color: theme.roundButtonText },
+                                { color: theme.roundButtonText[themeStyle] },
                                 {
                                     ...props.style === 'flat' ? { color: theme.accentColor } :
                                         props.style === 'danger' ? { color: theme.backgroundColor } :

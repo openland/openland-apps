@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 
 export interface AppTheme {
-
     headerColor: string;
+    subHeaderColor: string;
     backgroundColor: string;
     inputBackground: string;
     textColor: string;
@@ -28,8 +28,14 @@ export interface AppTheme {
     tabColorActive: string;
     tabColor: string;
 
-    roundButtonBackground: string;
-    roundButtonText: string;
+    roundButtonBackground: {
+        default: string;
+        secondary: string;
+    },
+    roundButtonText: {
+        default: string;
+        secondary: string;
+    };
 
     dialogTitleColor: string;
     dialogTitleSecureColor: string;
@@ -90,6 +96,7 @@ export interface AppTheme {
 
 export const DefaultTheme: AppTheme = {
     headerColor: 'white',
+    subHeaderColor: '#eff0f2',
     transparent: 'rgba(255,255,255,0)',
     backgroundColor: 'white',
     inputBackground: '#f3f5f7',
@@ -109,8 +116,14 @@ export const DefaultTheme: AppTheme = {
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
     selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
 
-    roundButtonBackground: '#0084fe',
-    roundButtonText: 'white',
+    roundButtonBackground: {
+        default: '#0084fe',
+        secondary: 'rgba(185, 193, 205, 0.4)',
+    },
+    roundButtonText: {
+        default: 'white',
+        secondary: '#000000',
+    },
 
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
@@ -174,6 +187,7 @@ export const DefaultTheme: AppTheme = {
 
 export const DarkTheme: AppTheme = {
     headerColor: '#1a1a1a',
+    subHeaderColor: '#1a1a1a',
     transparent: 'rgba(0,0,0,0)',
     backgroundColor: '#020202',
     inputBackground: '#020202',
@@ -193,8 +207,14 @@ export const DarkTheme: AppTheme = {
     groupHeaderColor: 'white',
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
 
-    roundButtonBackground: '#313131',
-    roundButtonText: 'white',
+    roundButtonBackground: {
+        default: '#313131',
+        secondary: '#313131',
+    },
+    roundButtonText: {
+        default: 'white',
+        secondary: 'white',
+    },
 
     tabColor: '#929292',
     tabColorActive: '#FDFDFD',
