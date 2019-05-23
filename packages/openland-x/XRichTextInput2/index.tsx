@@ -12,6 +12,7 @@ import { useDraftKeyHandling } from './hooks/useDraftKeyHandling';
 import { usePasteFiles } from './hooks/usePasteFiles';
 import { useHandlePastedText } from './hooks/useHandlePastedText';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
+import { XShortcuts } from 'openland-x/XShortcuts';
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions?: UserWithOffset[] }) => void;
     value: string;
@@ -98,38 +99,51 @@ export const XRichTextInput2 = React.memo(
             });
 
             return (
-                <EditorContainer
-                    {...props}
-                    plainText={plainText}
-                    onSubmit={onSubmit}
-                    editorState={editorState}
-                    setEditorState={setEditorState}
-                    emojiState={emojiState}
-                    mentionState={mentionState}
-                    finalAddEmoji={addEmoji}
-                    onMentionPicked={addMention}
-                    onEmojiPicked={onEmojiPicked}
+                <XShortcuts
+                    supressOtherShortcuts
+                    handlerMap={{
+                        ESC: () => {
+                            emojiState.setClosed(true);
+                            mentionState.setClosed(true);
+                        },
+                    }}
+                    keymap={{
+                        ESC: 'esc',
+                    }}
                 >
-                    <Editor
-                        ref={editorRef}
-                        placeholder={placeholder}
-                        keyBindingFn={keyBinding}
-                        handleKeyCommand={onHandleKey}
-                        handlePastedFiles={onPasteFiles}
-                        handlePastedText={handlePastedText as any}
-                        onDownArrow={(event: any) => {
-                            mentionState.handleDown(event);
-                            emojiState.handleDown(event);
-                        }}
-                        onUpArrow={(event: any) => {
-                            mentionState.handleUp(event);
-                            emojiState.handleUp(event);
-                        }}
-                        stripPastedStyles={true}
+                    <EditorContainer
+                        {...props}
+                        plainText={plainText}
+                        onSubmit={onSubmit}
                         editorState={editorState}
-                        onChange={handleEditorChange}
-                    />
-                </EditorContainer>
+                        setEditorState={setEditorState}
+                        emojiState={emojiState}
+                        mentionState={mentionState}
+                        finalAddEmoji={addEmoji}
+                        onMentionPicked={addMention}
+                        onEmojiPicked={onEmojiPicked}
+                    >
+                        <Editor
+                            ref={editorRef}
+                            placeholder={placeholder}
+                            keyBindingFn={keyBinding}
+                            handleKeyCommand={onHandleKey}
+                            handlePastedFiles={onPasteFiles}
+                            handlePastedText={handlePastedText as any}
+                            onDownArrow={(event: any) => {
+                                mentionState.handleDown(event);
+                                emojiState.handleDown(event);
+                            }}
+                            onUpArrow={(event: any) => {
+                                mentionState.handleUp(event);
+                                emojiState.handleUp(event);
+                            }}
+                            stripPastedStyles={true}
+                            editorState={editorState}
+                            onChange={handleEditorChange}
+                        />
+                    </EditorContainer>
+                </XShortcuts>
             );
         },
     ),

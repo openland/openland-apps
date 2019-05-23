@@ -8,6 +8,7 @@ export type useMentionSuggestionsT = {
 };
 
 export type MentionSuggestionsStateT = {
+    setClosed: (a: boolean) => void;
     handleUp: Function;
     handleDown: Function;
     suggestions: SuggestionTypeT[];
@@ -31,7 +32,8 @@ export const useMentionSuggestions = ({
     const [isLoading, setIsLoading] = React.useState(false);
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [isPreload, setIsPreload] = React.useState(true);
-    let [isSelecting, setIsSelecting] = React.useState(false);
+    const [isSelecting, setIsSelecting] = React.useState(false);
+    const [isClosed, setClosed] = React.useState(false);
     let [finalFilteredSuggestions, setFilteredSuggestions] = React.useState<SuggestionTypeT[]>([]);
     const [initialSuggestions, setInitialSuggestions] = React.useState<UserForMention[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
@@ -67,6 +69,15 @@ export const useMentionSuggestions = ({
     // }, [finalFilteredSuggestions, isSelecting]);
 
     React.useEffect(() => {
+        if (isClosed) {
+            setIsSelecting(false);
+        }
+    }, [isClosed]);
+
+    React.useEffect(() => {
+        if (activeWord === '@' && isClosed) {
+            setClosed(false);
+        }
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
         const searchText = activeWord.slice(1).toLowerCase();
 
@@ -95,7 +106,9 @@ export const useMentionSuggestions = ({
 
         const allMatch = 'All'.startsWith(searchText) || 'all'.startsWith(searchText);
 
-        setIsSelecting(activeWord.startsWith('@') && (!!filteredSuggestions.length || allMatch));
+        setIsSelecting(
+            !isClosed && activeWord.startsWith('@') && (!!filteredSuggestions.length || allMatch),
+        );
 
         setFilteredSuggestions([
             {
@@ -104,9 +117,10 @@ export const useMentionSuggestions = ({
             },
             ...filteredSuggestions,
         ]);
-    }, [initialSuggestions, activeWord]);
+    }, [initialSuggestions, activeWord, isClosed]);
 
     return {
+        setClosed,
         isSelecting,
         handleUp,
         handleDown,

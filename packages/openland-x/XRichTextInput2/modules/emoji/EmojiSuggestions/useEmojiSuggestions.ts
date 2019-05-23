@@ -19,6 +19,7 @@ export type EmojiDataT = {
 
 export type EmojiSuggestionsStateT = {
     isSelecting: boolean;
+    setClosed: (a: boolean) => void;
     handleUp: Function;
     handleDown: Function;
     suggestions: EmojiDataT[];
@@ -52,6 +53,7 @@ export const useEmojiSuggestions = ({
     activeWord,
 }: useEmojiSuggestionsT): EmojiSuggestionsStateT => {
     const [isSelecting, setIsSelecting] = React.useState(false);
+    const [isClosed, setClosed] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<EmojiDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
     const [cursorXPosition, setCursorXPosition] = React.useState(() => {
@@ -59,6 +61,14 @@ export const useEmojiSuggestions = ({
     });
 
     React.useEffect(() => {
+        if (isClosed) {
+            setIsSelecting(false);
+        }
+    }, [isClosed]);
+    React.useEffect(() => {
+        if (activeWord === ':' && isClosed) {
+            setClosed(false);
+        }
         if (!activeWord.includes(':')) {
             setIsSelecting(false);
             setSuggestions([]);
@@ -98,9 +108,9 @@ export const useEmojiSuggestions = ({
         }
 
         setCursorXPosition(getCursorXPosition());
-        setIsSelecting(finalActiveWord.startsWith(':') && !!filteredValues.length);
+        setIsSelecting(!isClosed && finalActiveWord.startsWith(':') && !!filteredValues.length);
         setSuggestions(filteredValues.slice(0, 9));
-    }, [activeWord]);
+    }, [activeWord, isClosed]);
 
     const { handleUp, handleDown } = useKeyupDown({
         suggestionsList: suggestions,
@@ -112,6 +122,7 @@ export const useEmojiSuggestions = ({
     return {
         cursorXPosition,
         isSelecting,
+        setClosed,
         handleUp,
         handleDown,
         suggestions,
