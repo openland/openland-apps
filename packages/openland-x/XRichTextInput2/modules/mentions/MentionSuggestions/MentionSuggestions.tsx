@@ -151,6 +151,7 @@ export const MentionSuggestions = ({
                 } else if (suggestion.__typename === 'AllMention') {
                     return (
                         <AllEntry
+                            key={key}
                             isSelected={key === mentionState.selectedEntryIndex}
                             onClick={() => {
                                 onMentionPicked(mentionState.suggestions[key]);

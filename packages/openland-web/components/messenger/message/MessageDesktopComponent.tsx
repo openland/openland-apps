@@ -376,6 +376,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageImageComponentWrapper
+                                    key={'image' + message.id}
                                     fileAttach={fileAttach}
                                     isComment={!!this.props.isComment}
                                     message={message}
