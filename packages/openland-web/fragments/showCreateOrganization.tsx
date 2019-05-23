@@ -30,9 +30,8 @@ const CreateOrgForm = React.memo<{ type: 'organization' | 'community'; ctx: XMod
         let descriptionField = useField('input.about', '', form);
         let photoField = useField<UploadedFile | null>('input.photoRef', null, form);
 
-        let createAction = React.useCallback(() => {
+        let createAction = () => {
             form.doAction(async () => {
-                console.log(photoField.value);
                 let res = await client.mutateCreateOrganization({
                     input: {
                         personal: false,
@@ -58,7 +57,7 @@ const CreateOrgForm = React.memo<{ type: 'organization' | 'community'; ctx: XMod
                 router.push(redirect);
                 props.ctx.hide();
             });
-        }, []);
+        };
 
         return (
             <>
