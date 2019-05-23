@@ -2,6 +2,10 @@ import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
 
 export type XRichTextInput2RefMethods = {
     getElement: () => HTMLElement | null;
@@ -9,7 +13,9 @@ export type XRichTextInput2RefMethods = {
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
     setInputValue: (a: { text: string; mentions: UserWithOffset[] }) => void;
-    getMentions: () => UserWithOffset[];
+    getMentions: () => (
+        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[];
 };
 
 type useInputMethodsT = {

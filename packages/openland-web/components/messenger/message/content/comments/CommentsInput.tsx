@@ -9,13 +9,25 @@ import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/
 import { useQuote } from 'openland-web/fragments/MessageComposeComponent/hooks/useQuote';
 import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/hooks/useHandleChange';
 import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
 import { UserForMention } from 'openland-api/Types';
 
 type CommentsInputProps = {
     topLevelComment?: boolean;
     minimal?: boolean;
-    onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
+    onSend?: (
+        text: string,
+        mentions:
+            | (
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+            | []
+            | null,
+        uploadedFileKey?: string,
+    ) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];

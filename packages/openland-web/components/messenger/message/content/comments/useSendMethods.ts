@@ -1,5 +1,9 @@
 import UploadCare from 'uploadcare-widget';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
+
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 import { useAddComment } from './useAddComment';
@@ -62,7 +66,11 @@ export const useSendMethods = ({
         messageId: string;
         replyComment: string | null;
         msgToSend: string;
-        mentions: UserWithOffset[] | null;
+        mentions:
+            | (
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+            | null;
         uploadedFileKey: string;
     }) => {
         const newCommentId = await addComment({

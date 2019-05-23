@@ -17,6 +17,8 @@ import {
     SharedRoomKind,
     RoomMembersForMentionsPaginated_members,
     UserShort,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useKeydownHandler } from '../hooks/useKeydownHandler';
@@ -38,7 +40,14 @@ export interface MessageComposeComponentProps {
     conversation?: ConversationEngine;
     enabled?: boolean;
     minimal?: boolean;
-    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
+    onSend?: (
+        text: string,
+        mentions:
+            | (
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+            | null,
+    ) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];

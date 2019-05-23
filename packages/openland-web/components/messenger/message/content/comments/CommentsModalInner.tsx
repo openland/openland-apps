@@ -34,6 +34,10 @@ import {
     IsActivePoliteContext,
     IsActiveContextState,
 } from 'openland-web/pages/main/mail/components/CacheComponent';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
 
 const CommentView = ({
     originalMessageId,
@@ -187,7 +191,11 @@ const CommentView = ({
                             onSendFile={onSendFile}
                             onSend={async (
                                 msgToSend: string,
-                                mentions: UserWithOffset[] | null,
+                                mentions:
+                                    | (
+                                          | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                                          | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                                    | null,
                                 uploadedFileKey: string,
                             ) => {
                                 const newCommentId = await onSend({
@@ -448,7 +456,11 @@ export const CommentsModalInnerNoRouter = ({
                             onSendFile={onSendFile}
                             onSend={async (
                                 msgToSend: string,
-                                mentions: UserWithOffset[] | null,
+                                mentions:
+                                    | (
+                                          | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                                          | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                                    | null,
                                 uploadedFileKey: string,
                             ) => {
                                 await onSend({

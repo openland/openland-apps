@@ -4,6 +4,10 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
 import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
@@ -21,7 +25,15 @@ export type useReplyPropsT = {
 };
 
 export type useHandleSendT = {
-    onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
+    onSend?: (
+        text: string,
+        mentions:
+            | (
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+            | null,
+        uploadedFileKey?: string,
+    ) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     inputMethodsState?: InputMethodsStateT;
     draftState?: DraftStateT;
