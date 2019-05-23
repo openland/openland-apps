@@ -32,7 +32,7 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Men
         if (mention.__typename === 'User') {
             mentionText = '@' + mention.name;
         } else {
-            mentionText = '@all';
+            mentionText = '@All';
         }
 
         let index = getOffset(mentionText);

@@ -21,7 +21,7 @@ export type SuggestionTypeT =
     | UserForMention
     | {
           __typename: 'AllMention';
-          name: 'all';
+          name: 'All' | 'all';
       };
 
 export const useMentionSuggestions = ({
@@ -37,10 +37,6 @@ export const useMentionSuggestions = ({
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
     let finalFinalSuggestions = [
-        {
-            __typename: 'AllMention',
-            name: 'all',
-        },
         ...(isPreload ? finalFilteredSuggestions.slice(0, 50) : finalFilteredSuggestions),
     ] as SuggestionTypeT[];
 
@@ -77,6 +73,7 @@ export const useMentionSuggestions = ({
         let filteredSuggestions = (initialSuggestions ? initialSuggestions : [])
             .filter(({ name }: { name: string }) => {
                 const validator = activeWord !== '' && activeWord[0] === '@';
+
                 const user = name.split(' ');
                 const finedFirstName = user[0].toLowerCase().startsWith(searchText);
                 const finedLastName = user[1] ? user[1].toLowerCase().startsWith(searchText) : null;
@@ -96,8 +93,17 @@ export const useMentionSuggestions = ({
             );
         }
 
-        setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
-        setFilteredSuggestions(filteredSuggestions);
+        const allMatch = 'All'.startsWith(searchText) || 'all'.startsWith(searchText);
+
+        setIsSelecting(activeWord.startsWith('@') && (!!filteredSuggestions.length || allMatch));
+
+        setFilteredSuggestions([
+            {
+                __typename: 'AllMention' as 'AllMention',
+                name: 'All'.startsWith(searchText) ? 'All' : 'all',
+            },
+            ...filteredSuggestions,
+        ]);
     }, [initialSuggestions, activeWord]);
 
     return {

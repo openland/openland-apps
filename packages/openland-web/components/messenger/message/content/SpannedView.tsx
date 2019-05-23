@@ -194,7 +194,7 @@ const SpanView = React.memo<{ span: Span; children?: any }>(props => {
 
         return <OthersPopper items={otherItems}>{children}</OthersPopper>;
     } else if (span.type === 'mention_all') {
-        return <MentionComponentInnerText isYou={false}>all</MentionComponentInnerText>;
+        return <MentionComponentInnerText isYou={true}>{span.textRaw ? span.textRaw.slice(1) : 'All'}</MentionComponentInnerText>;
     } else if (span.type === 'new_line') {
         return <br />;
     } else if (span.type === 'emoji') {

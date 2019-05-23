@@ -135,7 +135,7 @@ export const ChatWatchSubscription = gql`
     ${UserTiny}
     ${UserShort}
     ${RoomShort}
-    
+    ${UserForMention}
 `;
 
 export const DialogUpdateFragment = gql`

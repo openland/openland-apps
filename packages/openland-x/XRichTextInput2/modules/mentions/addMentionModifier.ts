@@ -94,7 +94,7 @@ export const addMention = ({
     let mentionReplacedContent = Modifier.replaceText(
         editorState.getCurrentContent(),
         mentionTextSelection as any,
-        `${mentionPrefix}${mention.__typename === 'User' ? mention.name : 'all'}`,
+        `${mentionPrefix}${mention.name}`,
         null as any, // no inline style needed
         entityKey,
     );

@@ -80,7 +80,7 @@ export const AllEntry = ({
                     lineHeight={1.54}
                     color={'#000000'}
                 >
-                    @all
+                    @All
                 </XView>
 
                 <XView

@@ -20,6 +20,8 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -246,7 +248,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         this.messageText = text;
     };
 
-    handleSend = (text: string, mentions: UserWithOffset[] | null) => {
+    handleSend = (
+        text: string,
+        mentions:
+            | (
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+            | null,
+    ) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
@@ -255,7 +264,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             text,
             mentions
                 ? mentions.map(mention => {
-                      if (mention.typename === 'UserWithOffset') {
+                      if (mention.__typename === 'MessageSpanUserMention') {
                           return mention.user;
                       }
                       return { __typename: 'AllMention' as 'AllMention' };
