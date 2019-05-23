@@ -51,9 +51,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
@@ -172,7 +172,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     componentDidMount() {
         this.activeSubscription = this.props.isActive.listen(acitive => {
             if (acitive) {
-                this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
+                this.unmounter = this.conversation!.engine.mountConversation(
+                    this.props.conversationId,
+                );
                 this.unmounter2 = this.conversation!.subscribe(this);
                 if (!this.conversation) {
                     throw Error('conversation should be defined here');
@@ -251,7 +253,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         this.conversation.sendMessage(
             text,
-            mentions ? mentions.map(mention => mention.user) : null,
+            mentions
+                ? mentions.map(mention => {
+                      if (mention.typename === 'UserWithOffset') {
+                          return mention.user;
+                      }
+                      return { __typename: 'AllMention' as 'AllMention' };
+                  })
+                : null,
         );
     };
 
@@ -330,9 +339,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 

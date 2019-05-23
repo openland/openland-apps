@@ -1,13 +1,19 @@
 import { ServerSpan, Span, SpanTypeToSymbol } from './Span';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 
-export const findChildSpans = (spans: ServerSpan[], parent: ServerSpan): { lastIndex: number; childs: ServerSpan[] } => {
+export const findChildSpans = (
+    spans: ServerSpan[],
+    parent: ServerSpan,
+): { lastIndex: number; childs: ServerSpan[] } => {
     let childs: ServerSpan[] = [];
 
     for (var i = 0; i < spans.length; i++) {
         const span = spans[i];
 
-        if ((span.offset >= parent.offset) && (span.offset + span.length <= parent.offset + parent.length)) {
+        if (
+            span.offset >= parent.offset &&
+            span.offset + span.length <= parent.offset + parent.length
+        ) {
             childs.push(span);
         } else {
             break;
@@ -15,7 +21,7 @@ export const findChildSpans = (spans: ServerSpan[], parent: ServerSpan): { lastI
     }
 
     return { childs, lastIndex: i };
-}
+};
 
 export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     const { offset, length } = s;
@@ -25,29 +31,37 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     if (s.__typename === 'MessageSpanLink') {
         span = { offset, length, type: 'link', link: s.url };
     } else if (s.__typename === 'MessageSpanUserMention') {
-        span = { offset, length, type: 'mention_user', user: s.user }
+        span = { offset, length, type: 'mention_user', user: s.user };
     } else if (s.__typename === 'MessageSpanRoomMention') {
-        span = { offset, length, type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
+        span = {
+            offset,
+            length,
+            type: 'mention_room',
+            title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name,
+            id: s.room.id,
+        };
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
-        span = { offset, length, type: 'mention_users', users: s.users }
+        span = { offset, length, type: 'mention_users', users: s.users };
+    } else if (s.__typename === 'MessageSpanAllMention') {
+        span = { offset, length, type: 'mention_all' };
     } else if (s.__typename === 'MessageSpanBold') {
-        span = { offset, length, type: 'bold' }
+        span = { offset, length, type: 'bold' };
     } else if (s.__typename === 'MessageSpanDate') {
-        span = { offset, length, type: 'date', date: s.date }
+        span = { offset, length, type: 'date', date: s.date };
     } else if (s.__typename === 'MessageSpanCodeBlock') {
-        span = { offset, length, type: 'code_block' }
+        span = { offset, length, type: 'code_block' };
     } else if (s.__typename === 'MessageSpanInlineCode') {
-        span = { offset, length, type: 'code_inline' }
+        span = { offset, length, type: 'code_inline' };
     } else if (s.__typename === 'MessageSpanInsane') {
-        span = { offset, length, type: 'insane' }
+        span = { offset, length, type: 'insane' };
     } else if (s.__typename === 'MessageSpanIrony') {
-        span = { offset, length, type: 'irony' }
+        span = { offset, length, type: 'irony' };
     } else if (s.__typename === 'MessageSpanItalic') {
-        span = { offset, length, type: 'italic' }
+        span = { offset, length, type: 'italic' };
     } else if (s.__typename === 'MessageSpanLoud') {
-        span = { offset, length, type: 'loud' }
+        span = { offset, length, type: 'loud' };
     } else if (s.__typename === 'MessageSpanRotating') {
-        span = { offset, length, type: 'rotating' }
+        span = { offset, length, type: 'rotating' };
     } else {
         span = { offset, length, type: 'text', textRaw: spanText };
     }
@@ -55,7 +69,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     span.textRaw = spanText;
 
     return span;
-}
+};
 
 export const preprocessRawText = (text: string, startOffset: number, isBig?: boolean): Span[] => {
     let res: Span[] = [];
@@ -69,7 +83,7 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
                 textRaw: p,
                 text: TextRenderProccessor.emojify(p, isBig ? 'big' : 'default'),
                 length: p.length,
-                offset: startOffset + garbageString.length
+                offset: startOffset + garbageString.length,
             });
         }
 
@@ -77,7 +91,7 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
             res.push({
                 type: 'new_line',
                 length: 0,
-                offset: startOffset + garbageString.length
+                offset: startOffset + garbageString.length,
             });
         }
 
@@ -85,7 +99,7 @@ export const preprocessRawText = (text: string, startOffset: number, isBig?: boo
     });
 
     return res;
-}
+};
 
 export const getTextSpans = (text: string, parent: Span): Span[] => {
     let res: Span[] = [];
@@ -93,16 +107,17 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
 
     let slicedText = text.substr(parent.offset, parent.length);
 
-    const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+    const isBigParent =
+        parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
 
     for (let s of parent.childrens || []) {
-        let rawFirst = slicedText.substr(offset, (s.offset - parent.offset) - offset);
+        let rawFirst = slicedText.substr(offset, s.offset - parent.offset - offset);
 
         if (rawFirst) {
             res.push(...preprocessRawText(rawFirst, offset + parent.offset, isBigParent));
         }
 
-        offset = (s.offset - parent.offset) + s.length;
+        offset = s.offset - parent.offset + s.length;
     }
 
     let rawLast = slicedText.slice(offset);
@@ -118,7 +133,7 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     }
 
     return res;
-}
+};
 
 type SpansSliceType = 'slice' | 'code_block' | 'loud' | 'emoji';
 
@@ -131,8 +146,8 @@ interface SpansSlice {
 export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[] => {
     let res: SpansSlice[] = [];
 
-    while (spans.findIndex((v) => ['code_block', 'loud', 'emoji'].includes(v.type)) >= 0) {
-        let index = spans.findIndex((v) => ['code_block', 'loud', 'emoji'].includes(v.type));
+    while (spans.findIndex(v => ['code_block', 'loud', 'emoji'].includes(v.type)) >= 0) {
+        let index = spans.findIndex(v => ['code_block', 'loud', 'emoji'].includes(v.type));
         let type: SpansSliceType = spans[index].type as any;
 
         // before current code-block/loud
@@ -140,7 +155,7 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
             res.push({
                 type: 'slice',
                 spans: spans.slice(0, index),
-                padded: false
+                padded: false,
             });
         }
 
@@ -148,7 +163,7 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
         res.push({
             type: type,
             spans: [spans[index]],
-            padded: ((index === spans.length - 1) && (type !== 'code_block')) ? !!usePadded : false
+            padded: index === spans.length - 1 && type !== 'code_block' ? !!usePadded : false,
         });
 
         spans = spans.slice(index + 1);
@@ -159,9 +174,9 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
         res.push({
             type: 'slice',
             spans: spans,
-            padded: !!usePadded
+            padded: !!usePadded,
         });
     }
 
     return res;
-}
+};

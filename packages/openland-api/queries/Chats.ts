@@ -135,6 +135,7 @@ export const ChatWatchSubscription = gql`
     ${UserTiny}
     ${UserShort}
     ${RoomShort}
+    
 `;
 
 export const DialogUpdateFragment = gql`
@@ -485,6 +486,7 @@ export const ChatHistoryQuery = gql`
     ${UserTiny}
     ${UserShort}
     ${RoomShort}
+    ${UserForMention}
 `;
 
 export const ChatInitQuery = gql`
@@ -503,6 +505,7 @@ export const ChatInitQuery = gql`
     ${UserTiny}
     ${UserShort}
     ${RoomShort}
+    ${UserForMention}
 `;
 
 export const SendMessageMutation = gql`

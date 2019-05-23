@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { UserTiny } from './UserTiny';
 import { UserShort } from './UserShort';
+import { UserForMention } from './UserForMention';
 
 export const DaialogListMessage = gql`
     fragment DaialogListMessage on ModernMessage {
@@ -258,12 +259,12 @@ export const FullMessage = gql`
 
             ... on MessageSpanUserMention {
                 user {
-                    ...UserShort
+                    ...UserForMention
                 }
             }
             ... on MessageSpanMultiUserMention {
                 users {
-                    ...UserShort
+                    ...UserForMention
                 }
             }
             ... on MessageSpanRoomMention {

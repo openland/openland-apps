@@ -1,6 +1,7 @@
 fragment UserForMention on User {
   __typename
   id
+  isYou
   name
   photo
   primaryOrganization {

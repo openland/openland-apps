@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserTiny } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, TextStyle } from 'react-native';
 import { ZAvatar } from './ZAvatar';
@@ -8,7 +8,7 @@ import { ZListItemBase } from './ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZUserViewProps {
-    user: UserTiny;
+    user: UserForMention;
     onPress: (userId: string) => void;
 }
 

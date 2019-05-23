@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
-import { UserShort } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
@@ -9,7 +9,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
-import { XViewRouterContext } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
@@ -76,7 +75,7 @@ const UserPopperContent = XMemo(
         startSelected,
         hidePopper,
     }: {
-        user: UserShort;
+        user: UserForMention;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;

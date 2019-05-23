@@ -65,7 +65,12 @@ export const getEditorStateFromText = ({
         EditorState.createWithContent(
             convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(
                 text,
-                mentions.map(({ user }) => user),
+                mentions.map(mention => {
+                    if (mention.typename === 'UserWithOffset') {
+                        return mention.user;
+                    }
+                    return { __typename: 'AllMention' as 'AllMention', name: 'all' as 'all' };
+                }),
             ) as any),
             new CompositeDecorator([mentionDecorator, emojiDecorator]),
         ),

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
-import { UserShort, UserTiny } from 'openland-api/Types';
+import { UserShort, UserForMention } from 'openland-api/Types';
 import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { Text, View } from 'react-native';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -9,7 +9,7 @@ import { ZUserView } from 'openland-mobile/components/ZUserView';
 
 interface OthersUsersWrapperProps {
     children?: any;
-    users: UserTiny[];
+    users: UserForMention[];
     onUserPress: (id: string) => void;
     useAsync: boolean;
     theme: AppTheme

@@ -21,6 +21,7 @@ export type SuggestionTypeT =
     | UserForMention
     | {
           __typename: 'AllMention';
+          name: 'all';
       };
 
 export const useMentionSuggestions = ({
@@ -35,117 +36,10 @@ export const useMentionSuggestions = ({
     const [initialSuggestions, setInitialSuggestions] = React.useState<UserForMention[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
-    // isSelecting = true;
-
-    // finalFilteredSuggestions = [
-    //     {
-    //         __typename: 'AllMention',
-    //     },
-    //     {
-    //         id: '1pkzZ9z6YzTaxv0P6YvXCLv9yy',
-    //         name: 'dev lapin 🎉',
-    //         photo:
-    //             'https://ucarecdn.com/f2a18548-dd22-432b-98ea-82b5c4215dfb/-/crop/1050x1050/315,0/',
-    //         primaryOrganization: {
-    //             id: 'g09417DZA9c1j9vKJKMmudA5nJ',
-    //             name: 'test-123',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    //     {
-    //         id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    //         name: 'Sergey Lapin',
-    //         photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
-    //         primaryOrganization: {
-    //             id: '61gk9KRrl9ComJkvYnvdcddr4o',
-    //             name: 'Openland',
-    //             __typename: 'Organization',
-    //         },
-    //         __typename: 'User',
-    //     },
-    // ];
-
     let finalFinalSuggestions = [
         {
             __typename: 'AllMention',
+            name: 'all',
         },
         ...(isPreload ? finalFilteredSuggestions.slice(0, 50) : finalFilteredSuggestions),
     ] as SuggestionTypeT[];

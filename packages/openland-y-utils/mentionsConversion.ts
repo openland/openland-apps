@@ -5,10 +5,33 @@ import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,
 } from 'openland-api/Types';
 
-export type UserWithOffset = {
-    user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
-    offset: number;
-    length: number;
+export type UserWithOffset =
+    | {
+          typename: 'UserWithOffset';
+          user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+          offset: number;
+          length: number;
+      }
+    | {
+          typename: 'AllMention';
+          offset: number;
+          length: number;
+      };
+
+export const convertToMentionInputNoText = (mention: UserWithOffset): MentionInput => {
+    if (mention.typename === 'UserWithOffset') {
+        return {
+            userId: mention.user.id,
+            offset: mention.offset,
+            length: mention.length,
+        };
+    } else {
+        return {
+            all: true,
+            offset: mention.offset,
+            length: mention.length,
+        };
+    }
 };
 
 export const convertToMentionInput = ({
@@ -22,12 +45,10 @@ export const convertToMentionInput = ({
 
     if (mentions.length > 0) {
         mentions.map(mention => {
-            if (text.indexOf(mention.user.name) >= 0) {
-                mentionsCleared.push({
-                    userId: mention.user.id,
-                    offset: mention.offset,
-                    length: mention.length,
-                });
+            if (mention.typename === 'UserWithOffset') {
+                if (text.indexOf(mention.user.name) >= 0) {
+                    mentionsCleared.push(convertToMentionInputNoText(mention));
+                }
             }
         });
     }
@@ -46,6 +67,7 @@ export const convertSpansToUserWithOffset = ({
         })
         .map((span: FullMessage_GeneralMessage_spans_MessageSpanUserMention) => {
             return {
+                typename: 'UserWithOffset' as 'UserWithOffset',
                 user: span.user,
                 offset: span.offset,
                 length: span.length,

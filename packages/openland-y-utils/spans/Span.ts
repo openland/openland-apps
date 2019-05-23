@@ -1,7 +1,45 @@
-import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, MessageSpanType } from "openland-api/Types";
+import {
+    FullMessage_GeneralMessage_spans,
+    FullMessage_ServiceMessage_spans,
+    UserForMention,
+    MessageSpanType,
+} from 'openland-api/Types';
 
-export type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating' | 'emoji';
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate | SpanCodeBlock | SpanCodeInline | SpanInsane | SpanIrony | SpanItalic | SpanLoud | SpanRotating | SpanEmoji;
+export type SpanType =
+    | 'link'
+    | 'text'
+    | 'new_line'
+    | 'mention_all'
+    | 'mention_user'
+    | 'mention_users'
+    | 'mention_room'
+    | 'bold'
+    | 'date'
+    | 'code_block'
+    | 'code_inline'
+    | 'insane'
+    | 'irony'
+    | 'italic'
+    | 'loud'
+    | 'rotating'
+    | 'emoji';
+export type Span =
+    | SpanUser
+    | SpanAll
+    | SpanRoom
+    | SpanText
+    | SpanLink
+    | SpanUsers
+    | SpanBold
+    | SpanDate
+    | SpanCodeBlock
+    | SpanCodeInline
+    | SpanInsane
+    | SpanIrony
+    | SpanItalic
+    | SpanLoud
+    | SpanRotating
+    | SpanEmoji;
 
 interface SpanAbs {
     type: SpanType;
@@ -65,12 +103,16 @@ export interface SpanLink extends SpanAbs {
 
 export interface SpanUser extends SpanAbs {
     type: 'mention_user';
-    user: UserShort;
+    user: UserForMention;
 }
 
 export interface SpanUsers extends SpanAbs {
     type: 'mention_users';
-    users: UserShort[];
+    users: UserForMention[];
+}
+
+export interface SpanAll extends SpanAbs {
+    type: 'mention_all';
 }
 
 export interface SpanRoom extends SpanAbs {
@@ -81,15 +123,17 @@ export interface SpanRoom extends SpanAbs {
 
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
 
-export const SpanSymbolToType: { [key: string]: { type: MessageSpanType, master?: boolean, lined?: boolean }} = {
+export const SpanSymbolToType: {
+    [key: string]: { type: MessageSpanType; master?: boolean; lined?: boolean };
+} = {
     '*': { type: MessageSpanType.Bold },
     '```': { type: MessageSpanType.CodeBlock, master: true },
-    '\'\'\'': { type: MessageSpanType.CodeBlock, master: true },
+    "'''": { type: MessageSpanType.CodeBlock, master: true },
     '`': { type: MessageSpanType.InlineCode },
-    '\'': { type: MessageSpanType.InlineCode },
+    "'": { type: MessageSpanType.InlineCode },
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
-    '_': { type: MessageSpanType.Italic },
+    _: { type: MessageSpanType.Italic },
     '# ': { type: MessageSpanType.Loud, lined: true },
     '🔄': { type: MessageSpanType.Rotating },
 };
@@ -100,34 +144,16 @@ export interface SpecSymbolsType {
 }
 
 export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType[] } = {
-    'bold': [
-        { s: '*' }
-    ],
-    'code_block': [
-        { s: '```' },
-        { s: '\'\'\'' }
-    ],
-    'code_inline': [
-        { s: '`' },
-        { s: '\'' }
-    ],
-    'insane': [
-        { s: '🌈' }
-    ],
-    'irony': [
-        { s: '~' }
-    ],
-    'italic': [
-        { s: '_' }
-    ],
-    'loud': [
+    bold: [{ s: '*' }],
+    code_block: [{ s: '```' }, { s: "'''" }],
+    code_inline: [{ s: '`' }, { s: "'" }],
+    insane: [{ s: '🌈' }],
+    irony: [{ s: '~' }],
+    italic: [{ s: '_' }],
+    loud: [
         { s: ':' }, // DEPRECATED
-        { s: '# ', opened: true }
+        { s: '# ', opened: true },
     ],
-    'rotating': [
-        { s: '🔄' }
-    ],
-    'mention_user': [
-        { s: '@', opened: true }
-    ],
+    rotating: [{ s: '🔄' }],
+    mention_user: [{ s: '@', opened: true }],
 };

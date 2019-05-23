@@ -1,5 +1,4 @@
 import { EditorState, Modifier } from 'draft-js';
-import { UserShort } from 'openland-api/Types';
 import { SuggestionTypeT } from '../../modules/mentions/MentionSuggestions/useMentionSuggestions';
 
 export function findActiveWordStart(state: EditorState): number {

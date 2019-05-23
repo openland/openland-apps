@@ -4,7 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
-import { MessageSendHandler } from './MessageSender';
+import { MessageSendHandler, MentionToSend } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
@@ -304,7 +304,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string, mentions: UserShort[] | null) => {
+    sendMessage = (text: string, mentions: MentionToSend[] | null) => {
         let message = text.trim();
         let date = (new Date().getTime()).toString();
 

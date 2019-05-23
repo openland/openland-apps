@@ -11,7 +11,11 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { useClient } from 'openland-web/utils/useClient';
-import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
+import {
+    UserWithOffset,
+    convertSpansToUserWithOffset,
+    convertToMentionInputNoText,
+} from 'openland-y-utils/mentionsConversion';
 import { XView } from 'react-mental';
 import { CommentPropsT } from '../PostMessageButtons';
 
@@ -54,12 +58,12 @@ const TextInputWrapper = Glamorous.div({
 
 export type XTextInputProps =
     | {
-        kind: 'from_store';
-        valueStoreKey: string;
-    }
+          kind: 'from_store';
+          valueStoreKey: string;
+      }
     | {
-        kind: 'controlled';
-    } & XRichTextInput2Props;
+          kind: 'controlled';
+      } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
@@ -69,7 +73,7 @@ class XRichTextInputStored extends React.PureComponent<
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
-    > {
+> {
     onChangeHandler = (value: { text: string; mentions?: UserWithOffset[] }) => {
         if (this.props.kind === 'from_store') {
             const previosValue = this.props.store.readValue(this.props.valueStoreKey);
@@ -112,7 +116,7 @@ class XTextInput extends React.PureComponent<
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
-    > {
+> {
     render() {
         if (this.props.kind === 'from_store') {
             const { valueStoreKey, ...other } = this.props;
@@ -220,18 +224,14 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 message: data.message.text,
                 spans: findSpans(data.message.text || ''),
                 mentions: data.message.mentions
-                    ? data.message.mentions.map((mention: UserWithOffset) => ({
-                        userId: mention.user.id,
-                        offset: mention.offset,
-                        length: mention.length,
-                    }))
+                    ? data.message.mentions.map(convertToMentionInputNoText)
                     : null,
                 fileAttachments: res
                     ? [
-                        {
-                            fileId: res,
-                        },
-                    ]
+                          {
+                              fileId: res,
+                          },
+                      ]
                     : [],
             });
 

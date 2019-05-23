@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { UserShort } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { LinkToRoom } from './service/views/LinkToRoom';
 import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
@@ -62,7 +62,7 @@ const TextRotatingStyle = css`
 `;
 
 const MentionedUser = React.memo(
-    ({ user, text, isYou }: { user: UserShort; text: any; isYou: boolean }) => {
+    ({ user, text, isYou }: { user: UserForMention; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
                 <MentionComponentInnerText isYou={isYou}>{text}</MentionComponentInnerText>

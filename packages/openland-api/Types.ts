@@ -1469,23 +1469,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -1500,23 +1491,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -2148,23 +2130,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -2179,23 +2152,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -2836,23 +2800,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -2867,23 +2822,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -3515,23 +3461,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -3546,23 +3483,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -3724,23 +3652,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -3755,23 +3674,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -4379,23 +4289,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -4410,23 +4311,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -4648,23 +4540,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -4679,23 +4562,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -5303,23 +5177,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -5334,23 +5199,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -5614,23 +5470,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -5645,23 +5492,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -6269,23 +6107,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -6300,23 +6129,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -6540,23 +6360,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -6571,23 +6382,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -7195,23 +6997,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -7226,23 +7019,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -7510,23 +7294,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -7541,23 +7316,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -8165,23 +7931,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -8196,23 +7953,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -8434,23 +8182,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -8465,23 +8204,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -9089,23 +8819,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -9120,23 +8841,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -9400,23 +9112,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -9431,23 +9134,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -10055,23 +9749,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -10086,23 +9771,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -10326,23 +10002,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -10357,23 +10024,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -10981,23 +10639,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -11012,23 +10661,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -12579,23 +12219,14 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -12610,23 +12241,14 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -13234,23 +12856,14 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -13265,23 +12878,14 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -13634,23 +13238,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -13665,23 +13260,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -14289,23 +13875,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -14320,23 +13897,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -14652,23 +14220,14 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -14683,23 +14242,14 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -15307,23 +14857,14 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -15338,23 +14879,14 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -15577,23 +15109,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -15608,23 +15131,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -16232,23 +15746,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -16263,23 +15768,14 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -16720,23 +16216,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -16751,23 +16238,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -17375,23 +16853,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -17406,23 +16875,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -17706,23 +17166,14 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -17737,23 +17188,14 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -18361,23 +17803,14 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -18392,23 +17825,14 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -18632,23 +18056,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -18663,23 +18078,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -19287,23 +18693,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -19318,23 +18715,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -19622,23 +19010,14 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -19653,23 +19032,14 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -20277,23 +19647,14 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -20308,23 +19669,14 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -20588,23 +19940,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -20619,23 +19962,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -21243,23 +20577,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -21274,23 +20599,14 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -21726,23 +21042,14 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -21757,23 +21064,14 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -22381,23 +21679,14 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -22412,23 +21701,14 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -22668,23 +21948,14 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_u
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -22699,23 +21970,14 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMent
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -23323,23 +22585,14 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_u
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -23354,23 +22607,14 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMent
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -23621,23 +22865,14 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -23652,23 +22887,14 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -24276,23 +23502,14 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -24307,23 +23524,14 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -24547,23 +23755,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -24578,23 +23777,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -25202,23 +24392,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -25233,23 +24414,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -25732,23 +24904,14 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -25763,23 +24926,14 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -26387,23 +25541,14 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -26418,23 +25563,14 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -26787,23 +25923,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -26818,23 +25945,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -27442,23 +26560,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -27473,23 +26582,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -27779,23 +26879,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -27810,23 +26901,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -28434,23 +27516,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -28465,23 +27538,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -28834,23 +27898,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -28865,23 +27920,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -29489,23 +28535,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -29520,23 +28557,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -29823,23 +28851,14 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -29854,23 +28873,14 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -30478,23 +29488,14 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -30509,23 +29510,14 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -30878,23 +29870,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -30909,23 +29892,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -31533,23 +30507,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -31564,23 +30529,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -31870,23 +30826,14 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -31901,23 +30848,14 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -32525,23 +31463,14 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -32556,23 +31485,14 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -32925,23 +31845,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -32956,23 +31867,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -33580,23 +32482,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -33611,23 +32504,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -33914,23 +32798,14 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -33945,23 +32820,14 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -34569,23 +33435,14 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -34600,23 +33457,14 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -34969,23 +33817,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -35000,23 +33839,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -35624,23 +34454,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -35655,23 +34476,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -35959,23 +34771,14 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -35990,23 +34793,14 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -36614,23 +35408,14 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -36645,23 +35430,14 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -37014,23 +35790,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -37045,23 +35812,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -37669,23 +36427,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -37700,23 +36449,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -38185,6 +36925,7 @@ export interface RoomMembersForMentionsPaginated_members_user_primaryOrganizatio
 
 export interface RoomMembersForMentionsPaginated_members_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
   photo: string | null;
@@ -38354,23 +37095,14 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -38385,23 +37117,14 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -39009,23 +37732,14 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -39040,23 +37754,14 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_Me
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -39409,23 +38114,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -39440,23 +38136,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -40064,23 +38751,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -40095,23 +38773,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -40417,23 +39086,14 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -40448,23 +39108,14 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -41072,23 +39723,14 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -41103,23 +39745,14 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -41472,23 +40105,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -41503,23 +40127,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -42127,23 +40742,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -42158,23 +40764,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -43220,23 +41817,14 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -43251,23 +41839,14 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -43649,23 +42228,14 @@ export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_use
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -43680,23 +42250,14 @@ export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMentio
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -44304,23 +42865,14 @@ export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_use
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -44335,23 +42887,14 @@ export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMentio
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -45657,23 +44200,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -45688,23 +44222,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -46312,23 +44837,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -46343,23 +44859,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -46685,23 +45192,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -46716,23 +45214,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -47340,23 +45829,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -47371,23 +45851,14 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -47712,23 +46183,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -47743,23 +46205,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -48367,23 +46820,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -48398,23 +46842,14 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -48750,23 +47185,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -48781,23 +47207,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -49405,23 +47822,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -49436,23 +47844,14 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -50043,23 +48442,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -50074,23 +48464,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -50698,23 +49079,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -50729,23 +49101,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -52259,23 +50622,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -52290,23 +50644,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -52914,23 +51259,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -52945,23 +51281,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -53831,23 +52158,14 @@ export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -53862,23 +52180,14 @@ export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -54820,23 +53129,14 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_pr
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -54851,23 +53151,14 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_us
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -54976,23 +53267,14 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_pr
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -55007,23 +53289,14 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_us
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -55319,23 +53592,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -55350,23 +53614,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -55974,23 +54229,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -56005,23 +54251,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -56486,23 +54723,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -56517,23 +54745,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -57141,23 +55360,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -57172,23 +55382,14 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -57499,23 +55700,14 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -57530,23 +55722,14 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -58154,23 +56337,14 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -58185,23 +56359,14 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -58554,23 +56719,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -58585,23 +56741,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -59209,23 +57356,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -59240,23 +57378,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -59609,23 +57738,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -59640,23 +57760,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -60264,23 +58375,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -60295,23 +58397,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -60633,23 +58726,14 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -60664,23 +58748,14 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -61288,23 +59363,14 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -61319,23 +59385,14 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_Messag
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -61559,23 +59616,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -61590,23 +59638,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -62214,23 +60253,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -62245,23 +60275,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -62533,6 +60554,7 @@ export interface UserForMention_primaryOrganization {
 
 export interface UserForMention {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
   photo: string | null;
@@ -63178,23 +61200,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -63209,23 +61222,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -63857,23 +61861,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -63888,23 +61883,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -64047,23 +62033,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -64078,23 +62055,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -64702,23 +62670,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -64733,23 +62692,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -64971,23 +62921,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -65002,23 +62943,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -65626,23 +63558,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -65657,23 +63580,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -65937,23 +63851,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -65968,23 +63873,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -66592,23 +64488,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -66623,23 +64510,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -66863,23 +64741,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -66894,23 +64763,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
@@ -67518,23 +65378,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
@@ -67549,23 +65400,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   __typename: "Organization";
   id: string;
   name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
+  isYou: boolean;
   id: string;
   name: string;
-  firstName: string;
-  lastName: string | null;
   photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 

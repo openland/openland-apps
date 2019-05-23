@@ -1,8 +1,12 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
-import { UserShort, MentionInput, FileAttachmentInput, MessageSpanInput } from 'openland-api/Types';
+import { UserForMention, MentionInput, FileAttachmentInput, MessageSpanInput } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+
+export type MentionToSend = UserForMention | {
+    __typename: "AllMention";
+}
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -108,7 +112,7 @@ export class MessageSender {
     }: {
         conversationId: string;
         message: string;
-        mentions: UserShort[] | null;
+        mentions: MentionToSend[] | null;
         callback: MessageSendHandler;
         quoted?: string[];
         spans: MessageSpanInput[] | null;
@@ -139,7 +143,7 @@ export class MessageSender {
     }: {
         conversationId: string;
         message: string;
-        mentions: UserShort[] | null;
+        mentions: MentionToSend[] | null;
     }) {
         await new Promise<string>((resolve, reject) => {
             let handler: MessageSendHandler = {
