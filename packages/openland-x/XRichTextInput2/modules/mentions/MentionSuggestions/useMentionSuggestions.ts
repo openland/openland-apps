@@ -111,10 +111,10 @@ export const useMentionSuggestions = ({
         );
 
         setFilteredSuggestions([
-            {
-                __typename: 'AllMention' as 'AllMention',
-                name: 'All'.startsWith(searchText) ? 'All' : 'all',
-            },
+            // {
+            //     __typename: 'AllMention' as 'AllMention',
+            //     name: 'All'.startsWith(searchText) ? 'All' : 'all',
+            // },
             ...filteredSuggestions,
         ]);
     }, [initialSuggestions, activeWord, isClosed]);
