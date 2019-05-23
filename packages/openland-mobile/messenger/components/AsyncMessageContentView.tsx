@@ -43,6 +43,8 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
             return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
             return <ASText key={'mention-user'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+        } else if (span.type === 'mention_all') {
+            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
             return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
