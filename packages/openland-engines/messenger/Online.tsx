@@ -2,7 +2,6 @@ import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
 import { forever } from 'openland-engines/utils/forever';
-import { subscribe } from 'graphql';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
@@ -32,10 +31,10 @@ export class OnlineWatcher {
             // }
             let evData = event.alphaSubscribeOnline;
 
-            let userId = evData.user.id;
+            let userId = evData.userId;
 
-            this.onlinesData.set(userId, evData.user.online);
-            this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
+            this.onlinesData.set(userId, evData.online);
+            this.singleChangeListeners.forEach(l => l(userId, evData.online));
 
             this.listeners.forEach(l => l(this.onlinesData));
         });

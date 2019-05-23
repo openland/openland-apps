@@ -2649,14 +2649,11 @@ private val DialogsWatchSelector = obj(
 private val OnlineWatchSelector = obj(
             field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
+                    field("active","active", notNull(scalar("Boolean"))),
+                    field("lastSeen","lastSeen", notNull(scalar("String"))),
+                    field("online","online", notNull(scalar("Boolean"))),
                     field("timeout","timeout", notNull(scalar("Int"))),
-                    field("type","type", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("lastSeen","lastSeen", scalar("String")),
-                            field("online","online", notNull(scalar("Boolean")))
-                        )))
+                    field("userId","userId", notNull(scalar("ID")))
                 )))
         )
 private val SettingsWatchSelector = obj(
@@ -3705,7 +3702,7 @@ object Operations {
     val OnlineWatch = object: OperationDefinition {
         override val name = "OnlineWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription OnlineWatch(\$users:[ID!]!){alphaSubscribeOnline(users:\$users){__typename timeout type user:user{__typename id lastSeen online}}}"
+        override val body = "subscription OnlineWatch(\$users:[ID!]!){alphaSubscribeOnline(users:\$users){__typename active lastSeen online timeout userId}}"
         override val selector = OnlineWatchSelector
     }
     val SettingsWatch = object: OperationDefinition {

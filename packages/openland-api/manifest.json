@@ -1178,10 +1178,10 @@
       }
     },
     {
-      "signature": "587226c89190425a4fca34c93c2f2defdfd419010208735168f895df7e0b93d7",
-      "document": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename timeout type user:user{__typename id lastSeen online}}}",
+      "signature": "f9842bf36ff8a6d23b6b7d4cd7876db4bd295eaa296e2c60615de42ae58a163d",
+      "document": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename active lastSeen online timeout userId}}",
       "metadata": {
-        "engineSignature": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename timeout type user{__typename id lastSeen online}}}"
+        "engineSignature": "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename active lastSeen online timeout userId}}"
       }
     },
     {
