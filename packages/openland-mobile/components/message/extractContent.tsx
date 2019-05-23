@@ -8,6 +8,7 @@ import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
 import { Dimensions } from 'react-native';
+import { isPad } from 'openland-mobile/pages/Root';
 
 interface ExtractContentProps {
     message: FullMessage_GeneralMessage;
@@ -21,6 +22,10 @@ interface ExtractContentProps {
 export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxWidth?: number) => {
     const { theme, message } = props;
     let realMaxWidth = maxWidth || Dimensions.get('screen').width - 32;
+
+    if (isPad) {
+        realMaxWidth -= 320;
+    }
 
     let attaches = (message.attachments || []);
     let fileAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
