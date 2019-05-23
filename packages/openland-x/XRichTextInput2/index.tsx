@@ -11,7 +11,7 @@ import { useHandleEditorChange } from './hooks/useHandleEditorChange/useHandleEd
 import { useDraftKeyHandling } from './hooks/useDraftKeyHandling';
 import { usePasteFiles } from './hooks/usePasteFiles';
 import { useHandlePastedText } from './hooks/useHandlePastedText';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions?: UserWithOffset[] }) => void;
     value: string;

@@ -5,7 +5,7 @@ import { addEmoji } from '../../modules/emoji/addEmojiModifier';
 import { addMention, findActiveWord } from '../../modules/mentions/addMentionModifier';
 import { mentionDecorator } from '../../modules/mentions/decorator';
 import { emojiDecorator } from '../../modules/emoji/decorator';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { SuggestionTypeT } from '../../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';

@@ -1,7 +1,7 @@
 import { getDefaultKeyBinding } from 'draft-js';
 import { EmojiSuggestionsStateT } from '../modules/emoji/EmojiSuggestions/useEmojiSuggestions';
 import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {

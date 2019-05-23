@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 export type InputMethodsStateT = XRichTextInput2RefMethods & {
     focusIfNeeded: Function;

@@ -17,7 +17,6 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentsInput } from './CommentsInput';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { convertMessage } from './convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';

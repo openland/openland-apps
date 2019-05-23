@@ -31,7 +31,7 @@ import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 export interface MessageComposeComponentProps {

@@ -15,7 +15,7 @@ import {
     UserWithOffset,
     convertSpansToUserWithOffset,
     convertToMentionInputNoText,
-} from 'openland-y-utils/mentionsConversion';
+} from 'openland-engines/legacy/legacymentions';
 import { XView } from 'react-mental';
 import { CommentPropsT } from '../PostMessageButtons';
 

@@ -1,4 +1,4 @@
-import { convertToMentionInput2 } from 'openland-y-utils/mentionsConversion';
+import { convertToMentionInput2 } from 'openland-engines/legacy/legacymentions';
 import { FileAttachmentInput } from 'openland-api/Types';
 import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,

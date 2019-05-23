@@ -9,7 +9,7 @@ import { EditView } from './EditView';
 import { QuoteStateT } from '../hooks/useQuote';
 import { DropZone } from '../../../modules/FileUploading/DropZone';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import Glamorous from 'glamorous';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView } from 'react-mental';

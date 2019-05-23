@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DraftStateT } from './useDraft/useDraft';
-import { InputMethodsStateT } from './useInputMethods';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 export type GeneralComposeStateT = {
     handleChange: Function;
@@ -18,20 +17,22 @@ export function useHandleChange({ setInputValue, onChange, draftState }: useHand
         return !!draftState;
     };
 
-    const handleChange = React.useCallback(({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
-        setInputValue(text);
+    const handleChange = React.useCallback(
+        ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
+            setInputValue(text);
 
-        if (onChange) {
-            onChange(text);
-        }
-
-        if (supportDraft()) {
-            if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
-                draftState!!.changeDraft(text, mentions);
+            if (onChange) {
+                onChange(text);
             }
-        }
-    }
-        , [])
+
+            if (supportDraft()) {
+                if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
+                    draftState!!.changeDraft(text, mentions);
+                }
+            }
+        },
+        [],
+    );
 
     return { handleChange };
 }

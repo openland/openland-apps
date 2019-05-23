@@ -1,4 +1,4 @@
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const getDraftKey = (conversationId?: string): string => {
     if (!conversationId) {

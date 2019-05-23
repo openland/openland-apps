@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SaveDraftMessageVariables, SaveDraftMessage } from 'openland-api/Types';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import * as DraftStore from './DraftStore';
 
 export type DraftStateT = {

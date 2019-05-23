@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const TextArea = css`
     border-radius: 10px;
@@ -79,14 +79,11 @@ export const ContentEditableTextInput = React.forwardRef(
             }
         };
 
-        React.useEffect(
-            () => {
-                if (value !== html) {
-                    ref.current.innerHTML = value;
-                }
-            },
-            [value],
-        );
+        React.useEffect(() => {
+            if (value !== html) {
+                ref.current.innerHTML = value;
+            }
+        }, [value]);
 
         return (
             <>

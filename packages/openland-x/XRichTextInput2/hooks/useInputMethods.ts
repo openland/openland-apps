@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,

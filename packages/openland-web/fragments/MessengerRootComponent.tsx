@@ -32,7 +32,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { trackEvent } from 'openland-x-analytics';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import throttle from 'lodash/throttle';
