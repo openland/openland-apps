@@ -63,7 +63,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     } else if (s.__typename === 'MessageSpanRotating') {
         span = { offset, length, type: 'rotating' };
     } else {
-        span = { offset, length, type: 'text', textRaw: spanText };
+        span = { offset, length, type: 'text', text: TextRenderProccessor.emojify(spanText) };
     }
 
     span.textRaw = spanText;

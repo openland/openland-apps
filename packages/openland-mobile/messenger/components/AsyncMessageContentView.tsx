@@ -73,7 +73,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
             return <ASText key={'text'}>{span.text}</ASText>;
         }
     
-        return props.children ? <span>{props.children}</span> : null;
+        return props.children ? <ASText key={'unknown'}>{props.children}</ASText> : null;
     }
     
     return renderSpans(SpanView, spans) || [];

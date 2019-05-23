@@ -114,7 +114,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return <Text key={'text'}>{span.text}</Text>;
         }
     
-        return props.children ? <span>{props.children}</span> : null;
+        return props.children ? <Text key={'unknown'}>{props.children}</Text> : null;
     }
     
     return renderSpans(SpanView, spans)
