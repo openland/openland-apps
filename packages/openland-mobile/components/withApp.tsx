@@ -20,7 +20,7 @@ function PageError(props: { refresh: () => void }) {
             <SHeader title="Content is unavailable" />
             <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                 <View height="73%" alignItems="center" justifyContent="center">
-                    <Image source={require('assets/img-empty.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                    <Image source={theme.imageEmpty} style={{ width: 224, height: 224, marginBottom: 30 }} />
                     <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>Content is unavailable</Text>
                     <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.textColor, opacity: 0.6 }} allowFontScaling={false}>This content doesn't exist or you don't have permission to view it</Text>
                 </View>

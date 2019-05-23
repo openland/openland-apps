@@ -92,6 +92,8 @@ export interface AppTheme {
         background: string,
         paddedText: string,
     };
+
+    imageEmpty: NodeRequire;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -182,7 +184,9 @@ export const DefaultTheme: AppTheme = {
         backgroundOut: 'rgba(0, 0, 0, 0.2)',
         background: 'rgba(255, 170, 0, 0.2)',
         paddedText: '\u202F',
-    }
+    },
+
+    imageEmpty: require('assets/img-empty.png')
 }
 
 export const DarkTheme: AppTheme = {
@@ -272,5 +276,7 @@ export const DarkTheme: AppTheme = {
         backgroundOut: 'rgba(255, 170, 0, 0.3)',
         background: 'rgba(255, 170, 0, 0.3)',
         paddedText: '\u202F',
-    }
+    },
+
+    imageEmpty: require('assets/img-empty-dark.png')
 }
