@@ -212,11 +212,11 @@ export const DarkTheme: AppTheme = {
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
 
     roundButtonBackground: {
-        default: '#313131',
+        default: 'white',
         secondary: '#313131',
     },
     roundButtonText: {
-        default: 'white',
+        default: '#000000',
         secondary: 'white',
     },
 

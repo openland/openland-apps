@@ -414,6 +414,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                                 size="large"
                                 title="Go back"
                                 uppercase={false}
+                                style="secondary"
                                 onPress={() => props.router.back()}
                             />
                         </View>
