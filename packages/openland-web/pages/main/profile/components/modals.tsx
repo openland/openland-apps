@@ -34,6 +34,8 @@ export const AboutPlaceholder = (props: { target?: any }) => {
                         about: submitData.input.about,
                     },
                 });
+
+                await client.refetchOrganization({ organizationId });
             }}
             target={props.target || <XButton text="About" iconRight="add" />}
             title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
