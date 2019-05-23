@@ -327,4 +327,5 @@ export const FullMessage = gql`
     }
     ${UserTiny}
     ${UserShort}
+    ${UserForMention}
 `;
