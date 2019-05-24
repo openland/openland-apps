@@ -157,7 +157,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                                 <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : theme.textLabelColor }]} allowFontScaling={false}>{sender.name}</Text>
 
-                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.textLabelColor }]}>• Edited</Text>}
+                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.textLabelColor }]} allowFontScaling={false}>• Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 

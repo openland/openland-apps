@@ -4,6 +4,7 @@ import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention_user,
     FullMessage_ServiceMessage_spans,
     MentionInput,
+    FullMessage_GeneralMessage_spans,
 } from 'openland-api/Types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
@@ -24,7 +25,7 @@ export const prepareLegacyMentions = (
     let offsets = new Set<number>();
 
     function getOffset(str: string, n: number = 0): number {
-        let offset = message.indexOf(str, n);
+        let offset = message.toLowerCase().indexOf(str.toLowerCase(), n);
 
         if (offsets.has(offset)) {
             return getOffset(str, n + 1);
@@ -217,3 +218,28 @@ export const convertSpansToUserWithOffset = ({
             };
         });
 };
+
+export const convertMentionsFromMessage = (text?: string | null, spans?: FullMessage_GeneralMessage_spans[]): MentionToSend[] => {
+    let res: MentionToSend[] = [];
+
+    (spans || []).map(s => {
+        if (s.__typename === 'MessageSpanUserMention') {
+            if ((text || '').substr(s.offset, s.length).toLowerCase() === '@all') {
+                res.push({
+                    __typename: 'AllMention',
+                });
+            } else {
+                res.push({
+                    __typename: 'User',
+                    ...s.user
+                });
+            }
+        } else if (s.__typename === 'MessageSpanAllMention') {
+            res.push({
+                __typename: 'AllMention',
+            });
+        }
+    })
+
+    return res;
+}

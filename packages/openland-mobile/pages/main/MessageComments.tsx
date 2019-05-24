@@ -6,7 +6,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
@@ -27,6 +27,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { findSpans } from 'openland-y-utils/findSpans';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -48,7 +50,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const [inputFocused, setInputFocused] = React.useState<boolean>(false);
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
-    const [mentions, setMentions] = React.useState<({ user: UserShort, offset: number, length: number })[]>([]);
+    const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
 
     // callbacks
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
@@ -57,32 +59,19 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         if (text.length > 0 || attachment) {
             setSending(true);
 
-            let mentionsCleared: MentionInput[] = [];
-
-            if (mentions.length > 0) {
-                mentions.map(mention => {
-                    if (text.indexOf(mention.user.name) >= 0) {
-                        mentionsCleared.push({
-                            userId: mention.user.id,
-                            offset: mention.offset,
-                            length: mention.length
-                        });
-                    }
-                });
-            }
-
             if (edited) {
                 await getClient().mutateEditComment({
                     id: edited.id,
                     message: text,
-                    spans: findSpans(text)
+                    spans: findSpans(text),
+                    mentions: prepareLegacyMentionsForSend(text, mentions),
                 });
             } else {
                 await getClient().mutateAddMessageComment({
                     messageId: message.id,
                     message: text,
                     replyComment: replied ? replied.id : null,
-                    mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
+                    mentions: prepareLegacyMentionsForSend(text, mentions),
                     fileAttachments: attachment ? [attachment] : null,
                     spans: findSpans(text)
                 });
@@ -106,19 +95,21 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         setInputText(newText);
     }, [inputText, inputSelection]);
 
-    const handleMentionPress = React.useCallback((word: string | undefined, user: RoomMembers_members_user) => {
+    const handleMentionPress = React.useCallback((word: string | undefined, mention: MentionToSend) => {
         if (typeof word !== 'string') {
             return;
         }
 
-        let newText = inputText.substring(0, inputSelection.start - word.length) + '@' + user.name + ' ' + inputText.substring(inputSelection.start, inputText.length);
+        let newText = '';
+
+        if (mention.__typename === 'User') {
+            newText = inputText.substring(0, inputSelection.start - word.length) + '@' + mention.name + ' ' + inputText.slice(inputSelection.start);
+        } else if (mention.__typename === 'AllMention') {
+            newText = inputText.substring(0, inputSelection.start - word.length) + '@all' + ' ' + inputText.slice(inputSelection.start);
+        }
 
         setInputText(newText);
-        setMentions([...mentions, {
-            user: user,
-            offset: inputSelection.start - 1,
-            length: user.name.length + 1
-        }]);
+        setMentions([...mentions, mention]);
     }, [inputText, inputSelection, mentions]);
 
     const handleManagePress = React.useCallback(() => {
@@ -187,6 +178,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         setReplied(undefined);
         setEdited(comment);
         setInputText(comment.message || '');
+        setMentions(convertMentionsFromMessage(comment.message, comment.spans))
 
         if (inputRef.current) {
             inputRef.current.focus();

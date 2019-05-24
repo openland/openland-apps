@@ -12,7 +12,7 @@ import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/C
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort, SharedRoomKind } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, SharedRoomKind } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -39,9 +39,10 @@ import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
-import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import throttle from 'lodash/throttle';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -51,7 +52,7 @@ interface ConversationRootProps extends PageProps {
 
 interface ConversationRootState {
     text: string;
-    mentionedUsers: UserShort[];
+    mentions: MentionToSend[];
     inputFocused: boolean;
     selection: {
         start: number,
@@ -78,13 +79,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 start: 0,
                 end: 0.
             },
-            mentionedUsers: [],
+            mentions: [],
             inputFocused: false,
             messagesActionsState: { messages: [] }
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        AsyncStorage.getItem('compose_draft_mentions_' + this.props.chat.id).then(s => this.setState({ mentionedUsers: JSON.parse(s) || [] }));
+        AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
     componentWillUnmount() {
@@ -98,17 +99,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             this.setState({ messagesActionsState: state })
 
             if (state.messages && state.messages.length > 0 && state.action === 'edit') {
-                let mentionsFromEditedMessage: UserShort[] = [];
-
-                (state.messages[0].spans || []).map(s => {
-                    if (s.__typename === 'MessageSpanUserMention') {
-                        mentionsFromEditedMessage.push(s.user as UserShort);
-                    }
-                })
+                const editMessage = state.messages[0];
 
                 this.setState({
-                    text: state.messages[0].text || '',
-                    mentionedUsers: mentionsFromEditedMessage
+                    text: editMessage.text || '',
+                    mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
                 })
             }
         });
@@ -117,14 +112,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     saveDraft = () => {
         AsyncStorage.multiSet([
             ['compose_draft_' + this.props.chat.id, this.state.text],
-            ['compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers)],
+            ['compose_draft_mentions_v2_' + this.props.chat.id, JSON.stringify(this.state.mentions)],
         ]);
     }
 
     removeDraft = () => {
         AsyncStorage.multiRemove([
             'compose_draft_' + this.props.chat.id,
-            'compose_draft_mentions_' + this.props.chat.id
+            'compose_draft_mentions_v2_' + this.props.chat.id
         ]);
     }
 
@@ -160,16 +155,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
 
-        let mentions: UserShort[] = [];
-
-        if (this.state.mentionedUsers.length > 0) {
-            this.state.mentionedUsers.map(user => {
-                if (tx.indexOf(user.name) >= 0) {
-                    mentions.push(user);
-                }
-            })
-        }
-
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
             let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
 
@@ -178,7 +163,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 await getClient().mutateEditMessage({
                     messageId: messageToEdit.id,
                     message: tx,
-                    mentions: prepareLegacyMentionsForSend(tx, mentions || []),
+                    mentions: prepareLegacyMentionsForSend(tx, this.state.mentions || []),
                     spans: findSpans(tx)
                 });
             } catch (e) {
@@ -187,14 +172,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 stopLoader();
             }
         } else {
-            this.engine.sendMessage(tx, mentions);
+            this.engine.sendMessage(tx, this.state.mentions);
         }
 
         this.engine.messagesActionsState.clear();
 
         this.setState({
             text: '',
-            mentionedUsers: [],
+            mentions: [],
         });
 
         this.removeDraft();
@@ -206,21 +191,23 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         });
     }
 
-    handleMentionPress = (word: string | undefined, user: RoomMembers_members_user) => {
+    handleMentionPress = (word: string | undefined, mention: MentionToSend) => {
         if (typeof word !== 'string') {
             return;
         }
 
         let { text, selection } = this.state;
+        let newText = '';
 
-        let newText = text.substring(0, selection.start - word.length) + '@' + user.name + ' ' + text.substring(selection.start, text.length);
-        let mentionedUsers = this.state.mentionedUsers;
-
-        mentionedUsers.push(user);
+        if (mention.__typename === 'User') {
+            newText = text.substring(0, selection.start - word.length) + '@' + mention.name + ' ' + text.slice(selection.start);
+        } else if (mention.__typename === 'AllMention') {
+            newText = text.substring(0, selection.start - word.length) + '@all' + ' ' + text.slice(selection.start);
+        }
 
         this.setState({
             text: newText,
-            mentionedUsers: mentionedUsers
+            mentions: [...this.state.mentions, mention]
         }, () => {
             this.saveDraft();
         });
@@ -259,7 +246,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         this.setState({
             text: '',
-            mentionedUsers: []
+            mentions: []
         });
 
         this.removeDraft();

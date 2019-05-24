@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text, Linking, Clipboard, Share, TextStyle, Platform } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
-import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -42,6 +41,16 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                     key={'mention-user'}
                     style={{ color: theme.accentColor }}
                     onPress={() => onUserPress(span.user.id)}
+                    allowFontScaling={false}
+                >
+                    {children}
+                </Text>
+            );
+        } else if (span.type === 'mention_all') {
+            return (
+                <Text
+                    key={'mention-user'}
+                    style={{ color: theme.accentColor }}
                     allowFontScaling={false}
                 >
                     {children}
