@@ -24,9 +24,9 @@ export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
 
     // DEPRECATED - START
-        let isRotating = (text.length > '🔄'.length * 2) && text.startsWith('🔄') && text.endsWith('🔄');
-        let isInsane = (text.length > '🌈'.length * 2) && text.startsWith('🌈') && text.endsWith('🌈');
-        let isTextSticker = (text.length > ':'.length * 2) && text.startsWith(':') && text.endsWith(':');
+        let isRotating = !isOnlyEmoji && (text.length > '🔄'.length * 2) && text.startsWith('🔄') && text.endsWith('🔄');
+        let isInsane = !isOnlyEmoji && (text.length > '🌈'.length * 2) && text.startsWith('🌈') && text.endsWith('🌈');
+        let isTextSticker = !isOnlyEmoji && (text.length > ':'.length * 2) && text.startsWith(':') && text.endsWith(':');
 
         if (isRotating) {
             text = text.slice('🔄'.length, text.length - '🔄'.length);
