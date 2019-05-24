@@ -38,6 +38,7 @@ interface RenderSpansProps {
     insetLeft: number;
     insetRight: number;
     insetTop: number;
+    textAlign?: 'left' | 'right' | 'center';
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -45,7 +46,7 @@ interface RenderSpansProps {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
+        const { textAlign, spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
         const mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
         const content = getSpansSlices(spans, padded);
 
@@ -58,9 +59,10 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 key={c.type + '-' + i}
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
-                                fontSize={c.type === 'emoji' ? 30 : (c.type === 'loud' ? 20 : 16)}
+                                fontSize={c.type === 'emoji' ? 48 : (c.type === 'loud' ? 20 : 16)}
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
                                 marginBottom={(c.type === 'loud' && i !== content.length - 1) ? 8 : undefined}
+                                textAlign={textAlign}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                 {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
