@@ -120,7 +120,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                         {this.props.attach!!.fileMetadata.name}{message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)}
                     </ASText>
                     <ASText
-                        color={this.props.theme.textSecondaryColor}
+                        color={message.isOut ? '#ffffff' : '#8a8a8f'}
                         height={15}
                         lineHeight={15}
                         fontSize={13}
