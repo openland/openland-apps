@@ -11,10 +11,6 @@ interface ContentDivProps {
     maxHeight?: number | string;
     minWidth?: number | string;
     minHeight?: number | string;
-    paddingTop?: number | string;
-    paddingBottom?: number | string;
-    paddingRight?: number | string;
-    paddingLeft?: number | string;
 
     colorStyle?: XPopperStyleType;
     className?: string;
@@ -41,17 +37,12 @@ let colorStyles = styleResolver({
 });
 
 export const ContentDiv = Glamorous.div<ContentDivProps>(
-    props => colorStyles(props.colorStyle),
     props => ({
         position: 'relative',
         maxWidth: props.maxWidth,
         maxHeight: props.maxHeight ? props.maxHeight : '70vh',
         minWidth: props.minWidth,
         minHeight: props.minHeight,
-        paddingTop: props.paddingTop,
-        paddingBottom: props.paddingBottom,
-        paddingRight: props.paddingRight,
-        paddingLeft: props.paddingLeft,
         width: props.width,
         height: props.height,
         fontSize: 14,
@@ -60,6 +51,8 @@ export const ContentDiv = Glamorous.div<ContentDivProps>(
         flexDirection: 'column',
         overflowY: 'scroll',
     }),
+
+    props => colorStyles(props.colorStyle),
 );
 
 interface XPopperContentProps {
@@ -70,10 +63,6 @@ interface XPopperContentProps {
     maxHeight?: number | string;
     minWidth?: number | string;
     minHeight?: number | string;
-    paddingTop?: number | string;
-    paddingBottom?: number | string;
-    paddingRight?: number | string;
-    paddingLeft?: number | string;
 
     colorStyle?: XPopperStyleType;
     className?: string;
@@ -89,10 +78,6 @@ export class XPopperContent extends React.PureComponent<XPopperContentProps> {
                 maxHeight={this.props.maxHeight}
                 minWidth={this.props.minWidth}
                 minHeight={this.props.minHeight}
-                paddingTop={this.props.paddingTop}
-                paddingBottom={this.props.paddingBottom}
-                paddingRight={this.props.paddingRight}
-                paddingLeft={this.props.paddingLeft}
                 width={this.props.width}
                 height={this.props.height}
                 colorStyle={this.props.colorStyle}
