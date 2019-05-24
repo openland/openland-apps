@@ -7,23 +7,44 @@ import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import emojiData from 'openland-y-utils/data/emoji-data';
 
+interface EmojiSuggestion {
+    shortname: string;
+    unicode: string;
+}
+
+const defaultRecentEmoji: EmojiSuggestion[] = [
+    { shortname: ':thumbsup:', unicode: '👍' },
+    { shortname: ':kissing_heart:', unicode: '😘' },
+    { shortname: ':grinning:', unicode: '😀' },
+    { shortname: ':heart_eyes:', unicode: '😍' },
+    { shortname: ':laughing:', unicode: '😆' },
+    { shortname: ':joy:', unicode: '😂' },
+    { shortname: ':stuck_out_tongue_winking_eye:', unicode: '😜' },
+    { shortname: ':sweat_smile:', unicode: '😅' },
+    { shortname: ':scream:', unicode: '😱' },
+    { shortname: ':sleeping:', unicode: '😴' },
+    { shortname: ':smile:', unicode: '😄' },
+    { shortname: ':smiley:', unicode: '😃' },
+];
+
 export const findEmojiByShortname = (activeWord: string) => {
-    let emojiMap = emojiData.shortToUnicode;
-    let emojiFiltered: ({ shortname: string; unicode: string })[] = [];
+    let emojiFiltered: EmojiSuggestion[] = [];
 
-    const COUNT_SUGGESTIONS_TO_SHOW = 100;
-
-    for (let k of emojiMap.keys()) {
-        if (emojiFiltered.length >= COUNT_SUGGESTIONS_TO_SHOW) {
-            break;
+    if (activeWord === ':') {
+        emojiFiltered.push(...defaultRecentEmoji);
+    } else {
+        let emojiMap = emojiData.shortToUnicode;
+    
+        for (let k of emojiMap.keys()) {
+            if (k.toLowerCase().startsWith(activeWord.toLowerCase())) {
+                emojiFiltered.push({ shortname: k, unicode: emojiMap.get(k) });
+            }
         }
 
-        if (k.toLowerCase().startsWith(activeWord.toLowerCase())) {
-            emojiFiltered.push({ shortname: k, unicode: emojiMap.get(k) });
-        }
+        emojiFiltered = emojiFiltered.slice(0, 20);
     }
 
-    return emojiFiltered.reverse();
+    return emojiFiltered;
 }
 
 interface EmojiRenderProps {
