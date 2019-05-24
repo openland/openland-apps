@@ -62,80 +62,6 @@ export type MessageComposeComponentInnerProps = {
     draft?: string | null;
 } & MessageComposeComponentProps & { user: UserShort } & MessageComposeComponentT; // XWithRouter &
 
-// TODO: get rid of any
-// TODO: extract only needed props
-const MessageComposeComponentInnerInner = React.memo(
-    (
-        messageComposeProps: MessageComposeComponentInnerProps & {
-            inputMethodsState: any;
-            inputValue: string;
-            setInputValue: (val: string) => void;
-            draftState: any;
-            inputRef: any;
-        },
-    ) => {
-        let {
-            inputMethodsState,
-            inputValue,
-            setInputValue,
-            draftState,
-            inputRef,
-        } = messageComposeProps;
-        const quoteState = useQuote({
-            inputMethodsState,
-            conversationId: messageComposeProps.conversationId,
-        });
-
-        const { handleSend, closeEditor } = useHandleSend({
-            replyMessage: messageComposeProps.replyMessage,
-            conversationId: messageComposeProps.conversationId,
-            onSend: messageComposeProps.onSend,
-            onSendFile: messageComposeProps.onSendFile,
-            scrollToBottom: messageComposeProps.scrollToBottom,
-            inputValue,
-            setInputValue,
-            quoteState,
-            draftState,
-            inputMethodsState,
-        });
-
-        useKeydownHandler({
-            conversation: messageComposeProps.conversation,
-            user: messageComposeProps.user,
-            inputValue,
-            quoteState,
-            inputMethodsState,
-        });
-
-        const { handleChange } = useHandleChange({
-            onChange: messageComposeProps.onChange,
-            setInputValue,
-            draftState,
-        });
-
-        const getMentionsSuggestions = async () => {
-            return (await messageComposeProps.getMembers()).map(({ user }) => user);
-        };
-
-        const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
-
-        return (
-            <DumpSendMessage
-                initialMentions={initialMentions}
-                getMentionsSuggestions={getMentionsSuggestions}
-                TextInputComponent={messageComposeProps.TextInputComponent || DesktopSendMessage}
-                quoteState={quoteState}
-                handleChange={handleChange}
-                handleSend={handleSend}
-                inputRef={inputRef}
-                inputValue={inputValue}
-                enabled={messageComposeProps.enabled}
-                closeEditor={closeEditor}
-            />
-        );
-    },
-);
-
 const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) => {
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: props.enabled });
@@ -170,15 +96,57 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     if (file) {
         inputMethodsState.focusIfNeeded();
     }
+    const quoteState = useQuote({
+        inputMethodsState,
+        conversationId: props.conversationId,
+    });
+
+    const { handleSend, closeEditor } = useHandleSend({
+        replyMessage: props.replyMessage,
+        conversationId: props.conversationId,
+        onSend: props.onSend,
+        onSendFile: props.onSendFile,
+        scrollToBottom: props.scrollToBottom,
+        inputValue,
+        setInputValue,
+        quoteState,
+        draftState,
+        inputMethodsState,
+    });
+
+    useKeydownHandler({
+        conversation: props.conversation,
+        user: props.user,
+        inputValue,
+        quoteState,
+        inputMethodsState,
+    });
+
+    const { handleChange } = useHandleChange({
+        onChange: props.onChange,
+        setInputValue,
+        draftState,
+    });
+
+    const getMentionsSuggestions = async () => {
+        return (await props.getMembers()).map(({ user }) => user);
+    };
+
+    const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
 
     return (
-        <MessageComposeComponentInnerInner
-            {...props}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            inputMethodsState={inputMethodsState}
+        <DumpSendMessage
+            showAllMentionsSuggestion={props.conversationType === 'PRIVATE' ? false : true}
+            initialMentions={initialMentions}
+            getMentionsSuggestions={getMentionsSuggestions}
+            TextInputComponent={props.TextInputComponent || DesktopSendMessage}
+            quoteState={quoteState}
+            handleChange={handleChange}
+            handleSend={handleSend}
             inputRef={inputRef}
-            draftState={draftState}
+            inputValue={inputValue}
+            enabled={props.enabled}
+            closeEditor={closeEditor}
         />
     );
 };

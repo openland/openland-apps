@@ -3,6 +3,7 @@ import { useKeyupDown } from '../../../modules/useKeyupDown';
 import { UserForMention } from 'openland-api/Types';
 
 export type useMentionSuggestionsT = {
+    showAllMentionsSuggestion: boolean;
     activeWord: string;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
 };
@@ -26,6 +27,7 @@ export type SuggestionTypeT =
       };
 
 export const useMentionSuggestions = ({
+    showAllMentionsSuggestion,
     getMentionsSuggestions,
     activeWord,
 }: useMentionSuggestionsT): MentionSuggestionsStateT => {
@@ -104,17 +106,26 @@ export const useMentionSuggestions = ({
             );
         }
 
-        const allMatch = 'All'.startsWith(searchText) || 'all'.startsWith(searchText);
+        const allMatch =
+            showAllMentionsSuggestion &&
+            ('All'.startsWith(searchText) || 'all'.startsWith(searchText));
+
+        console.log('All'.startsWith(searchText));
+        console.log('all'.startsWith(searchText));
 
         setIsSelecting(
             !isClosed && activeWord.startsWith('@') && (!!filteredSuggestions.length || allMatch),
         );
 
         setFilteredSuggestions([
-            {
-                __typename: 'AllMention' as 'AllMention',
-                name: 'All'.startsWith(searchText) ? 'All' : 'all',
-            },
+            ...(showAllMentionsSuggestion
+                ? [
+                      {
+                          __typename: 'AllMention' as 'AllMention',
+                          name: ('All'.startsWith(searchText) ? 'All' : 'all') as 'All' | 'all',
+                      },
+                  ]
+                : []),
             ...filteredSuggestions,
         ]);
     }, [initialSuggestions, activeWord, isClosed]);

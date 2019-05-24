@@ -44,6 +44,7 @@ class ContainerWrapper extends React.PureComponent {
 
 type EditorContainerContainer = XRichTextInput2Props & {
     hideAttachments?: boolean;
+    showAllMentionsSuggestion: boolean;
     minimal?: boolean;
     plainText: string;
     hideAttach?: boolean;

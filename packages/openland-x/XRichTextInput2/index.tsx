@@ -20,6 +20,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     placeholder?: string;
     autofocus?: boolean;
     initialMentions?: UserWithOffset[];
+    showAllMentionsSuggestion: boolean;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
@@ -42,6 +43,7 @@ export const XRichTextInput2 = React.memo(
                 getMentionsSuggestions,
                 initialMentions,
                 placeholder,
+                showAllMentionsSuggestion,
             } = props;
 
             const editorRef = React.useRef<Editor>(null);
@@ -85,6 +87,7 @@ export const XRichTextInput2 = React.memo(
             });
 
             const mentionState = useMentionSuggestions({
+                showAllMentionsSuggestion,
                 getMentionsSuggestions,
                 activeWord,
             });
@@ -113,6 +116,7 @@ export const XRichTextInput2 = React.memo(
                 >
                     <EditorContainer
                         {...props}
+                        showAllMentionsSuggestion={showAllMentionsSuggestion}
                         plainText={plainText}
                         onSubmit={onSubmit}
                         editorState={editorState}

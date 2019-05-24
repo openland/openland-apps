@@ -29,6 +29,7 @@ export const TextInputWrapper = Glamorous.div<{ minimal?: boolean }>(({ minimal 
 });
 
 export const DesktopSendMessage = ({
+    showAllMentionsSuggestion,
     inputValue,
     handleChange,
     inputRef,
@@ -44,6 +45,7 @@ export const DesktopSendMessage = ({
     return (
         <TextInputWrapper minimal={minimal}>
             <XRichTextInput2
+                showAllMentionsSuggestion={showAllMentionsSuggestion}
                 minimal={minimal}
                 hideAttachments={hideAttachments}
                 round={round}

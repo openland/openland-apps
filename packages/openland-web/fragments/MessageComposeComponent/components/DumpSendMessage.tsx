@@ -56,6 +56,7 @@ const SendMessageWrapper = Glamorous.div<{
 });
 
 export type TextInputComponentT = {
+    showAllMentionsSuggestion: boolean;
     topLevelComment?: boolean;
     fullWidth?: boolean;
     minimal?: boolean;
@@ -84,6 +85,7 @@ type DumpSendMessageT = {
 export const DumpSendMessage = React.memo(
     ({
         TextInputComponent,
+        showAllMentionsSuggestion,
         initialMentions,
         getMentionsSuggestions,
         topLevelComment,
@@ -124,6 +126,7 @@ export const DumpSendMessage = React.memo(
                             </XView>
                         )}
                         <TextInputComponent
+                            showAllMentionsSuggestion={showAllMentionsSuggestion}
                             initialMentions={initialMentions}
                             getMentionsSuggestions={getMentionsSuggestions}
                             placeholder={placeholder || 'Write a message...'}

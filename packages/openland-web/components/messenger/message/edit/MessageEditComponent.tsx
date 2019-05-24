@@ -16,16 +16,14 @@ import {
     convertSpansToUserWithOffset,
     convertToMentionInputNoText,
 } from 'openland-engines/legacy/legacymentions';
+import { SharedRoomKind } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { CommentPropsT } from '../PostMessageButtons';
-
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareMentionsToSend } from 'openland-engines/legacy/legacymentions';
-
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { FileUploader } from 'openland-web/modules/FileUploading/FileUploader';
 import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
-
 import {
     uploadFile,
     getUploadCareFile,
@@ -70,6 +68,7 @@ class XRichTextInputStored extends React.PureComponent<
         onSubmit: () => Promise<void>;
         store: XStoreState;
         minimal: boolean;
+        showAllMentionsSuggestion: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
@@ -98,6 +97,7 @@ class XRichTextInputStored extends React.PureComponent<
         return (
             <XRichTextInput2
                 {...other}
+                showAllMentionsSuggestion={this.props.showAllMentionsSuggestion}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
@@ -115,6 +115,7 @@ class XTextInput extends React.PureComponent<
         round: boolean;
         initialMentions?: UserWithOffset[];
         getMentionsSuggestions: () => Promise<UserForMention[]>;
+        showAllMentionsSuggestion: boolean;
     }
 > {
     render() {
@@ -158,6 +159,7 @@ const Footer = Glamorous(XHorizontal)({
 });
 
 type EditMessageInlineT = {
+    conversationType?: SharedRoomKind | 'PRIVATE';
     commentProps?: CommentPropsT;
     isComment: boolean;
     minimal: boolean;
@@ -279,6 +281,9 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                     <XView marginLeft={isComment ? -15 : 0}>
                         <TextInputWrapper>
                             <XTextInput
+                                showAllMentionsSuggestion={
+                                    props.conversationType === 'PRIVATE' ? false : true
+                                }
                                 onSubmit={onFormSubmit}
                                 minimal={minimal}
                                 round={minimal}
