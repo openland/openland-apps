@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Dimensions, TextStyle, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, TextStyle, ActivityIndicator, Image } from 'react-native';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
@@ -90,7 +90,9 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
                                         />
                                     )}
                                     {mention.__typename === 'AllMention' && (
-                                        <View style={{ width: 28, height: 28, backgroundColor: 'lightgrey', borderRadius: 14 }} />
+                                        <View alignItems="center" justifyContent="center" width={28} height={28} backgroundColor={theme.separatorColor} borderRadius={14}>
+                                            <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.textLabelColor, width: 13, height: 13 }} />
+                                        </View>
                                     )}
                                 </View>
                                 <View flexGrow={1}>
