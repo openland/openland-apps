@@ -1,14 +1,11 @@
 import * as React from 'react';
-import { View, Text, Dimensions, TextStyle, ActivityIndicator, Image } from 'react-native';
+import { View, ActivityIndicator, Image } from 'react-native';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
-import { ScrollView } from 'react-native-gesture-handler';
-import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { SuggestionsWrapper, SuggestionsItemName } from './Suggestions';
 
 export const findMentions = (activeWord: string, groupId: string): MentionToSend[] => {
     let res: MentionToSend[] = [];
@@ -42,21 +39,6 @@ interface MentionsRenderProps {
     onMentionPress: (word: string | undefined, mention: MentionToSend) => void;
 }
 
-const MentionsRenderItemName = (props: { theme: AppTheme, name: string; description?: string }) => (
-    <Text
-        style={{ fontSize: 14, width: Dimensions.get('window').width - 63, fontWeight: TextStyles.weight.medium, color: props.theme.textColor }}
-        numberOfLines={1}
-        ellipsizeMode="tail"
-    >
-        {props.name}{'   '}
-        {!!props.description && (
-            <Text style={{ color: props.theme.textLabelColor, fontWeight: TextStyles.weight.regular } as TextStyle}>
-                {props.description}
-            </Text>
-        )}
-    </Text>
-);
-
 const MentionsRenderInner = (props: MentionsRenderProps) => {
     let theme = React.useContext(ThemeContext);
     let mentionsWrapper = null;
@@ -64,62 +46,52 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
 
     if (mentions.length > 0) {
         mentionsWrapper = (
-            <>
-                {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-
-                <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={186}>
-                    <View height={6} />
-
-                    {mentions.map((mention, index) => (
-                        <ZListItemBase
-                            key={'mention-' + index}
-                            onPress={() => props.onMentionPress(props.activeWord, mention)}
-                            separator={false}
-                            height={40}
-                            underlayColor="rgba(0, 0, 0, 0.03)"
-                        >
-                            <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                                <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
-                                    {mention.__typename === 'User' && (
-                                        <ZAvatar
-                                            userId={mention.id}
-                                            src={mention.photo}
-                                            size={28}
-                                            placeholderKey={mention.id}
-                                            placeholderTitle={mention.name}
-                                        />
-                                    )}
-                                    {mention.__typename === 'AllMention' && (
-                                        <View alignItems="center" justifyContent="center" width={28} height={28} backgroundColor={theme.separatorColor} borderRadius={14}>
-                                            <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.textLabelColor, width: 13, height: 13 }} />
-                                        </View>
-                                    )}
-                                </View>
-                                <View flexGrow={1}>
-                                    {mention.__typename === 'User' && (
-                                        <MentionsRenderItemName
-                                            theme={theme}
-                                            name={mention.name}
-                                            description={mention.primaryOrganization ? mention.primaryOrganization.name : undefined}
-                                        />
-                                    )}
-                                    {mention.__typename === 'AllMention' && (
-                                        <MentionsRenderItemName
-                                            theme={theme}
-                                            name="@all"
-                                            description="Notify everyone in this chat"
-                                        />
-                                    )}
-                                </View>
+            <SuggestionsWrapper>
+                {mentions.map((mention, index) => (
+                    <ZListItemBase
+                        key={'mention-' + index}
+                        onPress={() => props.onMentionPress(props.activeWord, mention)}
+                        separator={false}
+                        height={40}
+                        underlayColor="rgba(0, 0, 0, 0.03)"
+                    >
+                        <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
+                            <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
+                                {mention.__typename === 'User' && (
+                                    <ZAvatar
+                                        userId={mention.id}
+                                        src={mention.photo}
+                                        size={28}
+                                        placeholderKey={mention.id}
+                                        placeholderTitle={mention.name}
+                                    />
+                                )}
+                                {mention.__typename === 'AllMention' && (
+                                    <View alignItems="center" justifyContent="center" width={28} height={28} backgroundColor={theme.separatorColor} borderRadius={14}>
+                                        <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.textLabelColor, width: 13, height: 13 }} />
+                                    </View>
+                                )}
                             </View>
-                        </ZListItemBase>
-                    ))}
-
-                    <View height={6} />
-                </ScrollView>
-
-                {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-            </>
+                            <View flexGrow={1}>
+                                {mention.__typename === 'User' && (
+                                    <SuggestionsItemName
+                                        theme={theme}
+                                        name={mention.name}
+                                        description={mention.primaryOrganization ? mention.primaryOrganization.name : undefined}
+                                    />
+                                )}
+                                {mention.__typename === 'AllMention' && (
+                                    <SuggestionsItemName
+                                        theme={theme}
+                                        name="@all"
+                                        description="Notify everyone in this chat"
+                                    />
+                                )}
+                            </View>
+                        </View>
+                    </ZListItemBase>
+                ))}
+            </SuggestionsWrapper>
         );
     }
 

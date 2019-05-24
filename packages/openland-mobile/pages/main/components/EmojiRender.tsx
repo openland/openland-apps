@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { View, Text, Dimensions, TextStyle } from 'react-native';
-import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
+import { View } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
-import { ScrollView } from 'react-native-gesture-handler';
-import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import emojiData from 'openland-y-utils/data/emoji-data';
+import { SuggestionsItemName, SuggestionsWrapper } from './Suggestions';
 
 interface EmojiSuggestion {
     shortname: string;
@@ -28,23 +26,26 @@ const defaultRecentEmoji: EmojiSuggestion[] = [
 ];
 
 export const findEmojiByShortname = (activeWord: string) => {
-    let emojiFiltered: EmojiSuggestion[] = [];
-
     if (activeWord === ':') {
-        emojiFiltered.push(...defaultRecentEmoji);
+        return defaultRecentEmoji;
     } else {
-        let emojiMap = emojiData.shortToUnicode;
-    
+        const emojiMap = emojiData.shortToUnicode;
+        let res: EmojiSuggestion[] = [];
+
         for (let k of emojiMap.keys()) {
+            if (res.length >= 20) {
+                break;
+            }
+
             if (k.toLowerCase().startsWith(activeWord.toLowerCase())) {
-                emojiFiltered.push({ shortname: k, unicode: emojiMap.get(k) });
+                res.push({ shortname: k, unicode: emojiMap.get(k) });
             }
         }
 
-        emojiFiltered = emojiFiltered.slice(0, 20);
-    }
+        res.sort((a, b) => a.shortname.localeCompare(b.shortname));
 
-    return emojiFiltered;
+        return res;
+    }
 }
 
 interface EmojiRenderProps {
@@ -61,45 +62,23 @@ export const EmojiRender = (props: EmojiRenderProps) => {
 
     if (emojiFiltered.length > 0) {
         emojiWrapper = (
-            <>
-                {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-                <ScrollView keyboardShouldPersistTaps="always" maxHeight={186}>
-                    <View height={6} />
-                    {emojiFiltered.map((item, index) => {
-                        let shortname = item.shortname;
-                        let unicode = item.unicode;
-        
-                        return (
-                            <ZListItemBase
-                                key={'emoji-' + index}
-                                onPress={() => props.onEmojiPress(props.activeWord, unicode)}
-                                separator={false}
-                                height={40}
-                                underlayColor="rgba(0, 0, 0, 0.03)"
-                            >
-                                <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                                    <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
-                                        <Text
-                                            style={{
-                                                fontSize: 14,
-                                                width: Dimensions.get('window').width - 63,
-                                                fontWeight: TextStyles.weight.medium,
-                                                color: theme.textColor
-                                            } as TextStyle}
-                                            numberOfLines={1}
-                                            ellipsizeMode="tail"
-                                        >
-                                            {unicode}{'   '}{shortname}
-                                        </Text>
-                                    </View>
-                                </View>
-                            </ZListItemBase>
-                        )
-                    })}
-                    <View height={6} />
-                </ScrollView>
-                {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-            </>
+            <SuggestionsWrapper>
+                {emojiFiltered.map((item, index) => (
+                    <ZListItemBase
+                        key={'emoji-' + index}
+                        onPress={() => props.onEmojiPress(props.activeWord, item.unicode)}
+                        separator={false}
+                        height={40}
+                        underlayColor="rgba(0, 0, 0, 0.03)"
+                    >
+                        <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
+                            <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
+                                <SuggestionsItemName theme={theme} name={item.shortname} />
+                            </View>
+                        </View>
+                    </ZListItemBase>
+                ))}
+            </SuggestionsWrapper>
         );
     }
 
