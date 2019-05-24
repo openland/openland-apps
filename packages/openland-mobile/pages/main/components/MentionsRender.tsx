@@ -50,12 +50,7 @@ const MentionsRenderItemName = (props: { theme: AppTheme, name: string; descript
     >
         {props.name}{'   '}
         {!!props.description && (
-            <Text
-                style={{
-                    color: '#99a2b0',
-                    fontWeight: TextStyles.weight.regular
-                } as TextStyle}
-            >
+            <Text style={{ color: props.theme.textLabelColor, fontWeight: TextStyles.weight.regular } as TextStyle}>
                 {props.description}
             </Text>
         )}

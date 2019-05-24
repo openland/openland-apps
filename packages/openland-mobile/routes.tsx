@@ -45,6 +45,7 @@ import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import Tasks from './pages/apps/Tasks';
 import { MessageComments } from './pages/main/MessageComments';
+import { Colors } from './pages/dev/Colors';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -97,6 +98,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBenchmarksAsync', BenchmarkAsync)
   .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
+  .addRoute('DevColors', Colors)
 
   .addRoute('HomeDialogs', HomeDialogs)
 
