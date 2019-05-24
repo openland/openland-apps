@@ -27,7 +27,7 @@ export const cropSpecSymbols = (spans: Span[], parent: Span, symbols: SpecSymbol
                     spans = spans.slice(1);
                 }
             } else {
-                spans[0].text = TextRenderProccessor.emojify(spans[0].textRaw, isBigParent ? 'big' : 'default')
+                spans[0].text = TextRenderProccessor.processSpan(parent.type, spans[0].textRaw, isBigParent ? 'big' : 'default')
             }
         }
     }
@@ -45,7 +45,7 @@ export const cropSpecSymbols = (spans: Span[], parent: Span, symbols: SpecSymbol
                 if (spans[last].textRaw!.length <= 0) {
                     spans.pop();
                 } else {
-                    spans[last].text = TextRenderProccessor.emojify(spans[last].textRaw!, isBigParent ? 'big' : 'default')
+                    spans[last].text = TextRenderProccessor.processSpan(parent.type, spans[last].textRaw!, isBigParent ? 'big' : 'default')
                 }
             }
         }

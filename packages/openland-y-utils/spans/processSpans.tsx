@@ -42,7 +42,8 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
                     offset: 0,
                     length: rootText.length,
                     textRaw: text,
-                    text: TextRenderProccessor.emojify(
+                    text: TextRenderProccessor.processSpan(
+                        rootType,
                         rootText,
                         rootType === 'emoji' ? 'huge' : 'big',
                     ),
@@ -55,7 +56,7 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
             offset: 0,
             length: rootText.length,
             textRaw: rootText,
-            text: TextRenderProccessor.emojify(rootText),
+            text: TextRenderProccessor.processSpan('text', rootText),
         };
     }
 };

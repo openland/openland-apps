@@ -63,7 +63,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     } else if (s.__typename === 'MessageSpanRotating') {
         span = { offset, length, type: 'rotating' };
     } else {
-        span = { offset, length, type: 'text', text: TextRenderProccessor.emojify(spanText) };
+        span = { offset, length, type: 'text', text: TextRenderProccessor.processSpan('text', spanText) };
     }
 
     span.textRaw = spanText;
@@ -71,17 +71,18 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     return span;
 };
 
-export const preprocessRawText = (text: string, startOffset: number, isBig?: boolean): Span[] => {
+export const preprocessRawText = (text: string, startOffset: number, parent: Span): Span[] => {
     let res: Span[] = [];
     let garbageString = '';
     let rows = text.split('\n');
+    const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
 
     rows.map((p, i) => {
         if (p.length > 0) {
             res.push({
                 type: 'text',
                 textRaw: p,
-                text: TextRenderProccessor.emojify(p, isBig ? 'big' : 'default'),
+                text: TextRenderProccessor.processSpan(parent.type, p, isBigParent ? 'big' : 'default'),
                 length: p.length,
                 offset: startOffset + garbageString.length,
             });
@@ -107,14 +108,11 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
 
     let slicedText = text.substr(parent.offset, parent.length);
 
-    const isBigParent =
-        parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
-
     for (let s of parent.childrens || []) {
         let rawFirst = slicedText.substr(offset, s.offset - parent.offset - offset);
 
         if (rawFirst) {
-            res.push(...preprocessRawText(rawFirst, offset + parent.offset, isBigParent));
+            res.push(...preprocessRawText(rawFirst, offset + parent.offset, parent));
         }
 
         offset = s.offset - parent.offset + s.length;
@@ -123,7 +121,7 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     let rawLast = slicedText.slice(offset);
 
     if (rawLast) {
-        res.push(...preprocessRawText(rawLast, offset + parent.offset, isBigParent));
+        res.push(...preprocessRawText(rawLast, offset + parent.offset, parent));
     }
 
     let symbolObject = SpanTypeToSymbol[parent.type];
