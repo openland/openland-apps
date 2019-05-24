@@ -13,7 +13,7 @@ export const MenuItemWithPopper = ({
     targetElement: any;
     contentContainer?: any;
 }) => {
-    let [show, setShow] = React.useState<boolean>(true);
+    let [show, setShow] = React.useState<boolean>(false);
 
     const onClick = () => {
         setShow(!show);
