@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
-import { UserShort, UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { Text, View } from 'react-native';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -17,18 +17,20 @@ interface OthersUsersWrapperProps {
 
 export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps> {
     private handlePress = () => {
-        let builder = new ActionSheetBuilder();
-
-        builder.flat();
-        builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} paddingTop={5}>
-                {this.props.users.map((u) => (
-                    <ZUserView key={'user-' + u.id} user={u} onPress={(id) => { ctx.hide(); this.props.onUserPress(id); }} />
-                ))}
-            </View>
-        ));
-
-        builder.show();
+        if (this.props.users.length > 0) {
+            let builder = new ActionSheetBuilder();
+    
+            builder.flat();
+            builder.view((ctx: ZModalController) => (
+                <View flexGrow={1} paddingTop={5}>
+                    {this.props.users.map((u) => (
+                        <ZUserView key={'user-' + u.id} user={u} onPress={(id) => { ctx.hide(); this.props.onUserPress(id); }} />
+                    ))}
+                </View>
+            ));
+    
+            builder.show();
+        }
     };
 
     render() {
