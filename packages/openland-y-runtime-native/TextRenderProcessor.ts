@@ -13,17 +13,9 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbols: SpecSymbolsType[]) {
-        let needCrop = false;
-
-        symbols.map(symbol => {
-            if (['*', '_', ':', '@', '~', '`', '\'', '```', '\'\'\'', '# '].includes(symbol.s)) {
-                needCrop = true;
-            }
-        });
-
-        if (needCrop) {
-            return cropSpecSymbols(spans, parent, symbols);
+    cropSpecSymbols(spans: Span[], parent: Span, symbolObject: SpecSymbolsType) {
+        if (symbolObject.supportMobile) {
+            return cropSpecSymbols(spans, parent, symbolObject);
         }
 
         return spans;

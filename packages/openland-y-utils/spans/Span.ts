@@ -139,22 +139,55 @@ export const SpanSymbolToType: {
 };
 
 export interface SpecSymbolsType {
-    s: string;
-    opened?: boolean;
+    variants: ({
+        s: string;
+        opened?: boolean
+    })[];
+    supportMobile: boolean;
 }
 
-export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType[] } = {
-    bold: [{ s: '*' }],
-    code_block: [{ s: '```' }, { s: "'''" }],
-    code_inline: [{ s: '`' }, { s: "'" }],
-    insane: [{ s: '🌈' }],
-    irony: [{ s: '~' }],
-    italic: [{ s: '_' }],
-    loud: [
-        { s: ':' }, // DEPRECATED
-        { s: '# ', opened: true },
-    ],
-    rotating: [{ s: '🔄' }],
-    mention_user: [{ s: '@', opened: true }],
-    mention_all: [{ s: '@', opened: true }],
+export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType } = {
+    bold: {
+        variants: [{ s: '*' }],
+        supportMobile: true
+    },
+    code_block: {
+        variants: [{ s: '```' }, { s: "'''" }],
+        supportMobile: true
+    },
+    code_inline: {
+        variants: [{ s: '`' }, { s: "'" }],
+        supportMobile: true
+    },
+    insane: {
+        variants: [{ s: '🌈' }],
+        supportMobile: false
+    },
+    irony: {
+        variants: [{ s: '~' }],
+        supportMobile: true
+    },
+    italic: {
+        variants: [{ s: '_' }],
+        supportMobile: true
+    },
+    loud: {
+        variants: [
+            { s: ':' }, // DEPRECATED
+            { s: '# ', opened: true },
+        ],
+        supportMobile: true
+    },
+    rotating: {
+        variants: [{ s: '🔄' }],
+        supportMobile: false
+    },
+    mention_user: {
+        variants: [{ s: '@', opened: true }],
+        supportMobile: true
+    },
+    mention_all: {
+        variants: [{ s: '@', opened: true }],
+        supportMobile: true
+    },
 };

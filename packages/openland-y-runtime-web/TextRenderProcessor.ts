@@ -22,8 +22,8 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         });
     },
 
-    cropSpecSymbols(spans: Span[], parent: Span, symbols: SpecSymbolsType[]) {
-        return cropSpecSymbols(spans, parent, symbols);
+    cropSpecSymbols(spans: Span[], parent: Span, symbolObject: SpecSymbolsType) {
+        return cropSpecSymbols(spans, parent, symbolObject);
     },
 
     removeLineBreakers(spans: Span[]) {
