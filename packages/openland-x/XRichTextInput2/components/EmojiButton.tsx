@@ -20,6 +20,12 @@ const emojiWrapperClassName = css`
     }
 `;
 
+const nimblePickerClassName = css`
+    .emoji-mart-search {
+        display: block !important;
+    }
+`;
+
 type EmojiButtonT = { onEmojiPicked: (emoji: EmojiData) => void };
 
 export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
@@ -30,33 +36,38 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
     });
 
     return (
-        <XPopper
-            show={showPicker}
-            onClickOutside={() => {
-                setShowPicker(false);
-            }}
-            arrow={null}
-            placement="top"
-            content={
-                <NimblePicker
-                    showPreview
-                    emojiTooltip
-                    data={data}
-                    color="#1790ff"
-                    set="emojione"
-                    onSelect={onEmojiPicked}
-                />
-            }
-        >
-            <div
-                ref={ref}
-                className={emojiWrapperClassName}
-                onClick={() => {
-                    setShowPicker(!showPicker);
+        <>
+            <XPopper
+                show={showPicker}
+                onClickOutside={() => {
+                    setShowPicker(false);
                 }}
+                arrow={null}
+                placement="top"
+                content={
+                    <div className={nimblePickerClassName}>
+                        <NimblePicker
+                            showSkinTones
+                            showPreview
+                            emojiTooltip
+                            data={data}
+                            color="#1790ff"
+                            set="emojione"
+                            onSelect={onEmojiPicked}
+                        />
+                    </div>
+                }
             >
-                <EmojiIcon />
-            </div>
-        </XPopper>
+                <div
+                    ref={ref}
+                    className={emojiWrapperClassName}
+                    onClick={() => {
+                        setShowPicker(!showPicker);
+                    }}
+                >
+                    <EmojiIcon />
+                </div>
+            </XPopper>
+        </>
     );
 };
