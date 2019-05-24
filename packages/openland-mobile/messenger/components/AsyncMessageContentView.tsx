@@ -9,7 +9,6 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { TextStyles } from '../../styles/AppStyles';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';

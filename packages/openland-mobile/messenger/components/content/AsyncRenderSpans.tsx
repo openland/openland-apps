@@ -63,6 +63,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
                                 marginBottom={(c.type === 'loud' && i !== content.length - 1) ? 8 : undefined}
                                 textAlign={textAlign}
+                                maxWidth={maxWidth}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                 {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
