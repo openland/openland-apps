@@ -31,6 +31,7 @@ export const SuggestionsItemName = (props: { theme: AppTheme, name: string; desc
         }}
         numberOfLines={1}
         ellipsizeMode="tail"
+        allowFontScaling={false}
     >
         {props.name}{'   '}
         {!!props.description && (
@@ -39,6 +40,7 @@ export const SuggestionsItemName = (props: { theme: AppTheme, name: string; desc
                     color: props.theme.textLabelColor,
                     fontWeight: TextStyles.weight.regular
                 } as TextStyle}
+                allowFontScaling={false}
             >
                 {props.description}
             </Text>
