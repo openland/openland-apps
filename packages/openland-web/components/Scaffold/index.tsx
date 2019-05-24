@@ -12,7 +12,7 @@ import MobileChatIcon from 'openland-icons/ic-chat.svg';
 import { useIsMobile } from 'openland-web/hooks';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { findChild } from '../utils';
-import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopComponents';
+import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopScaffold';
 import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
 import { useClient } from 'openland-web/utils/useClient';
