@@ -110,15 +110,12 @@ export const useMentionSuggestions = ({
             showAllMentionsSuggestion &&
             ('All'.startsWith(searchText) || 'all'.startsWith(searchText));
 
-        console.log('All'.startsWith(searchText));
-        console.log('all'.startsWith(searchText));
-
         setIsSelecting(
             !isClosed && activeWord.startsWith('@') && (!!filteredSuggestions.length || allMatch),
         );
 
         setFilteredSuggestions([
-            ...(showAllMentionsSuggestion
+            ...(allMatch
                 ? [
                       {
                           __typename: 'AllMention' as 'AllMention',
