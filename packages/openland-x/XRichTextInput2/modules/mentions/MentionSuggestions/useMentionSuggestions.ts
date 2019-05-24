@@ -80,6 +80,9 @@ export const useMentionSuggestions = ({
         if (activeWord === '@' && isClosed) {
             setClosed(false);
         }
+    }, [activeWord]);
+
+    React.useEffect(() => {
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
         const searchText = activeWord.slice(1).toLowerCase();
 

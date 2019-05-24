@@ -65,10 +65,14 @@ export const useEmojiSuggestions = ({
             setIsSelecting(false);
         }
     }, [isClosed]);
+
     React.useEffect(() => {
         if (activeWord === ':' && isClosed) {
             setClosed(false);
         }
+    }, [activeWord]);
+
+    React.useEffect(() => {
         if (!activeWord.includes(':')) {
             setIsSelecting(false);
             setSuggestions([]);
