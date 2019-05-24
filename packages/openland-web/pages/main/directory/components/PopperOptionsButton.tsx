@@ -4,16 +4,53 @@ import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
-import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
+import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
-import CreateCommunityIcon from 'openland-icons/ic-create-community.svg';
+import { css } from 'linaria';
+
+let iconClass = css`
+    opacity: 0.1;
+    background-color: #1790ff;
+`;
+
+const Item = ({
+    title,
+    description,
+    href,
+    icon,
+}: {
+    title: string;
+    description: string;
+    href: string;
+    icon: any;
+}) => {
+    return (
+        <XMenuItem
+            path={href}
+            icon={
+                <XView marginRight={14} marginTop={-4}>
+                    <div className={iconClass}>{icon}</div>
+                </XView>
+            }
+        >
+            <XView flexDirection="column">
+                <XView fontSize={14} fontWeight={'600'} color={'#000000'}>
+                    {title}
+                </XView>
+                <XView fontSize={13} opacity={0.5} color={'#000000'}>
+                    {description}
+                </XView>
+            </XView>
+        </XMenuItem>
+    );
+};
 
 export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
-        const [show, setShow] = React.useState(false);
+        const [show, setShow] = React.useState(true);
 
         const closer = () => {
-            setShow(false);
+            // setShow(false);
         };
 
         const toggle = () => {
@@ -34,39 +71,19 @@ export const PopperOptionsButton = XMemo(
                         content
                     ) : (
                         <>
-                            <XMenuItem
-                                style="gray"
-                                path="/mail/create"
-                                icon={
-                                    <XView marginRight={14} marginTop={-4}>
-                                        <CreateRoomIcon />
-                                    </XView>
-                                }
-                            >
-                                New group
-                            </XMenuItem>
-                            <XMenuItem
-                                style="gray"
-                                path="/mail/create?channel=true"
-                                icon={
-                                    <XView marginRight={14} marginTop={-4}>
-                                        <CreateChannelIcon />
-                                    </XView>
-                                }
-                            >
-                                New channel
-                            </XMenuItem>
-                            <XMenuItem
-                                style="gray"
-                                path="/mail/createOrganization?community=true"
-                                icon={
-                                    <XView marginRight={14} marginTop={-4}>
-                                        <CreateCommunityIcon />
-                                    </XView>
-                                }
-                            >
-                                New community
-                            </XMenuItem>
+                            <Item
+                                href="/mail/create"
+                                icon={<CellRoomIcon />}
+                                title="Create new group"
+                                description="Group chat for your projects or topics"
+                            />
+
+                            <Item
+                                href="/mail/create?channel=true"
+                                icon={<CreateChannelIcon />}
+                                title="Create new channel"
+                                description="Broadcast messages to your audience"
+                            />
                         </>
                     )
                 }
