@@ -191,7 +191,6 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                             )}
                             <ASText
                                 marginLeft={3}
-                                marginTop={Platform.OS === 'android' ? -2 : undefined}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
                                 color={theme.reactionsColor}
