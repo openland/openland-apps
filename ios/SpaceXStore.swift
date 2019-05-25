@@ -41,8 +41,8 @@ fileprivate class Subscription {
 
 class SpaceXStore {
   private static let ROOT_QUERY = "ROOT_QUERY"
-  private let normalizationQueue = DispatchQueue(label: "spacex-store-normalization")
-  private let storeQueue = DispatchQueue(label: "spacex-store")
+  private let normalizationQueue = ManagedDispatchQueue(label: "spacex-store-normalization")
+  private let storeQueue = ManagedDispatchQueue(label: "spacex-store")
   
   // Store
   private let store = RecordStore()
@@ -56,14 +56,13 @@ class SpaceXStore {
   
   // Bus
   private var nextSubscriptionId = 1
-  private let nextSubscriptionIdQueue = DispatchQueue(label: "spacex-store-id")
   private var subscriptions: [Int: Subscription] = [:]
   
   init(name: String?) {
     persistence = SpaceXPersistence(name: name)
   }
   
-  func mergeResponse(operation: OperationDefinition, variables: JSON, data: JSON, queue: DispatchQueue, callback: @escaping () -> Void) {
+  func mergeResponse(operation: OperationDefinition, variables: JSON, data: JSON, queue: ManagedDispatchQueue, callback: @escaping () -> Void) {
     self.normalizationQueue.async {
       let rootCacheKey: String?
       if operation.kind == .query {
@@ -81,7 +80,7 @@ class SpaceXStore {
     }
   }
   
-  func merge(recordSet: RecordSet, queue: DispatchQueue, callback: @escaping () -> Void) {
+  func merge(recordSet: RecordSet, queue: ManagedDispatchQueue, callback: @escaping () -> Void) {
     self.storeQueue.async {
       // Prepare merging (load required data from disk if needed)
       self.prepareMerge(recordSet: recordSet) {
@@ -125,7 +124,7 @@ class SpaceXStore {
     }
   }
   
-  func readQuery(operation: OperationDefinition, variables: JSON, queue: DispatchQueue, callback: @escaping (QueryReadResult) -> Void) {
+  func readQuery(operation: OperationDefinition, variables: JSON, queue: ManagedDispatchQueue, callback: @escaping (QueryReadResult) -> Void) {
     if operation.kind != .query {
       fatalError("Reading from cache is available only for queries")
     }
@@ -152,7 +151,7 @@ class SpaceXStore {
   func readQueryAndWatch(
     operation: OperationDefinition,
     variables: JSON,
-    queue: DispatchQueue,
+    queue: ManagedDispatchQueue,
     callback: @escaping (QueryReadAndWatchResult) -> Void
   ) {
     self.storeQueue.async {
@@ -198,7 +197,10 @@ class SpaceXStore {
   }
   
   func close() {
-   self.persistence.close()
+    self.normalizationQueue.stop()
+    self.storeQueue.stop()
+    self.persistence.close()
+    self.subscriptions.removeAll()
   }
 
   private func prepareRead(operation: OperationDefinition, variables: JSON, callback: @escaping () -> Void) {
