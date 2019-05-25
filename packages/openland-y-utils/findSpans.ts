@@ -2,7 +2,7 @@ import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api
 import { SpanSymbolToType } from './spans/Span';
 
 const whiteListBeforeSpec = ['', ' ', '	', '\n', ',', '.', '(', '<', '"', '«', '{', '['];
-const whiteListAfterSpec = ['', ' ', '	', '\n', ',', '.', '!', '?', ')', ':', '>', '"', '»', '}', ']', '¿', '¡'];
+const whiteListAfterSpec = ['', ' ', '	', '\n', ',', '.', '!', '?', '(', ')', ':', '>', '"', '»', '{', '[', '}', ']', '¿', '¡'];
 
 const spanInputMap = {
     'Bold': 'MessageSpanBold',
