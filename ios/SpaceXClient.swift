@@ -33,7 +33,7 @@ class SpaceXClient {
   
   fileprivate var store: SpaceXStore
   fileprivate var transport: SpaceXTransport!
-  fileprivate let callbackQueue = DispatchQueue(label: "client")
+  fileprivate let callbackQueue = ManagedDispatchQueue(label: "client")
   var connected: Bool = false
   var onConnected: (() -> Void)?
   var onDisconnected: (() -> Void)?
@@ -220,11 +220,9 @@ class SpaceXClient {
   
   func dispose() {
     NSLog("[SpaceX-Alloc]: dispose SpaceXClient")
+    self.callbackQueue.stop()
     self.store.close()
     self.transport.close()
-    self.transport.onDisconnected = nil
-    self.transport.onConnected = nil
-    self.transport = nil
   }
 }
 
@@ -233,7 +231,7 @@ fileprivate class QueryWatch {
   let operation: OperationDefinition
   let variables: JSON
   let handler: (SpaceXOperationResult) -> Void
-  var client: SpaceXClient
+  var client: SpaceXClient!
   let fetchMode: FetchMode
   private var completed = false
   private var wasLoadedFromNetwork = false
@@ -252,6 +250,9 @@ fileprivate class QueryWatch {
   
   func start() {
     self.client.callbackQueue.async {
+      if self.completed {
+        return
+      }
       if self.fetchMode == .cacheFirst || self.fetchMode == .cacheAndNetwork {
         self.doReloadFromCache()
       } else {
@@ -305,11 +306,12 @@ fileprivate class QueryWatch {
   
   func stop() {
     client.callbackQueue.async {
-      if self.completed {
-        return
+      if !self.completed {
+        self.completed = true
+        self.client = nil
+        
+        // TODO: Stop network requests and subscriptions
       }
-      self.completed = true
-      // TODO: Cancel everything
     }
   }
 }
@@ -361,8 +363,12 @@ fileprivate class Subscription: RunningSubscription {
     self.client.callbackQueue.async {
       if !self.stopped {
         self.stopped = true
+        
+        // Stopping Subscription
         self.runningOperation?.cancel()
         self.runningOperation = nil
+        
+        // Remove strong reference
         self.client = nil
       }
     }

@@ -17,18 +17,14 @@ protocol PersistenceProvier: class {
 
 class LevelDBPersistenceProvider: PersistenceProvier {
   
-  static let stores = LazyCollection<SwiftStore>() { name in
-    return SwiftStore(storeName: name + "-v5")
-  }
-  
   private let swiftStore: SwiftStore
   
   init(name: String) {
-    self.swiftStore = measure("leveldb:open", { return LevelDBPersistenceProvider.stores.get(name) })
+    self.swiftStore = measure("leveldb:open", { return SwiftStore(storeName: name + "-v5") })
   }
   
   func close() {
-    // self.swiftStore.close()
+    self.swiftStore.close()
   }
   
   func saveRecords(records: [String: String]) {
@@ -71,8 +67,8 @@ class EmptyPersistenceProvier: PersistenceProvier {
 
 class SpaceXPersistence {
   private let provider: PersistenceProvier
-  private let writerQueue = DispatchQueue(label: "spacex-persistence-write")
-  private let readerQueue = DispatchQueue(label: "spacex-persistence-read", attributes: .concurrent)
+  private let writerQueue = ManagedDispatchQueue(label: "spacex-persistence-write")
+  private let readerQueue = ManagedDispatchQueue(label: "spacex-persistence-read", concurrent: true)
   
   init(name: String?) {
     if name != nil {
@@ -83,10 +79,12 @@ class SpaceXPersistence {
   }
   
   func close() {
+    self.writerQueue.stop()
+    self.readerQueue.stop()
     self.provider.close()
   }
   
-  func saveRecords(records: RecordSet, queue: DispatchQueue, callback: @escaping () -> Void) {
+  func saveRecords(records: RecordSet, queue: ManagedDispatchQueue, callback: @escaping () -> Void) {
     writerQueue.async {
       var serialized: [String: String] = [:]
       for k in records {
@@ -99,7 +97,7 @@ class SpaceXPersistence {
     }
   }
   
-  func loadRecors(keys: Set<String>, queue: DispatchQueue, callback: @escaping (RecordSet) -> Void) {
+  func loadRecors(keys: Set<String>, queue: ManagedDispatchQueue, callback: @escaping (RecordSet) -> Void) {
     readerQueue.async {
       
       let loaded = self.provider.loadRecords(keys: keys)
