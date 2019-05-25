@@ -79,8 +79,6 @@
 		AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */; };
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
 		AAB181762284EC06008D3603 /* NormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181752284EC06008D3603 /* NormalizerTests.swift */; };
-		AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */; };
-		AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB23E19220B814900BFD222 /* RNLithoSpec.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
 		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
@@ -371,8 +369,6 @@
 		AAB181682284EB55008D3603 /* openlandTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openlandTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAB181752284EC06008D3603 /* NormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizerTests.swift; sourceTree = "<group>"; };
 		AAB181772284EDE6008D3603 /* normalizeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = normalizeData.swift; sourceTree = "<group>"; };
-		AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLithoResolver.swift; sourceTree = "<group>"; };
-		AAB23E19220B814900BFD222 /* RNLithoSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLithoSpec.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
 		AAC60B51215AE40C005E09BA /* RNSAuth0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAuth0.swift; sourceTree = "<group>"; };
 		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
@@ -499,7 +495,6 @@
 				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
-				AAB23E16220B803F00BFD222 /* RNLithoView */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAA4DA5722145C6200BB1781 /* RNThreads */,
 				AAE56DBF2129F997003706B3 /* hacks */,
@@ -755,15 +750,6 @@
 				AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */,
 			);
 			name = Store;
-			sourceTree = "<group>";
-		};
-		AAB23E16220B803F00BFD222 /* RNLithoView */ = {
-			isa = PBXGroup;
-			children = (
-				AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */,
-				AAB23E19220B814900BFD222 /* RNLithoSpec.swift */,
-			);
-			name = RNLithoView;
 			sourceTree = "<group>";
 		};
 		AAC60B06215AE3F0005E09BA /* RNSAuth0 */ = {
@@ -1410,7 +1396,6 @@
 				AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */,
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
-				AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */,
 				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
 				AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
@@ -1460,7 +1445,6 @@
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
 				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */,
-				AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */,
 				AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */,

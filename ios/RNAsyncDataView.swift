@@ -103,7 +103,7 @@ class RNAsyncDataView {
   }
   
   var state = RNAsyncDataViewState(items: [], completed: false, inited: false)
-  var watchers: [String : RNAsyncDataViewDelegate] = [:]
+  var watchers = WeakMap<RNAsyncDataViewDelegate>()
   
   let dataSourceKey: String
   
@@ -114,7 +114,7 @@ class RNAsyncDataView {
   func handleInitial(items: [RNAsyncDataViewItem], completed: Bool) {
     let st = RNAsyncDataViewState(items: items.map {$0}, completed: completed, inited: true)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onInited(state: st)
     }
   }
@@ -122,7 +122,7 @@ class RNAsyncDataView {
   func handleAdded(item: RNAsyncDataViewItem, index: Int) {
     let st = self.state.add(index: index, key: item.key, spec: item.config)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onAdded(index: index, state: st)
     }
   }
@@ -131,7 +131,7 @@ class RNAsyncDataView {
     let st = self.state
       .replace(index: index, spec: item.config)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onUpdated(index: index, state: st)
     }
   }
@@ -139,7 +139,7 @@ class RNAsyncDataView {
   func handleRemoved(index: Int) {
     let st = self.state.remove(index: index)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onRemoved(index: index, state: st)
     }
   }
@@ -147,7 +147,7 @@ class RNAsyncDataView {
   func handleMoved(fromIndex: Int, toIndex: Int) {
     let st = self.state.move(from: fromIndex, to: toIndex)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onMoved(from: fromIndex, to: toIndex, state: st)
     }
   }
@@ -158,7 +158,7 @@ class RNAsyncDataView {
       .loadedMore(items: items)
       .setCompleted(completed: completed)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onLoadedMore(from: start, count: items.count, state: st)
     }
   }
@@ -167,7 +167,7 @@ class RNAsyncDataView {
     let st = self.state
       .setCompleted(completed: true)
     self.state = st
-    for i in watchers {
+    for i in watchers.all() {
       i.value.onCompleted(state: st)
     }
   }
@@ -178,20 +178,20 @@ class RNAsyncDataView {
   
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
-    watchers[key] = delegate
+    self.watchers.set(key: key, value: delegate)
     let st = self.state
     if st.inited {
       delegate.onInited(state: st)
     }
     return {
-      self.watchers[key] = nil
+      self.watchers.remove(key: key)
     }
   }
 }
 
 class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   
-  var watchers: [String : RNAsyncDataViewDelegate] = [:]
+  var watchers = WeakMap<RNAsyncDataViewDelegate>()
   var state = RNAsyncDataViewState(items: [], completed: false, inited: false)
   private var latestState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   var source: RNAsyncDataView
@@ -224,7 +224,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if self.latestState.items.count <= 20 {
         self.completed = true
         self.state = self.latestState
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onInited(state: state)
         }
       } else {
@@ -232,7 +232,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         let s = RNAsyncDataViewState(items: Array(state.items[0..<self.windowSize]), completed: false, inited: true)
         self.latestState = self.source.state
         self.state = s
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onInited(state: s)
         }
       }
@@ -245,7 +245,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onAdded(index: index, state: state)
         }
         return
@@ -257,7 +257,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
         self.state = st
         self.windowSize = self.windowSize + 1
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onAdded(index: index, state: st)
         }
       }
@@ -269,7 +269,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onUpdated(index: index, state: state)
         }
         return
@@ -278,7 +278,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if index < self.windowSize {
         let st = self.state.replace(index: index, spec: state.items[index].config)
         self.state = st
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onUpdated(index: index, state: st)
         }
       }
@@ -290,7 +290,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onMoved(from: from, to: to, state: state)
         }
         return
@@ -299,14 +299,14 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if from < self.windowSize && to < self.windowSize {
         let st = self.state.move(from: from, to: to)
         self.state = st
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onMoved(from: from, to: to, state: st)
         }
       } else if from < self.windowSize {
         let st = self.state.remove(index: from)
         self.windowSize = self.windowSize - 1
         self.state = st
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onRemoved(index: from, state: st)
         }
       } else if to < self.windowSize {
@@ -314,7 +314,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
           .add(index: to, key: state.items[to].key, spec: state.items[to].config)
         self.windowSize = self.windowSize + 1
         self.state = st
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onAdded(index: from, state: st)
         }
       }
@@ -326,7 +326,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onRemoved(index: index, state: state)
         }
         return
@@ -335,7 +335,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if index < self.windowSize {
         let st = self.state.remove(index: index)
         self.state = st
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onRemoved(index: index, state: st)
         }
       }
@@ -347,7 +347,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onLoadedMore(from: from, count: count, state: state)
         }
         return
@@ -360,7 +360,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if (self.completed) {
         self.state = state
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.onCompleted(state: state)
         }
       }
@@ -390,7 +390,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
             self.state = st
             let from = self.windowSize
             self.windowSize += loaded
-            for i in self.watchers {
+            for i in self.watchers.all() {
               i.value.onLoadedMore(from: from, count: loaded, state: st)
             }
           } else {
@@ -403,7 +403,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
               self.windowSize = 0
               let s = self.latestState
               self.state = s
-              for i in self.watchers {
+              for i in self.watchers.all() {
                 i.value.onLoadedMore(from: s.items.count-loaded, count: loaded, state: s)
               }
             }
@@ -419,11 +419,11 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if self.state.inited {
         delegate.onInited(state: self.state)
       }
-      self.watchers[key] = delegate
+      self.watchers.set(key: key, value: delegate)
     }
     return {
       queue.async {
-        self.watchers[key] = nil
+        self.watchers.remove(key: key)
       }
     }
   }

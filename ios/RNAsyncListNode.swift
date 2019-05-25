@@ -38,7 +38,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var isDragging = false
   private var keyboardHeight: CGFloat = 0.0
   private var keyboardAcHeight: CGFloat = 0.0
-  private var keyboard: RNAsyncKeyboardContextView? = nil
+  // This context references parent view and can create reference cycle
+  private weak var keyboard: RNAsyncKeyboardContextView? = nil
   private var overscrollCompensation = false
   private var isApplying = false
   private var didRenderContent = false
@@ -60,7 +61,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.node.dataSource = self
     self.node.delegate = self
     
+    print("RNAsyncListView: init node")
     self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self)
+  }
+  
+  deinit {
+    print("RNAsyncListView: deinit node")
   }
   
   func start() {
@@ -79,19 +85,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.fixContentInset(interactive: false)
     
     self.keyboard = self.parent.resolveKeyboardContextKey()
-  }
-  
-  func destroy() {
-    self.keyboard = nil
-    NotificationCenter.default.removeObserver(self)
-    if self.dataViewUnsubscribe != nil {
-      self.dataViewUnsubscribe!()
-      self.dataViewUnsubscribe = nil
-    }
-    if self.keyboardSubscription != nil {
-      self.keyboardSubscription!()
-      self.keyboardSubscription = nil
-    }
   }
   
   func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
@@ -596,16 +589,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if indexPath.section == 1 {
       let d = self.state.items[indexPath.row]
       let cached = self.activeCells.get(key: d.key)
+      let applyModes = self.applyModes
+      /* NO "self" references here!!!! Bevare retantion cycles! */
       return { () -> ASCellNode in
         if cached == nil {
           fatalError("Unable to find cell: " + d.key)
         }
-        cached?.applyModes(modesToApply: self.applyModes)
+        cached?.applyModes(modesToApply: applyModes)
         return cached!
       }
     } else if indexPath.section == 2 {
       self.loadingCell.loaderColor = self.loaderColor
       let n = self.loadingCell
+      /* NO "self" references here!!!! Bevare retantion cycles! */
       return { () -> ASCellNode in
         n.layoutThatFits(range)
         n.automaticallyManagesSubnodes = true
@@ -613,10 +609,13 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     } else if indexPath.section == 0 {
       let padding = self.headerPadding
+      let overflowColor = self.overflowColor
+      let inverted = self.node.inverted
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.clipsToBounds = false
         res.automaticallyManagesSubnodes = true
+        /* NO "self" references here!!!! Bevare retantion cycles! */
         res.layoutSpecBlock = { node, constrainedSize in
           let res = ASStackLayoutSpec()
           res.direction = ASStackLayoutDirection.vertical
@@ -624,14 +623,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.justifyContent = ASStackLayoutJustifyContent.center
           res.style.flexGrow = 1
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
-          if(self.overflowColor != nil){
+          if overflowColor != nil {
             let overflow = ASDisplayNode()
-            overflow.backgroundColor = resolveColorR(self.overflowColor!)
+            overflow.backgroundColor = resolveColorR(overflowColor!)
             overflow.style.flexGrow = 1
             overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 10001)
             overflow.clipsToBounds = false
             
-            let insets = UIEdgeInsets(top: self.node.inverted ? 0 : CGFloat(padding - 10000), left: 0, bottom: self.node.inverted ? CGFloat(padding - 10000): 0, right: 0)
+            let insets = UIEdgeInsets(top: inverted ? 0 : CGFloat(padding - 10000), left: 0, bottom: inverted ? CGFloat(padding - 10000): 0, right: 0)
             let container = ASInsetLayoutSpec(insets: insets, child: overflow)
             res.setChild(container, at: 0)
           }
