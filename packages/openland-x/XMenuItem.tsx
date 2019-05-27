@@ -69,7 +69,7 @@ let XMenuItemColorStyles = styleResolver({
 
 const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
     {
-        height: 40,
+        // height: 40,
         flexShrink: 0,
         padding: '0 16px',
         display: 'flex',

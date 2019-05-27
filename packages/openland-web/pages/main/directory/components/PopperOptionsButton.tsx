@@ -32,7 +32,7 @@ let iconWrapperClass = css`
     }
 `;
 
-const IconWithBackground = ({ children }: { children: any }) => {
+export const IconWithBackground = ({ children }: { children: any }) => {
     return (
         <div className={iconBackgroundClass}>
             <div className={iconWrapperClass}>{children}</div>
@@ -41,27 +41,38 @@ const IconWithBackground = ({ children }: { children: any }) => {
 };
 
 const TextItemWrapper = ({ children }: { children: any }) => {
-    return <XView height={36}>{children}</XView>;
+    return <XView>{children}</XView>;
 };
 
-const Item = ({
+export const Item = ({
     title,
     description,
     href,
+    onClick,
     icon,
 }: {
     title: string;
     description: string;
-    href: string;
+    href?: string;
+    onClick?: ((event: React.MouseEvent) => void) | undefined;
     icon: any;
 }) => {
     return (
         <XMenuItem
+            style={'gray'}
+            onClick={onClick}
             TextItemWrapper={TextItemWrapper}
             path={href}
-            icon={<XView marginRight={12}>{icon}</XView>}
+            icon={
+                <XView marginRight={12} paddingTop={8} alignSelf="flex-start">
+                    {icon}
+                </XView>
+            }
         >
             <XView
+                paddingTop={8}
+                paddingBottom={8}
+                maxWidth={250}
                 flexGrow={1}
                 flexDirection="column"
                 justifyContent={'space-between'}
@@ -70,7 +81,7 @@ const Item = ({
                 <XView fontSize={14} fontWeight={'600'} color={'#000000'}>
                     {title}
                 </XView>
-                <XView fontSize={13} opacity={0.5} color={'#000000'}>
+                <XView marginTop={5} fontSize={13} opacity={0.5} color={'#000000'}>
                     {description}
                 </XView>
             </XView>
@@ -80,10 +91,10 @@ const Item = ({
 
 export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
-        const [show, setShow] = React.useState(false);
+        const [show, setShow] = React.useState(true);
 
         const closer = () => {
-            setShow(false);
+            // setShow(false);
         };
 
         const toggle = () => {
@@ -92,7 +103,7 @@ export const PopperOptionsButton = XMemo(
 
         return (
             <XPopper
-                contentContainer={<XMenuVertical paddingTop={16} paddingBottom={16} />}
+                contentContainer={<XMenuVertical paddingTop={8} paddingBottom={8} />}
                 placement="bottom-end"
                 show={show}
                 marginTop={10}

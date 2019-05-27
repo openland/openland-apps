@@ -9,7 +9,6 @@ import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
 import CommunityIcon from 'openland-icons/dir-communities.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
-import { XMenuItem } from 'openland-x/XMenuItem';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
@@ -21,6 +20,12 @@ import { useIsMobile } from 'openland-web/hooks';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganization';
+import {
+    IconWithBackground,
+    Item,
+} from 'openland-web/pages/main/directory/components/PopperOptionsButton';
+import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
+import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -173,18 +178,28 @@ export const DirectoryNavigation = XMemo(
                         title={TextDirectory.create.title}
                         content={
                             <>
-                                <XMenuItem
+                                <Item
+                                    href="/mail/createOrganization?community=true"
+                                    icon={
+                                        <IconWithBackground>
+                                            <CreateCommunityIcon />
+                                        </IconWithBackground>
+                                    }
+                                    title={'Create new community'}
+                                    description="A hub for groups and channels"
+                                />
+
+                                <Item
                                     onClick={() => showCreateOrganization('organization')}
-                                    icon="x-dropdown-organization"
-                                >
-                                    {TextDirectory.create.organization}
-                                </XMenuItem>
-                                <XMenuItem
-                                    path="/mail/createOrganization?community=true"
-                                    icon="x-dropdown-community"
-                                >
-                                    {TextDirectory.create.community}
-                                </XMenuItem>
+                                    icon={
+                                        <IconWithBackground>
+                                            <OrganizationIcon />
+                                        </IconWithBackground>
+                                    }
+                                    title={'Create new organization'}
+                                    description="To showcase your company and chat
+                                    with co-workers"
+                                />
                             </>
                         }
                     />
