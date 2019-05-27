@@ -24,6 +24,13 @@ class RNAsyncConfigManager: NSObject {
     }
   }
   
+  @objc(invalidate)
+  func invalidate() {
+    RNAsyncConfigManager.views.clear()
+    RNAsyncConfigManager.instances.clear()
+    RNAsyncConfigManager.configs.removeAll()
+  }
+  
   @objc(setSuspended:suspended:)
   func setSuspended(key: String, suspended: Bool) -> Void {
     if let i = RNAsyncConfigManager.instances.get(key: key) {

@@ -19,20 +19,61 @@ func lock(_ obj: AnyObject, blk:() -> ()) {
   objc_sync_exit(obj)
 }
 
-class WeakMap<V: AnyObject> {
-  private var cache = NSMapTable<NSString, V>(keyOptions: NSPointerFunctions.Options.strongMemory, valueOptions: NSPointerFunctions.Options.weakMemory)
+private class WeakBox {
+  weak var value: AnyObject?
+  init(value: AnyObject) {
+    self.value = value
+  }
+}
+
+class WeakMap<V> {
+  private let cacheSync = DispatchQueue(label: "weakmap")
+  private var cache: [String: WeakBox] = [:]
   
   func get(key: String) -> V? {
     var res: V? = nil
-    lock(self.cache) {
-      res = self.cache.object(forKey: NSString(string: key))
+    self.cacheSync.sync {
+      let ex = self.cache[key]
+      if ex != nil {
+        let v = ex!.value
+        if v != nil {
+          res = v! as! V
+        } else {
+          self.cache.removeValue(forKey: key)
+        }
+      }
     }
     return res
   }
   
   func set(key: String, value: V) {
-    lock(self.cache) {
-      self.cache.setObject(value, forKey: NSString(string: key))
+    self.cacheSync.sync {
+      self.cache[key] = WeakBox(value: value as! AnyObject)
+    }
+  }
+  
+  func remove(key: String) {
+    self.cacheSync.sync {
+      self.cache.removeValue(forKey: key)
+    }
+  }
+  
+  func all() -> [(key: String, value: V)] {
+    var res: [(key: String, value: V)] = []
+    self.cacheSync.sync {
+      for kv in self.cache {
+        let value = kv.value.value
+        if value != nil {
+          res.append((kv.key, value! as! V))
+        }
+      }
+    }
+    return res
+  }
+  
+  func clear() {
+    self.cacheSync.sync {
+      self.cache.removeAll()
     }
   }
 }

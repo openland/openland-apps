@@ -14,7 +14,7 @@ import { XMenuTitle } from 'openland-x/XMenuItem';
 const Item = ({ title, href, icon }: { title: string; href: string; icon: any }) => {
     return (
         <XMenuItem
-            path={href}
+            href={href}
             icon={
                 <XView marginRight={14} marginTop={-4}>
                     {icon}

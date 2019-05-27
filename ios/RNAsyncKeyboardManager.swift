@@ -27,7 +27,7 @@ import Foundation
   private var lastWillHideRect: CGRect? = nil
   private var lastWillShowRect: CGRect? = nil
   
-  private var watchers: [String : RNAsyncKeyboardManagerDelegate] = [:]
+  private var watchers = WeakMap<RNAsyncKeyboardManagerDelegate>()
   
   private override init() {
     super.init()
@@ -48,7 +48,7 @@ import Foundation
     print("Report Height \(kbHeight + acHeight)")
     self.keyboardHeight = kbHeight
     self.keyboardAcHeight = acHeight
-    for i in self.watchers {
+    for i in self.watchers.all() {
       i.value.keyboardWillChangeHeight(ctx: ctx, kbHeight: CGFloat(kbHeight), acHeight: CGFloat(acHeight))
     }
   }
@@ -71,7 +71,7 @@ import Foundation
       let kh = tr.keyboardHeight
       let ah = h - kh
       if let ctx = context?.keyboardContextKey {
-        for i in self.watchers {
+        for i in self.watchers.all() {
           i.value.keyboardWillShow(ctx: ctx, kbHeight: kh, acHeight: ah, duration: duration, curve: curve)
         }
       }
@@ -100,7 +100,7 @@ import Foundation
       let h = tr.keyboardHeightWithAccessory
       let kh = tr.keyboardHeight
       let ah = h - kh
-      for i in self.watchers {
+      for i in self.watchers.all() {
         i.value.keyboardWillHide(ctx: self.lastCtx, kbHeight: kh, acHeight: ah, duration: duration, curve: curve)
       }
     }
@@ -116,10 +116,10 @@ import Foundation
   
   func watch(delegate: RNAsyncKeyboardManagerDelegate) -> ()-> Void {
     let key = UUID().uuidString
-    self.watchers[key] = delegate
+    self.watchers.set(key: key, value: delegate)
     delegate.keyboardWillChangeHeight(ctx: self.lastCtx, kbHeight: CGFloat(keyboardHeight), acHeight: CGFloat(self.keyboardAcHeight))
     return {
-      self.watchers[key] = nil
+      self.watchers.remove(key: key)
     }
   }
 }

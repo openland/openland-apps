@@ -45,7 +45,7 @@ class SpaceXTransport {
   func operation(
     operation: OperationDefinition,
     variables: JSON,
-    queue: DispatchQueue,
+    queue: ManagedDispatchQueue,
     handler: @escaping  (SpaceXTransportOperationResult) -> Void
   ) {
     var isCompleted = false
@@ -77,7 +77,7 @@ class SpaceXTransport {
   func subscription(
     operation: OperationDefinition,
     variables: JSON,
-    queue: DispatchQueue,
+    queue: ManagedDispatchQueue,
     handler: @escaping (SpaceXTransportOperationResult) -> Void
   ) -> RunningOperation {
     var isCompleted = false

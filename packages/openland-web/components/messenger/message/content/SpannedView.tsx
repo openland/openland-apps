@@ -19,11 +19,19 @@ const boldTextClassName = css`
 
 const italicTextClassName = css`
     font-style: italic;
+
+    .emojione {
+        transform: skew(-12deg);
+    }
 `;
 
 const ironyTextClassName = css`
     font-style: italic;
     color: #d75454;
+
+    .emojione {
+        transform: skew(-12deg);
+    }
 `;
 
 const codeInlineClassName = css`

@@ -30,8 +30,10 @@ class RNAsyncListView: RCTView {
   init(eventDispatcher: RCTEventDispatcher) {
     self.eventDispatcher = eventDispatcher
     super.init(frame: CGRect.zero)
+    print("RNAsyncListView: init")
+    
     self.node = RNASyncListNode(parent: self)
-    self.addSubview(node.view);
+    self.addSubview(node.view)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -39,8 +41,7 @@ class RNAsyncListView: RCTView {
   }
   
   deinit {
-    self.node.destroy()
-    self.node = nil
+    print("RNAsyncListView: deinit")
   }
   
   @objc public func setDataViewKey(_ key: String) {

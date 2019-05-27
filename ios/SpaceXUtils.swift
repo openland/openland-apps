@@ -96,3 +96,32 @@ class AtomicInteger {
     return r
   }
 }
+
+class ManagedDispatchQueue {
+  
+  private var stopped = false
+  private let dispatchQueue: DispatchQueue
+  
+  init(label: String, concurrent: Bool = false) {
+    if concurrent {
+      self.dispatchQueue = DispatchQueue(label: label, attributes: .concurrent)
+    } else {
+      self.dispatchQueue = DispatchQueue(label: label)
+    }
+  }
+  
+  func async(execute: @escaping () -> Void) {
+    self.dispatchQueue.async {
+      if self.stopped {
+        return
+      }
+      execute()
+    }
+  }
+  
+  func stop() {
+    self.dispatchQueue.sync {
+      self.stopped = true
+    }
+  }
+}
