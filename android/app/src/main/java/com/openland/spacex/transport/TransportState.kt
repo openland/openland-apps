@@ -144,7 +144,8 @@ class TransportState : NetworkingHandler {
     //
 
     override fun onSessionRestart() {
-        for (op in this.liveOperations.values) {
+        val copy = this.liveOperations.values.toList()
+        for (op in copy) {
             if (op.operation.kind == OperationKind.SUBSCRIPTION) {
 
                 // Stop subscriptions
