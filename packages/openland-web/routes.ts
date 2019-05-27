@@ -119,6 +119,8 @@ routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
+routes.add('/testPage/:invite', '/main/mail/invitePeople');
+routes.add('/testPage/:invite/', '/main/mail/invitePeople');
 
 //
 // Mail
