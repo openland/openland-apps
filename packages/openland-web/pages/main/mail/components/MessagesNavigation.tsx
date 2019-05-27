@@ -103,6 +103,8 @@ export const MessagesNavigation = XMemo(
                     tab={tab}
                     menuRightContent={
                         <PopperOptionsButton
+                            marginTop={10}
+                            marginRight={0}
                             icon={<NewChatIcon />}
                             title={TextDirectory.create.title}
                         />

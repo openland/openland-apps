@@ -4,7 +4,13 @@ import { XModal, XModalBody, XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 
-export const LeaveAndDeleteModal = ({ chatTypeStr }: { chatTypeStr: string }) => {
+export const LeaveAndDeleteModal = ({
+    chatTypeStr,
+    redirectPath,
+}: {
+    chatTypeStr: string;
+    redirectPath: string;
+}) => {
     return (
         <XModal
             title={`Leave and delete ${chatTypeStr}`}
@@ -20,7 +26,7 @@ export const LeaveAndDeleteModal = ({ chatTypeStr }: { chatTypeStr: string }) =>
                 <XModalFooter>
                     <XButton text="Cancel" style="primary" autoClose={true} />
                     <XView width={12} flexShrink={0} />
-                    <XButton text="Leave and delete" style="ghost" path="/mail" />
+                    <XButton text="Leave and delete" style="ghost" path={redirectPath} />
                 </XModalFooter>
             }
             target={

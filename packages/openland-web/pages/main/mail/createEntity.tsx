@@ -71,7 +71,10 @@ const MainWrapper = ({ entityKind, back, onBackClick, children }: MainWrapperT) 
                         <span>Back</span>
                     </XView>
                 )}
-                <LeaveAndDeleteModal chatTypeStr={chatTypeStr} />
+                <LeaveAndDeleteModal
+                    chatTypeStr={chatTypeStr}
+                    redirectPath={entityKind === EntityKind.COMMUNITY ? '/directory' : '/mail'}
+                />
             </XView>
             <XView
                 flexDirection="row"

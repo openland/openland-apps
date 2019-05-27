@@ -45,7 +45,7 @@ const InviteFragment = ({
             justifyContent={'center'}
             backgroundColor={'#FFF'}
         >
-            <XView position="absolute" right={73} top={32}>
+            <XView position="absolute" right={32} top={32}>
                 <ClosingCross />
             </XView>
 

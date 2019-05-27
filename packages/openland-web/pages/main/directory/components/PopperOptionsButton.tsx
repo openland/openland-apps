@@ -90,7 +90,21 @@ export const Item = ({
 };
 
 export const PopperOptionsButton = XMemo(
-    ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
+    ({
+        content,
+        icon,
+        title,
+        path,
+        marginTop,
+        marginRight,
+    }: {
+        content?: any;
+        icon: any;
+        title: any;
+        path?: string;
+        marginTop: number;
+        marginRight: number;
+    }) => {
         const [show, setShow] = React.useState(false);
 
         const closer = () => {
@@ -106,8 +120,8 @@ export const PopperOptionsButton = XMemo(
                 contentContainer={<XMenuVertical paddingTop={8} paddingBottom={8} />}
                 placement="bottom-end"
                 show={show}
-                marginTop={10}
-                marginRight={-5}
+                marginTop={marginTop}
+                marginRight={marginRight}
                 arrow={null}
                 onClickOutside={closer}
                 content={
