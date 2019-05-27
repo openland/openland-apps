@@ -153,6 +153,11 @@ const CommentView = ({
             ? parentComment.comment.sender.name
             : undefined;
 
+    const showComment =
+        commentEntryId &&
+        (!commentsMap[commentEntryId].deleted ||
+            commentsMap[commentEntryId].childComments.length !== 0);
+
     return (
         <div data-comment-id={message.id}>
             <XView
@@ -160,27 +165,27 @@ const CommentView = ({
                 marginLeft={offset}
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
-                {commentEntryId &&
-                    !commentsMap[commentEntryId].deleted && (
-                        <MessageComponent
-                            room={room}
-                            conversationId={roomId}
-                            onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
-                            usernameOfRepliedUser={usernameOfRepliedUser}
-                            commentDepth={message.depth}
-                            noSelector
-                            isComment
-                            commentProps={{
-                                onCommentReplyClick,
-                                onCommentEditClick,
-                                onCommentDeleteClick,
-                                messageId: originalMessageId,
-                            }}
-                            message={message}
-                            onlyLikes={true}
-                            me={messenger.user}
-                        />
-                    )}
+                {showComment && (
+                    <MessageComponent
+                        room={room}
+                        conversationId={roomId}
+                        onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        usernameOfRepliedUser={usernameOfRepliedUser}
+                        commentDepth={message.depth}
+                        deleted={commentEntryId ? commentsMap[commentEntryId].deleted : false}
+                        noSelector
+                        isComment
+                        commentProps={{
+                            onCommentReplyClick,
+                            onCommentEditClick,
+                            onCommentDeleteClick,
+                            messageId: originalMessageId,
+                        }}
+                        message={message}
+                        onlyLikes={true}
+                        me={messenger.user}
+                    />
+                )}
 
                 {showInputId === message.key && (
                     <UploadContextProvider>

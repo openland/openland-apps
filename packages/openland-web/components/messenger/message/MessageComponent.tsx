@@ -22,6 +22,7 @@ export const MessageComponent = React.memo<MessageComponentProps>((props) => {
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
                         showNumberOfComments={props.showNumberOfComments}
                         isModal={props.isModal}
+                        deleted={props.deleted}
                         isPinned={props.isPinned}
                         commentDepth={props.commentDepth}
                         isComment={props.isComment}

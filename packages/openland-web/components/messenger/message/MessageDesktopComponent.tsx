@@ -97,6 +97,7 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 export interface MessageComponentProps {
+    deleted?: boolean;
     showNumberOfComments?: boolean;
     isPinned?: boolean;
     isModal?: boolean;
@@ -341,15 +342,23 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             />,
                         );
                     } else {
-                        content.push(
-                            <MessageTextComponentSpanned
-                                isChannel={!!this.props.isChannel}
-                                isComment={this.props.isComment}
-                                spans={message.textSpans}
-                                key={'text' + message.id}
-                                isEdited={!!message.isEdited}
-                            />,
-                        );
+                        if (this.props.deleted) {
+                            content.push(
+                                <XView key={'text' + message.id} color={'rgba(0, 0, 0, 0.5)'}>
+                                    {message.text}
+                                </XView>,
+                            );
+                        } else {
+                            content.push(
+                                <MessageTextComponentSpanned
+                                    isChannel={!!this.props.isChannel}
+                                    isComment={this.props.isComment}
+                                    spans={message.textSpans}
+                                    key={'text' + message.id}
+                                    isEdited={!!message.isEdited}
+                                />,
+                            );
+                        }
                     }
                 }
 
@@ -493,6 +502,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
             return (
                 <DesktopMessageContainer
+                    deleted={this.props.deleted}
                     conversationId={this.props.conversationId!!}
                     haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
