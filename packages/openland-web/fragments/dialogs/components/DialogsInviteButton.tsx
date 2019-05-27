@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from 'openland-icons/ic-invite-plus.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { showAppInviteModal } from 'openland-web/fragments/showAppInviteModal';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
@@ -35,8 +35,10 @@ const InviteWrapper = Glamorous(XLink)({
 });
 
 export const DialogsInviteButton = XMemo(() => {
+    let router = React.useContext(XRouterContext)!;
+
     return (
-        <InviteWrapper onClick={() => showAppInviteModal()}>
+        <InviteWrapper onClick={() => router.push(`/invitePeople`)}>
             <InviteIcon />
             <span>Invite people</span>
         </InviteWrapper>

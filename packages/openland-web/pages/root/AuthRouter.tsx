@@ -140,8 +140,8 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
 
     // Redirect from service pages to the app root
     if (userInfo.isCompleted) {
-        if (isRootPath(router) || router.path.startsWith('/invite')) {
-            if (router.path.startsWith('/invite')) {
+        if (isRootPath(router) || router.path.startsWith('/invite/')) {
+            if (router.path.startsWith('/invite/')) {
                 redirectPath = '/';
             }
             return <XPageRedirect path={redirectPath} />;

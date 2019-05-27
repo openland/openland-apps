@@ -2,14 +2,13 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XRouter } from 'openland-x-routing/XRouter';
 import ImgMembersEmpty from 'openland-icons/img-members-empty-copy-6.svg';
 import { XView } from 'react-mental';
 import { OwnerLinkComponent } from 'openland-web/fragments/OwnerLinkComponent';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { ClosingCross } from 'openland-web/fragments/InviteLandingComponent';
+import { useIsMobile } from 'openland-web/hooks';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -32,6 +31,8 @@ const InviteFragment = ({
     primaryOrganizationInvite: string;
     openlandInvite: string;
 }) => {
+    const [isMobile] = useIsMobile();
+
     return (
         <XView
             flexDirection="row"
@@ -59,7 +60,7 @@ const InviteFragment = ({
                     </TextAlignCenter>
                 </XView>
 
-                <XView width={540} marginTop={48}>
+                <XView width={isMobile ? 250 : 540} marginTop={48}>
                     <XView
                         flexDirection="row"
                         color={'#000'}
@@ -120,9 +121,6 @@ export default withApp(
     'viewer',
     withUserInfo(() => {
         const client = useClient();
-        const router = React.useContext(XRouterContext) as XRouter;
-        const { routeQuery } = router;
-        const openlandInvite = routeQuery.invite;
 
         const foundersChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
 
@@ -133,6 +131,8 @@ export default withApp(
         const data = client.useOrganizationPublicInvite({
             organizationId: profile.primaryOrganization!!.id,
         });
+
+        const { invite: openlandInvite } = client.useAccountAppInvite();
 
         const primaryOrganizationInvite = data.publicInvite!!.key;
 
