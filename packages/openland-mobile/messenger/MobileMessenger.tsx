@@ -36,7 +36,11 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
 
             selectedActionsState.setState({ ...stateToForward, action: 'forward' });
 
-            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+            if (conversationEngine.conversationId === id) {
+                getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
+            } else {
+                getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+            }
         }
     });
 }
