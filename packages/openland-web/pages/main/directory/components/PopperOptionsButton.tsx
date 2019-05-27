@@ -91,10 +91,10 @@ export const Item = ({
 
 export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
-        const [show, setShow] = React.useState(true);
+        const [show, setShow] = React.useState(false);
 
         const closer = () => {
-            // setShow(false);
+            setShow(false);
         };
 
         const toggle = () => {
