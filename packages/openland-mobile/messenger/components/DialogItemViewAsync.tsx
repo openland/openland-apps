@@ -61,7 +61,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: AppTheme, item: DialogData
                 <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
                     {isGroup && !isChannel && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={theme.dialogTitleSecureColor} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
                     {isChannel && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage key={theme.textColor} tintColor={isGroup ? theme.dialogTitleSecureColor : theme.textColor} width={13} height={13} source={require('assets/ic-channel-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
-                    <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.dialogTitleSecureColor : theme.dialogTitleColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                    <ASText lineHeight={Platform.OS === 'android' ? 22 : undefined} fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.dialogTitleSecureColor : theme.dialogTitleColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                     {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color={theme.dialogDateColor}>{formatDate(item.date)}</ASText>}
                 </ASFlex>
                 {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
