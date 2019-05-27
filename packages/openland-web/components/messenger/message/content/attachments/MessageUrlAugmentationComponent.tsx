@@ -56,7 +56,7 @@ const SplitTitleClassName = css`
 `;
 
 const DeleteButton = makeNavigable(
-    Glamorous.div<NavigableChildProps>(props => ({
+    Glamorous.div<NavigableChildProps>({
         position: 'absolute',
         right: 12,
         top: 12,
@@ -76,7 +76,7 @@ const DeleteButton = makeNavigable(
         '&:hover svg > path': {
             fill: 'rgba(0, 0, 0, 0.7)',
         },
-    })),
+    }),
 );
 
 const Favicon = css`
@@ -101,7 +101,7 @@ interface KeyboardItemProps {
     key?: string;
 }
 
-const KeyboardItem = ({ title, path, href, key }: KeyboardItemProps) => {
+const KeyboardItem = ({ title, path, href }: KeyboardItemProps) => {
     const modal = React.useContext(XModalContext);
     const modalBox = React.useContext(XModalBoxContext);
 
@@ -118,7 +118,6 @@ const KeyboardItem = ({ title, path, href, key }: KeyboardItemProps) => {
     return (
         <XView
             as="a"
-            key={key}
             href={href}
             path={path}
             flexGrow={1}
