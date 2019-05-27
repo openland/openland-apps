@@ -8,10 +8,41 @@ import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import { css } from 'linaria';
 
-let iconClass = css`
-    opacity: 0.1;
-    background-color: #1790ff;
+let iconBackgroundClass = css`
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(23, 144, 255, 0.1);
+    border-radius: 70px;
 `;
+
+let iconWrapperClass = css`
+    & > svg {
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+    }
+
+    & > svg path {
+        fill: #1a90ff;
+        opacity: 1;
+    }
+`;
+
+const IconWithBackground = ({ children }: { children: any }) => {
+    return (
+        <div className={iconBackgroundClass}>
+            <div className={iconWrapperClass}>{children}</div>
+        </div>
+    );
+};
+
+const TextItemWrapper = ({ children }: { children: any }) => {
+    return <XView height={36}>{children}</XView>;
+};
 
 const Item = ({
     title,
@@ -26,14 +57,16 @@ const Item = ({
 }) => {
     return (
         <XMenuItem
+            TextItemWrapper={TextItemWrapper}
             path={href}
-            icon={
-                <XView marginRight={14} marginTop={-4}>
-                    <div className={iconClass}>{icon}</div>
-                </XView>
-            }
+            icon={<XView marginRight={12}>{icon}</XView>}
         >
-            <XView flexDirection="column">
+            <XView
+                flexGrow={1}
+                flexDirection="column"
+                justifyContent={'space-between'}
+                height={'100%'}
+            >
                 <XView fontSize={14} fontWeight={'600'} color={'#000000'}>
                     {title}
                 </XView>
@@ -59,7 +92,7 @@ export const PopperOptionsButton = XMemo(
 
         return (
             <XPopper
-                contentContainer={<XMenuVertical />}
+                contentContainer={<XMenuVertical paddingTop={16} paddingBottom={16} />}
                 placement="bottom-end"
                 show={show}
                 marginTop={10}
@@ -73,17 +106,27 @@ export const PopperOptionsButton = XMemo(
                         <>
                             <Item
                                 href="/mail/create"
-                                icon={<CellRoomIcon />}
+                                icon={
+                                    <IconWithBackground>
+                                        <CellRoomIcon />
+                                    </IconWithBackground>
+                                }
                                 title="Create new group"
                                 description="Group chat for your projects or topics"
                             />
 
-                            <Item
-                                href="/mail/create?channel=true"
-                                icon={<CreateChannelIcon />}
-                                title="Create new channel"
-                                description="Broadcast messages to your audience"
-                            />
+                            <XView marginTop={6}>
+                                <Item
+                                    href="/mail/create?channel=true"
+                                    icon={
+                                        <IconWithBackground>
+                                            <CreateChannelIcon />
+                                        </IconWithBackground>
+                                    }
+                                    title="Create new channel"
+                                    description="Broadcast messages to your audience"
+                                />
+                            </XView>
                         </>
                     )
                 }
