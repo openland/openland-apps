@@ -45,7 +45,7 @@ const InviteFragment = ({
             justifyContent={'center'}
             backgroundColor={'#FFF'}
         >
-            <XView position="absolute" right={23} top={23}>
+            <XView position="absolute" right={20} top={20}>
                 <XView
                     cursor="pointer"
                     alignItems="center"
