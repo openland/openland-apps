@@ -18,6 +18,10 @@ const TextAlignCenter = ({ children }: { children: any }) => {
     return <div className={textAlignCenterClassName}>{children}</div>;
 };
 
+const letterSpacingClassName = css`
+    letter-spacing: 0.9px;
+`;
+
 const InviteFragment = ({
     founderChatsInvite,
     primaryOrganizationName,
@@ -41,22 +45,26 @@ const InviteFragment = ({
             justifyContent={'center'}
             backgroundColor={'#FFF'}
         >
-            <XView position="absolute" right={32} top={32}>
+            <XView position="absolute" right={73} top={32}>
                 <ClosingCross />
             </XView>
 
             <XView flexDirection="column" alignItems="center">
-                <ImgMembersEmpty />
+                <XView marginBottom={-55}>
+                    <ImgMembersEmpty />
+                </XView>
 
                 <XView
                     fontSize={22}
-                    maxWidth={300}
+                    maxWidth={328}
                     fontWeight={'600'}
                     lineHeight={1.36}
                     color={'#000'}
                 >
                     <TextAlignCenter>
-                        Share one of the links below with people you want to invite
+                        <span className={letterSpacingClassName}>
+                            Share one of the links below with people you want to invite
+                        </span>
                     </TextAlignCenter>
                 </XView>
 
@@ -74,7 +82,7 @@ const InviteFragment = ({
                             marginLeft={4}
                             href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
                         >
-                            Founder Chats
+                            <span className={letterSpacingClassName}>Founder Chats</span>
                         </XView>
                     </XView>
                     <OwnerLinkComponent appInvite={founderChatsInvite} />
