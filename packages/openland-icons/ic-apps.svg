@@ -1,7 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="21" viewBox="0 0 14 21">
-    <g fill="none" fill-rule="evenodd">
-        <path fill="#B4B8BD" fill-rule="nonzero" d="M11.5 0h-9A2.5 2.5 0 0 0 0 2.5v16A2.5 2.5 0 0 0 2.5 21h9a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 11.5 0z"/>
-        <path fill="#F9F9F9" fill-rule="nonzero" d="M7 19.7a1.499 1.499 0 1 1 0-3 1.499 1.499 0 1 1 0 3z"/>
-        <path fill="#F9F9F9" d="M10.5 15.5h-7a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1z"/>
-    </g>
+    <path fill="#b4b8be" fill-rule="nonzero" d="M11.5 0A2.5 2.5 0 0 1 14 2.5v16a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 0 18.5v-16A2.5 2.5 0 0 1 2.5 0h9zm-1 15.5a1 1 0 0 0 1-1v-11a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h7zM7 19.7a1.499 1.499 0 1 0 0-3 1.499 1.499 0 1 0 0 3z"/>
 </svg>
