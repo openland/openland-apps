@@ -6,26 +6,29 @@ export const useCheckPerf = ({ name, id }: { name: string; id?: string }) => {
 
     const isCached = id && perfCollector.getCachedChatsIds().indexOf(id) !== -1;
     let t0 = performance.now();
-    React.useLayoutEffect(() => {
-        let t1 = performance.now();
+    React.useLayoutEffect(
+        () => {
+            let t1 = performance.now();
 
-        const _map = perfCollector.getMap();
+            const _map = perfCollector.getMap();
 
-        let finalName = name;
-        if (id) {
-            finalName = name + ' ' + id;
-        }
+            let finalName = name;
+            if (id) {
+                finalName = name + ' ' + id;
+            }
 
-        // if (isCached) {
-        //     finalName = name + ' ' + id + ' ' + 'cached';
-        // }
+            // if (isCached) {
+            //     finalName = name + ' ' + id + ' ' + 'cached';
+            // }
 
-        perfCollector.setMap({
-            ..._map,
-            [finalName]: {
-                measure: t1 - t0,
-                renderCount: _map[finalName] ? _map[finalName].renderCount + 1 : 1,
-            },
-        });
-    }, [Math.random()]);
+            perfCollector.setMap({
+                ..._map,
+                [finalName]: {
+                    measure: t1 - t0,
+                    renderCount: _map[finalName] ? _map[finalName].renderCount + 1 : 1,
+                },
+            });
+        },
+        [Math.random()],
+    );
 };

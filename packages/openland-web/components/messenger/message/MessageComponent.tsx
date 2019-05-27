@@ -5,7 +5,7 @@ import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
-export const MessageComponent = React.memo<MessageComponentProps>((props) => {
+export const MessageComponent = React.memo<MessageComponentProps>(props => {
     const messagesContextProps = React.useContext(MessagesStateContext);
     const isMobile = React.useContext(IsMobileContext);
     return isMobile ? (
@@ -15,9 +15,10 @@ export const MessageComponent = React.memo<MessageComponentProps>((props) => {
             conversationType={props.conversationType}
         />
     ) : (
-            <>
-                <IsActivePoliteContext.Consumer>
-                    {isActive => <DesktopMessageComponentInner
+        <>
+            <IsActivePoliteContext.Consumer>
+                {isActive => (
+                    <DesktopMessageComponentInner
                         onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
                         showNumberOfComments={props.showNumberOfComments}
@@ -37,10 +38,9 @@ export const MessageComponent = React.memo<MessageComponentProps>((props) => {
                         messagesContext={messagesContextProps}
                         room={props.room}
                         isActive={isActive}
-                    />}
-                </IsActivePoliteContext.Consumer>
-
-            </>
-        );
-},
-);
+                    />
+                )}
+            </IsActivePoliteContext.Consumer>
+        </>
+    );
+});

@@ -275,13 +275,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-            <HeaderTitle
-                key={privateRoom!!.user.id}
-                value={privateRoom!!.user.name}
-                path={'/mail/u/' + privateRoom!!.user.id}
-                organization={privateRoom!!.user.primaryOrganization}
-            />
-        );
+        <HeaderTitle
+            key={privateRoom!!.user.id}
+            value={privateRoom!!.user.name}
+            path={'/mail/u/' + privateRoom!!.user.id}
+            organization={privateRoom!!.user.primaryOrganization}
+        />
+    );
 
     return (
         <ChatHeaderViewAbstract

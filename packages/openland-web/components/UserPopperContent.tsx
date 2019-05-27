@@ -47,8 +47,8 @@ const Status = (({ variables }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={user.lastSeen} format="humanize_cute" />
+                )}
             </StatusWrapper>
         );
     } else if (user && user.online) {
@@ -104,7 +104,7 @@ const UserPopperContent = XMemo(
             const messenger = React.useContext(MessengerContext);
             React.useEffect(() => {
                 messenger.getOnlines().onUserAppears(user.id!);
-            }, [])
+            }, []);
             return (
                 <Wrapper>
                     <XHorizontal>

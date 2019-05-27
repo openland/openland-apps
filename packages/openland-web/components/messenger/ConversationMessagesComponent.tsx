@@ -45,7 +45,7 @@ interface ConversationMessagesComponentProps {
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-    > {
+> {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {

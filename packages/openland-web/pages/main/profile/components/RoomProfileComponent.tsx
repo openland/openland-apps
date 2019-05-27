@@ -550,7 +550,6 @@ const RoomGroupProfileProvider = ({
         return dataSource.watch({
             onDataSourceInited(members: RoomMembersPaginated_members[], completed: boolean) {
                 members.map(u => u.user.id).map(messenger.getOnlines().onUserAppears);
-
             },
             onDataSourceItemAdded(item: RoomMembersPaginated_members, index: number) {
                 messenger.getOnlines().onUserAppears(item.user.id);
@@ -564,14 +563,18 @@ const RoomGroupProfileProvider = ({
             onDataSourceItemRemoved(item: RoomMembersPaginated_members, index: number) {
                 // Nothing to do
             },
-            onDataSourceItemMoved(item: RoomMembersPaginated_members, fromIndex: number, toIndex: number) {
+            onDataSourceItemMoved(
+                item: RoomMembersPaginated_members,
+                fromIndex: number,
+                toIndex: number,
+            ) {
                 // Nothing to do
             },
             onDataSourceCompleted() {
                 // Nothing to do
-            }
-        })
-    }, [])
+            },
+        });
+    }, []);
 
     const renderItem = React.useMemo(() => {
         return (member: any) => {

@@ -106,13 +106,16 @@ export const CacheComponent = React.memo(
             }[]
         >([]);
 
-        React.useEffect(() => {
-            perfCollector.setCachedChatsIds(
-                cachedPropsArray.map(({ chatId }: { chatId: string }) => {
-                    return chatId;
-                }),
-            );
-        }, [cachedPropsArray]);
+        React.useEffect(
+            () => {
+                perfCollector.setCachedChatsIds(
+                    cachedPropsArray.map(({ chatId }: { chatId: string }) => {
+                        return chatId;
+                    }),
+                );
+            },
+            [cachedPropsArray],
+        );
 
         const setCachedPropsProc = (
             componentPropsToCache: {
@@ -131,28 +134,31 @@ export const CacheComponent = React.memo(
             }
         }
 
-        React.useEffect(() => {
-            if (activeChat) {
-                if (
-                    cachedPropsArray.length > SIZE_OF_CACHE &&
-                    cachedPropsArray[0].chatId !== activeChat
-                ) {
+        React.useEffect(
+            () => {
+                if (activeChat) {
                     if (
-                        cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
-                        cachedPropsArray[0].chatId !== activeChat &&
-                        cachedPropsArray[1].chatId !== activeChat
+                        cachedPropsArray.length > SIZE_OF_CACHE &&
+                        cachedPropsArray[0].chatId !== activeChat
                     ) {
-                        maybeRequestIdleCallback(() => {
-                            setCachedPropsProc(cachedPropsArray.slice(2));
-                        });
-                    } else {
-                        maybeRequestIdleCallback(() => {
-                            setCachedPropsProc(cachedPropsArray.slice(1));
-                        });
+                        if (
+                            cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                            cachedPropsArray[0].chatId !== activeChat &&
+                            cachedPropsArray[1].chatId !== activeChat
+                        ) {
+                            maybeRequestIdleCallback(() => {
+                                setCachedPropsProc(cachedPropsArray.slice(2));
+                            });
+                        } else {
+                            maybeRequestIdleCallback(() => {
+                                setCachedPropsProc(cachedPropsArray.slice(1));
+                            });
+                        }
                     }
                 }
-            }
-        }, [activeChat]);
+            },
+            [activeChat],
+        );
 
         // if (true) {
         //     return (

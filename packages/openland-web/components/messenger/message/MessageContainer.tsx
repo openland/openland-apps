@@ -377,46 +377,44 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                 {props.sender.primaryOrganization.name}
                             </XView>
                         )}
-                        {props.isComment &&
-                            (props.isEditView || props.isEdited) && (
-                                <>
-                                    <XView
-                                        marginLeft={8}
-                                        alignSelf="center"
-                                        width={3}
-                                        height={3}
-                                        borderRadius={'50%'}
-                                        marginBottom={-1}
-                                        backgroundColor="rgba(0, 0, 0, 0.3)"
-                                    />
-                                    <XView
-                                        marginLeft={7}
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        fontSize={12}
-                                        alignSelf="flex-end"
-                                        fontWeight={'600'}
-                                        marginBottom={-1}
-                                    >
-                                        {props.isEditView
-                                            ? 'Editing message'
-                                            : props.isEdited && 'Edited'}
-                                    </XView>
-                                </>
-                            )}
-                    </XView>
-                    {!props.isComment &&
-                        !props.isModal && (
-                            <XView
-                                paddingLeft={8}
-                                fontSize={12}
-                                color="rgba(0, 0, 0, 0.4)"
-                                fontWeight="600"
-                                alignSelf="flex-end"
-                                marginBottom={-1}
-                            >
-                                <XDate value={props.date.toString()} format="time" />
-                            </XView>
+                        {props.isComment && (props.isEditView || props.isEdited) && (
+                            <>
+                                <XView
+                                    marginLeft={8}
+                                    alignSelf="center"
+                                    width={3}
+                                    height={3}
+                                    borderRadius={'50%'}
+                                    marginBottom={-1}
+                                    backgroundColor="rgba(0, 0, 0, 0.3)"
+                                />
+                                <XView
+                                    marginLeft={7}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontSize={12}
+                                    alignSelf="flex-end"
+                                    fontWeight={'600'}
+                                    marginBottom={-1}
+                                >
+                                    {props.isEditView
+                                        ? 'Editing message'
+                                        : props.isEdited && 'Edited'}
+                                </XView>
+                            </>
                         )}
+                    </XView>
+                    {!props.isComment && !props.isModal && (
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                            alignSelf="flex-end"
+                            marginBottom={-1}
+                        >
+                            <XDate value={props.date.toString()} format="time" />
+                        </XView>
+                    )}
                 </XView>
             ),
             [

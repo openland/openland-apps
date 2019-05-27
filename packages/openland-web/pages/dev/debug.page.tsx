@@ -14,21 +14,24 @@ import { GraphqlActiveSubscription } from '../../../openland-graphql/GraphqlClie
 import * as Types from '../../../openland-api/Types';
 import { foreverBreakable } from '../../../openland-engines/utils/forever';
 
-class DebugEventsInner extends React.Component<{ run: (randomDelay: boolean, count: number) => void }, { randomDelay: boolean, count: number }> {
+class DebugEventsInner extends React.Component<
+    { run: (randomDelay: boolean, count: number) => void },
+    { randomDelay: boolean; count: number }
+> {
     state = {
         randomDelay: false,
-        count: 100
+        count: 100,
     };
 
     render() {
-        let {randomDelay, count} = this.state;
+        let { randomDelay, count } = this.state;
 
         return (
             <XView marginTop={10}>
                 <XCheckbox
                     label="random delay"
                     checked={randomDelay}
-                    onChange={v => this.setState({randomDelay: v.checked})}
+                    onChange={v => this.setState({ randomDelay: v.checked })}
                 />
                 <XView marginTop={10}>
                     <XSelect
@@ -36,13 +39,13 @@ class DebugEventsInner extends React.Component<{ run: (randomDelay: boolean, cou
                         searchable={false}
                         clearable={false}
                         options={[
-                            {value: 100, label: '100'},
-                            {value: 200, label: '200'},
-                            {value: 300, label: '300'},
-                            {value: 400, label: '400'},
-                            {value: 500, label: '500'},
+                            { value: 100, label: '100' },
+                            { value: 200, label: '200' },
+                            { value: 300, label: '300' },
+                            { value: 400, label: '400' },
+                            { value: 500, label: '500' },
                         ]}
-                        onChange={(v: any) => this.setState({count: v.value})}
+                        onChange={(v: any) => this.setState({ count: v.value })}
                         value={count}
                     />
                 </XView>
@@ -61,7 +64,9 @@ class DebugEventsInner extends React.Component<{ run: (randomDelay: boolean, cou
     }
 }
 
-let sub: GraphqlActiveSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables> | undefined;
+let sub:
+    | GraphqlActiveSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables>
+    | undefined;
 let breakLoop: () => void | undefined;
 
 const DebugEvents = () => {
@@ -78,7 +83,7 @@ const DebugEvents = () => {
         }
 
         let seed = (Math.random() * Math.pow(2, 55)).toString(16);
-        sub = client.subscribeDebugEventsWatch({eventsCount: count, randomDelays: random, seed});
+        sub = client.subscribeDebugEventsWatch({ eventsCount: count, randomDelays: random, seed });
         let i = 1;
         breakLoop = foreverBreakable(async () => {
             let event = await sub!.get();
@@ -92,7 +97,7 @@ const DebugEvents = () => {
 
     return (
         <>
-            <DebugEventsInner run={run}/>
+            <DebugEventsInner run={run} />
             <XView>{`got ${gotEvents || 0}/${eventsCount || 0} events`}</XView>
         </>
     );
@@ -100,11 +105,11 @@ const DebugEvents = () => {
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], props => (
     <DevToolsScaffold title="Mails">
-        <XHeader text="Debug"/>
+        <XHeader text="Debug" />
         <XContent>
             <XVertical2>
                 <HeadTitle>Debug events</HeadTitle>
-                <DebugEvents/>
+                <DebugEvents />
             </XVertical2>
         </XContent>
     </DevToolsScaffold>

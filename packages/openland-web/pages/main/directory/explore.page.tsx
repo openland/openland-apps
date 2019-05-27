@@ -17,9 +17,10 @@ export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
     const data = client.useAvailableRooms();
 
-    let noData = data === undefined || (data.availableRooms === undefined && data.userRooms === undefined);
+    let noData =
+        data === undefined || (data.availableRooms === undefined && data.userRooms === undefined);
 
-    let rooms = data ? [...data.availableRooms || [], ...data.userRooms || []] : []
+    let rooms = data ? [...(data.availableRooms || []), ...(data.userRooms || [])] : [];
 
     props.tagsCount(rooms.length);
 

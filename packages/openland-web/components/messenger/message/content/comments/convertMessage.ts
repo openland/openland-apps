@@ -7,10 +7,11 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
-    let reply = generalMessage && generalMessage.quotedMessages
-        ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
-        : undefined;
-    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
+    let reply =
+        generalMessage && generalMessage.quotedMessages
+            ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
+            : undefined;
+    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : [];
 
     return {
         chatId: '',
@@ -36,6 +37,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
-        textSpans: src.message ? processSpans(src.message, src.spans) : []
+        textSpans: src.message ? processSpans(src.message, src.spans) : [],
     };
 }

@@ -62,13 +62,16 @@ export function SelectWithDropdown<T>({
         selectOptions.find((item: SelectWithDropdownOption<T>) => item.value === value)!!,
     );
 
-    React.useEffect(() => {
-        if (value !== innerValue) {
-            if (value && !(value instanceof Array)) {
-                onChange(innerValue.value);
+    React.useEffect(
+        () => {
+            if (value !== innerValue) {
+                if (value && !(value instanceof Array)) {
+                    onChange(innerValue.value);
+                }
             }
-        }
-    }, [innerValue]);
+        },
+        [innerValue],
+    );
 
     const currentItemOptions = selectOptions.find(
         (item: SelectWithDropdownOption<T>) => item.value === innerValue.value,

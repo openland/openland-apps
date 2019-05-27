@@ -719,9 +719,12 @@ const Members = ({ organization, router }: MembersProps) => {
         },
     );
 
-    React.useEffect(() => {
-        setJoinedMembers(data.organization.members);
-    }, [organization.id]);
+    React.useEffect(
+        () => {
+            setJoinedMembers(data.organization.members);
+        },
+        [organization.id],
+    );
 
     const toggleShown = async () => {
         const loaded = await client.queryOrganizationMembersShortPaginated({

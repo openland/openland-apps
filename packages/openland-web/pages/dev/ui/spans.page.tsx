@@ -11,18 +11,27 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { SpannedView } from 'openland-web/components/messenger/message/content/SpannedView';
 
 export default withApp('UI Framework - Spans', 'viewer', props => {
-    const [ data, setData ] = React.useState<{ text: string, spans: FullMessage_GeneralMessage_spans[]}>({ text: '', spans: [] });
+    const [data, setData] = React.useState<{
+        text: string;
+        spans: FullMessage_GeneralMessage_spans[];
+    }>({ text: '', spans: [] });
 
     return (
         <DevDocsScaffold title="Spans">
             <XContent>
                 <XVertical2>
-                    <XTextArea onChange={(value) => { setData({ text: value, spans: prepareLegacySpans(findSpans(value)) }) }} />
+                    <XTextArea
+                        onChange={value => {
+                            setData({ text: value, spans: prepareLegacySpans(findSpans(value)) });
+                        }}
+                    />
 
                     <SpannedView spans={processSpans(data.text, data.spans)} />
 
                     <XTitle>Parsed:</XTitle>
-                    {data.spans.map((s, i) => <div key={'parsed-span-' + i}>{JSON.stringify(s)}</div>)}
+                    {data.spans.map((s, i) => (
+                        <div key={'parsed-span-' + i}>{JSON.stringify(s)}</div>
+                    ))}
                 </XVertical2>
             </XContent>
         </DevDocsScaffold>

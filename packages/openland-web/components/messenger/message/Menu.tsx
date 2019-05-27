@@ -241,15 +241,14 @@ export const Menu = React.memo(
                                     reactions={message.reactions}
                                 />
                             )}
-                            {!isComment &&
-                                hover && <MessageReactionButton messageId={message.id!} />}
-                            {hover &&
-                                !isComment &&
-                                !isChannel && (
-                                    <CommentsIconWrapper onClick={commentsClick}>
-                                        <CommentIcon />
-                                    </CommentsIconWrapper>
-                                )}
+                            {!isComment && hover && (
+                                <MessageReactionButton messageId={message.id!} />
+                            )}
+                            {hover && !isComment && !isChannel && (
+                                <CommentsIconWrapper onClick={commentsClick}>
+                                    <CommentIcon />
+                                </CommentsIconWrapper>
+                            )}
                             {!isComment && (
                                 <XOverflow
                                     show={showMenu}
@@ -267,17 +266,16 @@ export const Menu = React.memo(
                                     }
                                     content={
                                         <>
-                                            {out &&
-                                                !deleted && (
-                                                    <XMenuItem
-                                                        onClick={(e: any) => {
-                                                            setEditMessage(e);
-                                                            setShowMenu(false);
-                                                        }}
-                                                    >
-                                                        Edit
-                                                    </XMenuItem>
-                                                )}
+                                            {out && !deleted && (
+                                                <XMenuItem
+                                                    onClick={(e: any) => {
+                                                        setEditMessage(e);
+                                                        setShowMenu(false);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </XMenuItem>
+                                            )}
                                             <XMenuItem
                                                 onClick={(e: any) => {
                                                     setReplyMessages(e);
@@ -286,17 +284,15 @@ export const Menu = React.memo(
                                             >
                                                 Reply
                                             </XMenuItem>
-                                            {pinMessageAccess &&
-                                                message.id &&
-                                                room && (
-                                                    <PinMessageButton
-                                                        variables={{
-                                                            chatId: room.id,
-                                                            messageId: message.id,
-                                                        }}
-                                                        onSuccess={() => setShowMenu(false)}
-                                                    />
-                                                )}
+                                            {pinMessageAccess && message.id && room && (
+                                                <PinMessageButton
+                                                    variables={{
+                                                        chatId: room.id,
+                                                        messageId: message.id,
+                                                    }}
+                                                    onSuccess={() => setShowMenu(false)}
+                                                />
+                                            )}
                                             <XMenuItem
                                                 onClick={() => {
                                                     setShowMenu(false);
@@ -306,17 +302,16 @@ export const Menu = React.memo(
                                             >
                                                 Forward
                                             </XMenuItem>
-                                            {message.id &&
-                                                out && (
-                                                    <XMenuItem
-                                                        style="danger"
-                                                        onClick={() =>
-                                                            ShowDeleteMessageModal(message.id!!)
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </XMenuItem>
-                                                )}
+                                            {message.id && out && (
+                                                <XMenuItem
+                                                    style="danger"
+                                                    onClick={() =>
+                                                        ShowDeleteMessageModal(message.id!!)
+                                                    }
+                                                >
+                                                    Delete
+                                                </XMenuItem>
+                                            )}
                                         </>
                                     }
                                 />

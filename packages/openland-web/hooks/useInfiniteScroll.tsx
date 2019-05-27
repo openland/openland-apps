@@ -31,7 +31,9 @@ export function useInfiniteScroll<FetchDataT, DataSourseT extends DataSourceItem
     }, []);
 
     let dataSource = React.useMemo(() => {
-        const ds = new DataSource<DataSourseT>(() => setCurrentPage((curPage: number) => curPage + 1));
+        const ds = new DataSource<DataSourseT>(() =>
+            setCurrentPage((curPage: number) => curPage + 1),
+        );
         ds.initialize(convertToDataSource(data), false);
 
         return ds;
