@@ -97,38 +97,40 @@ export const MessagesNavigation = XMemo(
         }
 
         return (
-            <Navigation
-                title="Messages"
-                tab={tab}
-                menuRightContent={
-                    <PopperOptionsButton
-                        icon={<NewChatIcon />}
-                        title={TextDirectory.create.title}
-                    />
-                }
-                secondFragmentHeader={
-                    <React.Suspense fallback={null}>
-                        {chatId && (
-                            <ChatHeaderViewLoader
-                                variables={{
-                                    id: chatId,
-                                }}
-                            />
-                        )}
-                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                    </React.Suspense>
-                }
-                firstFragment={<DialogListFragment />}
-                secondFragment={
-                    <ErrorBoundary>
+            <>
+                <Navigation
+                    title="Messages"
+                    tab={tab}
+                    menuRightContent={
+                        <PopperOptionsButton
+                            icon={<NewChatIcon />}
+                            title={TextDirectory.create.title}
+                        />
+                    }
+                    secondFragmentHeader={
                         <React.Suspense fallback={null}>
-                            <ConversationContainerWrapper
-                                {...{ tab, conversationId: cid, oid, uid, cid }}
-                            />
+                            {chatId && (
+                                <ChatHeaderViewLoader
+                                    variables={{
+                                        id: chatId,
+                                    }}
+                                />
+                            )}
+                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                         </React.Suspense>
-                    </ErrorBoundary>
-                }
-            />
+                    }
+                    firstFragment={<DialogListFragment />}
+                    secondFragment={
+                        <ErrorBoundary>
+                            <React.Suspense fallback={null}>
+                                <ConversationContainerWrapper
+                                    {...{ tab, conversationId: cid, oid, uid, cid }}
+                                />
+                            </React.Suspense>
+                        </ErrorBoundary>
+                    }
+                />
+            </>
         );
     },
 );

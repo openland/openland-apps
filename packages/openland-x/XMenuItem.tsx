@@ -13,6 +13,7 @@ import DropdownOrganizationIcon from 'openland-icons/ic-dropdown-organization.sv
 type XMenuItemStyle = 'default' | 'danger' | 'gray';
 
 interface XMenuItemProps extends XLinkProps {
+    TextItemWrapper?: any;
     style?: XMenuItemStyle;
     icon?: string | any;
     iconRight?: string | any;
@@ -151,7 +152,7 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
     }
 
     render() {
-        const { children, icon, iconRight } = this.props;
+        const { children, icon, iconRight, TextItemWrapper } = this.props;
         return (
             <XMenuItemStyled {...this.props} colorTheme={this.props.style}>
                 {icon && this.isCustomIcon(icon) && this.getCustomIcon(icon, 'left')}
@@ -160,7 +161,11 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
                 )}
                 {icon && typeof icon !== 'string' && !this.isCustomIcon(icon) && icon}
 
-                <XMenuItemText>{children}</XMenuItemText>
+                {TextItemWrapper ? (
+                    <TextItemWrapper>{children}</TextItemWrapper>
+                ) : (
+                    <XMenuItemText>{children}</XMenuItemText>
+                )}
 
                 {iconRight && this.isCustomIcon(iconRight) && this.getCustomIcon(iconRight)}
                 {iconRight && typeof iconRight === 'string' && !this.isCustomIcon(iconRight) && (
