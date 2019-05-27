@@ -7,7 +7,7 @@ import { XView } from 'react-mental';
 import { OwnerLinkComponent } from 'openland-web/fragments/OwnerLinkComponent';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
-import { ClosingCross } from 'openland-web/fragments/InviteLandingComponent';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { useIsMobile } from 'openland-web/hooks';
 
 const textAlignCenterClassName = css`
@@ -45,8 +45,19 @@ const InviteFragment = ({
             justifyContent={'center'}
             backgroundColor={'#FFF'}
         >
-            <XView position="absolute" right={32} top={32}>
-                <ClosingCross />
+            <XView position="absolute" right={23} top={23}>
+                <XView
+                    cursor="pointer"
+                    alignItems="center"
+                    justifyContent="center"
+                    padding={8}
+                    width={32}
+                    height={32}
+                    borderRadius={50}
+                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                >
+                    <CloseIcon />
+                </XView>
             </XView>
 
             <XView flexDirection="column" alignItems="center">
@@ -109,7 +120,7 @@ const InviteFragment = ({
                         />
                     </XView>
 
-                    <XView marginTop={36}>
+                    <XView marginTop={36} paddingBottom={100}>
                         <XView color={'#000'} fontWeight="600" fontSize={16} marginBottom={12}>
                             Invite to Openland
                         </XView>
