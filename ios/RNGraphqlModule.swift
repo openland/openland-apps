@@ -79,7 +79,7 @@ class RNGraphQL: RCTEventEmitter {
     } else {
       dict["data"] = NSNull()
     }
-    self.sendEvent(withName: "apollo_client", body: dict)
+    self.sendEvent(withName: "graphql_client", body: dict)
   }
   
   func reportError(key: String, id: String, result: Any) {
@@ -89,7 +89,7 @@ class RNGraphQL: RCTEventEmitter {
     dict["type"] = "failure"
     dict["kind"] = "graphql"
     dict["data"] = result
-    self.sendEvent(withName: "apollo_client", body: dict)
+    self.sendEvent(withName: "graphql_client", body: dict)
   }
   
   func reportStatus(key: String, status: String) {
@@ -97,7 +97,7 @@ class RNGraphQL: RCTEventEmitter {
     dict["key"] = key
     dict["type"] = "status"
     dict["status"] = status
-    self.sendEvent(withName: "apollo_client", body: dict)
+    self.sendEvent(withName: "graphql_client", body: dict)
   }
 
   

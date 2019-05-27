@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { View, Text, TouchableOpacity, Image, BackHandler, TouchableWithoutFeedbackComponent, TouchableHighlight } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';

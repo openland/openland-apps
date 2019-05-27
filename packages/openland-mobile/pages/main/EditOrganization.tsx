@@ -7,7 +7,7 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';

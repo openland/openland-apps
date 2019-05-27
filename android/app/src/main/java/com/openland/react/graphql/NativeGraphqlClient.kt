@@ -27,7 +27,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("type", "status")
                 map.putString("status", if (it) "connected" else "connecting")
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         }
     }
@@ -63,7 +63,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putMap("data", res)
 
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
 
             override fun onError(result: JSONArray) {
@@ -75,7 +75,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("kind", "graphql")
                 map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         })
     }
@@ -106,7 +106,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putMap("data", res)
 
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
 
             override fun onError(result: JSONArray) {
@@ -118,7 +118,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("kind", "graphql")
                 map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         })
         watches[id] = res
@@ -145,7 +145,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putMap("data", res)
 
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
 
             override fun onError(result: JSONArray) {
@@ -157,7 +157,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("kind", "graphql")
                 map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         })
     }
@@ -179,7 +179,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putMap("data", res)
 
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
 
             override fun onError(result: JSONArray) {
@@ -191,7 +191,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("kind", "graphql")
                 map.putArray("data", res)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         })
     }
@@ -220,7 +220,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 }
 
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
         })
     }
@@ -233,7 +233,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 map.putString("type", "response")
                 map.putString("id", id)
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("apollo_client", map)
+                        .emit("graphql_client", map)
             }
 
             override fun onError() {

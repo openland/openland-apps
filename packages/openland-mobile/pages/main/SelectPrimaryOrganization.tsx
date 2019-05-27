@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';

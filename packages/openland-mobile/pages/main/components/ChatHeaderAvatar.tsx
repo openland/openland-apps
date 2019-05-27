@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {

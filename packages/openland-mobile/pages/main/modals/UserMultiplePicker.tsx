@@ -12,7 +12,7 @@ import { ZBlurredView } from '../../../components/ZBlurredView';
 import { ZTagView } from '../../../components/ZTagView';
 import { UserView } from '../components/UserView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

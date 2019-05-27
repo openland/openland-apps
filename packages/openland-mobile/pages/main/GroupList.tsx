@@ -9,7 +9,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { QueryWatchParameters, OperationParameters } from 'openland-graphql/GraphqlClient';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const GroupListComponent = React.memo<PageProps>((props) => {
     let initial = props.router.params.initial as Types.AvailableRooms_availableRooms[];

@@ -5,7 +5,7 @@ import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { ZListItem } from '../../../components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const SettingsOrganizatonsContent = XMemo<PageProps>((props) => {

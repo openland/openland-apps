@@ -6,7 +6,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';

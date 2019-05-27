@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';

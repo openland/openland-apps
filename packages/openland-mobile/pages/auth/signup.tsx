@@ -1,7 +1,7 @@
 import { SessionStateFull } from 'openland-api/Types';
 import { SRouter } from 'react-native-s/SRouter';
 import { backoff } from 'openland-y-utils/timer';
-import { getClient } from '../../utils/apolloClient';
+import { getClient } from '../../utils/graphqlClient';
 import RNRestart from 'react-native-restart';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 

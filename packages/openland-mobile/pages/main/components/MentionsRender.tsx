@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ActivityIndicator, Image } from 'react-native';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

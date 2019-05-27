@@ -4,7 +4,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SRouter } from 'react-native-s/SRouter';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSharedRoom } from './GlobalSearchItems';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { XMemo } from 'openland-y-utils/XMemo';

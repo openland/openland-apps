@@ -7,7 +7,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
 import { signupStyles } from './SignupUser';
 import { next } from './signup';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: () => void }, { name: string, loading: boolean }> {
     private ref = React.createRef<ZForm>();

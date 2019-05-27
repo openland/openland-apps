@@ -10,7 +10,7 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {

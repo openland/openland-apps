@@ -6,7 +6,7 @@ import { PageProps } from '../../components/PageProps';
 import { ZForm } from '../../components/ZForm';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const SettingsNotificationsContent = XMemo<PageProps>((props) => {

@@ -5,7 +5,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';

@@ -8,7 +8,7 @@ import { Platform, View } from 'react-native';
 import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
 import { UserError, SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';

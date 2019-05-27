@@ -10,7 +10,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 

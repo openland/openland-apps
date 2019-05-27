@@ -28,13 +28,13 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 const log = createLogger('GraphQL-Native');
 
-export class NativeApolloClient extends BridgedClient {
+export class NativeSpaceXClient extends BridgedClient {
     private key: string = randomKey();
 
     constructor(storageKey?: string, token?: string) {
         super();
         if (Platform.OS === 'ios') {
-            RNGraphQLEmitter.addListener('apollo_client', (src) => {
+            RNGraphQLEmitter.addListener('graphql_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
                         log.warn('Received failure');
@@ -52,7 +52,7 @@ export class NativeApolloClient extends BridgedClient {
                 }
             });
         } else {
-            DeviceEventEmitter.addListener('apollo_client', (src) => {
+            DeviceEventEmitter.addListener('graphql_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
                         log.warn('Received failure');

@@ -7,7 +7,7 @@ import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild
 import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export const Home = XMemo<PageProps>((props) => {

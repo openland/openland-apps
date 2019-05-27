@@ -3,7 +3,7 @@ import { View, Text, Platform, TouchableOpacity, TextStyle, Image } from 'react-
 import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';

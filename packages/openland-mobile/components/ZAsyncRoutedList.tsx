@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
-import { getClient } from '../utils/apolloClient';
+import { getClient } from '../utils/graphqlClient';
 import { backoff } from 'openland-y-utils/timer';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { ASDataView } from 'react-native-async-view/ASDataView';

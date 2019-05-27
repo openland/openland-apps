@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 export function useWatchCall(id?: string | null) {
     React.useEffect(() => {

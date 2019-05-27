@@ -10,7 +10,7 @@ import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
 import { ZText } from 'openland-mobile/components/ZText';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
     mounted = false;

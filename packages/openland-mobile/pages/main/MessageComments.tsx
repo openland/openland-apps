@@ -7,7 +7,7 @@ import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';

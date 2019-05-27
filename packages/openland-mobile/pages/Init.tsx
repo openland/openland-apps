@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image, Animated } from 'react-native';
-import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
+import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/graphqlClient';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -19,7 +19,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
-import { NativeKeyValue } from 'openland-mobile/apollo/NativeKeyValue';
+import { NativeKeyValue } from 'openland-mobile/spacex/NativeKeyValue';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';

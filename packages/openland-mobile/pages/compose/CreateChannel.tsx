@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
-import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 
 interface CreateChannelComponentState {

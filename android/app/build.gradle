@@ -232,10 +232,10 @@ dependencies {
     compileOnly 'com.facebook.litho:litho-annotations:0.24.0'
     compileOnly 'com.facebook.litho:litho-sections-annotations:0.24.0'
 
-    kapt 'com.facebook.litho:litho-processor:0.23.0'
-    annotationProcessor 'com.facebook.litho:litho-processor:0.23.0'
-    kapt 'com.facebook.litho:litho-sections-processor:0.23.0'
-    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.23.0'
+    kapt 'com.facebook.litho:litho-processor:0.24.0'
+    annotationProcessor 'com.facebook.litho:litho-processor:0.24.0'
+    kapt 'com.facebook.litho:litho-sections-processor:0.24.0'
+    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.24.0'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.0"
