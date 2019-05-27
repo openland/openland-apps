@@ -4,7 +4,6 @@ export const sortComments = (
     comments: MessageComments_messageComments_comments[],
     commentsMap: { [key: string]: MessageComments_messageComments_comments | undefined },
 ): MessageComments_messageComments_comments[] => {
-    let i = 0;
     function treeSortHelper(node: any, explored: any, s: any) {
         if (node && node.id) {
             const curNode = commentsMap[node.id];
@@ -14,12 +13,12 @@ export const sortComments = (
                     explored.add(node.id);
                     s.push(curNode);
                 }
-        
+
                 if (curNode.parentComment && explored.has(curNode.parentComment.id)) {
                     explored.add(node.id);
                     s.push(curNode);
                 }
-        
+
                 for (let child of curNode.childComments) {
                     treeSortHelper(commentsMap[child.id], explored, s);
                 }

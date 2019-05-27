@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
+import { MessagesStateContext } from '../MessagesStateContext';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
@@ -20,7 +20,6 @@ export const MessageComponent = React.memo<MessageComponentProps>((props) => {
                     {isActive => <DesktopMessageComponentInner
                         onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
-                        deleted={props.deleted}
                         showNumberOfComments={props.showNumberOfComments}
                         isModal={props.isModal}
                         isPinned={props.isPinned}

@@ -5,7 +5,6 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { CommentWatch_event_CommentUpdateSingle_update, UserForMention } from 'openland-api/Types';
-import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -161,25 +160,27 @@ const CommentView = ({
                 marginLeft={offset}
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
-                <MessageComponent
-                    room={room}
-                    conversationId={roomId}
-                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
-                    usernameOfRepliedUser={usernameOfRepliedUser}
-                    deleted={commentEntryId ? commentsMap[commentEntryId].deleted : false}
-                    commentDepth={message.depth}
-                    noSelector
-                    isComment
-                    commentProps={{
-                        onCommentReplyClick,
-                        onCommentEditClick,
-                        onCommentDeleteClick,
-                        messageId: originalMessageId,
-                    }}
-                    message={message}
-                    onlyLikes={true}
-                    me={messenger.user}
-                />
+                {commentEntryId &&
+                    !commentsMap[commentEntryId].deleted && (
+                        <MessageComponent
+                            room={room}
+                            conversationId={roomId}
+                            onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                            usernameOfRepliedUser={usernameOfRepliedUser}
+                            commentDepth={message.depth}
+                            noSelector
+                            isComment
+                            commentProps={{
+                                onCommentReplyClick,
+                                onCommentEditClick,
+                                onCommentDeleteClick,
+                                messageId: originalMessageId,
+                            }}
+                            message={message}
+                            onlyLikes={true}
+                            me={messenger.user}
+                        />
+                    )}
 
                 {showInputId === message.key && (
                     <UploadContextProvider>
@@ -402,18 +403,21 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(() => {
-        if (currentCommentsInputRef.current && scrollRef.current) {
-            const targetElem = currentCommentsInputRef.current.getElement()!!
-                .parentNode as HTMLElement;
-            if (targetElem) {
-                scrollRef.current.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
+    React.useEffect(
+        () => {
+            if (currentCommentsInputRef.current && scrollRef.current) {
+                const targetElem = currentCommentsInputRef.current.getElement()!!
+                    .parentNode as HTMLElement;
+                if (targetElem) {
+                    scrollRef.current.scrollToBottomOfElement({
+                        targetElem,
+                        offset: 10,
+                    });
+                }
             }
-        }
-    }, [showInputId]);
+        },
+        [showInputId],
+    );
 
     return (
         <UploadContextProvider>
@@ -480,16 +484,6 @@ export const CommentsModalInnerNoRouter = ({
             </IsActivePoliteContext.Provider>
         </UploadContextProvider>
     );
-};
-
-export const openDeleteCommentsModal = ({
-    router,
-    commentId,
-}: {
-    router: XRouter;
-    commentId: string;
-}) => {
-    router.pushQuery('deleteComment', `${commentId}`);
 };
 
 const Modal = (props: { messageId: string; conversationId: string }) => {

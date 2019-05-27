@@ -11,7 +11,6 @@ import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 
 export interface DesktopMessageContainerProps {
-    deleted?: boolean;
     message: DataSourceWebMessageItem;
     conversationId: string;
     compact: boolean;
@@ -296,7 +295,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     );
 
     // Left side of message
-    const { compact, sender, date, deleted, isComment } = props;
+    const { compact, sender, date, isComment } = props;
 
     let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
 
@@ -311,23 +310,19 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         () => (
             <PreambulaContainer>
                 {!compact ? (
-                    deleted ? (
-                        <DeletedCommentAvatar />
-                    ) : (
-                            <UserPopper
-                                isMe={props.sender.isYou}
-                                startSelected={false}
-                                user={props.sender}
-                                ref={userPopperRef}
-                            >
-                                <XAvatar2
-                                    id={sender.id}
-                                    title={sender.name}
-                                    src={sender.photo}
-                                    size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
-                                />
-                            </UserPopper>
-                        )
+                    <UserPopper
+                        isMe={props.sender.isYou}
+                        startSelected={false}
+                        user={props.sender}
+                        ref={userPopperRef}
+                    >
+                        <XAvatar2
+                            id={sender.id}
+                            title={sender.name}
+                            src={sender.photo}
+                            size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
+                        />
+                    </UserPopper>
                 ) : (
                         <XView lineHeight="23px">
                             {hover && <XDate value={date.toString()} format="time" />}
@@ -344,20 +339,16 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             () => (
                 <XView flexDirection="row" marginBottom={4}>
                     <XView flexDirection="row">
-                        {deleted ? (
-                            <DeletedCommentHeader />
-                        ) : (
-                                <XView
-                                    flexDirection="row"
-                                    fontSize={14}
-                                    fontWeight="600"
-                                    color="rgba(0, 0, 0, 0.8)"
-                                    onMouseEnter={onAvatarOrUserNameMouseEnter}
-                                    onMouseLeave={onAvatarOrUserNameMouseLeave}
-                                >
-                                    {props.senderNameEmojify}
-                                </XView>
-                            )}
+                        <XView
+                            flexDirection="row"
+                            fontSize={14}
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.8)"
+                            onMouseEnter={onAvatarOrUserNameMouseEnter}
+                            onMouseLeave={onAvatarOrUserNameMouseLeave}
+                        >
+                            {props.senderNameEmojify}
+                        </XView>
                         {props.sender.primaryOrganization && (
                             <XView
                                 as="a"
@@ -486,7 +477,6 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
-                deleted={deleted}
                 message={props.message}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}

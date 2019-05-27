@@ -157,7 +157,6 @@ export const Menu = React.memo(
         conversationId,
         hover,
         message,
-        deleted,
         isModal,
         isComment,
         selectMessage,
@@ -266,7 +265,7 @@ export const Menu = React.memo(
                                     }
                                     content={
                                         <>
-                                            {out && !deleted && (
+                                            {out && (
                                                 <XMenuItem
                                                     onClick={(e: any) => {
                                                         setEditMessage(e);

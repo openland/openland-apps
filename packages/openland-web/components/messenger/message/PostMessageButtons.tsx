@@ -67,7 +67,6 @@ export type CommentPropsT = {
 };
 
 type PostMessageButtonsT = {
-    deleted?: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
@@ -84,7 +83,6 @@ type PostMessageButtonsT = {
 
 export const PostMessageButtons = React.memo(
     ({
-        deleted,
         isComment,
         isChannel,
         isModal,
@@ -118,7 +116,7 @@ export const PostMessageButtons = React.memo(
 
         const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
 
-        let canDelete = !!(!deleted && message.isOut);
+        let canDelete = !!message.isOut;
         if (room && room.__typename === 'SharedRoom' && room.kind === 'GROUP') {
             canDelete = room.role === 'OWNER';
         }
@@ -153,8 +151,7 @@ export const PostMessageButtons = React.memo(
                                         Reply
                                     </XView>
 
-                                    {!deleted &&
-                                        me &&
+                                    {me &&
                                         message.senderId === me.id && (
                                             <XView
                                                 marginLeft={12}
