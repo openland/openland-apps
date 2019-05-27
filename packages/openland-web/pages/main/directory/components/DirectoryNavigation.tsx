@@ -174,6 +174,8 @@ export const DirectoryNavigation = XMemo(
                 tab={tabs.empty}
                 menuRightContent={
                     <PopperOptionsButton
+                        marginTop={10}
+                        marginRight={-20}
                         icon={<NewIcon />}
                         title={TextDirectory.create.title}
                         content={
@@ -197,7 +199,7 @@ export const DirectoryNavigation = XMemo(
                                         </IconWithBackground>
                                     }
                                     title={'Create new organization'}
-                                    description="To showcase your company and chat
+                                    description="To showcase your company and to chat
                                     with co-workers"
                                 />
                             </>
