@@ -9,6 +9,7 @@ import { XView } from 'react-mental';
 import { OwnerLinkComponent } from 'openland-web/fragments/OwnerLinkComponent';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
+import { ClosingCross } from 'openland-web/fragments/InviteLandingComponent';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -21,16 +22,28 @@ const TextAlignCenter = ({ children }: { children: any }) => {
 const InviteFragment = ({
     founderChatsInvite,
     primaryOrganizationName,
+    primaryOrganizationId,
     primaryOrganizationInvite,
     openlandInvite,
 }: {
     founderChatsInvite: string;
     primaryOrganizationName: string;
+    primaryOrganizationId: string;
     primaryOrganizationInvite: string;
     openlandInvite: string;
 }) => {
     return (
-        <XView flexDirection="row" flexGrow={1} justifyContent={'center'}>
+        <XView
+            flexDirection="row"
+            position={'relative'}
+            flexGrow={1}
+            justifyContent={'center'}
+            backgroundColor={'#FFF'}
+        >
+            <XView position="absolute" right={32} top={32}>
+                <ClosingCross />
+            </XView>
+
             <XView flexDirection="column" alignItems="center">
                 <ImgMembersEmpty />
 
@@ -55,7 +68,11 @@ const InviteFragment = ({
                         marginBottom={12}
                     >
                         Invite to
-                        <XView as="a" marginLeft={4}>
+                        <XView
+                            as="a"
+                            marginLeft={4}
+                            href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
+                        >
                             Founder Chats
                         </XView>
                     </XView>
@@ -69,7 +86,11 @@ const InviteFragment = ({
                             marginBottom={12}
                         >
                             Invite to
-                            <XView as="a" marginLeft={4}>
+                            <XView
+                                as="a"
+                                marginLeft={4}
+                                href={`https://openland.com/directory/o/${primaryOrganizationId}`}
+                            >
                                 {primaryOrganizationName}
                             </XView>
                         </XView>
@@ -101,19 +122,26 @@ export default withApp(
         const client = useClient();
         const router = React.useContext(XRouterContext) as XRouter;
         const { routeQuery } = router;
-        const invite = routeQuery.invite;
+        const openlandInvite = routeQuery.invite;
+
+        const foundersChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
+
+        const { link: founderChatsInvite } = client.useRoomInviteLink({ roomId: foundersChatId });
 
         const profile = client.useProfile().profile!;
 
-        const openlandInvite = invite;
-        const primaryOrganizationInvite = invite;
-        const founderChatsInvite = invite;
+        const data = client.useOrganizationPublicInvite({
+            organizationId: profile.primaryOrganization!!.id,
+        });
+
+        const primaryOrganizationInvite = data.publicInvite!!.key;
 
         return (
             <>
                 <XDocumentHead title={'Invite People'} />
                 <InviteFragment
                     founderChatsInvite={founderChatsInvite}
+                    primaryOrganizationId={profile.primaryOrganization!!.id}
                     primaryOrganizationName={profile.primaryOrganization!!.name}
                     primaryOrganizationInvite={primaryOrganizationInvite}
                     openlandInvite={openlandInvite}

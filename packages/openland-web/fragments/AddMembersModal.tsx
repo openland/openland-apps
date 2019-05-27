@@ -90,6 +90,7 @@ interface OwnerLinkComponentProps {
     isCommunity?: boolean;
 }
 
+// TODO reuse OwnerLinkComponent from openland-web/fragments/OwnerLinkComponent.tsx
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     input?: any;
     timer: any;
