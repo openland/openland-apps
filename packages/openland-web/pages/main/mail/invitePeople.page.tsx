@@ -8,6 +8,7 @@ import ImgMembersEmpty from 'openland-icons/img-members-empty-copy-6.svg';
 import { XView } from 'react-mental';
 import { OwnerLinkComponent } from 'openland-web/fragments/OwnerLinkComponent';
 import { css } from 'linaria';
+import { useClient } from 'openland-web/utils/useClient';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -97,12 +98,14 @@ export default withApp(
     'Invite People',
     'viewer',
     withUserInfo(() => {
+        const client = useClient();
         const router = React.useContext(XRouterContext) as XRouter;
         const { routeQuery } = router;
         const invite = routeQuery.invite;
 
+        const profile = client.useProfile().profile!;
+
         const openlandInvite = invite;
-        const primaryOrganizationName = 'SignalFire';
         const primaryOrganizationInvite = invite;
         const founderChatsInvite = invite;
 
@@ -111,7 +114,7 @@ export default withApp(
                 <XDocumentHead title={'Invite People'} />
                 <InviteFragment
                     founderChatsInvite={founderChatsInvite}
-                    primaryOrganizationName={primaryOrganizationName}
+                    primaryOrganizationName={profile.primaryOrganization!!.name}
                     primaryOrganizationInvite={primaryOrganizationInvite}
                     openlandInvite={openlandInvite}
                 />

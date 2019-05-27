@@ -12,7 +12,6 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { XDate } from 'openland-x/XDate';
 import { SettingsNavigation } from './components/SettingsNavigation';
