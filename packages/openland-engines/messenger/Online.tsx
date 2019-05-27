@@ -26,15 +26,11 @@ export class OnlineWatcher {
 
         forever(async () => {
             let event = await s.get();
-            // if (!event) {
-            //     continue;
-            // }
+
             let evData = event.alphaSubscribeOnline;
 
-            let userId = evData.userId;
-
-            this.onlinesData.set(userId, evData.online);
-            this.singleChangeListeners.forEach(l => l(userId, evData.online));
+            this.onlinesData.set(evData.user.id, evData.user.online);
+            this.singleChangeListeners.forEach(l => l(evData.user.id, evData.user.online));
 
             this.listeners.forEach(l => l(this.onlinesData));
         });

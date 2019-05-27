@@ -44,10 +44,11 @@ export const OnlineQuery = gql`
 export const OnlineWatchSubscription = gql`
     subscription OnlineWatch($users: [ID!]!) {
         alphaSubscribeOnline(users: $users) {
-            userId
-            online
-            active
-            lastSeen
+            user{
+                id
+                online
+                lastSeen
+            }
             timeout
         }
     }

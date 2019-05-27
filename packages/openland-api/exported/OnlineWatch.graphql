@@ -1,10 +1,12 @@
 subscription OnlineWatch($users: [ID!]!) {
   alphaSubscribeOnline(users: $users) {
     __typename
-    active
-    lastSeen
-    online
     timeout
-    userId
+    user {
+      __typename
+      id
+      lastSeen
+      online
+    }
   }
 }

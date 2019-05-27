@@ -2643,11 +2643,13 @@ private let DialogsWatchSelector = obj(
 private let OnlineWatchSelector = obj(
             field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("active","active", notNull(scalar("Boolean"))),
-                    field("lastSeen","lastSeen", notNull(scalar("String"))),
-                    field("online","online", notNull(scalar("Boolean"))),
                     field("timeout","timeout", notNull(scalar("Int"))),
-                    field("userId","userId", notNull(scalar("ID")))
+                    field("user","user", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("lastSeen","lastSeen", scalar("String")),
+                            field("online","online", notNull(scalar("Boolean")))
+                        )))
                 )))
         )
 private let SettingsWatchSelector = obj(
@@ -3699,7 +3701,7 @@ class Operations {
     let OnlineWatch = OperationDefinition(
         "OnlineWatch",
         .subscription, 
-        "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename active lastSeen online timeout userId}}",
+        "subscription OnlineWatch($users:[ID!]!){alphaSubscribeOnline(users:$users){__typename timeout user{__typename id lastSeen online}}}",
         OnlineWatchSelector
     )
     let SettingsWatch = OperationDefinition(

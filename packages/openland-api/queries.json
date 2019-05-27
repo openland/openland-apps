@@ -14577,7 +14577,7 @@
 					"type": "[ID!]!"
 				}
 			],
-			"source": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    userId\n    online\n    active\n    lastSeen\n    timeout\n  }\n}",
+			"source": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    timeout\n  }\n}",
 			"fields": [
 				{
 					"responseName": "alphaSubscribeOnline",
@@ -14603,32 +14603,42 @@
 							"isConditional": false
 						},
 						{
-							"responseName": "userId",
-							"fieldName": "userId",
-							"type": "ID!",
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
 							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "online",
-							"fieldName": "online",
-							"type": "Boolean!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "active",
-							"fieldName": "active",
-							"type": "Boolean!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "lastSeen",
-							"fieldName": "lastSeen",
-							"type": "String!",
-							"isConditional": false,
-							"isDeprecated": false
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "online",
+									"fieldName": "online",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "lastSeen",
+									"fieldName": "lastSeen",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
 						},
 						{
 							"responseName": "timeout",
@@ -14645,8 +14655,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    userId\n    online\n    active\n    lastSeen\n    timeout\n  }\n}",
-			"operationId": "3e5a5914cf1b787a77ae672f31f6bce63bb1836289b223b69c04585812f8cf05"
+			"sourceWithFragments": "subscription OnlineWatch($users: [ID!]!) {\n  alphaSubscribeOnline(users: $users) {\n    __typename\n    user {\n      __typename\n      id\n      online\n      lastSeen\n    }\n    timeout\n  }\n}",
+			"operationId": "5cca69439e0bdf825856ae3e9558248b8b03fdb1888656d6747840fd14d65566"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/User.ts",

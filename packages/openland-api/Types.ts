@@ -50391,12 +50391,16 @@ export interface OnlineVariables {
 // GraphQL subscription operation: OnlineWatch
 // ====================================================
 
+export interface OnlineWatch_alphaSubscribeOnline_user {
+  __typename: "User";
+  id: string;
+  online: boolean;
+  lastSeen: string | null;
+}
+
 export interface OnlineWatch_alphaSubscribeOnline {
   __typename: "OnlineEvent";
-  userId: string;
-  online: boolean;
-  active: boolean;
-  lastSeen: string;
+  user: OnlineWatch_alphaSubscribeOnline_user;
   timeout: number;
 }
 
