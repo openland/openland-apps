@@ -29,8 +29,8 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
             >
                 <View
                     style={{
-                        width: 28,
-                        height: Platform.OS === 'android' ? 22 : 28,
+                        // width: 28,
+                        height: size,
                         marginBottom: Platform.OS === 'android' ? -1 : 0,
                         alignItems: 'center',
                         justifyContent: 'center'
