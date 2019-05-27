@@ -16,7 +16,7 @@ const Item = ({ title, href, icon }: { title: string; href: string; icon: any })
         <XMenuItem
             href={href}
             icon={
-                <XView marginRight={14} marginTop={-4}>
+                <XView marginRight={14} marginTop={-3}>
                     {icon}
                 </XView>
             }
