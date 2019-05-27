@@ -9,6 +9,7 @@ import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { useIsMobile } from 'openland-web/hooks';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -35,6 +36,8 @@ const InviteFragment = ({
     primaryOrganizationInvite: string;
     openlandInvite: string;
 }) => {
+    let router = React.useContext(XRouterContext)!;
+
     const [isMobile] = useIsMobile();
 
     return (
@@ -47,6 +50,10 @@ const InviteFragment = ({
         >
             <XView position="absolute" right={20} top={20}>
                 <XView
+                    onClick={() => {
+                        router.replace(`/mail`);
+                    }}
+                    href={'/mail'}
                     cursor="pointer"
                     alignItems="center"
                     justifyContent="center"
