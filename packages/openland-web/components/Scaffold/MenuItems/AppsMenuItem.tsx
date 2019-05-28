@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { MenuItemWithPopper } from '../MenuItemWithPopper';
-import AppsIcon from 'openland-icons/ic-apps.svg';
+import IconApps from 'openland-icons/ic-apps2.svg';
 import IphoneIcon from 'openland-icons/ic-app-iphone.svg';
 import AndroidIcon from 'openland-icons/ic-app-android.svg';
-import IpadIcon from 'openland-icons/ic-app-ipad.svg';
 import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
@@ -28,7 +27,7 @@ const Item = ({ title, href, icon }: { title: string; href: string; icon: any })
 
 export const AppsMenuItem = () => (
     <MenuItemWithPopper
-        targetElement={<AppsIcon />}
+        targetElement={<IconApps />}
         menuItems={
             <>
                 <XMenuTitle>
@@ -36,7 +35,6 @@ export const AppsMenuItem = () => (
                 </XMenuTitle>
                 <Item title={'iPhone'} href={'https://oplnd.com/ios'} icon={<IphoneIcon />} />
                 <Item title={'Android'} href={'https://oplnd.com/android'} icon={<AndroidIcon />} />
-                <Item title={'iPad'} href={'https://oplnd.com/ios'} icon={<IpadIcon />} />
                 <Item title={'Mac'} href={'https://oplnd.com/mac'} icon={<MacIcon />} />
                 <Item title={'Windows'} href={'https://oplnd.com/windows'} icon={<WinIcon />} />
                 <Item title={'Linux'} href={'https://oplnd.com/linux'} icon={<LinuxIcon />} />
