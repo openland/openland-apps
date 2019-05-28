@@ -110,6 +110,51 @@ export const Item = ({
     );
 };
 
+export const NewOptionsMenu = () => (
+    <>
+        <Item
+            href="/mail/create"
+            icon={
+                <IconWithBackground>
+                    <CellRoomIcon />
+                </IconWithBackground>
+            }
+            title="New group"
+            description="Group chat for your projects or topics"
+        />
+        <Item
+            href="/mail/create?channel=true"
+            icon={
+                <IconWithBackground>
+                    <CreateChannelIcon />
+                </IconWithBackground>
+            }
+            title="New channel"
+            description="Broadcast messages to your audience"
+        />
+        <Item
+            href="/mail/createOrganization?community=true"
+            icon={
+                <IconWithBackground>
+                    <CreateCommunityIcon />
+                </IconWithBackground>
+            }
+            title="New community"
+            description="A hub for groups and channels"
+        />
+        <Item
+            onClick={() => showCreateOrganization('organization')}
+            icon={
+                <IconWithBackground>
+                    <OrganizationIcon />
+                </IconWithBackground>
+            }
+            title="New organization"
+            description="Showcase your company and chat with co-workers"
+        />
+    </>
+);
+
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
 
@@ -129,50 +174,7 @@ export const NewOptionsButton = XMemo(() => {
             marginTop={10}
             arrow={null}
             onClickOutside={closer}
-            content={
-                <>
-                    <Item
-                        href="/mail/create"
-                        icon={
-                            <IconWithBackground>
-                                <CellRoomIcon />
-                            </IconWithBackground>
-                        }
-                        title="New group"
-                        description="Group chat for your projects or topics"
-                    />
-                    <Item
-                        href="/mail/create?channel=true"
-                        icon={
-                            <IconWithBackground>
-                                <CreateChannelIcon />
-                            </IconWithBackground>
-                        }
-                        title="New channel"
-                        description="Broadcast messages to your audience"
-                    />
-                    <Item
-                        href="/mail/createOrganization?community=true"
-                        icon={
-                            <IconWithBackground>
-                                <CreateCommunityIcon />
-                            </IconWithBackground>
-                        }
-                        title="New community"
-                        description="A hub for groups and channels"
-                    />
-                    <Item
-                        onClick={() => showCreateOrganization('organization')}
-                        icon={
-                            <IconWithBackground>
-                                <OrganizationIcon />
-                            </IconWithBackground>
-                        }
-                        title="New organization"
-                        description="Showcase your company and chat with co-workers"
-                    />
-                </>
-            }
+            content={<NewOptionsMenu />}
         >
             <NewButton onClick={toggle} />
         </XPopper>
