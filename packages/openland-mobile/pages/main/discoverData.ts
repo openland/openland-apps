@@ -125,7 +125,7 @@ export const getPreprocessedTags2 = () => {
     return res
 }
 
-export const resolveSuggestedChatsFlat = (tags: Set<Tag>) => {
+export const resolveSuggestedChats = (tags: Set<Tag>) => {
     let resMap = new Map<Row, number>();
     for (let tag of tags) {
         for (let row of _parsed) {
