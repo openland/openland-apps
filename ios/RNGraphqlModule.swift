@@ -118,6 +118,6 @@ class RNGraphQL: RCTEventEmitter {
   }
   
   override func supportedEvents() -> [String]! {
-    return ["apollo_client"]
+    return ["graphql_client"]
   }
 }
