@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import NewChatIcon from 'openland-icons/ic-new-chat.svg';
 import { tabs, tabsT } from '../tabs';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
-import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/ConversationContainerWrapper';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
-import { Navigation } from '../../../../components/Navigation';
+import { Navigation } from 'openland-web/components/Navigation';
+import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 
@@ -101,14 +99,7 @@ export const MessagesNavigation = XMemo(
                 <Navigation
                     title="Messages"
                     tab={tab}
-                    menuRightContent={
-                        <PopperOptionsButton
-                            marginTop={10}
-                            marginRight={0}
-                            icon={<NewChatIcon />}
-                            title={TextDirectory.create.title}
-                        />
-                    }
+                    menuRightContent={<NewOptionsButton />}
                     secondFragmentHeader={
                         <React.Suspense fallback={null}>
                             {chatId && (

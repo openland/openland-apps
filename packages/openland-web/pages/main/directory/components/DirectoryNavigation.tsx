@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
-import NewIcon from 'openland-icons/ic-add-medium-2.svg';
 import { tabs } from '../../mail/tabs';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
 import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
 import CommunityIcon from 'openland-icons/dir-communities.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
@@ -19,13 +16,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganization';
-import {
-    IconWithBackground,
-    Item,
-} from 'openland-web/pages/main/directory/components/PopperOptionsButton';
-import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
-import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
+import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -95,22 +86,23 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    !withoutSort && (
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                            options={sortOptions}
-                                        />
-                                    )
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        !withoutSort && (
+                                            <SortPicker
+                                                sort={sort}
+                                                onPick={setSort}
+                                                withoutFeatured={withoutFeatured}
+                                                options={sortOptions}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
@@ -172,40 +164,7 @@ export const DirectoryNavigation = XMemo(
                 title={isMobile ? title : 'Directory'}
                 swapFragmentsOnMobile
                 tab={tabs.empty}
-                menuRightContent={
-                    <PopperOptionsButton
-                        marginTop={10}
-                        marginRight={-20}
-                        icon={<NewIcon />}
-                        title={TextDirectory.create.title}
-                        content={
-                            <>
-                                <Item
-                                    href="/mail/createOrganization?community=true"
-                                    icon={
-                                        <IconWithBackground>
-                                            <CreateCommunityIcon />
-                                        </IconWithBackground>
-                                    }
-                                    title={'Create new community'}
-                                    description="A hub for groups and channels"
-                                />
-
-                                <Item
-                                    onClick={() => showCreateOrganization('organization')}
-                                    icon={
-                                        <IconWithBackground>
-                                            <OrganizationIcon />
-                                        </IconWithBackground>
-                                    }
-                                    title={'Create new organization'}
-                                    description="To showcase your company and to chat
-                                    with co-workers"
-                                />
-                            </>
-                        }
-                    />
-                }
+                menuRightContent={<NewOptionsButton />}
                 menuChildrenContent={
                     <>
                         <MenuItem path="/directory" title="Groups" icon={<RoomIcon />} />
@@ -306,8 +265,8 @@ export const ComponentWithSort = ({
     const finalQuery = variables.query
         ? variables.query
         : onlyFeatured
-        ? JSON.stringify({ featured: 'true' })
-        : variables.query;
+            ? JSON.stringify({ featured: 'true' })
+            : variables.query;
 
     const finalVariables = {
         ...(queryToPrefix
