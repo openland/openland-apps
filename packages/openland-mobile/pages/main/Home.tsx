@@ -9,6 +9,7 @@ import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { DiscoverHome } from './Discover';
 
 export const Home = XMemo<PageProps>((props) => {
     let [tab, setTab] = React.useState(1);
@@ -25,7 +26,7 @@ export const Home = XMemo<PageProps>((props) => {
                         </View> */}
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
-                            <Explore {...props as any} />
+                            <DiscoverHome {...props as any} />
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>

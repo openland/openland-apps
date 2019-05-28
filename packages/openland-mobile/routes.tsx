@@ -46,6 +46,7 @@ import { UserPicker } from './pages/main/modals/UserPicker';
 import Tasks from './pages/apps/Tasks';
 import { MessageComments } from './pages/main/MessageComments';
 import { Colors } from './pages/dev/Colors';
+import { Discover } from './pages/main/Discover';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -101,6 +102,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevColors', Colors)
 
   .addRoute('HomeDialogs', HomeDialogs)
+
+  .addRoute('Discover', Discover)
 
   .addRoute('Apps/Tasks', Tasks)
 
