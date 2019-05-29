@@ -198,6 +198,7 @@ export const DesktopScaffold = ({
 
                     {topItems}
                     <BottomNavigation>
+                        <FavIconChecker/>
                         <CreateMenuItem />
                         <AppsMenuItem />
                         <SuperAdminMenuItem />
@@ -212,8 +213,6 @@ export const DesktopScaffold = ({
             {menu}
         </XView>
     );
-
-    FavIconChecker();
 
     return (
         <XView
