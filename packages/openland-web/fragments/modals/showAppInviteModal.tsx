@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { showModalBox, XModalBoxStyles } from 'openland-x/showModalBox';
 import { useClient } from 'openland-web/utils/useClient';
-import { OwnerLinkComponent } from './OwnerLinkComponent';
+import { OwnerLinkComponent } from '../OwnerLinkComponent';
 
 const OwnerLinkOrganization = (props: { onCopied: () => void }) => {
     const client = useClient();

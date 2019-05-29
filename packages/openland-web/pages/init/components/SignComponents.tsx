@@ -18,7 +18,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XText } from 'openland-x/XText';
 import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 
@@ -897,7 +897,7 @@ export const WebSignUpActivationCode = ({
     codeValue,
     codeError,
 }: ActivationCodeProps) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
     return (
         <XForm
             defaultData={{
@@ -1108,7 +1108,7 @@ export const RoomCreateWithEmail = ({
     loginEmailStart,
     emailSending,
 }: CreateWithEmailProps) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
         <XForm
@@ -1174,7 +1174,7 @@ export const WebSignUpCreateWithEmail = ({
     loginEmailStart,
     emailSending,
 }: CreateWithEmailProps) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
         <XForm

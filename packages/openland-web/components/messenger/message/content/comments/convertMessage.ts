@@ -1,5 +1,4 @@
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
 import { FullMessage } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 

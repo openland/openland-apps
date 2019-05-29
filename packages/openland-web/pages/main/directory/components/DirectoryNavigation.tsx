@@ -13,7 +13,7 @@ import { SortPicker } from 'openland-web/pages/main/directory/components/sortPic
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from 'openland-web/components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
@@ -86,23 +86,22 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        !withoutSort && (
-                                            <SortPicker
-                                                sort={sort}
-                                                onPick={setSort}
-                                                withoutFeatured={withoutFeatured}
-                                                options={sortOptions}
-                                            />
-                                        )
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    !withoutSort && (
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    )
+                                }
+                            />
+                        )}
                         <CardsComponent
                             onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
@@ -158,7 +157,7 @@ export const DirectoryNavigation = XMemo(
         };
         withoutSort?: boolean;
     }) => {
-        const [isMobile] = useIsMobile();
+        const isMobile = useIsMobile();
         return (
             <Navigation
                 title={isMobile ? title : 'Directory'}
@@ -265,8 +264,8 @@ export const ComponentWithSort = ({
     const finalQuery = variables.query
         ? variables.query
         : onlyFeatured
-            ? JSON.stringify({ featured: 'true' })
-            : variables.query;
+        ? JSON.stringify({ featured: 'true' })
+        : variables.query;
 
     const finalVariables = {
         ...(queryToPrefix

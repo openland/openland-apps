@@ -23,7 +23,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { trackEvent } from 'openland-x-analytics';
 
@@ -513,7 +513,7 @@ export const SignInPage = (props: any) => {
     }
 
     let fromRoom: any = Cookie.get('x-openland-invite');
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
     if (isMobile) {
         fromRoom = false;
     }

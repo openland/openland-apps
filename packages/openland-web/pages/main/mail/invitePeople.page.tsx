@@ -8,7 +8,7 @@ import { OwnerLinkComponent } from 'openland-web/fragments/OwnerLinkComponent';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const textAlignCenterClassName = css`
@@ -38,7 +38,7 @@ const InviteFragment = ({
 }) => {
     let router = React.useContext(XRouterContext)!;
 
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     return (
         <XView

@@ -50,7 +50,7 @@ import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPopper } from 'openland-x/XPopper';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { showLeaveConfirmation } from 'openland-web/fragments/showLeaveConfirmation';
+import { showLeaveConfirmation } from 'openland-web/fragments/modals/showLeaveConfirmation';
 import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
 
 const BackWrapper = Glamorous.div({

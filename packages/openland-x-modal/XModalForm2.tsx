@@ -7,7 +7,7 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';
 import { applyFlex, extractFlexProps, XFlexStyles } from 'openland-x/basics/Flex';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 
 export interface XModalFormProps extends XFormProps, XModalProps {
@@ -131,7 +131,7 @@ export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyl
 }
 
 export const XModalForm = (props: XModalFormProps & XFlexStyles) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     return <XModalFormInner {...props} children={props.children} isMobile={isMobile} />;
 };

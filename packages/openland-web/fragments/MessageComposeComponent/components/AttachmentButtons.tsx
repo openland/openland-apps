@@ -6,7 +6,7 @@ import Glamorous from 'glamorous';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
-import { showShortcutsHelp } from '../../showShortcutsHelp';
+import { showShortcutsHelp } from '../../modals/showShortcutsHelp';
 
 const FileInput = Glamorous.input({
     display: 'none',
