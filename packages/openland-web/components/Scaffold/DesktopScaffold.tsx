@@ -13,6 +13,7 @@ import { SuperAdminMenuItem } from './MenuItems/SuperAdminMenuItem';
 import { CreateMenuItem } from './MenuItems/CreateMenuItem';
 import { DesktopUserProfile } from './DesktopUserProfile';
 import { XPopper } from 'openland-x/XPopper';
+import { FavIconChecker } from 'openland-web/hooks/useFavicon';
 
 export const DesktopScafoldMenuItem = ({
     name,
@@ -211,6 +212,8 @@ export const DesktopScaffold = ({
             {menu}
         </XView>
     );
+
+    FavIconChecker();
 
     return (
         <XView
