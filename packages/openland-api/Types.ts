@@ -15056,135 +15056,6 @@ export interface Rooms_rooms_PrivateRoom {
   pinnedMessage: Rooms_rooms_PrivateRoom_pinnedMessage | null;
 }
 
-export interface Rooms_rooms_SharedRoom_organization_adminMembers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Rooms_rooms_SharedRoom_organization_adminMembers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: Rooms_rooms_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
-}
-
-export interface Rooms_rooms_SharedRoom_organization_adminMembers {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: Rooms_rooms_SharedRoom_organization_adminMembers_user;
-}
-
-export interface Rooms_rooms_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isMine: boolean;
-  membersCount: number;
-  isOwner: boolean;
-  isAdmin: boolean;
-  isCommunity: boolean;
-  adminMembers: Rooms_rooms_SharedRoom_organization_adminMembers[];
-}
-
-export interface Rooms_rooms_SharedRoom_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Rooms_rooms_SharedRoom_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: Rooms_rooms_SharedRoom_members_user_primaryOrganization | null;
-}
-
-export interface Rooms_rooms_SharedRoom_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: Rooms_rooms_SharedRoom_members_user;
-  canKick: boolean;
-}
-
-export interface Rooms_rooms_SharedRoom_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Rooms_rooms_SharedRoom_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: Rooms_rooms_SharedRoom_requests_user_primaryOrganization | null;
-}
-
-export interface Rooms_rooms_SharedRoom_requests {
-  __typename: "RoomMember";
-  user: Rooms_rooms_SharedRoom_requests_user;
-}
-
-export interface Rooms_rooms_SharedRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
-}
-
-export interface Rooms_rooms_SharedRoom_welcomeMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface Rooms_rooms_SharedRoom_welcomeMessage {
-  __typename: "WelcomeMessage";
-  isOn: boolean;
-  sender: Rooms_rooms_SharedRoom_welcomeMessage_sender | null;
-  message: string | null;
-}
-
 export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -16067,6 +15938,20 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage {
 
 export type Rooms_rooms_SharedRoom_pinnedMessage = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage;
 
+export interface Rooms_rooms_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface Rooms_rooms_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -16074,19 +15959,14 @@ export interface Rooms_rooms_SharedRoom {
   isChannel: boolean;
   title: string;
   photo: string;
-  socialImage: string | null;
-  description: string | null;
-  organization: Rooms_rooms_SharedRoom_organization | null;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
-  membersCount: number | null;
-  members: Rooms_rooms_SharedRoom_members[];
-  requests: Rooms_rooms_SharedRoom_requests[] | null;
-  settings: Rooms_rooms_SharedRoom_settings;
   canEdit: boolean;
   canSendMessage: boolean;
-  welcomeMessage: Rooms_rooms_SharedRoom_welcomeMessage | null;
+  membersCount: number | null;
   pinnedMessage: Rooms_rooms_SharedRoom_pinnedMessage | null;
+  organization: Rooms_rooms_SharedRoom_organization | null;
+  settings: Rooms_rooms_SharedRoom_settings;
 }
 
 export type Rooms_rooms = Rooms_rooms_PrivateRoom | Rooms_rooms_SharedRoom;

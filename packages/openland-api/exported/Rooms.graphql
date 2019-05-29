@@ -1,6 +1,6 @@
 query Rooms($ids: [ID!]!) {
   rooms(ids: $ids) {
     __typename
-    ...RoomFull
+    ...RoomShort
   }
 }

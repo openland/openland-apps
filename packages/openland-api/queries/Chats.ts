@@ -246,7 +246,7 @@ export const RoomQuery = gql`
 export const RoomsQuery = gql`
     query Rooms($ids: [ID!]!) {
         rooms(ids: $ids) {
-            ...RoomFull
+            ...RoomShort
         }
     }
     ${RoomShort}
