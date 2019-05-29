@@ -93,7 +93,7 @@ export const Item = ({
             <XView
                 paddingTop={9}
                 paddingBottom={9}
-                maxWidth={250}
+                maxWidth={240}
                 flexGrow={1}
                 flexDirection="column"
                 justifyContent={'space-between'}
@@ -172,6 +172,7 @@ export const NewOptionsButton = XMemo(() => {
             placement="bottom-end"
             show={show}
             marginTop={10}
+            marginRight={-10}
             arrow={null}
             onClickOutside={closer}
             content={<NewOptionsMenu />}
