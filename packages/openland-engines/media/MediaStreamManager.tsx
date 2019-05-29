@@ -21,6 +21,7 @@ export class MediaStreamManager {
     private appliedCandidates = new Set<string>();
     private destroyed = false;
     private onReady?: () => void;
+    private iceConnectionState?: string;
 
     constructor(
         client: OpenlandClient,
@@ -66,7 +67,7 @@ export class MediaStreamManager {
 
         this.peerConnection.onnegotiationneeded = () => {
             console.warn('[WEBRTC]: onnegotiationneeded')
-            if (this.streamConfig.state === 'READY') {
+            if (this.streamConfig.state === 'READY' && this.iceConnectionState === 'connected') {
                 backoff(async () => {
                     if (this.destroyed) {
                         return;
@@ -78,6 +79,7 @@ export class MediaStreamManager {
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
             console.warn('[WEBRTC]: oniceconnectionstatechange ')
+            this.iceConnectionState = ev.target.iceConnectionState;
             if (ev.target.iceConnectionState === 'failed') {
                 this.destroy();
                 backoff(async () => {
