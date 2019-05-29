@@ -15,9 +15,3 @@ export const useWithWidth = () => {
 
     return [width, setWidth];
 };
-
-export const useIsMobile = () => {
-    const [width] = useWithWidth();
-
-    return [width ? width <= 750 : null];
-};

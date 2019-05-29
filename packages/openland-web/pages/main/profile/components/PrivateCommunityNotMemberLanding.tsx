@@ -4,7 +4,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
 import { FooterImage } from 'openland-web/fragments/InviteLandingComponent';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { ClosingCross } from 'openland-web/fragments/InviteLandingComponent';
 
@@ -13,7 +13,7 @@ export const PrivateCommunityNotMemberLanding = ({
 }: {
     organization: OrganizationWithoutMembers_organization;
 }) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
     return (
         <>
             <XView

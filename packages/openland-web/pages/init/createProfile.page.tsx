@@ -12,7 +12,7 @@ import {
     RoomSignupContainer,
     CreateProfileFormInner,
 } from './components/SignComponents';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { useClient } from 'openland-web/utils/useClient';
 
 const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
@@ -62,7 +62,7 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
 };
 
 const CreateProfileForm = ({ roomView }: { roomView: boolean }) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     if (isMobile) {
         roomView = false;
