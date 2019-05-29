@@ -172,7 +172,7 @@ export const NewOptionsButton = XMemo(() => {
             placement="bottom-end"
             show={show}
             marginTop={10}
-            marginRight={-10}
+            marginRight={-5}
             arrow={null}
             onClickOutside={closer}
             content={<NewOptionsMenu />}
