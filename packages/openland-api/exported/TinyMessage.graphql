@@ -26,6 +26,7 @@ fragment TinyMessage on ModernMessage {
     }
     commentsCount
     id
+    isMentioned
     quotedMessages {
       __typename
       id

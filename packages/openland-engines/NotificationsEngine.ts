@@ -44,7 +44,7 @@ export class NotificationsEngine {
             }
         }
 
-        if (!(sharedRoom || privateRoom)!.settings.mute) {
+        if (!(sharedRoom || privateRoom)!.settings.mute || msg.isMentioned) {
             AppNotifications.playIncomingSound();
             let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
             if (msg.message) {
