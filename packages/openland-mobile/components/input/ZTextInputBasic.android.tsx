@@ -33,6 +33,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 tintColor={theme.accentColor}
                 baseColor="#9B9B9B"
                 textColor={theme.textColor}
+                placeholderTextColor="#a0a0a0"
                 fontSize={16}
                 animationDuration={150}
                 labelPadding={0}
