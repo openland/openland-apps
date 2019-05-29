@@ -11021,6 +11021,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
@@ -11135,6 +11136,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
@@ -11247,6 +11249,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
@@ -11353,6 +11356,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
@@ -11505,6 +11509,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages[];
@@ -11628,6 +11633,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
@@ -11742,6 +11748,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
@@ -11854,6 +11861,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
@@ -11960,6 +11968,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
@@ -12112,6 +12121,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages[];
@@ -52580,6 +52590,7 @@ export interface TinyMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: TinyMessage_GeneralMessage_attachments[];
   quotedMessages: TinyMessage_GeneralMessage_quotedMessages[];
@@ -65740,6 +65751,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
@@ -65854,6 +65866,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessag
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
@@ -65966,6 +65979,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
@@ -66072,6 +66086,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMe
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
@@ -66224,6 +66239,7 @@ export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
+  isMentioned: boolean;
   commentsCount: number;
   attachments: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages[];

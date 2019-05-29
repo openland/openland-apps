@@ -46,6 +46,7 @@ export const TinyMessage = gql`
         fallback
         ... on GeneralMessage {
             id
+            isMentioned
             commentsCount
             attachments {
                 id
