@@ -112,13 +112,13 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         } else if (span.type === 'italic') {
             return <Text key={'italic'} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{children}</Text>;
         } else if (span.type === 'loud') {
-            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium, fontSize: 20, lineHeight: 24 }}>{children}</Text>;
+            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium }}>{children}</Text>;
         } else if (span.type === 'rotating') {
             return <Text key={'rotating'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'new_line') {
             return <Text key={'br'}>{'\n'}</Text>;
         } else if (span.type === 'emoji') {
-            return <Text key={'emoji'} style={{ fontSize: 30, lineHeight: 34 }}>{children}</Text>;
+            return <Text key={'emoji'}>{children}</Text>;
         }  if (span.type === 'text') {
             return <Text key={'text'}>{span.text}</Text>;
         }

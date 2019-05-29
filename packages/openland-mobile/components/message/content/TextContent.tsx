@@ -1,30 +1,26 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Text, TextStyle, View } from 'react-native';
+import { Text, TextStyle, View, TextProps } from 'react-native';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 
-interface TextWrapperProps {
-    marginBottom?: number;
-    isSmall?: boolean;
-    fontSize?: number;
+interface TextWrapperProps extends TextProps {
     color: string;
-    fontStyle?: 'italic' | 'normal';
     children?: any;
 }
 
 const TextWrapper = (props: TextWrapperProps) => (
     <Text
-        style={{
-            color: props.color,
-            fontSize: props.fontSize || (props.isSmall ? 15 : 16),
-            fontWeight: TextStyles.weight.regular,
-            fontStyle: props.fontStyle,
-            marginBottom: props.marginBottom,
-        } as TextStyle}
+        style={[
+            props.style,
+            {
+                color: props.color,
+                fontWeight: TextStyles.weight.regular,
+            } as TextStyle
+        ]}
         allowFontScaling={false}
     >
         {props.children}
@@ -53,17 +49,35 @@ export const TextContent = (props: TextContentProps) => {
     const codePaddingLeft = isSmall ? 10 : -codeMarginLeft;
     const codePaddingRight = isSmall ? 10 : -codeMarginRight;
 
+    const fontSize = {
+        'emoji': isSmall ? 26 : 30,
+        'loud': isSmall ? 16 : 20,
+        'slice': isSmall ? 15 : 16,
+        'code_block': 14,
+    }
+
+    const lineHeight = {
+        'emoji': isSmall ? 30 : 34,
+        'loud': isSmall ? 20 : 24,
+        'slice': undefined,
+        'code_block': undefined,
+    }
+
     return (
         <>
             {content.map((c, i) => (
                 <>
-                    {(c.type === 'slice' || c.type === 'loud') && (
+                    {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
                         <TextWrapper
                             key={c.type + '-' + i}
                             color={theme.textColor}
-                            fontStyle={fontStyle}
-                            isSmall={isSmall}
-                            marginBottom={c.type === 'loud' ? 4 : undefined}
+                            style={{
+                                fontStyle: fontStyle,
+                                marginTop: (c.type === 'loud' && i !== 0) ? (isSmall ? 5 : 8) : undefined,
+                                marginBottom: (c.type === 'loud' && i !== content.length - 1) ? (isSmall ? 5 : 8) : undefined,
+                                fontSize: fontSize[c.type],
+                                lineHeight: lineHeight[c.type]
+                            }}
                         >
                             {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                         </TextWrapper>
@@ -79,7 +93,13 @@ export const TextContent = (props: TextContentProps) => {
                             paddingRight={codePaddingRight}
                             paddingVertical={6}
                         >
-                            <TextWrapper fontSize={14} color={theme.textColor}>
+                            <TextWrapper
+                                style={{
+                                    fontSize: fontSize[c.type],
+                                    lineHeight: lineHeight[c.type]
+                                }}
+                                color={theme.textColor}
+                            >
                                 {renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                             </TextWrapper>
                         </View>
