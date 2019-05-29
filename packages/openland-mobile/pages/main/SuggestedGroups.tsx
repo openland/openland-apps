@@ -15,7 +15,7 @@ import { Image } from 'react-native';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { select } from 'glamor';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { discoverDone, setDiscoverDone } from './Discover';
+import { setDiscoverDone } from './Discover';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {

@@ -188,6 +188,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':react-native-pdf')
     implementation project(':react-native-background-timer')
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-incall-manager')

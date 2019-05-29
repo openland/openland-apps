@@ -82,6 +82,8 @@ target 'openland' do
 
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
+  pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
+
 end
 
 target 'openlandTests' do

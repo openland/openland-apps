@@ -108,7 +108,12 @@ export class MobileMessenger {
     handleDocumentClick = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
-        this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
+        // TODO: link android
+        if (Platform.OS === 'ios' && attach.fileMetadata.name.toLowerCase().includes('.pdf')) {
+            this.history.navigationManager.push('PdfPreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
+        } else {
+            this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
+        }
     }
 
     handleDialogClick = (id: string) => {
