@@ -1,12 +1,16 @@
-let _data = `Name,all triggers,Link,Role,Profession,Industry,Goal
-Founder Chats,"Founder, ",https://next.openland.com/mail/ZYx4d9K6kjIZ5jo6r69zc4AX3v,Founder,,,
-HR Tech Founders,"Founder, Engineer, Recruiter, IT, HR, ",https://next.openland.com/mail/0DW7dl3rzJFvjn5m0vELuxA3Xq,Founder,"Engineer,Recruiter","HR,IT",
-Welcome Guide,"Founder, ",https://next.openland.com/mail/7Vd4aLWmZzHaX9waypnocXM9PZ,Founder,,,
-YC Applicants Help,"Founder, Investor, ",https://next.openland.com/mail/1pm4Xrl3AMf1EjPWlX5oHdz7KY,"Founder,Investor",,,Fundraising
-Remote Engineers,"Engineer, IT, ",https://next.openland.com/mail/61MyVnm7YDfzqmJvMzR6Ul6RXb,,Engineer,IT,Recruitment
-Openland Tech,"Engineer, IT, ",https://next.openland.com/mail/LOLqoerbADtq4xDP0dBzuwJwx3,,Engineer,IT,
-Proptech,"Real Estate, ",https://next.openland.com/mail/EQvPJ1LaODS1WAAx65wVI3m55l,,,Real Estate,
-,,,,,,`
+let _data = `Name,all triggers,Link,Role,Profession,Industry,Goal,Engeneer_sub,IT_sub
+,,,,,,,,AI
+Founder Chats,"Founder, ",https://next.openland.com/mail/ZYx4d9K6kjIZ5jo6r69zc4AX3v,Founder,,,,,
+HR Tech Founders,"Founder, Engineer, Recruiter, IT, HR, ",https://next.openland.com/mail/0DW7dl3rzJFvjn5m0vELuxA3Xq,Founder,"Engineer,Recruiter","HR,IT",,,
+Welcome Guide,"Founder, ",https://next.openland.com/mail/7Vd4aLWmZzHaX9waypnocXM9PZ,Founder,,,,,
+YC Applicants Help,"Founder, Investor, ",https://next.openland.com/mail/1pm4Xrl3AMf1EjPWlX5oHdz7KY,"Founder,Investor",,,Fundraising,,
+Remote Engineers,"Engineer, IT, ",https://next.openland.com/mail/61MyVnm7YDfzqmJvMzR6Ul6RXb,,Engineer,IT,Recruitment,,
+Openland Tech,"Engineer, IT, ",https://next.openland.com/mail/LOLqoerbADtq4xDP0dBzuwJwx3,,Engineer,IT,,,
+Proptech,"Real Estate, ",https://next.openland.com/mail/EQvPJ1LaODS1WAAx65wVI3m55l,,,Real Estate,,,
+Frontend,"Engineer, ",https://next.openland.com/mail/D4KeQl0V7xhJYmRpqWABflZZWM,,Engineer,,,Frontend,
+FoundationDB,"Engineer, ",https://next.openland.com/mail/Y96dY7aO1DsL0B9rVQrrUml5q5,,Engineer,,,Backend,
+AI Founders,"Founder, IT, ",https://next.openland.com/mail/Om49WwAP7BspmarAvko0fWPj1R,Founder,,IT,,,AI
+,,,,,,,,`
 
 function csvToArray(text: string) {
     var reValid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
@@ -32,7 +36,7 @@ function csvToArray(text: string) {
     return a;
 };
 
-type Row = { name: string, link: string, tags: string[] };
+type Row = { name: string, id: string, tags: string[] };
 export type Tag = { name: string, group: string, score: number };
 let _parsed: Row[]
 let _tagsGroupsMap = new Map<string, Tag[]>();
@@ -72,7 +76,8 @@ let _prepare = () => {
             for (let j = 3; j < tagsGroups.length; j++) {
                 tags.push(...line[j].replace('"', '').split(',').map(s => s.trim()).filter(s => !!s))
             }
-            _parsed.push({ name: line[0], link: line[2], tags })
+            let linkSplit = line[2].split('/');
+            _parsed.push({ name: line[0], id: linkSplit[linkSplit.length - 1], tags })
 
             // fill tags groups
             for (let j = 3; j < tagsGroups.length; j++) {
@@ -98,16 +103,15 @@ export const getTags = () => {
     return _tagsGroups
 }
 
-export const getPreprocessedTags1 = () => {
+export const getRootTags = () => {
     _prepare();
     let res: { name: string, tags: Tag[] }[] = []
     let roleExt: Tag[] = []
     res.push({ name: 'role_ext', tags: roleExt });
     for (let g of _tagsGroups) {
-        // merge first two groups
         if (g.name === 'Role' || g.name === 'Profession') {
             roleExt.push(...g.tags);
-        } else if (g.name !== 'Goal') {
+        } else if (g.name === 'Industry') {
             res.push(g);
         }
     }
@@ -135,6 +139,24 @@ export const resolveSuggestedChats = (tags: Set<Tag>) => {
         }
     }
 
-    return [...resMap].sort((a, b) => b[1] - a[1]).map(e => e[0]);
+    return [...resMap].filter(e => !!e[0].id).sort((a, b) => b[1] - a[1]).map(e => e[0]);
 
+}
+
+export const getTagGroup = (name: string) => {
+    _prepare();
+    return { name, tags: _tagsGroupsMap.get(name) || [] };
+}
+
+export const tagsGroupsMap = {
+    'Engineer': 'Engeneer_sub',
+    // 'Founder': 'Industry',
+    'IT': 'IT_sub',
+}
+
+export const getSubTags = (tag: Tag) => {
+    if (tagsGroupsMap[tag.name]) {
+        return getTagGroup(tagsGroupsMap[tag.name]).tags.map(t => t)
+    }
+    return [];
 }

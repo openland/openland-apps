@@ -11,7 +11,7 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
 import { useClient } from 'openland-web/utils/useClient';
-import { showAppInviteModal } from 'openland-web/fragments/showAppInviteModal';
+import { showAppInviteModal } from 'openland-web/fragments/modals/showAppInviteModal';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 
 interface TitleContainerProps {

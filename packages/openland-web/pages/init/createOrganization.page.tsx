@@ -12,7 +12,7 @@ import {
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as Cookie from 'js-cookie';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
@@ -162,7 +162,7 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
 const CreateOrganizationPrefixHolder = (props: any) => {
     const client = useClient();
     let roomView = Cookie.get('x-openland-invite') || false;
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     if (isMobile) {
         roomView = false;

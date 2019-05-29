@@ -47,6 +47,7 @@ import Tasks from './pages/apps/Tasks';
 import { MessageComments } from './pages/main/MessageComments';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
+import { SuggestedGroups } from './pages/main/SuggestedGroups';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -104,6 +105,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('HomeDialogs', HomeDialogs)
 
   .addRoute('Discover', Discover)
+  .addRoute('SuggestedGroups', SuggestedGroups)
 
   .addRoute('Apps/Tasks', Tasks)
 

@@ -9,26 +9,7 @@ import { MessagesStateContext } from 'openland-web/components/messenger/Messages
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
 import { XText } from 'openland-x/XText';
-import { XMutation } from 'openland-x/XMutation';
 import { useClient } from 'openland-web/utils/useClient';
-import { MutationFunc } from 'react-apollo';
-
-const PinMessageButton = ({
-    variables,
-    onSuccess,
-}: {
-    variables: { chatId: string; messageId: string };
-    onSuccess: () => void;
-}) => {
-    const client = useClient();
-    const pinMessage = async () => await client.mutatePinMessage(variables);
-
-    return (
-        <XMutation mutation={pinMessage as MutationFunc} onSuccess={onSuccess}>
-            <XButton text="Pin" />
-        </XMutation>
-    );
-};
 
 const ClearIconClass = css`
     margin-top: 4px;

@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Tag, getPreprocessedTags1, getPreprocessedTags2, resolveSuggestedChats } from 'openland-mobile/pages/main/discoverData';
+import { Tag, getRootTags, resolveSuggestedChats, getTagGroup, tagsGroupsMap, getSubTags } from 'openland-mobile/pages/main/discoverData';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
@@ -55,61 +55,71 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
     </TouchableOpacity>
 }
 
-const TagsCloud = (props: { tagsGroups: { name: string, tags: Tag[] }[], initialSelected: Set<Tag>, onChange: (selected: Set<Tag>) => void }) => {
-    let [tagsGroups] = React.useState(props.tagsGroups);
-    let [selected, setSelected] = React.useState(props.initialSelected);
+const TagsCloud = (props: { tagsGroups: { name: string, tags: Tag[] }, selected: Set<Tag>, onChange: (tag: Tag) => void }) => {
+    let selected = props.selected;
 
-    let onTagPress = React.useCallback((tag: Tag) => {
-        if (selected.has(tag)) {
-            selected.delete(tag);
-        } else {
-            selected.add(tag);
+    let sub = []
+    for (let t of props.tagsGroups.tags) {
+        if (selected.has(t) && tagsGroupsMap[t.name] && getTagGroup(tagsGroupsMap[t.name])) {
+            sub.push(<TagsCloud tagsGroups={getTagGroup(tagsGroupsMap[t.name])} selected={selected} onChange={props.onChange} />)
         }
-        props.onChange(new Set(selected));
-        setSelected(new Set(selected));
-
-    }, [selected]);
+    }
 
     return (
         <View flexDirection="column">
-            {tagsGroups.map((group, i) => (
-                <View marginBottom={18} flexDirection="row" flexWrap="wrap">
-                    {group.tags.map(tag => (
-                        <TagButton tag={tag} onPress={onTagPress} selected={!![...selected.values()].find(v => v.name === tag.name)} />
-                    ))}
-                </View>
-            ))}
+            <View marginBottom={18} flexDirection="row" flexWrap="wrap">
+                {props.tagsGroups.tags.map(tag => (
+                    <TagButton tag={tag} onPress={props.onChange} selected={!![...selected.values()].find(v => v.name === tag.name)} />
+                ))}
+            </View>
+            {sub}
         </View>
     )
 }
 
 const DiscoverPage = (props: PageProps) => {
-    let tab = props.router.params.tab || '1';
-    let [selected] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
-    let [dumb, update] = React.useState({});
-    let onSelectChange = React.useCallback((newSelected: Set<Tag>) => {
-        [...newSelected].map(s => selected.add(s));
-        update({});
+    let tab = props.router.params.tab || 'initial';
+    let [selected, setSelected] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
+    let [selectedImmutable] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
+    let onSelectChange = React.useCallback((tag: Tag) => {
+        if (selectedImmutable.has(tag)) {
+            selectedImmutable.delete(tag);
+            getSubTags(tag).map(t => selectedImmutable.delete(t));
+        } else {
+            selectedImmutable.add(tag);
+        }
+        setSelected(new Set(selectedImmutable));
     }, [])
-    let title = tab === '1' ? 'Select your role' : tab === '2' ? 'What brings you to Openland?' : 'Chats we offer to join by default';
-    let subtitle = tab === '1' ? 'Tell us a bit about yourself' : tab === '2' ? 'What is important to you' : 'What is important to you';
 
+    let next = React.useCallback(() => {
+        let path = 'SuggestedGroups';
+        let paprams: any = { selected };
+        if (tab === 'initial' && [...selected.values()].find(t => t.name === 'Founder')) {
+            path = 'Discover';
+            paprams = { tab: 'founder', selected: selectedImmutable };
+        }
+        props.router.push(path, paprams);
+
+    }, [selected]);
+    let title = tab === 'initial' ? 'Select your role' : tab === 'founder' ? 'What brings you to Openland?' : 'Chats we offer to join by default';
+    let subtitle = tab === 'initial' ? 'Tell us a bit about yourself' : tab === 'founder' ? 'What is important to you' : 'What is important to you';
+
+    let tagGroups = tab === 'initial' ? getRootTags() : tab === 'founder' ? [getTagGroup('Goal')] : [];
     return (
         <>
-            {tab === '1' &&
+            {tab === 'initial' &&
                 <>
                     {Platform.OS === 'ios' && <SHeader title="Discover" />}
                     {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
                 </>
             }
-            {tab !== 'groups' && <SHeaderButton title={'Next'} onPress={() => props.router.push('Discover', { tab: tab === '1' ? '2' : 'groups', selected })} />}
+            {tab !== 'groups' && <SHeaderButton title={'Next'} onPress={[...selected.values()].length ? next : undefined} />}
             <SScrollView padding={18} justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 22, fontWeight: TextStyles.weight.medium, marginBottom: 10 }}>{title}</Text>
                 <Text style={{ fontSize: 16, marginBottom: 20 }}>{subtitle}</Text>
-
-                {(tab === '1' || tab === '2') && <TagsCloud initialSelected={selected} onChange={onSelectChange} tagsGroups={tab === '1' ? getPreprocessedTags1() : getPreprocessedTags2()} />}
-                {tab === 'groups' && <Text>{JSON.stringify(resolveSuggestedChats(selected), undefined, 4)}</Text>}
-
+                {tagGroups.map(tg => (
+                    <TagsCloud selected={selected} onChange={onSelectChange} tagsGroups={tg} />
+                ))}
             </SScrollView>
         </>
     );

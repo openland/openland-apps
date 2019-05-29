@@ -11,7 +11,7 @@ import { delayForewer } from 'openland-y-utils/timer';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -346,7 +346,7 @@ export const InviteLandingComponentLayout = ({
         return null;
     }
 
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     return (
         <div

@@ -9,7 +9,7 @@ import { XScrollView } from 'openland-x/XScrollView';
 import RoomIcon from 'openland-icons/channel-2.svg';
 import DirectoryIcon from 'openland-icons/directory-3.svg';
 import MobileChatIcon from 'openland-icons/ic-chat.svg';
-import { useIsMobile } from 'openland-web/hooks';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { findChild } from '../utils';
 import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopScaffold';
@@ -145,7 +145,7 @@ const UniversalScafoldMenuItem = AdaptiveHOC({
 });
 
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
-    const [isMobile] = useIsMobile();
+    const isMobile = useIsMobile();
 
     const [showSidebar, setShowSidebar] = React.useState(false);
     const [showMenu, setShowMenu] = React.useState(false);

@@ -69,6 +69,7 @@ export const CommentWatchSubscription = typedSubscription<Types.CommentWatch, Ty
 export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
 export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
+export const RoomsQuery = typedQuery<Types.Rooms, Types.RoomsVariables>(Chats.RoomsQuery);
 export const RoomPicoQuery = typedQuery<Types.RoomPico, Types.RoomPicoVariables>(Chats.RoomPicoQuery);
 export const RoomChatQuery = typedQuery<Types.RoomChat, Types.RoomChatVariables>(Chats.RoomChatQuery);
 export const RoomHeaderQuery = typedQuery<Types.RoomHeader, Types.RoomHeaderVariables>(Chats.RoomHeaderQuery);

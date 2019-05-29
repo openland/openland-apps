@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XPoperRef } from './XPopper2';
+import { XPoperRef } from '../components/XPopper2';
 
 export function usePopperHover(ref: React.RefObject<XPoperRef>) {
     let visible = React.useRef<HTMLElement | null>(null);
