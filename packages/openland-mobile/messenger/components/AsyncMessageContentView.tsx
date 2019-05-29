@@ -9,7 +9,6 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { TextStyles } from '../../styles/AppStyles';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
@@ -197,7 +196,6 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                             )}
                             <ASText
                                 marginLeft={3}
-                                marginTop={Platform.OS === 'android' ? -2 : undefined}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
                                 color={hasImage ? '#fff' : props.message.isOut ? props.theme.textColorOut : props.theme.textColor}
