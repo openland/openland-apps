@@ -32,7 +32,7 @@ function csvToArray(text: string) {
     return a;
 };
 
-type Row = { name: string, link: string, tags: string[] };
+type Row = { name: string, id: string, tags: string[] };
 export type Tag = { name: string, group: string, score: number };
 let _parsed: Row[]
 let _tagsGroupsMap = new Map<string, Tag[]>();
@@ -72,7 +72,8 @@ let _prepare = () => {
             for (let j = 3; j < tagsGroups.length; j++) {
                 tags.push(...line[j].replace('"', '').split(',').map(s => s.trim()).filter(s => !!s))
             }
-            _parsed.push({ name: line[0], link: line[2], tags })
+            let linkSplit = line[2].split['/'];
+            _parsed.push({ name: line[0], id: linkSplit[linkSplit.length - 1], tags })
 
             // fill tags groups
             for (let j = 3; j < tagsGroups.length; j++) {

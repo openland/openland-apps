@@ -14133,6 +14133,1977 @@ export interface RoomVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Rooms
+// ====================================================
+
+export interface Rooms_rooms_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_spans[];
+  edited: boolean;
+  commentsCount: number;
+  attachments: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_attachments[];
+  quotedMessages: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages[];
+  reactions: Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans = Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata = Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_spans[];
+  serviceMetadata: Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type Rooms_rooms_PrivateRoom_pinnedMessage = Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage | Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage;
+
+export interface Rooms_rooms_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_PrivateRoom_user;
+  settings: Rooms_rooms_PrivateRoom_settings;
+  pinnedMessage: Rooms_rooms_PrivateRoom_pinnedMessage | null;
+}
+
+export interface Rooms_rooms_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: Rooms_rooms_SharedRoom_organization_adminMembers_user;
+}
+
+export interface Rooms_rooms_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  membersCount: number;
+  isOwner: boolean;
+  isAdmin: boolean;
+  isCommunity: boolean;
+  adminMembers: Rooms_rooms_SharedRoom_organization_adminMembers[];
+}
+
+export interface Rooms_rooms_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: Rooms_rooms_SharedRoom_members_user;
+  canKick: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: Rooms_rooms_SharedRoom_requests_user;
+}
+
+export interface Rooms_rooms_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface Rooms_rooms_SharedRoom_welcomeMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: Rooms_rooms_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_spans[];
+  edited: boolean;
+  commentsCount: number;
+  attachments: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+  quotedMessages: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
+  reactions: Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room = Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans = Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata = Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_spans[];
+  serviceMetadata: Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type Rooms_rooms_SharedRoom_pinnedMessage = Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage | Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage;
+
+export interface Rooms_rooms_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: Rooms_rooms_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: Rooms_rooms_SharedRoom_members[];
+  requests: Rooms_rooms_SharedRoom_requests[] | null;
+  settings: Rooms_rooms_SharedRoom_settings;
+  canEdit: boolean;
+  canSendMessage: boolean;
+  welcomeMessage: Rooms_rooms_SharedRoom_welcomeMessage | null;
+  pinnedMessage: Rooms_rooms_SharedRoom_pinnedMessage | null;
+}
+
+export type Rooms_rooms = Rooms_rooms_PrivateRoom | Rooms_rooms_SharedRoom;
+
+export interface Rooms {
+  rooms: Rooms_rooms[];
+}
+
+export interface RoomsVariables {
+  ids: string[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: RoomPico
 // ====================================================
 
