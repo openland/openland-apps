@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, View, Text, TouchableOpacity } from 'react-native';
+import { Platform, View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SDeferred } from 'react-native-s/SDeferred';
@@ -9,6 +9,19 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { Tag, getRootTags, resolveSuggestedChats, getTagGroup, tagsGroupsMap, getSubTags } from 'openland-mobile/pages/main/discoverData';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+
+let discoverDone = false;
+export const isDiscoverDone = () => {
+    return discoverDone
+}
+export const setDiscoverDone = async (done: boolean) => {
+    await AsyncStorage.setItem('discover_done', 'done');
+    discoverDone = done;
+}
+
+export const prepareDiscoverStatus = async () => {
+    discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
+}
 
 type tagColors = 'green' | 'blue' | 'purple';
 const resolveStyle = (group: string): tagColors => {

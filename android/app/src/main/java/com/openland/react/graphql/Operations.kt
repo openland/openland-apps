@@ -2435,6 +2435,12 @@ private val RoomUpdateSelector = obj(
                     ))
                 )))
         )
+private val RoomsJoinSelector = obj(
+            field("betaRoomsJoin","join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("Room", RoomShortSelector)
+                )))))
+        )
 private val SaveDraftMessageSelector = obj(
             field("conversationDraftUpdate","conversationDraftUpdate", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("message", refValue("message"))), notNull(scalar("String")))
         )
@@ -3540,6 +3546,12 @@ object Operations {
         override val body = "mutation RoomUpdate(\$input:RoomUpdateInput!,\$roomId:ID!){betaRoomUpdate(input:\$input,roomId:\$roomId){__typename ... on PrivateRoom{id}... on SharedRoom{description id photo socialImage title}}}"
         override val selector = RoomUpdateSelector
     }
+    val RoomsJoin = object: OperationDefinition {
+        override val name = "RoomsJoin"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation RoomsJoin(\$roomsIds:[ID!]!){join:betaRoomsJoin(roomsIds:\$roomsIds){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val selector = RoomsJoinSelector
+    }
     val SaveDraftMessage = object: OperationDefinition {
         override val name = "SaveDraftMessage"
         override val kind = OperationKind.MUTATION
@@ -3874,6 +3886,7 @@ object Operations {
         if (name == "RoomSendEmailInvite") return RoomSendEmailInvite
         if (name == "RoomSettingsUpdate") return RoomSettingsUpdate
         if (name == "RoomUpdate") return RoomUpdate
+        if (name == "RoomsJoin") return RoomsJoin
         if (name == "SaveDraftMessage") return SaveDraftMessage
         if (name == "SendMessage") return SendMessage
         if (name == "SendPostMessage") return SendPostMessage

@@ -134,7 +134,10 @@ export const resolveSuggestedChats = (tags: Set<Tag>) => {
     for (let tag of tags) {
         for (let row of _parsed) {
             if (row.tags.includes(tag.name)) {
-                resMap.set(row, (resMap.get(row) || 0) + tag.score);
+                // founder category is exeptional - show it only if Founder or Investor tag selected
+                if (!row.tags.includes('Founder') || [...tags.values()].find(t => t.name === 'Founder' || t.name === 'Investor')) {
+                    resMap.set(row, (resMap.get(row) || 0) + tag.score);
+                }
             }
         }
     }
