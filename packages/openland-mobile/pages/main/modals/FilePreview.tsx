@@ -12,6 +12,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from '../../../utils/formatBytes';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
+import { PdfPreview } from './PdfPreview';
 
 const styles = StyleSheet.create({
     name: {
@@ -33,10 +34,12 @@ const styles = StyleSheet.create({
 class FilePreviewComponent extends React.PureComponent<PageProps, { completed: boolean, path?: string, downloadState?: DownloadState }> {
 
     subscription?: WatchSubscription;
+    isPdf = false;
 
     constructor(props: any) {
         super(props);
         this.state = { completed: false };
+        this.isPdf = props.router.params.config.name.toLowerCase().endsWith('.pdf')
     }
 
     componentDidMount() {
@@ -76,23 +79,31 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
 
     render() {
         const config = this.props.router.params.config;
+
+        let content = <View backgroundColor="#fff" flexGrow={1}>
+            <TouchableHighlight underlayColor="#fff" onPress={this.handleOpen}>
+                <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
+                    <Text style={styles.name}>{config.name}</Text>
+                    <Text style={styles.size}>{formatBytes(config.size)}</Text>
+                    <View height={46} justifyContent="center" marginTop={5}>
+                        {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
+                        {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
+                    </View>
+                </ASSafeAreaView>
+            </TouchableHighlight>
+        </View>;
+
+        if (this.state.completed && this.state.path && this.isPdf) {
+            content = <PdfPreview path={this.state.path} />
+        }
         return (
             <>
                 <SHeader title="Document" />
                 <SHeaderButton title="Share" icon={require('assets/ic-export-white-ios.png')} onPress={this.handleOpen} />
-                <View backgroundColor="#fff" flexGrow={1}>
-                    <TouchableHighlight underlayColor="#fff" onPress={this.handleOpen}>
-                        <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
-                            <Text style={styles.name}>{config.name}</Text>
-                            <Text style={styles.size}>{formatBytes(config.size)}</Text>
-                            <View height={46} justifyContent="center" marginTop={5}>
-                                {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
-                                {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
-                            </View>
-                        </ASSafeAreaView>
-                    </TouchableHighlight>
-                </View>
+
+                {content}
+
             </>
         );
     }

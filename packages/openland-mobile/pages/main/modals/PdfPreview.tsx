@@ -8,22 +8,16 @@
 
 import React from 'react';
 import {
-    StyleSheet,
-    TouchableHighlight,
     Dimensions,
     View,
-    Text,
-    SafeAreaView
 } from 'react-native';
 
 import Pdf from 'react-native-pdf';
-import { withApp } from 'openland-mobile/components/withApp';
-import { PageProps } from 'openland-mobile/components/PageProps';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 const WIN_WIDTH = Dimensions.get('window').width;
 
-class PdfPreviewComponent extends React.PureComponent<PageProps, {
+export class PdfPreview extends React.PureComponent<{ path: string }, {
     page: number,
     scale: number,
     numberOfPages: number,
@@ -33,7 +27,7 @@ class PdfPreviewComponent extends React.PureComponent<PageProps, {
 
     pdf: any;
     url?: string;
-    constructor(props: any) {
+    constructor(props: { path: string }) {
         super(props);
         this.state = {
             page: 1,
@@ -42,43 +36,12 @@ class PdfPreviewComponent extends React.PureComponent<PageProps, {
             horizontal: false,
             width: WIN_WIDTH
         };
-        let uuid = this.props.router.params.config.uuid;
-        this.url = uuid.includes('https://ucarecdn.com/') ? uuid : 'https://ucarecdn.com/' + uuid + '/';
+        this.url = props.path;
         this.pdf = null;
     }
 
-    prePage = () => {
-        let prePage = this.state.page > 1 ? this.state.page - 1 : 1;
-        this.setState({ page: prePage });
-        console.log(`prePage: ${prePage}`);
-    };
-
-    nextPage = () => {
-        let nextPage = this.state.page + 1 > this.state.numberOfPages ? this.state.numberOfPages : this.state.page + 1;
-        this.setState({ page: nextPage });
-        console.log(`nextPage: ${nextPage}`);
-    };
-
-    zoomOut = () => {
-        let scale = this.state.scale > 1 ? this.state.scale / 1.2 : 1;
-        this.setState({ scale: scale });
-        console.log(`zoomOut scale: ${scale}`);
-    };
-
-    zoomIn = () => {
-        let scale = this.state.scale * 1.2;
-        scale = scale > 3 ? 3 : scale;
-        this.setState({ scale: scale });
-        console.log(`zoomIn scale: ${scale}`);
-    };
-
-    // switchHorizontal = () => {
-    //     this.setState({ horizontal: !this.state.horizontal, page: this.state.page });
-    // };
-
     render() {
-        let source = { uri: this.url, cache: true };
-
+        let source = { uri: this.url, cache: false };
         return (
             <ASSafeAreaView style={{ width: '100%', height: '100%' }}>
                 <View style={{ flex: 1, width: this.state.width }}>
@@ -90,24 +53,13 @@ class PdfPreviewComponent extends React.PureComponent<PageProps, {
                         page={this.state.page}
                         scale={this.state.scale}
                         horizontal={this.state.horizontal}
-                        onLoadComplete={(numberOfPages, filePath) => {
-                            // this.state.numberOfPages = numberOfPages; //do not use setState, it will cause re-render
-                            // console.log(`total page count: ${numberOfPages}`);
-                            // console.log(tableContents);
-                        }}
-                        onPageChanged={(page, numberOfPages) => {
-                            // this.state.page = page; //do not use setState, it will cause re-render
-                        }}
                         onError={(error) => {
-                            console.log(error);
+                            console.warn(error);
                         }}
                         style={{ flex: 1 }}
                     />
                 </View>
             </ASSafeAreaView>
-
         )
     }
 }
-
-export const PdfPreview = withApp(PdfPreviewComponent, { navigationAppearance: 'small' });
