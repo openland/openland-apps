@@ -1,13 +1,25 @@
 import * as React from 'react';
 import { PerfCollectorContext } from './PerfCollectorContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+const EventSource = require('eventsource');
 
-const compareCurrentMeasureWithSavedMeasure = ({
-    savedMeasure,
-    currentMeasure,
-}: {
-    savedMeasure: any;
-    currentMeasure: any;
-}) => {
+let numberOfMeasuresToSkip = 3;
+let lastMeasureId: null | string = null;
+
+if (canUseDOM && location.hostname === 'localhost') {
+    const es = new EventSource('/_next/webpack-hmr');
+
+    es.onmessage = (event: any) => {
+        if (event.data === `{"action":"building"}`) {
+            numberOfMeasuresToSkip = 3;
+        }
+    };
+}
+
+const compareCurrentMeasureWithSavedMeasure = ({ currentMeasure }: { currentMeasure: any }) => {
+    if (numberOfMeasuresToSkip !== 0) {
+        numberOfMeasuresToSkip -= 1;
+    }
     if (!currentMeasure) {
         return;
     }
@@ -20,11 +32,15 @@ const compareCurrentMeasureWithSavedMeasure = ({
         // }
 
         if (key === 'CacheComponent' && currentMeasureItem.measure > 300) {
-            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            if (numberOfMeasuresToSkip === 0) {
+                throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            }
         }
 
         if (key.indexOf('DisplayNone') !== -1 && currentMeasureItem.measure > 150) {
-            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            if (numberOfMeasuresToSkip === 0) {
+                throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            }
         }
     }
 };
@@ -80,10 +96,12 @@ export const PerfViewer = () => {
 
         const intervalToSave = setInterval(() => {
             try {
-                compareCurrentMeasureWithSavedMeasure({
-                    savedMeasure: perfCollector.measureFromServer,
-                    currentMeasure: perfCollector.getMap(),
-                });
+                if (lastMeasureId !== perfCollector.getMeasureId()) {
+                    lastMeasureId = perfCollector.getMeasureId();
+                    compareCurrentMeasureWithSavedMeasure({
+                        currentMeasure: perfCollector.getMap(),
+                    });
+                }
             } catch (err) {
                 setHasError(true);
 
