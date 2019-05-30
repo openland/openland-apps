@@ -49,7 +49,7 @@ export const CommentsInput = ({
     const { file } = React.useContext(UploadContext);
 
     if (file) {
-        inputMethodsState.focusIfNeeded();
+        inputMethodsState.focusIfEnabled();
     }
 
     const [inputValue, setInputValue] = React.useState('');

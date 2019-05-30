@@ -10,6 +10,7 @@ import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
+import { GlobalSearch_items } from 'openland-api/Types';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -50,6 +51,7 @@ class ErrorBoundary extends React.Component<any, { error: any }> {
 export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
+        const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
 
         const { replace } = React.useContext(XRoutingContext)!;
 
@@ -59,7 +61,8 @@ export const MessagesNavigation = XMemo(
         let isChat = path.includes('/mail');
         let isRoomProfile = path.includes('/mail/p/');
 
-        const chatId = !path.includes('/mail/new') && getId(path, '/mail/');
+        const chatId =
+            selectedChat || (!path.includes('/mail/new') && getId(path, '/mail/')) || cid;
 
         if (!cid) {
             tab = tabs.empty;
@@ -124,12 +127,18 @@ export const MessagesNavigation = XMemo(
                                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
                         }
-                        firstFragment={<DialogListFragment />}
+                        firstFragment={
+                            <DialogListFragment
+                                onSearchItemSelected={(item: GlobalSearch_items) => {
+                                    setSelectedChat(item ? item.id : null);
+                                }}
+                            />
+                        }
                         secondFragment={
                             <ErrorBoundary>
                                 <React.Suspense fallback={null}>
                                     <ConversationContainerWrapper
-                                        {...{ tab, conversationId: cid, oid, uid, cid }}
+                                        {...{ tab, conversationId: chatId, oid, uid, cid: chatId }}
                                     />
                                 </React.Suspense>
                             </ErrorBoundary>
