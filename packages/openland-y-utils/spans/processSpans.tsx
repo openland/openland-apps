@@ -1,8 +1,7 @@
-import { Span, ServerSpan } from 'openland-y-utils/spans/Span';
+import { Span, SpanType, ServerSpan } from 'openland-y-utils/spans/Span';
 import { findChildSpans, convertServerSpan, getTextSpans } from './utils';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { checkSpanRootSize } from './checkSpanRootSize';
-import { SpanType } from 'openland-y-utils/spans/Span';
 
 const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
     let res: Span[] = [];
@@ -52,13 +51,17 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
             ],
         };
     } else {
-        return {
-            type: SpanType.text,
+        const currentSpan: Span = {
+            type: SpanType.root,
             offset: 0,
             length: rootText.length,
             textRaw: rootText,
             text: TextRenderProccessor.processSpan(SpanType.text, rootText),
         };
+
+        currentSpan.childrens = getTextSpans(text, currentSpan);
+
+        return currentSpan;
     }
 };
 
@@ -71,9 +74,9 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
         let sortedSpans = (spans || []).sort(
             (a, b) => (a.offset - b.offset) * 100000 + (b.length - a.length),
         );
-        let rootSpan = [{ offset: 0, length: text.length }];
+        let rootSpan = { offset: 0, length: text.length };
 
-        spans = [...(rootSpan as any), ...sortedSpans];
+        spans = [rootSpan as any, ...sortedSpans];
 
         res.push(
             ...TextRenderProccessor.removeLineBreakers(

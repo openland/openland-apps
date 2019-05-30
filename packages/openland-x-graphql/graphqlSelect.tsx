@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XSelectAsync, XSelectAsyncProps } from 'openland-x/XSelect';
 import { GraphqlTypedQuery, typedQuery } from 'openland-y-graphql/typed';
-import { useClient } from '../openland-web/utils/useClient';
+import { useClient } from 'openland-web/utils/useClient';
 
 export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
     return (props: Partial<XSelectAsyncProps> & { variables?: V }) => {

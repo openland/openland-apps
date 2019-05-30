@@ -37,12 +37,20 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         fetchPolicy: 'cache-and-network',
     });
 
-    React.useEffect(() => {
-        if (selectedIndex !== null) {
-            props.onSearchItemSelected(items[selectedIndex]);
-            return;
-        }
-    }, [selectedIndex]);
+    if (!data || !data.items) {
+        return <XLoader loading={true} />;
+    }
+
+    // Why?
+    let items = data.items.reduce(
+        (p, x) => {
+            if (!p.find(c => c.id === x.id)) {
+                p.push(x);
+            }
+            return p;
+        },
+        [] as any[],
+    );
 
     const handleOptionUp = () => {
         if (selectedIndex === null) {
@@ -64,20 +72,12 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return;
     };
 
-    if (!data || !data.items) {
-        return <XLoader loading={true} />;
-    }
-
-    // Why?
-    let items = data.items.reduce(
-        (p, x) => {
-            if (!p.find(c => c.id === x.id)) {
-                p.push(x);
-            }
-            return p;
-        },
-        [] as any[],
-    );
+    React.useEffect(() => {
+        if (selectedIndex !== null) {
+            props.onSearchItemSelected(items[selectedIndex]);
+            return;
+        }
+    }, [selectedIndex]);
 
     if (items.length === 0) {
         return (

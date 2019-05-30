@@ -9,12 +9,29 @@ import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { SpannedView } from 'openland-web/components/messenger/message/content/SpannedView';
+import { Span } from 'openland-y-utils/spans/Span';
+import { css } from 'linaria';
+
+const SpanRenderClass = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(0,0,0,0.8);
+`;
 
 export default withApp('UI Framework - Spans', 'viewer', props => {
-    const [data, setData] = React.useState<{
-        text: string;
-        spans: FullMessage_GeneralMessage_spans[];
-    }>({ text: '', spans: [] });
+    const [text, setText] = React.useState<string>('');
+    const [spans, setSpans] = React.useState<FullMessage_GeneralMessage_spans[]>([]);
+    const [processed, setProcessed] = React.useState<Span[]>([]);
+
+    React.useEffect(() => {
+        setProcessed(processSpans(text, spans));
+    }, [text, spans]);
 
     return (
         <DevDocsScaffold title="Spans">
@@ -22,14 +39,17 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
                 <XVertical2>
                     <XTextArea
                         onChange={value => {
-                            setData({ text: value, spans: prepareLegacySpans(findSpans(value)) });
+                            setText(value);
+                            setSpans(prepareLegacySpans(findSpans(value)));
                         }}
                     />
 
-                    <SpannedView spans={processSpans(data.text, data.spans)} />
+                    <div className={SpanRenderClass}>
+                        <SpannedView spans={processed} />
+                    </div>
 
                     <XTitle>Parsed:</XTitle>
-                    {data.spans.map((s, i) => (
+                    {spans.map((s, i) => (
                         <div key={'parsed-span-' + i}>{JSON.stringify(s)}</div>
                     ))}
                 </XVertical2>

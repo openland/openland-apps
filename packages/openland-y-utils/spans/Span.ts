@@ -6,6 +6,7 @@ import {
 } from 'openland-api/Types';
 
 export enum SpanType {
+    root = 'root',
     link = 'link',
     text = 'text',
     new_line = 'new_line',
@@ -26,6 +27,7 @@ export enum SpanType {
 }
 
 export type Span =
+    | SpanRoot
     | SpanUser
     | SpanAll
     | SpanRoom
@@ -51,6 +53,10 @@ interface SpanAbs {
     textRaw?: string;
     text?: string | Element[] | JSX.Element[] | Element | JSX.Element;
     childrens?: Span[];
+}
+
+export interface SpanRoot extends SpanAbs {
+    type: SpanType.root;
 }
 
 export interface SpanText extends SpanAbs {

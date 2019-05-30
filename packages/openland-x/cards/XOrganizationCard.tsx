@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XOverflow } from '../../openland-web/components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
