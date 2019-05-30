@@ -11,6 +11,7 @@ import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import NewIcon from 'openland-icons/ic-add-blue.svg';
 import { makeActionable } from 'openland-x/Actionable';
+import { XShortcuts } from 'openland-x/XShortcuts';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -158,13 +159,17 @@ export const NewOptionsMenu = () => (
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
 
-    const closer = () => {
+    const closer = React.useCallback(() => {
         setShow(false);
-    };
+    }, []);
 
-    const toggle = () => {
+    const open = React.useCallback(() => {
+        setShow(true);
+    }, []);
+
+    const toggle = React.useCallback(() => {
         setShow(!show);
-    };
+    }, []);
 
     return (
         <XPopper
@@ -177,7 +182,19 @@ export const NewOptionsButton = XMemo(() => {
             onClickOutside={closer}
             content={<NewOptionsMenu />}
         >
-            <NewButton onClick={toggle} />
+            <XShortcuts
+                handlerMap={{
+                    CTRL_OPTION_N: open,
+                }}
+                keymap={{
+                    CTRL_OPTION_N: {
+                        osx: ['ctrl+option+n'],
+                        windows: ['ctrl+alt+n'],
+                    },
+                }}
+            >
+                <NewButton onClick={toggle} />
+            </XShortcuts>
         </XPopper>
     );
 });

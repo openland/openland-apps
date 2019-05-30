@@ -12,7 +12,6 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const OrganizationCardWrapper = makeNavigable(
     Glamorous.div<NavigableChildProps>(() => ({
