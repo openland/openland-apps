@@ -63,15 +63,19 @@ class ShareViewController: UIViewController {
               case is URL:
                 let url = data as! URL
                 let path = "\(self.docPath)/\(url.pathComponents.last ?? "")"
-                try? FileManager.default.copyItem(at: url, to: URL(fileURLWithPath: path))
-                fileUrls.append(path)
+                do {
+                  try FileManager.default.copyItem(at: url, to: URL(fileURLWithPath: path))
+                  fileUrls.append(path)
+                } catch {}
               case is String:
                 fileUrls.append(data as! String)
               case is UIImage:
                 let uiImage = data as! UIImage
                 let path = "\(self.docPath)/image.png"
-                try? uiImage.pngData()?.write(to: URL(fileURLWithPath: path))
-                fileUrls.append(path)
+                do {
+                  try uiImage.pngData()?.write(to: URL(fileURLWithPath: path))
+                  fileUrls.append(path)
+                } catch {}
               default:
                 print("ok swift, here is your default executable statement")
               }
@@ -83,7 +87,15 @@ class ShareViewController: UIViewController {
           itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { data, error in
             if error == nil {
               let url = data as! URL
-              strings.append(url.absoluteString)
+              if(url.absoluteString.starts(with: "file://")){
+                let path = "\(self.docPath)/\(url.pathComponents.last ?? "")"
+                do {
+                   try FileManager.default.copyItem(at: url, to: URL(fileURLWithPath: path))
+                   fileUrls.append(path)
+                } catch {}
+              }else{
+                strings.append(url.absoluteString)
+              }
             } else {
               NSLog("\(error)")
             }
