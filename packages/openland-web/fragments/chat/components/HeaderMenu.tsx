@@ -6,6 +6,8 @@ import { XOverflow } from 'openland-web/components/XOverflow';
 import { RoomHeader_room_SharedRoom } from 'openland-api/Types';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { XLoader } from 'openland-x/XLoader';
+import { showModalBox } from 'openland-x/showModalBox';
+import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 
 export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
     const { id, canEdit } = room;
@@ -34,11 +36,12 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
                     </XWithRole>
 
                     <XMenuItem
-                        query={{
-                            field: 'leaveFromChat',
-                            value: id,
-                        }}
                         style="danger"
+                        onClick={() =>
+                            showModalBox({ title: 'Leave the chat' }, ctx => (
+                                <LeaveChatComponent id={id} ctx={ctx} />
+                            ))
+                        }
                     >
                         {isChannel ? 'Leave channel' : 'Leave group'}
                     </XMenuItem>

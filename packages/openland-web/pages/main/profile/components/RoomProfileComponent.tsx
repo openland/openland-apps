@@ -139,10 +139,11 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         </XWithRole>
 
                                         <XMenuItem
-                                            query={{
-                                                field: 'leaveFromChat',
-                                                value: chat.id,
-                                            }}
+                                            onClick={() =>
+                                                showModalBox({ title: 'Leave the chat' }, ctx => (
+                                                    <LeaveChatComponent id={chat.id} ctx={ctx} />
+                                                ))
+                                            }
                                             style="danger"
                                         >
                                             {leaveText}
@@ -168,7 +169,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                     </React.Suspense>
                                 }
                             />
-                            <LeaveChatComponent />
                             {chat.welcomeMessage && (
                                 <AdvancedSettingsModal
                                     roomId={chat.id}

@@ -18,7 +18,6 @@ import { PerfViewer } from 'openland-web/perf/PerfViewer';
 import {
     DeleteUrlAugmentationComponent,
     DeleteMessageComponent,
-    LeaveChatComponent,
 } from 'openland-web/fragments/MessengerRootComponent';
 import { CacheComponent } from './CacheComponent';
 
@@ -112,7 +111,6 @@ export const ConversationContainerWrapper = ({
             </ConversationContainerInner>
             <DeleteUrlAugmentationComponent />
             <DeleteMessageComponent />
-            <LeaveChatComponent />
         </>
     );
 };
