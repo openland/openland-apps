@@ -1,8 +1,7 @@
+import { XImageCropT } from 'openland-x/files/XFileUpload';
+
 export function sanitizeImageRef(
-    src:
-        | { uuid: string; crop?: { x: number; y: number; w: number; h: number } | null }
-        | null
-        | undefined,
+    src: { uuid: string; crop?: XImageCropT | null } | null | undefined,
 ) {
     if (src !== null && src !== undefined) {
         return {

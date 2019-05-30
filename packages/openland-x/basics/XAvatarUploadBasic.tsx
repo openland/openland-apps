@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     XFileUpload,
-    XImageCrop,
+    XUploadCareImageCrop,
     XFileUploadRenderProps,
     UploadedFile,
 } from '../files/XFileUpload';
@@ -103,7 +103,7 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>(props => ({
     },
 }));
 
-function prepareSrc(uuid: string, crop: XImageCrop | null) {
+function prepareSrc(uuid: string, crop: XUploadCareImageCrop | null) {
     if (uuid && uuid.startsWith('https://ucarecdn.com/')) {
         return uuid;
     }

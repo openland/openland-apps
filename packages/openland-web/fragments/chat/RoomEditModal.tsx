@@ -2,9 +2,7 @@ import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 import { useClient } from 'openland-web/utils/useClient';
@@ -12,6 +10,10 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XButton } from 'openland-x/XButton';
+import { XView } from 'react-mental';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 
 type RoomEditModalT = {
     title: string;
@@ -22,145 +24,99 @@ type RoomEditModalT = {
     isChannel: boolean;
 };
 
-export const RoomEditModal = (props: RoomEditModalT) => {
+const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     const client = useClient();
     const form = useForm();
+
     const editPhotoRef = props.photo;
-    const editSocialImageRef = props.socialImage;
-    const title = props.isChannel ? 'Channel settings' : 'Group settings';
+
     const inputTitle = props.isChannel ? 'Channel name' : 'Group name';
-    const avatarField = useField('input.photoRef', { uuid: props.photo }, form);
+    const avatarField = useField<StoredFileT | undefined | null>(
+        'input.photoRef',
+        { uuid: props.photo } as any,
+        form,
+    );
     const titleField = useField('input.title', props.title || '', form);
     const longDescriptionField = useField('input.longDescription', '', form);
     const descriptionField = useField('input.description', props.description || '', form);
-    const socialImageField = useField(
-        'input.socialImageRef',
-        props.socialImage ? { uuid: props.socialImage || '', isImage: true, crop: null, width: null,
-            height: null, name: null, size: null } : undefined,
-        form,
-    );
+
+    const onSubmit = () => {
+        form.doAction(async () => {
+            let newPhoto = avatarField.value;
+
+            const dataToSend = {
+                roomId: props.roomId,
+                input: {
+                    ...{ title: titleField.value },
+                    ...{ description: descriptionField.value },
+                    ...(newPhoto && newPhoto.uuid !== editPhotoRef
+                        ? { photoRef: sanitizeImageRef(newPhoto) }
+                        : {}),
+                },
+            };
+
+            await client.mutateRoomUpdate(dataToSend);
+            props.onClose();
+        });
+    };
 
     return (
-        <XRouterContext.Consumer>
-            {router => {
-                const isOpen = !!router!!.query.editChat;
-                if (isOpen) {
-                    showModalBox({ title }, ctx => (
-                        <XVertical separator={12}>
-                            <XHorizontal separator={12}>
-                                <XAvatarUpload
-                                    size="default"
-                                    {...avatarField.input}
-                                    placeholder={{
-                                        add: 'Add photo',
-                                        change: 'Change Photo',
-                                    }}
+        <>
+            <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
+                <XVertical separator={12}>
+                    <XHorizontal separator={12}>
+                        <XAvatarFormFieldComponent
+                            {...avatarField.input}
+                            size="default"
+                            placeholder={{
+                                add: 'Add photo',
+                                change: 'Change Photo',
+                            }}
+                        />
+                        <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
+                            <XInput title={inputTitle} {...titleField.input} size="large" />
+                            <XWithRole role="feature-chat-embedded-attach">
+                                <XInput
+                                    {...longDescriptionField.input}
+                                    flexGrow={1}
+                                    title="Attach link"
+                                    size="large"
                                 />
-                                <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                                    <XInput title={inputTitle} {...titleField.input} size="large" />
-                                    <XWithRole role="feature-chat-embedded-attach">
-                                        <XInput
-                                            {...longDescriptionField.input}
-                                            flexGrow={1}
-                                            title="Attach link"
-                                            size="large"
-                                        />
-                                    </XWithRole>
-                                </XVertical>
-                            </XHorizontal>
-                            <XTextArea
-                                {...descriptionField.input}
-                                placeholder="Description"
-                                resize={false}
-                            />
-                            <XAvatarUpload
-                                cropParams="1:1, free"
-                                {...socialImageField.input}
-                                placeholder={{
-                                    add: 'Add social image',
-                                    change: 'Change social image',
-                                }}
-                            />
+                            </XWithRole>
                         </XVertical>
-                    ));
-                    return null;
-                }
-            }}
-        </XRouterContext.Consumer>
+                    </XHorizontal>
+                    <XTextArea
+                        {...descriptionField.input}
+                        placeholder="Description"
+                        resize={false}
+                    />
+                </XVertical>
+            </XView>
+            <XModalFooter>
+                <XButton text="Save" style="primary" size="large" onClick={onSubmit} />
+            </XModalFooter>
+        </>
     );
+};
 
-    // return (
-    //     <XModalForm
-    //         scrollableContent={true}
-    //         targetQuery="editChat"
-    //         useTopCloser={true}
-    //         title={title}
-    //         defaultAction={async data => {
-    //             let newTitle = data.input.title;
-    //             let newDescription = data.input.description;
-    //             let newPhoto = data.input.photoRef;
-    //             let newSocialImage = data.input.socialImageRef;
-    //             await client.mutateRoomUpdate({
-    //                 roomId: props.roomId,
-    //                 input: {
-    //                     ...{ title: newTitle },
-    //                     ...{ description: newDescription },
-    //                     ...(newPhoto && newPhoto.uuid !== editPhotoRef
-    //                         ? { photoRef: sanitizeImageRef(newPhoto) }
-    //                         : {}),
-    //                     ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
-    //                         ? {
-    //                               socialImageRef: sanitizeImageRef(newSocialImage),
-    //                           }
-    //                         : {}),
-    //                 },
-    //             });
-    //         }}
-    //         defaultData={{
-    //             input: {
-    //                 title: props.title || '',
-    //                 description: props.description || '',
-    //                 photoRef: { uuid: props.photo },
-    //                 socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
-    //             },
-    //         }}
-    //     >
-    //         <XVertical separator={12}>
-    //             <XHorizontal separator={12}>
-    //                 <XAvatarUpload
-    //                     size="default"
-    //                     field="input.photoRef"
-    //                     placeholder={{
-    //                         add: 'Add photo',
-    //                         change: 'Change Photo',
-    //                     }}
-    //                 />
-    //                 <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-    //                     <XInput title={inputTitle} field="input.title" size="large" />
-    //                     <XWithRole role="feature-chat-embedded-attach">
-    //                         <XInput
-    //                             field="input.longDescription"
-    //                             flexGrow={1}
-    //                             title="Attach link"
-    //                             size="large"
-    //                         />
-    //                     </XWithRole>
-    //                 </XVertical>
-    //             </XHorizontal>
-    //             <XTextArea
-    //                 valueStoreKey="fields.input.description"
-    //                 placeholder="Description"
-    //                 resize={false}
-    //             />
-    //             <XAvatarUpload
-    //                 cropParams="1:1, free"
-    //                 field="input.socialImageRef"
-    //                 placeholder={{
-    //                     add: 'Add social image',
-    //                     change: 'Change social image',
-    //                 }}
-    //             />
-    //         </XVertical>
-    //     </XModalForm>
-    // );
+// TODO remove this, just call showModalBox where needed
+export const RoomEditModal = (props: RoomEditModalT) => {
+    const router = React.useContext(XRouterContext);
+
+    const title = props.isChannel ? 'Channel settings' : 'Group settings';
+
+    const isOpen = !!router!!.query.editChat;
+
+    if (isOpen) {
+        showModalBox({ title }, ctx => (
+            <RoomEditModalBody
+                {...props}
+                onClose={() => {
+                    ctx.hide();
+                }}
+            />
+        ));
+    }
+
+    return null;
 };
