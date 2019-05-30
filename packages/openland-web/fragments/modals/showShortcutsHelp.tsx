@@ -98,23 +98,23 @@ export const ShortcutsBody = () => {
                     shortcuts={[<strong key="edit">↑</strong>]}
                     description="Edit last message (works when the message box is in focus)"
                 />
+                {/* overlapse with Cmd + S */}
+                <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
+                {/* overlapse with option + ↑ behaves weird with scroll */}
                 <Shortcut
-                    shortcuts={['Cmd + S (Mac)', 'Ctrl + S (Windows)']}
-                    description="Search chats"
-                />
-                <Shortcut
-                    shortcuts={['Option + ↑ (Mac)', 'Alt + ↑ (Windows)']}
+                    shortcuts={['Shift + ↑ (Mac)', 'Alt + ↑ (Windows)']}
                     description="Previous chat"
                 />
                 <Shortcut
-                    shortcuts={['Option + ↓ (Mac)', 'Alt + ↓ (Windows)']}
+                    shortcuts={['Shift + ↓ (Mac)', 'Alt + ↓ (Windows)']}
                     description="Next chat"
                 />
                 <Shortcut shortcuts={['Esc']} description="Close chat" />
-                <Shortcut
+                {/* we don't have it now */}
+                {/* <Shortcut
                     shortcuts={['Ctrl + Option + N (Mac)', 'Ctrl + Alt + N (Windows)']}
                     description="New chat"
-                />
+                /> */}
                 <Shortcut
                     shortcuts={['Ctrl + Cmd + Space (Mac)']}
                     description="Emojis (standard Mac shortcut)"

@@ -60,21 +60,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, []);
 
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogListWebItem) => {
-                let selected = false;
-                if (
-                    conversationId &&
-                    (conversationId === item.key || conversationId === item.flexibleId)
-                ) {
-                    selected = true;
-                }
-                return <DialogView item={item} selected={selected} />;
-            };
-        },
-        [props.onDialogClick, conversationId],
-    );
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogListWebItem) => {
+            let selected = false;
+            if (
+                conversationId &&
+                (conversationId === item.key || conversationId === item.flexibleId)
+            ) {
+                selected = true;
+            }
+            return <DialogView item={item} selected={selected} />;
+        };
+    }, [props.onDialogClick, conversationId]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -124,11 +121,11 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             }}
             keymap={{
                 OPTION_UP: {
-                    osx: ['option+up'],
+                    osx: ['shift+up'],
                     windows: ['alt+up'],
                 },
                 OPTION_DOWN: {
-                    osx: ['option+down'],
+                    osx: ['shift+down'],
                     windows: ['alt+down'],
                 },
                 CTRL_S: {

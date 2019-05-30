@@ -12,6 +12,7 @@ import CloseIcon from './ic-close.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XView } from 'react-mental';
+import { XShortcuts } from 'openland-x/XShortcuts';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -279,11 +280,13 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
 
     render() {
         let size = this.props.size || 'default';
+
+        let result;
         if (this.props.target) {
             let TargetClone = React.cloneElement(this.props.target, {
                 onClick: this.onTargetClick,
             });
-            return (
+            result = (
                 <React.Suspense fallback={<div />}>
                     {TargetClone}
                     <ModalRender
@@ -312,7 +315,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             );
         } else if (this.props.targetQuery) {
             let q = this.props.targetQuery;
-            return (
+            result = (
                 <React.Suspense fallback={<div />}>
                     <XRouterContext.Consumer>
                         {router => {
@@ -346,7 +349,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 </React.Suspense>
             );
         } else if (this.props.isOpen !== undefined) {
-            return (
+            result = (
                 <React.Suspense fallback={<div />}>
                     <ModalRender
                         scrollableContent={this.props.scrollableContent}
@@ -375,5 +378,21 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
         } else {
             throw Error('You should provide show, targetQuery or target');
         }
+
+        return (
+            <XShortcuts
+                supressOtherShortcuts
+                handlerMap={{
+                    ESC: () => {
+                        this.onModalCloseRequest();
+                    },
+                }}
+                keymap={{
+                    ESC: 'ESC',
+                }}
+            >
+                {result}
+            </XShortcuts>
+        );
     }
 }
