@@ -11,7 +11,6 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
 import { useClient } from 'openland-web/utils/useClient';
-import { showAppInviteModal } from 'openland-web/fragments/modals/showAppInviteModal';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 
 interface TitleContainerProps {
@@ -134,9 +133,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 path={`/mail/u/${this.props.id}`}
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem onClick={() => showAppInviteModal()}>
-                                {TextGlobal.joinOpenland}
-                            </XMenuItem>
+                            <XMenuItem path="/invitePeople">{TextGlobal.joinOpenland}</XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
 
                             {primaryOrganization && (
@@ -150,48 +147,50 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                         path={'/directory/o/' + primaryOrganization.id}
                                     />
 
-                                    {organizations && organizations.length > 1 && (
-                                        <XPopper
-                                            placement="right"
-                                            contentContainer={<XMenuVertical />}
-                                            showOnHover={true}
-                                            padding={25}
-                                            marginLeft={8}
-                                            marginBottom={5}
-                                            arrow={null}
-                                            content={
-                                                <OtherOrgWrapper
-                                                    separator="none"
-                                                    ref={this.onInner}
-                                                    maxHeight="90vh"
-                                                >
-                                                    {organizations
-                                                        .sort((a, b) =>
-                                                            a.name.localeCompare(b.name),
-                                                        )
-                                                        .map((org, index) =>
-                                                            index >= 0 ? (
-                                                                <XMenuItem
-                                                                    path={
-                                                                        (org.isCommunity
-                                                                            ? '/directory/c/'
-                                                                            : '/directory/o/') +
-                                                                        org.id
-                                                                    }
-                                                                    key={'other-' + org.id}
-                                                                >
-                                                                    {org.name}
-                                                                </XMenuItem>
-                                                            ) : null,
-                                                        )}
-                                                </OtherOrgWrapper>
-                                            }
-                                        >
-                                            <XMenuItem iconRight="x-right">
-                                                Other organizations
-                                            </XMenuItem>
-                                        </XPopper>
-                                    )}
+                                    {organizations &&
+                                        organizations.length > 1 && (
+                                            <XPopper
+                                                placement="right"
+                                                contentContainer={<XMenuVertical />}
+                                                showOnHover={true}
+                                                padding={25}
+                                                marginLeft={8}
+                                                marginBottom={5}
+                                                arrow={null}
+                                                content={
+                                                    <OtherOrgWrapper
+                                                        separator="none"
+                                                        ref={this.onInner}
+                                                        maxHeight="90vh"
+                                                    >
+                                                        {organizations
+                                                            .sort((a, b) =>
+                                                                a.name.localeCompare(b.name),
+                                                            )
+                                                            .map(
+                                                                (org, index) =>
+                                                                    index >= 0 ? (
+                                                                        <XMenuItem
+                                                                            path={
+                                                                                (org.isCommunity
+                                                                                    ? '/directory/c/'
+                                                                                    : '/directory/o/') +
+                                                                                org.id
+                                                                            }
+                                                                            key={'other-' + org.id}
+                                                                        >
+                                                                            {org.name}
+                                                                        </XMenuItem>
+                                                                    ) : null,
+                                                            )}
+                                                    </OtherOrgWrapper>
+                                                }
+                                            >
+                                                <XMenuItem iconRight="x-right">
+                                                    Other organizations
+                                                </XMenuItem>
+                                            </XPopper>
+                                        )}
                                 </>
                             )}
                         </XVertical>

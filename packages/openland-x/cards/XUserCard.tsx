@@ -4,7 +4,7 @@ import { User_user } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from 'openland-icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { XOverflow } from '../../openland-web/components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XDate } from 'openland-x/XDate';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';

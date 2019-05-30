@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppFull } from 'openland-api/Types';
-import { XOverflow } from '../../openland-web/components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { buildBaseImageUrl } from 'openland-x/XCloudImage';

@@ -1,18 +1,18 @@
 import { withApp } from '../../components/withApp';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XHeader } from '../../../openland-x/XHeader';
-import { XContent } from '../../../openland-x-layout/XContent';
-import { XVertical2 } from '../../../openland-x/XVertical2';
+import { XHeader } from 'openland-x/XHeader';
+import { XContent } from 'openland-x-layout/XContent';
+import { XVertical2 } from 'openland-x/XVertical2';
 import * as React from 'react';
-import { XCheckbox } from '../../../openland-x/XCheckbox';
+import { XCheckbox } from 'openland-x/XCheckbox';
 import { HeadTitle } from '../main/settings/components/SettingComponents';
-import { XButton } from '../../../openland-x/XButton';
+import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
-import { XSelect } from '../../../openland-x/XSelect';
+import { XSelect } from 'openland-x/XSelect';
 import { useClient } from '../../utils/useClient';
-import { GraphqlActiveSubscription } from '../../../openland-graphql/GraphqlClient';
-import * as Types from '../../../openland-api/Types';
-import { foreverBreakable } from '../../../openland-engines/utils/forever';
+import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import * as Types from 'openland-api/Types';
+import { foreverBreakable } from 'openland-engines/utils/forever';
 
 class DebugEventsInner extends React.Component<
     { run: (randomDelay: boolean, count: number) => void },

@@ -8,7 +8,6 @@ import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XButton } from 'openland-x/XButton';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XModalController } from 'openland-x/showModal';
 import { useField } from 'openland-form/useField';
 import { useClient } from 'openland-web/utils/useClient';

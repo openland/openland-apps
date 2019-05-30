@@ -53,9 +53,9 @@ import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvance
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 import { AvatarModal } from './UserProfileComponent';
-import { canUseDOM } from '../../../../../openland-y-utils/canUseDOM';
-import { XIcon } from '../../../../../openland-x/XIcon';
-import { TextProfiles } from '../../../../../openland-text/TextProfiles';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XIcon } from 'openland-x/XIcon';
+import { TextProfiles } from 'openland-text/TextProfiles';
 import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XModalController } from 'openland-x/showModal';

@@ -20,11 +20,11 @@ const compareCurrentMeasureWithSavedMeasure = ({
         // }
 
         if (key === 'CacheComponent' && currentMeasureItem.measure > 300) {
-            // throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
         }
 
         if (key.indexOf('DisplayNone') !== -1 && currentMeasureItem.measure > 150) {
-            // throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
         }
     }
 };
