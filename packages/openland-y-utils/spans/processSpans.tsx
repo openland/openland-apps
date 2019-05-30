@@ -51,13 +51,17 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
             ],
         };
     } else {
-        return {
-            type: 'text',
+        const currentSpan: Span = {
+            type: 'root',
             offset: 0,
             length: rootText.length,
             textRaw: rootText,
             text: TextRenderProccessor.processSpan('text', rootText),
         };
+
+        currentSpan.childrens = getTextSpans(text, currentSpan);
+
+        return currentSpan;
     }
 };
 
@@ -70,9 +74,9 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
         let sortedSpans = (spans || []).sort(
             (a, b) => (a.offset - b.offset) * 100000 + (b.length - a.length),
         );
-        let rootSpan = [{ offset: 0, length: text.length }];
+        let rootSpan = { offset: 0, length: text.length };
 
-        spans = [...(rootSpan as any), ...sortedSpans];
+        spans = [rootSpan as any, ...sortedSpans];
 
         res.push(
             ...TextRenderProccessor.removeLineBreakers(

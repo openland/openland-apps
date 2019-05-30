@@ -6,6 +6,7 @@ import {
 } from 'openland-api/Types';
 
 export type SpanType =
+    | 'root'
     | 'link'
     | 'text'
     | 'new_line'
@@ -24,6 +25,7 @@ export type SpanType =
     | 'rotating'
     | 'emoji';
 export type Span =
+    | SpanRoot
     | SpanUser
     | SpanAll
     | SpanRoom
@@ -49,6 +51,10 @@ interface SpanAbs {
     textRaw?: string;
     text?: string | Element[] | JSX.Element[] | Element | JSX.Element;
     childrens?: Span[];
+}
+
+export interface SpanRoot extends SpanAbs {
+    type: 'root';
 }
 
 export interface SpanText extends SpanAbs {
