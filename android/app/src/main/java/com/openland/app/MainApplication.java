@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import org.wonday.pdf.RCTPdfView;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
@@ -65,6 +66,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RCTPdfView(),
             new BackgroundTimerPackage(),
             new RNReactNativeHapticFeedbackPackage(),
             new InCallManagerPackage(),

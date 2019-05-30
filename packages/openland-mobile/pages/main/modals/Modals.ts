@@ -45,5 +45,8 @@ export const Modals = {
     },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
+    },
+    showPdfPreview(router: SRouter, uuid: string, name: string, size: number) {
+        router.push('PdfPreview', { config: { uuid, name, size } });
     }
 };

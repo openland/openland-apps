@@ -24,6 +24,7 @@ import { SAnimated } from 'react-native-s/SAnimated';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { Track } from 'openland-engines/Tracking';
+import { setDiscoverDone, prepareDiscoverStatus } from './main/Discover';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -161,6 +162,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         (async () => {
             await ThemePersister.prepare();
             await AppStorage.prepare();
+            await prepareDiscoverStatus();
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));

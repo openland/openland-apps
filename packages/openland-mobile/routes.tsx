@@ -47,6 +47,8 @@ import Tasks from './pages/apps/Tasks';
 import { MessageComments } from './pages/main/MessageComments';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
+import { SuggestedGroups } from './pages/main/SuggestedGroups';
+import { PdfPreview } from './pages/main/modals/PdfPreview';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -63,6 +65,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('FilePreview', FilePreview)
+  .addRoute('PdfPreview', PdfPreview)
   .addRoute('PhoneVerify', PhoneVerify)
   .addRoute('CountryPicker', CountryPicker)
   .addRoute('Compose', Compose)
@@ -104,6 +107,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('HomeDialogs', HomeDialogs)
 
   .addRoute('Discover', Discover)
+  .addRoute('SuggestedGroups', SuggestedGroups)
 
   .addRoute('Apps/Tasks', Tasks)
 

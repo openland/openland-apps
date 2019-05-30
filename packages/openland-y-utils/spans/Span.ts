@@ -130,9 +130,7 @@ export const SpanSymbolToType: {
 } = {
     '*': { type: MessageSpanType.Bold },
     '```': { type: MessageSpanType.CodeBlock, master: true },
-    "'''": { type: MessageSpanType.CodeBlock, master: true },
     '`': { type: MessageSpanType.InlineCode },
-    "'": { type: MessageSpanType.InlineCode },
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
     _: { type: MessageSpanType.Italic },

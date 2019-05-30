@@ -243,6 +243,17 @@ export const RoomQuery = gql`
     ${OrganizationMedium}
 `;
 
+export const RoomsQuery = gql`
+    query Rooms($ids: [ID!]!) {
+        rooms(ids: $ids) {
+            ...RoomShort
+        }
+    }
+    ${RoomShort}
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
 export const RoomPicoQuery = gql`
     query RoomPico($id: ID!) {
         room(id: $id) {
@@ -835,6 +846,17 @@ export const RoomJoinMutation = gql`
     ${UserShort}
     ${OrganizationMedium}
     ${RoomFull}
+`;
+
+export const RoomsJoinMutation = gql`
+    mutation RoomsJoin($roomsIds: [ID!]!) {
+        join: betaRoomsJoin(roomsIds: $roomsIds) {
+            ...RoomShort
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomShort}
 `;
 
 export const RoomSendEmailInviteMutation = gql`

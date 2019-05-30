@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { MutationFunc } from 'react-apollo';
 import { XView } from 'react-mental';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -12,9 +11,7 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { RoomMembersPaginated } from 'openland-api/Types';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { showModalBox } from 'openland-x/showModalBox';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
@@ -61,6 +58,12 @@ import { XIcon } from '../../../../../openland-x/XIcon';
 import { TextProfiles } from '../../../../../openland-text/TextProfiles';
 import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { XModalController } from 'openland-x/showModal';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -191,45 +194,41 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const AboutPlaceholder = (props: { target: any; description: string | null; roomId: string }) => {
-    let client = useClient();
-    let editDescription = (props as any).description;
-    return (
-        <XModalForm
-            scrollableContent={true}
-            target={(props as any).target}
-            useTopCloser={true}
-            title="Add short description"
-            defaultAction={async data => {
-                let newDescription = data.input.description;
+const DescriptionModalContent = (props: {
+    description: string | null;
+    roomId: string;
+    ctx: XModalController;
+}) => {
+    const client = useClient();
+    const form = useForm();
+    const editDescription = (props as any).description;
+    const descriptionField = useField('input.description', editDescription, form);
 
-                await client.mutateRoomUpdate({
-                    roomId: (props as any).roomId,
-                    input: {
-                        ...(newDescription !== editDescription
-                            ? { description: newDescription }
-                            : {}),
-                    },
-                });
-            }}
-            defaultData={{
+    const createAction = () => {
+        form.doAction(async () => {
+            await client.mutateRoomUpdate({
+                roomId: (props as any).roomId,
                 input: {
-                    description: (props as any).description || '',
+                    ...(descriptionField.value !== editDescription
+                        ? { description: descriptionField.value }
+                        : {}),
                 },
-            }}
-        >
-            <XVertical>
-                <XFormLoadingContent>
-                    <XFormField field="input.description">
-                        <XTextArea
-                            valueStoreKey="fields.input.description"
-                            placeholder="Description"
-                            resize={false}
-                        />
-                    </XFormField>
-                </XFormLoadingContent>
-            </XVertical>
-        </XModalForm>
+            });
+            props.ctx.hide();
+        });
+    };
+
+    return (
+        <XView borderRadius={8}>
+            {form.loading && <XLoader loading={form.loading} />}
+            {form.error && <XErrorMessage message={form.error} />}
+            <XModalContent>
+                <XTextArea {...descriptionField.input} placeholder="Description" resize={false} />
+            </XModalContent>
+            <XModalFooter>
+                <XButton text="Save" style="primary" size="large" onClick={createAction} />
+            </XModalFooter>
+        </XView>
     );
 };
 
@@ -250,10 +249,17 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <Section separator={0}>
                         <XSubHeader title="About" paddingBottom={0} />
                         <SectionContent>
-                            <AboutPlaceholder
-                                roomId={chat.id}
-                                description={chat.description}
-                                target={<EditButton text="Add a short description" />}
+                            <EditButton
+                                text="Add a short description"
+                                onClick={() =>
+                                    showModalBox({ title: 'Add short description' }, ctx => (
+                                        <DescriptionModalContent
+                                            roomId={chat.id}
+                                            description={chat.description}
+                                            ctx={ctx}
+                                        />
+                                    ))
+                                }
                             />
                         </SectionContent>
                     </Section>

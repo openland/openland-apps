@@ -13021,6 +13021,14 @@ react-native-modalbox@^1.6.0:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
 
+react-native-pdf@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.1.0.tgz#dd209171cec9a04d74a4b12e71ff78ecb98465d4"
+  integrity sha512-zmeSmsheqydC+Vm8l74XSJ/gzLp9LZcT49lJasBXl9NH67yHd0HoW9Un5jawM+xwHwx/xKsw6lOUb0HHVjq6ng==
+  dependencies:
+    crypto-js "^3.1.9-1"
+    prop-types "^15.5.10"
+
 react-native-permissions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"

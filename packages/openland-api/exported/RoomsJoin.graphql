@@ -1,0 +1,6 @@
+mutation RoomsJoin($roomsIds: [ID!]!) {
+  join: betaRoomsJoin(roomsIds: $roomsIds) {
+    __typename
+    ...RoomShort
+  }
+}
