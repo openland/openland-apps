@@ -41,17 +41,18 @@ type XShortcutsT = {
     keymap: KeymapT;
     supressOtherShortcuts?: boolean;
 };
+
+let listOfIdKeymaps: { id: string; keymap: KeymapT; supressOtherShortcuts?: boolean }[] = [];
 export class XShortcuts extends React.Component<XShortcutsT> {
     componentId: string;
-    listOfIdKeymaps: { id: string; keymap: KeymapT; supressOtherShortcuts?: boolean }[];
+
     constructor(props: XShortcutsT) {
         super(props);
         this.componentId = UUID();
-        this.listOfIdKeymaps = [];
     }
 
     componentWillMount() {
-        this.listOfIdKeymaps.push({
+        listOfIdKeymaps.push({
             id: this.componentId,
             keymap: this.props.keymap,
             supressOtherShortcuts: this.props.supressOtherShortcuts,
@@ -61,20 +62,19 @@ export class XShortcuts extends React.Component<XShortcutsT> {
     }
 
     componentWillUnmount() {
-        this.listOfIdKeymaps = this.listOfIdKeymaps.filter(
+        listOfIdKeymaps = listOfIdKeymaps.filter(
             ({ id }: { id: string }) => id !== this.componentId,
         );
+
         this.updateKeymap();
     }
 
     updateKeymap = () => {
         let finalKeymap = {};
 
-        this.listOfIdKeymaps.forEach(({ keymap }: { keymap: KeymapT }) => {
+        listOfIdKeymaps.forEach(({ keymap }: { keymap: KeymapT }) => {
             finalKeymap = { ...finalKeymap, ...keymap };
         });
-
-        console.log(finalKeymap);
 
         shortcutManager.setKeymap({
             App: finalKeymap,
@@ -82,15 +82,29 @@ export class XShortcuts extends React.Component<XShortcutsT> {
     };
 
     handleActions = (action: string, event: React.KeyboardEvent) => {
-        const filteredIdKeymapsPairs = this.listOfIdKeymaps.filter(
+        const filteredIdKeymapsPairs = listOfIdKeymaps.filter(
             ({ keymap }: { keymap: KeymapT }) => Object.keys(keymap).indexOf(action) !== -1,
         );
 
-        console.log(filteredIdKeymapsPairs);
+        const myDepth = filteredIdKeymapsPairs.findIndex(item => item.id === this.componentId);
+        const suppressIds = filteredIdKeymapsPairs
+            .filter(item => item.supressOtherShortcuts)
+            .map(filteredItem => {
+                return filteredIdKeymapsPairs.findIndex(item => item.id === filteredItem.id);
+            });
+
+        let isSuppresed = false;
+
+        for (let i = 0; i < suppressIds.length; i++) {
+            if (suppressIds[i] > myDepth) {
+                isSuppresed = true;
+            }
+        }
 
         if (
             filteredIdKeymapsPairs.length &&
-            filteredIdKeymapsPairs[filteredIdKeymapsPairs.length - 1].id === this.componentId
+            filteredIdKeymapsPairs.filter(item => item.id === this.componentId).length &&
+            !isSuppresed
         ) {
             this.props.handlerMap[action](event);
         }

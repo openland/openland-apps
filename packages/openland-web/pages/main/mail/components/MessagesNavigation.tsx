@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { tabs, tabsT } from '../tabs';
+import { XShortcuts } from 'openland-x/XShortcuts';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/ConversationContainerWrapper';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
@@ -8,6 +9,7 @@ import { Navigation } from 'openland-web/components/Navigation';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -49,7 +51,7 @@ export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
 
-        // let isCompose = path.endsWith('/new');
+        const { replace } = React.useContext(XRoutingContext)!;
 
         let isCall = path.endsWith('/call');
         let isOrganizationInvite = path.includes('join') && !path.includes('joinChannel');
@@ -96,33 +98,44 @@ export const MessagesNavigation = XMemo(
 
         return (
             <>
-                <Navigation
-                    title="Messages"
-                    tab={tab}
-                    menuRightContent={<NewOptionsButton />}
-                    secondFragmentHeader={
-                        <React.Suspense fallback={null}>
-                            {chatId && (
-                                <ChatHeaderViewLoader
-                                    variables={{
-                                        id: chatId,
-                                    }}
-                                />
-                            )}
-                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                        </React.Suspense>
-                    }
-                    firstFragment={<DialogListFragment />}
-                    secondFragment={
-                        <ErrorBoundary>
+                <XShortcuts
+                    handlerMap={{
+                        ESC: () => {
+                            replace('/mail');
+                        },
+                    }}
+                    keymap={{
+                        ESC: 'esc',
+                    }}
+                >
+                    <Navigation
+                        title="Messages"
+                        tab={tab}
+                        menuRightContent={<NewOptionsButton />}
+                        secondFragmentHeader={
                             <React.Suspense fallback={null}>
-                                <ConversationContainerWrapper
-                                    {...{ tab, conversationId: cid, oid, uid, cid }}
-                                />
+                                {chatId && (
+                                    <ChatHeaderViewLoader
+                                        variables={{
+                                            id: chatId,
+                                        }}
+                                    />
+                                )}
+                                <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
-                        </ErrorBoundary>
-                    }
-                />
+                        }
+                        firstFragment={<DialogListFragment />}
+                        secondFragment={
+                            <ErrorBoundary>
+                                <React.Suspense fallback={null}>
+                                    <ConversationContainerWrapper
+                                        {...{ tab, conversationId: cid, oid, uid, cid }}
+                                    />
+                                </React.Suspense>
+                            </ErrorBoundary>
+                        }
+                    />
+                </XShortcuts>
             </>
         );
     },
