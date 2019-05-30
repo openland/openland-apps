@@ -259,7 +259,9 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             <XShortcuts
                 supressOtherShortcuts
                 handlerMap={{
-                    ESC: onClose,
+                    ESC: () => {
+                        onClose();
+                    },
                 }}
                 keymap={{
                     ESC: 'esc',
