@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XOverflow } from '../../openland-web/components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
@@ -12,7 +12,6 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const OrganizationCardWrapper = makeNavigable(
     Glamorous.div<NavigableChildProps>(() => ({

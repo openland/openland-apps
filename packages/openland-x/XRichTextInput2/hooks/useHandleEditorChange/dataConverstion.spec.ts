@@ -2,7 +2,7 @@ import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 const {
     preprocessMentions,
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
-import { UserForMention } from '../../../../openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 
 const makeIncrementFunc = () => {
     let i = 0;

@@ -10,6 +10,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import ArrowDownIcon from 'openland-icons/ic-arrow-down.svg';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -20,23 +21,26 @@ const TextAlignCenter = ({ children }: { children: any }) => {
 };
 
 const letterSpacingClassName = css`
-    letter-spacing: 0.9px;
+    letter-spacing: 0.8px;
 `;
 
 const InviteFragment = ({
+    founderChatId,
     founderChatsInvite,
     primaryOrganizationName,
     primaryOrganizationId,
     primaryOrganizationInvite,
     openlandInvite,
 }: {
+    founderChatId: string;
     founderChatsInvite: string;
     primaryOrganizationName: string;
     primaryOrganizationId: string;
     primaryOrganizationInvite: string;
     openlandInvite: string;
 }) => {
-    let router = React.useContext(XRouterContext)!;
+    const [moreInvite, showMoreInvite] = React.useState(false);
+    const router = React.useContext(XRouterContext)!;
 
     const isMobile = useIsMobile();
 
@@ -103,7 +107,12 @@ const InviteFragment = ({
                             <span className={letterSpacingClassName}>Founder Chats</span>
                         </XView>
                     </XView>
-                    <OwnerLinkComponent appInvite={founderChatsInvite} />
+                    <OwnerLinkComponent
+                        appInvite={founderChatsInvite}
+                        id={founderChatId}
+                        isRoom={true}
+                        useRevoke={true}
+                    />
                     <XView marginTop={36}>
                         <XView
                             flexDirection="row"
@@ -124,18 +133,39 @@ const InviteFragment = ({
                         <OwnerLinkComponent
                             footerNote="Anyone can use this link to join your organization"
                             appInvite={primaryOrganizationInvite}
+                            id={primaryOrganizationId}
+                            isOrganization={true}
+                            useRevoke={true}
                         />
                     </XView>
-
-                    <XView marginTop={36} paddingBottom={100}>
-                        <XView color={'#000'} fontWeight="600" fontSize={16} marginBottom={12}>
-                            Invite to Openland
+                    {!moreInvite && (
+                        <XView
+                            flexDirection="row"
+                            alignItems="center"
+                            cursor="pointer"
+                            marginTop={30}
+                            paddingBottom={100}
+                            onClick={() => showMoreInvite(true)}
+                        >
+                            <XView marginRight={8} flexDirection="row" alignItems="center">
+                                <ArrowDownIcon />
+                            </XView>
+                            <XView fontSize={14} color="rgba(0, 0, 0, 0.5)">
+                                More invites
+                            </XView>
                         </XView>
-                        <OwnerLinkComponent
-                            footerNote="Anyone can use this link to join Openland"
-                            appInvite={openlandInvite}
-                        />
-                    </XView>
+                    )}
+                    {moreInvite && (
+                        <XView marginTop={36} paddingBottom={100}>
+                            <XView color={'#000'} fontWeight="600" fontSize={16} marginBottom={12}>
+                                Invite to Openland
+                            </XView>
+                            <OwnerLinkComponent
+                                footerNote="Anyone can use this link to join Openland"
+                                appInvite={openlandInvite}
+                            />
+                        </XView>
+                    )}
                 </XView>
             </XView>
         </XView>
@@ -166,6 +196,7 @@ export default withApp(
             <>
                 <XDocumentHead title={'Invite People'} />
                 <InviteFragment
+                    founderChatId={foundersChatId}
                     founderChatsInvite={founderChatsInvite}
                     primaryOrganizationId={profile.primaryOrganization!!.id}
                     primaryOrganizationName={profile.primaryOrganization!!.name}
