@@ -36,25 +36,46 @@ function csvToArray(text: string) {
     return a;
 };
 
+// keep it in declarative way so we can move it easily to backend 
+const groupMeta: { [group: string]: { score: number, title?: string } | undefined } = {
+    'Role': { score: 1 },
+    'Profession': { score: 2 },
+    'Engeneer_sub': { score: 2, title: 'Interest' },
+    'Industry': { score: 3, title: 'Sectors' },
+    'IT_sub': { score: 2, title: 'Technologies' },
+    'Goal': { score: 5 },
+}
+
+const tagsGroupsMap: { [tag: string]: string | undefined } = {
+    'Engineer': 'Engeneer_sub',
+    'Founder': 'Industry',
+    'IT': 'IT_sub',
+}
+
+const pages: { [tag: string]: { title?: string, subtitle?: string, tagGroups: (string | { title: string, groups: string[] })[] } | undefined } = {
+    'root': {
+        title: 'Discover chats',
+        subtitle: 'Help us find the right chats for you',
+        tagGroups: [
+            { title: 'What areas have you worked on?', groups: ['Role', 'Profession'] },
+            // 'Industry'
+        ]
+    },
+    'Founder': {
+        title: 'Priority Tasks',
+        subtitle: 'What are your key priorities at the moment?',
+        tagGroups: [
+            'Goal'
+        ]
+    }
+}
+
 type Row = { name: string, id: string, tags: string[] };
 export type Tag = { name: string, group: string, score: number };
+export type TagGroup = { name: string, title?: string, tags: Tag[] };
 let _parsed: Row[]
 let _tagsGroupsMap = new Map<string, Tag[]>();
-let _tagsGroups: { name: string, tags: Tag[] }[] = [];
-
-let _getGroupScore = (group: string) => {
-    if (group === 'Role') {
-        return 1;
-    } else if (group === 'Profession') {
-        return 2;
-    } else if (group === 'Industry') {
-        return 3;
-    } else if (group === 'Goal') {
-        return 4;
-    }
-
-    return 1;
-}
+let _tagsGroups: TagGroup[] = [];
 
 let _prepare = () => {
     if (!_parsed) {
@@ -66,8 +87,9 @@ let _prepare = () => {
         // init tag groups
         for (let i = 3; i < tagsGroups.length; i++) {
             let array: Tag[] = [];
+            let meta = groupMeta[tagsGroups[i]];
             _tagsGroupsMap.set(tagsGroups[i], array);
-            _tagsGroups.push({ name: tagsGroups[i], tags: array });
+            _tagsGroups.push({ name: tagsGroups[i], tags: array, title: meta && meta.title });
         }
         for (let i = 1; i < split.length; i++) {
             let line = csvToArray(split[i]);
@@ -85,48 +107,13 @@ let _prepare = () => {
                 let lineTags = line[j].replace('"', '').split(',').map(s => s.trim()).filter(s => !!s);
                 for (let t of lineTags) {
                     if (!_tagsGroupsMap.get(groupName)!.find(tag => tag.name === t)) {
-                        _tagsGroupsMap.get(groupName)!.push({ name: t, group: groupName, score: _getGroupScore(groupName) })
+                        let meta = groupMeta[groupName];
+                        _tagsGroupsMap.get(groupName)!.push({ name: t, group: groupName, score: meta ? meta.score : 1 })
                     }
                 }
             }
         }
     }
-}
-
-export const getData = () => {
-    _prepare();
-    return _parsed;
-}
-
-export const getTags = () => {
-    _prepare();
-    return _tagsGroups
-}
-
-export const getRootTags = () => {
-    _prepare();
-    let res: { name: string, tags: Tag[] }[] = []
-    let roleExt: Tag[] = []
-    res.push({ name: 'role_ext', tags: roleExt });
-    for (let g of _tagsGroups) {
-        if (g.name === 'Role' || g.name === 'Profession') {
-            roleExt.push(...g.tags);
-        } else if (g.name === 'Industry') {
-            res.push(g);
-        }
-    }
-    return res
-}
-
-export const getPreprocessedTags2 = () => {
-    _prepare();
-    let res: { name: string, tags: Tag[] }[] = []
-    for (let g of _tagsGroups) {
-        if (g.name === 'Goal') {
-            res.push(g);
-        }
-    }
-    return res
 }
 
 export const resolveSuggestedChats = (tags: Set<Tag>) => {
@@ -143,23 +130,40 @@ export const resolveSuggestedChats = (tags: Set<Tag>) => {
     }
 
     return [...resMap].filter(e => !!e[0].id).sort((a, b) => b[1] - a[1]).map(e => e[0]);
-
 }
 
-export const getTagGroup = (name: string) => {
+export const getTagGroup = (name: string): TagGroup => {
     _prepare();
-    return { name, tags: _tagsGroupsMap.get(name) || [] };
-}
-
-export const tagsGroupsMap = {
-    'Engineer': 'Engeneer_sub',
-    // 'Founder': 'Industry',
-    'IT': 'IT_sub',
+    let meta = groupMeta[name];
+    return { name, tags: _tagsGroupsMap.get(name) || [], title: meta && meta.title };
 }
 
 export const getSubTags = (tag: Tag) => {
     if (tagsGroupsMap[tag.name]) {
-        return getTagGroup(tagsGroupsMap[tag.name]).tags.map(t => t)
+        return getTagGroup(tagsGroupsMap[tag.name]!).tags.map(t => t)
     }
     return [];
+}
+
+export const havePageForTag = (tag: string) => {
+    return !!pages[tag];
+}
+
+export const getSubTagGroup = (tag: string) => {
+    return tagsGroupsMap[tag] ? getTagGroup(tagsGroupsMap[tag]!) : undefined;
+}
+
+export const getPageForTag: (tag: string) => { title?: string, subtitle?: string, groups: TagGroup[] } = (tag: string) => {
+    _prepare();
+    let page = pages[tag] || { tagGroups: [] };
+    let groups = page.tagGroups.map((gr, i) => {
+        if (typeof gr === 'string') {
+            return getTagGroup(gr);
+        } else {
+            let res1 = { name: 'combined_' + i, title: gr.title, tags: [] as Tag[] };
+            gr.groups.map(g => (((_tagsGroupsMap.get(g) || [] as Tag[]).map(t => res1.tags.push(t)))));
+            return res1;
+        }
+    });
+    return { title: page.title, subtitle: page.subtitle, groups };
 }
