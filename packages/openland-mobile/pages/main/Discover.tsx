@@ -5,13 +5,14 @@ import { Platform, View, Text, TouchableOpacity, AsyncStorage } from 'react-nati
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Tag, getPageForTag, resolveSuggestedChats, getTagGroup, getSubTags, havePageForTag, getSubTagGroup, TagGroup } from 'openland-mobile/pages/main/discoverData';
+import { Tag, getPageForTag, getSubTags, havePageForTag, getSubTagGroup, TagGroup } from 'openland-mobile/pages/main/discoverData';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
-    return discoverDone;
+    return discoverDone && false;
 }
 export const setDiscoverDone = async (done: boolean) => {
     await AsyncStorage.setItem('discover_done', 'done');
@@ -22,45 +23,14 @@ export const prepareDiscoverStatus = async () => {
     discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
 }
 
-type tagColors = 'green' | 'blue' | 'purple';
-const resolveStyle = (group: string): tagColors => {
-    if (group === 'Industry') {
-        return 'green';
-    } else if (group === 'Goal') {
-        return 'purple';
-    }
-    return 'blue';
-}
-const tagStyles: { [color in tagColors]: { textColor: string, backgroundColor: string, textColorSelected: string, backgroundColorSelected: string } } = {
-    'green': {
-        textColor: '#81d365',
-        textColorSelected: '#fff',
-        backgroundColor: '#ecf9e8',
-        backgroundColorSelected: '#81d365',
-
-    },
-    'blue': {
-        textColor: '#0084fe',
-        textColorSelected: '#fff',
-        backgroundColor: '#e5f2fe',
-        backgroundColorSelected: '#0084fe',
-    },
-    'purple': {
-        textColor: '#8f3fee',
-        textColorSelected: '#fff',
-        backgroundColor: '#f4ecfe',
-        backgroundColorSelected: '#8f3fee',
-    }
-}
-
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style = tagStyles[resolveStyle(props.tag.group)];
+    let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
         props.onPress(props.tag);
     }, [props.tag])
     return <TouchableOpacity onPress={callback} activeOpacity={0.6}>
-        <View style={{ marginRight: 10, marginBottom: 12, paddingHorizontal: 18, paddingVertical: 12, backgroundColor: props.selected ? style.backgroundColorSelected : style.backgroundColor, borderRadius: 12 }}>
-            <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, color: props.selected ? style.textColorSelected : style.textColor }}>
+        <View style={{ marginRight: 10, marginBottom: 12, paddingHorizontal: 18, paddingVertical: 12, backgroundColor: props.selected ? theme.accentColor : theme.accentBackgroundColor, borderRadius: 12 }}>
+            <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, color: props.selected ? theme.textInverseColor : theme.accentColor }}>
                 {props.tag.name}
             </Text>
         </View >
@@ -68,6 +38,7 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
 }
 
 const TagsCloud = (props: { tagsGroups: TagGroup, selected: Set<Tag>, onChange: (tag: Tag) => void }) => {
+    let theme = useThemeGlobal();
     let selected = props.selected;
 
     let sub = []
@@ -80,7 +51,7 @@ const TagsCloud = (props: { tagsGroups: TagGroup, selected: Set<Tag>, onChange: 
     return (
         <View flexDirection="column">
             <View height={15} />
-            {props.tagsGroups.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium }}>{props.tagsGroups.title}</Text>}
+            {props.tagsGroups.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroups.title}</Text>}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
                 {props.tagsGroups.tags.map(tag => (
                     <TagButton tag={tag} onPress={props.onChange} selected={!![...selected.values()].find(v => v.name === tag.name)} />
@@ -92,6 +63,7 @@ const TagsCloud = (props: { tagsGroups: TagGroup, selected: Set<Tag>, onChange: 
 }
 
 const DiscoverPage = (props: PageProps) => {
+    let theme = React.useContext(ThemeContext);
     let path = (props.router.params.path || []) as string[];
     let depth = props.router.params.depth || 0;
     let tag = path[depth - 1];
@@ -138,7 +110,7 @@ const DiscoverPage = (props: PageProps) => {
             {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
             <SHeaderButton title={'Next'} onPress={[...selected.values()].length ? next : undefined} />
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20 }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
                 {groups.map(tg => (
                     <TagsCloud selected={selected} onChange={onSelectChange} tagsGroups={tg} />
                 ))}

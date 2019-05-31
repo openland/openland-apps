@@ -22,6 +22,7 @@ export interface AppTheme {
 
     accentColor: string;
     accentDisabledColor: string;
+    accentBackgroundColor: string;
     hairlineColor: string;
     groupHeaderColor: string;
 
@@ -114,6 +115,7 @@ export const DefaultTheme: AppTheme = {
     arrowColor: '#D1D1D6',
     accentColor: '#0084fe',
     accentDisabledColor: '#c8c8c8',
+    accentBackgroundColor: '#e5f2fe',
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
     selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
@@ -207,6 +209,7 @@ export const DarkTheme: AppTheme = {
     arrowColor: '#565658',
     accentColor: 'white',
     accentDisabledColor: '#808080',
+    accentBackgroundColor: '#808080',
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',

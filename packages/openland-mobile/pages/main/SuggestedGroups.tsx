@@ -7,21 +7,23 @@ import { RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
-import { View, Text, TextStyle, AsyncStorage } from 'react-native';
+import { View, Text, TextStyle, Platform } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { storeKeyNameFromField } from 'apollo-utilities';
 import { Image } from 'react-native';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { select } from 'glamor';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { setDiscoverDone } from './Discover';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { CenteredHeader } from './components/CenteredHeader';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SHeader } from 'react-native-s/SHeader';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
         props.onPress(props.item);
     }, [props.onPress]);
+    let theme = React.useContext(ThemeContext);
     return <ZListItemBase
         height={60}
         onPress={onPress}
@@ -42,7 +44,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     fontSize: 16,
                     lineHeight: 19,
                     height: 19,
-                    color: '#000',
+                    color: theme.textColor,
                     fontWeight: TextStyles.weight.medium
                 } as TextStyle}
             >{props.item.title}
@@ -54,15 +56,15 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     fontSize: 13,
                     lineHeight: 15,
                     height: 15,
-                    color: '#99a2b0',
+                    color: theme.textSecondaryColor,
                 }}
             >{props.item.membersCount + (props.item.membersCount === 1 ? ' members' : ' members')}
             </Text>
         </View>
 
-        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, backgroundColor: props.selected ? '#e5f2fe' : '#0084fe', alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-            {props.selected && <Image source={require('assets/ic-checkmark.png')} style={{ tintColor: "#0084fe" }} />}
-            {!props.selected && <Image source={require('assets/ic-add-24.png')} style={{ tintColor: "#fff" }} />}
+        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.accentColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
+            {props.selected && <Image source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.accentColor }} />}
+            {!props.selected && <Image source={require('assets/ic-add-24.png')} style={{ tintColor: theme.backgroundColor }} />}
         </View>
     </ZListItemBase>
 }
@@ -71,6 +73,7 @@ const SuggestedGroupsPage = (props: PageProps) => {
     let [chats, setChats] = React.useState([] as RoomShort[]);
     let [selected, setSelected] = React.useState(new Set<string>());
     let [loading, setLoading] = React.useState(true);
+    let theme = React.useContext(ThemeContext);
 
     React.useEffect(() => {
         (async () => {
@@ -105,11 +108,32 @@ const SuggestedGroupsPage = (props: PageProps) => {
         })()
     }, [selected]);
 
+    let exit = React.useCallback(() => {
+        props.router.pushAndResetRoot('Home');
+    }, [])
+
     return (
         <>
             {loading && <ZLoader />}
-            {<SHeaderButton title={'Done'} onPress={onAdd} />}
+            {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
+            {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
+            {<SHeaderButton title={'Done'} onPress={exit} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
+                <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
+                <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <Text
+                        numberOfLines={1}
+                        style={{
+                            flexGrow: 1,
+                            fontSize: 16,
+                            color: theme.textSecondaryColor,
+                            fontWeight: TextStyles.weight.medium
+                        }}
+                    >
+                        {chats.length + (chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
+                    </Text>
+                    {!!selected.size && <ZRoundedButton title={selected.size > 1 ? 'join all' : 'join'} onPress={onAdd} />}
+                </View>
                 {chats.map((item) => (
                     item.__typename === 'SharedRoom' &&
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
@@ -119,4 +143,4 @@ const SuggestedGroupsPage = (props: PageProps) => {
     );
 };
 
-export const SuggestedGroups = withApp(SuggestedGroupsPage, { navigationAppearance: 'small-hidden' });
+export const SuggestedGroups = withApp(SuggestedGroupsPage, { navigationAppearance: 'large', hideHairline: true });
