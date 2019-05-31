@@ -6,6 +6,7 @@ import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
+import { XShortcuts } from 'openland-x/XShortcuts';
 
 const boxStyle = css`
     overflow: visible;
@@ -209,6 +210,20 @@ export interface XModalBoxConfig {
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     showModal(ctx => {
-        return <ModalBoxComponent modal={modal} ctx={ctx} config={config} />;
+        return (
+            <XShortcuts
+                supressOtherShortcuts
+                handlerMap={{
+                    ESC: () => {
+                        ctx.hide();
+                    },
+                }}
+                keymap={{
+                    ESC: 'ESC',
+                }}
+            >
+                <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
+            </XShortcuts>
+        );
     });
 }

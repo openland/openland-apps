@@ -44,58 +44,71 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
     }
 
     return (
-        <ReactModal
-            isOpen={props.isOpen}
-            onRequestClose={props.onCloseRequest}
-            shouldCloseOnOverlayClick={props.closeOnClick !== undefined ? props.closeOnClick : true}
-            shouldCloseOnEsc={true}
-            ariaHideApp={false}
-            closeTimeoutMS={300}
-            style={{
-                overlay: {
-                    zIndex: 2,
-                    backgroundColor:
-                        props.size !== 'x-large' && props.size !== 'large'
-                            ? 'rgba(0, 0, 0, 0.4)'
-                            : 'rgba(0, 0, 0, 0.3)',
-                },
-                content: {
-                    display: 'block',
-                    background: props.transparent ? 'transparent' : '#ffffff',
-                    margin: 'auto',
-                    padding: 0,
-                    overflow: 'visible',
-
-                    // Border/shadow
-                    border: 'none',
-                    boxShadow: props.transparent ? 'none' : '0px 2px 2px 0px #777',
-                    borderRadius: isMobile ? 0 : 6,
-
-                    // Sizes
-                    width: isMobile
-                        ? '100%'
-                        : props.size !== 'x-large'
-                        ? width
-                        : 'calc(100% - 128px)',
-                    top: isMobile
-                        ? 0
-                        : props.size !== 'x-large' && !props.scrollableContent
-                        ? 96
-                        : 64,
-                    left: isMobile
-                        ? 0
-                        : props.size !== 'x-large'
-                        ? `calc(50% - ${width / 2}px)`
-                        : 64,
-                    right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
-                    bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+        <XShortcuts
+            handlerMap={{
+                ESC: () => {
+                    props.onCloseRequest();
                 },
             }}
+            keymap={{
+                ESC: 'ESC',
+            }}
         >
-            <XModalContext.Provider value={{ close: props.onCloseRequest }}>
-                {props.children}
-            </XModalContext.Provider>
-        </ReactModal>
+            <ReactModal
+                isOpen={props.isOpen}
+                onRequestClose={props.onCloseRequest}
+                shouldCloseOnOverlayClick={
+                    props.closeOnClick !== undefined ? props.closeOnClick : true
+                }
+                shouldCloseOnEsc={true}
+                ariaHideApp={false}
+                closeTimeoutMS={300}
+                style={{
+                    overlay: {
+                        zIndex: 2,
+                        backgroundColor:
+                            props.size !== 'x-large' && props.size !== 'large'
+                                ? 'rgba(0, 0, 0, 0.4)'
+                                : 'rgba(0, 0, 0, 0.3)',
+                    },
+                    content: {
+                        display: 'block',
+                        background: props.transparent ? 'transparent' : '#ffffff',
+                        margin: 'auto',
+                        padding: 0,
+                        overflow: 'visible',
+
+                        // Border/shadow
+                        border: 'none',
+                        boxShadow: props.transparent ? 'none' : '0px 2px 2px 0px #777',
+                        borderRadius: isMobile ? 0 : 6,
+
+                        // Sizes
+                        width: isMobile
+                            ? '100%'
+                            : props.size !== 'x-large'
+                            ? width
+                            : 'calc(100% - 128px)',
+                        top: isMobile
+                            ? 0
+                            : props.size !== 'x-large' && !props.scrollableContent
+                            ? 96
+                            : 64,
+                        left: isMobile
+                            ? 0
+                            : props.size !== 'x-large'
+                            ? `calc(50% - ${width / 2}px)`
+                            : 64,
+                        right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+                        bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+                    },
+                }}
+            >
+                <XModalContext.Provider value={{ close: props.onCloseRequest }}>
+                    {props.children}
+                </XModalContext.Provider>
+            </ReactModal>
+        </XShortcuts>
     );
 });
 
@@ -379,20 +392,6 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             throw Error('You should provide show, targetQuery or target');
         }
 
-        return (
-            <XShortcuts
-                supressOtherShortcuts
-                handlerMap={{
-                    ESC: () => {
-                        this.onModalCloseRequest();
-                    },
-                }}
-                keymap={{
-                    ESC: 'ESC',
-                }}
-            >
-                {result}
-            </XShortcuts>
-        );
+        return result;
     }
 }

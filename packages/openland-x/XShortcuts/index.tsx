@@ -69,6 +69,18 @@ export class XShortcuts extends React.Component<XShortcutsT> {
         this.updateKeymap();
     }
 
+    componentWillReceiveProps(nextProps: XShortcutsT) {
+        const index = listOfIdKeymaps.findIndex(({ id }) => id === this.componentId);
+
+        listOfIdKeymaps[index] = {
+            id: this.componentId,
+            keymap: this.props.keymap,
+            supressOtherShortcuts: nextProps.supressOtherShortcuts,
+        };
+
+        this.updateKeymap();
+    }
+
     updateKeymap = () => {
         let finalKeymap = {};
 

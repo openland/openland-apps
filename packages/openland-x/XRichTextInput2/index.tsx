@@ -103,6 +103,7 @@ export const XRichTextInput2 = React.memo(
 
             return (
                 <XShortcuts
+                    supressOtherShortcuts={emojiState.isSelecting || mentionState.isSelecting}
                     handlerMap={{
                         ESC: () => {
                             emojiState.setClosed(true);
