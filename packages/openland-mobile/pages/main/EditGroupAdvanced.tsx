@@ -43,6 +43,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
     let rawGroup = getClient().useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
     let group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
+    let roomAdmins = getClient().useRoomOrganizationAdminMembers({ id: props.router.params.id })
 
     const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
@@ -126,7 +127,10 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
 
                                             props.router.back();
                                         },
-                                        getWelcomeMessageSenders({ chat: group }),
+                                        getWelcomeMessageSenders({
+                                            chat: group,
+                                            admins: (roomAdmins && roomAdmins.room && roomAdmins.room.__typename === 'SharedRoom' && roomAdmins.room.organization && roomAdmins.room.organization.adminMembers || []).map(a => a.user)
+                                        }),
                                         'Choose sender',
                                         welcomeMessageSender ? welcomeMessageSender.id : undefined,
                                     );

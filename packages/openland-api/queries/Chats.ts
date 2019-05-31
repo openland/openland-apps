@@ -803,6 +803,26 @@ export const RoomMembersQuery = gql`
     ${UserShort}
 `;
 
+export const RoomOrganizationAdminMembersQuery = gql`
+    query RoomOrganizationAdminMembers($id: ID!) {
+        room(id: $id) {
+            ... on SharedRoom{
+                id
+                organization{
+                    id
+                    adminMembers: alphaOrganizationAdminMembers {
+                        role
+                        user {
+                            ...UserShort
+                        }
+                    }
+                }
+            }   
+        }
+    }
+    ${UserShort}
+`;
+
 export const RoomMembersForMentionsPaginatedQuery = gql`
     query RoomMembersForMentionsPaginated($roomId: ID!, $first: Int, $after: ID) {
         members: roomMembers(roomId: $roomId, first: $first, after: $after) {
