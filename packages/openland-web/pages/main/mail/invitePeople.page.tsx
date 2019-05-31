@@ -29,25 +29,28 @@ const textLetterSpacingClassName = css`
     letter-spacing: 1.1px;
 `;
 
-const InviteFragment = ({
-    founderChatId,
-    founderChatsInvite,
-    primaryOrganizationName,
-    primaryOrganizationId,
-    primaryOrganizationInvite,
-    openlandInvite,
-}: {
-    founderChatId: string;
-    founderChatsInvite: string;
-    primaryOrganizationName: string;
-    primaryOrganizationId: string;
-    primaryOrganizationInvite: string;
-    openlandInvite: string;
-}) => {
+export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolean }) => {
+    const client = useClient();
+
+    const founderChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
+
+    const { link: founderChatsInvite } = client.useRoomInviteLink({ roomId: founderChatId });
+
+    const profile = client.useProfile().profile!;
+
+    const data = client.useOrganizationPublicInvite({
+        organizationId: profile.primaryOrganization!!.id,
+    });
+
+    const { invite: openlandInvite } = client.useAccountAppInvite();
+
+    const primaryOrganizationInvite = data.publicInvite!!.key;
+    const primaryOrganizationId = profile.primaryOrganization!!.id;
+    const primaryOrganizationName = profile.primaryOrganization!!.name;
     const [moreInvite, showMoreInvite] = React.useState(false);
     const router = React.useContext(XRouterContext)!;
 
-    const isMobile = useIsMobile();
+    const isMobile = useIsMobile() || false;
 
     return (
         <XView
@@ -56,37 +59,45 @@ const InviteFragment = ({
             flexGrow={1}
             justifyContent={'center'}
             backgroundColor={'#FFF'}
+            paddingLeft={isMobile ? 40 : 0}
+            paddingRight={isMobile ? 40 : 0}
         >
-            <XView position="absolute" right={20} top={20}>
-                <XView
-                    onClick={() => {
-                        router.replace(`/mail`);
-                    }}
-                    href={'/mail'}
-                    cursor="pointer"
-                    alignItems="center"
-                    justifyContent="center"
-                    padding={8}
-                    width={32}
-                    height={32}
-                    borderRadius={50}
-                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                >
-                    <CloseIcon />
+            {!withoutCloseIcon && (
+                <XView position="absolute" right={20} top={20}>
+                    <XView
+                        onClick={() => {
+                            router.replace(`/mail`);
+                        }}
+                        href={'/mail'}
+                        cursor="pointer"
+                        alignItems="center"
+                        justifyContent="center"
+                        padding={8}
+                        width={32}
+                        height={32}
+                        borderRadius={50}
+                        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                    >
+                        <CloseIcon />
+                    </XView>
                 </XView>
-            </XView>
+            )}
 
-            <XView flexDirection="column" alignItems="center">
-                <XView marginBottom={-55}>
-                    <ImgMembersEmpty />
-                </XView>
+            <XView flexDirection="column" alignItems="center" width="100%">
+                {!isMobile && (
+                    <XView marginBottom={-55}>
+                        <ImgMembersEmpty />
+                    </XView>
+                )}
 
                 <XView
                     fontSize={22}
-                    maxWidth={328}
+                    maxWidth={isMobile ? '100%' : 328}
                     fontWeight={'600'}
                     lineHeight={1.36}
                     color={'#000'}
+                    width="100%"
+                    marginTop={isMobile ? 28 : 0 }
                 >
                     <TextAlignCenter>
                         <span className={titleLetterSpacingClassName}>
@@ -95,7 +106,7 @@ const InviteFragment = ({
                     </TextAlignCenter>
                 </XView>
 
-                <XView width={isMobile ? 250 : 540} marginTop={48}>
+                <XView width={isMobile ? '100%' : 540} marginTop={48}>
                     <XView
                         flexDirection="row"
                         color={'#000'}
@@ -104,7 +115,6 @@ const InviteFragment = ({
                         marginBottom={12}
                     >
                         <span className={textLetterSpacingClassName}>
-                            Invite to
                             <XView
                                 as="a"
                                 marginLeft={4}
@@ -119,6 +129,7 @@ const InviteFragment = ({
                         id={founderChatId}
                         isRoom={true}
                         useRevoke={true}
+                        withoutInput={isMobile}
                     />
                     <XView marginTop={36}>
                         <XView
@@ -129,7 +140,6 @@ const InviteFragment = ({
                             marginBottom={12}
                         >
                             <span className={textLetterSpacingClassName}>
-                                Invite to
                                 <XView
                                     as="a"
                                     marginLeft={4}
@@ -145,6 +155,7 @@ const InviteFragment = ({
                             id={primaryOrganizationId}
                             isOrganization={true}
                             useRevoke={true}
+                            withoutInput={isMobile}
                         />
                     </XView>
                     {!moreInvite && (
@@ -168,12 +179,13 @@ const InviteFragment = ({
                         <XView marginTop={36} paddingBottom={100}>
                             <XView color={'#000'} fontWeight="600" fontSize={20} marginBottom={12}>
                                 <span className={textLetterSpacingClassName}>
-                                    Invite to Openland
+                                    Openland
                                 </span>
                             </XView>
                             <OwnerLinkComponent
                                 footerNote="Anyone can use this link to join Openland"
                                 appInvite={openlandInvite}
+                                withoutInput={isMobile}
                             />
                         </XView>
                     )}
@@ -187,33 +199,10 @@ export default withApp(
     'Invite People',
     'viewer',
     withUserInfo(() => {
-        const client = useClient();
-
-        const foundersChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
-
-        const { link: founderChatsInvite } = client.useRoomInviteLink({ roomId: foundersChatId });
-
-        const profile = client.useProfile().profile!;
-
-        const data = client.useOrganizationPublicInvite({
-            organizationId: profile.primaryOrganization!!.id,
-        });
-
-        const { invite: openlandInvite } = client.useAccountAppInvite();
-
-        const primaryOrganizationInvite = data.publicInvite!!.key;
-
         return (
             <>
                 <XDocumentHead title={'Invite People'} />
-                <InviteFragment
-                    founderChatId={foundersChatId}
-                    founderChatsInvite={founderChatsInvite}
-                    primaryOrganizationId={profile.primaryOrganization!!.id}
-                    primaryOrganizationName={profile.primaryOrganization!!.name}
-                    primaryOrganizationInvite={primaryOrganizationInvite}
-                    openlandInvite={openlandInvite}
-                />
+                <InviteFragment />
             </>
         );
     }),

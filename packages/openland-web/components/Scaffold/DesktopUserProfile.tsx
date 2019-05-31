@@ -12,6 +12,8 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
 import { useClient } from 'openland-web/utils/useClient';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
+import { showModalBox } from 'openland-x/showModalBox';
+import { InviteFragment } from 'openland-web/pages/main/mail/invitePeople.page';
 
 interface TitleContainerProps {
     id: string;
@@ -133,7 +135,15 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 path={`/mail/u/${this.props.id}`}
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem path="/invitePeople">{TextGlobal.joinOpenland}</XMenuItem>
+                            <XMenuItem
+                                onClick={() =>
+                                    showModalBox({ title: 'Invite People', withScroll: true }, ctx => (
+                                        <InviteFragment withoutCloseIcon />
+                                    ))
+                                }
+                            >
+                                {TextGlobal.joinOpenland}
+                            </XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
 
                             {primaryOrganization && (

@@ -67,6 +67,7 @@ interface OwnerLinkComponentProps {
     id?: string;
     isRoom?: boolean;
     isOrganization?: boolean;
+    withoutInput?: boolean;
 }
 
 export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
@@ -125,37 +126,40 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
     render() {
         const { copied, resetLink } = this.state;
         const { props } = this;
+        const copyText = props.withoutInput ? 'Copy Invite Link' : 'Copy';
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {props.appInvite && (
                     <XView flexDirection="column">
                         <XView flexDirection="row" alignItems="center">
-                            <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                                <XInput
-                                    size="large"
-                                    flexGrow={1}
-                                    ref={this.handleRef}
-                                    className={InputClassName}
-                                    value={'https://openland.com/invite/' + props.appInvite}
-                                />
-                                {props.useRevoke &&
-                                    props.id &&
-                                    (props.isOrganization || props.isRoom) && (
-                                        <XView
-                                            position="absolute"
-                                            right={16}
-                                            top={10}
-                                            cursor="pointer"
-                                        >
-                                            <RenewInviteLinkButton
-                                                onClick={this.resetLink}
-                                                id={props.id}
-                                                isOrganization={props.isOrganization}
-                                                isRoom={props.isRoom}
-                                            />
-                                        </XView>
-                                    )}
-                            </XView>
+                            {!props.withoutInput && (
+                                <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                                    <XInput
+                                        size="large"
+                                        flexGrow={1}
+                                        ref={this.handleRef}
+                                        className={InputClassName}
+                                        value={'https://openland.com/invite/' + props.appInvite}
+                                    />
+                                    {props.useRevoke &&
+                                        props.id &&
+                                        (props.isOrganization || props.isRoom) && (
+                                            <XView
+                                                position="absolute"
+                                                right={16}
+                                                top={10}
+                                                cursor="pointer"
+                                            >
+                                                <RenewInviteLinkButton
+                                                    onClick={this.resetLink}
+                                                    id={props.id}
+                                                    isOrganization={props.isOrganization}
+                                                    isRoom={props.isRoom}
+                                                />
+                                            </XView>
+                                        )}
+                                </XView>
+                            )}
                             <XView
                                 height={40}
                                 borderRadius={8}
@@ -163,20 +167,22 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                                 paddingRight={14}
                                 flexDirection="row"
                                 alignItems="center"
+                                justifyContent={props.withoutInput ? 'center' : 'flex-start'}
                                 fontSize={14}
                                 fontWeight="600"
                                 backgroundColor={copied ? '#69d06d' : '#1790ff'}
                                 color="#ffffff"
                                 cursor="pointer"
                                 onClick={this.copy}
-                                marginLeft={12}
+                                marginLeft={props.withoutInput ? 0 : 12}
+                                width={props.withoutInput ? '100%' : 'auto'}
                             >
                                 {copied ? (
                                     <CheckIcon />
                                 ) : (
                                     <CopiedIcon className={CopyIconClassName} />
                                 )}
-                                <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
+                                <XView marginLeft={10}>{copied ? 'Copied' : copyText}</XView>
                             </XView>
                         </XView>
                         {(props.footerNote || resetLink) && (

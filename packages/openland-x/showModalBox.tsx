@@ -38,6 +38,10 @@ const boxHiding = css`
     transform: translate(0px, 32px);
 `;
 
+const boxScrolling = css`
+    overflow-y: scroll;
+`;
+
 const overlayHiding = css`
     opacity: 0;
     transition: opacity 150ms cubic-bezier(0, 0, 0.2, 1);
@@ -75,6 +79,7 @@ const ModalBoxComponent = React.memo<{
     const [left, setLeft] = React.useState(0);
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const boxRef = React.useRef<HTMLDivElement | null>(null);
+    const { withScroll } = props.config;
 
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
@@ -169,6 +174,7 @@ const ModalBoxComponent = React.memo<{
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
                         state === 'hiding' && boxHiding,
+                        withScroll && boxScrolling
                     )}
                     style={{ top, left, width: props.config.width }}
                 >
@@ -206,6 +212,7 @@ export const XModalBoxStyles = {
 export interface XModalBoxConfig {
     title?: string;
     width?: number;
+    withScroll?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
