@@ -3,21 +3,32 @@ import { EmojiSuggestionsStateT } from '../modules/emoji/EmojiSuggestions/useEmo
 import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
+enum XEditorCommands {
+    BoldWrap = 'BoldWrap',
+    ItalicWrap = 'ItalicWrap',
+    IronyWrap = 'IronyWrap',
+    EditorSubmit = 'EditorSubmit',
+}
+
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.key === 'b' && e.metaKey) {
-        console.log('bold shortcut');
+        return XEditorCommands.BoldWrap;
     }
     if (e.key === 'i' && e.metaKey) {
-        console.log('italic shortcut');
+        return XEditorCommands.ItalicWrap;
+    }
+    if (e.key === 'r' && e.metaKey) {
+        return XEditorCommands.IronyWrap;
     }
 
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
-        return 'x-editor-submit';
+        return XEditorCommands.EditorSubmit;
     }
     return getDefaultKeyBinding(e);
 };
 
 type useKeyHandlingT = {
+    wrapSelectedWithSymbols: (a: { startSymbol: string; endSymbol: string }) => void;
     onSubmit?: () => Promise<void>;
     mentionState: MentionSuggestionsStateT;
     emojiState: EmojiSuggestionsStateT;
@@ -27,6 +38,7 @@ type useKeyHandlingT = {
 };
 
 export function useDraftKeyHandling({
+    wrapSelectedWithSymbols,
     onSubmit,
     mentionState,
     addMention,
@@ -35,7 +47,7 @@ export function useDraftKeyHandling({
     updateEditorStateFromTextAndMentions,
 }: useKeyHandlingT) {
     const onHandleKey = (command: string) => {
-        if (command === 'x-editor-submit') {
+        if (command === XEditorCommands.EditorSubmit) {
             if (emojiState.isSelecting) {
                 addEmoji(emojiState.suggestions[emojiState.selectedEntryIndex]);
                 return 'handled';
@@ -51,6 +63,23 @@ export function useDraftKeyHandling({
 
                 return 'handled';
             }
+        } else if (command === XEditorCommands.BoldWrap) {
+            wrapSelectedWithSymbols({
+                startSymbol: '*',
+                endSymbol: '*',
+            });
+            return 'handled';
+        } else if (command === XEditorCommands.ItalicWrap) {
+            wrapSelectedWithSymbols({
+                startSymbol: '_',
+                endSymbol: '_',
+            });
+            return 'handled';
+        } else if (command === XEditorCommands.IronyWrap) {
+            wrapSelectedWithSymbols({
+                startSymbol: '~',
+                endSymbol: '~',
+            });
         }
         return 'not-handled';
     };

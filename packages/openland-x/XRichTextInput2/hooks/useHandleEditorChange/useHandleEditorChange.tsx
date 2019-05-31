@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { EditorState, convertToRaw, convertFromRaw, CompositeDecorator } from 'draft-js';
+import {
+    EditorState,
+    Modifier,
+    convertToRaw,
+    convertFromRaw,
+    CompositeDecorator,
+    SelectionState,
+} from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from '../../modules/emoji/addEmojiModifier';
 import { addMention, findActiveWord } from '../../modules/mentions/addMentionModifier';
@@ -131,6 +138,31 @@ export function useHandleEditorChange({
         );
     };
 
+    const wrapSelectedWithSymbols = ({
+        startSymbol,
+        endSymbol,
+    }: {
+        startSymbol: string;
+        endSymbol: string;
+    }) => {
+        const selection = editorState.getSelection();
+        if (selection.isCollapsed()) {
+            return;
+        }
+
+        const textToInsert = `${startSymbol}${(window as any)
+            .getSelection()
+            .toString()}${endSymbol}`;
+
+        const nextContentState = Modifier.replaceText(
+            editorState.getCurrentContent(),
+            selection,
+            textToInsert,
+        );
+
+        updateEditorState(EditorState.push(editorState, nextContentState, 'insert-characters'));
+    };
+
     const finalAddMention = (mention: SuggestionTypeT) => {
         if (mention) {
             const newEditorState = addMention({
@@ -187,6 +219,7 @@ export function useHandleEditorChange({
     }, [plainText]);
 
     return {
+        wrapSelectedWithSymbols,
         plainText,
         activeWord,
         addMention: finalAddMention,

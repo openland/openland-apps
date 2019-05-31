@@ -49,6 +49,7 @@ export const XRichTextInput2 = React.memo(
             const editorRef = React.useRef<Editor>(null);
 
             const {
+                wrapSelectedWithSymbols,
                 plainText,
                 editorState,
                 setEditorState,
@@ -93,6 +94,7 @@ export const XRichTextInput2 = React.memo(
             });
 
             const { keyBinding, onHandleKey } = useDraftKeyHandling({
+                wrapSelectedWithSymbols,
                 updateEditorStateFromTextAndMentions,
                 onSubmit,
                 mentionState,
