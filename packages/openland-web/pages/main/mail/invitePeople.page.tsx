@@ -20,8 +20,13 @@ const TextAlignCenter = ({ children }: { children: any }) => {
     return <div className={textAlignCenterClassName}>{children}</div>;
 };
 
-const letterSpacingClassName = css`
-    letter-spacing: 0.8px;
+const titleLetterSpacingClassName = css`
+    letter-spacing: 0.6px;
+`;
+
+const textLetterSpacingClassName = css`
+    display: flex;
+    letter-spacing: 1.1px;
 `;
 
 const InviteFragment = ({
@@ -84,7 +89,7 @@ const InviteFragment = ({
                     color={'#000'}
                 >
                     <TextAlignCenter>
-                        <span className={letterSpacingClassName}>
+                        <span className={titleLetterSpacingClassName}>
                             Share one of the links below with people you want to invite
                         </span>
                     </TextAlignCenter>
@@ -95,17 +100,19 @@ const InviteFragment = ({
                         flexDirection="row"
                         color={'#000'}
                         fontWeight="600"
-                        fontSize={16}
+                        fontSize={20}
                         marginBottom={12}
                     >
-                        Invite to
-                        <XView
-                            as="a"
-                            marginLeft={4}
-                            href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
-                        >
-                            <span className={letterSpacingClassName}>Founder Chats</span>
-                        </XView>
+                        <span className={textLetterSpacingClassName}>
+                            Invite to
+                            <XView
+                                as="a"
+                                marginLeft={4}
+                                href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
+                            >
+                                <span className={titleLetterSpacingClassName}>Founder Chats</span>
+                            </XView>
+                        </span>
                     </XView>
                     <OwnerLinkComponent
                         appInvite={founderChatsInvite}
@@ -118,17 +125,19 @@ const InviteFragment = ({
                             flexDirection="row"
                             color={'#000'}
                             fontWeight="600"
-                            fontSize={16}
+                            fontSize={20}
                             marginBottom={12}
                         >
-                            Invite to
-                            <XView
-                                as="a"
-                                marginLeft={4}
-                                href={`https://openland.com/directory/o/${primaryOrganizationId}`}
-                            >
-                                {primaryOrganizationName}
-                            </XView>
+                            <span className={textLetterSpacingClassName}>
+                                Invite to
+                                <XView
+                                    as="a"
+                                    marginLeft={4}
+                                    href={`https://openland.com/directory/o/${primaryOrganizationId}`}
+                                >
+                                    {primaryOrganizationName}
+                                </XView>
+                            </span>
                         </XView>
                         <OwnerLinkComponent
                             footerNote="Anyone can use this link to join your organization"
@@ -157,8 +166,10 @@ const InviteFragment = ({
                     )}
                     {moreInvite && (
                         <XView marginTop={36} paddingBottom={100}>
-                            <XView color={'#000'} fontWeight="600" fontSize={16} marginBottom={12}>
-                                Invite to Openland
+                            <XView color={'#000'} fontWeight="600" fontSize={20} marginBottom={12}>
+                                <span className={textLetterSpacingClassName}>
+                                    Invite to Openland
+                                </span>
                             </XView>
                             <OwnerLinkComponent
                                 footerNote="Anyone can use this link to join Openland"
