@@ -166,13 +166,18 @@ export const ShortcutsBody = () => {
                     <Shortcut shortcuts={['Cmd + B (Mac)', 'Ctrl + B (Windows)']} />
                 </XView>
                 <XView flexDirection="row">
-                    <SpanPreview spanType={SpanType.italic} text={`_italic_`} />{' '}
+                    <SpanPreview spanType={SpanType.italic} text={`_italic_`} />
                     <XView paddingLeft={6} paddingRight={8}>
                         or
                     </XView>
                     <Shortcut shortcuts={['Cmd + I (Mac)', 'Ctrl + I (Windows)']} />
                 </XView>
-                <XView>
+                <XView flexDirection="row">
+                    <SpanPreview spanType={SpanType.italic} text={`~irony~`} />
+                    <XView paddingLeft={6} paddingRight={8}>
+                        or
+                    </XView>
+                    <Shortcut shortcuts={['Cmd + R (Mac)', 'Ctrl + R (Windows)']} />
                     <SpanPreview spanType={SpanType.irony} text={`~irony~`} />
                 </XView>
                 <XView marginTop={12}>
