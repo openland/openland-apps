@@ -6,6 +6,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { showModalBox } from 'openland-x/showModalBox';
 import { InviteFragment } from 'openland-web/pages/main/mail/invitePeople.page';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
@@ -42,7 +43,11 @@ export const DialogsInviteButton = XMemo(() => {
     return (
         <InviteWrapper
             onClick={() =>
-                showModalBox({ title: 'Invite People', withScroll: true }, ctx => <InviteFragment withoutCloseIcon />)
+                showModalBox({ title: 'Invite People' }, () => (
+                    <XScrollView3 flexGrow={1} flexShrink={1}>
+                        <InviteFragment withoutCloseIcon />
+                    </XScrollView3>
+                ))
             }
         >
             <InviteIcon />

@@ -14,6 +14,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { InviteFragment } from 'openland-web/pages/main/mail/invitePeople.page';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 interface TitleContainerProps {
     id: string;
@@ -137,8 +138,10 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem
                                 onClick={() =>
-                                    showModalBox({ title: 'Invite People', withScroll: true }, ctx => (
-                                        <InviteFragment withoutCloseIcon />
+                                    showModalBox({ title: 'Invite People' }, () => (
+                                        <XScrollView3 flexGrow={1} flexShrink={1}>
+                                            <InviteFragment withoutCloseIcon />
+                                        </XScrollView3>
                                     ))
                                 }
                             >
