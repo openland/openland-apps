@@ -4,6 +4,13 @@ import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
+    if (e.key === 'b' && e.metaKey) {
+        console.log('bold shortcut');
+    }
+    if (e.key === 'i' && e.metaKey) {
+        console.log('italic shortcut');
+    }
+
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
         return 'x-editor-submit';
     }
