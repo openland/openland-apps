@@ -8,8 +8,11 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 import { XShortcutsRoot, XShortcuts } from 'openland-x/XShortcuts';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 
 export const AppContainer = (props: { children: any }) => {
+    let router = React.useContext(XRoutingContext)!;
+
     const client = useClient();
 
     const data = client.useWithoutLoaderAccount();
