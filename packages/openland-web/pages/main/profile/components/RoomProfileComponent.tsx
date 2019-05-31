@@ -45,7 +45,7 @@ import {
     RoomSetFeatured,
     RoomSetHidden,
 } from 'openland-web/pages/main/profile/components/RoomControls';
-import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
+import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
@@ -129,20 +129,37 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                     <React.Suspense fallback={<XLoader loading={true} />}>
                                         <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
-                                                query={{
-                                                    field: 'editChat',
-                                                    value: 'true',
-                                                }}
+                                                onClick={() =>
+                                                    showModalBox(
+                                                        {
+                                                            title: isChannel
+                                                                ? 'Channel settings'
+                                                                : 'Group settings',
+                                                        },
+                                                        ctx => (
+                                                            <RoomEditModalBody
+                                                                roomId={chat.id}
+                                                                title={chat.title}
+                                                                photo={chat.photo}
+                                                                description={chat.description}
+                                                                socialImage={chat.socialImage}
+                                                                isChannel={isChannel}
+                                                                onClose={ctx.hide}
+                                                            />
+                                                        ),
+                                                    )
+                                                }
                                             >
                                                 Settings
                                             </XMenuItem>
                                         </XWithRole>
 
                                         <XMenuItem
-                                            query={{
-                                                field: 'leaveFromChat',
-                                                value: chat.id,
-                                            }}
+                                            onClick={() =>
+                                                showModalBox({ title: 'Leave the chat' }, ctx => (
+                                                    <LeaveChatComponent id={chat.id} ctx={ctx} />
+                                                ))
+                                            }
                                             style="danger"
                                         >
                                             {leaveText}
@@ -168,7 +185,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                     </React.Suspense>
                                 }
                             />
-                            <LeaveChatComponent />
                             {chat.welcomeMessage && (
                                 <AdvancedSettingsModal
                                     roomId={chat.id}
@@ -178,14 +194,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                     welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
                                 />
                             )}
-                            <RoomEditModal
-                                roomId={chat.id}
-                                title={chat.title}
-                                description={chat.description}
-                                photo={chat.photo}
-                                socialImage={chat.socialImage}
-                                isChannel={isChannel}
-                            />
                         </>
                     )}
                 </HeaderTools>

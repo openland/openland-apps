@@ -4,15 +4,14 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { Platform, View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
-import { SDeferred } from 'react-native-s/SDeferred';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Tag, getRootTags, resolveSuggestedChats, getTagGroup, tagsGroupsMap, getSubTags } from 'openland-mobile/pages/main/discoverData';
+import { Tag, getPageForTag, resolveSuggestedChats, getTagGroup, getSubTags, havePageForTag, getSubTagGroup, TagGroup } from 'openland-mobile/pages/main/discoverData';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
-    return discoverDone
+    return discoverDone;
 }
 export const setDiscoverDone = async (done: boolean) => {
     await AsyncStorage.setItem('discover_done', 'done');
@@ -68,18 +67,20 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
     </TouchableOpacity>
 }
 
-const TagsCloud = (props: { tagsGroups: { name: string, tags: Tag[] }, selected: Set<Tag>, onChange: (tag: Tag) => void }) => {
+const TagsCloud = (props: { tagsGroups: TagGroup, selected: Set<Tag>, onChange: (tag: Tag) => void }) => {
     let selected = props.selected;
 
     let sub = []
     for (let t of props.tagsGroups.tags) {
-        if (selected.has(t) && tagsGroupsMap[t.name] && getTagGroup(tagsGroupsMap[t.name])) {
-            sub.push(<TagsCloud tagsGroups={getTagGroup(tagsGroupsMap[t.name])} selected={selected} onChange={props.onChange} />)
+        if (selected.has(t) && getSubTagGroup(t.name)) {
+            sub.push(<TagsCloud tagsGroups={getSubTagGroup(t.name)!} selected={selected} onChange={props.onChange} />)
         }
     }
 
     return (
         <View flexDirection="column">
+            <View height={15} />
+            {props.tagsGroups.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium }}>{props.tagsGroups.title}</Text>}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
                 {props.tagsGroups.tags.map(tag => (
                     <TagButton tag={tag} onPress={props.onChange} selected={!![...selected.values()].find(v => v.name === tag.name)} />
@@ -91,46 +92,54 @@ const TagsCloud = (props: { tagsGroups: { name: string, tags: Tag[] }, selected:
 }
 
 const DiscoverPage = (props: PageProps) => {
-    let tab = props.router.params.tab || 'initial';
+    let path = (props.router.params.path || []) as string[];
+    let depth = props.router.params.depth || 0;
+    let tag = path[depth - 1];
+    let page = getPageForTag(tag || 'root');
     let [selected, setSelected] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
-    let [selectedImmutable] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
-    let onSelectChange = React.useCallback((tag: Tag) => {
-        if (selectedImmutable.has(tag)) {
-            selectedImmutable.delete(tag);
-            getSubTags(tag).map(t => selectedImmutable.delete(t));
+    let [selectedMutable] = React.useState(props.router.params.selected as Set<Tag> || new Set<Tag>());
+    let onSelectChange = React.useCallback((t: Tag) => {
+        if (selectedMutable.has(t)) {
+            selectedMutable.delete(t);
+            getSubTags(t).map(tg => selectedMutable.delete(tg));
         } else {
-            selectedImmutable.add(tag);
+            selectedMutable.add(t);
         }
-        setSelected(new Set(selectedImmutable));
+        setSelected(new Set(selectedMutable));
     }, [])
 
     let next = React.useCallback(() => {
-        let path = 'SuggestedGroups';
+        let nextPage = 'SuggestedGroups';
         let paprams: any = { selected };
-        if (tab === 'initial' && [...selected.values()].find(t => t.name === 'Founder')) {
-            path = 'Discover';
-            paprams = { tab: 'founder', selected: selectedImmutable };
+
+        if (depth < path.length) {
+            nextPage = 'Discover';
+            paprams = { selected: selectedMutable, path, depth: depth + 1 };
+        } else {
+            for (let s of selected) {
+                if (!path.includes(s.name) && havePageForTag(s.name)) {
+                    nextPage = 'Discover';
+                    path = path.filter(t => t !== s.name);
+                    path.push(s.name);
+
+                    paprams = { selected: selectedMutable, path, depth: depth + 1 };
+                    break;
+                }
+            }
         }
-        props.router.push(path, paprams);
+
+        props.router.push(nextPage, paprams);
 
     }, [selected]);
-    let title = tab === 'initial' ? 'Select your role' : tab === 'founder' ? 'What brings you to Openland?' : 'Chats we offer to join by default';
-    let subtitle = tab === 'initial' ? 'Tell us a bit about yourself' : tab === 'founder' ? 'What is important to you' : 'What is important to you';
-
-    let tagGroups = tab === 'initial' ? getRootTags() : tab === 'founder' ? [getTagGroup('Goal')] : [];
+    let { title, subtitle, groups } = page;
     return (
         <>
-            {tab === 'initial' &&
-                <>
-                    {Platform.OS === 'ios' && <SHeader title="Discover" />}
-                    {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
-                </>
-            }
-            {tab !== 'groups' && <SHeaderButton title={'Next'} onPress={[...selected.values()].length ? next : undefined} />}
-            <SScrollView padding={18} justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 22, fontWeight: TextStyles.weight.medium, marginBottom: 10 }}>{title}</Text>
-                <Text style={{ fontSize: 16, marginBottom: 20 }}>{subtitle}</Text>
-                {tagGroups.map(tg => (
+            {title && Platform.OS === 'ios' && <SHeader title={title} />}
+            {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
+            <SHeaderButton title={'Next'} onPress={[...selected.values()].length ? next : undefined} />
+            <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
+                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20 }}>{subtitle}</Text>}
+                {groups.map(tg => (
                     <TagsCloud selected={selected} onChange={onSelectChange} tagsGroups={tg} />
                 ))}
             </SScrollView>
@@ -138,5 +147,5 @@ const DiscoverPage = (props: PageProps) => {
     );
 };
 
-export const DiscoverHome = withApp(DiscoverPage, { navigationAppearance: 'large' });
-export const Discover = withApp(DiscoverPage, { navigationAppearance: 'small-hidden' });
+export const DiscoverHome = withApp(DiscoverPage, { navigationAppearance: 'large', hideHairline: true });
+export const Discover = withApp(DiscoverPage, { navigationAppearance: 'large', hideHairline: true });
