@@ -32,6 +32,7 @@ const CloseBannerIconClassName = css`
 
 export const MobileCustomPromo = () => {
     const [hidden, bannerHandler] = React.useState(true);
+    const [ios, setIos] = React.useState(true);
     const [beHide, beHideHandler] = React.useState(false);
     const handleHideBanner = () => {
         bannerHandler(true);
@@ -53,6 +54,7 @@ export const MobileCustomPromo = () => {
         }
         if (userAgent.match(/Android/i)) {
             android = true;
+            setIos(false);
         }
         if (iosChrome || iosMozila || android) {
             bannerHandler(false);
@@ -84,7 +86,7 @@ export const MobileCustomPromo = () => {
                         Openland
                     </XView>
                     <XView fontSize={14} opacity={0.7} color="#000">
-                        {android ? 'Use Android app' : 'Use iOS app'}
+                        {ios ? 'Use iOS app' : 'Use Android app'}
                     </XView>
                 </XView>
             </PromoContent>
@@ -106,7 +108,7 @@ export const MobileCustomPromo = () => {
                 fontWeight="600"
                 hoverTextDecoration="none"
                 whiteSpace="nowrap"
-                href={android ? 'https://oplnd.com/android' : 'https://oplnd.com/ios'}
+                href={ios ? 'https://oplnd.com/ios' : 'https://oplnd.com/android'}
             >
                 USE APP
             </XView>
