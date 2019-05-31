@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PerfCollectorContext } from './PerfCollectorContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-const EventSource = require('eventsource');
 
 let numberOfMeasuresToSkip = 3;
 let lastMeasureId: null | string = null;
 
 if (canUseDOM && location.hostname === 'localhost') {
+    const EventSource = require('eventsource');
     const es = new EventSource('/_next/webpack-hmr');
 
     es.onmessage = (event: any) => {
