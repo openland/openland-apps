@@ -39,7 +39,7 @@ export const MobileCustomPromo = () => {
     };
     let iosChrome = false;
     let iosMozila = false;
-    let androidMozila = false;
+    let android = false;
     React.useEffect(() => {
         if (beHide) {
             return;
@@ -51,10 +51,10 @@ export const MobileCustomPromo = () => {
         if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/FxiOS/i)) {
             iosMozila = true;
         }
-        if (userAgent.match(/Android/i) && userAgent.match(/Firefox/i)) {
-            androidMozila = true;
+        if (userAgent.match(/Android/i)) {
+            android = true;
         }
-        if (iosChrome || iosMozila || androidMozila) {
+        if (iosChrome || iosMozila || android) {
             bannerHandler(false);
         }
     });
@@ -84,7 +84,7 @@ export const MobileCustomPromo = () => {
                         Openland
                     </XView>
                     <XView fontSize={14} opacity={0.7} color="#000">
-                        {androidMozila ? 'Use Android app' : 'Use iOS app'}
+                        {android ? 'Use Android app' : 'Use iOS app'}
                     </XView>
                 </XView>
             </PromoContent>
@@ -106,7 +106,7 @@ export const MobileCustomPromo = () => {
                 fontWeight="600"
                 hoverTextDecoration="none"
                 whiteSpace="nowrap"
-                href={androidMozila ? 'https://oplnd.com/android' : 'https://oplnd.com/ios'}
+                href={android ? 'https://oplnd.com/android' : 'https://oplnd.com/ios'}
             >
                 USE APP
             </XView>

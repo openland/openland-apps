@@ -27,20 +27,20 @@ const MobileCustomPromoBanner = () => {
     const userAgent = window.navigator.userAgent;
     let iosChrome = false;
     let iosMozila = false;
-    let androidMozila = false;
+    let android = false;
     if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/CriOS/i)) {
         iosChrome = true;
     }
     if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/FxiOS/i)) {
         iosMozila = true;
     }
-    if (userAgent.match(/Android/i) && userAgent.match(/Firefox/i)) {
-        androidMozila = true;
+    if (userAgent.match(/Android/i)) {
+        android = true;
     }
     if (!banner) {
         return null;
     }
-    if (iosChrome || iosMozila || androidMozila) {
+    if (iosChrome || iosMozila || android) {
         return (
             <XView
                 height={60}
@@ -76,7 +76,7 @@ const MobileCustomPromoBanner = () => {
                             Openland
                         </XView>
                         <XView fontSize={14} opacity={0.7} color="#000">
-                            {androidMozila ? 'Use Android app' : 'Use iOS app'}
+                            {android ? 'Use Android app' : 'Use iOS app'}
                         </XView>
                     </XView>
                 </XView>
@@ -98,7 +98,7 @@ const MobileCustomPromoBanner = () => {
                     fontWeight="600"
                     hoverTextDecoration="none"
                     whiteSpace="nowrap"
-                    href={androidMozila ? 'https://oplnd.com/android' : 'https://oplnd.com/ios'}
+                    href={android ? 'https://oplnd.com/android' : 'https://oplnd.com/ios'}
                 >
                     USE APP
                 </XView>
