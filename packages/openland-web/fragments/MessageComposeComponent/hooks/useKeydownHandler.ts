@@ -36,7 +36,10 @@ export function useKeydownHandler({
             isActive.getValue() &&
             inputValue.length === 0 &&
             conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.getHasFocus()) ||
+            ((e.code === 'ArrowUp' &&
+                !e.shiftKey &&
+                !e.altKey &&
+                inputMethodsState.getHasFocus()) ||
                 (e.code === 'KeyE' && e.ctrlKey)) &&
             !quoteState.quoteMessagesId.length
         ) {

@@ -1,4 +1,4 @@
-import { Span, ServerSpan } from 'openland-y-utils/spans/Span';
+import { Span, SpanType, ServerSpan } from 'openland-y-utils/spans/Span';
 import { findChildSpans, convertServerSpan, getTextSpans } from './utils';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { checkSpanRootSize } from './checkSpanRootSize';
@@ -31,14 +31,14 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
 const handleNoSpans = (text: string, disableBig?: boolean): Span => {
     const { text: rootText, type: rootType } = checkSpanRootSize(text);
 
-    if (rootType !== 'text' && !disableBig) {
+    if (rootType !== SpanType.text && !disableBig) {
         return {
             type: rootType as any,
             offset: 0,
             length: rootText.length,
             childrens: [
                 {
-                    type: 'text',
+                    type: SpanType.text,
                     offset: 0,
                     length: rootText.length,
                     textRaw: text,
@@ -52,11 +52,11 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
         };
     } else {
         const currentSpan: Span = {
-            type: 'root',
+            type: SpanType.root,
             offset: 0,
             length: rootText.length,
             textRaw: rootText,
-            text: TextRenderProccessor.processSpan('text', rootText),
+            text: TextRenderProccessor.processSpan(SpanType.text, rootText),
         };
 
         currentSpan.childrens = getTextSpans(text, currentSpan);

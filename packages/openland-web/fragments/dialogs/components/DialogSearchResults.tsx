@@ -5,6 +5,8 @@ import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
+import { XShortcuts } from 'openland-x/XShortcuts';
+import { GlobalSearch_items } from 'openland-api/Types';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -23,9 +25,12 @@ type DialogSearchResultsT = {
     onClick: () => void;
     onSelect?: () => void;
     variables: { query: string };
+    onSearchItemSelected: (a: GlobalSearch_items) => void;
 };
 
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
+    const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+
     const client = useClient();
 
     const data = client.useGlobalSearch(props.variables, {
@@ -47,6 +52,33 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         [] as any[],
     );
 
+    const handleOptionUp = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectedIndex(Math.min(Math.max(selectedIndex - 1, 0), items.length - 1));
+
+        return;
+    };
+
+    const handleOptionDown = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectedIndex(Math.min(Math.max(selectedIndex + 1, 0), items.length - 1));
+
+        return;
+    };
+
+    React.useEffect(() => {
+        if (selectedIndex !== null) {
+            props.onSearchItemSelected(items[selectedIndex]);
+            return;
+        }
+    }, [selectedIndex]);
+
     if (items.length === 0) {
         return (
             <NoResultWrapper separator={10} alignItems="center">
@@ -57,8 +89,23 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     }
 
     return (
-        <>
-            {items.map(i => {
+        <XShortcuts
+            handlerMap={{
+                SHIFT_UP: handleOptionUp,
+                SHIFT_DOWN: handleOptionDown,
+            }}
+            keymap={{
+                SHIFT_UP: {
+                    osx: ['shift+up'],
+                    windows: ['alt+up'],
+                },
+                SHIFT_DOWN: {
+                    osx: ['shift+down'],
+                    windows: ['alt+down'],
+                },
+            }}
+        >
+            {items.map((i, index) => {
                 let item;
 
                 if (i.__typename === 'SharedRoom') {
@@ -99,6 +146,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
 
                 return (
                     <DialogViewCompact
+                        selected={selectedIndex === index}
                         key={i.id}
                         onSelect={props.onSelect}
                         onClick={props.onClick}
@@ -106,7 +154,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                     />
                 );
             })}
-        </>
+        </XShortcuts>
     );
 };
 

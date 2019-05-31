@@ -163,7 +163,7 @@ const LinkComponent = (props: { link: string; children?: any }) => {
     );
 };
 
-const SpanView = React.memo<{ span: Span; children?: any }>(props => {
+export const SpanView = React.memo<{ span: Span; children?: any }>(props => {
     const { span, children } = props;
 
     if (span.type === 'link') {

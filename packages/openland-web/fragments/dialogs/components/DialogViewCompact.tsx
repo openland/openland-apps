@@ -23,6 +23,7 @@ export const DialogViewCompact = React.memo(
 
         return (
             <XLink2
+                selected={props.selected}
                 ref={props.handleRef}
                 path={path}
                 height={50}

@@ -279,6 +279,8 @@ routes.add('/super/admins/', '/dev/admins');
 routes.add('/compatibility', '/perf/compat');
 routes.add('/performance', '/perf/perf');
 
+routes.add('/test', '/dev/test');
+
 //
 // Authentication
 //

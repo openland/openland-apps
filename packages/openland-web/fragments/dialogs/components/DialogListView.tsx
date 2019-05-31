@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
 import { css } from 'linaria';
 import { DialogSearchInput } from './DialogSearchInput';
+import { GlobalSearch_items } from 'openland-api/Types';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
@@ -25,6 +26,7 @@ const dialogSearchWrapperClassName = css`
 
 export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
+    onSearchItemSelected: (a: GlobalSearch_items | null) => void;
 }
 
 export const DialogListView = XMemo<DialogListViewProps>(props => {
@@ -37,6 +39,12 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
     let route = React.useContext(XViewRouteContext);
+
+    React.useEffect(() => {
+        if (isSearching === false) {
+            props.onSearchItemSelected(null);
+        }
+    }, [isSearching]);
 
     let conversationId: null | string = null;
     if (route) {
@@ -60,21 +68,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, []);
 
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogListWebItem) => {
-                let selected = false;
-                if (
-                    conversationId &&
-                    (conversationId === item.key || conversationId === item.flexibleId)
-                ) {
-                    selected = true;
-                }
-                return <DialogView item={item} selected={selected} />;
-            };
-        },
-        [props.onDialogClick, conversationId],
-    );
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogListWebItem) => {
+            let selected = false;
+            if (
+                conversationId &&
+                (conversationId === item.key || conversationId === item.flexibleId)
+            ) {
+                selected = true;
+            }
+            return <DialogView item={item} selected={selected} />;
+        };
+    }, [props.onDialogClick, conversationId]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -118,17 +123,17 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     return (
         <XShortcuts
             handlerMap={{
-                OPTION_UP: handleOptionUp,
-                OPTION_DOWN: handleOptionDown,
+                SHIFT_UP: handleOptionUp,
+                SHIFT_DOWN: handleOptionDown,
                 CTRL_S: handleCtrlS,
             }}
             keymap={{
-                OPTION_UP: {
-                    osx: ['option+up'],
+                SHIFT_UP: {
+                    osx: ['shift+up'],
                     windows: ['alt+up'],
                 },
-                OPTION_DOWN: {
-                    osx: ['option+down'],
+                SHIFT_DOWN: {
+                    osx: ['shift+down'],
                     windows: ['alt+down'],
                 },
                 CTRL_S: {
@@ -144,6 +149,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             <DialogSearchResults
                                 variables={{ query: query }}
                                 onClick={() => setQuery('')}
+                                onSearchItemSelected={props.onSearchItemSelected}
                             />
                         </div>
                     )}

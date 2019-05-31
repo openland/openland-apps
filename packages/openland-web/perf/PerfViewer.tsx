@@ -1,13 +1,25 @@
 import * as React from 'react';
 import { PerfCollectorContext } from './PerfCollectorContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+const EventSource = require('eventsource');
 
-const compareCurrentMeasureWithSavedMeasure = ({
-    savedMeasure,
-    currentMeasure,
-}: {
-    savedMeasure: any;
-    currentMeasure: any;
-}) => {
+let numberOfMeasuresToSkip = 3;
+let lastMeasureId: null | string = null;
+
+if (canUseDOM && location.hostname === 'localhost') {
+    const es = new EventSource('/_next/webpack-hmr');
+
+    es.onmessage = (event: any) => {
+        if (event.data === `{"action":"building"}`) {
+            numberOfMeasuresToSkip = 3;
+        }
+    };
+}
+
+const compareCurrentMeasureWithSavedMeasure = ({ currentMeasure }: { currentMeasure: any }) => {
+    if (numberOfMeasuresToSkip !== 0) {
+        numberOfMeasuresToSkip -= 1;
+    }
     if (!currentMeasure) {
         return;
     }
@@ -20,11 +32,15 @@ const compareCurrentMeasureWithSavedMeasure = ({
         // }
 
         if (key === 'CacheComponent' && currentMeasureItem.measure > 300) {
-            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            if (numberOfMeasuresToSkip === 0) {
+                throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            }
         }
 
         if (key.indexOf('DisplayNone') !== -1 && currentMeasureItem.measure > 150) {
-            throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            if (numberOfMeasuresToSkip === 0) {
+                throw Error(`BOOM ${key} is too slow to rerender :${currentMeasureItem.measure}`);
+            }
         }
     }
 };
@@ -42,54 +58,50 @@ export const PerfViewer = () => {
     const [maxMeasureCacheComponent, setMaxMeasureCacheComponent] = React.useState<any>(null);
     const [hasError, setHasError] = React.useState<any>(false);
 
-    React.useEffect(
-        () => {
-            let newMaxMeasureDisplayNone = maxMeasureDisplayNone;
-            let newMaxMeasureCacheComponent = maxMeasureCacheComponent;
-            for (let key of Object.keys(perfState)) {
-                if (key === 'CacheComponent') {
-                    if (perfState[key].measure > newMaxMeasureCacheComponent) {
-                        newMaxMeasureCacheComponent = perfState[key].measure;
-                    }
+    React.useEffect(() => {
+        let newMaxMeasureDisplayNone = maxMeasureDisplayNone;
+        let newMaxMeasureCacheComponent = maxMeasureCacheComponent;
+        for (let key of Object.keys(perfState)) {
+            if (key === 'CacheComponent') {
+                if (perfState[key].measure > newMaxMeasureCacheComponent) {
+                    newMaxMeasureCacheComponent = perfState[key].measure;
                 }
+            }
 
-                if (key.indexOf('DisplayNone') !== -1) {
-                    if (perfState[key].measure > newMaxMeasureDisplayNone) {
-                        newMaxMeasureDisplayNone = perfState[key].measure;
-                    }
+            if (key.indexOf('DisplayNone') !== -1) {
+                if (perfState[key].measure > newMaxMeasureDisplayNone) {
+                    newMaxMeasureDisplayNone = perfState[key].measure;
                 }
             }
-            if (newMaxMeasureCacheComponent !== maxMeasureCacheComponent) {
-                setMaxMeasureCacheComponent(newMaxMeasureCacheComponent);
-            }
-            if (maxMeasureDisplayNone !== newMaxMeasureDisplayNone) {
-                setMaxMeasureDisplayNone(newMaxMeasureDisplayNone);
-            }
-        },
-        [perfState],
-    );
+        }
+        if (newMaxMeasureCacheComponent !== maxMeasureCacheComponent) {
+            setMaxMeasureCacheComponent(newMaxMeasureCacheComponent);
+        }
+        if (maxMeasureDisplayNone !== newMaxMeasureDisplayNone) {
+            setMaxMeasureDisplayNone(newMaxMeasureDisplayNone);
+        }
+    }, [perfState]);
 
-    React.useEffect(
-        () => {
-            if (hasError) {
-                if (timeout) {
-                    clearInterval(timeout);
-                    setIntervalTimeout(null);
-                }
+    React.useEffect(() => {
+        if (hasError) {
+            if (timeout) {
+                clearInterval(timeout);
+                setIntervalTimeout(null);
             }
-        },
-        [hasError],
-    );
+        }
+    }, [hasError]);
 
     if (!timeout && firstRender) {
         setFirstRender(false);
 
         const intervalToSave = setInterval(() => {
             try {
-                compareCurrentMeasureWithSavedMeasure({
-                    savedMeasure: perfCollector.measureFromServer,
-                    currentMeasure: perfCollector.getMap(),
-                });
+                if (lastMeasureId !== perfCollector.getMeasureId()) {
+                    lastMeasureId = perfCollector.getMeasureId();
+                    compareCurrentMeasureWithSavedMeasure({
+                        currentMeasure: perfCollector.getMap(),
+                    });
+                }
             } catch (err) {
                 setHasError(true);
 
