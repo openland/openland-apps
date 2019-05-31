@@ -88,13 +88,13 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                 messagesContext.changeForwardConverstion();
                 setInputValue(newInputValue.text);
                 draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
+                inputMethodsState.focusIfEnabled();
             }
         });
     }, []);
 
     if (file) {
-        inputMethodsState.focusIfNeeded();
+        inputMethodsState.focusIfEnabled();
     }
     const quoteState = useQuote({
         inputMethodsState,

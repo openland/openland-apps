@@ -1,5 +1,6 @@
 import { ServerSpan, Span, SpanTypeToSymbol } from './Span';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
+import { SpanType } from 'openland-y-utils/spans/Span';
 
 export const findChildSpans = (
     spans: ServerSpan[],
@@ -29,41 +30,46 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     let span: Span;
 
     if (s.__typename === 'MessageSpanLink') {
-        span = { offset, length, type: 'link', link: s.url };
+        span = { offset, length, type: SpanType.link, link: s.url };
     } else if (s.__typename === 'MessageSpanUserMention') {
-        span = { offset, length, type: 'mention_user', user: s.user };
+        span = { offset, length, type: SpanType.mention_user, user: s.user };
     } else if (s.__typename === 'MessageSpanRoomMention') {
         span = {
             offset,
             length,
-            type: 'mention_room',
+            type: SpanType.mention_room,
             title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name,
             id: s.room.id,
         };
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
-        span = { offset, length, type: 'mention_users', users: s.users };
+        span = { offset, length, type: SpanType.mention_users, users: s.users };
     } else if (s.__typename === 'MessageSpanAllMention') {
-        span = { offset, length, type: 'mention_all' };
+        span = { offset, length, type: SpanType.mention_all };
     } else if (s.__typename === 'MessageSpanBold') {
-        span = { offset, length, type: 'bold' };
+        span = { offset, length, type: SpanType.bold };
     } else if (s.__typename === 'MessageSpanDate') {
-        span = { offset, length, type: 'date', date: s.date };
+        span = { offset, length, type: SpanType.date, date: s.date };
     } else if (s.__typename === 'MessageSpanCodeBlock') {
-        span = { offset, length, type: 'code_block' };
+        span = { offset, length, type: SpanType.code_block };
     } else if (s.__typename === 'MessageSpanInlineCode') {
-        span = { offset, length, type: 'code_inline' };
+        span = { offset, length, type: SpanType.code_inline };
     } else if (s.__typename === 'MessageSpanInsane') {
-        span = { offset, length, type: 'insane' };
+        span = { offset, length, type: SpanType.insane };
     } else if (s.__typename === 'MessageSpanIrony') {
-        span = { offset, length, type: 'irony' };
+        span = { offset, length, type: SpanType.irony };
     } else if (s.__typename === 'MessageSpanItalic') {
-        span = { offset, length, type: 'italic' };
+        span = { offset, length, type: SpanType.italic };
     } else if (s.__typename === 'MessageSpanLoud') {
-        span = { offset, length, type: 'loud' };
+        span = { offset, length, type: SpanType.loud };
     } else if (s.__typename === 'MessageSpanRotating') {
-        span = { offset, length, type: 'rotating' };
+        span = { offset, length, type: SpanType.rotating };
     } else {
-        span = { offset, length, type: 'text', text: TextRenderProccessor.processSpan('text', spanText) };
+        span = {
+            offset,
+            length,
+            type: SpanType.text,
+            text: TextRenderProccessor.processSpan(SpanType.text, spanText),
+        };
     }
 
     span.textRaw = spanText;
@@ -75,14 +81,21 @@ export const preprocessRawText = (text: string, startOffset: number, parent: Spa
     let res: Span[] = [];
     let garbageString = '';
     let rows = text.split('\n');
-    const isBigParent = parent.type === 'loud' || parent.type === 'rotating' || parent.type === 'insane';
+    const isBigParent =
+        parent.type === SpanType.loud ||
+        parent.type === SpanType.rotating ||
+        parent.type === SpanType.insane;
 
     rows.map((p, i) => {
         if (p.length > 0) {
             res.push({
-                type: 'text',
+                type: SpanType.text,
                 textRaw: p,
-                text: TextRenderProccessor.processSpan(parent.type, p, isBigParent ? 'big' : 'default'),
+                text: TextRenderProccessor.processSpan(
+                    parent.type,
+                    p,
+                    isBigParent ? 'big' : 'default',
+                ),
                 length: p.length,
                 offset: startOffset + garbageString.length,
             });
@@ -90,7 +103,7 @@ export const preprocessRawText = (text: string, startOffset: number, parent: Spa
 
         if (i !== rows.length - 1) {
             res.push({
-                type: 'new_line',
+                type: SpanType.new_line,
                 length: 0,
                 offset: startOffset + garbageString.length,
             });

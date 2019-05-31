@@ -47,22 +47,16 @@ export function useQuote({ conversationId, inputMethodsState }: useQuoteT): Quot
         return quoteMessageReply && quoteMessagesId.length !== 0 && quoteMessageSender;
     };
 
-    React.useEffect(
-        () => {
-            updateQuote();
-            if (!messagesContext.editMessage) {
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [messagesContext.replyMessages],
-    );
+    React.useEffect(() => {
+        updateQuote();
+        if (!messagesContext.editMessage) {
+            inputMethodsState.focusIfEnabled();
+        }
+    }, [messagesContext.replyMessages]);
 
-    React.useEffect(
-        () => {
-            updateQuote();
-        },
-        [conversationId],
-    );
+    React.useEffect(() => {
+        updateQuote();
+    }, [conversationId]);
 
     return {
         quoteMessagesId,

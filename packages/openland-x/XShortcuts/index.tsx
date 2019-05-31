@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-// type ShortcutManager
 const { ShortcutManager } = require('react-shortcuts');
 import Shortcuts from './shortcuts';
 import UUID from 'uuid/v4';
@@ -21,37 +20,33 @@ export class XShortcutsRoot extends React.Component {
     }
 }
 
-// list of pairs {id, keymap} ordered by component depth
-let listOfIdKeymaps: any = [];
-
-const updateKeymap = () => {
-    let finalKeymap = {};
-    if (
-        listOfIdKeymaps.length &&
-        listOfIdKeymaps[listOfIdKeymaps.length - 1].supressOtherShortcuts
-    ) {
-        finalKeymap = listOfIdKeymaps[listOfIdKeymaps.length - 1].keymap;
-    } else {
-        listOfIdKeymaps.forEach(({ keymap }: any) => {
-            finalKeymap = { ...finalKeymap, ...keymap };
-        });
-    }
-
-    // console.log(JSON.stringify(finalKeymap, null, 2));
-
-    shortcutManager.setKeymap({
-        App: finalKeymap,
-    });
+type HandlerMapT = {
+    [id: string]: Function;
 };
 
-export class XShortcuts extends React.Component<{
-    handlerMap: Object;
+type KeymapT = {
+    [id: string]:
+        | string
+        | {
+              osx?: string[];
+              windows?: string[];
+          };
+};
+
+// list of pairs {id, keymap} ordered by component depth
+
+type XShortcutsT = {
+    handlerMap: HandlerMapT;
     children: any;
-    keymap: Object;
+    keymap: KeymapT;
     supressOtherShortcuts?: boolean;
-}> {
+};
+
+let listOfIdKeymaps: { id: string; keymap: KeymapT; supressOtherShortcuts?: boolean }[] = [];
+export class XShortcuts extends React.Component<XShortcutsT> {
     componentId: string;
-    constructor(props: any) {
+
+    constructor(props: XShortcutsT) {
         super(props);
         this.componentId = UUID();
     }
@@ -62,25 +57,54 @@ export class XShortcuts extends React.Component<{
             keymap: this.props.keymap,
             supressOtherShortcuts: this.props.supressOtherShortcuts,
         });
-        updateKeymap();
+
+        this.updateKeymap();
     }
 
     componentWillUnmount() {
         listOfIdKeymaps = listOfIdKeymaps.filter(
             ({ id }: { id: string }) => id !== this.componentId,
         );
-        updateKeymap();
+
+        this.updateKeymap();
     }
 
-    handleActions = (action: any, event: any) => {
+    updateKeymap = () => {
+        let finalKeymap = {};
+
+        listOfIdKeymaps.forEach(({ keymap }: { keymap: KeymapT }) => {
+            finalKeymap = { ...finalKeymap, ...keymap };
+        });
+
+        shortcutManager.setKeymap({
+            App: finalKeymap,
+        });
+    };
+
+    handleActions = (action: string, event: React.KeyboardEvent) => {
         const filteredIdKeymapsPairs = listOfIdKeymaps.filter(
-            ({ keymap }: any) => Object.keys(keymap).indexOf(action) !== -1,
+            ({ keymap }: { keymap: KeymapT }) => Object.keys(keymap).indexOf(action) !== -1,
         );
 
-        // last one wins
+        const myDepth = filteredIdKeymapsPairs.findIndex(item => item.id === this.componentId);
+        const suppressIds = filteredIdKeymapsPairs
+            .filter(item => item.supressOtherShortcuts)
+            .map(filteredItem => {
+                return filteredIdKeymapsPairs.findIndex(item => item.id === filteredItem.id);
+            });
+
+        let isSuppresed = false;
+
+        for (let i = 0; i < suppressIds.length; i++) {
+            if (suppressIds[i] > myDepth) {
+                isSuppresed = true;
+            }
+        }
+
         if (
             filteredIdKeymapsPairs.length &&
-            filteredIdKeymapsPairs[filteredIdKeymapsPairs.length - 1].id === this.componentId
+            filteredIdKeymapsPairs.filter(item => item.id === this.componentId).length &&
+            !isSuppresed
         ) {
             this.props.handlerMap[action](event);
         }
@@ -88,12 +112,7 @@ export class XShortcuts extends React.Component<{
 
     render() {
         return (
-            <Shortcuts
-                name="App"
-                handler={this.handleActions}
-                isolate
-                alwaysFireHandler
-            >
+            <Shortcuts name="App" handler={this.handleActions} isolate alwaysFireHandler>
                 {this.props.children}
             </Shortcuts>
         );

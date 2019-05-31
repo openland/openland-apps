@@ -3,7 +3,7 @@ import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useI
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 export type InputMethodsStateT = XRichTextInput2RefMethods & {
-    focusIfNeeded: Function;
+    focusIfEnabled: Function;
 };
 
 type useInputMethodsT = {
@@ -18,7 +18,7 @@ export function useInputMethods({ inputRef, enabled }: useInputMethodsT) {
         }
     };
 
-    const focusIfNeeded = () => {
+    const focusIfEnabled = () => {
         if (enabled !== false) {
             focus();
         }
@@ -62,7 +62,7 @@ export function useInputMethods({ inputRef, enabled }: useInputMethodsT) {
         focus,
         resetAndFocus,
         getHasFocus,
-        focusIfNeeded,
+        focusIfEnabled,
         getMentions,
         setInputValue,
     };

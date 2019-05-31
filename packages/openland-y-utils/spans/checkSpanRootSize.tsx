@@ -24,33 +24,42 @@ export const checkSpanRootSize = (text: string): CheckSpanRootSizeResult => {
     let isOnlyEmoji = emojiChecker(text);
 
     // DEPRECATED - START
-        let isRotating = !isOnlyEmoji && (text.length > '🔄'.length * 2) && text.startsWith('🔄') && text.endsWith('🔄');
-        let isInsane = !isOnlyEmoji && (text.length > '🌈'.length * 2) && text.startsWith('🌈') && text.endsWith('🌈');
-        let isTextSticker = !isOnlyEmoji && (text.length > ':'.length * 2) && text.startsWith(':') && text.endsWith(':');
+    let isRotating =
+        !isOnlyEmoji &&
+        text.length > '🔄'.length * 2 &&
+        text.startsWith('🔄') &&
+        text.endsWith('🔄');
+    let isInsane =
+        !isOnlyEmoji &&
+        text.length > '🌈'.length * 2 &&
+        text.startsWith('🌈') &&
+        text.endsWith('🌈');
+    let isTextSticker =
+        !isOnlyEmoji && text.length > ':'.length * 2 && text.startsWith(':') && text.endsWith(':');
 
-        if (isRotating) {
-            text = text.slice('🔄'.length, text.length - '🔄'.length);
-        }
+    if (isRotating) {
+        text = text.slice('🔄'.length, text.length - '🔄'.length);
+    }
 
-        if (isInsane) {
-            text = text.slice('🌈'.length, text.length - '🌈'.length);
-        }
+    if (isInsane) {
+        text = text.slice('🌈'.length, text.length - '🌈'.length);
+    }
 
-        if (isTextSticker) {
-            text = text.slice(':'.length, text.length - ':'.length);
-        }
+    if (isTextSticker) {
+        text = text.slice(':'.length, text.length - ':'.length);
+    }
 
-        let type: SpanType = 'text';
+    let type: SpanType = SpanType.text;
 
-        type = isInsane ? 'insane' : type;
-        type = isRotating ? 'rotating' : type;
-        type = isTextSticker ? 'loud' : type;
+    type = isInsane ? SpanType.insane : type;
+    type = isRotating ? SpanType.rotating : type;
+    type = isTextSticker ? SpanType.loud : type;
     // DEPRECATED - END
 
-    type = isOnlyEmoji ? 'emoji' : type;
+    type = isOnlyEmoji ? SpanType.emoji : type;
 
     return {
         text,
-        type
+        type,
     };
 };

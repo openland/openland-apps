@@ -3,7 +3,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAppBase } from './withAppBase';
 import { AuthRouter } from '../pages/root/AuthRouter';
 import { XShortcutsRoot, XShortcuts } from 'openland-x/XShortcuts';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
@@ -19,11 +19,12 @@ export function withApp(
     forceSSR?: boolean,
 ) {
     return withAppBase(name, () => {
-        let router = React.useContext(XRouterContext)!;
+        let router = React.useContext(XRoutingContext)!;
 
         const handleCtrlOptionN = () => {
-            router.push(`/mail/new`);
+            router.push(`/mail`);
         };
+
         return (
             <PerfCollectorContext.Provider value={defaultPerfCollectorContextValue}>
                 <ClientCacheProvider>
