@@ -6,6 +6,9 @@ import { XOverflow } from 'openland-web/components/XOverflow';
 import { RoomHeader_room_SharedRoom } from 'openland-api/Types';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { XLoader } from 'openland-x/XLoader';
+import { showModalBox } from 'openland-x/showModalBox';
+import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
+import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 
 export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
     const { id, canEdit } = room;
@@ -24,21 +27,34 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
                 <React.Suspense fallback={<XLoader loading={true} />}>
                     <XWithRole role="super-admin" or={canEdit}>
                         <XMenuItem
-                            query={{
-                                field: 'editChat',
-                                value: 'true',
-                            }}
+                            onClick={() =>
+                                showModalBox(
+                                    { title: isChannel ? 'Channel settings' : 'Group settings' },
+                                    ctx => (
+                                        <RoomEditModalBody
+                                            roomId={id}
+                                            title={room.title}
+                                            photo={room.photo}
+                                            description={room.description}
+                                            socialImage={room.socialImage}
+                                            isChannel={room.isChannel}
+                                            onClose={ctx.hide}
+                                        />
+                                    ),
+                                )
+                            }
                         >
                             Settings
                         </XMenuItem>
                     </XWithRole>
 
                     <XMenuItem
-                        query={{
-                            field: 'leaveFromChat',
-                            value: id,
-                        }}
                         style="danger"
+                        onClick={() =>
+                            showModalBox({ title: 'Leave the chat' }, ctx => (
+                                <LeaveChatComponent id={id} ctx={ctx} />
+                            ))
+                        }
                     >
                         {isChannel ? 'Leave channel' : 'Leave group'}
                     </XMenuItem>

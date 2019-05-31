@@ -10,7 +10,6 @@ import {
     RoomHeader_room,
 } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
-import { RoomEditModal } from './RoomEditModal';
 import { AdvancedSettingsModal } from './AdvancedSettingsModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
@@ -245,14 +244,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
                     />
                 )}
-                <RoomEditModal
-                    title={sharedRoom.title}
-                    description={sharedRoom.description}
-                    photo={sharedRoom.photo}
-                    socialImage={sharedRoom.socialImage}
-                    roomId={sharedRoom.id}
-                    isChannel={isChannel}
-                />
             </>
         );
     }

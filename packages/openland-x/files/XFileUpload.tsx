@@ -10,7 +10,14 @@ export interface XFileUploadRenderProps {
     value?: UploadedFile | null;
 }
 
-export interface XImageCrop {
+export interface XImageCropT {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+}
+
+export interface XUploadCareImageCrop {
     left: number;
     top: number;
     width: number;
@@ -33,7 +40,7 @@ export interface XFileUploadProps {
 export interface UploadedFile {
     isImage: boolean;
     uuid: string;
-    crop: XImageCrop | null;
+    crop: XUploadCareImageCrop | null;
     width: number | null;
     height: number | null;
     name: string | null;
@@ -79,10 +86,10 @@ export class XFileUpload extends React.Component<
                   'uploaded',
                   file.crop
                       ? 'https://ucarecdn.com/' +
-                        file.uuid +
-                        `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${
-                            file.crop.top
-                        }/`
+                            file.uuid +
+                            `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${
+                                file.crop.top
+                            }/`
                       : file.uuid,
               )
             : null;
