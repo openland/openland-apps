@@ -37,8 +37,15 @@ const MobileCustomPromoBanner = () => {
     }
     if (userAgent.match(/Android/i)) {
         android = true;
-        setIos(false);
     }
+    React.useEffect(
+        () => {
+            if (android) {
+                setIos(false);
+            }
+        },
+        [android],
+    );
     if (!banner) {
         return null;
     }
