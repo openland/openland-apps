@@ -24,7 +24,7 @@ type RoomEditModalT = {
     isChannel: boolean;
 };
 
-const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
+export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     const client = useClient();
     const form = useForm();
 
@@ -97,26 +97,4 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             </XModalFooter>
         </>
     );
-};
-
-// TODO remove this, just call showModalBox where needed
-export const RoomEditModal = (props: RoomEditModalT) => {
-    const router = React.useContext(XRouterContext);
-
-    const title = props.isChannel ? 'Channel settings' : 'Group settings';
-
-    const isOpen = !!router!!.query.editChat;
-
-    if (isOpen) {
-        showModalBox({ title }, ctx => (
-            <RoomEditModalBody
-                {...props}
-                onClose={() => {
-                    ctx.hide();
-                }}
-            />
-        ));
-    }
-
-    return null;
 };
