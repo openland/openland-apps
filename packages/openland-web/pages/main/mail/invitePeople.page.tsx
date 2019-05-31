@@ -50,7 +50,7 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
     const [moreInvite, showMoreInvite] = React.useState(false);
     const router = React.useContext(XRouterContext)!;
 
-    const isMobile = useIsMobile() || false;
+    const isMobile = useIsMobile() || undefined;
 
     return (
         <XView
@@ -97,7 +97,7 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                     lineHeight={1.36}
                     color={'#000'}
                     width="100%"
-                    marginTop={isMobile ? 28 : 0 }
+                    marginTop={isMobile ? 28 : 0}
                 >
                     <TextAlignCenter>
                         <span className={titleLetterSpacingClassName}>
@@ -115,6 +115,7 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                         marginBottom={12}
                     >
                         <span className={textLetterSpacingClassName}>
+                            {!isMobile && 'Invite to'}
                             <XView
                                 as="a"
                                 marginLeft={4}
@@ -140,6 +141,7 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                             marginBottom={12}
                         >
                             <span className={textLetterSpacingClassName}>
+                                {!isMobile && 'Invite to'}
                                 <XView
                                     as="a"
                                     marginLeft={4}
@@ -179,7 +181,7 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                         <XView marginTop={36} paddingBottom={100}>
                             <XView color={'#000'} fontWeight="600" fontSize={20} marginBottom={12}>
                                 <span className={textLetterSpacingClassName}>
-                                    Openland
+                                    {!isMobile && 'Invite to'} Openland
                                 </span>
                             </XView>
                             <OwnerLinkComponent
