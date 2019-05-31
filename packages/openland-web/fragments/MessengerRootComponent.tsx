@@ -32,10 +32,16 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { trackEvent } from 'openland-x-analytics';
-import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import throttle from 'lodash/throttle';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XButton } from 'openland-x/XButton';
+import { XLoader } from 'openland-x/XLoader';
+import { useForm } from 'openland-form/useForm';
+import { XModalController } from 'openland-x/showModal';
 
 export interface File {
     uuid: string;
@@ -101,26 +107,31 @@ export const DeleteUrlAugmentationComponent = withRouter(props => {
     );
 });
 
-export const LeaveChatComponent = withRouter(props => {
-    let client = useClient();
-    let id = props.router.query.leaveFromChat;
+export const LeaveChatComponent = (props: { id: string; ctx: XModalController }) => {
+    const client = useClient();
+    const form = useForm();
+    const createAction = () => {
+        form.doAction(async () => {
+            await client.mutateRoomLeave({ roomId: props.id });
+            props.ctx.hide();
+        });
+    };
     return (
-        <XModalForm
-            title="Leave the chat"
-            targetQuery="leaveFromChat"
-            submitBtnText="Leave"
-            defaultAction={async data => {
-                await client.mutateRoomLeave({ roomId: id });
-            }}
-            submitProps={{ successText: 'Done!', style: 'danger' }}
-        >
-            <XText>
-                Are you sure you want to leave? You will need to request access to join it again in
-                the future.
-            </XText>
-        </XModalForm>
+        <XView borderRadius={8}>
+            {form.loading && <XLoader loading={form.loading} />}
+            {form.error && <XErrorMessage message={form.error} />}
+            <XModalContent>
+                <XText>
+                    Are you sure you want to leave? You will need to request access to join it again
+                    in the future.
+                </XText>
+            </XModalContent>
+            <XModalFooter>
+                <XButton text="Leave" style="danger" size="large" onClick={createAction} />
+            </XModalFooter>
+        </XView>
     );
-});
+};
 
 interface ComposeHandlerProps extends MessageComposeComponentProps {
     variables?: {
