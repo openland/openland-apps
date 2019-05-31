@@ -118,7 +118,7 @@ const SuggestedGroupsPage = (props: PageProps) => {
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
             {<SHeaderButton title={'Done'} onPress={exit} />}
-            <SScrollView justifyContent="flex-start" alignContent="center">
+            {!loading && <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
@@ -138,7 +138,7 @@ const SuggestedGroupsPage = (props: PageProps) => {
                     item.__typename === 'SharedRoom' &&
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
                 ))}
-            </SScrollView>
+            </SScrollView>}
         </>
     );
 };

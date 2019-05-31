@@ -138,10 +138,18 @@ export const getTagGroup = (name: string): TagGroup => {
 }
 
 export const getSubTags = (tag: Tag) => {
-    if (tagsGroupsMap[tag.name]) {
-        return getTagGroup(tagsGroupsMap[tag.name]!).tags.map(t => t)
+    let tags = [tag.name];
+    let res: Tag[] = [];
+    let t = tags.pop();
+    while (t) {
+        let sub = tagsGroupsMap[t]
+        if (sub) {
+            tags.push(...getTagGroup(sub).tags.map(t1 => t1.name));
+            res.push(...(getTagGroup(sub).tags))
+        }
+        t = tags.pop();
     }
-    return [];
+    return res;
 }
 
 export const havePageForTag = (tag: string) => {
