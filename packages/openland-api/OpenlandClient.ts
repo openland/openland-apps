@@ -367,6 +367,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoomMembers(variables: Types.RoomMembersVariables, opts?: QueryWatchParameters): Types.RoomMembers | null {
         return this.useQuery(Source.RoomMembersQuery, variables, opts);
     }
+    async queryRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomOrganizationAdminMembers> {
+        return this.client.query(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+    }
+    async refetchRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables): Promise<Types.RoomOrganizationAdminMembers> {
+        return this.refetch(Source.RoomOrganizationAdminMembersQuery, variables);
+    }
+    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: QueryWatchParameters): Types.RoomOrganizationAdminMembers {
+        return this.useQuerySuspense(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+    }
+    useWithoutLoaderRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: QueryWatchParameters): Types.RoomOrganizationAdminMembers | null {
+        return this.useQuery(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+    }
     async queryRoomMembersForMentionsPaginated(variables: Types.RoomMembersForMentionsPaginatedVariables, opts?: OperationParameters): Promise<Types.RoomMembersForMentionsPaginated> {
         return this.client.query(Source.RoomMembersForMentionsPaginatedQuery, variables, opts);
     }

@@ -87,6 +87,7 @@ const ModalBody = (props: ModalBodyProps) => {
 
     const client = useClient();
     let room = client.useWithoutLoaderRoom(variables);
+    let roomAdmins = client.useWithoutLoaderRoomOrganizationAdminMembers({ id: variables.id })
 
     if (!room || !room.room) {
         return <XLoader loading={true} />;
@@ -98,6 +99,7 @@ const ModalBody = (props: ModalBodyProps) => {
     if (sharedRoom) {
         const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
             chat: sharedRoom,
+            admins: (roomAdmins && roomAdmins.room && roomAdmins.room.__typename === 'SharedRoom' && roomAdmins.room.organization && roomAdmins.room.organization.adminMembers || []).map(a => a.user)
         });
 
         return (
@@ -316,8 +318,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                  socialImageRef: sanitizeImageRef(newSocialImage),
-                              }
+                                socialImageRef: sanitizeImageRef(newSocialImage),
+                            }
                             : {}),
                     },
                 });
@@ -342,12 +344,12 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     welcomeMessageSender: welcomeMessageSender,
                     socialImageRef: props.socialImage
                         ? {
-                              uuid: props.socialImage,
-                              crop: {
-                                  w: 190,
-                                  h: 100,
-                              },
-                          }
+                            uuid: props.socialImage,
+                            crop: {
+                                w: 190,
+                                h: 100,
+                            },
+                        }
                         : undefined,
                 },
             }}

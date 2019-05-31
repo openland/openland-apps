@@ -9,7 +9,6 @@ import {
 } from 'openland-api/Types';
 import { XMutation } from 'openland-x/XMutation';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessageModal } from './MessageModal';
@@ -53,20 +52,7 @@ export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let usersCanUnpinMessage = [];
-    let canMeUnpinMessage = false;
-    if (sharedRoom) {
-        usersCanUnpinMessage = getWelcomeMessageSenders({
-            chat: sharedRoom as any,
-        });
-    }
-    if (usersCanUnpinMessage.find(i => i.id === myId) !== undefined) {
-        canMeUnpinMessage = true;
-    }
-
-    if ((room as Room_room_SharedRoom).kind === 'GROUP') {
-        canMeUnpinMessage = true;
-    }
+    let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
 
     let target = (
         <XView cursor="pointer">

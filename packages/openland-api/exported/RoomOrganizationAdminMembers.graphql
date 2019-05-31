@@ -1,0 +1,20 @@
+query RoomOrganizationAdminMembers($id: ID!) {
+  room(id: $id) {
+    __typename
+    ... on SharedRoom {
+      id
+      organization {
+        __typename
+        adminMembers: alphaOrganizationAdminMembers {
+          __typename
+          role
+          user {
+            __typename
+            ...UserShort
+          }
+        }
+        id
+      }
+    }
+  }
+}
