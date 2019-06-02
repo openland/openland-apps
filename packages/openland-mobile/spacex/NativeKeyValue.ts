@@ -13,7 +13,7 @@ export class NativeKeyValue implements KeyValueStore {
         this.queue.post(async () => {
             SQLite.enablePromise(true);
             SQLite.DEBUG(__DEV__);
-            this.db = await SQLite.openDatabase({ name: name + '-' + AppStorage.storage, location: 'default' });
+            this.db = await SQLite.openDatabase({ name: name + '-' + AppStorage.storage + '-v2', location: 'default' });
             await this.db.executeSql('CREATE TABLE IF NOT EXISTS records(key TEXT PRIMARY KEY, value TEXT);');
         })
     }
