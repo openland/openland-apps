@@ -12,7 +12,7 @@ import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContex
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
-    return discoverDone && false;
+    return discoverDone;
 }
 export const setDiscoverDone = async (done: boolean) => {
     await AsyncStorage.setItem('discover_done', 'done');
