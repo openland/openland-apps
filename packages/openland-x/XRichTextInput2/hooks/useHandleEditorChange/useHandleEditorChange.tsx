@@ -150,9 +150,19 @@ export function useHandleEditorChange({
             return;
         }
 
-        let focusOffset = selection.getFocusOffset() + 2;
+        const getSelectedText = () => {
+            let start = selection.getStartOffset();
+            let end = selection.getEndOffset();
 
-        let selectionText = (window as any).getSelection().toString();
+            let anchorKey = selection.getAnchorKey();
+            let currentContent = editorState.getCurrentContent();
+            let currentContentBlock = currentContent.getBlockForKey(anchorKey);
+
+            return currentContentBlock.getText().slice(start, end);
+        };
+
+        const selectionText = getSelectedText();
+
         let textToInsert = `${startSymbol}${selectionText}${endSymbol}`;
 
         let shouldRemove =
@@ -160,17 +170,34 @@ export function useHandleEditorChange({
             selectionText[0] === startSymbol &&
             selectionText[selectionText.length - 1] === endSymbol;
 
+        let focusOffset, anchorOffset;
+
         if (shouldRemove) {
             textToInsert = selectionText.slice(1, -1);
-            focusOffset = selection.getFocusOffset() - 2;
+
+            if (!selection.getIsBackward()) {
+                anchorOffset = selection.getAnchorOffset();
+                focusOffset = selection.getFocusOffset() - 2;
+            } else {
+                anchorOffset = selection.getAnchorOffset() - 2;
+                focusOffset = selection.getFocusOffset();
+            }
+        } else {
+            if (!selection.getIsBackward()) {
+                anchorOffset = selection.getAnchorOffset();
+                focusOffset = selection.getFocusOffset() + 2;
+            } else {
+                anchorOffset = selection.getAnchorOffset() + 2;
+                focusOffset = selection.getFocusOffset();
+            }
         }
 
         const updateSelection = new SelectionState({
             anchorKey: selection.getAnchorKey(),
-            anchorOffset: selection.getAnchorOffset(),
             focusKey: selection.getAnchorKey(),
+            anchorOffset,
             focusOffset,
-            isBackward: false,
+            isBackward: selection.getIsBackward(),
         });
 
         const nextContentState = Modifier.replaceText(
