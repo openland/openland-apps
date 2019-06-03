@@ -259,12 +259,18 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             <XShortcuts
                 supressOtherShortcuts
                 handlerMap={{
-                    ESC: () => {
-                        onClose();
-                    },
+                    COMMAND_DOWN: onClose,
+                    ESC: onClose,
                 }}
                 keymap={{
-                    ESC: 'esc',
+                    COMMAND_DOWN: {
+                        osx: ['command+down'],
+                        windows: ['ctrl+down'],
+                    },
+                    ESC: {
+                        osx: ['esc'],
+                        windows: ['esc'],
+                    },
                 }}
             >
                 {(file || fileId) && (

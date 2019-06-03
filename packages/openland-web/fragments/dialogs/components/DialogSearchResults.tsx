@@ -96,12 +96,12 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             }}
             keymap={{
                 SHIFT_COMMAND_UP: {
-                    osx: ['shift+up'],
-                    windows: ['alt+up'],
+                    osx: ['shift+command+up'],
+                    windows: ['shift+ctrl+up'],
                 },
                 SHIFT_COMMAND_DOWN: {
-                    osx: ['shift+down'],
-                    windows: ['alt+down'],
+                    osx: ['shift+command+down'],
+                    windows: ['shift+ctrl+down'],
                 },
             }}
         >

@@ -109,7 +109,7 @@ export const ShortcutsBody = () => {
                 <Shortcut shortcuts={['Shift + Enter']} description="New line" />
                 <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
                 <Shortcut
-                    shortcuts={['Cmd + ↑ (Mac)', 'Alt + ↑ (Mac)']}
+                    shortcuts={['↑ (when input empty)', 'Cmd + ↑ (Mac)', 'Alt + ↑ (Windows)']}
                     description="Edit last message (works when the message box is in focus)"
                 />
                 <XView height={22} />
