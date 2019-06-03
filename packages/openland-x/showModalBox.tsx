@@ -61,7 +61,7 @@ const overlayStyle = css`
 `;
 
 const Loader = (
-    <XView height={64} alignItems="center" justifyContent="center">
+    <XView height="100%" alignItems="center" justifyContent="center">
         <XLoader loading={true} />
     </XView>
 );
