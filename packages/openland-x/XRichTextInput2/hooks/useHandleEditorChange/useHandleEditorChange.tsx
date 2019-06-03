@@ -150,9 +150,29 @@ export function useHandleEditorChange({
             return;
         }
 
-        const textToInsert = `${startSymbol}${(window as any)
-            .getSelection()
-            .toString()}${endSymbol}`;
+
+        let focusOffset = selection.getFocusOffset() + 2;
+
+        let selectionText = (window as any).getSelection().toString();
+        let textToInsert = `${startSymbol}${selectionText}${endSymbol}`;
+
+        let shouldRemove =
+            selectionText.length >= 2 &&
+            selectionText[0] === startSymbol &&
+            selectionText[selectionText.length - 1] === endSymbol;
+
+        if (shouldRemove) {
+            textToInsert = selectionText.slice(1, -1);
+            focusOffset = selection.getFocusOffset() - 2;
+        }
+
+        const updateSelection = new SelectionState({
+            anchorKey: selection.getAnchorKey(),
+            anchorOffset: selection.getAnchorOffset(),
+            focusKey: selection.getAnchorKey(),
+            focusOffset,
+            isBackward: false,
+        });
 
         const nextContentState = Modifier.replaceText(
             editorState.getCurrentContent(),
@@ -160,7 +180,14 @@ export function useHandleEditorChange({
             textToInsert,
         );
 
-        updateEditorState(EditorState.push(editorState, nextContentState, 'insert-characters'));
+        const newEditorState = EditorState.push(editorState, nextContentState, 'insert-characters');
+
+        const newEditorStateWithSelection = EditorState.forceSelection(
+            newEditorState,
+            updateSelection,
+        );
+
+        updateEditorState(newEditorStateWithSelection);
     };
 
     const finalAddMention = (mention: SuggestionTypeT) => {
