@@ -158,6 +158,7 @@ const ModalBoxComponent = React.memo<{
               maxWidth: 'initial',
               maxHeight: 'initial',
               borderRadius: 0,
+              transition: 'none',
           }
         : { top, left, width: props.config.width };
 
