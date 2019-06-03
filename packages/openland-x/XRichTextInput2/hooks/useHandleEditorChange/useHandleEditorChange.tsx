@@ -17,6 +17,7 @@ import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { SuggestionTypeT } from '../../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import { EmojiDataT } from '../../modules/emoji/EmojiSuggestions/useEmojiSuggestions';
+import { XWrapWithSymbolCommand, cmdSymbolMap, symbolCmdWrapMap } from '../useDraftKeyHandling';
 
 const getWordAt = (maybeString: any, position: any) => {
     // Perform type conversions.
@@ -138,13 +139,8 @@ export function useHandleEditorChange({
         );
     };
 
-    const wrapSelectedWithSymbols = ({
-        startSymbol,
-        endSymbol,
-    }: {
-        startSymbol: string;
-        endSymbol: string;
-    }) => {
+    const wrapSelectedWithSymbols = (cmd: XWrapWithSymbolCommand) => {
+        const wrapSymbol = cmdSymbolMap[cmd];
         const selection = editorState.getSelection();
         if (selection.isCollapsed()) {
             return;
@@ -163,12 +159,22 @@ export function useHandleEditorChange({
 
         const selectionText = getSelectedText();
 
-        let textToInsert = `${startSymbol}${selectionText}${endSymbol}`;
+        let textToInsert = `${wrapSymbol}${selectionText}${wrapSymbol}`;
 
-        let shouldRemove =
-            selectionText.length >= 2 &&
-            selectionText[0] === startSymbol &&
-            selectionText[selectionText.length - 1] === endSymbol;
+        let shouldRemove = false;
+        let shouldReplace = false;
+        if (selectionText.length >= 2) {
+            const startSymbol = selectionText[0];
+            const endSymbol = selectionText[selectionText.length - 1];
+
+            if (startSymbol === endSymbol) {
+                if (startSymbol === wrapSymbol) {
+                    shouldRemove = true;
+                } else if (symbolCmdWrapMap[startSymbol]) {
+                    shouldReplace = true;
+                }
+            }
+        }
 
         let focusOffset, anchorOffset;
 
@@ -180,6 +186,16 @@ export function useHandleEditorChange({
                 focusOffset = selection.getFocusOffset() - 2;
             } else {
                 anchorOffset = selection.getAnchorOffset() - 2;
+                focusOffset = selection.getFocusOffset();
+            }
+        } else if (shouldReplace) {
+            textToInsert = `${wrapSymbol}${selectionText.slice(1, -1)}${wrapSymbol}`;
+
+            if (!selection.getIsBackward()) {
+                anchorOffset = selection.getAnchorOffset();
+                focusOffset = selection.getFocusOffset();
+            } else {
+                anchorOffset = selection.getAnchorOffset();
                 focusOffset = selection.getFocusOffset();
             }
         } else {

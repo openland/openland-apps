@@ -3,12 +3,26 @@ import { EmojiSuggestionsStateT } from '../modules/emoji/EmojiSuggestions/useEmo
 import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
-enum XEditorCommands {
+export enum XWrapWithSymbolCommand {
     BoldWrap = 'BoldWrap',
     ItalicWrap = 'ItalicWrap',
     IronyWrap = 'IronyWrap',
-    EditorSubmit = 'EditorSubmit',
 }
+
+export const cmdSymbolMap = {
+    [XWrapWithSymbolCommand.BoldWrap]: '*',
+    [XWrapWithSymbolCommand.ItalicWrap]: '_',
+    [XWrapWithSymbolCommand.IronyWrap]: '~',
+};
+
+export const symbolCmdWrapMap = {
+    '*': XWrapWithSymbolCommand.BoldWrap,
+    _: XWrapWithSymbolCommand.ItalicWrap,
+    '~': XWrapWithSymbolCommand.IronyWrap,
+};
+
+export const XEditorCommands = { ...XWrapWithSymbolCommand, EditorSubmit: 'EditorSubmit' };
+export type XEditorCommands = typeof XEditorCommands;
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.key === 'b' && e.metaKey) {
@@ -28,7 +42,7 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
 };
 
 type useKeyHandlingT = {
-    wrapSelectedWithSymbols: (a: { startSymbol: string; endSymbol: string }) => void;
+    wrapSelectedWithSymbols: (a: XWrapWithSymbolCommand) => void;
     onSubmit?: () => Promise<void>;
     mentionState: MentionSuggestionsStateT;
     emojiState: EmojiSuggestionsStateT;
@@ -64,22 +78,14 @@ export function useDraftKeyHandling({
                 return 'handled';
             }
         } else if (command === XEditorCommands.BoldWrap) {
-            wrapSelectedWithSymbols({
-                startSymbol: '*',
-                endSymbol: '*',
-            });
+            wrapSelectedWithSymbols(XEditorCommands.BoldWrap);
             return 'handled';
         } else if (command === XEditorCommands.ItalicWrap) {
-            wrapSelectedWithSymbols({
-                startSymbol: '_',
-                endSymbol: '_',
-            });
+            wrapSelectedWithSymbols(XEditorCommands.ItalicWrap);
+
             return 'handled';
         } else if (command === XEditorCommands.IronyWrap) {
-            wrapSelectedWithSymbols({
-                startSymbol: '~',
-                endSymbol: '~',
-            });
+            wrapSelectedWithSymbols(XEditorCommands.IronyWrap);
         }
         return 'not-handled';
     };
