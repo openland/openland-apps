@@ -138,6 +138,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     return (
         <XShortcuts
             handlerMap={{
+                CTRL_E: handleCommandUp,
                 COMMAND_UP: handleCommandUp,
                 UP: handleUp,
             }}
@@ -146,6 +147,10 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                 COMMAND_UP: {
                     osx: ['command+up'],
                     windows: ['ctrl+up'],
+                },
+                CTRL_E: {
+                    osx: ['ctrl+e'],
+                    windows: ['ctrl+e'],
                 },
             }}
         >

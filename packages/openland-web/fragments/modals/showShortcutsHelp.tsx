@@ -98,6 +98,16 @@ const SpanPreview = ({
     );
 };
 
+const arrowUpShortcutClassName = css`
+    padding: 3px 6px 4px 6px;
+    font-size: 13px;
+    line-height: 1.54;
+    font-weight: 600;
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.06);
+`;
+
 export const ShortcutsBody = () => {
     return (
         <XScrollView3 flexShrink={1} useDefaultScroll={true}>
@@ -109,7 +119,11 @@ export const ShortcutsBody = () => {
                 <Shortcut shortcuts={['Shift + Enter']} description="New line" />
                 <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
                 <Shortcut
-                    shortcuts={['↑ (when input empty)', 'Cmd + ↑ (Mac)', 'Alt + ↑ (Windows)']}
+                    shortcuts={[
+                        <strong className={arrowUpShortcutClassName} key="edit">
+                            ↑
+                        </strong>,
+                    ]}
                     description="Edit last message (works when the message box is in focus)"
                 />
                 <XView height={22} />
