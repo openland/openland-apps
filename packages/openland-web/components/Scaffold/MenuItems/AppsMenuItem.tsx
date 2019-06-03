@@ -27,7 +27,7 @@ const Item = ({ title, href, icon }: { title: string; href: string; icon: any })
 
 export const AppsMenuItem = () => (
     <MenuItemWithPopper
-        targetElement={<IconApps />}
+        targetElement={<IconApps style={{ width: 20, height: 20 }} />}
         menuItems={
             <>
                 <XMenuTitle>
