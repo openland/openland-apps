@@ -178,7 +178,6 @@ export const ShortcutsBody = () => {
                         or
                     </XView>
                     <Shortcut shortcuts={['Cmd + R (Mac)', 'Ctrl + R (Windows)']} />
-                    <SpanPreview spanType={SpanType.irony} text={`~irony~`} />
                 </XView>
                 <XView marginTop={12}>
                     <div>
