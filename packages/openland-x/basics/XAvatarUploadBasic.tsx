@@ -76,6 +76,8 @@ const AvatarImage = Glamorous(XCloudImage)({
     bottom: 0,
     minHeight: '100%',
     minWidth: '100%',
+    maxWidth: '100%',
+    maxHeight: '100%',
 });
 
 const PlaceholderHoint = Glamorous.div<{ hasImage: boolean }>(props => ({
