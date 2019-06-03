@@ -285,6 +285,7 @@ export const RoomChatQuery = gql`
                 role
                 canEdit
                 photo
+                membersCount
                 pinnedMessage {
                     ...FullMessage
                 }

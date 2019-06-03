@@ -18,6 +18,7 @@ query RoomChat($id: ID!) {
       id
       isChannel
       kind
+      membersCount
       membership
       photo
       pinnedMessage {

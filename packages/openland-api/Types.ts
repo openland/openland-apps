@@ -17791,6 +17791,7 @@ export interface RoomChat_room_SharedRoom {
   role: RoomMemberRole;
   canEdit: boolean;
   photo: string;
+  membersCount: number | null;
   pinnedMessage: RoomChat_room_SharedRoom_pinnedMessage | null;
 }
 
