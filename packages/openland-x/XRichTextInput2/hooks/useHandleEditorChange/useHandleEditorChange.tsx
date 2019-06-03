@@ -150,7 +150,6 @@ export function useHandleEditorChange({
             return;
         }
 
-
         let focusOffset = selection.getFocusOffset() + 2;
 
         let selectionText = (window as any).getSelection().toString();
