@@ -93,6 +93,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                         marginLeft={isMobile ? 0 : 32}
                         marginBottom={30}
                         alignSelf={isMobile ? 'center' : 'flex-start'}
+                        position={isMobile ? 'relative' : 'fixed'}
                     />
                 )}
                 {!isMobile && (
