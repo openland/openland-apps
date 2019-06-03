@@ -17,7 +17,7 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.key === 'i' && e.metaKey) {
         return XEditorCommands.ItalicWrap;
     }
-    if (e.key === 'r' && e.metaKey) {
+    if (e.key === 'u' && e.metaKey) {
         return XEditorCommands.IronyWrap;
     }
 

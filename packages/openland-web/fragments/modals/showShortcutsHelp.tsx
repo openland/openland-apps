@@ -177,7 +177,7 @@ export const ShortcutsBody = () => {
                     <XView paddingLeft={6} paddingRight={8}>
                         or
                     </XView>
-                    <Shortcut shortcuts={['Cmd + R (Mac)', 'Ctrl + R (Windows)']} />
+                    <Shortcut shortcuts={['Cmd + U (Mac)', 'Ctrl + U (Windows)']} />
                 </XView>
                 <XView marginTop={12}>
                     <div>
