@@ -14,9 +14,11 @@ type useKeydownHandlerT = {
     quoteState: QuoteStateT;
     conversation?: ConversationEngine;
     user: UserShort | null;
+    inputValue: string;
 };
 
 export function useKeydownHandler({
+    inputValue,
     inputMethodsState,
     quoteState,
     conversation,
@@ -25,12 +27,14 @@ export function useKeydownHandler({
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const isActive = React.useContext(IsActivePoliteContext);
 
-    const handleCommandUp = () => {
+    const setEditMessage = () => {
+        if (!conversation) {
+            return;
+        }
         if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
             return;
         }
-
-        if (!isActive.getValue() || !inputMethodsState.getHasFocus() || !conversation) {
+        if (!isActive.getValue() || !inputMethodsState.getHasFocus()) {
             return;
         }
 
@@ -57,7 +61,19 @@ export function useKeydownHandler({
         }
     };
 
+    const handleUp = () => {
+        if (inputValue !== '') {
+            return;
+        }
+        setEditMessage();
+    };
+
+    const handleCommandUp = () => {
+        setEditMessage();
+    };
+
     return {
         handleCommandUp,
+        handleUp,
     };
 }

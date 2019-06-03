@@ -115,7 +115,8 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         inputMethodsState,
     });
 
-    const { handleCommandUp } = useKeydownHandler({
+    const { handleCommandUp, handleUp } = useKeydownHandler({
+        inputValue,
         conversation: props.conversation,
         user: props.user,
         quoteState,
@@ -138,8 +139,10 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         <XShortcuts
             handlerMap={{
                 COMMAND_UP: handleCommandUp,
+                UP: handleUp,
             }}
             keymap={{
+                UP: 'up',
                 COMMAND_UP: {
                     osx: ['command+up'],
                     windows: ['ctrl+up'],

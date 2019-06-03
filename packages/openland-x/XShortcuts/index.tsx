@@ -94,7 +94,6 @@ export class XShortcuts extends React.Component<XShortcutsT> {
     };
 
     handleActions = (action: string, event: React.KeyboardEvent) => {
-        console.log('handleActions');
         const filteredIdKeymapsPairs = listOfIdKeymaps.filter(
             ({ keymap }: { keymap: KeymapT }) => Object.keys(keymap).indexOf(action) !== -1,
         );

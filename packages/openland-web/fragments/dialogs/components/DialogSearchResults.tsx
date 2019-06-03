@@ -90,6 +90,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
 
     return (
         <XShortcuts
+            supressOtherShortcuts
             handlerMap={{
                 SHIFT_COMMAND_UP: handleOptionUp,
                 SHIFT_COMMAND_DOWN: handleOptionDown,
