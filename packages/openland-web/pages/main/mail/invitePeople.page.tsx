@@ -11,6 +11,7 @@ import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import ArrowDownIcon from 'openland-icons/ic-arrow-down.svg';
+import { XImage } from 'react-mental';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -29,7 +30,7 @@ const textLetterSpacingClassName = css`
     letter-spacing: 1.1px;
 `;
 
-export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolean }) => {
+export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean }) => {
     const client = useClient();
 
     const founderChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
@@ -62,8 +63,8 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
             paddingLeft={isMobile ? 40 : 0}
             paddingRight={isMobile ? 40 : 0}
         >
-            {!withoutCloseIcon && (
-                <XView position="absolute" right={20} top={20}>
+            {!asModalContent && (
+                <XView position="absolute" right={20} top={20} zIndex={100}>
                     <XView
                         onClick={() => {
                             router.replace(`/mail`);
@@ -82,8 +83,18 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                     </XView>
                 </XView>
             )}
-
             <XView flexDirection="column" alignItems="center" width="100%">
+                {asModalContent && (
+                    <XImage
+                        src="/static/landing/logotype.svg"
+                        width={145}
+                        height={42}
+                        marginTop={19}
+                        marginLeft={isMobile ? 0 : 32}
+                        marginBottom={30}
+                        alignSelf={isMobile ? 'center' : 'flex-start'}
+                    />
+                )}
                 {!isMobile && (
                     <XView marginBottom={-55}>
                         <ImgMembersEmpty />
@@ -163,11 +174,19 @@ export const InviteFragment = ({ withoutCloseIcon }: { withoutCloseIcon?: boolea
                     {!moreInvite && (
                         <XView
                             flexDirection="row"
+                            alignSelf="center"
                             alignItems="center"
                             cursor="pointer"
                             marginTop={30}
-                            paddingBottom={100}
+                            marginBottom={100}
+                            paddingTop={8}
+                            paddingBottom={8}
+                            paddingLeft={11}
+                            paddingRight={11}
                             onClick={() => showMoreInvite(true)}
+                            borderRadius={20}
+                            borderWidth={1}
+                            borderColor="rgba(0,0,0,0.07)"
                         >
                             <XView marginRight={8} flexDirection="row" alignItems="center">
                                 <ArrowDownIcon />
