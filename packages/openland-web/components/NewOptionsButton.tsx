@@ -12,6 +12,7 @@ import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import NewIcon from 'openland-icons/ic-add-blue.svg';
 import { makeActionable } from 'openland-x/Actionable';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -157,6 +158,7 @@ export const NewOptionsMenu = () => (
 );
 
 export const NewOptionsButton = XMemo(() => {
+    let router = React.useContext(XRoutingContext)!;
     const [show, setShow] = React.useState(false);
 
     const closer = React.useCallback(() => {
@@ -166,6 +168,11 @@ export const NewOptionsButton = XMemo(() => {
     const open = React.useCallback(() => {
         setShow(true);
     }, []);
+
+    const ctrlOptionN = () => {
+        open();
+        router.push(`/mail`);
+    };
 
     const toggle = React.useCallback(() => {
         setShow(!show);
@@ -184,7 +191,7 @@ export const NewOptionsButton = XMemo(() => {
         >
             <XShortcuts
                 handlerMap={{
-                    CTRL_OPTION_N: open,
+                    CTRL_OPTION_N: ctrlOptionN,
                 }}
                 keymap={{
                     CTRL_OPTION_N: {
