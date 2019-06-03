@@ -33,6 +33,7 @@ import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+import { XShortcuts } from 'openland-x/XShortcuts';
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -114,10 +115,9 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         inputMethodsState,
     });
 
-    useKeydownHandler({
+    const { handleCommandUp } = useKeydownHandler({
         conversation: props.conversation,
         user: props.user,
-        inputValue,
         quoteState,
         inputMethodsState,
     });
@@ -135,19 +135,31 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
 
     return (
-        <DumpSendMessage
-            showAllMentionsSuggestion={props.conversationType === 'PRIVATE' ? false : true}
-            initialMentions={initialMentions}
-            getMentionsSuggestions={getMentionsSuggestions}
-            TextInputComponent={props.TextInputComponent || DesktopSendMessage}
-            quoteState={quoteState}
-            handleChange={handleChange}
-            handleSend={handleSend}
-            inputRef={inputRef}
-            inputValue={inputValue}
-            enabled={props.enabled}
-            closeEditor={closeEditor}
-        />
+        <XShortcuts
+            handlerMap={{
+                COMMAND_UP: handleCommandUp,
+            }}
+            keymap={{
+                COMMAND_UP: {
+                    osx: ['command+up'],
+                    windows: ['ctrl+up'],
+                },
+            }}
+        >
+            <DumpSendMessage
+                showAllMentionsSuggestion={props.conversationType === 'PRIVATE' ? false : true}
+                initialMentions={initialMentions}
+                getMentionsSuggestions={getMentionsSuggestions}
+                TextInputComponent={props.TextInputComponent || DesktopSendMessage}
+                quoteState={quoteState}
+                handleChange={handleChange}
+                handleSend={handleSend}
+                inputRef={inputRef}
+                inputValue={inputValue}
+                enabled={props.enabled}
+                closeEditor={closeEditor}
+            />
+        </XShortcuts>
     );
 };
 

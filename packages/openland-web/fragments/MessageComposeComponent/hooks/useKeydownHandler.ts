@@ -11,14 +11,12 @@ import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/C
 
 type useKeydownHandlerT = {
     inputMethodsState: InputMethodsStateT;
-    inputValue: string;
     quoteState: QuoteStateT;
     conversation?: ConversationEngine;
     user: UserShort | null;
 };
 
 export function useKeydownHandler({
-    inputValue,
     inputMethodsState,
     quoteState,
     conversation,
@@ -27,49 +25,39 @@ export function useKeydownHandler({
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const isActive = React.useContext(IsActivePoliteContext);
 
-    const keydownHandler = (e: any) => {
+    const handleCommandUp = () => {
         if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
             return;
         }
 
-        if (
-            isActive.getValue() &&
-            inputValue.length === 0 &&
-            conversation &&
-            ((e.code === 'ArrowUp' &&
-                !e.shiftKey &&
-                !e.altKey &&
-                inputMethodsState.getHasFocus()) ||
-                (e.code === 'KeyE' && e.ctrlKey)) &&
-            !quoteState.quoteMessagesId.length
-        ) {
-            e.preventDefault();
+        if (!isActive.getValue() || !inputMethodsState.getHasFocus() || !conversation) {
+            return;
+        }
 
-            const size = conversation.dataSource.getSize();
+        if (quoteState.quoteMessagesId.length) {
+            return;
+        }
 
-            for (let i = 0; i < size; i++) {
-                const item = conversation.dataSource.getAt(i);
-                if (
-                    item.type === 'message' &&
-                    item.isSending === false &&
-                    user &&
-                    item.senderId === user.id &&
-                    item.id &&
-                    item.text &&
-                    !item.isService
-                ) {
-                    messagesContext.setEditMessage(item.id, item.text);
-                    return;
-                }
+        const size = conversation.dataSource.getSize();
+
+        for (let i = 0; i < size; i++) {
+            const item = conversation.dataSource.getAt(i);
+            if (
+                item.type === 'message' &&
+                item.isSending === false &&
+                user &&
+                item.senderId === user.id &&
+                item.id &&
+                item.text &&
+                !item.isService
+            ) {
+                messagesContext.setEditMessage(item.id, item.text);
+                return;
             }
         }
     };
 
-    React.useEffect(() => {
-        window.addEventListener('keydown', keydownHandler);
-
-        return function cleanup() {
-            window.removeEventListener('keydown', keydownHandler);
-        };
-    });
+    return {
+        handleCommandUp,
+    };
 }

@@ -91,15 +91,15 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     return (
         <XShortcuts
             handlerMap={{
-                SHIFT_UP: handleOptionUp,
-                SHIFT_DOWN: handleOptionDown,
+                SHIFT_COMMAND_UP: handleOptionUp,
+                SHIFT_COMMAND_DOWN: handleOptionDown,
             }}
             keymap={{
-                SHIFT_UP: {
+                SHIFT_COMMAND_UP: {
                     osx: ['shift+up'],
                     windows: ['alt+up'],
                 },
-                SHIFT_DOWN: {
+                SHIFT_COMMAND_DOWN: {
                     osx: ['shift+down'],
                     windows: ['alt+down'],
                 },

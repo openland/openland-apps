@@ -123,18 +123,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     return (
         <XShortcuts
             handlerMap={{
-                SHIFT_UP: handleOptionUp,
-                SHIFT_DOWN: handleOptionDown,
+                SHIFT_COMMAND_UP: handleOptionUp,
+                SHIFT_COMMAND_DOWN: handleOptionDown,
                 CTRL_S: handleCtrlS,
             }}
             keymap={{
-                SHIFT_UP: {
-                    osx: ['shift+up'],
-                    windows: ['alt+up'],
+                SHIFT_COMMAND_UP: {
+                    osx: ['shift+command+up'],
+                    windows: ['shift+ctrl+up'],
                 },
-                SHIFT_DOWN: {
-                    osx: ['shift+down'],
-                    windows: ['alt+down'],
+                SHIFT_COMMAND_DOWN: {
+                    osx: ['shift+command+down'],
+                    windows: ['shift+ctrl+down'],
                 },
                 CTRL_S: {
                     osx: ['ctrl+s'],

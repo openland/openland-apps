@@ -98,16 +98,6 @@ const SpanPreview = ({
     );
 };
 
-const arrowUpShortcutClassName = css`
-    padding: 3px 6px 4px 6px;
-    font-size: 13px;
-    line-height: 1.54;
-    font-weight: 600;
-    border-radius: 8px;
-    color: rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.06);
-`;
-
 export const ShortcutsBody = () => {
     return (
         <XScrollView3 flexShrink={1} useDefaultScroll={true}>
@@ -119,11 +109,7 @@ export const ShortcutsBody = () => {
                 <Shortcut shortcuts={['Shift + Enter']} description="New line" />
                 <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
                 <Shortcut
-                    shortcuts={[
-                        <strong className={arrowUpShortcutClassName} key="edit">
-                            ↑
-                        </strong>,
-                    ]}
+                    shortcuts={['Cmd + ↑ (Mac)', 'Alt + ↑ (Mac)']}
                     description="Edit last message (works when the message box is in focus)"
                 />
                 <XView height={22} />
@@ -131,11 +117,11 @@ export const ShortcutsBody = () => {
                 <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
                 {/* overlapse with option + ↑ behaves weird with scroll */}
                 <Shortcut
-                    shortcuts={['Shift + ↑ (Mac)', 'Alt + ↑ (Windows)']}
+                    shortcuts={['Shift + Cmd + ↑ (Mac)', 'Shift + Ctrl + ↑ (Windows)']}
                     description="Previous chat"
                 />
                 <Shortcut
-                    shortcuts={['Shift + ↓ (Mac)', 'Alt + ↓ (Windows)']}
+                    shortcuts={['Shift + Cmd + ↓ (Mac)', 'Shift + Ctrl + ↓ (Windows)']}
                     description="Next chat"
                 />
                 <Shortcut shortcuts={['Esc']} description="Close chat" />
