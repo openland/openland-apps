@@ -66,6 +66,16 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                             ))
                         }
                     />
+                    <XButton
+                        text="Show Fullscreen Modal"
+                        onClick={() =>
+                            showModalBox({ fullScreen: true }, ctx => (
+                                <XView alignItems="center" marginTop={100}>
+                                    <XButton text="close" onClick={() => ctx.hide()} />
+                                </XView>
+                            ))
+                        }
+                    />
                     {/* <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />
                     </XModal>

@@ -7,6 +7,7 @@ import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 const boxStyle = css`
     overflow: visible;
@@ -146,6 +147,20 @@ const ModalBoxComponent = React.memo<{
         return () => observer.disconnect();
     }, []);
 
+    const boxInlineStyle = props.config.fullScreen
+        ? {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'initial',
+              maxHeight: 'initial',
+              borderRadius: 0,
+          }
+        : { top, left, width: props.config.width };
+
     return (
         <XModalBoxContext.Provider
             value={{
@@ -170,8 +185,25 @@ const ModalBoxComponent = React.memo<{
                         state === 'visible' && boxVisible,
                         state === 'hiding' && boxHiding,
                     )}
-                    style={{ top, left, width: props.config.width }}
+                    style={boxInlineStyle}
                 >
+                    {props.config.fullScreen && (
+                        <XView position="absolute" right={23} top={23} zIndex={100}>
+                            <XView
+                                onClick={tryHide}
+                                cursor="pointer"
+                                alignItems="center"
+                                justifyContent="center"
+                                padding={8}
+                                width={36}
+                                height={36}
+                                borderRadius={50}
+                                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                            >
+                                <CloseIcon width={18} height={18} />
+                            </XView>
+                        </XView>
+                    )}
                     {props.config.title && (
                         <XView paddingTop={30} paddingBottom={20}>
                             <XView
@@ -206,6 +238,7 @@ export const XModalBoxStyles = {
 export interface XModalBoxConfig {
     title?: string;
     width?: number;
+    fullScreen?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
