@@ -211,13 +211,14 @@ export class DialogListEngine {
         await this._dataSourceStored.updateState(state);
     }
 
-    handleUserRead = async (conversationId: string, unread: number, visible: boolean) => {
+    handleUserRead = async (conversationId: string, unread: number, visible: boolean, haveMention: boolean) => {
         // Write counter to datasource
         let res = await this._dataSourceStored.getItem(conversationId);
         if (res) {
             await this._dataSourceStored.updateItem({
                 ...res,
                 unread: unread,
+                haveMention
             });
         }
     };
@@ -252,6 +253,7 @@ export class DialogListEngine {
                     message: event.message.message ? msg : undefined,
                     fallback: msg,
                     attachments: event.message.attachments,
+                    haveMention: event.haveMention
                 });
             }
         }
@@ -288,16 +290,6 @@ export class DialogListEngine {
         }
     };
 
-    handleHaveMentionUpdated = async (cid: string, haveMention: boolean) => {
-        let existing = await this._dataSourceStored.getItem(cid);
-        if (existing) {
-            await this._dataSourceStored.updateItem({
-                ...existing,
-                haveMention: haveMention,
-            });
-        }
-    };
-
     handlePhotoUpdated = async (cid: string, photo: string) => {
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
@@ -324,6 +316,7 @@ export class DialogListEngine {
                 unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
                 isOut: isOut,
                 sender: sender,
+                haveMention: event.haveMention,
                 messageId: event.message.id,
                 message: event.message && event.message.message ? msg : undefined,
                 fallback: msg,
@@ -366,7 +359,7 @@ export class DialogListEngine {
                     key: conversationId,
                     isService,
                     isMuted: !!room.settings.mute,
-                    haveMention: event.message.haveMention,
+                    haveMention: event.haveMention,
                     flexibleId: privateRoom ? privateRoom.user.id : room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     isChannel: sharedRoom ? sharedRoom.isChannel : false,

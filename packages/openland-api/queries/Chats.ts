@@ -147,12 +147,14 @@ export const DialogUpdateFragment = gql`
             message: alphaMessage {
                 ...TinyMessage
             }
+            haveMention
         }
         ... on DialogMessageUpdated {
             cid
             message: alphaMessage {
                 ...TinyMessage
             }
+            haveMention
         }
         ... on DialogMessageDeleted {
             cid
@@ -164,16 +166,13 @@ export const DialogUpdateFragment = gql`
             }
             unread
             globalUnread
+            haveMention
         }
         ... on DialogMessageRead {
             cid
             unread
             globalUnread
-        }
-        ... on DialogMessageRead {
-            cid
-            unread
-            globalUnread
+            haveMention
         }
         ... on DialogTitleUpdated {
             cid
@@ -182,10 +181,6 @@ export const DialogUpdateFragment = gql`
         ... on DialogMuteChanged {
             cid
             mute
-        }
-        ... on DialogMentionedChanged {
-            cid
-            haveMention
         }
         ... on DialogPhotoUpdated {
             cid
@@ -202,6 +197,7 @@ export const DialogUpdateFragment = gql`
             topMessage {
                 ...TinyMessage
             }
+            haveMention
         }
     }
 `;

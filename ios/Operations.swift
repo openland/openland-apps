@@ -612,6 +612,7 @@ private let DialogUpdateFragmentSelector = obj(
                     ))),
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
+                field("haveMention","haveMention", notNull(scalar("Boolean"))),
                 field("unread","unread", notNull(scalar("Int")))
             )),
             inline("DialogMessageUpdated", obj(
@@ -619,7 +620,8 @@ private let DialogUpdateFragmentSelector = obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     ))),
-                field("cid","cid", notNull(scalar("ID")))
+                field("cid","cid", notNull(scalar("ID"))),
+                field("haveMention","haveMention", notNull(scalar("Boolean")))
             )),
             inline("DialogMessageDeleted", obj(
                 field("alphaMessage","message", notNull(obj(
@@ -632,16 +634,13 @@ private let DialogUpdateFragmentSelector = obj(
                     )),
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
+                field("haveMention","haveMention", notNull(scalar("Boolean"))),
                 field("unread","unread", notNull(scalar("Int")))
             )),
             inline("DialogMessageRead", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("unread","unread", notNull(scalar("Int")))
-            )),
-            inline("DialogMessageRead", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
+                field("haveMention","haveMention", notNull(scalar("Boolean"))),
                 field("unread","unread", notNull(scalar("Int")))
             )),
             inline("DialogTitleUpdated", obj(
@@ -651,10 +650,6 @@ private let DialogUpdateFragmentSelector = obj(
             inline("DialogMuteChanged", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("mute","mute", notNull(scalar("Boolean")))
-            )),
-            inline("DialogMentionedChanged", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean")))
             )),
             inline("DialogPhotoUpdated", obj(
                 field("cid","cid", notNull(scalar("ID"))),
@@ -667,6 +662,7 @@ private let DialogUpdateFragmentSelector = obj(
             inline("DialogBump", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
+                field("haveMention","haveMention", notNull(scalar("Boolean"))),
                 field("topMessage","topMessage", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
@@ -3739,7 +3735,7 @@ class Operations {
     let DialogsWatch = OperationDefinition(
         "DialogsWatch",
         .subscription, 
-        "subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogMentionedChanged{cid haveMention}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}",
+        "subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}",
         DialogsWatchSelector
     )
     let OnlineWatch = OperationDefinition(

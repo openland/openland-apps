@@ -146,7 +146,7 @@ export class GlobalStateEngine {
             await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             // Dialogs List
-            await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
+            await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible, event.haveMention);
         } else if (event.__typename === 'DialogMessageDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);
 
@@ -178,9 +178,6 @@ export class GlobalStateEngine {
             await this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
             log.log(event.cid);
             this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
-        } else if (event.__typename === 'DialogMentionedChanged') {
-            log.warn('new haveMention ' + event);
-            await this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
         } else if (event.__typename === 'DialogPhotoUpdated') {
             log.warn('new photo ' + event);
             await this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);

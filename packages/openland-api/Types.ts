@@ -10922,6 +10922,10 @@ export interface ChatWatchVariables {
 // GraphQL subscription operation: DialogsWatch
 // ====================================================
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -11035,6 +11039,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   unread: number;
   globalUnread: number;
   message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
@@ -11148,6 +11153,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   __typename: "DialogMessageUpdated";
   cid: string;
   message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
@@ -11371,6 +11377,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   prevMessage: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage | null;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead {
@@ -11378,6 +11385,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead 
   cid: string;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated {
@@ -11390,12 +11398,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged 
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
-}
-
-export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
-  cid: string;
-  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated {
@@ -11523,15 +11525,20 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump {
   globalUnread: number;
   unread: number;
   topMessage: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage | null;
+  haveMention: boolean;
 }
 
-export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
+export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateSingle {
   __typename: "DialogUpdateSingle";
   seq: number;
   state: string;
   update: DialogsWatch_event_DialogUpdateSingle_update;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
@@ -11647,6 +11654,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   unread: number;
   globalUnread: number;
   message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
@@ -11760,6 +11768,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   __typename: "DialogMessageUpdated";
   cid: string;
   message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
@@ -11983,6 +11992,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   prevMessage: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage | null;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead {
@@ -11990,6 +12000,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead 
   cid: string;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated {
@@ -12002,12 +12013,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged 
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
-}
-
-export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
-  cid: string;
-  haveMention: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
@@ -12135,9 +12140,10 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump {
   globalUnread: number;
   unread: number;
   topMessage: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage | null;
+  haveMention: boolean;
 }
 
-export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
+export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateBatch {
   __typename: "DialogUpdateBatch";
@@ -68938,6 +68944,10 @@ export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUp
 // GraphQL fragment: DialogUpdateFragment
 // ====================================================
 
+export interface DialogUpdateFragment_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+}
+
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -69051,6 +69061,7 @@ export interface DialogUpdateFragment_DialogMessageReceived {
   unread: number;
   globalUnread: number;
   message: DialogUpdateFragment_DialogMessageReceived_message;
+  haveMention: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
@@ -69164,6 +69175,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated {
   __typename: "DialogMessageUpdated";
   cid: string;
   message: DialogUpdateFragment_DialogMessageUpdated_message;
+  haveMention: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
@@ -69387,6 +69399,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted {
   prevMessage: DialogUpdateFragment_DialogMessageDeleted_prevMessage | null;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageRead {
@@ -69394,6 +69407,7 @@ export interface DialogUpdateFragment_DialogMessageRead {
   cid: string;
   unread: number;
   globalUnread: number;
+  haveMention: boolean;
 }
 
 export interface DialogUpdateFragment_DialogTitleUpdated {
@@ -69406,12 +69420,6 @@ export interface DialogUpdateFragment_DialogMuteChanged {
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
-}
-
-export interface DialogUpdateFragment_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
-  cid: string;
-  haveMention: boolean;
 }
 
 export interface DialogUpdateFragment_DialogPhotoUpdated {
@@ -69539,9 +69547,10 @@ export interface DialogUpdateFragment_DialogBump {
   globalUnread: number;
   unread: number;
   topMessage: DialogUpdateFragment_DialogBump_topMessage | null;
+  haveMention: boolean;
 }
 
-export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
+export type DialogUpdateFragment = DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
 
 /* tslint:disable */
 /* eslint-disable */

@@ -7,6 +7,7 @@ fragment DialogUpdateFragment on DialogUpdate {
     }
     cid
     globalUnread
+    haveMention
     unread
   }
   ... on DialogMessageUpdated {
@@ -15,6 +16,7 @@ fragment DialogUpdateFragment on DialogUpdate {
       ...TinyMessage
     }
     cid
+    haveMention
   }
   ... on DialogMessageDeleted {
     message: alphaMessage {
@@ -27,16 +29,13 @@ fragment DialogUpdateFragment on DialogUpdate {
     }
     cid
     globalUnread
+    haveMention
     unread
   }
   ... on DialogMessageRead {
     cid
     globalUnread
-    unread
-  }
-  ... on DialogMessageRead {
-    cid
-    globalUnread
+    haveMention
     unread
   }
   ... on DialogTitleUpdated {
@@ -46,10 +45,6 @@ fragment DialogUpdateFragment on DialogUpdate {
   ... on DialogMuteChanged {
     cid
     mute
-  }
-  ... on DialogMentionedChanged {
-    cid
-    haveMention
   }
   ... on DialogPhotoUpdated {
     cid
@@ -62,6 +57,7 @@ fragment DialogUpdateFragment on DialogUpdate {
   ... on DialogBump {
     cid
     globalUnread
+    haveMention
     topMessage {
       __typename
       ...TinyMessage
