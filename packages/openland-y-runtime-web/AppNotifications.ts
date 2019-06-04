@@ -1,4 +1,7 @@
-import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
+import {
+    AppNotificationsApi,
+    AppNotifcationsState,
+} from 'openland-y-runtime-api/AppNotificationsApi';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { trackError } from 'openland-x-analytics';
 import { Howl } from 'howler';
@@ -8,22 +11,27 @@ class AppNotiticationsWeb implements AppNotificationsApi {
 
     private watchers: ((state: AppNotifcationsState) => void)[] = [];
     private router: { replaceRoute(path: string): void } | null = null;
-    private sound = canUseDOM ? new Howl({
-        src: ['/static/sounds/notification.mp3'],
-        onloaderror: () => {
-            console.warn('sound error');
-        },
-        onplayerror: () => {
-            console.warn('sound play error');
-        }
-    }) : undefined;
+    private blinkFaviconAlreadyStarted: boolean;
+    private sound = canUseDOM
+        ? new Howl({
+              src: ['/static/sounds/notification.mp3'],
+              onloaderror: () => {
+                  console.warn('sound error');
+              },
+              onplayerror: () => {
+                  console.warn('sound play error');
+              },
+          })
+        : undefined;
 
     constructor() {
         if (canUseDOM) {
             const serviceWorkerSupported = 'serviceWorker' in navigator;
-            const notiticationServiceWorkerSupported = serviceWorkerSupported && 'showNotification' in ServiceWorkerRegistration.prototype;
+            const notiticationServiceWorkerSupported =
+                serviceWorkerSupported && 'showNotification' in ServiceWorkerRegistration.prototype;
             const notificationsClassicalSupported = 'Notification' in window;
-            const notificationsSupported = notificationsClassicalSupported || notiticationServiceWorkerSupported;
+            const notificationsSupported =
+                notificationsClassicalSupported || notiticationServiceWorkerSupported;
             if (notificationsSupported) {
                 let granted = (Notification as any).permission === 'granted';
                 let denied = (Notification as any).permission === 'denied';
@@ -40,6 +48,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         } else {
             this.state = 'unsupported';
         }
+        this.blinkFaviconAlreadyStarted = false;
     }
 
     watch(handler: (state: AppNotifcationsState) => void) {
@@ -47,7 +56,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     }
 
     unwatch(handler: (state: AppNotifcationsState) => void) {
-        let index = this.watchers.findIndex((v) => v === handler);
+        let index = this.watchers.findIndex(v => v === handler);
         if (index >= 0) {
             this.watchers.splice(index, 1);
         } else {
@@ -58,7 +67,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     requestPermission() {
         if (canUseDOM) {
             if (this.state === 'default' || this.state === 'temporary_denied') {
-                Notification.requestPermission((permission) => {
+                Notification.requestPermission(permission => {
                     let changed = false;
                     if (permission === 'granted') {
                         if (this.state !== 'granted') {
@@ -94,25 +103,62 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         }
     }
 
+    blinkDocumentFavicon = () => {
+        if (canUseDOM) {
+            let favicons: any = document.getElementsByClassName('favicon');
+            const favIconPath16 = '/static/img/favicon/favicon-16x16.png?v=2';
+            const favIconPath32 = '/static/img/favicon/favicon-32x32.png?v=2';
+            const favIconNotifyPath16 = '/static/img/favicon/favicon-notify-16x16.png?v=2';
+            const favIconNotifyPath32 = '/static/img/favicon/favicon-notify-32x32.png?v=2';
+
+            if (document.hasFocus()) {
+                localStorage.setItem('fav', 'false');
+            } else if (
+                !document.hasFocus() &&
+                !this.blinkFaviconAlreadyStarted &&
+                favicons
+            ) {
+                this.blinkFaviconAlreadyStarted = true;
+                localStorage.setItem('fav', 'true');
+                favicons[0].href = favIconNotifyPath32;
+                favicons[1].href = favIconNotifyPath16;
+
+                let interval = setInterval(() => {
+                    if (document.hasFocus()) {
+                        this.blinkFaviconAlreadyStarted = false;
+                        clearInterval(interval);
+                        localStorage.setItem('fav', 'false');
+                        favicons[0].href = favIconPath32;
+                        favicons[1].href = favIconPath16;
+                    }
+
+                    if (!document.hasFocus() && localStorage.getItem('fav') === 'false') {
+                        this.blinkFaviconAlreadyStarted = false;
+                        clearInterval(interval);
+                        localStorage.setItem('fav', 'false');
+                        favicons[0].href = favIconPath32;
+                        favicons[1].href = favIconPath16;
+                    }
+                }, 1000);
+            }
+        }
+    };
+
     playIncomingSound() {
         this.sound!.play();
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string }) {
+    displayNotification(content: { path: string; title: string; body: string; image?: string }) {
         try {
+            this.blinkDocumentFavicon();
             if (this.state === 'granted') {
-                // let isSafari = (window as any).safari !== undefined;
-                // if (!isSafari) {
-                //     var audio = new Audio('/static/sounds/notification.mp3');
-                //     audio.play();
-                // }
                 let notification = new Notification(content.title, {
                     body: content.body,
                     icon: content.image,
-                    silent: true
+                    silent: true,
                 } as any);
                 let router = this.router;
-                notification.onclick = function () {
+                notification.onclick = function() {
                     if (router) {
                         router.replaceRoute(content.path);
                     }
