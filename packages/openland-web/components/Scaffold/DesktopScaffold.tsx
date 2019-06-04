@@ -13,7 +13,7 @@ import { SuperAdminMenuItem } from './MenuItems/SuperAdminMenuItem';
 import { CreateMenuItem } from './MenuItems/CreateMenuItem';
 import { DesktopUserProfile } from './DesktopUserProfile';
 import { XPopper } from 'openland-x/XPopper';
-import { FavIconChecker } from 'openland-web/hooks/useFavicon';
+import { useFaviconChecker } from 'openland-web/hooks/useFaviconChecker';
 
 export const DesktopScafoldMenuItem = ({
     name,
@@ -153,6 +153,7 @@ export const DesktopScaffold = ({
     content: any;
     topItems: any;
 }) => {
+    useFaviconChecker();
     const [banner, bannerHandler] = React.useState(true);
     const handleHideBanner = () => {
         bannerHandler(false);
@@ -198,7 +199,6 @@ export const DesktopScaffold = ({
 
                     {topItems}
                     <BottomNavigation>
-                        <FavIconChecker/>
                         <CreateMenuItem />
                         <AppsMenuItem />
                         <SuperAdminMenuItem />
