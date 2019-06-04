@@ -60,7 +60,6 @@ export const MessagesNavigation = XMemo(
         let isRoomInvite = path.includes('joinChannel') || path.includes('invite');
         let isChat = path.includes('/mail');
         let isRoomProfile = path.includes('/mail/p/');
-
         const chatId =
             selectedChat || (!path.includes('/mail/new') && getId(path, '/mail/')) || cid;
 
@@ -117,13 +116,14 @@ export const MessagesNavigation = XMemo(
                         menuRightContent={<NewOptionsButton />}
                         secondFragmentHeader={
                             <React.Suspense fallback={null}>
-                                {chatId && (
-                                    <ChatHeaderViewLoader
-                                        variables={{
-                                            id: chatId,
-                                        }}
-                                    />
-                                )}
+                                {chatId &&
+                                    !isRoomProfile && (
+                                        <ChatHeaderViewLoader
+                                            variables={{
+                                                id: chatId,
+                                            }}
+                                        />
+                                    )}
                                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
                         }
