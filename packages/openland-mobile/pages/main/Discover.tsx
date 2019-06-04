@@ -9,9 +9,8 @@ import { Tag, TagGroup, Page, DiscoverApi } from 'openland-mobile/pages/main/dis
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { delay } from 'openland-y-utils/timer';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { SRouter } from 'react-native-s/SRouter';
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
@@ -26,7 +25,7 @@ export const prepareDiscoverStatus = async () => {
     discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
 }
 
-const TagButton = (props: { tag: TagEx, selected: boolean, onPress: (tag: TagEx) => void }) => {
+const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
         props.onPress(props.tag);
@@ -40,19 +39,46 @@ const TagButton = (props: { tag: TagEx, selected: boolean, onPress: (tag: TagEx)
     </TouchableOpacity>
 }
 
-const TagsCloud = (props: { tagsGroup: TagGroupEx, treeTagToGroupModel: { tagId: string, groupId: string }[] }) => {
+const TagsCloud = (props: { tagsGroup: TagGroup, model: Page, selected: Set<string>, onSelectedChange: (selected: Set<string>) => void }) => {
     let theme = useThemeGlobal();
-    let [dumb, update] = React.useState({});
 
-    let onTagPress = (tag: TagEx) => {
-        tag.selected = !tag.selected;
-        update({});
+    let onTagPress = (tag: Tag) => {
+        let tags = [tag];
+        let t = tags.pop();
+
+        let selected = props.selected.has(tag.id);
+
+        // clear nested tags
+        while (t) {
+            for (let group of props.model.groups) {
+                for (let connection of props.model.tagToGroupModel) {
+                    if (connection.groupId === group.id && connection.tagId === t.id) {
+                        tags.push(...(group.tags));
+                        tags.map(tg => props.selected.delete(tg.id));
+                    }
+                }
+            }
+            t = tags.pop();
+        }
+
+        if (selected) {
+            props.selected.delete(tag.id);
+        } else {
+            props.selected.add(tag.id);
+        }
+        props.onSelectedChange(props.selected);
     }
 
-    let sub = []
-    for (let t of props.tagsGroup.tags) {
-        if (t.selected && t.group) {
-            sub.push(<TagsCloud tagsGroup={t.group! as TagGroupEx} />)
+    let sub = [];
+    for (let tag of props.tagsGroup.tags) {
+        if (props.selected.has(tag.id)) {
+            for (let connection of props.model.tagToGroupModel) {
+                for (let group of props.model.groups) {
+                    if (group.id === connection.groupId && connection.tagId === tag.id) {
+                        sub.push(<TagsCloud tagsGroup={group} model={props.model} selected={props.selected} onSelectedChange={props.onSelectedChange} />)
+                    }
+                }
+            }
         }
     }
 
@@ -62,7 +88,7 @@ const TagsCloud = (props: { tagsGroup: TagGroupEx, treeTagToGroupModel: { tagId:
             {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroup.title}</Text>}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
                 {props.tagsGroup.tags.map(tag => (
-                    <TagButton tag={tag} onPress={onTagPress} selected={!!tag.selected} />
+                    <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
                 ))}
             </View>
             {sub}
@@ -70,106 +96,75 @@ const TagsCloud = (props: { tagsGroup: TagGroupEx, treeTagToGroupModel: { tagId:
     )
 }
 
-interface TagEx extends Tag {
-    se: any;
-    selected?: boolean;
-}
-
-interface TagGroupEx extends TagGroup {
-    tags: TagEx[];
-}
-const DiscoverPage = (props: PageProps) => {
+const DiscoverPage = (props: { page: Page, lastSelected: string[], router: SRouter }) => {
+    let [selected, setCurretnSelected] = React.useState(new Set<string>());
+    let onSelectedChange = React.useCallback((s: Set<string>) => {
+        setCurretnSelected(new Set(s));
+    }, []);
 
     let theme = React.useContext(ThemeContext);
 
-    let prevSelected = props.router.params.selected;
-    let currentPage = new DiscoverApi().next(prevSelected);
-
-    // let onSelectChange = React.useCallback((t: Tag) => {
-    //     if (prevSelected.has(t)) {
-    //         prevSelected.delete(t);
-    //         // getSubTags(t).map(tg => selected.delete(tg));
-    //     } else {
-    //         selectedMutable.add(t);
-    //     }
-    //     setSelected(new Set(selectedMutable));
-    // }, [])
-
     let next = React.useCallback(() => {
+        if (!selected.size && !props.lastSelected.length) {
+            return;
+        }
         (async () => {
-            startLoader()
             let nextPath = 'Discover';
-            let params: any = { selected: prevSelected };
 
-            await delay(1000)
+            let allSelected = new Set([...[...selected.values()], ...[...props.lastSelected.values()]]);
+            let params: any = { lastSelected: [...selected.values()], allSelected: [...allSelected.values()] };
 
-            let currentSelected = new Set<string>();
-            if (currentPage.page) {
-                let tags: TagEx[] = []
-                for (let group of [...(currentPage.page ? currentPage.page.groups : [])]) {
-                    tags.push(...group.tags);
-                }
-                let tag = tags.pop();
-                while (tag) {
-                    if (tag.selected) {
-                        currentSelected.add(tag.id);
-                        tags.push(...(tag.group ? tag.group.tags : []));
-                    }
-                }
-            }
-
-            let nextPageRes = new DiscoverApi().next([...currentSelected.values()]);
-
-            // if (depth < path.length) {
-            //     nextPage = 'Discover';
-            //     paprams = { selected: selectedMutable, path, depth: depth + 1 };
-            // } else {
-            //     for (let s of selected) {
-            //         if (!path.includes(s.title) && havePageForTag(s.title)) {
-            //             nextPage = 'Discover';
-            //             path = path.filter(t => t !== s.title);
-            //             path.push(s.title);
-
-            //             paprams = { selected: selectedMutable, path, depth: depth + 1 };
-            //             break;
-            //         }
-            //     }
-            // }
-            if (nextPageRes.page) {
-                // just move next
-            } else if (nextPageRes.chatIds) {
-                nextPath = 'SuggestedGroups';
-                params = { ids: currentPage.chatIds };
-            }
-            stopLoader()
             props.router.push(nextPath, params);
         })();
-    }, []);
+    }, [selected]);
+
+    let { title, subtitle, groups } = props.page;
+    let groupsComp = [];
+    for (let gid of props.page!.rootGroups) {
+        for (let g of groups) {
+            if (gid === g.id) {
+                groupsComp.push(<TagsCloud tagsGroup={g} model={props.page} selected={selected} onSelectedChange={onSelectedChange} />);
+            }
+        }
+    }
+    return (
+        <>
+            {title && Platform.OS === 'ios' && <SHeader title={title} />}
+            {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
+            <SHeaderButton title={'Next'} onPress={next} />
+            <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
+                <Text>{JSON.stringify(props.lastSelected, undefined, 2)}</Text>
+                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
+                {groupsComp}
+            </SScrollView>
+        </>
+    );
+};
+
+const SuggestedChats = (props: { chatIds: string[], lastSelected: string[] }) => {
+    return <>
+        {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
+        {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
+        <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
+            <Text>{JSON.stringify(props.chatIds, undefined, 2)}</Text>
+            <Text>{JSON.stringify(props.lastSelected, undefined, 2)}</Text>
+        </SScrollView>
+    </>
+}
+
+const DiscoverComponent = (props: PageProps) => {
+    let lastSelected = props.router.params.lastSelected || [];
+    let allSelected = props.router.params.allSelected || [];
+    let currentPage = new DiscoverApi().next(lastSelected, allSelected);
+
     if (currentPage.chatIds) {
-        let paprams: any = { ids: currentPage.chatIds };
-        props.router.push('SuggestedGroups', paprams);
-        return <ZLoader />
+        return <SuggestedChats chatIds={currentPage.chatIds} lastSelected={lastSelected} />
     } else if (currentPage.page) {
-        let { title, subtitle, groups, treeTagToGroupModel } = currentPage.page;
-        let rootGroups = groups.filter()
-        return (
-            <>
-                {title && Platform.OS === 'ios' && <SHeader title={title} />}
-                {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
-                <SHeaderButton title={'Next'} onPress={next} />
-                <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                    <Text>{JSON.stringify(groups)}</Text>
-                    {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
-                    {groups.map(tg => (
-                        <TagsCloud tagsGroup={tg as TagGroupEx} treeTagToGroupModel={treeTagToGroupModel} />
-                    ))}
-                </SScrollView>
-            </>
-        );
+        return < DiscoverPage page={currentPage.page} lastSelected={allSelected} router={props.router} />
     }
 
     return <ZLoader />
-};
+}
 
-export const DiscoverHome = withApp(DiscoverPage, { navigationAppearance: 'large', hideHairline: true });
-export const Discover = withApp(DiscoverPage, { navigationAppearance: 'large', hideHairline: true });
+export const DiscoverHome = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });
+export const Discover = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });

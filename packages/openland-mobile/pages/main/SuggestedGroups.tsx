@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { resolveSuggestedChats } from 'openland-mobile/pages/main/discoverData';
 import { RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -69,23 +68,9 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
     </ZListItemBase>
 }
 
-const SuggestedGroupsPage = (props: PageProps) => {
-    let [chats, setChats] = React.useState([] as RoomShort[]);
+const SuggestedChats = (props: PageProps & { chats: RoomShort[] }) => {
     let [selected, setSelected] = React.useState(new Set<string>());
-    let [loading, setLoading] = React.useState(true);
     let theme = React.useContext(ThemeContext);
-
-    React.useEffect(() => {
-        (async () => {
-            let suggested = resolveSuggestedChats(props.router.params.selected);
-            let ids = suggested.map(r => r.id);
-            let res = await getClient().queryRooms({ ids });
-            setLoading(false);
-            setSelected(new Set(res.rooms.map(r => r.id)));
-            setChats(res.rooms);
-
-        })()
-    }, []);
 
     let onSelect = React.useCallback((room: RoomShort) => {
         let res = new Set(selected);
@@ -114,11 +99,10 @@ const SuggestedGroupsPage = (props: PageProps) => {
 
     return (
         <>
-            {loading && <ZLoader />}
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
             {<SHeaderButton title={'Done'} onPress={exit} />}
-            {!loading && <SScrollView justifyContent="flex-start" alignContent="center">
+            <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
@@ -130,17 +114,15 @@ const SuggestedGroupsPage = (props: PageProps) => {
                             fontWeight: TextStyles.weight.medium
                         }}
                     >
-                        {chats.length + (chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
+                        {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
                     </Text>
                     {!!selected.size && <ZRoundedButton title={selected.size > 1 ? 'join all' : 'join'} onPress={onAdd} />}
                 </View>
-                {chats.map((item) => (
+                {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
                 ))}
-            </SScrollView>}
+            </SScrollView>
         </>
     );
 };
-
-export const SuggestedGroups = withApp(SuggestedGroupsPage, { navigationAppearance: 'large', hideHairline: true });
