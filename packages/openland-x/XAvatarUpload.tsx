@@ -3,6 +3,7 @@ import { XAvatarUploadBasicProps, XAvatarUploadBasic } from './basics/XAvatarUpl
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { UploadedFile, XImageCropT } from './files/XFileUpload';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 
 export type StoredFileT = {
     uuid: string;
@@ -108,7 +109,7 @@ class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { sto
     handleChange = (file: UploadedFile | null) => {
         let key = this.props.valueStoreKey || 'fields.' + this.props.field;
         if (file && file.isImage) {
-            this.props.store.writeValue(key, toValue(file));
+            this.props.store.writeValue(key, sanitizeImageRef(toValue(file)));
         } else {
             this.props.store.writeValue(key, null);
         }
