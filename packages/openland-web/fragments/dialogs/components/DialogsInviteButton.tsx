@@ -51,7 +51,7 @@ export const DialogsInviteButton = XMemo(() => {
             }
         >
             <InviteIcon />
-            <span>Invite people</span>
+            <span>Invite friends</span>
         </InviteWrapper>
     );
 });

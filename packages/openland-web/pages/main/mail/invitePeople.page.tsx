@@ -25,11 +25,6 @@ const titleLetterSpacingClassName = css`
     letter-spacing: 0.6px;
 `;
 
-const textLetterSpacingClassName = css`
-    display: flex;
-    letter-spacing: 1.1px;
-`;
-
 export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean }) => {
     const client = useClient();
 
@@ -83,21 +78,20 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                     </XView>
                 </XView>
             )}
-            <XView flexDirection="column" alignItems="center" width="100%">
-                {asModalContent && (
+            <XView flexDirection="column" alignItems="center" justifyContent="center" width="100%">
+                {asModalContent  && (
                     <XImage
                         src="/static/landing/logotype.svg"
                         width={145}
                         height={42}
-                        marginTop={19}
-                        marginLeft={isMobile ? 0 : 32}
-                        marginBottom={30}
+                        top={19}
+                        left={isMobile ? null : 32}
                         alignSelf={isMobile ? 'center' : 'flex-start'}
-                        position={isMobile ? 'relative' : 'fixed'}
+                        position={isMobile ? 'absolute' : 'fixed'}
                     />
                 )}
                 {!isMobile && (
-                    <XView marginBottom={-55}>
+                    <XView marginTop={-75} marginBottom={-55}>
                         <ImgMembersEmpty />
                     </XView>
                 )}
@@ -109,11 +103,11 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                     lineHeight={1.36}
                     color={'#000'}
                     width="100%"
-                    marginTop={isMobile ? 28 : 0}
+                    marginTop={isMobile ? 89 : 0}
                 >
                     <TextAlignCenter>
                         <span className={titleLetterSpacingClassName}>
-                            Share one of the links below with people you want to invite
+                            Share one of the links below with friends you want to invite
                         </span>
                     </TextAlignCenter>
                 </XView>
@@ -126,16 +120,14 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                         fontSize={20}
                         marginBottom={12}
                     >
-                        <span className={textLetterSpacingClassName}>
-                            {!isMobile && 'Invite to'}
-                            <XView
-                                as="a"
-                                marginLeft={4}
-                                href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
-                            >
-                                <span className={titleLetterSpacingClassName}>Founder Chats</span>
-                            </XView>
-                        </span>
+                        {!isMobile && 'Invite to'}
+                        <XView
+                            as="a"
+                            marginLeft={4}
+                            href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
+                        >
+                            <span className={titleLetterSpacingClassName}>Founder Chats</span>
+                        </XView>
                     </XView>
                     <OwnerLinkComponent
                         appInvite={founderChatsInvite}
@@ -152,16 +144,14 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                             fontSize={20}
                             marginBottom={12}
                         >
-                            <span className={textLetterSpacingClassName}>
-                                {!isMobile && 'Invite to'}
-                                <XView
-                                    as="a"
-                                    marginLeft={4}
-                                    href={`https://openland.com/directory/o/${primaryOrganizationId}`}
-                                >
-                                    {primaryOrganizationName}
-                                </XView>
-                            </span>
+                            {!isMobile && 'Invite to'}
+                            <XView
+                                as="a"
+                                marginLeft={4}
+                                href={`https://openland.com/directory/o/${primaryOrganizationId}`}
+                            >
+                                {primaryOrganizationName}
+                            </XView>
                         </XView>
                         <OwnerLinkComponent
                             footerNote="Anyone can use this link to join your organization"
@@ -179,7 +169,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                             alignItems="center"
                             cursor="pointer"
                             marginTop={30}
-                            marginBottom={100}
+                            marginBottom={20}
                             paddingTop={8}
                             paddingBottom={8}
                             paddingLeft={11}
@@ -198,11 +188,9 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                         </XView>
                     )}
                     {moreInvite && (
-                        <XView marginTop={36} paddingBottom={100}>
+                        <XView marginTop={36} paddingBottom={20}>
                             <XView color={'#000'} fontWeight="600" fontSize={20} marginBottom={12}>
-                                <span className={textLetterSpacingClassName}>
-                                    {!isMobile && 'Invite to'} Openland
-                                </span>
+                                {!isMobile && 'Invite to'} Openland
                             </XView>
                             <OwnerLinkComponent
                                 footerNote="Anyone can use this link to join Openland"

@@ -201,7 +201,7 @@ const ModalBoxComponent = React.memo<{
                                 borderRadius={50}
                                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
                             >
-                                <CloseIcon width={18} height={18} />
+                                <CloseIcon width={16} height={16} />
                             </XView>
                         </XView>
                     )}
