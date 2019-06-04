@@ -1,5 +1,5 @@
 import { Watcher } from 'openland-y-utils/Watcher';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
 import { Platform } from 'react-native';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
@@ -8,13 +8,13 @@ export class DownloadManager implements DownloadManagerInterface {
 
     private _watchers = new Map<string, { watcher: Watcher<DownloadState>, download: boolean, existing: Promise<boolean> }>();
     private version = 1;
-    private rootDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_v' + this.version;
-    private rootIncompleteDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_incomplete_v' + this.version;
-    private createRootFolder = (async () => {
-        if (!await (RNFetchBlob as any).fs.exists(this.rootDir)) {
-            await (RNFetchBlob as any).fs.mkdir(this.rootDir);
-        }
-    })();
+    private rootDir = ''; // (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_v' + this.version;
+    private rootIncompleteDir = ''; // = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_incomplete_v' + this.version;
+    // private createRootFolder = (async () => {
+    //     if (!await (RNFetchBlob as any).fs.exists(this.rootDir)) {
+    //         await (RNFetchBlob as any).fs.mkdir(this.rootDir);
+    //     }
+    // })();
 
     resolvePath(uuid: string, resize: { width: number, height: number } | null, local?: boolean) {
         let suffix = '';
@@ -56,40 +56,40 @@ export class DownloadManager implements DownloadManagerInterface {
 
         watcherState.existing.then(async (existing) => {
 
-            let url = 'https://ucarecdn.com/' + uuid + '/';
-            if (resize) {
-                url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
-            }
+            // let url = 'https://ucarecdn.com/' + uuid + '/';
+            // if (resize) {
+            //     url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
+            // }
 
-            if (existing) {
-                return;
-            }
+            // if (existing) {
+            //     return;
+            // }
 
-            // Download
-            try {
-                watcher.setState({ progress: 0 });
-                let res = RNFetchBlob.config({
-                    path: this.rootIncompleteDir + '/' + uuid + suffix
-                }).fetch('GET', url);
-                setTimeout(
-                    () => {
-                        res.progress({ interval: 100 }, (written: number, total: number) => {
-                            let p = written / total;
-                            watcher.setState({ progress: p });
-                        });
-                    },
-                    0);
-                await res;
+            // // Download
+            // try {
+            //     watcher.setState({ progress: 0 });
+            //     let res = RNFetchBlob.config({
+            //         path: this.rootIncompleteDir + '/' + uuid + suffix
+            //     }).fetch('GET', url);
+            //     setTimeout(
+            //         () => {
+            //             res.progress({ interval: 100 }, (written: number, total: number) => {
+            //                 let p = written / total;
+            //                 watcher.setState({ progress: p });
+            //             });
+            //         },
+            //         0);
+            //     await res;
 
-                await this.createRootFolder;
+            //     // await this.createRootFolder;
 
-                await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid + suffix, path);
+            //     await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid + suffix, path);
 
-                watcher.setState({ path, progress: 1 });
-            } catch (e) {
-                // How to handle?
-                console.log(e);
-            }
+            //     watcher.setState({ path, progress: 1 });
+            // } catch (e) {
+            //     // How to handle?
+            //     console.log(e);
+            // }
         });
     }
 
@@ -98,32 +98,32 @@ export class DownloadManager implements DownloadManagerInterface {
             let watcher = new Watcher<DownloadState>();
 
             let checkExisting = new Promise<boolean>(async (resolever, reject) => {
-                // Init
-                let suffix = '';
-                if (resize) {
-                    suffix = '_' + resize.width + 'x' + resize.height;
-                }
-                let path = this.rootDir + '/' + uuid + suffix;
-                let pathLocal = this.rootDir + '/' + uuid + '_local';
+                // // Init
+                // let suffix = '';
+                // if (resize) {
+                //     suffix = '_' + resize.width + 'x' + resize.height;
+                // }
+                // let path = this.rootDir + '/' + uuid + suffix;
+                // let pathLocal = this.rootDir + '/' + uuid + '_local';
 
-                // Check if exists
-                let exists = false;
-                try {
-                    if (await (RNFetchBlob as any).fs.exists(path)) {
-                        exists = true;
-                    } else if (await (RNFetchBlob as any).fs.exists(pathLocal)) {
-                        exists = true;
-                        path = pathLocal;
-                    }
-                } catch (e) {
-                    // How to handle?
-                    console.log(e);
-                }
-                if (exists) {
-                    watcher.setState({ path, progress: 1 });
-                }
+                // // Check if exists
+                // let exists = false;
+                // try {
+                //     if (await (RNFetchBlob as any).fs.exists(path)) {
+                //         exists = true;
+                //     } else if (await (RNFetchBlob as any).fs.exists(pathLocal)) {
+                //         exists = true;
+                //         path = pathLocal;
+                //     }
+                // } catch (e) {
+                //     // How to handle?
+                //     console.log(e);
+                // }
+                // if (exists) {
+                //     watcher.setState({ path, progress: 1 });
+                // }
 
-                resolever(exists);
+                // resolever(exists);
             }).then();
 
             this._watchers.set(this.resolvePath(uuid, resize), { watcher, download: false, existing: checkExisting });
@@ -137,39 +137,41 @@ export class DownloadManager implements DownloadManagerInterface {
             suffix = '_' + resize.width + 'x' + resize.height;
         }
 
-        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+        // let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
 
-        let fileById = this.rootDir + '/' + uuid + suffix;
-        let fileByName = targetPath + '/' + fileName;
+        // let fileById = this.rootDir + '/' + uuid + suffix;
+        // let fileByName = targetPath + '/' + fileName;
 
-        if (await checkPermissions('android-storage')) {
-            if (await (RNFetchBlob as any).fs.exists(fileByName)) {
-                await (RNFetchBlob as any).fs.unlink(fileByName);
-            }
+        // if (await checkPermissions('android-storage')) {
+        //     if (await (RNFetchBlob as any).fs.exists(fileByName)) {
+        //         await (RNFetchBlob as any).fs.unlink(fileByName);
+        //     }
 
-            await (RNFetchBlob as any).fs.cp(fileById, fileByName);
+        //     await (RNFetchBlob as any).fs.cp(fileById, fileByName);
 
-            return fileByName;
-        } else {
-            return undefined;
-        }
+        //     return fileByName;
+        // } else {
+        //     return undefined;
+        // }
+        return undefined;
     }
 
     copyFileWithNewName = async (file: string, newName: string) => {
-        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
-        let fileWithExt = targetPath + '/' + newName;
+        // let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+        // let fileWithExt = targetPath + '/' + newName;
 
-        if (await checkPermissions('android-storage')) {
-            if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
-                await (RNFetchBlob as any).fs.unlink(fileWithExt);
-            }
+        // if (await checkPermissions('android-storage')) {
+        //     if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
+        //         await (RNFetchBlob as any).fs.unlink(fileWithExt);
+        //     }
 
-            await (RNFetchBlob as any).fs.cp(file, fileWithExt);
+        //     await (RNFetchBlob as any).fs.cp(file, fileWithExt);
 
-            return fileWithExt;
-        } else {
-            return undefined;
-        }
+        //     return fileWithExt;
+        // } else {
+        //     return undefined;
+        // }
+        return undefined;
     }
 }
 

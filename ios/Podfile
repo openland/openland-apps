@@ -31,16 +31,16 @@ target 'openland' do
     
   pod 'Texture', '2.7'
   pod 'SwiftyJSON', '~> 4.0'
-  pod 'Auth0', '~> 1.14.2'
+  # pod 'Auth0', '~> 1.14.2'
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
 
-  pod 'AppCenter', '~> 1.13.0'
-  pod 'AppCenter/Crashes', '~> 1.13.0'
-  pod 'AppCenter/Analytics', '~> 1.13.0'
-  pod 'AppCenterReactNativeShared', '~> 1.12.0'
+#  pod 'AppCenter', '~> 1.13.0'
+#  pod 'AppCenter/Crashes', '~> 1.13.0'
+#  pod 'AppCenter/Analytics', '~> 1.13.0'
+#  pod 'AppCenterReactNativeShared', '~> 1.12.0'
 
-  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
+#  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
@@ -55,7 +55,7 @@ target 'openland' do
 
   pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+#  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
@@ -74,7 +74,7 @@ target 'openland' do
 
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
 
-  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+#  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
 
   pod 'react-native-haptic-feedback', :path => '../node_modules/react-native-haptic-feedback'
 

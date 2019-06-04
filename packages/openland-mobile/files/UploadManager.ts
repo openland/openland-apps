@@ -2,7 +2,7 @@ import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import { Image } from 'react-native';
 import { DownloadManagerInstance } from './DownloadManager';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';

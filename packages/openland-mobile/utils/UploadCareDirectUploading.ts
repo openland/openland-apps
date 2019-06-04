@@ -1,5 +1,5 @@
 import { UploadingFile, UploadStatus } from 'openland-engines/messenger/types';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 export class UploadCareDirectUploading implements UploadingFile {
     private name: string;
     private uri: string;
@@ -11,62 +11,62 @@ export class UploadCareDirectUploading implements UploadingFile {
             uri = uri.substring(8);
         }
         this.uri = uri;
-        let req = RNFetchBlob.fetch(
-            'POST',
-            'https://upload.uploadcare.com/base/',
-            {
-                'Content-Type': 'multipart/form-data',
-            },
-            [{
-                name: 'UPLOADCARE_PUB_KEY',
-                data: 'b70227616b5eac21ba88',
-            }, {
-                name: 'UPLOADCARE_STORE',
-                data: '1'
-            }, {
-                name: 'file',
-                filename: this.name,
-                data: RNFetchBlob.wrap(decodeURI(this.uri))
-            }]);
+        // let req = RNFetchBlob.fetch(
+        //     'POST',
+        //     'https://upload.uploadcare.com/base/',
+        //     {
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        //     [{
+        //         name: 'UPLOADCARE_PUB_KEY',
+        //         data: 'b70227616b5eac21ba88',
+        //     }, {
+        //         name: 'UPLOADCARE_STORE',
+        //         data: '1'
+        //     }, {
+        //         name: 'file',
+        //         filename: this.name,
+        //         data: RNFetchBlob.wrap(decodeURI(this.uri))
+        //     }]);
 
         // Work-around for IOS
-        setTimeout(
-            () => {
-                try {
-                    req.uploadProgress({ interval: 100 }, (written: number, total: number) => {
-                        let p = written / total;
-                        this.state = { status: UploadStatus.UPLOADING, progress: p };
-                        for (let w of this.watchers) {
-                            w(this.state);
-                        }
-                    }).catch((e: Error) => {
-                        this.state = { status: UploadStatus.FAILED };
-                        for (let w of this.watchers) {
-                            w(this.state);
-                        }
-                    });
-                } catch (e) {
-                    this.state = { status: UploadStatus.FAILED };
-                    for (let w of this.watchers) {
-                        w(this.state);
-                    }
-                }
+        // setTimeout(
+        //     () => {
+        //         try {
+        //             req.uploadProgress({ interval: 100 }, (written: number, total: number) => {
+        //                 let p = written / total;
+        //                 this.state = { status: UploadStatus.UPLOADING, progress: p };
+        //                 for (let w of this.watchers) {
+        //                     w(this.state);
+        //                 }
+        //             }).catch((e: Error) => {
+        //                 this.state = { status: UploadStatus.FAILED };
+        //                 for (let w of this.watchers) {
+        //                     w(this.state);
+        //                 }
+        //             });
+        //         } catch (e) {
+        //             this.state = { status: UploadStatus.FAILED };
+        //             for (let w of this.watchers) {
+        //                 w(this.state);
+        //             }
+        //         }
 
-            },
-            0);
+        //     },
+        //     0);
 
-        req.then((v: any) => {
-            let res = JSON.parse(v.data);
-            this.state = { status: UploadStatus.COMPLETED, progress: 1, uuid: res.file };
-            for (let w of this.watchers) {
-                w(this.state);
-            }
-        }).catch((v: any) => {
-            this.state = { status: UploadStatus.FAILED };
-            for (let w of this.watchers) {
-                w(this.state);
-            }
-        });
+        // req.then((v: any) => {
+        //     let res = JSON.parse(v.data);
+        //     this.state = { status: UploadStatus.COMPLETED, progress: 1, uuid: res.file };
+        //     for (let w of this.watchers) {
+        //         w(this.state);
+        //     }
+        // }).catch((v: any) => {
+        //     this.state = { status: UploadStatus.FAILED };
+        //     for (let w of this.watchers) {
+        //         w(this.state);
+        //     }
+        // });
     }
     async fetchInfo() {
         return { name: this.name };

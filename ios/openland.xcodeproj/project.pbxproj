@@ -53,11 +53,6 @@
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
 		AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */; };
 		AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */; };
-		AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */; };
-		AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */; };
-		AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */; };
-		AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */; };
-		AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */; };
 		AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6122145CF800BB1781 /* ThreadManager.m */; };
 		AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */; };
 		AAAA1DAE2289E0C50023A28F /* ApolloNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DAD2289E0C50023A28F /* ApolloNetworking.swift */; };
@@ -83,19 +78,15 @@
 		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
 		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
-		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
-		AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */; };
 		AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */; };
 		AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14D2208A5EA007C4FE3 /* CoreGraphics.framework */; };
-		AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14F2208A5F1007C4FE3 /* GLKit.framework */; };
 		AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1512208A5F7007C4FE3 /* CoreAudio.framework */; };
 		AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1532208A5FC007C4FE3 /* CoreVideo.framework */; };
 		AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1552208A601007C4FE3 /* VideoToolbox.framework */; };
 		AAD8F1582208A60A007C4FE3 /* libc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1572208A60A007C4FE3 /* libc.tbd */; };
 		AAD8F15A2208A60E007C4FE3 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1592208A60E007C4FE3 /* libc++.tbd */; };
 		AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15B2208A619007C4FE3 /* libsqlite3.tbd */; };
-		AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15D2208A7C3007C4FE3 /* WebRTC.framework */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
@@ -108,6 +99,9 @@
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AAE7E6C422A5ECAA002D0E76 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7E6BB22A5ECA9002D0E76 /* libicucore.tbd */; };
+		AAE7E6C622A5ED00002D0E76 /* libicucore.A.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7E6C522A5ED00002D0E76 /* libicucore.A.tbd */; };
+		AAE7E6C822A5ED20002D0E76 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7E6C722A5ED1F002D0E76 /* CoreData.framework */; };
 		BC701745812B7920402D1BE6 /* Pods_openlandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C30E301AEB4D807D765B7A3 /* Pods_openlandTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -132,27 +126,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A0153A92222426F400C026A4;
 			remoteInfo = "openland-share-ex";
-		};
-		AACF263822609C7400C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2EAADF261AF6F94600783BAD;
-			remoteInfo = SwiftStore;
-		};
-		AACF263A22609C7400C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2EAADF311AF6F94600783BAD;
-			remoteInfo = SwiftStoreTests;
-		};
-		AACF26452260A90100C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2EAADF251AF6F94600783BAD;
-			remoteInfo = SwiftStore;
 		};
 		AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -244,7 +217,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -334,16 +306,6 @@
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
 		AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncColor.swift; sourceTree = "<group>"; };
 		AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListNode.swift; sourceTree = "<group>"; };
-		AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNative.h; sourceTree = "<group>"; };
-		AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNative.m; sourceTree = "<group>"; };
-		AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashes.h; sourceTree = "<group>"; };
-		AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesDelegate.h; sourceTree = "<group>"; };
-		AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesDelegate.m; sourceTree = "<group>"; };
-		AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesUtils.h; sourceTree = "<group>"; };
-		AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashes.m; sourceTree = "<group>"; };
-		AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesUtils.m; sourceTree = "<group>"; };
-		AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeAnalytics.m; sourceTree = "<group>"; };
-		AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeAnalytics.h; sourceTree = "<group>"; };
 		AAA4DA6022145CF800BB1781 /* ThreadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadManager.h; sourceTree = "<group>"; };
 		AAA4DA6122145CF800BB1781 /* ThreadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadManager.m; sourceTree = "<group>"; };
 		AAA4DA6222145CF800BB1781 /* ThreadSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSelfManager.h; sourceTree = "<group>"; };
@@ -374,7 +336,6 @@
 		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
 		AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAuth0-Bridge.m"; sourceTree = "<group>"; };
 		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
-		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -399,6 +360,9 @@
 		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
+		AAE7E6BB22A5ECA9002D0E76 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		AAE7E6C522A5ED00002D0E76 /* libicucore.A.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.A.tbd; path = usr/lib/libicucore.A.tbd; sourceTree = SDKROOT; };
+		AAE7E6C722A5ED1F002D0E76 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		CD66E08746544FAC954BD413 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
@@ -421,16 +385,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAE7E6C822A5ED20002D0E76 /* CoreData.framework in Frameworks */,
+				AAE7E6C622A5ED00002D0E76 /* libicucore.A.tbd in Frameworks */,
+				AAE7E6C422A5ECAA002D0E76 /* libicucore.tbd in Frameworks */,
 				AA2281DC228B5E3300810848 /* CoreTelephony.framework in Frameworks */,
 				AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */,
 				AAD8F15A2208A60E007C4FE3 /* libc++.tbd in Frameworks */,
 				AAD8F1582208A60A007C4FE3 /* libc.tbd in Frameworks */,
-				AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */,
 				AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */,
 				AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */,
-				AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */,
 				AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */,
-				AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */,
 				AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */,
 				AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */,
 				AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */,
@@ -492,7 +456,6 @@
 				AA3DDA122284E76F0078A762 /* SpaceX */,
 				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
-				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
@@ -521,6 +484,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAE7E6C722A5ED1F002D0E76 /* CoreData.framework */,
+				AAE7E6C522A5ED00002D0E76 /* libicucore.A.tbd */,
+				AAE7E6BB22A5ECA9002D0E76 /* libicucore.tbd */,
 				AA2281D1228B5E3300810848 /* CoreTelephony.framework */,
 				AA94929922126B9300E46917 /* AppCenter.framework */,
 				AA94929A22126B9300E46917 /* AppCenterAnalytics.framework */,
@@ -549,7 +515,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */,
 				AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */,
 			);
 			name = Libraries;
@@ -700,23 +665,6 @@
 			name = Nodes;
 			sourceTree = "<group>";
 		};
-		AAA4DA46221457BB00BB1781 /* appcenter */ = {
-			isa = PBXGroup;
-			children = (
-				AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */,
-				AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */,
-				AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */,
-				AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */,
-				AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */,
-				AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */,
-				AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */,
-				AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */,
-				AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */,
-				AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */,
-			);
-			name = appcenter;
-			sourceTree = "<group>";
-		};
 		AAA4DA5722145C6200BB1781 /* RNThreads */ = {
 			isa = PBXGroup;
 			children = (
@@ -760,15 +708,6 @@
 				AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */,
 			);
 			name = RNSAuth0;
-			sourceTree = "<group>";
-		};
-		AACF262B22609C7400C565E4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AACF263922609C7400C565E4 /* SwiftStore.framework */,
-				AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		AAE104CF212C2A440034DA0F /* RNAsyncView */ = {
@@ -878,7 +817,6 @@
 			dependencies = (
 				AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */,
 				A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */,
-				AACF26462260A90100C565E4 /* PBXTargetDependency */,
 			);
 			name = openland;
 			productName = "Hello World";
@@ -951,6 +889,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = ATWUYU6747;
 						LastSwiftMigration = 1020;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
@@ -1017,10 +956,6 @@
 					ProductGroup = AAE56DC7212A0CAC003706B3 /* Products */;
 					ProjectRef = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
 				},
-				{
-					ProductGroup = AACF262B22609C7400C565E4 /* Products */;
-					ProjectRef = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1034,20 +969,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		AACF263922609C7400C565E4 /* SwiftStore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftStore.framework;
-			remoteRef = AACF263822609C7400C565E4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftStoreTests.xctest;
-			remoteRef = AACF263A22609C7400C565E4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		AAE56DD3212A0CAC003706B3 /* Nuke.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1241,7 +1162,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1250,7 +1171,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF41E56CD0EBA26F6D97F99D /* [CP] Embed Pods Frameworks */ = {
@@ -1259,9 +1180,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/A0Auth0/A0Auth0.framework",
-				"${BUILT_PRODUCTS_DIR}/Auth0/Auth0.framework",
 				"${BUILT_PRODUCTS_DIR}/BVLinearGradient/BVLinearGradient.framework",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
@@ -1280,9 +1200,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactNativeIncallManager/ReactNativeIncallManager.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativePermissions/ReactNativePermissions.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SimpleKeychain/SimpleKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
@@ -1294,18 +1212,14 @@
 				"${BUILT_PRODUCTS_DIR}/react-native-document-picker/react_native_document_picker.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-fast-image/react_native_fast_image.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-haptic-feedback/react_native_haptic_feedback.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-image-picker/react_native_image_picker.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-pdf/react_native_pdf.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-sqlite-storage/react_native_sqlite_storage.framework",
-				"${PODS_ROOT}/../../node_modules/react-native-webrtc/ios/WebRTC.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-webrtc/react_native_webrtc.framework",
 				"${BUILT_PRODUCTS_DIR}/rn-fetch-blob/rn_fetch_blob.framework",
 				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/A0Auth0.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Auth0.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BVLinearGradient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
@@ -1324,9 +1238,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeIncallManager.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativePermissions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
@@ -1338,17 +1250,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_document_picker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fast_image.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_haptic_feedback.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_image_picker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_pdf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_sqlite_storage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_webrtc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/rn_fetch_blob.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CEF0A2B465ABDE5B3C64DF57 /* [CP] Check Pods Manifest.lock */ = {
@@ -1390,7 +1299,6 @@
 				AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */,
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
-				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
 				AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
@@ -1407,7 +1315,6 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
-				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
 				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
@@ -1433,11 +1340,9 @@
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAAA1DBA2289E2260023A28F /* SpaceXTransport.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
-				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
 				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
-				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */,
 				AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
@@ -1448,7 +1353,6 @@
 				AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAAA1DAE2289E0C50023A28F /* ApolloNetworking.swift in Sources */,
-				AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
 				AA7B7BE022851C3F001AA400 /* normalizeData.swift in Sources */,
 			);
@@ -1497,11 +1401,6 @@
 			target = A0153A92222426F400C026A4 /* openland-share-ex */;
 			targetProxy = A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */;
 		};
-		AACF26462260A90100C565E4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SwiftStore;
-			targetProxy = AACF26452260A90100C565E4 /* PBXContainerItemProxy */;
-		};
 		AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Nuke iOS";
@@ -1537,6 +1436,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = ATWUYU6747;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1617,6 +1517,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = ATWUYU6747;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
@@ -1697,8 +1598,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1734,6 +1637,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openland.app.debug;
 				PRODUCT_NAME = openland;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1756,8 +1660,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1794,6 +1700,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openland.app;
 				PRODUCT_NAME = openland;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
@@ -2152,7 +2059,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2190,7 +2097,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
@@ -2222,6 +2129,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -2235,6 +2143,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -2267,6 +2176,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2278,6 +2188,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
-#import "AppCenterReactNative.h"
-#import "AppCenterReactNativeCrashes.h"
-#import "AppCenterReactNativeAnalytics.h"
+//#import "AppCenterReactNative.h"
+//#import "AppCenterReactNativeCrashes.h"
+//#import "AppCenterReactNativeAnalytics.h"
 
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
@@ -19,9 +19,9 @@
    * Start App Center
    */
   
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+//  [AppCenterReactNative register];
+//  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+//  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
   /*
    * Bundle location

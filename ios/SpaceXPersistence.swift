@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftStore
+//import SwiftStore
 
 protocol PersistenceProvier: class {
   func saveRecords(records: [String: String])
@@ -15,42 +15,42 @@ protocol PersistenceProvier: class {
   func close()
 }
 
-class LevelDBPersistenceProvider: PersistenceProvier {
-  
-  private let swiftStore: SwiftStore
-  
-  init(name: String) {
-    self.swiftStore = measure("leveldb:open", { return SwiftStore(storeName: name + "-v5") })
-  }
-  
-  func close() {
-    self.swiftStore.close()
-  }
-  
-  func saveRecords(records: [String: String]) {
-    for k in records {
-      NSLog("[SpaceX-Persistence]: Save \(k)")
-    }
-    for k in records {
-      self.swiftStore[k.key] = k.value
-    }
-  }
-  
-  func loadRecords(keys: Set<String>) -> [String: String] {
-    var res: [String: String] = [:]
-    let _ = measure("[SpaceX-LevelDB]: save") {
-      for k in keys {
-        if let e = self.swiftStore[k] {
-          if !e.isEmpty {
-            NSLog("[SpaceX-Persistence]: Loaded \(k)")
-            res[k] = e
-          }
-        }
-      }
-    }
-    return res
-  }
-}
+//class LevelDBPersistenceProvider: PersistenceProvier {
+//
+//  private let swiftStore: SwiftStore
+//
+//  init(name: String) {
+//    self.swiftStore = measure("leveldb:open", { return SwiftStore(storeName: name + "-v5") })
+//  }
+//
+//  func close() {
+//    self.swiftStore.close()
+//  }
+//
+//  func saveRecords(records: [String: String]) {
+//    for k in records {
+//      NSLog("[SpaceX-Persistence]: Save \(k)")
+//    }
+//    for k in records {
+//      self.swiftStore[k.key] = k.value
+//    }
+//  }
+//
+//  func loadRecords(keys: Set<String>) -> [String: String] {
+//    var res: [String: String] = [:]
+//    let _ = measure("[SpaceX-LevelDB]: save") {
+//      for k in keys {
+//        if let e = self.swiftStore[k] {
+//          if !e.isEmpty {
+//            NSLog("[SpaceX-Persistence]: Loaded \(k)")
+//            res[k] = e
+//          }
+//        }
+//      }
+//    }
+//    return res
+//  }
+//}
 
 class EmptyPersistenceProvier: PersistenceProvier {
   func close() {
@@ -71,11 +71,12 @@ class SpaceXPersistence {
   private let readerQueue = ManagedDispatchQueue(label: "spacex-persistence-read", concurrent: true)
   
   init(name: String?) {
-    if name != nil {
-      self.provider = LevelDBPersistenceProvider(name: name!)
-    } else {
-      self.provider = EmptyPersistenceProvier()
-    }
+//    if name != nil {
+//      self.provider = LevelDBPersistenceProvider(name: name!)
+//    } else {
+//      self.provider = EmptyPersistenceProvier()
+//    }
+    self.provider = EmptyPersistenceProvier()
   }
   
   func close() {
