@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { PageProps } from 'openland-mobile/components/PageProps';
-import { withApp } from 'openland-mobile/components/withApp';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, TextStyle, Platform } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -17,6 +14,7 @@ import { CenteredHeader } from './components/CenteredHeader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { SRouter } from 'react-native-s/SRouter';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
@@ -68,8 +66,8 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
     </ZListItemBase>
 }
 
-const SuggestedChats = (props: PageProps & { chats: RoomShort[] }) => {
-    let [selected, setSelected] = React.useState(new Set<string>());
+export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) => {
+    let [selected, setSelected] = React.useState(new Set<string>(props.chats.filter((c, i) => i < 5).map(c => c.id)));
     let theme = React.useContext(ThemeContext);
 
     let onSelect = React.useCallback((room: RoomShort) => {
@@ -93,15 +91,15 @@ const SuggestedChats = (props: PageProps & { chats: RoomShort[] }) => {
         })()
     }, [selected]);
 
-    let exit = React.useCallback(() => {
-        props.router.pushAndResetRoot('Home');
-    }, [])
+    let selectAll = React.useCallback(() => {
+        setSelected(new Set(props.chats.map(c => c.id)))
+    }, [selected])
 
     return (
         <>
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
-            {<SHeaderButton title={'Done'} onPress={exit} />}
+            {<SHeaderButton title={'Done'} onPress={onAdd} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -116,7 +114,7 @@ const SuggestedChats = (props: PageProps & { chats: RoomShort[] }) => {
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
                     </Text>
-                    {!!selected.size && <ZRoundedButton title={selected.size > 1 ? 'join all' : 'join'} onPress={onAdd} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'join all' : 'join'} onPress={selectAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&

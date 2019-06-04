@@ -535,6 +535,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderGlobalSearch(variables: Types.GlobalSearchVariables, opts?: QueryWatchParameters): Types.GlobalSearch | null {
         return this.useQuery(Source.GlobalSearchQuery, variables, opts);
     }
+    async queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
+        return this.client.query(Source.DiscoverNextPageQuery, variables, opts);
+    }
+    async refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables): Promise<Types.DiscoverNextPage> {
+        return this.refetch(Source.DiscoverNextPageQuery, variables);
+    }
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage {
+        return this.useQuerySuspense(Source.DiscoverNextPageQuery, variables, opts);
+    }
+    useWithoutLoaderDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage | null {
+        return this.useQuery(Source.DiscoverNextPageQuery, variables, opts);
+    }
     async queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery, undefined, opts);
     }

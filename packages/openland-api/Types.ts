@@ -47252,6 +47252,1878 @@ export interface GlobalSearchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: DiscoverNextPage
+// ====================================================
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_spans[];
+  edited: boolean;
+  commentsCount: number;
+  attachments: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_attachments[];
+  quotedMessages: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages[];
+  reactions: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage_reactions[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_spans[];
+  serviceMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_GeneralMessage | DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage_ServiceMessage;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_user;
+  settings: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_settings;
+  pinnedMessage: DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedMessage | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_spans[];
+  edited: boolean;
+  commentsCount: number;
+  attachments: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+  quotedMessages: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
+  reactions: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_spans[];
+  serviceMetadata: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage = DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_GeneralMessage | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage_ServiceMessage;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  canEdit: boolean;
+  canSendMessage: boolean;
+  membersCount: number | null;
+  pinnedMessage: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMessage | null;
+  organization: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_organization | null;
+  settings: DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_settings;
+}
+
+export type DiscoverNextPage_betaNextDiscoverPage_chats = DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom | DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom;
+
+export interface DiscoverNextPage_betaNextDiscoverPage_tagGroup_tags {
+  __typename: "Tag";
+  id: string;
+  title: string;
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage_tagGroup {
+  __typename: "TagGroup";
+  id: string;
+  title: string | null;
+  subtitle: string | null;
+  tags: DiscoverNextPage_betaNextDiscoverPage_tagGroup_tags[];
+}
+
+export interface DiscoverNextPage_betaNextDiscoverPage {
+  __typename: "DiscoverPage";
+  chats: DiscoverNextPage_betaNextDiscoverPage_chats[] | null;
+  tagGroup: DiscoverNextPage_betaNextDiscoverPage_tagGroup | null;
+}
+
+export interface DiscoverNextPage {
+  betaNextDiscoverPage: DiscoverNextPage_betaNextDiscoverPage | null;
+}
+
+export interface DiscoverNextPageVariables {
+  selectedTagsIds: string[];
+  excudedGroupsIds: string[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 

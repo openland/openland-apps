@@ -5,16 +5,17 @@ import { Platform, View, Text, TouchableOpacity, AsyncStorage, SafeAreaView } fr
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Tag, TagGroup, DiscoverApi } from 'openland-mobile/pages/main/discoverData';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
-import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
-import LinearGradient from 'react-native-linear-gradient';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { SuggestedChats } from './SuggestedChats';
+
+export type Tag = { id: string, title: string };
+export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
@@ -107,7 +108,6 @@ const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: 
             {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
             {/* <SHeaderButton title={'Next'} onPress={next} /> */}
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                <Text>{JSON.stringify(props.selected, undefined, 2)}</Text>
                 {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
                 <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
                 <View height={100} />
@@ -125,28 +125,19 @@ const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: 
     );
 };
 
-const SuggestedChats = (props: { chatIds: string[], selected: string[] }) => {
-    return <>
-        {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
-        {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
-        <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-            <Text>{JSON.stringify(props.chatIds, undefined, 2)}</Text>
-        </SScrollView>
-    </>
-}
-
 const DiscoverComponent = (props: PageProps) => {
     let exclude = props.router.params.exclude || new Set<string>();
     let selected = props.router.params.selected || new Set<string>();
-    let currentPage = new DiscoverApi().next([...selected.values()], [...exclude.values()]);
+    let currentPage = getClient().useDiscoverNextPage({ selectedTagsIds: [...selected.values()], excudedGroupsIds: [...exclude.values()] }, { fetchPolicy: 'network-only' });
 
-    if (currentPage.chatIds) {
-        return <SuggestedChats chatIds={currentPage.chatIds} selected={[...selected.values()]} />
-    } else if (currentPage.group) {
-        exclude.add(currentPage.group.id);
-        return < DiscoverPage group={currentPage.group} exclude={exclude} selected={selected} router={props.router} />
+    if (currentPage.betaNextDiscoverPage) {
+        if (currentPage.betaNextDiscoverPage.chats) {
+            return <SuggestedChats chats={currentPage.betaNextDiscoverPage.chats} router={props.router} />
+        } else if (currentPage.betaNextDiscoverPage.tagGroup) {
+            exclude.add(currentPage.betaNextDiscoverPage.tagGroup.id);
+            return < DiscoverPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
+        }
     }
-
     return <ZLoader />
 }
 

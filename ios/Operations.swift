@@ -1220,6 +1220,26 @@ private let DialogsSelector = obj(
                     field("state","state", scalar("String"))
                 )))
         )
+private let DiscoverNextPageSelector = obj(
+            field("betaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("chats","chats", list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("Room", RoomShortSelector)
+                        )))),
+                    field("tagGroup","tagGroup", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("String"))),
+                            field("subtitle","subtitle", scalar("String")),
+                            field("tags","tags", notNull(list(notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("id","id", notNull(scalar("String"))),
+                                    field("title","title", notNull(scalar("String")))
+                                ))))),
+                            field("title","title", scalar("String"))
+                        ))
+                ))
+        )
 private let ExploreCommunitySelector = obj(
             field("alphaComunityPrefixSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2790,6 +2810,12 @@ class Operations {
         "query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}",
         DialogsSelector
     )
+    let DiscoverNextPage = OperationDefinition(
+        "DiscoverNextPage",
+        .query, 
+        "query DiscoverNextPage($excudedGroupsIds:[String!]!,$selectedTagsIds:[String!]!){betaNextDiscoverPage(excudedGroupsIds:$excudedGroupsIds,selectedTagsIds:$selectedTagsIds){__typename chats{__typename ...RoomShort}tagGroup{__typename id subtitle tags{__typename id title}title}}}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
+        DiscoverNextPageSelector
+    )
     let ExploreCommunity = OperationDefinition(
         "ExploreCommunity",
         .query, 
@@ -3772,6 +3798,7 @@ class Operations {
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }
+        if name == "DiscoverNextPage" { return DiscoverNextPage }
         if name == "ExploreCommunity" { return ExploreCommunity }
         if name == "ExploreOrganizations" { return ExploreOrganizations }
         if name == "ExplorePeople" { return ExplorePeople }

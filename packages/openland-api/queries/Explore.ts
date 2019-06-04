@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from 'openland-api/fragments/OrganizationShort';
 import { UserShort } from 'openland-api/fragments/UserShort';
+import { RoomShort } from 'openland-api/fragments/RoomShort';
 
 export const AvailableRoomsQuery = gql`
     query AvailableRooms {
@@ -102,5 +103,26 @@ export const GlobalSearchQuery = gql`
         }
     }
     ${OrganizationShort}
+    ${UserShort}
+`;
+
+export const DiscoverNextPageQuery = gql`
+    query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
+        betaNextDiscoverPage(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {
+            chats{
+                ...RoomShort
+            }
+            tagGroup{
+                id
+                title
+                subtitle
+                tags{
+                    id
+                    title
+                }
+            }
+        }
+    }
+    ${RoomShort}
     ${UserShort}
 `;

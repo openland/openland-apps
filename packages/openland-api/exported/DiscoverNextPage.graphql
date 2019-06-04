@@ -1,0 +1,20 @@
+query DiscoverNextPage($excudedGroupsIds: [String!]!, $selectedTagsIds: [String!]!) {
+  betaNextDiscoverPage(excudedGroupsIds: $excudedGroupsIds, selectedTagsIds: $selectedTagsIds) {
+    __typename
+    chats {
+      __typename
+      ...RoomShort
+    }
+    tagGroup {
+      __typename
+      id
+      subtitle
+      tags {
+        __typename
+        id
+        title
+      }
+      title
+    }
+  }
+}
