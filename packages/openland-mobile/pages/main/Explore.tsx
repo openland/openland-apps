@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
@@ -12,19 +12,58 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
+import { SRouter } from 'react-native-s/SRouter';
+import { getDiscoverSelectedTags } from './Discover';
 
-const RoomsList = () => {
-    let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
+const RoomsList = (props: { router: SRouter }) => {
+    let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
     let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
 
-    let rooms = getClient().useAvailableRooms();
+    let rooms = getClient().useAvailableRooms({ selectedTagsIds: getDiscoverSelectedTags() });
     let availableRooms = rooms.availableRooms || [];
-    let myRooms = rooms.userRooms || [];
+    let suggestedRooms = rooms.suggestedRooms || [];
     return (
         <>
             {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
             {isSuper && <ZListItem text="Tasks" path="Apps/Tasks" />}
-            <ZListItemGroup header="Available Groups" divider={false}>
+            <ZListItemGroup
+                header="Chats for you"
+                divider={false}
+                actionRight={{
+                    title: 'see all', onPress: () => props.router.push('GroupList', {
+                        initial: suggestedRooms,
+                        title: 'Chats for you',
+                    })
+                }}
+            >
+                {suggestedRooms.filter((s, i) => i < 3).map(v => (
+                    v.__typename === 'SharedRoom' ? <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            key: v.id,
+                            title: v.title,
+                        }}
+                        title={v.organization ? v.organization.name : undefined}
+                        description={v.membersCount + ' members'}
+                        path="Conversation"
+                        pathParams={{ flexibleId: v.id }}
+                    /> : null
+                ))}
+            </ZListItemGroup>
+
+            <ZListItemGroup
+                header="Groups and channels"
+                divider={false}
+                actionRight={{
+                    title: 'see all', onPress: () => props.router.push('GroupList', {
+                        query: 'available',
+                        initial: availableRooms,
+                        title: 'Groups and channels',
+                    })
+                }}
+            >
                 {availableRooms.map(v => (
                     <ZListItem
                         key={v.id}
@@ -40,22 +79,9 @@ const RoomsList = () => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-                {(availableRooms.length >= 3) && (
-                    <ZListItem
-                        leftIcon={require('assets/ic-more-24.png')}
-                        text="All groups"
-                        path="GroupList"
-                        pathParams={{
-                            query: 'available',
-                            initial: availableRooms,
-                            title: 'Available groups',
-                        }}
-                        navigationIcon={false}
-                    />
-                )}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Your Groups" divider={false}>
+            {/* <ZListItemGroup header="Your Groups" divider={false}>
                 {myRooms.map(v => (
                     <ZListItem
                         key={v.id}
@@ -84,7 +110,7 @@ const RoomsList = () => {
                         navigationIcon={false}
                     />
                 )}
-            </ZListItemGroup>
+            </ZListItemGroup> */}
 
             {/* <ZListItemGroup header="Featured" divider={false}>
                 {featured.map(v => (
@@ -132,7 +158,7 @@ const ExplorePage = (props: PageProps) => {
             >
                 <SScrollView>
                     <SDeferred>
-                        <RoomsList />
+                        <RoomsList router={props.router} />
                     </SDeferred>
                 </SScrollView>
             </SSearchControler>

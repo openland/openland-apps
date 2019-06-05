@@ -1,5 +1,5 @@
-query AvailableRooms {
-  availableRooms: betaUserAvailableRooms(limit: 3) {
+query AvailableRooms($selectedTagsIds: [String!]!) {
+  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
     __typename
     ... on SharedRoom {
       id
@@ -16,7 +16,7 @@ query AvailableRooms {
       title
     }
   }
-  userRooms: betaUserRooms(limit: 3) {
+  availableRooms: betaUserAvailableRooms(limit: 3) {
     __typename
     ... on SharedRoom {
       id

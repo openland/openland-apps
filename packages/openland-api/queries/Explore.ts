@@ -4,8 +4,9 @@ import { UserShort } from 'openland-api/fragments/UserShort';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms {
-        userRooms: betaUserRooms(limit: 3) {
+    query AvailableRooms($selectedTagsIds: [String!]!) {
+     
+        availableRooms: betaUserAvailableRooms(limit: 3) {
             ... on SharedRoom {
                 id
                 kind
@@ -20,7 +21,7 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        availableRooms: betaUserAvailableRooms(limit: 3) {
+        suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
             ... on SharedRoom {
                 id
                 kind

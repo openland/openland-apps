@@ -47068,24 +47068,6 @@ export interface ConferenceWatchVariables {
 // GraphQL query operation: AvailableRooms
 // ====================================================
 
-export interface AvailableRooms_userRooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface AvailableRooms_userRooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membersCount: number | null;
-  membership: SharedRoomMembershipStatus;
-  organization: AvailableRooms_userRooms_organization | null;
-}
-
 export interface AvailableRooms_availableRooms_organization {
   __typename: "Organization";
   id: string;
@@ -47104,9 +47086,37 @@ export interface AvailableRooms_availableRooms {
   organization: AvailableRooms_availableRooms_organization | null;
 }
 
+export interface AvailableRooms_suggestedRooms_PrivateRoom {
+  __typename: "PrivateRoom";
+}
+
+export interface AvailableRooms_suggestedRooms_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface AvailableRooms_suggestedRooms_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: AvailableRooms_suggestedRooms_SharedRoom_organization | null;
+}
+
+export type AvailableRooms_suggestedRooms = AvailableRooms_suggestedRooms_PrivateRoom | AvailableRooms_suggestedRooms_SharedRoom;
+
 export interface AvailableRooms {
-  userRooms: AvailableRooms_userRooms[];
   availableRooms: AvailableRooms_availableRooms[];
+  suggestedRooms: AvailableRooms_suggestedRooms[];
+}
+
+export interface AvailableRoomsVariables {
+  selectedTagsIds: string[];
 }
 
 /* tslint:disable */

@@ -1097,7 +1097,7 @@ private let AccountSettingsSelector = obj(
                 )))))
         )
 private let AvailableRoomsSelector = obj(
-            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaSuggestedRooms","suggestedRooms", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1114,7 +1114,7 @@ private let AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserRooms","userRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -2771,7 +2771,7 @@ class Operations {
     let AvailableRooms = OperationDefinition(
         "AvailableRooms",
         .query, 
-        "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+        "query AvailableRooms($selectedTagsIds:[String!]!){suggestedRooms:betaSuggestedRooms(selectedTagsIds:$selectedTagsIds){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
         AvailableRoomsSelector
     )
     let ChatHistory = OperationDefinition(

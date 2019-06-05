@@ -69,7 +69,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
     </ZListItemBase>
 }
 
-export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) => {
+export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, selectedTagIds: string[] }) => {
     let [selected, setSelected] = React.useState(new Set<string>(props.chats.map(c => c.id)));
     let theme = React.useContext(ThemeContext);
 
@@ -90,7 +90,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
 
     let skip = React.useCallback(() => {
         (async () => {
-            await setDiscoverDone(true);
+            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, []);
@@ -100,7 +100,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
             startLoader();
             await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
             stopLoader();
-            await setDiscoverDone(true);
+            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, [])
