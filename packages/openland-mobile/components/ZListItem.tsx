@@ -17,6 +17,7 @@ export interface ZListItemProps {
     leftIconColor?: string;
     separator?: boolean | null;
     title?: string | null;
+    subTitle?: string | any | null;
     text?: string | null;
     description?: string;
     descriptionColor?: string;
@@ -106,7 +107,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 path={this.props.path}
                 pathParams={this.props.pathParams}
                 pathRemove={this.props.pathRemove}
-                height={this.props.multiline ? null : ((this.props.title || this.props.leftAvatar) ? 60 : (this.props.leftIcon ? 60 : (Platform.OS === 'android' ? 48 : 44)))}
+                height={this.props.multiline ? null : ((this.props.title || this.props.subTitle || this.props.leftAvatar) ? 60 : (this.props.leftIcon ? 60 : (Platform.OS === 'android' ? 48 : 44)))}
                 navigationIcon={this.props.navigationIcon}
             >
                 {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
@@ -172,10 +173,12 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             </View>
                         )}
                     </View>
+                    {this.props.subTitle && < Text style={{ color: this.props.theme.tabColor, fontSize: 15, height: 22, marginTop: 6, marginBottom: -2 }}>{this.props.subTitle}</Text>}
+
                     {this.props.title && Platform.OS === 'android' && <Text style={{ color: this.props.theme.textLabelColor, opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                 </View>
                 {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
-            </ZListItemBase>
+            </ZListItemBase >
         );
     }
 }

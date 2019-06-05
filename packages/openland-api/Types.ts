@@ -47110,9 +47110,42 @@ export interface AvailableRooms_suggestedRooms_SharedRoom {
 
 export type AvailableRooms_suggestedRooms = AvailableRooms_suggestedRooms_PrivateRoom | AvailableRooms_suggestedRooms_SharedRoom;
 
+export interface AvailableRooms_communities_edges_node_betaPublicRooms {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export interface AvailableRooms_communities_edges_node {
+  __typename: "Organization";
+  id: string;
+  /**
+   * # Refactor?
+   */
+  superAccountId: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  about: string | null;
+  status: string;
+  featured: boolean;
+  membersCount: number;
+  betaPublicRooms: AvailableRooms_communities_edges_node_betaPublicRooms[];
+}
+
+export interface AvailableRooms_communities_edges {
+  __typename: "OrganizationsEdge";
+  node: AvailableRooms_communities_edges_node;
+}
+
+export interface AvailableRooms_communities {
+  __typename: "OrganizationsConnection";
+  edges: AvailableRooms_communities_edges[];
+}
+
 export interface AvailableRooms {
   availableRooms: AvailableRooms_availableRooms[];
   suggestedRooms: AvailableRooms_suggestedRooms[];
+  communities: AvailableRooms_communities;
 }
 
 export interface AvailableRoomsVariables {
@@ -53557,6 +53590,11 @@ export interface ExploreOrganizationsVariables {
 // GraphQL query operation: ExploreCommunity
 // ====================================================
 
+export interface ExploreCommunity_items_edges_node_betaPublicRooms {
+  __typename: "SharedRoom";
+  id: string;
+}
+
 export interface ExploreCommunity_items_edges_node {
   __typename: "Organization";
   id: string;
@@ -53571,6 +53609,7 @@ export interface ExploreCommunity_items_edges_node {
   status: string;
   featured: boolean;
   membersCount: number;
+  betaPublicRooms: ExploreCommunity_items_edges_node_betaPublicRooms[];
 }
 
 export interface ExploreCommunity_items_edges {
@@ -53603,6 +53642,8 @@ export interface ExploreCommunityVariables {
   query?: string | null;
   sort?: string | null;
   page?: number | null;
+  after?: string | null;
+  featuredIfEmptyQuery?: boolean | null;
 }
 
 /* tslint:disable */
@@ -57583,6 +57624,11 @@ export interface CommentEntryFragment {
 // GraphQL fragment: CommunitySearch
 // ====================================================
 
+export interface CommunitySearch_betaPublicRooms {
+  __typename: "SharedRoom";
+  id: string;
+}
+
 export interface CommunitySearch {
   __typename: "Organization";
   id: string;
@@ -57597,6 +57643,7 @@ export interface CommunitySearch {
   status: string;
   featured: boolean;
   membersCount: number;
+  betaPublicRooms: CommunitySearch_betaPublicRooms[];
 }
 
 /* tslint:disable */

@@ -1,4 +1,14 @@
 query AvailableRooms($selectedTagsIds: [String!]!) {
+  communities: alphaComunityPrefixSearch(first: 3) {
+    __typename
+    edges {
+      __typename
+      node {
+        __typename
+        ...CommunitySearch
+      }
+    }
+  }
   suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
     __typename
     ... on SharedRoom {
