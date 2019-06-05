@@ -153,6 +153,16 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             />
                         </div>
                     )}
+                    <XView
+                        cursor="pointer"
+                        onClick={() => {
+                            if (router) {
+                                router.navigate(`/notifications/comments`);
+                            }
+                        }}
+                    >
+                        Comments
+                    </XView>
                     {canUseDOM && !isSearching && (
                         <XListView
                             dataSource={dataSource}
