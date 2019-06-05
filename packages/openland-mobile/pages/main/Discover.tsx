@@ -32,7 +32,7 @@ export const prepareDiscoverStatus = async () => {
 }
 
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style: 'fill' | 'border' = 'border' as any;
+    let style: 'fill' | 'border' = 'fill' as any;
 
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
@@ -90,10 +90,10 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
             <View height={15} />
             {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroup.title}</Text>} */}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
-                {props.tagsGroup.tags.filter((t, i) => showAll || i < 20).map(tag => (
+                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
                 ))}
-                {props.tagsGroup.tags.length > 20 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
+                {props.tagsGroup.tags.length > 17 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
             </View>
             {/* {sub} */}
         </View>
@@ -130,18 +130,17 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
             {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
             {/* <SHeaderButton title={'Next'} onPress={next} /> */}
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
                 <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
                 <View height={120} />
             </SScrollView>
+            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
+
             <ASSafeAreaContext.Consumer>
                 {sa => (
-                    <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center">
-                        <View marginBottom={sa.bottom + 48}>
-                            <ZRoundedButton size="large" title="  Next  " style="default" enabled={!disabled} onPress={next} />
-                        </View>
-                    </LinearGradient>
-
+                    <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
+                        <ZRoundedButton size="large" title="  Next  " style="default" enabled={!disabled} onPress={next} />
+                    </View>
                 )}
             </ASSafeAreaContext.Consumer>
 

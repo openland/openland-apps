@@ -123,14 +123,12 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                 ))}
                 <View height={120} />
             </SScrollView>
+            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
             <ASSafeAreaContext.Consumer>
                 {sa => (
-                    <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center">
-                        <View marginBottom={sa.bottom + 48}>
-                            <ZRoundedButton size="large" title="  Done  " style="default" enabled={!!selected.size} onPress={onAdd} />
-                        </View>
-                    </LinearGradient>
-
+                    <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
+                        <ZRoundedButton size="large" title="  Done  " style="default" enabled={!!selected.size} onPress={onAdd} />
+                    </View>
                 )}
             </ASSafeAreaContext.Consumer>
         </>
