@@ -504,5 +504,12 @@
                 16
             ]
         },
+        {
+            "name": "ic-rooms-ios",
+            "src": "ic-rooms-ios.svg",
+            "sizes": [
+                28
+            ]
+        }
     ]
 }

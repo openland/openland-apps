@@ -110,8 +110,8 @@ const RoomsList = () => {
 const ExplorePage = (props: PageProps) => {
     return (
         <>
-            {Platform.OS === 'ios' && <SHeader title="Browse" />}
-            {Platform.OS === 'android' && <CenteredHeader title="Browse" padding={98} />}
+            {Platform.OS === 'ios' && <SHeader title="Discover" />}
+            {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
             <SHeaderButton
                 title="New"
                 icon={

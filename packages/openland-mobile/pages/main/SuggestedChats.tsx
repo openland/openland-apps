@@ -69,7 +69,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
 }
 
 export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) => {
-    let [selected, setSelected] = React.useState(new Set<string>(props.chats.filter((c, i) => i < 5).map(c => c.id)));
+    let [selected, setSelected] = React.useState(new Set<string>(props.chats.map(c => c.id)));
     let theme = React.useContext(ThemeContext);
 
     let onSelect = React.useCallback((room: RoomShort) => {
@@ -83,14 +83,30 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
 
     }, [selected]);
 
-    let onAdd = React.useCallback(() => {
+    let toHome = React.useCallback(() => {
+        props.router.pushAndResetRoot('Home');
+    }, []);
+
+    let skip = React.useCallback(() => {
         (async () => {
-            startLoader();
-            await getClient().mutateRoomsJoin({ roomsIds: [...selected.values()] })
-            stopLoader();
             await setDiscoverDone(true);
-            props.router.pushAndResetRoot('Home');
+            toHome()
         })()
+    }, []);
+
+    let onAdd = React.useCallback(() => {
+        if (selected.size) {
+            (async () => {
+                startLoader();
+                await getClient().mutateRoomsJoin({ roomsIds: [...selected.values()] })
+                stopLoader();
+                await setDiscoverDone(true);
+                toHome()
+            })()
+        } else {
+            toHome()
+        }
+
     }, [selected]);
 
     let selectAll = React.useCallback(() => {
@@ -101,6 +117,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
         <>
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
+            <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -115,7 +132,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
-                    {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'join all' : 'join'} onPress={selectAll} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'select all' : 'select'} onPress={selectAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&
@@ -127,7 +144,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
             <ASSafeAreaContext.Consumer>
                 {sa => (
                     <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
-                        <ZRoundedButton size="large" title="  Done  " style="default" enabled={!!selected.size} onPress={onAdd} />
+                        <ZRoundedButton size="large" title={`   ${selected.size === 0 ? 'Skip' : ('Join' + (selected.size === props.chats.length ? ' all' : ''))}   `} style="default" onPress={onAdd} />
                     </View>
                 )}
             </ASSafeAreaContext.Consumer>

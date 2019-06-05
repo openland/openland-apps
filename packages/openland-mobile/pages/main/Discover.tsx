@@ -20,7 +20,7 @@ export type TagGroup = { id: string, title?: string | null, subtitle?: string | 
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
-    return discoverDone && false;
+    return discoverDone;
 }
 export const setDiscoverDone = async (done: boolean) => {
     await AsyncStorage.setItem('discover_done', 'done');
@@ -32,7 +32,7 @@ export const prepareDiscoverStatus = async () => {
 }
 
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style: 'fill' | 'border' = 'fill' as any;
+    let style: 'fill' | 'border' = 'border' as any;
 
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
