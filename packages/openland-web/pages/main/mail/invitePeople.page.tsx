@@ -79,7 +79,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                 </XView>
             )}
             <XView flexDirection="column" alignItems="center" justifyContent="center" width="100%">
-                {asModalContent  && (
+                {asModalContent && (
                     <XImage
                         src="/static/landing/logotype.svg"
                         width={145}
@@ -90,53 +90,29 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                         position={isMobile ? 'absolute' : 'fixed'}
                     />
                 )}
-                {!isMobile && (
-                    <XView marginTop={-75} marginBottom={-55}>
-                        <ImgMembersEmpty />
-                    </XView>
-                )}
-
-                <XView
-                    fontSize={22}
-                    maxWidth={isMobile ? '100%' : 328}
-                    fontWeight={'600'}
-                    lineHeight={1.36}
-                    color={'#000'}
-                    width="100%"
-                    marginTop={isMobile ? 89 : 0}
-                >
-                    <TextAlignCenter>
-                        <span className={titleLetterSpacingClassName}>
-                            Share one of the links below with friends you want to invite
-                        </span>
-                    </TextAlignCenter>
-                </XView>
-
-                <XView width={isMobile ? '100%' : 540} marginTop={48}>
-                    <XView
-                        flexDirection="row"
-                        color={'#000'}
-                        fontWeight="600"
-                        fontSize={20}
-                        marginBottom={12}
-                    >
-                        {!isMobile && 'Invite to'}
-                        <XView
-                            as="a"
-                            marginLeft={4}
-                            href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
-                        >
-                            <span className={titleLetterSpacingClassName}>Founder Chats</span>
+                <XView flexGrow={1} flexShrink={1} height={0} />
+                <XView flexGrow={0} flexShrink={0} alignItems="center">
+                    {!isMobile && (
+                        <XView marginTop={-75} marginBottom={-55}>
+                            <ImgMembersEmpty />
                         </XView>
+                    )}
+
+                    <XView
+                        fontSize={22}
+                        maxWidth={isMobile ? '100%' : 328}
+                        fontWeight={'600'}
+                        lineHeight={1.36}
+                        color={'#000'}
+                        width="100%"
+                    >
+                        <TextAlignCenter>
+                            <span className={titleLetterSpacingClassName}>
+                                Share one of the links below with friends you want to invite
+                            </span>
+                        </TextAlignCenter>
                     </XView>
-                    <OwnerLinkComponent
-                        appInvite={founderChatsInvite}
-                        id={founderChatId}
-                        isRoom={true}
-                        useRevoke={true}
-                        withoutInput={isMobile}
-                    />
-                    <XView marginTop={36}>
+                    <XView width={isMobile ? '100%' : 540} marginTop={48}>
                         <XView
                             flexDirection="row"
                             color={'#000'}
@@ -148,20 +124,47 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                             <XView
                                 as="a"
                                 marginLeft={4}
-                                href={`https://openland.com/directory/o/${primaryOrganizationId}`}
+                                href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
                             >
-                                {primaryOrganizationName}
+                                <span className={titleLetterSpacingClassName}>Founder Chats</span>
                             </XView>
                         </XView>
                         <OwnerLinkComponent
-                            footerNote="Anyone can use this link to join your organization"
-                            appInvite={primaryOrganizationInvite}
-                            id={primaryOrganizationId}
-                            isOrganization={true}
+                            appInvite={founderChatsInvite}
+                            id={founderChatId}
+                            isRoom={true}
                             useRevoke={true}
                             withoutInput={isMobile}
                         />
+                        <XView marginTop={36}>
+                            <XView
+                                flexDirection="row"
+                                color={'#000'}
+                                fontWeight="600"
+                                fontSize={20}
+                                marginBottom={12}
+                            >
+                                {!isMobile && 'Invite to'}
+                                <XView
+                                    as="a"
+                                    marginLeft={4}
+                                    href={`https://openland.com/directory/o/${primaryOrganizationId}`}
+                                >
+                                    {primaryOrganizationName}
+                                </XView>
+                            </XView>
+                            <OwnerLinkComponent
+                                footerNote="Anyone can use this link to join your organization"
+                                appInvite={primaryOrganizationInvite}
+                                id={primaryOrganizationId}
+                                isOrganization={true}
+                                useRevoke={true}
+                                withoutInput={isMobile}
+                            />
+                        </XView>
                     </XView>
+                </XView>
+                <XView width={isMobile ? '100%' : 540} flexGrow={1} flexShrink={1} height={0}>
                     {!moreInvite && (
                         <XView
                             flexDirection="row"
