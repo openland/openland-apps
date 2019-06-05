@@ -102,7 +102,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
                         numberOfLines={1}
@@ -113,7 +113,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                             fontWeight: TextStyles.weight.medium
                         }}
                     >
-                        {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
+                        {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
                     {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'join all' : 'join'} onPress={selectAll} />}
                 </View>
@@ -121,6 +121,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                     item.__typename === 'SharedRoom' &&
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
                 ))}
+                <View height={120} />
             </SScrollView>
             <ASSafeAreaContext.Consumer>
                 {sa => (

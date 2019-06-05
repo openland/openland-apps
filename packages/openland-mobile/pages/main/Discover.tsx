@@ -32,13 +32,34 @@ export const prepareDiscoverStatus = async () => {
 }
 
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
+    let style: 'fill' | 'border' = 'border' as any;
+
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
         props.onPress(props.tag);
     }, [props.tag])
     return <TouchableOpacity onPress={callback} activeOpacity={0.6}>
-        <View style={{ marginRight: 10, marginBottom: 12, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? theme.accentColor : theme.accentBackgroundColor, borderRadius: 12, borderWidth: 2, borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor }}>
-            <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, color: props.selected ? theme.textInverseColor : theme.accentColor }}>
+
+        <View
+            style={{
+                marginRight: 10,
+                marginBottom: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 10,
+                borderRadius: 12,
+                borderWidth: 2,
+
+                backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentColor : theme.accentBackgroundColor) : theme.accentBackgroundColor,
+                borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 16,
+                    fontWeight: TextStyles.weight.medium,
+                    color: props.selected ? (style === 'fill' ? theme.textInverseColor : theme.accentColor) : theme.accentColor
+                }}
+            >
                 {props.tag.title}
             </Text>
         </View >
@@ -72,7 +93,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
                 {props.tagsGroup.tags.filter((t, i) => showAll || i < 20).map(tag => (
                     <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
                 ))}
-                {props.tagsGroup.tags.length > 20 && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
+                {props.tagsGroup.tags.length > 20 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
             </View>
             {/* {sub} */}
         </View>
@@ -109,9 +130,9 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
             {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
             {/* <SHeaderButton title={'Next'} onPress={next} /> */}
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 20, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
                 <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
-                <View height={100} />
+                <View height={120} />
             </SScrollView>
             <ASSafeAreaContext.Consumer>
                 {sa => (
