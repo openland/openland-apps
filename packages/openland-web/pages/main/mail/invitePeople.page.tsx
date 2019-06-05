@@ -17,13 +17,59 @@ const textAlignCenterClassName = css`
     text-align: center;
 `;
 
+const illustrationStyles = css`
+    margin-top: -90px;
+    margin-bottom: -55px;
+
+    @media (max-height: 800px) {
+        display: none;
+    }
+`;
+
+const contentWrapperStyles = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    @media (max-height: 570px) {
+        justify-content: flex-start;
+    }
+`;
+
+const spanStyles = css`
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 0;
+    min-height: 100px;
+
+    @media (max-height: 500px) and (min-width: 750px) {
+        flex-grow: 0;
+        min-height: 150px;
+    }
+`;
+
+const logoWrapperStyles = css`
+    top: 19px;
+    left: 32px;
+    align-self: flex-start;
+    position: fixed;
+
+    @media (max-width: 950px) {
+        position: absolute;
+    }
+
+    @media (max-width: 750px) {
+        position: absolute;
+        left: unset;
+        align-self: center;
+    }
+`;
+
 const TextAlignCenter = ({ children }: { children: any }) => {
     return <div className={textAlignCenterClassName}>{children}</div>;
 };
-
-const titleLetterSpacingClassName = css`
-    letter-spacing: 0.6px;
-`;
 
 export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean }) => {
     const client = useClient();
@@ -78,38 +124,32 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                     </XView>
                 </XView>
             )}
-            <XView flexDirection="column" alignItems="center" justifyContent="center" width="100%">
+            <div className={contentWrapperStyles}>
                 {asModalContent && (
-                    <XImage
-                        src="/static/landing/logotype.svg"
-                        width={145}
-                        height={42}
-                        top={19}
-                        left={isMobile ? null : 32}
-                        alignSelf={isMobile ? 'center' : 'flex-start'}
-                        position={isMobile ? 'absolute' : 'fixed'}
-                    />
+                    <div className={logoWrapperStyles}>
+                        <XImage src="/static/landing/logotype.svg" width={145} height={42} />
+                    </div>
                 )}
-                <XView flexGrow={1} flexShrink={1} height={0} />
-                <XView flexGrow={0} flexShrink={0} alignItems="center">
-                    {!isMobile && (
-                        <XView marginTop={-75} marginBottom={-55}>
-                            <ImgMembersEmpty />
-                        </XView>
-                    )}
+                <div className={spanStyles} />
+                <XView
+                    flexGrow={0}
+                    flexShrink={0}
+                    alignItems="center"
+                    marginTop={isMobile ? 0 : -68}
+                    width="100%"
+                >
+                    {!isMobile && <ImgMembersEmpty className={illustrationStyles} />}
 
                     <XView
                         fontSize={22}
-                        maxWidth={isMobile ? '100%' : 328}
+                        maxWidth={isMobile ? 440 : 328}
                         fontWeight={'600'}
                         lineHeight={1.36}
                         color={'#000'}
                         width="100%"
                     >
                         <TextAlignCenter>
-                            <span className={titleLetterSpacingClassName}>
-                                Share one of the links below with friends you want to invite
-                            </span>
+                            Share one of the links below with friends you want to invite
                         </TextAlignCenter>
                     </XView>
                     <XView width={isMobile ? '100%' : 540} marginTop={48}>
@@ -126,7 +166,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                                 marginLeft={4}
                                 href="https://openland.com/mail/p/ZYx4d9K6kjIZ5jo6r69zc4AX3v"
                             >
-                                <span className={titleLetterSpacingClassName}>Founder Chats</span>
+                                Founder Chats
                             </XView>
                         </XView>
                         <OwnerLinkComponent
@@ -203,7 +243,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                         </XView>
                     )}
                 </XView>
-            </XView>
+            </div>
         </XView>
     );
 };
