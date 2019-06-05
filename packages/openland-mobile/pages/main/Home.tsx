@@ -9,14 +9,13 @@ import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { Discover, isDiscoverDone } from './Discover';
-import { NON_PRODUCTION } from '../Init';
+import { isDiscoverDone } from './Discover';
 import { DiscoverHome } from './DiscoverHome';
 
 export const Home = XMemo<PageProps>((props) => {
     let [tab, setTab] = React.useState(1);
     let counter = getClient().useWithoutLoaderGlobalCounter();
-    let showDiscover = !isDiscoverDone() && NON_PRODUCTION;
+    let showDiscover = !isDiscoverDone();
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>

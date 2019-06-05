@@ -17,6 +17,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
@@ -94,24 +95,28 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
         })()
     }, []);
 
+    let join = React.useCallback((selectedIds: string[]) => {
+        (async () => {
+            startLoader();
+            await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
+            stopLoader();
+            await setDiscoverDone(true);
+            toHome()
+        })()
+    }, [])
+
     let onAdd = React.useCallback(() => {
         if (selected.size) {
-            (async () => {
-                startLoader();
-                await getClient().mutateRoomsJoin({ roomsIds: [...selected.values()] })
-                stopLoader();
-                await setDiscoverDone(true);
-                toHome()
-            })()
+            join([...selected.values()]);
         } else {
             toHome()
         }
 
     }, [selected]);
 
-    let selectAll = React.useCallback(() => {
-        setSelected(new Set(props.chats.map(c => c.id)))
-    }, [selected])
+    let joinAll = React.useCallback(() => {
+        join(props.chats.map(c => c.id));
+    }, [])
 
     return (
         <>
@@ -132,7 +137,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
-                    {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'select all' : 'select'} onPress={selectAll} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton title="join all" onPress={joinAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&
