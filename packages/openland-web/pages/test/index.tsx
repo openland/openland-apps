@@ -23,8 +23,9 @@ export const TestCommentsComponent = () => {
     return (
         <TestWrapper>
             <CommentsModalInnerNoRouter
-                messageId="0DkElrP40mfJe1JbL0aXCWKa30"
-                roomId="1pm4Xrl3BpiDaQgayqAbuK1gDj"
+                selectedCommentMessageId={'ygMnXAkbk5CK5gLMrXo3fM0Z1W'}
+                messageId={'jZOxeaJxrqiEoRxvrdqafeEaQD'}
+                roomId={'Jlb4AOJBglSEDgkpbea3tkYyxd'}
             />
         </TestWrapper>
     );

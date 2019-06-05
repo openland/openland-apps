@@ -190,7 +190,6 @@ const NotCompactShortMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={20}
             paddingRight={isEditView ? 0 : 20}
         >
             {children}
