@@ -11,6 +11,7 @@ import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { RoomChat_room } from 'openland-api/Types';
+import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 
 const DiscussButton = React.memo(
     ({
@@ -137,7 +138,17 @@ export const PostMessageButtons = React.memo(
                                 color="#000"
                                 fontWeight="600"
                             >
-                                <XDate value={message.date.toString()} format="time" />
+                                <ZRelativeDate
+                                    style={
+                                        {
+                                            fontSize: '100%',
+
+                                            color: '#000',
+                                            fontWeight: 600,
+                                        } as any
+                                    }
+                                    date={message.date.toString()}
+                                />
                             </XView>
                             {commentProps && (
                                 <>
