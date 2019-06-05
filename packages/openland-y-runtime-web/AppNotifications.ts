@@ -45,6 +45,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
             } else {
                 this.state = 'unsupported';
             }
+            this.maintainActiveTabTs();
         } else {
             this.state = 'unsupported';
         }
@@ -103,49 +104,66 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         }
     }
 
+    maintainActiveTabTs = () => {
+        setInterval(() => {
+            if (document.hasFocus()) {
+                const timeStampInMs = Date.now();
+                localStorage.setItem('openland-active-tab-ts', timeStampInMs.toString());
+            }
+        }, 500);
+    };
+
     blinkDocumentFavicon = () => {
         if (canUseDOM) {
             let favicons: any = document.getElementsByClassName('favicon');
-            const favIconPath16 = '/static/img/favicon/favicon-16x16.png?v=2';
-            const favIconPath32 = '/static/img/favicon/favicon-32x32.png?v=2';
-            const favIconNotifyPath16 = '/static/img/favicon/favicon-notify-16x16.png?v=2';
-            const favIconNotifyPath32 = '/static/img/favicon/favicon-notify-32x32.png?v=2';
 
-            const localStorageKey = 'fav';
-            const lcSet = (key: string) => localStorage.setItem(localStorageKey, key);
+            const setFavIcon = (isNotified: boolean) => {
+                const favIconPath16 = '/static/img/favicon/favicon-16x16.png?v=2';
+                const favIconPath32 = '/static/img/favicon/favicon-32x32.png?v=2';
+                const favIconNotifyPath16 = '/static/img/favicon/favicon-notify-16x16.png?v=2';
+                const favIconNotifyPath32 = '/static/img/favicon/favicon-notify-32x32.png?v=2';
 
-            const setFavicon = () => {
-                this.blinkFaviconAlreadyStarted = true;
-                lcSet('true');
-                favicons[0].href = favIconNotifyPath32;
-                favicons[1].href = favIconNotifyPath16;
+                if (isNotified) {
+                    favicons[0].href = favIconNotifyPath32;
+                    favicons[1].href = favIconNotifyPath16;
+                } else {
+                    favicons[0].href = favIconPath32;
+                    favicons[1].href = favIconPath16;
+                }
             };
 
-            const resetFavicon = (interval: any) => {
-                this.blinkFaviconAlreadyStarted = false;
-                clearInterval(interval);
-                lcSet('false');
-                favicons[0].href = favIconPath32;
-                favicons[1].href = favIconPath16;
+            const lcSet = (key: string, value: boolean) =>
+                localStorage.setItem(key, value ? 'true' : 'false');
+            const lcGet = (key: string): boolean => localStorage.getItem(key) === 'true';
+
+            const checkHasActiveTab = () => {
+                const activeTabTsString = localStorage.getItem('openland-active-tab-ts');
+                if (!activeTabTsString) {
+                    return;
+                }
+
+                const activeTabTs = parseInt(activeTabTsString, 10);
+
+                return Date.now() - activeTabTs < 1000;
             };
 
             if (favicons) {
                 if (document.hasFocus()) {
-                    lcSet('false');
-                } else if (!document.hasFocus() && !this.blinkFaviconAlreadyStarted) {
-                    setFavicon();
+                    lcSet('fav', false);
+                } else if (
+                    !document.hasFocus() &&
+                    !this.blinkFaviconAlreadyStarted &&
+                    !checkHasActiveTab()
+                ) {
+                    this.blinkFaviconAlreadyStarted = true;
+                    lcSet('fav', true);
+                    setFavIcon(true);
                     let interval = setInterval(() => {
-                        if (
-                            document.hasFocus() ||
-                            localStorage.getItem(localStorageKey) === 'false'
-                        ) {
-                            resetFavicon(interval);
-                        }
-                        if (
-                            !document.hasFocus() &&
-                            localStorage.getItem(localStorageKey) === 'false'
-                        ) {
-                            resetFavicon(interval);
+                        if (document.hasFocus() || !lcGet('fav')) {
+                            this.blinkFaviconAlreadyStarted = false;
+                            clearInterval(interval);
+                            lcSet('fav', false);
+                            setFavIcon(false);
                         }
                     }, 1000);
                 }
