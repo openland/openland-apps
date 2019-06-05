@@ -489,6 +489,20 @@
             "sizes": [
                 20
             ]
-        }
+        },
+        {
+            "name": "ic-add-rounded",
+            "src": "ic-add-rounded.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-checkmark",
+            "src": "ic-checkmark.svg",
+            "sizes": [
+                16
+            ]
+        },
     ]
 }

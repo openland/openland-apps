@@ -12,14 +12,15 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { SuggestedChats } from './SuggestedChats';
+import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
+import LinearGradient from 'react-native-linear-gradient';
 
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
 let discoverDone = false;
 export const isDiscoverDone = () => {
-    return discoverDone;
+    return discoverDone && false;
 }
 export const setDiscoverDone = async (done: boolean) => {
     await AsyncStorage.setItem('discover_done', 'done');
@@ -78,7 +79,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
     )
 }
 
-const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
+const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
     let [selected, setCurretnSelected] = React.useState(props.selected);
     let onSelectedChange = React.useCallback((s: Set<string>) => {
         setCurretnSelected(new Set(s));
@@ -114,9 +115,11 @@ const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: 
             </SScrollView>
             <ASSafeAreaContext.Consumer>
                 {sa => (
-                    <View position="absolute" bottom={sa.bottom + 48} width="100%" justifyContent="center" alignItems="center">
-                        <ZRoundedButton size="large" title="  Next  " style={disabled ? "secondary" : 'default'} onPress={next} />
-                    </View>
+                    <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center">
+                        <View marginBottom={sa.bottom + 48}>
+                            <ZRoundedButton size="large" title="  Next  " style="default" enabled={!disabled} onPress={next} />
+                        </View>
+                    </LinearGradient>
 
                 )}
             </ASSafeAreaContext.Consumer>
@@ -132,14 +135,13 @@ const DiscoverComponent = (props: PageProps) => {
 
     if (currentPage.betaNextDiscoverPage) {
         if (currentPage.betaNextDiscoverPage.chats) {
-            return <SuggestedChats chats={currentPage.betaNextDiscoverPage.chats} router={props.router} />
+            return <SuggestedChatsPage chats={currentPage.betaNextDiscoverPage.chats} router={props.router} />
         } else if (currentPage.betaNextDiscoverPage.tagGroup) {
             exclude.add(currentPage.betaNextDiscoverPage.tagGroup.id);
-            return < DiscoverPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
+            return < TagsGroupPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
         }
     }
     return <ZLoader />
 }
 
-export const DiscoverHome = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });
 export const Discover = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });

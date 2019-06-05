@@ -15,6 +15,8 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SRouter } from 'react-native-s/SRouter';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
@@ -59,9 +61,9 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.accentColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-            {props.selected && <Image source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.accentColor }} />}
-            {!props.selected && <Image source={require('assets/ic-add-24.png')} style={{ tintColor: theme.backgroundColor }} />}
+        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, borderWidth: 2, borderColor: theme.accentBackgroundColor, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.backgroundColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
+            {props.selected && <Image source={require('assets/ic-checkmark-16.png')} style={{ tintColor: theme.accentColor }} />}
+            {!props.selected && <Image source={require('assets/ic-add-rounded-16.png')} style={{ tintColor: theme.accentColor }} />}
         </View>
     </ZListItemBase>
 }
@@ -99,7 +101,6 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
         <>
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
-            {<SHeaderButton title={'Done'} onPress={onAdd} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -121,6 +122,16 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
                 ))}
             </SScrollView>
+            <ASSafeAreaContext.Consumer>
+                {sa => (
+                    <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center">
+                        <View marginBottom={sa.bottom + 48}>
+                            <ZRoundedButton size="large" title="  Done  " style="default" enabled={!!selected.size} onPress={onAdd} />
+                        </View>
+                    </LinearGradient>
+
+                )}
+            </ASSafeAreaContext.Consumer>
         </>
     );
 };

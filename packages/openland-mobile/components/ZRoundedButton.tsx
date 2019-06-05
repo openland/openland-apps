@@ -81,6 +81,7 @@ export interface ZRoundedButtonProps {
     size?: ZRoundedButtonSize;
     style?: ZRoundedButtonStyle
     uppercase?: boolean;
+    enabled?: boolean;
 }
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
@@ -121,7 +122,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
     return (
         <View borderRadius={size === 'default' ? 13 : 18}>
-            <TouchableOpacity onPress={!actionInProgress ? handlePress : undefined} activeOpacity={0.6}>
+            <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
                 <View
                     style={[
                         styles.container,
@@ -145,6 +146,9 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                                 },
                                 {
                                     ...actionInProgress ? { color: 'transparent' } : {}
+                                },
+                                {
+                                    opacity: props.enabled === false ? 0.7 : undefined
                                 }
                             ]}
                             allowFontScaling={false}
