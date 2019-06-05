@@ -76,7 +76,7 @@ type PostMessageButtonsT = {
     message: DataSourceWebMessageItem;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
-    conversationId: string | null;
+    conversationId?: string | null;
     me?: UserShort | null;
     commentProps?: CommentPropsT;
     room?: RoomChat_room;

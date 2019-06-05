@@ -107,7 +107,7 @@ export interface MessageComponentProps {
     noSelector?: boolean;
     isComment?: boolean;
     commentProps?: CommentPropsT;
-    conversationId: string | null;
+    conversationId?: string | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
     onlyLikes?: boolean;
