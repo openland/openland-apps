@@ -130,8 +130,8 @@ export const ExploreOrganizationsQuery = gql`
 `;
 
 export const ExploreCommunityQuery = gql`
-    query ExploreCommunity($query: String, $sort: String, $page: Int) {
-        items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {
+    query ExploreCommunity($query: String, $sort: String, $page: Int, $after: String, $featuredIfEmptyQuery: Boolean) {
+        items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after, featuredIfEmptyQuery: $featuredIfEmptyQuery) {
             edges {
                 node {
                     ...CommunitySearch

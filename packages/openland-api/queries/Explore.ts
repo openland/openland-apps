@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { OrganizationShort } from 'openland-api/fragments/OrganizationShort';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
+import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
     query AvailableRooms($selectedTagsIds: [String!]!) {
@@ -36,7 +37,15 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
+        communities: alphaComunityPrefixSearch( first: 3) {
+            edges {
+                node {
+                    ...CommunitySearch
+                }
+            }
+        }
     }
+    ${CommunitySearch}
 `;
 
 export const UserRoomsQuery = gql`

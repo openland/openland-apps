@@ -22,6 +22,7 @@ const RoomsList = (props: { router: SRouter }) => {
     let rooms = getClient().useAvailableRooms({ selectedTagsIds: getDiscoverSelectedTags() });
     let availableRooms = rooms.availableRooms || [];
     let suggestedRooms = rooms.suggestedRooms || [];
+    let communities = rooms.communities || [];
     return (
         <>
             {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
@@ -30,7 +31,7 @@ const RoomsList = (props: { router: SRouter }) => {
                 header="Chats for you"
                 divider={false}
                 actionRight={{
-                    title: 'see all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
                         initial: suggestedRooms,
                         title: 'Chats for you',
                     })
@@ -45,9 +46,9 @@ const RoomsList = (props: { router: SRouter }) => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization ? v.organization.name : undefined}
-                        description={v.membersCount + ' members'}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
                         path="Conversation"
+                        navigationIcon={false}
                         pathParams={{ flexibleId: v.id }}
                     /> : null
                 ))}
@@ -57,7 +58,7 @@ const RoomsList = (props: { router: SRouter }) => {
                 header="Groups and channels"
                 divider={false}
                 actionRight={{
-                    title: 'see all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         initial: availableRooms,
                         title: 'Groups and channels',
@@ -73,62 +74,41 @@ const RoomsList = (props: { router: SRouter }) => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization ? v.organization.name : undefined}
-                        description={v.membersCount + ' members'}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
                         path="Conversation"
+                        navigationIcon={false}
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
             </ZListItemGroup>
 
-            {/* <ZListItemGroup header="Your Groups" divider={false}>
-                {myRooms.map(v => (
+            <ZListItemGroup
+                header="Communities"
+                divider={false}
+                actionRight={{
+                    title: 'See all', onPress: () => props.router.push('CommunityList', {
+                        initial: communities.edges.map(e => e.node),
+                        title: 'Communities',
+                    })
+                }}
+            >
+                {communities.edges.map(e => e.node).map(v => (
                     <ZListItem
                         key={v.id}
-                        text={v.title}
+                        text={v.name}
                         leftAvatar={{
                             photo: v.photo,
                             key: v.id,
-                            title: v.title,
+                            title: v.name,
                         }}
-                        title={v.organization ? v.organization!.name : undefined}
-                        description={v.membersCount + ' members'}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
-                {(myRooms.length >= 3) && (
-                    <ZListItem
-                        leftIcon={require('assets/ic-more-24.png')}
-                        text="All groups"
-                        path="GroupList"
-                        pathParams={{
-                            initial: myRooms,
-                            query: 'rooms',
-                            title: 'Your groups',
-                        }}
+                        subTitle={<>{v.betaPublicRooms.length + (v.betaPublicRooms.length === 1 ? 'group' : ' groups')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.membersCount + (v.membersCount === 1 ? 'member' : ' members')}</>}
                         navigationIcon={false}
-                    />
-                )}
-            </ZListItemGroup> */}
-
-            {/* <ZListItemGroup header="Featured" divider={false}>
-                {featured.map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            key: v.id,
-                            title: v.title,
-                        }}
-                        title={v.organization ? v.organization.name : undefined}
-                        description={v.membersCount + ' members'}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
+                        path="ProfileOrganization"
+                        pathParams={{ id: v.id }}
                     />
                 ))}
-            </ZListItemGroup> */}
+            </ZListItemGroup>
+
         </>
     );
 };
