@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
@@ -34,7 +33,6 @@ let styles = StyleSheet.create({
 
 const iconAttach = require('assets/ic-attachment-11.png');
 const icon = require('assets/ic-send.png');
-const inputShadow = require('assets/input.png');
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -55,8 +53,8 @@ export interface MessageInputBarProps {
 }
 
 export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
-    let resolved = Image.resolveAssetSource(inputShadow);
     let theme = React.useContext(ThemeContext);
+    let resolved = Image.resolveAssetSource(theme.androidInputBackground);
 
     return (
         <View marginBottom={SDevice.safeArea.bottom}>
@@ -93,11 +91,11 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                 width={30}
                                 height={30}
                                 borderRadius={15}
-                                backgroundColor={theme.accentColor}
+                                backgroundColor={theme.inputIconsColorBackground}
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                <Image source={iconAttach} style={{ width: 17, height: 17, tintColor: theme.backgroundColor }} />
+                                <Image source={iconAttach} style={{ width: 17, height: 17, tintColor: theme.inputIconsColor }} />
                             </View>
                         </TouchableOpacity>
                     )}
@@ -116,11 +114,10 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                 flexGrow={1}
                                 backgroundPatch={{ source: resolved.uri, scale: resolved.scale, top: 21, left: 21, right: 21, bottom: 21 }}
                             />
-
                         </ASView>
                         <TextInput
                             ref={ref}
-                            style={styles.textInput}
+                            style={[styles.textInput, { color: theme.textInputColor }]}
                             placeholder={props.placeholder}
                             placeholderTextColor="#aaaaaa"
                             onChangeText={props.onChangeText}
@@ -149,7 +146,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                     width={30}
                                     height={30}
                                     borderRadius={30}
-                                    backgroundColor={props.canSubmit && props.enabled !== false ? theme.accentColor : theme.inputIconsColorInactiveBackground}
+                                    backgroundColor={props.canSubmit && props.enabled !== false ? theme.inputIconsColorActiveBackground : theme.inputIconsColorInactiveBackground}
                                     marginHorizontal={6}
                                 >
                                     <Image
@@ -158,7 +155,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                             width: 17,
                                             height: 17,
                                             marginRight: -4,
-                                            tintColor: props.canSubmit && props.enabled !== false ? theme.backgroundColor : theme.inputIconsColorInactive
+                                            tintColor: props.canSubmit && props.enabled !== false ? theme.inputIconsColorActive : theme.inputIconsColorInactive
                                         }}
                                     />
                                 </View>

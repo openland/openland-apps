@@ -13,6 +13,7 @@ export interface AppTheme {
     selectorColor: string;
     arrowColor: string;
     androidIconColor: string;
+    androidInputBackground: NodeRequire;
 
     transparent: string;
 
@@ -62,8 +63,11 @@ export interface AppTheme {
     commentsColor: string;
 
     inputIconsColor: string;
+    inputIconsColorBackground: string;
     inputIconsColorInactive: string;
     inputIconsColorInactiveBackground: string;
+    inputIconsColorActive: string;
+    inputIconsColorActiveBackground: string;
 
     highlightedComment: string;
     listItemIconColor: string;
@@ -119,6 +123,7 @@ export const DefaultTheme: AppTheme = {
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
     selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
+    androidInputBackground: require('assets/input.png'),
 
     roundButtonBackground: {
         default: '#0084fe',
@@ -155,9 +160,12 @@ export const DefaultTheme: AppTheme = {
     commentsBackground: 'rgba(0, 132, 254, 0.1)',
     commentsColor: '#0084fe',
 
-    inputIconsColor: '#b9c1cd',
+    inputIconsColor: Platform.OS === 'android' ? 'white' : '#b9c1cd',
+    inputIconsColorBackground: '#0084fe',
     inputIconsColorInactive: '#b0b0b0',
     inputIconsColorInactiveBackground: '#ebebeb',
+    inputIconsColorActive: 'white',
+    inputIconsColorActiveBackground: '#0084fe',
 
     highlightedComment: '#fffee8',
     listItemIconColor: '#fff',
@@ -213,6 +221,7 @@ export const DarkTheme: AppTheme = {
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
+    androidInputBackground: require('assets/input_dark.png'),
 
     roundButtonBackground: {
         default: 'white',
@@ -249,9 +258,12 @@ export const DarkTheme: AppTheme = {
     commentsBackground: 'rgba(255, 255, 255, 0.2)',
     commentsColor: 'rgba(255, 255, 255, 0.8)',
 
-    inputIconsColor: '#767676',
+    inputIconsColor: Platform.OS === 'android' ? 'white' : '#767676',
+    inputIconsColorBackground: 'rgba(255, 255, 255, 0.2)',
     inputIconsColorInactive: '#b0b0b0',
-    inputIconsColorInactiveBackground: '#ebebeb',
+    inputIconsColorInactiveBackground: '#000000',
+    inputIconsColorActive: '#ffffff',
+    inputIconsColorActiveBackground: '#000000',
 
     highlightedComment: '#002140',
     listItemIconColor: '#d4d4d4',
