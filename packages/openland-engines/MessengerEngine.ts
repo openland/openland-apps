@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
@@ -109,9 +109,13 @@ export class MessengerEngine {
         }
     }
 
+    handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
+        this.dialogList.handleChatNewMessage(message, cid)
+    }
+
     getConversation(conversationId: string) {
         if (!this.activeConversations.has(conversationId)) {
-            let engine = new ConversationEngine(this, conversationId);
+            let engine = new ConversationEngine(this, conversationId, this.handleNewMessage);
             this.activeConversations.set(conversationId, engine);
             engine.start();
         }
