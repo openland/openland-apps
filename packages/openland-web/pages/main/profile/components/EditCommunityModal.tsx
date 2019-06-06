@@ -8,7 +8,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { UploadedFile } from 'openland-x/files/XFileUpload';
-import { XAvatarUpload, fromValue } from 'openland-x/XAvatarUpload';
+import { fromValue, XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
@@ -17,6 +17,7 @@ import { InputField } from '../../mail/InputField';
 import { SelectWithDropdown } from '../../mail/SelectWithDropdown';
 import { CommunityType } from '../../mail/createEntity';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
+import { UpdateOrganizationProfileInput } from 'openland-api/Types';
 // import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
@@ -49,8 +50,6 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
     const data = client.useOrganizationProfile({ organizationId });
     const org = data.organizationProfile;
 
-    // console.log(data);
-
     const form = useForm();
     const nameField = useField('input.name', org.name, form, [
         {
@@ -59,19 +58,27 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         },
     ]);
 
-    const typeField = useField('input.type', CommunityType.COMMUNITY_PUBLIC, form);
+    const typeField = useField<CommunityType>(
+        'input.type',
+        org.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
+        form,
+    );
     const aboutField = useField('input.about', org.about || '', form);
     const shortNameField = useField('input.shortname', org.shortname || '', form);
 
-    const onTypeChange = (d: any) => {
-        // console.log(d);
+    const onTypeChange = (d: CommunityType) => {
+        typeField.input.onChange(d);
     };
 
     const onAvatarChange = (d: any) => {
         setNewPhoto(d);
     };
 
-    const updateOrganizaton = async ({ variables: { input } }: { variables: { input: any } }) => {
+    const updateOrganizaton = async ({
+        variables: { input },
+    }: {
+        variables: { input: UpdateOrganizationProfileInput };
+    }) => {
         setSaving(true);
         await client.mutateUpdateOrganization({ input, organizationId });
         await client.refetchOrganization({ organizationId });
@@ -90,6 +97,7 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         await client.refetchOrganization({ organizationId });
         await client.refetchOrganizationProfile({ organizationId });
     };
+
     return (
         <XView borderRadius={8} overflow="hidden" flexShrink={1}>
             <XScrollView3 flexShrink={1} flexGrow={1}>
@@ -192,6 +200,8 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
                                     input: {
                                         name: nameField.value,
                                         about: aboutField.value,
+                                        alphaIsPrivate:
+                                            typeField.value === CommunityType.COMMUNITY_PRIVATE,
                                         photoRef: newPhoto
                                             ? sanitizeImageRef({
                                                   uuid: newPhoto.uuid,

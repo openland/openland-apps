@@ -2,6 +2,7 @@ fragment OrganizationProfileFull on OrganizationProfile {
   __typename
   about
   featured: alphaFeatured
+  private: alphaIsPrivate
   facebook
   id
   linkedin

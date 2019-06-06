@@ -21,7 +21,7 @@ export const OrganizationProfileFull = gql`
         linkedin
 
         shortname
-
+        private: alphaIsPrivate
         featured: alphaFeatured
     }
 `;

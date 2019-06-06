@@ -757,6 +757,7 @@ private let OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
@@ -2941,7 +2942,7 @@ class Operations {
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
-        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
+        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
         OrganizationProfileSelector
     )
     let OrganizationPublicInvite = OperationDefinition(
@@ -3721,7 +3722,7 @@ class Operations {
     let UpdateOrganization = OperationDefinition(
         "UpdateOrganization",
         .mutation, 
-        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
+        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
         UpdateOrganizationSelector
     )
     let UpdateWelcomeMessage = OperationDefinition(

@@ -49385,6 +49385,7 @@ export interface UpdateOrganization_updateOrganizationProfile {
   facebook: string | null;
   linkedin: string | null;
   shortname: string | null;
+  private: boolean;
   featured: boolean;
 }
 
@@ -53499,6 +53500,7 @@ export interface OrganizationProfile_organizationProfile {
   facebook: string | null;
   linkedin: string | null;
   shortname: string | null;
+  private: boolean;
   featured: boolean;
 }
 
@@ -59894,6 +59896,7 @@ export interface OrganizationProfileFull {
   facebook: string | null;
   linkedin: string | null;
   shortname: string | null;
+  private: boolean;
   featured: boolean;
 }
 

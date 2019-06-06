@@ -891,10 +891,10 @@
       }
     },
     {
-      "signature": "531862e3ec0b22d63b60b8ab31a315bf252c203c20d65da97fcbc84b114ad6b4",
-      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}",
+      "signature": "eb0f5401698c00091a1b65b77cae1a4469eeee5d7aff6966c98f526cb3169332",
+      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}"
+        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}"
       }
     },
     {
@@ -933,10 +933,10 @@
       }
     },
     {
-      "signature": "d8b8b3b41211536d0934e67f62a6af4063c443cc38af6b011ab75df21e9777e8",
-      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}",
+      "signature": "f0033c100186ba7366604f07cd502b5a9c299585683f28a9d3445025b317219a",
+      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}"
+        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}"
       }
     },
     {
