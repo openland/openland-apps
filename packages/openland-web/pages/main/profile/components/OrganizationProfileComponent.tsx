@@ -534,19 +534,11 @@ export let extractHostname = (url: string) => {
 const Header = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
-    let editButton = (
-        <XMenuItem path={'/settings/organization/' + organization.id}>
+    const editButton = (
+        <XMenuItem onClick={() => EditCommunityModal(organization.id, organization.isCommunity)}>
             {TextProfiles.Organization.edit}
         </XMenuItem>
     );
-
-    if (organization.isCommunity) {
-        editButton = (
-            <XMenuItem onClick={() => EditCommunityModal(organization.id)}>
-                {TextProfiles.Organization.edit}
-            </XMenuItem>
-        );
-    }
 
     const deleteOrganizationButton = (
         <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
