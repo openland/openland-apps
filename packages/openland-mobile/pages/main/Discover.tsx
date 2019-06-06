@@ -147,9 +147,7 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
 
     return (
         <>
-            {title && Platform.OS === 'ios' && <SHeader title={title} />}
-            {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
-            {/* <SHeaderButton title={'Next'} onPress={next} /> */}
+            {title && <SHeader title={title} />}
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
                 {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
                 <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />

@@ -120,8 +120,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     return (
         <>
-            {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
-            {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
+            <SHeader title={"Chats for you"} />
             <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
