@@ -16,7 +16,7 @@ const DiscoverHomeComponent = (props: PageProps) => {
                 {sa => (
                     <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom}>
                         <Image marginTop={theme.blurType === 'light' ? -30 : 0} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
-                        <View>
+                        <View alignItems="center" justifyContent="center">
                             <Text style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>
                             <Text style={{ fontSize: 18, color: theme.textColor }}>Find the right chats for you</Text>
                         </View>

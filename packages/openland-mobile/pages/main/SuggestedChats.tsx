@@ -62,9 +62,8 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, borderWidth: 2, borderColor: theme.accentBackgroundColor, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.backgroundColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-            {props.selected && <Image source={require('assets/ic-checkmark-16.png')} style={{ tintColor: theme.accentColor }} />}
-            {!props.selected && <Image source={require('assets/ic-add-rounded-16.png')} style={{ tintColor: theme.accentColor }} />}
+        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentColor : theme.backgroundColor} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentColor : theme.accentDisabledColor} borderWidth={2} borderRadius={12} width={24} height={24} >
+            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.textInverseColor }} />}
         </View>
     </ZListItemBase>
 }
@@ -114,8 +113,8 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     }, [selected]);
 
-    let joinAll = React.useCallback(() => {
-        join(props.chats.map(c => c.id));
+    let selectAll = React.useCallback(() => {
+        setSelected(new Set<string>(props.chats.map(c => c.id)));
     }, [])
 
     return (
@@ -136,7 +135,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
-                    {selected.size !== props.chats.length && <ZRoundedButton title="join all" onPress={joinAll} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton style="secondary" title="select all" onPress={selectAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&

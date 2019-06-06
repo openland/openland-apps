@@ -11,6 +11,7 @@ export interface AppBarBottomItemProps {
     icon?: any;
     selected?: boolean;
     counter?: number;
+    dot?: boolean;
     onPress?: () => void;
 }
 
@@ -53,8 +54,21 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                             right: -5
                         }}
                     >
-                        {props.counter !== undefined && (<ZCounter value={props.counter} appearance="contrast" />)}
+                        {props.counter !== undefined && (<ZCounter theme={theme} value={props.counter} appearance="contrast" />)}
                     </View>
+                    {props.dot && <View
+                        style={{
+                            position: 'absolute',
+                            top: Platform.OS === 'android' ? -6 : 0,
+                            right: 'android' ? -6 : 0,
+                            width: 11,
+                            height: 11,
+                            backgroundColor: '#ff3b30',
+                            borderRadius: 5,
+                            borderWidth: 2,
+                            borderColor: theme.headerColor
+                        }}
+                    />}
                 </View>
                 <Text
                     style={{

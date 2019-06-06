@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, View, Text, TouchableOpacity, AsyncStorage, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { CenteredHeader } from './components/CenteredHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -14,7 +13,6 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
 import LinearGradient from 'react-native-linear-gradient';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
@@ -53,7 +51,7 @@ export const prepareDiscoverStatus = async () => {
 }
 
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style: 'fill' | 'border' = 'border' as any;
+    let style: 'fill' | 'border' = 'fill' as any;
 
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {

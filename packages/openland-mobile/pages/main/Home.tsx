@@ -15,7 +15,7 @@ import { DiscoverHome } from './DiscoverHome';
 export const Home = XMemo<PageProps>((props) => {
     let [tab, setTab] = React.useState(1);
     let counter = getClient().useWithoutLoaderGlobalCounter();
-    let showDiscover = !isDiscoverDone();
+    let showInitialDiscover = !isDiscoverDone();
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
@@ -28,7 +28,7 @@ export const Home = XMemo<PageProps>((props) => {
                         </View> */}
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
-                            {showDiscover ? <DiscoverHome {...props as any} /> : <Explore {...props as any} />}
+                            {showInitialDiscover ? <DiscoverHome {...props as any} /> : <Explore {...props as any} />}
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
@@ -53,6 +53,7 @@ export const Home = XMemo<PageProps>((props) => {
                                 /> */}
                     <AppBarBottomItem
                         title="Discover"
+                        dot={showInitialDiscover}
                         icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-rooms-ios-28.png')}
                         selected={tab === 0}
                         onPress={() => setTab(0)}

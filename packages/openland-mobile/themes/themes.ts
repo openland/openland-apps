@@ -122,11 +122,11 @@ export const DefaultTheme: AppTheme = {
 
     roundButtonBackground: {
         default: '#0084fe',
-        secondary: 'rgba(185, 193, 205, 0.4)',
+        secondary: '#e5f2fe',
     },
     roundButtonText: {
         default: 'white',
-        secondary: '#000000',
+        secondary: '#0084fe',
     },
 
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',

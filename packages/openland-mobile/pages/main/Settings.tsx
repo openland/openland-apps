@@ -48,7 +48,7 @@ let SettingsContent = ((props: PageProps) => {
         try {
             const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
             const inviteLink = 'https://openland.com/invite/' + inviteCode.invite;
-    
+
             Share.share({ message: inviteLink });
         } catch (e) {
             console.warn(e);
@@ -91,13 +91,13 @@ let SettingsContent = ((props: PageProps) => {
                     text="Invite friends"
                     onPress={handleGlobalInvitePress}
                 />
-                <ZListItem
+                {/* <ZListItem
                     leftIconColor={theme.settingsHelpIcon}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
                     appearance="default"
                     text="Ask for help"
                     onPress={() => props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
-                />
+                /> */}
                 <ZListItem
                     leftIconColor={theme.settingsRateIcon}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-rate-24.png') : require('assets/ic-rate-fill-24.png')}
