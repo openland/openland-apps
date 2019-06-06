@@ -31,7 +31,7 @@ const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolea
 
     if (props.useScroll) {
         return (
-            <SScrollView keyboardDismissMode="interactive">
+            <SScrollView keyboardDismissMode="on-drag">
                 <View style={{ flexDirection: 'column', width: '100%' }}>
                     {search.items.edges.map((item) => (
                         <UserView user={item.node} onPress={() => props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
