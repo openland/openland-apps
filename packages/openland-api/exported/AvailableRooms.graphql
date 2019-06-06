@@ -1,4 +1,4 @@
-query AvailableRooms($selectedTagsIds: [String!]!) {
+query AvailableRooms {
   communities: alphaComunityPrefixSearch(first: 3) {
     __typename
     edges {
@@ -9,7 +9,8 @@ query AvailableRooms($selectedTagsIds: [String!]!) {
       }
     }
   }
-  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
+  isDiscoverDone: betaIsDiscoverDone
+  suggestedRooms: betaSuggestedRooms {
     __typename
     ... on SharedRoom {
       id

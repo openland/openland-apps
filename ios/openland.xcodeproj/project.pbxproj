@@ -1237,7 +1237,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1246,7 +1246,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF41E56CD0EBA26F6D97F99D /* [CP] Embed Pods Frameworks */ = {
@@ -1255,7 +1255,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/A0Auth0/A0Auth0.framework",
 				"${BUILT_PRODUCTS_DIR}/Auth0/Auth0.framework",
 				"${BUILT_PRODUCTS_DIR}/BVLinearGradient/BVLinearGradient.framework",
@@ -1344,7 +1344,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CEF0A2B465ABDE5B3C64DF57 /* [CP] Check Pods Manifest.lock */ = {

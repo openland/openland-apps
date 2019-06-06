@@ -487,17 +487,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: QueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery(Source.ConferenceMediaQuery, variables, opts);
     }
-    async queryAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.client.query(Source.AvailableRoomsQuery, variables, opts);
+    async queryAvailableRooms(opts?: OperationParameters): Promise<Types.AvailableRooms> {
+        return this.client.query(Source.AvailableRoomsQuery, undefined, opts);
     }
-    async refetchAvailableRooms(variables: Types.AvailableRoomsVariables): Promise<Types.AvailableRooms> {
-        return this.refetch(Source.AvailableRoomsQuery, variables);
+    async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
+        return this.refetch(Source.AvailableRoomsQuery);
     }
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms {
-        return this.useQuerySuspense(Source.AvailableRoomsQuery, variables, opts);
+    useAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms {
+        return this.useQuerySuspense(Source.AvailableRoomsQuery, undefined, opts);
     }
-    useWithoutLoaderAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms | null {
-        return this.useQuery(Source.AvailableRoomsQuery, variables, opts);
+    useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
+        return this.useQuery(Source.AvailableRoomsQuery, undefined, opts);
     }
     async queryUserRooms(variables: Types.UserRoomsVariables, opts?: OperationParameters): Promise<Types.UserRooms> {
         return this.client.query(Source.UserRoomsQuery, variables, opts);
@@ -546,6 +546,18 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage | null {
         return this.useQuery(Source.DiscoverNextPageQuery, variables, opts);
+    }
+    async queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
+        return this.client.query(Source.DiscoverIsDoneQuery, undefined, opts);
+    }
+    async refetchDiscoverIsDone(): Promise<Types.DiscoverIsDone> {
+        return this.refetch(Source.DiscoverIsDoneQuery);
+    }
+    useDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone {
+        return this.useQuerySuspense(Source.DiscoverIsDoneQuery, undefined, opts);
+    }
+    useWithoutLoaderDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone | null {
+        return this.useQuery(Source.DiscoverIsDoneQuery, undefined, opts);
     }
     async queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery, undefined, opts);

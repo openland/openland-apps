@@ -5,7 +5,7 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms($selectedTagsIds: [String!]!) {
+    query AvailableRooms {
      
         availableRooms: betaUserAvailableRooms(limit: 3) {
             ... on SharedRoom {
@@ -22,7 +22,7 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
+        suggestedRooms: betaSuggestedRooms {
             ... on SharedRoom {
                 id
                 kind
@@ -44,6 +44,8 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
+        isDiscoverDone: betaIsDiscoverDone
+
     }
     ${CommunitySearch}
 `;
@@ -135,4 +137,10 @@ export const DiscoverNextPageQuery = gql`
     }
     ${RoomShort}
     ${UserShort}
+`;
+
+export const DiscoverIsDoneQuery = gql`
+    query DiscoverIsDone {
+        betaIsDiscoverDone
+    }
 `;

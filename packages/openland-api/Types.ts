@@ -47146,10 +47146,7 @@ export interface AvailableRooms {
   availableRooms: AvailableRooms_availableRooms[];
   suggestedRooms: AvailableRooms_suggestedRooms[];
   communities: AvailableRooms_communities;
-}
-
-export interface AvailableRoomsVariables {
-  selectedTagsIds: string[];
+  isDiscoverDone: boolean;
 }
 
 /* tslint:disable */
@@ -49160,6 +49157,18 @@ export interface DiscoverNextPage {
 export interface DiscoverNextPageVariables {
   selectedTagsIds: string[];
   excudedGroupsIds: string[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: DiscoverIsDone
+// ====================================================
+
+export interface DiscoverIsDone {
+  betaIsDiscoverDone: boolean;
 }
 
 /* tslint:disable */

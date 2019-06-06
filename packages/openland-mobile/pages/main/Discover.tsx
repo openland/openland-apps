@@ -17,39 +17,6 @@ import LinearGradient from 'react-native-linear-gradient';
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
-let discoverDone = false;
-let userPickedTags: string[] = [];
-export const isDiscoverDone = () => {
-    return discoverDone;
-}
-
-export const getDiscoverSelectedTags = () => {
-    return userPickedTags;
-}
-
-export const setDiscoverDone = async (tagIds: string[]) => {
-    await AsyncStorage.setItem('discover_done', 'done');
-    await AsyncStorage.setItem('discover_picked_tags', JSON.stringify(tagIds));
-    userPickedTags = tagIds;
-    discoverDone = true;
-}
-
-export const prepareDiscoverStatus = async () => {
-    discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
-    let suggestedChatsStr = await AsyncStorage.getItem('discover_picked_tags');
-    if (suggestedChatsStr) {
-        try {
-            let suggestedChatsRaw = JSON.parse(suggestedChatsStr);
-            if (Array.isArray(suggestedChatsRaw) && typeof suggestedChatsRaw[0] === 'string') {
-                userPickedTags = suggestedChatsRaw;
-            }
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-}
-
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
     let style: 'fill' | 'border' = 'fill' as any;
 
