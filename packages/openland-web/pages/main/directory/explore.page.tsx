@@ -15,12 +15,12 @@ interface RoomsCardsProps {
 
 export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
-    const data = client.useAvailableRooms();
+    const data = client.useAvailableRooms({ true: true, false: false });
 
     let noData =
-        data === undefined || (data.availableRooms === undefined);
+        data === undefined || (data.availableChats === undefined);
 
-    let rooms = data ? [...(data.availableRooms || [])] : [];
+    let rooms = data ? [...(data.availableChats || [])] : [];
 
     props.tagsCount(rooms.length);
 
