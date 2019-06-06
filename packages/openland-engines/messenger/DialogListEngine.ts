@@ -316,8 +316,9 @@ export class DialogListEngine {
             chatProcessedMessages = new Set<string>();
             this.processedMessages.set(conversationId, chatProcessedMessages);
         }
-        // skip processed messafges, but process if same last message - handle haveMention flag
-        if (chatProcessedMessages.has(event.message.id) && (res && res.messageId !== event.message.id)) {
+        // handle event if not processed for this message or it is latest DialogUpdate event - handle haveMention flag 
+        let handle = !chatProcessedMessages.has(event.message.id) || ((res && res.messageId === event.message.id) && !fromChatUpdate)
+        if (!handle) {
             return;
         }
         chatProcessedMessages.add(event.message.id)
