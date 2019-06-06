@@ -146,9 +146,11 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
     return (
         <>
             {title && <SHeader title={title} />}
-            <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
-                <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+            <SScrollView justifyContent="flex-start" alignContent="center">
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.headerColor, color: theme.textColor }}>{subtitle}</Text>}
+                <View paddingHorizontal={18}>
+                    <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+                </View>
                 <View height={120} />
             </SScrollView>
             <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
