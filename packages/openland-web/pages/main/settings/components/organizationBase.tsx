@@ -7,7 +7,7 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { sanitizeImageRef } from '../../../../utils/sanitizer';
+import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';

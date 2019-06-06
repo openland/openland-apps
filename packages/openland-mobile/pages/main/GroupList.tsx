@@ -16,7 +16,7 @@ const GroupListComponent = React.memo<PageProps>((props) => {
 
     let [rooms, setRooms] = React.useState(initial);
     const [loading, setLoading] = React.useState(false);
-    const [needMore, setNeedMore] = React.useState(true);
+    const [needMore, setNeedMore] = React.useState(!!props.router.params.query);
     let handleLoadMore = React.useCallback(async () => {
         if (!loading && needMore) {
             setLoading(true);

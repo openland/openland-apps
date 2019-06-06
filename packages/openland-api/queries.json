@@ -9871,113 +9871,14 @@
 			"operationName": "AvailableRooms",
 			"operationType": "query",
 			"rootType": "Query",
-			"variables": [],
-			"source": "query AvailableRooms {\n  userRooms: betaUserRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
-			"fields": [
+			"variables": [
 				{
-					"responseName": "userRooms",
-					"fieldName": "betaUserRooms",
-					"type": "[SharedRoom!]!",
-					"args": [
-						{
-							"name": "limit",
-							"value": 3,
-							"type": "Int"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "id",
-							"fieldName": "id",
-							"type": "ID!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "kind",
-							"fieldName": "kind",
-							"type": "SharedRoomKind!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "title",
-							"fieldName": "title",
-							"type": "String!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "photo",
-							"fieldName": "photo",
-							"type": "String!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "membersCount",
-							"fieldName": "membersCount",
-							"type": "Int",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "membership",
-							"fieldName": "membership",
-							"type": "SharedRoomMembershipStatus!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "organization",
-							"fieldName": "organization",
-							"type": "Organization",
-							"isConditional": false,
-							"isDeprecated": false,
-							"fields": [
-								{
-									"responseName": "__typename",
-									"fieldName": "__typename",
-									"type": "String!",
-									"isConditional": false
-								},
-								{
-									"responseName": "id",
-									"fieldName": "id",
-									"type": "ID!",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
-									"responseName": "name",
-									"fieldName": "name",
-									"type": "String!",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
-									"responseName": "photo",
-									"fieldName": "photo",
-									"type": "String",
-									"isConditional": false,
-									"isDeprecated": false
-								}
-							],
-							"fragmentSpreads": [],
-							"inlineFragments": []
-						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
-				},
+					"name": "selectedTagsIds",
+					"type": "[String!]!"
+				}
+			],
+			"source": "query AvailableRooms($selectedTagsIds: [String!]!) {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n}",
+			"fields": [
 				{
 					"responseName": "availableRooms",
 					"fieldName": "betaUserAvailableRooms",
@@ -10081,13 +9982,198 @@
 					],
 					"fragmentSpreads": [],
 					"inlineFragments": []
+				},
+				{
+					"responseName": "suggestedRooms",
+					"fieldName": "betaSuggestedRooms",
+					"type": "[Room!]!",
+					"args": [
+						{
+							"name": "selectedTagsIds",
+							"value": {
+								"kind": "Variable",
+								"variableName": "selectedTagsIds"
+							},
+							"type": "[String!]!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "SharedRoom",
+							"possibleTypes": [
+								"SharedRoom"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "kind",
+									"fieldName": "kind",
+									"type": "SharedRoomKind!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "title",
+									"fieldName": "title",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "membersCount",
+									"fieldName": "membersCount",
+									"type": "Int",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "membership",
+									"fieldName": "membership",
+									"type": "SharedRoomMembershipStatus!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "organization",
+									"fieldName": "organization",
+									"type": "Organization",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				},
+				{
+					"responseName": "communities",
+					"fieldName": "alphaComunityPrefixSearch",
+					"type": "OrganizationsConnection!",
+					"args": [
+						{
+							"name": "first",
+							"value": 3,
+							"type": "Int!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "edges",
+							"fieldName": "edges",
+							"type": "[OrganizationsEdge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "node",
+									"fieldName": "node",
+									"type": "Organization!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"CommunitySearch"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
 				}
 			],
 			"fragmentSpreads": [],
 			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "query AvailableRooms {\n  userRooms: betaUserRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
-			"operationId": "dfbafbbc07516ccf96df901da58c65a52db37a1c502909b7f2974aea43817e44"
+			"fragmentsReferenced": [
+				"CommunitySearch"
+			],
+			"sourceWithFragments": "query AvailableRooms($selectedTagsIds: [String!]!) {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
+			"operationId": "48c459297edf55551fedcec8efb938f8a43e65d59bce8cb78ca57dd38342a694"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
@@ -11952,9 +12038,17 @@
 				{
 					"name": "page",
 					"type": "Int"
+				},
+				{
+					"name": "after",
+					"type": "String"
+				},
+				{
+					"name": "featuredIfEmptyQuery",
+					"type": "Boolean"
 				}
 			],
-			"source": "query ExploreCommunity($query: String, $sort: String, $page: Int) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}",
+			"source": "query ExploreCommunity($query: String, $sort: String, $page: Int, $after: String, $featuredIfEmptyQuery: Boolean) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after, featuredIfEmptyQuery: $featuredIfEmptyQuery) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "items",
@@ -11989,6 +12083,22 @@
 							"name": "first",
 							"value": 25,
 							"type": "Int!"
+						},
+						{
+							"name": "after",
+							"value": {
+								"kind": "Variable",
+								"variableName": "after"
+							},
+							"type": "String"
+						},
+						{
+							"name": "featuredIfEmptyQuery",
+							"value": {
+								"kind": "Variable",
+								"variableName": "featuredIfEmptyQuery"
+							},
+							"type": "Boolean"
 						}
 					],
 					"isConditional": false,
@@ -12112,8 +12222,8 @@
 			"fragmentsReferenced": [
 				"CommunitySearch"
 			],
-			"sourceWithFragments": "query ExploreCommunity($query: String, $sort: String, $page: Int) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n}",
-			"operationId": "1683b2ae73735a325fdc58e87bd42354e609bfdb8e262037d7125f8358063478"
+			"sourceWithFragments": "query ExploreCommunity($query: String, $sort: String, $page: Int, $after: String, $featuredIfEmptyQuery: Boolean) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after, featuredIfEmptyQuery: $featuredIfEmptyQuery) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
+			"operationId": "68a62dc9c7e67c53f3351342780278b9d44ef8b6a05ed63b0bf2b372544d0a87"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Organization.ts",
@@ -15734,7 +15844,7 @@
 			],
 			"fragmentName": "CommunitySearch",
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/fragments/CommunitySearch.ts",
-			"source": "fragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n}",
+			"source": "fragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -15805,6 +15915,30 @@
 					"type": "Int!",
 					"isConditional": false,
 					"isDeprecated": false
+				},
+				{
+					"responseName": "betaPublicRooms",
+					"fieldName": "betaPublicRooms",
+					"type": "[SharedRoom!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
 				}
 			],
 			"fragmentSpreads": [],

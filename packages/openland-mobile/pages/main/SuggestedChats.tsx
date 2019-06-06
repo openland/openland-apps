@@ -15,6 +15,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SRouter } from 'react-native-s/SRouter';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import LinearGradient from 'react-native-linear-gradient';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
@@ -59,15 +62,15 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.accentColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-            {props.selected && <Image source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.accentColor }} />}
-            {!props.selected && <Image source={require('assets/ic-add-24.png')} style={{ tintColor: theme.backgroundColor }} />}
+        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, borderWidth: 2, borderColor: theme.accentBackgroundColor, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.backgroundColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
+            {props.selected && <Image source={require('assets/ic-checkmark-16.png')} style={{ tintColor: theme.accentColor }} />}
+            {!props.selected && <Image source={require('assets/ic-add-rounded-16.png')} style={{ tintColor: theme.accentColor }} />}
         </View>
     </ZListItemBase>
 }
 
-export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) => {
-    let [selected, setSelected] = React.useState(new Set<string>(props.chats.filter((c, i) => i < 5).map(c => c.id)));
+export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, selectedTagIds: string[] }) => {
+    let [selected, setSelected] = React.useState(new Set<string>(props.chats.map(c => c.id)));
     let theme = React.useContext(ThemeContext);
 
     let onSelect = React.useCallback((room: RoomShort) => {
@@ -81,27 +84,47 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
 
     }, [selected]);
 
-    let onAdd = React.useCallback(() => {
+    let toHome = React.useCallback(() => {
+        props.router.pushAndResetRoot('Home');
+    }, []);
+
+    let skip = React.useCallback(() => {
+        (async () => {
+            await setDiscoverDone(props.selectedTagIds);
+            toHome()
+        })()
+    }, []);
+
+    let join = React.useCallback((selectedIds: string[]) => {
         (async () => {
             startLoader();
-            await getClient().mutateRoomsJoin({ roomsIds: [...selected.values()] })
+            await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
             stopLoader();
-            await setDiscoverDone(true);
-            props.router.pushAndResetRoot('Home');
+            await setDiscoverDone(props.selectedTagIds);
+            toHome()
         })()
+    }, [])
+
+    let onAdd = React.useCallback(() => {
+        if (selected.size) {
+            join([...selected.values()]);
+        } else {
+            toHome()
+        }
+
     }, [selected]);
 
-    let selectAll = React.useCallback(() => {
-        setSelected(new Set(props.chats.map(c => c.id)))
-    }, [selected])
+    let joinAll = React.useCallback(() => {
+        join(props.chats.map(c => c.id));
+    }, [])
 
     return (
         <>
             {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
             {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
-            {<SHeaderButton title={'Done'} onPress={onAdd} />}
+            <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 16, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Find chats that are most relevant to you"}</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
                         numberOfLines={1}
@@ -112,15 +135,24 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter }) =
                             fontWeight: TextStyles.weight.medium
                         }}
                     >
-                        {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS') + ' FOR YOU'}
+                        {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
-                    {selected.size !== props.chats.length && <ZRoundedButton title={props.chats.length > 1 ? 'join all' : 'join'} onPress={selectAll} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton title="join all" onPress={joinAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&
                     <Chat key={item.id} item={item} selected={selected.has(item.id)} onPress={onSelect} />
                 ))}
+                <View height={120} />
             </SScrollView>
+            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
+            <ASSafeAreaContext.Consumer>
+                {sa => (
+                    <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
+                        <ZRoundedButton size="large" title={`   ${selected.size === 0 ? 'Skip' : ('Join' + (selected.size === props.chats.length ? ' all' : ''))}   `} style="default" onPress={onAdd} />
+                    </View>
+                )}
+            </ASSafeAreaContext.Consumer>
         </>
     );
 };

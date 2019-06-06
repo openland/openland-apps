@@ -284,7 +284,7 @@
         "linaria-jest": "^0.0.4",
         "nodemon": "^1.17.1",
         "postinstall-postinstall": "^1.0.0",
-        "react-native": "0.59.4",
+        "react-native": "0.59.9",
         "rimraf": "^2.6.2",
         "rsync": "^0.6.1",
         "ts-jest": "^22.0.4",

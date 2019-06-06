@@ -807,10 +807,10 @@
       }
     },
     {
-      "signature": "ae89234605296c3c91598970dffa0d552e0364aeb578ac1c3955cab73272adbb",
-      "document": "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "8fb42be8a242702fcf98d7a79c73091ae34f7ef36d402fa4edaeb16ab7620ae7",
+      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms($selectedTagsIds:[String!]!){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename...CommunitySearch}}}suggestedRooms:betaSuggestedRooms(selectedTagsIds:$selectedTagsIds){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {
-        "engineSignature": "query AvailableRooms{betaUserAvailableRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms($selectedTagsIds:[String!]!){alphaComunityPrefixSearch(first:0){__typename edges{__typename node{__typename...CommunitySearch}}}betaSuggestedRooms(selectedTagsIds:$selectedTagsIds){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {
@@ -947,10 +947,10 @@
       }
     },
     {
-      "signature": "53ec54cffef45accbe454bb112453f68a85839f93a56fb89044b53fa1e059b2d",
-      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured id isMine membersCount name photo status superAccountId}query ExploreCommunity($page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
+      "signature": "15df1a2b223d70501a8366d66f5a98ff0cdd911901e2e7210930a1a810513502",
+      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
       "metadata": {
-        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured id isMine membersCount name photo status superAccountId}query ExploreCommunity($page:Int,$query:String,$sort:String){alphaComunityPrefixSearch(first:0,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
+        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:0,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
       }
     },
     {

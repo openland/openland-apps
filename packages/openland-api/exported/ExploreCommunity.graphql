@@ -1,5 +1,5 @@
-query ExploreCommunity($page: Int, $query: String, $sort: String) {
-  items: alphaComunityPrefixSearch(first: 25, page: $page, query: $query, sort: $sort) {
+query ExploreCommunity($after: String, $featuredIfEmptyQuery: Boolean, $page: Int, $query: String, $sort: String) {
+  items: alphaComunityPrefixSearch(after: $after, featuredIfEmptyQuery: $featuredIfEmptyQuery, first: 25, page: $page, query: $query, sort: $sort) {
     __typename
     edges {
       __typename

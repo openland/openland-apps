@@ -12,32 +12,75 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { SuggestedChats } from './SuggestedChats';
+import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
+import LinearGradient from 'react-native-linear-gradient';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
 let discoverDone = false;
+let userPickedTags: string[] = [];
 export const isDiscoverDone = () => {
     return discoverDone;
 }
-export const setDiscoverDone = async (done: boolean) => {
+
+export const getDiscoverSelectedTags = () => {
+    return userPickedTags;
+}
+
+export const setDiscoverDone = async (tagIds: string[]) => {
     await AsyncStorage.setItem('discover_done', 'done');
-    discoverDone = done;
+    await AsyncStorage.setItem('discover_picked_tags', JSON.stringify(tagIds));
+    userPickedTags = tagIds;
+    discoverDone = true;
 }
 
 export const prepareDiscoverStatus = async () => {
     discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
+    let suggestedChatsStr = await AsyncStorage.getItem('discover_picked_tags');
+    if (suggestedChatsStr) {
+        try {
+            let suggestedChatsRaw = JSON.parse(suggestedChatsStr);
+            if (Array.isArray(suggestedChatsRaw) && typeof suggestedChatsRaw[0] === 'string') {
+                userPickedTags = suggestedChatsRaw;
+            }
+        } catch (e) {
+            console.warn(e)
+        }
+    }
+
 }
 
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
+    let style: 'fill' | 'border' = 'border' as any;
+
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
         props.onPress(props.tag);
     }, [props.tag])
     return <TouchableOpacity onPress={callback} activeOpacity={0.6}>
-        <View style={{ marginRight: 10, marginBottom: 12, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? theme.accentColor : theme.accentBackgroundColor, borderRadius: 12, borderWidth: 2, borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor }}>
-            <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, color: props.selected ? theme.textInverseColor : theme.accentColor }}>
+
+        <View
+            style={{
+                marginRight: 10,
+                marginBottom: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 10,
+                borderRadius: 12,
+                borderWidth: 2,
+
+                backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentColor : theme.accentBackgroundColor) : theme.accentBackgroundColor,
+                borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 16,
+                    fontWeight: TextStyles.weight.medium,
+                    color: props.selected ? (style === 'fill' ? theme.textInverseColor : theme.accentColor) : theme.accentColor
+                }}
+            >
                 {props.tag.title}
             </Text>
         </View >
@@ -68,17 +111,17 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
             <View height={15} />
             {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroup.title}</Text>} */}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
-                {props.tagsGroup.tags.filter((t, i) => showAll || i < 20).map(tag => (
+                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
                 ))}
-                {props.tagsGroup.tags.length > 20 && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
+                {props.tagsGroup.tags.length > 17 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
             </View>
             {/* {sub} */}
         </View>
     )
 }
 
-const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
+const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
     let [selected, setCurretnSelected] = React.useState(props.selected);
     let onSelectedChange = React.useCallback((s: Set<string>) => {
         setCurretnSelected(new Set(s));
@@ -108,16 +151,17 @@ const DiscoverPage = (props: { group: TagGroup, selected: Set<string>, exclude: 
             {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
             {/* <SHeaderButton title={'Next'} onPress={next} /> */}
             <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 16, marginBottom: 20, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
                 <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
-                <View height={100} />
+                <View height={120} />
             </SScrollView>
+            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
+
             <ASSafeAreaContext.Consumer>
                 {sa => (
-                    <View position="absolute" bottom={sa.bottom + 48} width="100%" justifyContent="center" alignItems="center">
-                        <ZRoundedButton size="large" title="  Next  " style={disabled ? "secondary" : 'default'} onPress={next} />
+                    <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
+                        <ZRoundedButton size="large" title="  Next  " style="default" enabled={!disabled} onPress={next} />
                     </View>
-
                 )}
             </ASSafeAreaContext.Consumer>
 
@@ -132,14 +176,13 @@ const DiscoverComponent = (props: PageProps) => {
 
     if (currentPage.betaNextDiscoverPage) {
         if (currentPage.betaNextDiscoverPage.chats) {
-            return <SuggestedChats chats={currentPage.betaNextDiscoverPage.chats} router={props.router} />
+            return <SuggestedChatsPage chats={currentPage.betaNextDiscoverPage.chats} router={props.router} selectedTagIds={[...selected.values()]} />
         } else if (currentPage.betaNextDiscoverPage.tagGroup) {
             exclude.add(currentPage.betaNextDiscoverPage.tagGroup.id);
-            return < DiscoverPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
+            return < TagsGroupPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
         }
     }
     return <ZLoader />
 }
 
-export const DiscoverHome = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });
 export const Discover = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });

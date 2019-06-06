@@ -108,6 +108,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         setInterval(() => {
             if (document.hasFocus()) {
                 const timeStampInMs = Date.now();
+                localStorage.setItem('fav', 'false');
                 localStorage.setItem('openland-active-tab-ts', timeStampInMs.toString());
             }
         }, 500);

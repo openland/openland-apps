@@ -485,6 +485,10 @@ private let CommunitySearchSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
+            field("betaPublicRooms","betaPublicRooms", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID")))
+                ))))),
             field("id","id", notNull(scalar("ID"))),
             field("isMine","isMine", notNull(scalar("Boolean"))),
             field("membersCount","membersCount", notNull(scalar("Int"))),
@@ -1097,7 +1101,17 @@ private let AccountSettingsSelector = obj(
                 )))))
         )
 private let AvailableRoomsSelector = obj(
-            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("alphaComunityPrefixSearch","communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("edges","edges", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("node","node", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    fragment("Organization", CommunitySearchSelector)
+                                )))
+                        )))))
+                ))),
+            field("betaSuggestedRooms","suggestedRooms", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1114,7 +1128,7 @@ private let AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserRooms","userRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1241,7 +1255,7 @@ private let DiscoverNextPageSelector = obj(
                 ))
         )
 private let ExploreCommunitySelector = obj(
-            field("alphaComunityPrefixSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+            field("alphaComunityPrefixSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("edges","edges", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
@@ -2771,7 +2785,7 @@ class Operations {
     let AvailableRooms = OperationDefinition(
         "AvailableRooms",
         .query, 
-        "query AvailableRooms{availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}userRooms:betaUserRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+        "query AvailableRooms($selectedTagsIds:[String!]!){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}suggestedRooms:betaSuggestedRooms(selectedTagsIds:$selectedTagsIds){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         AvailableRoomsSelector
     )
     let ChatHistory = OperationDefinition(
@@ -2819,7 +2833,7 @@ class Operations {
     let ExploreCommunity = OperationDefinition(
         "ExploreCommunity",
         .query, 
-        "query ExploreCommunity($page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured id isMine membersCount name photo status superAccountId}",
+        "query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         ExploreCommunitySelector
     )
     let ExploreOrganizations = OperationDefinition(

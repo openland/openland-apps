@@ -16,6 +16,7 @@ export interface HeaderConfig {
     counter?: number;
 
     accentColor?: string;
+    backgroundColor?: string;
 
     hideBackText?: boolean;
 
@@ -38,6 +39,7 @@ export interface HeaderConfig {
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
     let accentColor: string | undefined;
+    let backgroundColor: string | undefined;
     let buttons: HeaderButtonDescription[] = [];
     let contentOffset: STrackedValue | undefined;
     let appearance: SHeaderAppearance | undefined;
@@ -63,6 +65,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.accentColor) {
             accentColor = c.accentColor;
+        }
+        if (c.backgroundColor) {
+            backgroundColor = c.backgroundColor;
         }
         if (c.contentOffset) {
             contentOffset = c.contentOffset;
@@ -148,6 +153,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.accentColor !== b.accentColor) {
+        return false;
+    }
+    if (a.backgroundColor !== b.backgroundColor) {
         return false;
     }
     if (a.hairline !== b.hairline) {
