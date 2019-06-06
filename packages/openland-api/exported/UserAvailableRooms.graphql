@@ -1,5 +1,5 @@
-query UserAvailableRooms($after: ID, $limit: Int!) {
-  betaUserAvailableRooms(after: $after, limit: $limit) {
+query UserAvailableRooms($after: ID, $isChannel: Boolean, $limit: Int!) {
+  betaUserAvailableRooms(after: $after, isChannel: $isChannel, limit: $limit) {
     __typename
     ... on SharedRoom {
       id

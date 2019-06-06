@@ -47068,14 +47068,14 @@ export interface ConferenceWatchVariables {
 // GraphQL query operation: AvailableRooms
 // ====================================================
 
-export interface AvailableRooms_availableRooms_organization {
+export interface AvailableRooms_availableChats_organization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface AvailableRooms_availableRooms {
+export interface AvailableRooms_availableChats {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -47083,7 +47083,25 @@ export interface AvailableRooms_availableRooms {
   photo: string;
   membersCount: number | null;
   membership: SharedRoomMembershipStatus;
-  organization: AvailableRooms_availableRooms_organization | null;
+  organization: AvailableRooms_availableChats_organization | null;
+}
+
+export interface AvailableRooms_availableChannels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface AvailableRooms_availableChannels {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: AvailableRooms_availableChannels_organization | null;
 }
 
 export interface AvailableRooms_suggestedRooms_PrivateRoom {
@@ -47143,10 +47161,16 @@ export interface AvailableRooms_communities {
 }
 
 export interface AvailableRooms {
-  availableRooms: AvailableRooms_availableRooms[];
+  availableChats: AvailableRooms_availableChats[];
+  availableChannels: AvailableRooms_availableChannels[];
   suggestedRooms: AvailableRooms_suggestedRooms[];
   communities: AvailableRooms_communities;
   isDiscoverDone: boolean;
+}
+
+export interface AvailableRoomsVariables {
+  true?: boolean | null;
+  false?: boolean | null;
 }
 
 /* tslint:disable */
@@ -47217,6 +47241,7 @@ export interface UserAvailableRooms {
 export interface UserAvailableRoomsVariables {
   limit: number;
   after?: string | null;
+  isChannel?: boolean | null;
 }
 
 /* tslint:disable */

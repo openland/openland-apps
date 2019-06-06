@@ -9871,11 +9871,20 @@
 			"operationName": "AvailableRooms",
 			"operationType": "query",
 			"rootType": "Query",
-			"variables": [],
-			"source": "query AvailableRooms {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}",
+			"variables": [
+				{
+					"name": "true",
+					"type": "Boolean"
+				},
+				{
+					"name": "false",
+					"type": "Boolean"
+				}
+			],
+			"source": "query AvailableRooms($true: Boolean, $false: Boolean) {\n  availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}",
 			"fields": [
 				{
-					"responseName": "availableRooms",
+					"responseName": "availableChats",
 					"fieldName": "betaUserAvailableRooms",
 					"type": "[SharedRoom!]!",
 					"args": [
@@ -9883,6 +9892,126 @@
 							"name": "limit",
 							"value": 3,
 							"type": "Int"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "false"
+							},
+							"type": "Boolean"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "kind",
+							"fieldName": "kind",
+							"type": "SharedRoomKind!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "title",
+							"fieldName": "title",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membership",
+							"fieldName": "membership",
+							"type": "SharedRoomMembershipStatus!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "availableChannels",
+					"fieldName": "betaUserAvailableRooms",
+					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": 3,
+							"type": "Int"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "true"
+							},
+							"type": "Boolean"
 						}
 					],
 					"isConditional": false,
@@ -10164,8 +10293,8 @@
 			"fragmentsReferenced": [
 				"CommunitySearch"
 			],
-			"sourceWithFragments": "query AvailableRooms {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
-			"operationId": "16c65ed28bb072adab2980f351c032f8545c5a14835c552ace9d6a628b5cadb6"
+			"sourceWithFragments": "query AvailableRooms($true: Boolean, $false: Boolean) {\n  availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
+			"operationId": "c597ca930efdb011ab614dcec881e198ebfc887096524206e5def3d6c1e5d0e0"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
@@ -10319,9 +10448,13 @@
 				{
 					"name": "after",
 					"type": "ID"
+				},
+				{
+					"name": "isChannel",
+					"type": "Boolean"
 				}
 			],
-			"source": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"source": "query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {\n  betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "betaUserAvailableRooms",
@@ -10343,6 +10476,14 @@
 								"variableName": "after"
 							},
 							"type": "ID"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "isChannel"
+							},
+							"type": "Boolean"
 						}
 					],
 					"isConditional": false,
@@ -10442,8 +10583,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
-			"operationId": "13f832471f67fb3ceb24c3718592ba36d7742f2b7e59633b4b32e1083fc1d523"
+			"sourceWithFragments": "query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {\n  betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"operationId": "3de9de2928e0bd53861b493f1d92b088dd99b63a35b935d46baf7f6439b0a0d0"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",

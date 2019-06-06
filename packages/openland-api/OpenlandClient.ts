@@ -487,17 +487,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: QueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery(Source.ConferenceMediaQuery, variables, opts);
     }
-    async queryAvailableRooms(opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.client.query(Source.AvailableRoomsQuery, undefined, opts);
+    async queryAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: OperationParameters): Promise<Types.AvailableRooms> {
+        return this.client.query(Source.AvailableRoomsQuery, variables, opts);
     }
-    async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
-        return this.refetch(Source.AvailableRoomsQuery);
+    async refetchAvailableRooms(variables: Types.AvailableRoomsVariables): Promise<Types.AvailableRooms> {
+        return this.refetch(Source.AvailableRoomsQuery, variables);
     }
-    useAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms {
-        return this.useQuerySuspense(Source.AvailableRoomsQuery, undefined, opts);
+    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms {
+        return this.useQuerySuspense(Source.AvailableRoomsQuery, variables, opts);
     }
-    useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
-        return this.useQuery(Source.AvailableRoomsQuery, undefined, opts);
+    useWithoutLoaderAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms | null {
+        return this.useQuery(Source.AvailableRoomsQuery, variables, opts);
     }
     async queryUserRooms(variables: Types.UserRoomsVariables, opts?: OperationParameters): Promise<Types.UserRooms> {
         return this.client.query(Source.UserRoomsQuery, variables, opts);

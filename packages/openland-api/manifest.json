@@ -807,10 +807,10 @@
       }
     },
     {
-      "signature": "93dda51fb4534bc9f711fdc21a58160c4bf7db50a4ee5dd1c5004920a04e071b",
-      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "e2e9d92af95c1b9cc4d091394d2319f3b1e4d3d6f51ffad6607f74b6d9cecc8a",
+      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms($false:Boolean,$true:Boolean){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:$false,limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:$true,limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {
-        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms{alphaComunityPrefixSearch(first:0){__typename edges{__typename node{__typename...CommunitySearch}}}betaIsDiscoverDone betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}query AvailableRooms($false:Boolean,$true:Boolean){alphaComunityPrefixSearch(first:0){__typename edges{__typename node{__typename...CommunitySearch}}}betaIsDiscoverDone betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(isChannel:$false,limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(isChannel:$true,limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {
@@ -821,10 +821,10 @@
       }
     },
     {
-      "signature": "5367cfd0bd0d80ed228d473e845b6fc7bf7c57a762524b28f3ac099e5c8863ef",
-      "document": "query UserAvailableRooms($after:ID,$limit:Int!){betaUserAvailableRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "92741f93ecb41a486567c4c638293230070835b7f9372be12c1ebb818f88588f",
+      "document": "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {
-        "engineSignature": "query UserAvailableRooms($after:ID,$limit:Int!){betaUserAvailableRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {

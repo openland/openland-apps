@@ -22,8 +22,9 @@ const RoomsList = (props: { router: SRouter }) => {
     let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
     let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
 
-    let rooms = getClient().useAvailableRooms();
-    let availableRooms = rooms.availableRooms || [];
+    let rooms = getClient().useAvailableRooms({ true: true, false: false });
+    let availableChats = rooms.availableChats || [];
+    let availableChannels = rooms.availableChannels || [];
     let suggestedRooms = rooms.suggestedRooms || [];
     let communities = rooms.communities || [];
     return (
@@ -58,17 +59,18 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Groups and channels"
+                header="Top chats"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
-                        initial: availableRooms,
-                        title: 'Groups and channels',
+                        isChannel: false,
+                        initial: availableChats,
+                        title: 'Top chats',
                     })
                 }}
             >
-                {availableRooms.map(v => (
+                {availableChats.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -86,7 +88,36 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Communities"
+                header="Top channels"
+                divider={false}
+                actionRight={{
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                        query: 'available',
+                        isChannel: true,
+                        initial: availableChannels,
+                        title: 'Top channels',
+                    })
+                }}
+            >
+                {availableChannels.map(v => (
+                    <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            key: v.id,
+                            title: v.title,
+                        }}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
+                        path="Conversation"
+                        navigationIcon={false}
+                        pathParams={{ flexibleId: v.id }}
+                    />
+                ))}
+            </ZListItemGroup>
+
+            <ZListItemGroup
+                header="Top communities"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('CommunityList', {

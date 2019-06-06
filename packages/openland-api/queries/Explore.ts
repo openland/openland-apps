@@ -5,9 +5,24 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms {
+    query AvailableRooms($true: Boolean, $false: Boolean) {
      
-        availableRooms: betaUserAvailableRooms(limit: 3) {
+        availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+        availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {
             ... on SharedRoom {
                 id
                 kind
@@ -71,8 +86,8 @@ export const UserRoomsQuery = gql`
 `;
 
 export const UserAvailableRoomsQuery = gql`
-    query UserAvailableRooms($limit: Int!, $after: ID) {
-        betaUserAvailableRooms(limit: $limit, after: $after) {
+    query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {
+        betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {
             ... on SharedRoom {
                 id
                 kind

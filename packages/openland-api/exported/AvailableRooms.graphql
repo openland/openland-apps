@@ -1,4 +1,4 @@
-query AvailableRooms {
+query AvailableRooms($false: Boolean, $true: Boolean) {
   communities: alphaComunityPrefixSearch(first: 3) {
     __typename
     edges {
@@ -27,7 +27,24 @@ query AvailableRooms {
       title
     }
   }
-  availableRooms: betaUserAvailableRooms(limit: 3) {
+  availableChats: betaUserAvailableRooms(isChannel: $false, limit: 3) {
+    __typename
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      photo
+      title
+    }
+  }
+  availableChannels: betaUserAvailableRooms(isChannel: $true, limit: 3) {
     __typename
     ... on SharedRoom {
       id
