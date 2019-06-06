@@ -66,10 +66,6 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
     const aboutField = useField('input.about', org.about || '', form);
     const shortNameField = useField('input.shortname', org.shortname || '', form);
 
-    const onTypeChange = (d: CommunityType) => {
-        typeField.input.onChange(d);
-    };
-
     const onAvatarChange = (d: any) => {
         setNewPhoto(d);
     };
@@ -83,9 +79,12 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         await client.mutateUpdateOrganization({ input, organizationId });
         await client.refetchOrganization({ organizationId });
         await client.refetchOrganizationProfile({ organizationId });
-        await setTimeout(() => {
-            props.modalCtx.hide();
-        }, 500);
+
+        if (shortNameField.value !== org.shortname) {
+            await setShortname({ variables: { shortname: shortNameField.value } });
+        }
+
+        await closeModal();
     };
 
     const setShortname = async ({
@@ -96,6 +95,12 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         await client.mutateSetOrgShortname({ shortname, organizationId });
         await client.refetchOrganization({ organizationId });
         await client.refetchOrganizationProfile({ organizationId });
+    };
+
+    const closeModal = async () => {
+        await setTimeout(() => {
+            props.modalCtx.hide();
+        }, 500);
     };
 
     return (
@@ -126,7 +131,7 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
                                 <SelectWithDropdown
                                     title="Community type"
                                     value={typeField.value}
-                                    onChange={onTypeChange}
+                                    onChange={typeField.input.onChange}
                                     selectOptions={[
                                         {
                                             value: CommunityType.COMMUNITY_PUBLIC,
@@ -171,7 +176,14 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
                                     className={InputClassName}
                                 />
                             </XView>
-                            <ShortNameButton text="Save" flexShrink={0} style="primary" />
+                            <ShortNameButton
+                                text="Save"
+                                flexShrink={0}
+                                style="primary"
+                                onClick={() =>
+                                    setShortname({ variables: { shortname: shortNameField.value } })
+                                }
+                            />
                         </XView>
                     </XView>
                     {/*SUPER ADMIN*/}
