@@ -70,6 +70,22 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         setNewPhoto(d);
     };
 
+    const setShortname = async ({
+                                    variables: { shortname },
+                                }: {
+        variables: { shortname: string };
+    }) => {
+        await client.mutateSetOrgShortname({ shortname, organizationId });
+        await client.refetchOrganization({ organizationId });
+        await client.refetchOrganizationProfile({ organizationId });
+    };
+
+    const closeModal = async () => {
+        await setTimeout(() => {
+            props.modalCtx.hide();
+        }, 500);
+    };
+
     const updateOrganizaton = async ({
         variables: { input },
     }: {
@@ -85,22 +101,6 @@ const EditCommunityEntity = (props: { id: string; modalCtx: XModalController }) 
         }
 
         await closeModal();
-    };
-
-    const setShortname = async ({
-        variables: { shortname },
-    }: {
-        variables: { shortname: string };
-    }) => {
-        await client.mutateSetOrgShortname({ shortname, organizationId });
-        await client.refetchOrganization({ organizationId });
-        await client.refetchOrganizationProfile({ organizationId });
-    };
-
-    const closeModal = async () => {
-        await setTimeout(() => {
-            props.modalCtx.hide();
-        }, 500);
     };
 
     return (
