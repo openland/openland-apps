@@ -60,7 +60,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                         style={{
                             position: 'absolute',
                             top: Platform.OS === 'android' ? -6 : 0,
-                            right: 'android' ? -6 : 0,
+                            right: Platform.OS === 'android' ? -6 : 0,
                             width: 11,
                             height: 11,
                             backgroundColor: '#ff3b30',
