@@ -70,6 +70,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     const { file } = React.useContext(UploadContext);
     const isActive = React.useContext(IsActivePoliteContext);
     const draftState = useDraft(props);
+
     const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 
     const hasReply = () => {
@@ -88,7 +89,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                     : { text: '', mentions: [] };
                 messagesContext.changeForwardConverstion();
                 setInputValue(newInputValue.text);
-                draftState.setBeDrafted(hasReply());
                 inputMethodsState.focusIfEnabled();
             }
         });

@@ -13,10 +13,6 @@ type useHandleChangeT = {
 };
 
 export function useHandleChange({ setInputValue, onChange, draftState }: useHandleChangeT) {
-    const supportDraft = () => {
-        return !!draftState;
-    };
-
     const handleChange = React.useCallback(
         ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
             setInputValue(text);
@@ -25,8 +21,8 @@ export function useHandleChange({ setInputValue, onChange, draftState }: useHand
                 onChange(text);
             }
 
-            if (supportDraft()) {
-                if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
+            if (!!draftState) {
+                if (draftState!!.changeDraft) {
                     draftState!!.changeDraft(text, mentions);
                 }
             }

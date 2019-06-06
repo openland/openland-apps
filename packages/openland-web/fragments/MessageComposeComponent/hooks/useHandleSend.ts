@@ -103,7 +103,6 @@ export function useHandleSend({
     const clearAfterSend = () => {
         if (supportDraft()) {
             draftState!!.cleanDraft!!();
-            draftState!!.setBeDrafted!!(false);
         }
         scrollChatToBottom();
         closeEditor();
