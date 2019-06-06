@@ -4,13 +4,14 @@ import { showPictureModal } from './modal/ZPictureModal';
 import { ZAvatarProps, ZAvatar } from './ZAvatar';
 
 class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
-
     ref = React.createRef<View>();
+
     handleLayout = () => {
         // Do nothing
     }
+
     handlePress = () => {
-        if (!this.props.src) {
+        if (!this.props.src || this.props.src.startsWith('ph://')) {
             return;
         }
         if (!this.ref.current) {
@@ -18,8 +19,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
         }
         let view = this.ref.current!!;
         let url = this.props.src;
-        // url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
-        // console.log(url);
+
         view.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             showPictureModal({
                 title: this.props.placeholderTitle || undefined,
@@ -35,22 +35,15 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
                     view!!.setNativeProps({ 'opacity': 1 });
                 },
             });
-            // console.log({ x, y, width, height, pageX, pageY });
-            // Modals.showPicturePreview(
-            //     this.props.navigator,
-            //     message.file!!,
-            //     message.fileMetadata!!.imageWidth!!,
-            //     message.fileMetadata!!.imageHeight!!,
-            //     { x: pageX, y: pageY, width, height }
-            // );
         });
-        //
     }
+
     render() {
         let { ...other } = this.props;
+
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
-                <View onLayout={this.handleLayout} ref={this.ref}>
+                <View onLayout={this.handleLayout} ref={this.ref} width={this.props.size} height={this.props.size}>
                     <ZAvatar {...other} />
                 </View>
             </TouchableWithoutFeedback>

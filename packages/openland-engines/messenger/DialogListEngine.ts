@@ -8,6 +8,7 @@ import {
     TinyMessage,
     DialogKind,
     Message_message,
+    ChatUpdateFragment_ChatMessageReceived,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
@@ -15,6 +16,7 @@ import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/Dat
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 import { RoomPicoQuery } from 'openland-api';
+import { from } from 'zen-observable';
 
 const log = createLogger('Engine-Dialogs');
 
@@ -112,6 +114,7 @@ export class DialogListEngine {
     private userConversationMap = new Map<string, string>();
     private useOnlines = new Map<string, boolean>();
     private loadedConversations = new Set<string>();
+    private processedMessages = new Map<string, Set<string>>();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -300,11 +303,28 @@ export class DialogListEngine {
         }
     };
 
-    handleNewMessage = async (event: any, visible: boolean) => {
+    handleChatNewMessage = async (event: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
+        this.handleNewMessage({ message: event.message, cid, unread: 0, haveMention: false }, false, true);
+    }
+
+    handleNewMessage = async (event: { message: any, unread: number, cid: string, haveMention: boolean }, visible: boolean, fromChatUpdate?: boolean) => {
         const conversationId = event.cid as string;
+        let res = await this._dataSourceStored.getItem(conversationId);
+
+        let chatProcessedMessages = this.processedMessages.get(conversationId);
+        if (!chatProcessedMessages) {
+            chatProcessedMessages = new Set<string>();
+            this.processedMessages.set(conversationId, chatProcessedMessages);
+        }
+        // handle event if not processed for this message or it is latest DialogUpdate event - handle haveMention flag 
+        let handle = !chatProcessedMessages.has(event.message.id) || ((res && res.messageId === event.message.id) && !fromChatUpdate)
+        if (!handle) {
+            return;
+        }
+        chatProcessedMessages.add(event.message.id)
+
         const unreadCount = event.unread as number;
 
-        let res = await this._dataSourceStored.getItem(conversationId);
         let isOut = event.message.sender.id === this.engine.user.id;
         let sender = isOut ? 'You' : event.message.sender.firstName;
         let isService = event.message.__typename === 'ServiceMessage';
@@ -313,10 +333,10 @@ export class DialogListEngine {
             await this._dataSourceStored.updateItem({
                 ...res,
                 isService,
-                unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
+                unread: (!visible || res.unread > unreadCount) && !fromChatUpdate ? unreadCount : res.unread,
                 isOut: isOut,
                 sender: sender,
-                haveMention: event.haveMention,
+                haveMention: fromChatUpdate ? res.haveMention : event.haveMention,
                 messageId: event.message.id,
                 message: event.message && event.message.message ? msg : undefined,
                 fallback: msg,

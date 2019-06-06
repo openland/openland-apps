@@ -17,39 +17,6 @@ import LinearGradient from 'react-native-linear-gradient';
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
-let discoverDone = false;
-let userPickedTags: string[] = [];
-export const isDiscoverDone = () => {
-    return discoverDone;
-}
-
-export const getDiscoverSelectedTags = () => {
-    return userPickedTags;
-}
-
-export const setDiscoverDone = async (tagIds: string[]) => {
-    await AsyncStorage.setItem('discover_done', 'done');
-    await AsyncStorage.setItem('discover_picked_tags', JSON.stringify(tagIds));
-    userPickedTags = tagIds;
-    discoverDone = true;
-}
-
-export const prepareDiscoverStatus = async () => {
-    discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
-    let suggestedChatsStr = await AsyncStorage.getItem('discover_picked_tags');
-    if (suggestedChatsStr) {
-        try {
-            let suggestedChatsRaw = JSON.parse(suggestedChatsStr);
-            if (Array.isArray(suggestedChatsRaw) && typeof suggestedChatsRaw[0] === 'string') {
-                userPickedTags = suggestedChatsRaw;
-            }
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-}
-
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
     let style: 'fill' | 'border' = 'fill' as any;
 
@@ -146,9 +113,11 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
     return (
         <>
             {title && <SHeader title={title} />}
-            <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
-                <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+            <SScrollView justifyContent="flex-start" alignContent="center">
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.headerColor, color: theme.textColor }}>{subtitle}</Text>}
+                <View paddingHorizontal={18}>
+                    <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+                </View>
                 <View height={120} />
             </SScrollView>
             <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />

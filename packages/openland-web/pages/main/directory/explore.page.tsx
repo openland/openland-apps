@@ -15,7 +15,7 @@ interface RoomsCardsProps {
 
 export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
-    const data = client.useAvailableRooms({ selectedTagsIds: [] });
+    const data = client.useAvailableRooms();
 
     let noData =
         data === undefined || (data.availableRooms === undefined);

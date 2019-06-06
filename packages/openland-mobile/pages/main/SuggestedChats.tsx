@@ -8,7 +8,6 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { setDiscoverDone } from './Discover';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { CenteredHeader } from './components/CenteredHeader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -89,7 +88,6 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     let skip = React.useCallback(() => {
         (async () => {
-            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, []);
@@ -99,7 +97,6 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
             startLoader();
             await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
             stopLoader();
-            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, [])

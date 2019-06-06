@@ -159,6 +159,7 @@ export const UserRoomsQuery = typedQuery<Types.UserRooms, Types.UserRoomsVariabl
 export const UserAvailableRoomsQuery = typedQuery<Types.UserAvailableRooms, Types.UserAvailableRoomsVariables>(Explore.UserAvailableRoomsQuery);
 export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);
 export const DiscoverNextPageQuery = typedQuery<Types.DiscoverNextPage, Types.DiscoverNextPageVariables>(Explore.DiscoverNextPageQuery);
+export const DiscoverIsDoneQuery = typedQuery<Types.DiscoverIsDone, {}>(Explore.DiscoverIsDoneQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);

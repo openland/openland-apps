@@ -157,6 +157,7 @@ export class ConversationEngine implements MessageSendHandler {
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
     readonly messagesActionsState: MessagesActionsStateEngine;
+    readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
     canEdit?: boolean;
@@ -165,7 +166,7 @@ export class ConversationEngine implements MessageSendHandler {
     isPrivate?: boolean;
     user?: Types.ChatInit_room_PrivateRoom_user
 
-    constructor(engine: MessengerEngine, conversationId: string) {
+    constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
         this.conversationId = conversationId;
 
@@ -176,6 +177,7 @@ export class ConversationEngine implements MessageSendHandler {
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
         this.messagesActionsState = new MessagesActionsStateEngine();
+        this.onNewMessage = onNewMessage;
     }
 
     start = async () => {
@@ -552,6 +554,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (event.__typename === 'ChatMessageReceived') {
             // Handle message
             log.log('Received new message');
+            this.onNewMessage(event, this.conversationId);
 
             // Write message to store
             let local = false;
