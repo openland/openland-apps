@@ -39,6 +39,7 @@ interface RenderSpansProps {
     insetRight: number;
     insetTop: number;
     textAlign?: 'left' | 'right' | 'center';
+    emojiOnly?: boolean;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -46,8 +47,8 @@ interface RenderSpansProps {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { textAlign, spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
-        const mainTextColor = message.isOut ? theme.textColorOut : theme.textColor;
+        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
+        const mainTextColor = emojiOnly ? theme.textColor : (message.isOut ? theme.textColorOut : theme.textColor);
         const content = getSpansSlices(spans, padded);
 
         return (
@@ -57,7 +58,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                         {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
-                                color={c.type === 'emoji' ? theme.textColor : mainTextColor}
+                                color={mainTextColor}
                                 fontStyle={fontStyle}
                                 fontSize={c.type === 'emoji' ? 48 : (c.type === 'loud' ? 20 : 16)}
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}

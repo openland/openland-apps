@@ -87,6 +87,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                 </ASFlex>
                 <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
                     <TextContent
+                        emojiOnly={false}
                         theme={theme}
                         padded={false}
                         fontStyle="italic"
