@@ -535,7 +535,11 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
     let { organization } = props;
 
     const editButton = (
-        <XMenuItem onClick={() => EditCommunityModal(organization.id, organization.isCommunity)}>
+        <XMenuItem
+            onClick={() =>
+                EditCommunityModal(organization.id, organization.isCommunity, organization.isOwner)
+            }
+        >
             {TextProfiles.Organization.edit}
         </XMenuItem>
     );
