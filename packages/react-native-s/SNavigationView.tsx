@@ -94,7 +94,13 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
         if (this.routing.navigationManager.isLocked()) {
             return true;
         }
-        return this.routing.navigationManager.pop();
+        if (this.state.presented) {
+            this.handleDismissed();
+
+            return true;
+        } else {
+            return this.routing.navigationManager.pop();
+        }
     }
 
     componentWillUnmount() {

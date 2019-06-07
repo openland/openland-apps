@@ -763,6 +763,7 @@ private val OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
@@ -1117,7 +1118,8 @@ private val AvailableRoomsSelector = obj(
                                 )))
                         )))))
                 ))),
-            field("betaSuggestedRooms","suggestedRooms", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), notNull(list(notNull(obj(
+            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1134,7 +1136,24 @@ private val AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", refValue("false")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                ))))),
+            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", refValue("true")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1239,6 +1258,9 @@ private val DialogsSelector = obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("state","state", scalar("String"))
                 )))
+        )
+private val DiscoverIsDoneSelector = obj(
+            field("betaIsDiscoverDone","betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
 private val DiscoverNextPageSelector = obj(
             field("betaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
@@ -1882,6 +1904,26 @@ private val SettingsSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private val SuggestedRoomsSelector = obj(
+            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
 private val SuperAccountSelector = obj(
             field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -1946,7 +1988,7 @@ private val UserSelector = obj(
                 )))
         )
 private val UserAvailableRoomsSelector = obj(
-            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("isChannel", refValue("isChannel")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -2788,7 +2830,7 @@ object Operations {
     val AvailableRooms = object: OperationDefinition {
         override val name = "AvailableRooms"
         override val kind = OperationKind.QUERY
-        override val body = "query AvailableRooms(\$selectedTagsIds:[String!]!){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}suggestedRooms:betaSuggestedRooms(selectedTagsIds:\$selectedTagsIds){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}"
+        override val body = "query AvailableRooms(\$false:Boolean,\$true:Boolean){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:\$false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:\$true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}"
         override val selector = AvailableRoomsSelector
     }
     val ChatHistory = object: OperationDefinition {
@@ -2826,6 +2868,12 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}"
         override val selector = DialogsSelector
+    }
+    val DiscoverIsDone = object: OperationDefinition {
+        override val name = "DiscoverIsDone"
+        override val kind = OperationKind.QUERY
+        override val body = "query DiscoverIsDone{betaIsDiscoverDone}"
+        override val selector = DiscoverIsDoneSelector
     }
     val DiscoverNextPage = object: OperationDefinition {
         override val name = "DiscoverNextPage"
@@ -2944,7 +2992,7 @@ object Operations {
     val OrganizationProfile = object: OperationDefinition {
         override val name = "OrganizationProfile"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = OrganizationProfileSelector
     }
     val OrganizationPublicInvite = object: OperationDefinition {
@@ -3103,6 +3151,12 @@ object Operations {
         override val body = "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsSelector
     }
+    val SuggestedRooms = object: OperationDefinition {
+        override val name = "SuggestedRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query SuggestedRooms{isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = SuggestedRoomsSelector
+    }
     val SuperAccount = object: OperationDefinition {
         override val name = "SuperAccount"
         override val kind = OperationKind.QUERY
@@ -3130,7 +3184,7 @@ object Operations {
     val UserAvailableRooms = object: OperationDefinition {
         override val name = "UserAvailableRooms"
         override val kind = OperationKind.QUERY
-        override val body = "query UserAvailableRooms(\$after:ID,\$limit:Int!){betaUserAvailableRooms(after:\$after,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val body = "query UserAvailableRooms(\$after:ID,\$isChannel:Boolean,\$limit:Int!){betaUserAvailableRooms(after:\$after,isChannel:\$isChannel,limit:\$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
         override val selector = UserAvailableRoomsSelector
     }
     val UserRooms = object: OperationDefinition {
@@ -3724,7 +3778,7 @@ object Operations {
     val UpdateOrganization = object: OperationDefinition {
         override val name = "UpdateOrganization"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = UpdateOrganizationSelector
     }
     val UpdateWelcomeMessage = object: OperationDefinition {
@@ -3814,6 +3868,7 @@ object Operations {
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "Dialogs") return Dialogs
+        if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExploreOrganizations") return ExploreOrganizations
@@ -3860,6 +3915,7 @@ object Operations {
         if (name == "RoomWithoutMembers") return RoomWithoutMembers
         if (name == "Rooms") return Rooms
         if (name == "Settings") return Settings
+        if (name == "SuggestedRooms") return SuggestedRooms
         if (name == "SuperAccount") return SuperAccount
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins

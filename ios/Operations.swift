@@ -757,6 +757,7 @@ private let OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
@@ -1111,7 +1112,8 @@ private let AvailableRoomsSelector = obj(
                                 )))
                         )))))
                 ))),
-            field("betaSuggestedRooms","suggestedRooms", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), notNull(list(notNull(obj(
+            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1128,7 +1130,24 @@ private let AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableRooms", arguments(fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", refValue("false")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                ))))),
+            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", refValue("true")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1233,6 +1252,9 @@ private let DialogsSelector = obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("state","state", scalar("String"))
                 )))
+        )
+private let DiscoverIsDoneSelector = obj(
+            field("betaIsDiscoverDone","betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
 private let DiscoverNextPageSelector = obj(
             field("betaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
@@ -1876,6 +1898,26 @@ private let SettingsSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private let SuggestedRoomsSelector = obj(
+            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
 private let SuperAccountSelector = obj(
             field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -1940,7 +1982,7 @@ private let UserSelector = obj(
                 )))
         )
 private let UserAvailableRoomsSelector = obj(
-            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("isChannel", refValue("isChannel")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -2785,7 +2827,7 @@ class Operations {
     let AvailableRooms = OperationDefinition(
         "AvailableRooms",
         .query, 
-        "query AvailableRooms($selectedTagsIds:[String!]!){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}suggestedRooms:betaSuggestedRooms(selectedTagsIds:$selectedTagsIds){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableRooms:betaUserAvailableRooms(limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
+        "query AvailableRooms($false:Boolean,$true:Boolean){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:$false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:$true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         AvailableRoomsSelector
     )
     let ChatHistory = OperationDefinition(
@@ -2823,6 +2865,12 @@ class Operations {
         .query, 
         "query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}",
         DialogsSelector
+    )
+    let DiscoverIsDone = OperationDefinition(
+        "DiscoverIsDone",
+        .query, 
+        "query DiscoverIsDone{betaIsDiscoverDone}",
+        DiscoverIsDoneSelector
     )
     let DiscoverNextPage = OperationDefinition(
         "DiscoverNextPage",
@@ -2941,7 +2989,7 @@ class Operations {
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
-        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
+        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
         OrganizationProfileSelector
     )
     let OrganizationPublicInvite = OperationDefinition(
@@ -3100,6 +3148,12 @@ class Operations {
         "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
         SettingsSelector
     )
+    let SuggestedRooms = OperationDefinition(
+        "SuggestedRooms",
+        .query, 
+        "query SuggestedRooms{isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+        SuggestedRoomsSelector
+    )
     let SuperAccount = OperationDefinition(
         "SuperAccount",
         .query, 
@@ -3127,7 +3181,7 @@ class Operations {
     let UserAvailableRooms = OperationDefinition(
         "UserAvailableRooms",
         .query, 
-        "query UserAvailableRooms($after:ID,$limit:Int!){betaUserAvailableRooms(after:$after,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+        "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
         UserAvailableRoomsSelector
     )
     let UserRooms = OperationDefinition(
@@ -3721,7 +3775,7 @@ class Operations {
     let UpdateOrganization = OperationDefinition(
         "UpdateOrganization",
         .mutation, 
-        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
+        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}",
         UpdateOrganizationSelector
     )
     let UpdateWelcomeMessage = OperationDefinition(
@@ -3812,6 +3866,7 @@ class Operations {
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }
+        if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNextPage" { return DiscoverNextPage }
         if name == "ExploreCommunity" { return ExploreCommunity }
         if name == "ExploreOrganizations" { return ExploreOrganizations }
@@ -3858,6 +3913,7 @@ class Operations {
         if name == "RoomWithoutMembers" { return RoomWithoutMembers }
         if name == "Rooms" { return Rooms }
         if name == "Settings" { return Settings }
+        if name == "SuggestedRooms" { return SuggestedRooms }
         if name == "SuperAccount" { return SuperAccount }
         if name == "SuperAccounts" { return SuperAccounts }
         if name == "SuperAdmins" { return SuperAdmins }

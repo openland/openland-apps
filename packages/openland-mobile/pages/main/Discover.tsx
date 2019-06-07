@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, View, Text, TouchableOpacity, AsyncStorage, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { CenteredHeader } from './components/CenteredHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -14,46 +13,12 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
 import LinearGradient from 'react-native-linear-gradient';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export type Tag = { id: string, title: string };
 export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
 
-let discoverDone = false;
-let userPickedTags: string[] = [];
-export const isDiscoverDone = () => {
-    return discoverDone;
-}
-
-export const getDiscoverSelectedTags = () => {
-    return userPickedTags;
-}
-
-export const setDiscoverDone = async (tagIds: string[]) => {
-    await AsyncStorage.setItem('discover_done', 'done');
-    await AsyncStorage.setItem('discover_picked_tags', JSON.stringify(tagIds));
-    userPickedTags = tagIds;
-    discoverDone = true;
-}
-
-export const prepareDiscoverStatus = async () => {
-    discoverDone = (await AsyncStorage.getItem('discover_done')) === 'done';
-    let suggestedChatsStr = await AsyncStorage.getItem('discover_picked_tags');
-    if (suggestedChatsStr) {
-        try {
-            let suggestedChatsRaw = JSON.parse(suggestedChatsStr);
-            if (Array.isArray(suggestedChatsRaw) && typeof suggestedChatsRaw[0] === 'string') {
-                userPickedTags = suggestedChatsRaw;
-            }
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-}
-
 const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style: 'fill' | 'border' = 'border' as any;
+    let style: 'fill' | 'border' = 'fill' as any;
 
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
@@ -147,12 +112,12 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
 
     return (
         <>
-            {title && Platform.OS === 'ios' && <SHeader title={title} />}
-            {title && Platform.OS === 'android' && <CenteredHeader title={title} padding={98} />}
-            {/* <SHeaderButton title={'Next'} onPress={next} /> */}
-            <SScrollView paddingHorizontal={18} justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingLeft: 18, backgroundColor: theme.headerColor, color: theme.textColor, marginLeft: -18, marginRight: -18 }}>{subtitle}</Text>}
-                <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+            {title && <SHeader title={title} />}
+            <SScrollView justifyContent="flex-start" alignContent="center">
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.headerColor, color: theme.textColor }}>{subtitle}</Text>}
+                <View paddingHorizontal={18}>
+                    <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
+                </View>
                 <View height={120} />
             </SScrollView>
             <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />

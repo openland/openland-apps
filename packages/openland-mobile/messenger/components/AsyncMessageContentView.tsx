@@ -20,6 +20,7 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
+import { EmojiOnlyContent } from './content/EmojiOnlyContent';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
@@ -69,7 +70,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'new_line') {
             return <ASText key={'br'}>{'\n'}</ASText>;
         } else if (span.type === 'emoji') {
-            return <ASText key={'emoji'} fontSize={30} lineHeight={34}>{children}</ASText>;
+            return <ASText key={'emoji'} fontSize={48} lineHeight={58}>{children}</ASText>;
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }
@@ -89,6 +90,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let hasReply = !!(props.message.reply && props.message.reply.length > 0);
     let hasText = !!(props.message.text);
     let hasUrlAug = !!augmenationAttach;
+
+    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji';
 
     let imageLayout;
     if (hasImage) {
@@ -128,7 +131,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         bottomContent = [];
     }
 
-    if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
+    if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
         topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + props.theme.linkColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.theme.linkColor}>{props.message.senderName}</ASText>);
     }
 
@@ -143,7 +146,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         imageLayout,
         imageOnly,
         richAttachImageLayout,
-        richAttachIsCompact
+        richAttachIsCompact,
+        isEmojiOnly
     }
 }
 
@@ -160,10 +164,22 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         imageLayout,
         richAttachImageLayout,
         bottomContent,
-        richAttachIsCompact
+        richAttachIsCompact,
+        isEmojiOnly
     } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
     let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
+
+    if (isEmojiOnly) {
+        return (
+            <EmojiOnlyContent
+                theme={theme}
+                content={topContent}
+                message={props.message}
+            />
+        );
+    }
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
             <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleColorIn} backgroundColor={theme.backgroundColor}>

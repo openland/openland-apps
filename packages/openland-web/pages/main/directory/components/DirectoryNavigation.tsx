@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import { tabs } from '../../mail/tabs';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
 import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
 import CommunityIcon from 'openland-icons/dir-communities.svg';
+import RecommendationIcon from 'openland-icons/ic-cell-recommendation.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
@@ -17,6 +19,21 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
+
+const iconWrapper = css`
+    & svg * {
+        fill: #bfbfbf !important;
+        opacity: 1 !important;
+    }
+`;
+
+const RecommendationIconWrapper = () => {
+    return (
+        <div className={iconWrapper}>
+            <RecommendationIcon />
+        </div>
+    );
+};
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -124,7 +141,7 @@ export const SearchCardsOrShowProfile = XMemo(
 
 export const DirectoryNavigation = XMemo(
     ({
-        title,
+        title = '',
         onlyFeatured,
         id,
         ProfileComponent,
@@ -139,7 +156,7 @@ export const DirectoryNavigation = XMemo(
         sortOptions,
         withoutSort,
     }: {
-        title: string;
+        title?: string;
         onlyFeatured?: boolean;
         id?: string | null;
         ProfileComponent?: any;
@@ -166,7 +183,16 @@ export const DirectoryNavigation = XMemo(
                 menuRightContent={<NewOptionsButton />}
                 menuChildrenContent={
                     <>
-                        <MenuItem path="/directory" title="Groups" icon={<RoomIcon />} />
+                        <MenuItem
+                            path="/directory/discover"
+                            title="Chats for you"
+                            icon={<RecommendationIconWrapper />}
+                        />
+                        <MenuItem
+                            path="/directory"
+                            title="Groups and Channels"
+                            icon={<RoomIcon />}
+                        />
                         <MenuItem
                             path="/directory/communities"
                             title="Communities"

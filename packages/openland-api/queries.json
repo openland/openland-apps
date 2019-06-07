@@ -9873,14 +9873,18 @@
 			"rootType": "Query",
 			"variables": [
 				{
-					"name": "selectedTagsIds",
-					"type": "[String!]!"
+					"name": "true",
+					"type": "Boolean"
+				},
+				{
+					"name": "false",
+					"type": "Boolean"
 				}
 			],
-			"source": "query AvailableRooms($selectedTagsIds: [String!]!) {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n}",
+			"source": "query AvailableRooms($true: Boolean, $false: Boolean) {\n  availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}",
 			"fields": [
 				{
-					"responseName": "availableRooms",
+					"responseName": "availableChats",
 					"fieldName": "betaUserAvailableRooms",
 					"type": "[SharedRoom!]!",
 					"args": [
@@ -9888,6 +9892,126 @@
 							"name": "limit",
 							"value": 3,
 							"type": "Int"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "false"
+							},
+							"type": "Boolean"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "kind",
+							"fieldName": "kind",
+							"type": "SharedRoomKind!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "title",
+							"fieldName": "title",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "membership",
+							"fieldName": "membership",
+							"type": "SharedRoomMembershipStatus!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "availableChannels",
+					"fieldName": "betaUserAvailableRooms",
+					"type": "[SharedRoom!]!",
+					"args": [
+						{
+							"name": "limit",
+							"value": 3,
+							"type": "Int"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "true"
+							},
+							"type": "Boolean"
 						}
 					],
 					"isConditional": false,
@@ -9987,16 +10111,6 @@
 					"responseName": "suggestedRooms",
 					"fieldName": "betaSuggestedRooms",
 					"type": "[Room!]!",
-					"args": [
-						{
-							"name": "selectedTagsIds",
-							"value": {
-								"kind": "Variable",
-								"variableName": "selectedTagsIds"
-							},
-							"type": "[String!]!"
-						}
-					],
 					"isConditional": false,
 					"isDeprecated": false,
 					"fields": [
@@ -10165,6 +10279,13 @@
 					],
 					"fragmentSpreads": [],
 					"inlineFragments": []
+				},
+				{
+					"responseName": "isDiscoverDone",
+					"fieldName": "betaIsDiscoverDone",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
 				}
 			],
 			"fragmentSpreads": [],
@@ -10172,8 +10293,143 @@
 			"fragmentsReferenced": [
 				"CommunitySearch"
 			],
-			"sourceWithFragments": "query AvailableRooms($selectedTagsIds: [String!]!) {\n  availableRooms: betaUserAvailableRooms(limit: 3) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
-			"operationId": "48c459297edf55551fedcec8efb938f8a43e65d59bce8cb78ca57dd38342a694"
+			"sourceWithFragments": "query AvailableRooms($true: Boolean, $false: Boolean) {\n  availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  communities: alphaComunityPrefixSearch(first: 3) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}\nfragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n  betaPublicRooms {\n    __typename\n    id\n  }\n}",
+			"operationId": "c597ca930efdb011ab614dcec881e198ebfc887096524206e5def3d6c1e5d0e0"
+		},
+		{
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
+			"operationName": "SuggestedRooms",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [],
+			"source": "query SuggestedRooms {\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}",
+			"fields": [
+				{
+					"responseName": "suggestedRooms",
+					"fieldName": "betaSuggestedRooms",
+					"type": "[Room!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "SharedRoom",
+							"possibleTypes": [
+								"SharedRoom"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "kind",
+									"fieldName": "kind",
+									"type": "SharedRoomKind!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "title",
+									"fieldName": "title",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "membersCount",
+									"fieldName": "membersCount",
+									"type": "Int",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "membership",
+									"fieldName": "membership",
+									"type": "SharedRoomMembershipStatus!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "organization",
+									"fieldName": "organization",
+									"type": "Organization",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				},
+				{
+					"responseName": "isDiscoverDone",
+					"fieldName": "betaIsDiscoverDone",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query SuggestedRooms {\n  suggestedRooms: betaSuggestedRooms {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n  isDiscoverDone: betaIsDiscoverDone\n}",
+			"operationId": "66c33b706672be3b136f69449250d6217de6428c968710f54be44bc97d3ed901"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
@@ -10327,9 +10583,13 @@
 				{
 					"name": "after",
 					"type": "ID"
+				},
+				{
+					"name": "isChannel",
+					"type": "Boolean"
 				}
 			],
-			"source": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"source": "query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {\n  betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "betaUserAvailableRooms",
@@ -10351,6 +10611,14 @@
 								"variableName": "after"
 							},
 							"type": "ID"
+						},
+						{
+							"name": "isChannel",
+							"value": {
+								"kind": "Variable",
+								"variableName": "isChannel"
+							},
+							"type": "Boolean"
 						}
 					],
 					"isConditional": false,
@@ -10450,8 +10718,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query UserAvailableRooms($limit: Int!, $after: ID) {\n  betaUserAvailableRooms(limit: $limit, after: $after) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
-			"operationId": "13f832471f67fb3ceb24c3718592ba36d7742f2b7e59633b4b32e1083fc1d523"
+			"sourceWithFragments": "query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {\n  betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {\n    __typename\n    ... on SharedRoom {\n      id\n      kind\n      title\n      photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"operationId": "3de9de2928e0bd53861b493f1d92b088dd99b63a35b935d46baf7f6439b0a0d0"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
@@ -10786,6 +11054,28 @@
 			],
 			"sourceWithFragments": "query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {\n  betaNextDiscoverPage(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {\n    __typename\n    chats {\n      __typename\n      ...RoomShort\n    }\n    tagGroup {\n      __typename\n      id\n      title\n      subtitle\n      tags {\n        __typename\n        id\n        title\n      }\n    }\n  }\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
 			"operationId": "bc53e5a7ab4de4d76220572c41e7e2d42d92927c962f3480bb9131e18950fbfc"
+		},
+		{
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Explore.ts",
+			"operationName": "DiscoverIsDone",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [],
+			"source": "query DiscoverIsDone {\n  betaIsDiscoverDone\n}",
+			"fields": [
+				{
+					"responseName": "betaIsDiscoverDone",
+					"fieldName": "betaIsDiscoverDone",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query DiscoverIsDone {\n  betaIsDiscoverDone\n}",
+			"operationId": "1699290ac35a2da7ffe83662ca2a57754657859f9c61c62fefdd5766fa677026"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/FeatureFlag.ts",
@@ -11360,8 +11650,8 @@
 			"fragmentsReferenced": [
 				"OrganizationProfileFull"
 			],
-			"sourceWithFragments": "mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {\n  updateOrganizationProfile(input: $input, id: $organizationId) {\n    __typename\n    ...OrganizationProfileFull\n  }\n}\nfragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  featured: alphaFeatured\n}",
-			"operationId": "5dcec475e9f97846f7231e2db83ae25ae16ce31abcfe42495aad351af35665a8"
+			"sourceWithFragments": "mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {\n  updateOrganizationProfile(input: $input, id: $organizationId) {\n    __typename\n    ...OrganizationProfileFull\n  }\n}\nfragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  private: alphaIsPrivate\n  featured: alphaFeatured\n}",
+			"operationId": "56661c73c1a7bdd66ff8e266c1807977d0a786baf1c990c1dde6a9fdf2dc1555"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Organization.ts",
@@ -11802,8 +12092,8 @@
 			"fragmentsReferenced": [
 				"OrganizationProfileFull"
 			],
-			"sourceWithFragments": "query OrganizationProfile($organizationId: ID!) {\n  organizationProfile(id: $organizationId) {\n    __typename\n    ...OrganizationProfileFull\n  }\n}\nfragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  featured: alphaFeatured\n}",
-			"operationId": "dfca8d1a4e2a9fe0054420783c9b6342c9f068f10e4b7da5b64c6c7c37b95b6d"
+			"sourceWithFragments": "query OrganizationProfile($organizationId: ID!) {\n  organizationProfile(id: $organizationId) {\n    __typename\n    ...OrganizationProfileFull\n  }\n}\nfragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  private: alphaIsPrivate\n  featured: alphaFeatured\n}",
+			"operationId": "d575b63d8f9ff494cd7f5cada120f2cea6fca6b0954be8d9e9df67ea9a590648"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Organization.ts",
@@ -20121,7 +20411,7 @@
 			],
 			"fragmentName": "OrganizationProfileFull",
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/fragments/OrganizationProfileFull.ts",
-			"source": "fragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  featured: alphaFeatured\n}",
+			"source": "fragment OrganizationProfileFull on OrganizationProfile {\n  __typename\n  id\n  name\n  photoRef {\n    __typename\n    uuid\n    crop {\n      __typename\n      x\n      y\n      w\n      h\n    }\n  }\n  website\n  websiteTitle\n  about\n  twitter\n  facebook\n  linkedin\n  shortname\n  private: alphaIsPrivate\n  featured: alphaFeatured\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -20258,6 +20548,13 @@
 					"responseName": "shortname",
 					"fieldName": "shortname",
 					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "private",
+					"fieldName": "alphaIsPrivate",
+					"type": "Boolean!",
 					"isConditional": false,
 					"isDeprecated": false
 				},

@@ -499,6 +499,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms | null {
         return this.useQuery(Source.AvailableRoomsQuery, variables, opts);
     }
+    async querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
+        return this.client.query(Source.SuggestedRoomsQuery, undefined, opts);
+    }
+    async refetchSuggestedRooms(): Promise<Types.SuggestedRooms> {
+        return this.refetch(Source.SuggestedRoomsQuery);
+    }
+    useSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms {
+        return this.useQuerySuspense(Source.SuggestedRoomsQuery, undefined, opts);
+    }
+    useWithoutLoaderSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms | null {
+        return this.useQuery(Source.SuggestedRoomsQuery, undefined, opts);
+    }
     async queryUserRooms(variables: Types.UserRoomsVariables, opts?: OperationParameters): Promise<Types.UserRooms> {
         return this.client.query(Source.UserRoomsQuery, variables, opts);
     }
@@ -546,6 +558,18 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage | null {
         return this.useQuery(Source.DiscoverNextPageQuery, variables, opts);
+    }
+    async queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
+        return this.client.query(Source.DiscoverIsDoneQuery, undefined, opts);
+    }
+    async refetchDiscoverIsDone(): Promise<Types.DiscoverIsDone> {
+        return this.refetch(Source.DiscoverIsDoneQuery);
+    }
+    useDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone {
+        return this.useQuerySuspense(Source.DiscoverIsDoneQuery, undefined, opts);
+    }
+    useWithoutLoaderDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone | null {
+        return this.useQuery(Source.DiscoverIsDoneQuery, undefined, opts);
     }
     async queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery, undefined, opts);

@@ -8,7 +8,6 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { setDiscoverDone } from './Discover';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { CenteredHeader } from './components/CenteredHeader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -62,9 +61,8 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View style={{ width: 30, height: 30, marginRight: 16, borderRadius: 8, borderWidth: 2, borderColor: theme.accentBackgroundColor, backgroundColor: props.selected ? theme.accentBackgroundColor : theme.backgroundColor, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-            {props.selected && <Image source={require('assets/ic-checkmark-16.png')} style={{ tintColor: theme.accentColor }} />}
-            {!props.selected && <Image source={require('assets/ic-add-rounded-16.png')} style={{ tintColor: theme.accentColor }} />}
+        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentColor : theme.backgroundColor} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentColor : theme.accentDisabledColor} borderWidth={2} borderRadius={12} width={24} height={24} >
+            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.textInverseColor }} />}
         </View>
     </ZListItemBase>
 }
@@ -90,7 +88,6 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     let skip = React.useCallback(() => {
         (async () => {
-            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, []);
@@ -100,7 +97,6 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
             startLoader();
             await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
             stopLoader();
-            await setDiscoverDone(props.selectedTagIds);
             toHome()
         })()
     }, [])
@@ -114,14 +110,13 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     }, [selected]);
 
-    let joinAll = React.useCallback(() => {
-        join(props.chats.map(c => c.id));
+    let selectAll = React.useCallback(() => {
+        setSelected(new Set<string>(props.chats.map(c => c.id)));
     }, [])
 
     return (
         <>
-            {Platform.OS === 'ios' && <SHeader title={"Chats for you"} />}
-            {Platform.OS === 'android' && <CenteredHeader title={"Chats for you"} padding={98} />}
+            <SHeader title={"Chats for you"} />
             <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
@@ -137,7 +132,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}
                     </Text>
-                    {selected.size !== props.chats.length && <ZRoundedButton title="join all" onPress={joinAll} />}
+                    {selected.size !== props.chats.length && <ZRoundedButton style="secondary" title="select all" onPress={selectAll} />}
                 </View>
                 {props.chats.map((item) => (
                     item.__typename === 'SharedRoom' &&

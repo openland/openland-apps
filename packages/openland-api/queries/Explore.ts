@@ -5,9 +5,8 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms($selectedTagsIds: [String!]!) {
-     
-        availableRooms: betaUserAvailableRooms(limit: 3) {
+    query AvailableRooms($true: Boolean, $false: Boolean) {
+        availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {
             ... on SharedRoom {
                 id
                 kind
@@ -22,7 +21,7 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        suggestedRooms: betaSuggestedRooms(selectedTagsIds: $selectedTagsIds) {
+        availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {
             ... on SharedRoom {
                 id
                 kind
@@ -37,13 +36,51 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        communities: alphaComunityPrefixSearch( first: 3) {
+        suggestedRooms: betaSuggestedRooms {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+        communities: alphaComunityPrefixSearch(first: 3) {
             edges {
                 node {
                     ...CommunitySearch
                 }
             }
         }
+        isDiscoverDone: betaIsDiscoverDone
+    }
+    ${CommunitySearch}
+`;
+
+export const SuggestedRoomsQuery = gql`
+    query SuggestedRooms {
+        suggestedRooms: betaSuggestedRooms {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+        isDiscoverDone: betaIsDiscoverDone
     }
     ${CommunitySearch}
 `;
@@ -69,8 +106,8 @@ export const UserRoomsQuery = gql`
 `;
 
 export const UserAvailableRoomsQuery = gql`
-    query UserAvailableRooms($limit: Int!, $after: ID) {
-        betaUserAvailableRooms(limit: $limit, after: $after) {
+    query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {
+        betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {
             ... on SharedRoom {
                 id
                 kind
@@ -118,15 +155,18 @@ export const GlobalSearchQuery = gql`
 
 export const DiscoverNextPageQuery = gql`
     query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
-        betaNextDiscoverPage(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {
-            chats{
+        betaNextDiscoverPage(
+            selectedTagsIds: $selectedTagsIds
+            excudedGroupsIds: $excudedGroupsIds
+        ) {
+            chats {
                 ...RoomShort
             }
-            tagGroup{
+            tagGroup {
                 id
                 title
                 subtitle
-                tags{
+                tags {
                     id
                     title
                 }
@@ -135,4 +175,10 @@ export const DiscoverNextPageQuery = gql`
     }
     ${RoomShort}
     ${UserShort}
+`;
+
+export const DiscoverIsDoneQuery = gql`
+    query DiscoverIsDone {
+        betaIsDiscoverDone
+    }
 `;

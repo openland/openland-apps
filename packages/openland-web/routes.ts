@@ -78,6 +78,8 @@ routes.add('/directory/organizations', '/main/directory/organizations');
 routes.add('/directory/organizations/', '/main/directory/organizations');
 routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/discover', '/main/directory/discover');
+routes.add('/directory/discover/', '/main/directory/discover');
 routes.add('/directory/explore', '/main/directory/explore');
 routes.add('/directory/explore/', '/main/directory/explore');
 routes.add('/directory/r/:conversationId', '/main/directory/root');

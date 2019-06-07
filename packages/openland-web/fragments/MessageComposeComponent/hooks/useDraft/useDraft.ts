@@ -5,8 +5,6 @@ import * as DraftStore from './DraftStore';
 
 export type DraftStateT = {
     getNextDraft: Function;
-    beDrafted: boolean;
-    setBeDrafted: Function;
     getDefaultValue: Function;
     changeDraft: Function;
     cleanDraft: Function;
@@ -19,13 +17,7 @@ type useDraftT = {
 };
 
 export function useDraft({ conversationId, saveDraftMessage, draft }: useDraftT) {
-    const [beDrafted, setBeDrafted] = React.useState(false);
-
     const changeDraft = async (message: string, mentions: UserWithOffset[]) => {
-        if (!beDrafted) {
-            setBeDrafted(true);
-        }
-
         if (conversationId) {
             DraftStore.setDraftMessage(conversationId, message, mentions);
         }
@@ -65,8 +57,6 @@ export function useDraft({ conversationId, saveDraftMessage, draft }: useDraftT)
 
     return {
         getNextDraft,
-        beDrafted,
-        setBeDrafted,
         getDefaultValue,
         changeDraft,
         cleanDraft,
