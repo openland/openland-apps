@@ -59,30 +59,33 @@ export default withApp('Discover', 'viewer', () => {
 
     return (
         <DirectoryNavigation>
-            <XContentWrapper withPaddingBottom={true}>
-                <XView fontSize={16} marginTop={32} marginBottom={27}>
-                    Chats for you
-                </XView>
-                {data.suggestedRooms.map((room, key) => {
-                    if (room.__typename === 'SharedRoom') {
-                        return (
-                            <XRoomCard
-                                key={key}
-                                room={room as any}
-                                // path={'/directory/p/' + room.id}
-                            />
-                        );
-                    } else {
-                        return (
-                            <XRoomCard
-                                key={key}
-                                room={room as any}
-                                // path={'/directory/p/' + room.id}
-                            />
-                        );
-                    }
-                })}
-            </XContentWrapper>
+            {!data.isDiscoverDone && <EmptyComponent />}
+            {data.isDiscoverDone && (
+                <XContentWrapper withPaddingBottom={true}>
+                    <XView fontSize={16} marginTop={32} marginBottom={27}>
+                        Chats for you
+                    </XView>
+                    {data.suggestedRooms.map((room, key) => {
+                        if (room.__typename === 'SharedRoom') {
+                            return (
+                                <XRoomCard
+                                    key={key}
+                                    room={room as any}
+                                    // path={'/directory/p/' + room.id}
+                                />
+                            );
+                        } else {
+                            return (
+                                <XRoomCard
+                                    key={key}
+                                    room={room as any}
+                                    // path={'/directory/p/' + room.id}
+                                />
+                            );
+                        }
+                    })}
+                </XContentWrapper>
+            )}
         </DirectoryNavigation>
     );
 });
