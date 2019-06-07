@@ -20,6 +20,7 @@ import { reactionsImagesMap, defaultReactions, reactionMap } from './components/
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-mobile/utils/formatTime';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -196,7 +197,7 @@ export class MobileMessenger {
             });
         }
 
-        if (message.senderId === this.engine.user.id) {
+        if (message.senderId === this.engine.user.id || SUPER_ADMIN) {
             builder.action('Delete', async () => {
                 try {
                     Alert.builder()

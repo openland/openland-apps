@@ -20,12 +20,14 @@ interface TextContentProps {
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
         const { message, padded, theme, fontStyle, onUserPress, onGroupPress } = this.props;
+        const onlyEmoji = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji';
 
         return (
             <RenderSpans
                 spans={message.textSpans}
                 message={message}
-                padded={padded !== false}
+                padded={onlyEmoji ? false : padded !== false}
+                textAlign={onlyEmoji && message.isOut ? 'right' : 'left'}
                 fontStyle={fontStyle}
                 theme={theme}
                 maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 40}

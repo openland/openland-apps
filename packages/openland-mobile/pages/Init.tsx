@@ -74,6 +74,7 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
 });
 
 export let NON_PRODUCTION = false;
+export let SUPER_ADMIN = false;
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
 
@@ -166,6 +167,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
                         NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
+                        SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
 
                         this.setState({ state: 'app' });
                     } else {
@@ -186,6 +188,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                         if (res.me) {
                             NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
+                            SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
 
                             let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
                             setMessenger(new MobileMessenger(messenger, this.history));

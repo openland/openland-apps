@@ -69,7 +69,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'new_line') {
             return <ASText key={'br'}>{'\n'}</ASText>;
         } else if (span.type === 'emoji') {
-            return <ASText key={'emoji'} fontSize={30} lineHeight={34}>{children}</ASText>;
+            return <ASText key={'emoji'} fontSize={48} lineHeight={58}>{children}</ASText>;
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }
@@ -164,6 +164,51 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
     let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
+    if (props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji') {
+        return (
+            <ASFlex backgroundColor={theme.backgroundColor}>
+                <ASFlex flexDirection="column" alignItems="stretch" marginRight={props.message.isOut ? 6 : undefined}>
+                    {topContent}
+
+                    <ASFlex
+                        alignItems="flex-end"
+                        justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'}
+                        marginLeft={!props.message.isOut ? 2 : undefined}
+                    >
+                        <ASFlex
+                            flexDirection="row"
+                            height={14}
+                            backgroundColor={theme.reactionsBackground}
+                            borderRadius={4}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            {props.message.isEdited && (
+                                <ASFlex width={10} height={10} marginTop={1} marginLeft={5} justifyContent="flex-start" alignItems="center">
+                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={props.message.isOut ? 0.7 : 0.5} />
+                                </ASFlex>
+                            )}
+                            <ASText
+                                marginLeft={3}
+                                marginRight={!props.message.isOut ? 3 : 0}
+                                fontSize={11}
+                                color={theme.reactionsColor}
+                                opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
+                            >
+                                {formatTime(props.message.date)}
+                            </ASText>
+                            {props.message.isOut && (
+                                <ASFlex width={13} height={13} marginLeft={3} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
+                                    {props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={0.7} />}
+                                    {!props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={0.7} />}
+                                </ASFlex>
+                            )}
+                        </ASFlex>
+                    </ASFlex>
+                </ASFlex>
+            </ASFlex>
+        );
+    }
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
             <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
