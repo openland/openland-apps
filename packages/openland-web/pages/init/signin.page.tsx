@@ -7,11 +7,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import {
     PageModeT,
     WebSignUpContainer,
-    RoomSignupContainer,
-    RoomActivationCode,
-    RoomAuthMechanism,
     WebSignUpAuthMechanism,
-    RoomCreateWithEmail,
     WebSignUpCreateWithEmail,
     WebSignUpActivationCode,
     InviteInfoInner,
@@ -22,8 +18,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { useClient } from 'openland-web/utils/useClient';
-import { XView } from 'react-mental';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { trackEvent } from 'openland-x-analytics';
 
@@ -34,7 +28,6 @@ function validateEmail(email: string) {
 
 const InviteInfo = (props: {
     variables: { inviteKey: string };
-    signin: boolean;
     loginWithGoogle: Function;
     loginWithEmail: Function;
     isInvitePageSignin: boolean;
@@ -69,16 +62,12 @@ const InviteInfo = (props: {
         return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
     }
 
-    let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-
     if (!inviter) {
         return <XLoader loading={true} />;
     }
     return (
         <InviteInfoInner
-            signin={props.signin}
             inviter={inviter}
-            signPath={signPath}
             loginWithGoogle={props.loginWithGoogle}
             loginWithEmail={props.loginWithEmail}
             isInvitePageSignin={props.isInvitePageSignin}
@@ -122,10 +111,7 @@ interface SignInComponentState {
     signInInvite: boolean;
 }
 
-class SignInComponent extends React.Component<
-    SignInComponentProps & { roomView?: boolean },
-    SignInComponentState
-> {
+class SignInComponent extends React.Component<SignInComponentProps, SignInComponentState> {
     fireGoogle = async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
@@ -346,22 +332,6 @@ class SignInComponent extends React.Component<
             ? '?redirect=' + encodeURIComponent(this.props.router.query.redirect)
             : '';
 
-        const roomView = this.props.roomView;
-
-        const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
-        const AuthMechanism = roomView ? RoomAuthMechanism : WebSignUpAuthMechanism;
-        const Loader = roomView
-            ? () => (
-                  <XView height={150} position="relative">
-                      <XLoader loading={true} />
-                  </XView>
-              )
-            : () => <XLoader loading={!this.state.emailSent} />;
-
-        const MyCreateWithEmail = roomView ? RoomCreateWithEmail : WebSignUpCreateWithEmail;
-
-        const MyActivationCode = roomView ? RoomActivationCode : WebSignUpActivationCode;
-
         let pageMode: PageModeT = 'AuthMechanism';
 
         if (this.state.signInInvite) {
@@ -392,33 +362,27 @@ class SignInComponent extends React.Component<
         let linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
         let containerPath = (signin ? '/signup' : '/signin') + redirect;
-        let headerStyle: 'signin' | 'signup' | 'profile' | 'organization' = signin
-            ? 'signin'
-            : 'signup';
 
         if (isInvitePage) {
             containerPath = (isInvitePageSignin ? '/signin' : '/signup') + redirect;
-            headerStyle = isInvitePageSignin ? 'signup' : 'signin';
             signupText = isInvitePageSignin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
             linkText = isInvitePageSignin ? InitTexts.auth.signup : InitTexts.auth.signin;
         }
 
         return (
             <>
-                <Container
+                <WebSignUpContainer
                     showTerms={showTerms}
                     pageMode={pageMode}
                     text={signupText}
                     path={containerPath}
                     linkText={linkText}
-                    headerStyle={headerStyle}
                 >
                     {pageMode === 'SignInInvite' && (
                         <InviteInfo
                             variables={{
                                 inviteKey: this.props.router.query.redirect.split('/')[2],
                             }}
-                            signin={signin}
                             loginWithGoogle={this.loginWithGoogle}
                             loginWithEmail={this.loginWithEmail}
                             isInvitePageSignin={isInvitePageSignin}
@@ -429,7 +393,7 @@ class SignInComponent extends React.Component<
                             event={signin ? 'signin_view' : 'signup_view'}
                             key={signin ? 'signin-track' : 'signup-track'}
                         >
-                            <AuthMechanism
+                            <WebSignUpAuthMechanism
                                 signin={signin}
                                 loginWithGoogle={this.loginWithGoogle}
                                 loginWithEmail={this.loginWithEmail}
@@ -437,11 +401,11 @@ class SignInComponent extends React.Component<
                         </XTrack>
                     )}
 
-                    {pageMode === 'Loading' && <Loader />}
+                    {pageMode === 'Loading' && <XLoader loading={!this.state.emailSent} />}
 
                     {pageMode === 'CreateFromEmail' && (
                         <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
-                            <MyCreateWithEmail
+                            <WebSignUpCreateWithEmail
                                 signin={signin}
                                 emailError={this.state.emailError}
                                 emailChanged={this.emailValueChanged}
@@ -454,8 +418,7 @@ class SignInComponent extends React.Component<
 
                     {pageMode === 'ActivationCode' && (
                         <XTrack event="code_view">
-                            <MyActivationCode
-                                signin={signin}
+                            <WebSignUpActivationCode
                                 emailWasResend={this.state.emailWasResend}
                                 resendCodeClick={() => {
                                     trackEvent('code_resend_action');
@@ -489,7 +452,7 @@ class SignInComponent extends React.Component<
                             />
                         </XTrack>
                     )}
-                </Container>
+                </WebSignUpContainer>
             </>
         );
     }
@@ -512,11 +475,6 @@ export const SignInPage = (props: any) => {
         }
     }
 
-    let fromRoom: any = Cookie.get('x-openland-invite');
-    const isMobile = useIsMobile();
-    if (isMobile) {
-        fromRoom = false;
-    }
     const isSignInInvite = checkIfIsSignInInvite(props.router);
 
     let title;
@@ -541,7 +499,6 @@ export const SignInPage = (props: any) => {
                     <SignInComponent
                         redirect={redirect}
                         router={props.router}
-                        roomView={!!fromRoom}
                         isSignInInvite={isSignInInvite}
                     />
                 )}
