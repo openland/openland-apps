@@ -91,7 +91,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let hasText = !!(props.message.text);
     let hasUrlAug = !!augmenationAttach;
 
-    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji' && (props.message.attachments || []).length === 0;
+    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji' && (props.message.attachments || []).length === 0 && (props.message.reply || []).length === 0;
 
     let imageLayout;
     if (hasImage) {
