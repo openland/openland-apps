@@ -155,6 +155,7 @@ export const MediaCandidateMutation = typedMutation<Types.MediaCandidate, Types.
 export const ConferenceMediaWatchSubscription = typedSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables>(Conferences.ConferenceMediaWatchSubscription);
 export const ConferenceWatchSubscription = typedSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables>(Conferences.ConferenceWatchSubscription);
 export const AvailableRoomsQuery = typedQuery<Types.AvailableRooms, Types.AvailableRoomsVariables>(Explore.AvailableRoomsQuery);
+export const SuggestedRoomsQuery = typedQuery<Types.SuggestedRooms, {}>(Explore.SuggestedRoomsQuery);
 export const UserRoomsQuery = typedQuery<Types.UserRooms, Types.UserRoomsVariables>(Explore.UserRoomsQuery);
 export const UserAvailableRoomsQuery = typedQuery<Types.UserAvailableRooms, Types.UserAvailableRoomsVariables>(Explore.UserAvailableRoomsQuery);
 export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);

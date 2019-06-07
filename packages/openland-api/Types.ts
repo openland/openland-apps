@@ -47178,6 +47178,43 @@ export interface AvailableRoomsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: SuggestedRooms
+// ====================================================
+
+export interface SuggestedRooms_suggestedRooms_PrivateRoom {
+  __typename: "PrivateRoom";
+}
+
+export interface SuggestedRooms_suggestedRooms_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface SuggestedRooms_suggestedRooms_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: SuggestedRooms_suggestedRooms_SharedRoom_organization | null;
+}
+
+export type SuggestedRooms_suggestedRooms = SuggestedRooms_suggestedRooms_PrivateRoom | SuggestedRooms_suggestedRooms_SharedRoom;
+
+export interface SuggestedRooms {
+  suggestedRooms: SuggestedRooms_suggestedRooms[];
+  isDiscoverDone: boolean;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: UserRooms
 // ====================================================
 

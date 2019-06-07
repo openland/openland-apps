@@ -1,0 +1,20 @@
+query SuggestedRooms {
+  isDiscoverDone: betaIsDiscoverDone
+  suggestedRooms: betaSuggestedRooms {
+    __typename
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      photo
+      title
+    }
+  }
+}
