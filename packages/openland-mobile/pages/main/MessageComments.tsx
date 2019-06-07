@@ -105,7 +105,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         if (mention.__typename === 'User') {
             newText = inputText.substring(0, inputSelection.start - word.length) + '@' + mention.name + ' ' + inputText.slice(inputSelection.start);
         } else if (mention.__typename === 'AllMention') {
-            newText = inputText.substring(0, inputSelection.start - word.length) + '@all' + ' ' + inputText.slice(inputSelection.start);
+            newText = inputText.substring(0, inputSelection.start - word.length) + '@All' + ' ' + inputText.slice(inputSelection.start);
         }
 
         setInputText(newText);

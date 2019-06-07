@@ -202,7 +202,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         if (mention.__typename === 'User') {
             newText = text.substring(0, selection.start - word.length) + '@' + mention.name + ' ' + text.slice(selection.start);
         } else if (mention.__typename === 'AllMention') {
-            newText = text.substring(0, selection.start - word.length) + '@all' + ' ' + text.slice(selection.start);
+            newText = text.substring(0, selection.start - word.length) + '@All' + ' ' + text.slice(selection.start);
         }
 
         this.setState({
