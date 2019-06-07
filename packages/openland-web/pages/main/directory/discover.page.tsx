@@ -5,7 +5,6 @@ import { withApp } from 'openland-web/components/withApp';
 import { useClient } from 'openland-web/utils/useClient';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
-import { XView } from 'react-mental';
 
 const EmptyComponent = () => (
     <XView height="calc(100vh - 118px)" alignItems="center" justifyContent="center">
