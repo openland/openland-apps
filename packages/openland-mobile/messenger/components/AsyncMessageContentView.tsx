@@ -20,6 +20,7 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
+import { EmojiOnlyContent } from './content/EmojiOnlyContent';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
@@ -164,51 +165,18 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
     let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
-    if (props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji') {
-        return (
-            <ASFlex backgroundColor={theme.backgroundColor}>
-                <ASFlex flexDirection="column" alignItems="stretch" marginRight={props.message.isOut ? 6 : undefined}>
-                    {topContent}
 
-                    <ASFlex
-                        alignItems="flex-end"
-                        justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'}
-                        marginLeft={!props.message.isOut ? 2 : undefined}
-                    >
-                        <ASFlex
-                            flexDirection="row"
-                            height={14}
-                            backgroundColor={theme.reactionsBackground}
-                            borderRadius={4}
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            {props.message.isEdited && (
-                                <ASFlex width={10} height={10} marginTop={1} marginLeft={5} justifyContent="flex-start" alignItems="center">
-                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={props.message.isOut ? 0.7 : 0.5} />
-                                </ASFlex>
-                            )}
-                            <ASText
-                                marginLeft={3}
-                                marginRight={!props.message.isOut ? 3 : 0}
-                                fontSize={11}
-                                color={theme.reactionsColor}
-                                opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
-                            >
-                                {formatTime(props.message.date)}
-                            </ASText>
-                            {props.message.isOut && (
-                                <ASFlex width={13} height={13} marginLeft={3} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
-                                    {props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={0.7} />}
-                                    {!props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor={theme.reactionsColor} opacity={0.7} />}
-                                </ASFlex>
-                            )}
-                        </ASFlex>
-                    </ASFlex>
-                </ASFlex>
-            </ASFlex>
+    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji';
+    if (isEmojiOnly) {
+        return (
+            <EmojiOnlyContent
+                theme={theme}
+                content={topContent}
+                message={props.message}
+            />
         );
     }
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
             <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
