@@ -499,6 +499,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms | null {
         return this.useQuery(Source.AvailableRoomsQuery, variables, opts);
     }
+    async querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
+        return this.client.query(Source.SuggestedRoomsQuery, undefined, opts);
+    }
+    async refetchSuggestedRooms(): Promise<Types.SuggestedRooms> {
+        return this.refetch(Source.SuggestedRoomsQuery);
+    }
+    useSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms {
+        return this.useQuerySuspense(Source.SuggestedRoomsQuery, undefined, opts);
+    }
+    useWithoutLoaderSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms | null {
+        return this.useQuery(Source.SuggestedRoomsQuery, undefined, opts);
+    }
     async queryUserRooms(variables: Types.UserRoomsVariables, opts?: OperationParameters): Promise<Types.UserRooms> {
         return this.client.query(Source.UserRoomsQuery, variables, opts);
     }

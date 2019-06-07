@@ -6,7 +6,6 @@ import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
     query AvailableRooms($true: Boolean, $false: Boolean) {
-     
         availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {
             ... on SharedRoom {
                 id
@@ -52,7 +51,7 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        communities: alphaComunityPrefixSearch( first: 3) {
+        communities: alphaComunityPrefixSearch(first: 3) {
             edges {
                 node {
                     ...CommunitySearch
@@ -60,7 +59,28 @@ export const AvailableRoomsQuery = gql`
             }
         }
         isDiscoverDone: betaIsDiscoverDone
+    }
+    ${CommunitySearch}
+`;
 
+export const SuggestedRoomsQuery = gql`
+    query SuggestedRooms {
+        suggestedRooms: betaSuggestedRooms {
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                membersCount
+                membership
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+        }
+        isDiscoverDone: betaIsDiscoverDone
     }
     ${CommunitySearch}
 `;
@@ -135,15 +155,18 @@ export const GlobalSearchQuery = gql`
 
 export const DiscoverNextPageQuery = gql`
     query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
-        betaNextDiscoverPage(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {
-            chats{
+        betaNextDiscoverPage(
+            selectedTagsIds: $selectedTagsIds
+            excudedGroupsIds: $excudedGroupsIds
+        ) {
+            chats {
                 ...RoomShort
             }
-            tagGroup{
+            tagGroup {
                 id
                 title
                 subtitle
-                tags{
+                tags {
                     id
                     title
                 }

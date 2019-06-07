@@ -814,6 +814,13 @@
       }
     },
     {
+      "signature": "b14440700527dd9d0b0ae1efa2994d814a28b91e1cfcca1b4fc1cb5647f45ad6",
+      "document": "query SuggestedRooms{isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "metadata": {
+        "engineSignature": "query SuggestedRooms{betaIsDiscoverDone betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+      }
+    },
+    {
       "signature": "86cbd3c856d2d196c5401e653b65ea95134f86894a4e18d7bc1de48097a5567d",
       "document": "query UserRooms($after:ID,$limit:Int!){betaUserRooms(after:$after,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {

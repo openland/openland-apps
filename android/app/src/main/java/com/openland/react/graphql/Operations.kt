@@ -1904,6 +1904,26 @@ private val SettingsSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private val SuggestedRoomsSelector = obj(
+            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("id","id", notNull(scalar("ID"))),
+                        field("kind","kind", notNull(scalar("String"))),
+                        field("membersCount","membersCount", scalar("Int")),
+                        field("membership","membership", notNull(scalar("String"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
+                        field("photo","photo", notNull(scalar("String"))),
+                        field("title","title", notNull(scalar("String")))
+                    ))
+                )))))
+        )
 private val SuperAccountSelector = obj(
             field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3131,6 +3151,12 @@ object Operations {
         override val body = "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsSelector
     }
+    val SuggestedRooms = object: OperationDefinition {
+        override val name = "SuggestedRooms"
+        override val kind = OperationKind.QUERY
+        override val body = "query SuggestedRooms{isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        override val selector = SuggestedRoomsSelector
+    }
     val SuperAccount = object: OperationDefinition {
         override val name = "SuperAccount"
         override val kind = OperationKind.QUERY
@@ -3889,6 +3915,7 @@ object Operations {
         if (name == "RoomWithoutMembers") return RoomWithoutMembers
         if (name == "Rooms") return Rooms
         if (name == "Settings") return Settings
+        if (name == "SuggestedRooms") return SuggestedRooms
         if (name == "SuperAccount") return SuperAccount
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
