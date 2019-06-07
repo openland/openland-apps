@@ -32,7 +32,6 @@ interface AdminToolsProps {
     setPublished: (e: boolean) => void;
     setEditorial: (e: boolean) => void;
     setFeatured: (e: boolean) => void;
-    // setSuperAccountId: (e: string) => void;
 }
 
 const AdminTools = (props: AdminToolsProps) => {
@@ -46,7 +45,6 @@ const AdminTools = (props: AdminToolsProps) => {
     const activated = data.superAccount.state === 'ACTIVATED';
     if (props.activated === null) {
         props.setActivated(activated);
-        // props.setSuperAccountId(data.superAccount.id);
     }
     return (
         <XView>
@@ -56,7 +54,6 @@ const AdminTools = (props: AdminToolsProps) => {
                         label="Activated"
                         checked={props.activated || false}
                         disabled={true}
-                        // onChange={() => props.setActivated(!props.activated)}
                     />
                 </XView>
                 <XView flexGrow={1} flexShrink={0} width={240}>
@@ -121,6 +118,8 @@ const EditCommunityEntity = (props: {
 }) => {
     const [newPhoto, setNewPhoto] = React.useState<UploadedFile | null>(null);
     const [savingData, setSavingData] = React.useState(false);
+    const [saveIsDone, setSaveIsDone] = React.useState(false);
+    const [saveShortNameIsDone, setSaveShortNameIsDone] = React.useState(false);
     const [savingShortName, setSavingShortName] = React.useState(false);
     const [nameError, setNameError] = React.useState<string | null>(null);
     const [shortNameError, setShortNameError] = React.useState<string | null>(null);
@@ -136,7 +135,6 @@ const EditCommunityEntity = (props: {
     const [featured, setFeatured] = React.useState(org.featured);
     const [editorial, setEditorial] = React.useState(org.editorial);
     const [published, setPublished] = React.useState(org.published);
-    // const [superAccountId, setSuperAccountId] = React.useState<null | string>(null);
     // end super account
 
     const form = useForm();
@@ -157,51 +155,57 @@ const EditCommunityEntity = (props: {
         setNewPhoto(file);
     };
 
-    const setShortName = async (shortname: string) => {
+    const setShortName = async (shortname: string, globalSave: boolean) => {
         setShortNameError(null);
-        await setSavingShortName(true);
+        let error = false;
+        if (!globalSave) {
+            await setSavingShortName(true);
+        }
         try {
             await client.mutateSetOrgShortname({ shortname: shortname, organizationId });
             await client.refetchOrganization({ organizationId });
             await client.refetchOrganizationProfile({ organizationId });
         } catch (e) {
+            error = true;
             setShortNameError(formatError(e));
             setTimeout(() => {
                 setShortNameError(null);
             }, 1500);
         }
-        await setTimeout(() => {
+        if (!globalSave && error) {
             setSavingShortName(false);
-        }, 500);
+            setSaveShortNameIsDone(false);
+        }
+        if (!globalSave && !error) {
+            await setTimeout(() => {
+                setSaveShortNameIsDone(true);
+                setTimeout(() => {
+                    setSavingShortName(false);
+                    setSaveShortNameIsDone(false);
+                }, 1000);
+            }, 1000);
+        }
     };
 
     const closeModal = async () => {
-        await setSavingData(false);
         await setTimeout(() => {
-            props.modalCtx.hide();
-        }, 500);
+            setSavingData(false);
+            setSaveIsDone(true);
+            setTimeout(() => {
+                props.modalCtx.hide();
+            }, 1000);
+        }, 1000);
     };
 
     const updateOrganizaton = async ({ input }: { input: UpdateOrganizationProfileInput }) => {
         await setSavingData(true);
-        // if (activated !== null && superAccountId) {
-        //     if (activated) {
-        //         await client.mutateSuperAccountActivate({
-        //             accountId: superAccountId,
-        //         });
-        //     } else {
-        //         await client.mutateSuperAccountPend({
-        //             accountId: superAccountId,
-        //         });
-        //     }
-        // }
         try {
             await client.mutateUpdateOrganization({ input, organizationId });
             await client.refetchOrganization({ organizationId });
             await client.refetchOrganizationProfile({ organizationId });
 
             if (shortNameField.value && shortNameField.value !== org.shortname) {
-                await setShortName(shortNameField.value);
+                await setShortName(shortNameField.value, true);
             }
             await closeModal();
         } catch (e) {
@@ -350,11 +354,11 @@ const EditCommunityEntity = (props: {
                                 />
                             </XView>
                             <ShortNameButton
-                                loading={savingShortName}
-                                text="Save"
+                                loading={savingShortName && !saveShortNameIsDone}
+                                text={saveShortNameIsDone ? 'Done!' : 'Save'}
                                 flexShrink={0}
-                                style="primary"
-                                onClick={() => setShortName(shortNameField.value)}
+                                style={saveShortNameIsDone ? 'success' : 'primary'}
+                                onClick={() => setShortName(shortNameField.value, false)}
                             />
                         </XView>
                         {!shortNameError && (
@@ -390,7 +394,6 @@ const EditCommunityEntity = (props: {
                             setEditorial={setEditorial}
                             setPublished={setPublished}
                             setFeatured={setFeatured}
-                            // setSuperAccountId={setSuperAccountId}
                         />
                     </XWithRole>
                 </XView>
@@ -406,10 +409,10 @@ const EditCommunityEntity = (props: {
                         <CloseButton text="Cancel" size="large" onClick={props.modalCtx.hide} />
                     </XView>
                     <XButton
-                        loading={savingData}
-                        text={'save'}
+                        loading={savingData && !saveIsDone}
+                        text={saveIsDone ? 'Done!' : 'Save'}
                         size="large"
-                        style={'primary'}
+                        style={saveIsDone ? 'success' : 'primary'}
                         onClick={() =>
                             updateOrganizaton({
                                 input: {
