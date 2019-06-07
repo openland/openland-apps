@@ -15,6 +15,7 @@ import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
+import { EditCommunity } from './pages/main/EditCommunity';
 import { PhoneVerify, CountryPicker } from './pages/auth/PhoneVerify';
 import { SignupUser } from './pages/auth/SignupUser';
 import { SignupOrg } from './pages/auth/SignupOrg';
@@ -62,6 +63,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('SettingsAppearance', SettingsAppearance)
   .addRoute('NewOrganization', NewOrganization)
+  .addRoute('EditCommunity', EditCommunity)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('FilePreview', FilePreview)
   .addRoute('PhoneVerify', PhoneVerify)

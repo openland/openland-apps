@@ -47168,11 +47168,6 @@ export interface AvailableRooms {
   isDiscoverDone: boolean;
 }
 
-export interface AvailableRoomsVariables {
-  true?: boolean | null;
-  false?: boolean | null;
-}
-
 /* tslint:disable */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -49458,6 +49453,8 @@ export interface UpdateOrganization_updateOrganizationProfile {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 export interface UpdateOrganization {
@@ -53573,6 +53570,8 @@ export interface OrganizationProfile_organizationProfile {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 export interface OrganizationProfile {
@@ -59969,6 +59968,8 @@ export interface OrganizationProfileFull {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 /* tslint:disable */

@@ -762,8 +762,10 @@ private val OrganizationMediumSelector = obj(
 private val OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
+            field("alphaEditorial","editorial", notNull(scalar("Boolean"))),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
             field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
+            field("alphaPublished","published", notNull(scalar("Boolean"))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
@@ -1136,7 +1138,7 @@ private val AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", refValue("false")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1153,7 +1155,7 @@ private val AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", refValue("true")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -2830,7 +2832,7 @@ object Operations {
     val AvailableRooms = object: OperationDefinition {
         override val name = "AvailableRooms"
         override val kind = OperationKind.QUERY
-        override val body = "query AvailableRooms(\$false:Boolean,\$true:Boolean){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:\$false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:\$true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}"
+        override val body = "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}"
         override val selector = AvailableRoomsSelector
     }
     val ChatHistory = object: OperationDefinition {
@@ -2992,7 +2994,7 @@ object Operations {
     val OrganizationProfile = object: OperationDefinition {
         override val name = "OrganizationProfile"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = OrganizationProfileSelector
     }
     val OrganizationPublicInvite = object: OperationDefinition {
@@ -3778,7 +3780,7 @@ object Operations {
     val UpdateOrganization = object: OperationDefinition {
         override val name = "UpdateOrganization"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = UpdateOrganizationSelector
     }
     val UpdateWelcomeMessage = object: OperationDefinition {

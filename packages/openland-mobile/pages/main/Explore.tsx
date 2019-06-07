@@ -22,7 +22,7 @@ const RoomsList = (props: { router: SRouter }) => {
     let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
     let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
 
-    let rooms = getClient().useAvailableRooms({ true: true, false: false });
+    let rooms = getClient().useAvailableRooms();
     let availableChats = rooms.availableChats || [];
     let availableChannels = rooms.availableChannels || [];
     let suggestedRooms = rooms.suggestedRooms || [];

@@ -1,8 +1,10 @@
 fragment OrganizationProfileFull on OrganizationProfile {
   __typename
   about
+  editorial: alphaEditorial
   featured: alphaFeatured
   private: alphaIsPrivate
+  published: alphaPublished
   facebook
   id
   linkedin
