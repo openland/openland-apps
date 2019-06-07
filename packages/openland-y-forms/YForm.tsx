@@ -128,7 +128,7 @@ class YFormController extends React.PureComponent<YFormControllerProps, { loadin
             } else {
                 let error = formatError(e);
                 if (error) {
-                    Alert.alert(error);
+                    Alert.builder().title(error).button('GOT IT!').show();
                 }
             }
         } finally {

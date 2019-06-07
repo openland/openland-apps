@@ -112,7 +112,11 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             let builder = new ActionSheetBuilder();
 
             if (organization.isOwner || organization.isAdmin) {
-                builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
+                if (organization.isCommunity) {
+                    builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }));
+                } else {
+                    builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
+                }
             }
 
             if (canMakePrimary) {
