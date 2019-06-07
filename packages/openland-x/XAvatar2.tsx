@@ -72,7 +72,16 @@ const AvatarImage = (props: XAvatar2Props) => {
         (size * 2 + 'x' + size * 2) +
         '/center/-/quality/lighter/-/progressive/yes/ 2x';
 
-    return <XImage width="100%" height="100%" src={baseUrl + ops} srcSet={baseUrl + opsRetina} />;
+    return (
+        <XImage
+            width="100%"
+            height="100%"
+            src={baseUrl + ops}
+            srcSet={baseUrl + opsRetina}
+            borderRadius="100%"
+            overflow="hidden"
+        />
+    );
 };
 
 const OnlineDot74 = () => (
