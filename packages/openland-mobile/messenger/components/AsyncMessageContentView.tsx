@@ -91,6 +91,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let hasText = !!(props.message.text);
     let hasUrlAug = !!augmenationAttach;
 
+    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji';
+
     let imageLayout;
     if (hasImage) {
         imageLayout = layoutImage(fileAttach!.fileMetadata, maxSize);
@@ -129,7 +131,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         bottomContent = [];
     }
 
-    if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
+    if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
         topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + props.theme.linkColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.theme.linkColor}>{props.message.senderName}</ASText>);
     }
 
@@ -144,7 +146,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         imageLayout,
         imageOnly,
         richAttachImageLayout,
-        richAttachIsCompact
+        richAttachIsCompact,
+        isEmojiOnly
     }
 }
 
@@ -161,12 +164,12 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         imageLayout,
         richAttachImageLayout,
         bottomContent,
-        richAttachIsCompact
+        richAttachIsCompact,
+        isEmojiOnly
     } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
     let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
 
-    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji';
     if (isEmojiOnly) {
         return (
             <EmojiOnlyContent
