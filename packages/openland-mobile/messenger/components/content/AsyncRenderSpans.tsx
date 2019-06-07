@@ -57,7 +57,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                         {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
-                                color={mainTextColor}
+                                color={c.type === 'emoji' ? theme.textColor : mainTextColor}
                                 fontStyle={fontStyle}
                                 fontSize={c.type === 'emoji' ? 48 : (c.type === 'loud' ? 20 : 16)}
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
