@@ -5,7 +5,11 @@ import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
-import { WebSignUpContainer, CreateOrganizationFormInner } from './components/SignComponents';
+import {
+    WebSignUpContainer,
+    RoomSignupContainer,
+    CreateOrganizationFormInner,
+} from './components/SignComponents';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -51,6 +55,7 @@ const OrganizationsSelectorOptionsFetcher = (props: {
 class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
         organizations: any;
+        roomView: any;
         onPrefixChanges: any;
         createOrganization: any;
         router: any;
@@ -66,7 +71,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     }
 
     render() {
-        const { organizations, onPrefixChanges, createOrganization, router } = this.props;
+        const { organizations, roomView, onPrefixChanges, createOrganization, router } = this.props;
 
         const fetchedOrPrevOrganizations = organizations.loading
             ? this.state.lastLoadedOrganizations
@@ -75,6 +80,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
             <CreateOrganizationFormInner
                 organizations={fetchedOrPrevOrganizations}
                 onPrefixChanges={onPrefixChanges}
+                roomView={roomView}
                 defaultAction={async (data: any) => {
                     let result = await createOrganization({
                         variables: {
@@ -127,8 +133,13 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
     };
 
     render() {
+        const props = this.props;
+        const roomView = props.roomView;
+
+        const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
+
         return (
-            <WebSignUpContainer pageMode="CreateOrganization">
+            <Container pageMode="CreateOrganization">
                 <React.Suspense fallback={<XLoader />}>
                     <OrganizationsSelectorOptionsFetcher
                         variables={{
@@ -143,7 +154,7 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
                         {this.renderOrganizationsSelectorOptionsFetcherInner}
                     </OrganizationsSelectorOptionsFetcher>
                 </React.Suspense>
-            </WebSignUpContainer>
+            </Container>
         );
     }
 }

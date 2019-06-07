@@ -7,7 +7,11 @@ import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import * as Cookie from 'js-cookie';
-import { WebSignUpContainer, CreateProfileFormInner } from './components/SignComponents';
+import {
+    WebSignUpContainer,
+    RoomSignupContainer,
+    CreateProfileFormInner,
+} from './components/SignComponents';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { useClient } from 'openland-web/utils/useClient';
 
@@ -34,10 +38,12 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
         await client.refetchAccount();
     };
 
+    const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
+
     const prefill = usePhotoPrefill ? data.prefill : null;
 
     return (
-        <WebSignUpContainer pageMode="CreateProfile">
+        <Container pageMode="CreateProfile">
             <CreateProfileFormInner
                 {...{
                     roomView,
@@ -51,7 +57,7 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
                     },
                 }}
             />
-        </WebSignUpContainer>
+        </Container>
     );
 };
 
