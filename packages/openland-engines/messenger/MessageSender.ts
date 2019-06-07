@@ -61,7 +61,8 @@ export class MessageSender {
     sendFile(
         conversationId: string,
         file: UploadingFile,
-        callback: MessageSendHandler
+        callback: MessageSendHandler,
+        quoted?: string[]
     ) {
         console.log('MessageSender sendFile');
         let key = UUID();
@@ -91,7 +92,7 @@ export class MessageSender {
             this.doSendMessage({
                 fileAttachments: [{ fileId: this.uploadedFiles.get(key)!! }],
                 mentions: null,
-                replyMessages: null,
+                replyMessages: quoted || null,
                 message: null,
                 conversationId,
                 key,

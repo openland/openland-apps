@@ -357,7 +357,15 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendFile = (file: UploadingFile) => {
-        let key = this.engine.sender.sendFile(this.conversationId, file, this);
+        let messagesActionsState = this.messagesActionsState.getState();
+        let quoted;
+
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsState.getState().messages;
+            this.messagesActionsState.clear();
+        }
+
+        let key = this.engine.sender.sendFile(this.conversationId, file, this, (quoted || []).map(q => q.id!));
         (async () => {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
@@ -372,7 +380,8 @@ export class ConversationEngine implements MessageSendHandler {
                 message: null,
                 failed: false,
                 isImage: !!info.isImage,
-                imageSize: info.imageSize
+                imageSize: info.imageSize,
+                quoted
             } as PendingMessage;
             console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
