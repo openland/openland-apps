@@ -49458,6 +49458,8 @@ export interface UpdateOrganization_updateOrganizationProfile {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 export interface UpdateOrganization {
@@ -53573,6 +53575,8 @@ export interface OrganizationProfile_organizationProfile {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 export interface OrganizationProfile {
@@ -59969,6 +59973,8 @@ export interface OrganizationProfileFull {
   shortname: string | null;
   private: boolean;
   featured: boolean;
+  published: boolean;
+  editorial: boolean;
 }
 
 /* tslint:disable */

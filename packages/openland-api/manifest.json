@@ -905,10 +905,10 @@
       }
     },
     {
-      "signature": "eb0f5401698c00091a1b65b77cae1a4469eeee5d7aff6966c98f526cb3169332",
-      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}",
+      "signature": "3d2b2baac7a0a14cfdd7a2b1b0a3f49a6b285d9293ea0636a60d34c9ccac519e",
+      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}"
+        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaEditorial alphaFeatured alphaIsPrivate alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(id:$organizationId,input:$input){__typename...OrganizationProfileFull}}"
       }
     },
     {
@@ -947,10 +947,10 @@
       }
     },
     {
-      "signature": "f0033c100186ba7366604f07cd502b5a9c299585683f28a9d3445025b317219a",
-      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}",
+      "signature": "bca75ff3b865af8652b085a51a8005f5beb6cd9cf6340ac284ebc81ebb58e46c",
+      "document": "fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaFeatured alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}"
+        "engineSignature": "fragment OrganizationProfileFull on OrganizationProfile{__typename about alphaEditorial alphaFeatured alphaIsPrivate alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename...OrganizationProfileFull}}"
       }
     },
     {

@@ -23,5 +23,7 @@ export const OrganizationProfileFull = gql`
         shortname
         private: alphaIsPrivate
         featured: alphaFeatured
+        published: alphaPublished
+        editorial: alphaEditorial
     }
 `;

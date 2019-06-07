@@ -762,8 +762,10 @@ private val OrganizationMediumSelector = obj(
 private val OrganizationProfileFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
+            field("alphaEditorial","editorial", notNull(scalar("Boolean"))),
             field("alphaFeatured","featured", notNull(scalar("Boolean"))),
             field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
+            field("alphaPublished","published", notNull(scalar("Boolean"))),
             field("facebook","facebook", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("linkedin","linkedin", scalar("String")),
@@ -2992,7 +2994,7 @@ object Operations {
     val OrganizationProfile = object: OperationDefinition {
         override val name = "OrganizationProfile"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = OrganizationProfileSelector
     }
     val OrganizationPublicInvite = object: OperationDefinition {
@@ -3778,7 +3780,7 @@ object Operations {
     val UpdateOrganization = object: OperationDefinition {
         override val name = "UpdateOrganization"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured private:alphaIsPrivate facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+        override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = UpdateOrganizationSelector
     }
     val UpdateWelcomeMessage = object: OperationDefinition {

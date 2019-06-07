@@ -19,7 +19,61 @@ import { CommunityType } from '../../mail/createEntity';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { UpdateOrganizationProfileInput } from 'openland-api/Types';
 import { formatError } from 'openland-x-forms/errorHandling';
-// import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XCheckbox } from 'openland-x/XCheckbox';
+
+interface AdminToolsProps {
+    id: string;
+    published: boolean;
+    editorial: boolean;
+    featured: boolean;
+    activated: boolean | null;
+    setActivated: (e: boolean) => void;
+    setPublished: (e: boolean) => void;
+    setEditorial: (e: boolean) => void;
+    setFeatured: (e: boolean) => void;
+    // setSuperAccountId: (e: string) => void;
+}
+
+const AdminTools = (props: AdminToolsProps) => {
+    const client = useClient();
+
+    const data = client.useWithoutLoaderSuperAccount({ accountId: props.id, viaOrgId: true });
+
+    if (!(data && data.superAccount)) {
+        return null;
+    }
+    const activated = data.superAccount.state === 'ACTIVATED';
+    if (props.activated === null) {
+        props.setActivated(activated);
+        // props.setSuperAccountId(data.superAccount.id);
+    }
+    return (
+        <XView>
+            <XCheckbox
+                label="Activated"
+                checked={props.activated || false}
+                disabled={true}
+                // onChange={() => props.setActivated(!props.activated)}
+            />
+            <XCheckbox
+                label="Featured"
+                checked={props.featured}
+                onChange={() => props.setFeatured(!props.featured)}
+            />
+            <XCheckbox
+                label="Published"
+                checked={props.published}
+                onChange={() => props.setPublished(!props.published)}
+            />
+            <XCheckbox
+                label="Editorial"
+                checked={props.editorial}
+                onChange={() => props.setEditorial(!props.editorial)}
+            />
+        </XView>
+    );
+};
 
 const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
     width: 120,
@@ -59,6 +113,14 @@ const EditCommunityEntity = (props: {
     const data = client.useOrganizationProfile({ organizationId });
 
     const org = data.organizationProfile;
+
+    // super account
+    const [activated, setActivated] = React.useState<null | boolean>(null);
+    const [featured, setFeatured] = React.useState(org.featured);
+    const [editorial, setEditorial] = React.useState(org.editorial);
+    const [published, setPublished] = React.useState(org.published);
+    // const [superAccountId, setSuperAccountId] = React.useState<null | string>(null);
+    // end super account
 
     const form = useForm();
     const nameField = useField('input.name', org.name, form);
@@ -105,6 +167,17 @@ const EditCommunityEntity = (props: {
 
     const updateOrganizaton = async ({ input }: { input: UpdateOrganizationProfileInput }) => {
         await setSavingData(true);
+        // if (activated !== null && superAccountId) {
+        //     if (activated) {
+        //         await client.mutateSuperAccountActivate({
+        //             accountId: superAccountId,
+        //         });
+        //     } else {
+        //         await client.mutateSuperAccountPend({
+        //             accountId: superAccountId,
+        //         });
+        //     }
+        // }
         try {
             await client.mutateUpdateOrganization({ input, organizationId });
             await client.refetchOrganization({ organizationId });
@@ -239,11 +312,23 @@ const EditCommunityEntity = (props: {
                         )}
                     </XView>
                     {/*SUPER ADMIN*/}
-                    {/*<XWithRole role={['super-admin', 'editor']}>*/}
-                    {/*    <XView fontSize={18} fontWeight="600" marginBottom={16}>*/}
-                    {/*        Superadmin*/}
-                    {/*    </XView>*/}
-                    {/*</XWithRole>*/}
+                    <XWithRole role={['super-admin', 'editor']}>
+                        <XView fontSize={18} fontWeight="600" marginBottom={16}>
+                            Superadmin
+                        </XView>
+                        <AdminTools
+                            id={props.id}
+                            activated={activated}
+                            editorial={editorial}
+                            published={published}
+                            featured={featured}
+                            setActivated={setActivated}
+                            setEditorial={setEditorial}
+                            setPublished={setPublished}
+                            setFeatured={setFeatured}
+                            // setSuperAccountId={setSuperAccountId}
+                        />
+                    </XWithRole>
                 </XView>
             </XScrollView3>
             <XView marginTop={34} backgroundColor="#f4f4f4">
@@ -267,6 +352,12 @@ const EditCommunityEntity = (props: {
                                     twitter: twitterField.value,
                                     facebook: facebookField.value,
                                     linkedin: linkedinField.value,
+                                    alphaFeatured:
+                                        featured !== org.featured ? featured : org.featured,
+                                    alphaPublished:
+                                        published !== org.published ? published : org.published,
+                                    alphaEditorial:
+                                        editorial !== org.editorial ? editorial : org.editorial,
                                     alphaIsPrivate:
                                         typeField.value === CommunityType.COMMUNITY_PRIVATE,
                                     photoRef: newPhoto
@@ -298,6 +389,6 @@ const EditCommunityEntity = (props: {
 };
 
 export const EditCommunityModal = (id: string, isCommunity: boolean) =>
-    showModalBox({ title: 'Edit community' }, ctx => {
+    showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
         return <EditCommunityEntity id={id} modalCtx={ctx} isCommunity={isCommunity} />;
     });
