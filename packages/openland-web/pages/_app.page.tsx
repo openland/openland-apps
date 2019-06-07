@@ -103,13 +103,13 @@ export default withData(
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
-                                                <XView justifyContent="center" width="50%">
+                                                {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
-                                                </XView>
+                                                </XView> */}
                                                 {/* <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
                                                 </XView> */}
-                                                {/* <Component {...pageProps} /> */}
+                                                <Component {...pageProps} />
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>

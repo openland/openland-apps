@@ -15,6 +15,7 @@ export interface DesktopMessageContainerProps {
     message: DataSourceWebMessageItem;
     conversationId: string;
     compact: boolean;
+    isCommentNotification?: boolean;
     isModal?: boolean;
     isPinned?: boolean;
     commentDepth?: number;
@@ -150,8 +151,8 @@ const NotCompactMessageContainerWrapper = ({
             marginBottom={-3}
             paddingTop={10}
             paddingBottom={5}
-            paddingLeft={20}
-            paddingRight={20}
+            // paddingLeft={20}
+            // paddingRight={20}
             borderRadius={4}
             onClick={onClick}
         >
@@ -245,6 +246,63 @@ const DeletedCommentAvatar = () => {
     );
 };
 
+const Preambula = ({
+    compact,
+    sender,
+    date,
+    deleted,
+    isComment,
+    commentDepth,
+    userPopperRef,
+    hover,
+}: {
+    compact: any;
+    sender: any;
+    date: any;
+    deleted: any;
+    isComment: boolean;
+    commentDepth: number;
+    hover: boolean;
+    userPopperRef: any;
+}) => {
+    let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
+
+    if (isComment) {
+        PreambulaContainer = NotCompactNotDeepPreambulaContainer;
+        if (commentDepth && commentDepth > 0) {
+            PreambulaContainer = NotCompactDeepPreambulaContainer;
+        }
+    }
+
+    return (
+        <PreambulaContainer>
+            {!compact ? (
+                deleted ? (
+                    <DeletedCommentAvatar />
+                ) : (
+                    <UserPopper
+                        isMe={sender.isYou}
+                        startSelected={false}
+                        user={sender}
+                        ref={userPopperRef}
+                    >
+                        <XAvatar2
+                            id={sender.id}
+                            title={sender.name}
+                            src={sender.photo}
+                            size={commentDepth && commentDepth > 0 ? 26 : 36}
+                        />
+                    </UserPopper>
+                )
+            ) : (
+                <XView lineHeight="23px">
+                    {hover && <XDate value={date.toString()} format="time" />}
+                </XView>
+            )}
+        </PreambulaContainer>
+    );
+};
+
 export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
@@ -306,36 +364,37 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         }
     }
 
-    const preambula = React.useMemo(
-        () => (
-            <PreambulaContainer>
-                {!compact ? (
-                    deleted ? (
-                        <DeletedCommentAvatar />
-                    ) : (
-                        <UserPopper
-                            isMe={props.sender.isYou}
-                            startSelected={false}
-                            user={props.sender}
-                            ref={userPopperRef}
-                        >
-                            <XAvatar2
-                                id={sender.id}
-                                title={sender.name}
-                                src={sender.photo}
-                                size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
-                            />
-                        </UserPopper>
-                    )
-                ) : (
-                    <XView lineHeight="23px">
-                        {hover && <XDate value={date.toString()} format="time" />}
-                    </XView>
-                )}
-            </PreambulaContainer>
-        ),
-        [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
-    );
+    const preambula = <Preambula sender={props.sender} date={props.date} hover={hover} />;
+    // React.useMemo(
+    //     () => (
+    //         <PreambulaContainer>
+    //             {!compact ? (
+    //                 deleted ? (
+    //                     <DeletedCommentAvatar />
+    //                 ) : (
+    //                     <UserPopper
+    //                         isMe={props.sender.isYou}
+    //                         startSelected={false}
+    //                         user={props.sender}
+    //                         ref={userPopperRef}
+    //                     >
+    //                         <XAvatar2
+    //                             id={sender.id}
+    //                             title={sender.name}
+    //                             src={sender.photo}
+    //                             size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
+    //                         />
+    //                     </UserPopper>
+    //                 )
+    //             ) : (
+    //                 <XView lineHeight="23px">
+    //                     {hover && <XDate value={date.toString()} format="time" />}
+    //                 </XView>
+    //             )}
+    //         </PreambulaContainer>
+    //     ),
+    //     [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
+    // );
 
     const notCompactHeader =
         !props.compact &&
@@ -487,6 +546,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                 hover={hover}
                 deleted={deleted}
                 message={props.message}
+                isCommentNotification={!!props.isCommentNotification}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}
                 selectMessage={props.selectMessage}

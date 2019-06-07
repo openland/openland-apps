@@ -146,6 +146,7 @@ interface MenuProps {
     message: DataSourceWebMessageItem;
     isModal: boolean;
     isComment: boolean;
+    isCommentNotification: boolean;
     hover: boolean;
     selectMessage: () => void;
     room?: RoomChat_room;
@@ -160,6 +161,7 @@ export const Menu = React.memo(
         deleted,
         isModal,
         isComment,
+        isCommentNotification,
         selectMessage,
         room,
     }: MenuProps) => {
@@ -220,6 +222,78 @@ export const Menu = React.memo(
             pinMessageAccess = true;
         }
         const isChannel = sharedRoom && sharedRoom.isChannel;
+        let contentElem;
+
+        if (isCommentNotification) {
+            contentElem = (
+                <>
+                    <XMenuItem
+                        onClick={(e: any) => {
+                            console.log('Unfollow this thread');
+                        }}
+                    >
+                        Unfollow this thread
+                    </XMenuItem>
+
+                    <XMenuItem
+                        onClick={(e: any) => {
+                            console.log('Remove this notification');
+                        }}
+                    >
+                        Remove this notification
+                    </XMenuItem>
+                </>
+            );
+        } else {
+            contentElem = (
+                <>
+                    {out && !deleted && (
+                        <XMenuItem
+                            onClick={(e: any) => {
+                                setEditMessage(e);
+                                setShowMenu(false);
+                            }}
+                        >
+                            Edit
+                        </XMenuItem>
+                    )}
+                    <XMenuItem
+                        onClick={(e: any) => {
+                            setReplyMessages(e);
+                            setShowMenu(false);
+                        }}
+                    >
+                        Reply
+                    </XMenuItem>
+                    {pinMessageAccess && message.id && room && (
+                        <PinMessageButton
+                            variables={{
+                                chatId: room.id,
+                                messageId: message.id,
+                            }}
+                            onSuccess={() => setShowMenu(false)}
+                        />
+                    )}
+                    <XMenuItem
+                        onClick={() => {
+                            setShowMenu(false);
+                            selectMessage();
+                            messagesContext.forwardMessages();
+                        }}
+                    >
+                        Forward
+                    </XMenuItem>
+                    {message.id && out && (
+                        <XMenuItem
+                            style="danger"
+                            onClick={() => ShowDeleteMessageModal(message.id!!)}
+                        >
+                            Delete
+                        </XMenuItem>
+                    )}
+                </>
+            );
+        }
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
             return (
@@ -241,10 +315,10 @@ export const Menu = React.memo(
                                     reactions={message.reactions}
                                 />
                             )}
-                            {!isComment && hover && (
+                            {!isComment && !isCommentNotification && hover && (
                                 <MessageReactionButton messageId={message.id!} />
                             )}
-                            {hover && !isComment && !isChannel && (
+                            {hover && !isCommentNotification && !isComment && !isChannel && (
                                 <CommentsIconWrapper onClick={commentsClick}>
                                     <CommentIcon />
                                 </CommentsIconWrapper>
@@ -264,56 +338,7 @@ export const Menu = React.memo(
                                             opacity={hover || showMenu ? 1 : 0}
                                         />
                                     }
-                                    content={
-                                        <>
-                                            {out && !deleted && (
-                                                <XMenuItem
-                                                    onClick={(e: any) => {
-                                                        setEditMessage(e);
-                                                        setShowMenu(false);
-                                                    }}
-                                                >
-                                                    Edit
-                                                </XMenuItem>
-                                            )}
-                                            <XMenuItem
-                                                onClick={(e: any) => {
-                                                    setReplyMessages(e);
-                                                    setShowMenu(false);
-                                                }}
-                                            >
-                                                Reply
-                                            </XMenuItem>
-                                            {pinMessageAccess && message.id && room && (
-                                                <PinMessageButton
-                                                    variables={{
-                                                        chatId: room.id,
-                                                        messageId: message.id,
-                                                    }}
-                                                    onSuccess={() => setShowMenu(false)}
-                                                />
-                                            )}
-                                            <XMenuItem
-                                                onClick={() => {
-                                                    setShowMenu(false);
-                                                    selectMessage();
-                                                    messagesContext.forwardMessages();
-                                                }}
-                                            >
-                                                Forward
-                                            </XMenuItem>
-                                            {message.id && out && (
-                                                <XMenuItem
-                                                    style="danger"
-                                                    onClick={() =>
-                                                        ShowDeleteMessageModal(message.id!!)
-                                                    }
-                                                >
-                                                    Delete
-                                                </XMenuItem>
-                                            )}
-                                        </>
-                                    }
+                                    content={contentElem}
                                 />
                             )}
                         </XHorizontal>

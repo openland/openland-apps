@@ -1,99 +1,92 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { MessageListComponent } from 'openland-web/components/messenger/view/MessageListComponent';
+import UUID from 'uuid/v4';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
 
-const testMessages = [
+// add attaches document/photo
+const users = ['Ada Poole', 'Isaiah Schultz', 'Stanley Hughes', 'Dora Becker'];
+
+const messages = [
+    'With 13 state-of-the-art ski lifts and a selection of choices for both snowboarders and skiers Tremblant attained its reputation through daring, varied runs catering',
+    'Tremblant is based in Canada and has over 90 runs servicing millions of skiers each year',
+    'Maui hotel or Maui condo? It’s the burning question on everyones mind! What should you do? Maui hotel? Maui condo? Which should you choose?',
+    'show me',
+    'Stu Unger is one of the biggest superstars to have immerged from the professional poker world. Besides being a true poker genius and a three time World Series of Poker champion',
+];
+
+const chats = ['Friends of Openland', 'Isaiah Schultz', 'YC Applicants help', 'Dora Becker'];
+
+const commentedOn = [
+    'Hi everybody!',
+    'how to improve your playing quality and even overall under and more some text later',
+    'Families traveling with kids will find Amboseli national and more some text later',
+    'Maui hotel or Maui condo? It’s the burning question on everyt and more some text later',
+    'Stu Unger is one of the biggest superstars to have immigr and more some text later',
+];
+
+const senders = [
     {
-        chatId: '61MyVnm7k3IlVW0xzRdAH3k4r5',
-        type: 'message',
-        id: 'jZOxeaJxrqiLgQdBbQKWhKm9Lj',
-        key: 'jZOxeaJxrqiLgQdBbQKWhKm9Lj',
-        date: 1559737819432,
-        isOut: false,
-        senderId: 'qlO16E1R0xIj6R14MjqXhW5PXQ',
-        senderName: 'Coke',
-        senderPhoto:
-            'https://ucarecdn.com/026ae882-e177-4243-bb14-b6761db79fdd/-/crop/488x488/0,0/',
-        sender: {
-            id: 'qlO16E1R0xIj6R14MjqXhW5PXQ',
-            name: 'Coke',
-            firstName: 'Coke',
-            lastName: null,
-            photo: 'https://ucarecdn.com/026ae882-e177-4243-bb14-b6761db79fdd/-/crop/488x488/0,0/',
-            email: null,
-            online: false,
-            lastSeen: 'never_online',
-            isYou: false,
-            isBot: true,
-            shortname: 'buycoke',
-            primaryOrganization: null,
-            __typename: 'User',
+        id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
+        name: 'Sergey Lapin',
+        firstName: 'Sergey',
+        lastName: 'Lapin',
+        photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/447x447/0,0/',
+        email: 'lapanoid@gmail.com',
+        online: true,
+        lastSeen: 'online',
+        isYou: true,
+        isBot: false,
+        shortname: 'sergey',
+        primaryOrganization: {
+            id: '61gk9KRrl9ComJkvYnvdcddr4o',
+            name: 'Openland',
+            photo:
+                'https://ucarecdn.com/25629a3c-1ebe-4d49-8560-9df3b92ade3a/-/crop/1024x1024/0,0/',
+            isCommunity: false,
+            __typename: 'Organization',
         },
-        text: 'Ща обед закончится 😱',
-        isSending: false,
-        attachTop: false,
-        attachBottom: false,
-        reactions: [],
-        isService: false,
-        attachments: [],
-        reply: [],
-        replyTextSpans: [],
-        isEdited: false,
-        spans: [],
-        commentsCount: 0,
-        fallback: 'Ща обед закончится 😱',
-        textSpans: [],
-        senderNameEmojify: <span>Coke</span>,
-        replySenderNameEmojify: [],
-    },
-    {
-        chatId: '61MyVnm7k3IlVW0xzRdAH3k4r5',
-        type: 'message',
-        id: 'M6KER0kEZdUQjxDnwpxafrqbBy',
-        key: 'M6KER0kEZdUQjxDnwpxafrqbBy',
-        date: 1559718011809,
-        isOut: false,
-        senderId: 'qlO16E1R0xIj6R14MjqXhW5PXQ',
-        senderName: 'Coke',
-        senderPhoto:
-            'https://ucarecdn.com/026ae882-e177-4243-bb14-b6761db79fdd/-/crop/488x488/0,0/',
-        sender: {
-            id: 'qlO16E1R0xIj6R14MjqXhW5PXQ',
-            name: 'Coke',
-            firstName: 'Coke',
-            lastName: null,
-            photo: 'https://ucarecdn.com/026ae882-e177-4243-bb14-b6761db79fdd/-/crop/488x488/0,0/',
-            email: null,
-            online: false,
-            lastSeen: 'never_online',
-            isYou: false,
-            isBot: true,
-            shortname: 'buycoke',
-            primaryOrganization: null,
-            __typename: 'User',
-        },
-        text: 'Купите меня 🥺🙏🏻🤑',
-        isSending: false,
-        attachTop: false,
-        attachBottom: false,
-        reactions: [],
-        isService: false,
-        attachments: [],
-        reply: [],
-        replyTextSpans: [],
-        isEdited: false,
-        spans: [],
-        commentsCount: 0,
-        fallback: 'Купите меня 🥺🙏🏻🤑',
-        textSpans: [],
-        senderNameEmojify: <span>Coke</span>,
-        replySenderNameEmojify: [],
+        __typename: 'User',
     },
 ];
 
+const createMessage = ({ text }: { text: string }) => {
+    return {
+        id: UUID(),
+        date: '1559662023052',
+        sender: senders[0],
+        message: text,
+        fallback: text,
+        edited: false,
+        commentsCount: 0,
+        attachments: [],
+        quotedMessages: [],
+        reactions: [],
+        __typename: 'GeneralMessage',
+        spans: [],
+    };
+};
+
 export const CommentsNotifications = () => {
+    const testMessages = [
+        createMessage({
+            text: messages[0],
+        }) as any,
+        createMessage({
+            text: messages[1],
+        }) as any,
+        createMessage({
+            text: messages[2],
+        }) as any,
+        createMessage({
+            text: messages[3],
+        }) as any,
+        createMessage({
+            text: messages[4],
+        }) as any,
+    ];
     return (
         <XView alignItems="center" paddingTop={24}>
             <XView width={674}>
@@ -108,7 +101,14 @@ export const CommentsNotifications = () => {
                 </XView>
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     {testMessages.map((item: any, key: any) => {
-                        return <MessageComponent key={key} message={item} isChannel={false} />;
+                        return (
+                            <MessageComponent
+                                key={key}
+                                message={convertDsMessage(convertMessage(item))}
+                                noSelector
+                                isCommentNotification
+                            />
+                        );
                     })}
                 </XScrollView3>
             </XView>

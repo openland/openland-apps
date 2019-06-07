@@ -104,6 +104,7 @@ export interface MessageComponentProps {
     commentDepth?: number;
     message: DataSourceWebMessageItem & { depth?: number };
     isChannel?: boolean;
+    isCommentNotification?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
     commentProps?: CommentPropsT;
@@ -507,6 +508,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
+                    isCommentNotification={this.props.isCommentNotification}
                     isModal={this.props.isModal}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}

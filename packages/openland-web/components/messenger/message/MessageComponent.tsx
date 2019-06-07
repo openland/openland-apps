@@ -19,6 +19,7 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
             <IsActivePoliteContext.Consumer>
                 {isActive => (
                     <DesktopMessageComponentInner
+                        isCommentNotification={props.isCommentNotification}
                         onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
                         showNumberOfComments={props.showNumberOfComments}
