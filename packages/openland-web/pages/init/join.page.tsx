@@ -36,9 +36,6 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         inviteKey,
     });
 
-    console.log(userCtx);
-    console.log(data);
-
     if (userCtx.isLoggedIn && userCtx.isCompleted) {
         return <XPageRedirect path={`/mail/join/${inviteKey}`} />;
     }
