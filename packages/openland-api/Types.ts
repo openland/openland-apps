@@ -47168,11 +47168,6 @@ export interface AvailableRooms {
   isDiscoverDone: boolean;
 }
 
-export interface AvailableRoomsVariables {
-  true?: boolean | null;
-  false?: boolean | null;
-}
-
 /* tslint:disable */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.

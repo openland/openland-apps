@@ -1132,7 +1132,7 @@ private let AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", refValue("false")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -1149,7 +1149,7 @@ private let AvailableRoomsSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", refValue("true")), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id","id", notNull(scalar("ID"))),
@@ -2829,7 +2829,7 @@ class Operations {
     let AvailableRooms = OperationDefinition(
         "AvailableRooms",
         .query, 
-        "query AvailableRooms($false:Boolean,$true:Boolean){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:$false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:$true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
+        "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         AvailableRoomsSelector
     )
     let ChatHistory = OperationDefinition(

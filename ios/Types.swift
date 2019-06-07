@@ -342,6 +342,10 @@ func intValue(_ v: Int) -> InputValue.IntValue {
   return InputValue.IntValue(value: v)
 }
 
+func boolValue(_ v: Bool) -> InputValue.BooleanValue {
+  return InputValue.BooleanValue(value: v)
+}
+
 func floatValue(_ v: Double) -> InputValue.FloatValue {
   return InputValue.FloatValue(value: v)
 }

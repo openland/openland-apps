@@ -5,8 +5,8 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms($true: Boolean, $false: Boolean) {
-        availableChats: betaUserAvailableRooms(limit: 3, isChannel: $false) {
+    query AvailableRooms {
+        availableChats: betaUserAvailableRooms(limit: 3, isChannel: false) {
             ... on SharedRoom {
                 id
                 kind
@@ -21,7 +21,7 @@ export const AvailableRoomsQuery = gql`
                 }
             }
         }
-        availableChannels: betaUserAvailableRooms(limit: 3, isChannel: $true) {
+        availableChannels: betaUserAvailableRooms(limit: 3, isChannel: true) {
             ... on SharedRoom {
                 id
                 kind
