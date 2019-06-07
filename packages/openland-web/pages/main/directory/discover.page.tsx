@@ -71,18 +71,12 @@ export default withApp('Discover', 'viewer', () => {
                                 <XRoomCard
                                     key={key}
                                     room={room as any}
-                                    // path={'/directory/p/' + room.id}
-                                />
-                            );
-                        } else {
-                            return (
-                                <XRoomCard
-                                    key={key}
-                                    room={room as any}
-                                    // path={'/directory/p/' + room.id}
+                                    path={'/directory/p/' + room.id}
+                                    customMenu={null}
                                 />
                             );
                         }
+                        return null;
                     })}
                 </XContentWrapper>
             )}
