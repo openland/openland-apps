@@ -81,7 +81,8 @@ object LithoSectionSpec {
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
                         .detectMoves(false)
-                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
+                        // when enabled not relayouting updated items - height not changing
+//                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
                 .child(SingleComponentSection.create(c)
                         .component(footer))
