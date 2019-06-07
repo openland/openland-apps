@@ -43,7 +43,6 @@ export const EmojiOnlyContent = React.memo<EmojiOnlyContentProps>((props) => {
                             marginRight={!message.isOut ? 3 : 0}
                             fontSize={11}
                             color={theme.reactionsColor}
-                            opacity={message.isOut ? 0.7 : 0.6}
                         >
                             {formatTime(message.date)}
                         </ASText>
