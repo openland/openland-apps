@@ -355,7 +355,7 @@ const EditCommunityEntity = (props: {
                             </XView>
                             <ShortNameButton
                                 loading={savingShortName && !saveShortNameIsDone}
-                                text={saveShortNameIsDone ? 'Done!' : 'Save'}
+                                text={saveShortNameIsDone ? 'Saved!' : 'Save'}
                                 flexShrink={0}
                                 style={saveShortNameIsDone ? 'success' : 'primary'}
                                 onClick={() => setShortName(shortNameField.value, false)}
@@ -410,7 +410,7 @@ const EditCommunityEntity = (props: {
                     </XView>
                     <XButton
                         loading={savingData && !saveIsDone}
-                        text={saveIsDone ? 'Done!' : 'Save'}
+                        text={saveIsDone ? 'Saved!' : 'Save'}
                         size="large"
                         style={saveIsDone ? 'success' : 'primary'}
                         onClick={() =>
