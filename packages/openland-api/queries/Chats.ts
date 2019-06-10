@@ -876,6 +876,17 @@ export const RoomsJoinMutation = gql`
     ${RoomShort}
 `;
 
+export const RoomsInviteUserMutation = gql`
+    mutation RoomsInviteUser($userId: ID!, $roomIds: [ID!]!) {
+        rooms: betaRoomsInviteUser(userId: $userId, roomIds: $roomIds) {
+            ...RoomShort
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomShort}
+`;
+
 export const RoomSendEmailInviteMutation = gql`
     mutation RoomSendEmailInvite($roomId: ID!, $inviteRequests: [RoomInviteEmailRequest!]!) {
         betaRoomInviteLinkSendEmail(roomId: $roomId, inviteRequests: $inviteRequests)
