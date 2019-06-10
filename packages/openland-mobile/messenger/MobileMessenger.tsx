@@ -216,7 +216,7 @@ export class MobileMessenger {
         builder.show();
     }
 
-    private handleMessageDoublePress = (message: DataSourceMessageItem, chatId: string) => {
+    private handleMessageDoublePress = (message: DataSourceMessageItem) => {
         startLoader();
         try {
             this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: 'LIKE' });
