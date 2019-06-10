@@ -21,6 +21,7 @@ import { UpdateOrganizationProfileInput } from 'openland-api/Types';
 import { formatError } from 'openland-x-forms/errorHandling';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
+import CheckIcon from 'openland-icons/ic-check.svg';
 
 interface AdminToolsProps {
     id: string;
@@ -371,6 +372,7 @@ const EditCommunityEntity = (props: {
                                 flexShrink={0}
                                 style={saveShortNameIsDone ? 'success' : 'primary'}
                                 onClick={() => setShortName(shortNameField.value, false)}
+                                icon={saveShortNameIsDone ? <CheckIcon /> : undefined}
                             />
                         </XView>
                         {!shortNameError && (
@@ -425,6 +427,7 @@ const EditCommunityEntity = (props: {
                         text={saveIsDone ? 'Saved!' : 'Save'}
                         size="large"
                         style={saveIsDone ? 'success' : 'primary'}
+                        icon={saveIsDone ? <CheckIcon /> : undefined}
                         onClick={() =>
                             updateOrganizaton({
                                 input: {
