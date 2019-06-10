@@ -300,6 +300,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                             key={v!!.id}
                             item={v!}
                             onPress={() => props.router.push('Conversation', { flexibleId: v!!.id })}
+                            photo={v!.photo}
                         />
                     ))
                 }

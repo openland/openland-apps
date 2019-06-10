@@ -126,8 +126,8 @@ export const UserAvailableRoomsQuery = gql`
 `;
 
 export const GlobalSearchQuery = gql`
-    query GlobalSearch($query: String!) {
-        items: alphaGlobalSearch(query: $query) {
+    query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
+        items: alphaGlobalSearch(query: $query, kinds: $kinds) {
             ... on Organization {
                 ...OrganizationShort
             }

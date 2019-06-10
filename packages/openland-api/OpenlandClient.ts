@@ -970,6 +970,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateRoomsJoin(variables: Types.RoomsJoinVariables): Promise<Types.RoomsJoin> {
         return this.client.mutate(Source.RoomsJoinMutation, variables);
     }
+    async mutateRoomsInviteUser(variables: Types.RoomsInviteUserVariables): Promise<Types.RoomsInviteUser> {
+        return this.client.mutate(Source.RoomsInviteUserMutation, variables);
+    }
     async mutateRoomSendEmailInvite(variables: Types.RoomSendEmailInviteVariables): Promise<Types.RoomSendEmailInvite> {
         return this.client.mutate(Source.RoomSendEmailInviteMutation, variables);
     }

@@ -117,6 +117,7 @@ export const RoomMembersPaginatedQuery = typedQuery<Types.RoomMembersPaginated, 
 export const RoomSettingsUpdateMutation = typedMutation<Types.RoomSettingsUpdate, Types.RoomSettingsUpdateVariables>(Chats.RoomSettingsUpdateMutation);
 export const RoomJoinMutation = typedMutation<Types.RoomJoin, Types.RoomJoinVariables>(Chats.RoomJoinMutation);
 export const RoomsJoinMutation = typedMutation<Types.RoomsJoin, Types.RoomsJoinVariables>(Chats.RoomsJoinMutation);
+export const RoomsInviteUserMutation = typedMutation<Types.RoomsInviteUser, Types.RoomsInviteUserVariables>(Chats.RoomsInviteUserMutation);
 export const RoomSendEmailInviteMutation = typedMutation<Types.RoomSendEmailInvite, Types.RoomSendEmailInviteVariables>(Chats.RoomSendEmailInviteMutation);
 export const RoomJoinInviteLinkMutation = typedMutation<Types.RoomJoinInviteLink, Types.RoomJoinInviteLinkVariables>(Chats.RoomJoinInviteLinkMutation);
 export const RoomRenewInviteLinkMutation = typedMutation<Types.RoomRenewInviteLink, Types.RoomRenewInviteLinkVariables>(Chats.RoomRenewInviteLinkMutation);

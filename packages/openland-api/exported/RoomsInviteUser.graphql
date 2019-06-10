@@ -1,0 +1,6 @@
+mutation RoomsInviteUser($roomIds: [ID!]!, $userId: ID!) {
+  rooms: betaRoomsInviteUser(roomIds: $roomIds, userId: $userId) {
+    __typename
+    ...RoomShort
+  }
+}

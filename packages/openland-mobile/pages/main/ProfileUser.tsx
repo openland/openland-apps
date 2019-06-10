@@ -12,20 +12,39 @@ import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-// import { changeThemeModal } from './themes/ThemeChangeModal';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { SUPER_ADMIN } from '../Init';
+import { Modals } from './modals/Modals';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { formatError } from 'openland-y-forms/errorHandling';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     let userQuery = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     let user = userQuery.user;
     let conversation = userQuery.conversation;
 
-    let myID = getMessenger().engine.user.id;
-    // let online = getClient().useOnline({ userId: props.router.params.id }).user;
+    const handleAddMember = React.useCallback(() => {
+        Modals.showGroupMuptiplePicker(props.router, {
+            title: 'Add',
+            action: async (groups) => {
+                if (groups.length > 0) {
+                    startLoader();
+                    try {
+                        console.warn('boom', groups);
+                        await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) })
+                    } catch (e) {
+                        Alert.alert(formatError(e));
+                    }
+                    stopLoader();
+                }
 
-    // const editTheme = React.useCallback(() => {
-    //     changeThemeModal((userQuery.conversation! as any).id);
-    // }, [(userQuery.conversation! as any).id])
+                props.router.back();
+            }
+        });
+    }, [user.id]);
+
+    let myID = getMessenger().engine.user.id;
 
     let sub = undefined;
     let subColor = undefined;
@@ -96,11 +115,14 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                             id={(conversation as User_conversation_PrivateRoom).id}
                             mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
                         />
-                        {/* <ZListItem
-                            text="Change theme"
-                            leftIcon={require('assets/ic-edit.png')}
-                            onPress={editTheme}
-                        /> */}
+                        {SUPER_ADMIN && !user.isBot && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-invite-fill-24.png')}
+                                text="Add to groups"
+                                onPress={handleAddMember}
+                                navigationIcon={true}
+                            />
+                        )}
                     </ZListItemGroup>
                 )}
             </SScrollView>
