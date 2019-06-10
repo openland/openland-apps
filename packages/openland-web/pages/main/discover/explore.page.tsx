@@ -3,7 +3,7 @@ import { withApp } from 'openland-web/components/withApp';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
-import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
+import { DiscoverNavigation, ComponentWithSort } from './components/DiscoverNavigation';
 import { useClient } from 'openland-web/utils/useClient';
 
 interface RoomsCardsProps {
@@ -39,7 +39,7 @@ export const RoomsCards = (props: RoomsCardsProps) => {
                         );
                     })}
                     {/* <PagePagination
-                            currentRoute="/directory/explore"
+                            currentRoute="/discover/explore"
                             pageInfo={data.rooms.pageInfo}
                         /> */}
                 </XContentWrapper>
@@ -55,7 +55,7 @@ export default withApp('Explore', 'viewer', () => {
     let CardsComponent = ComponentWithSort({ Component: RoomsCards, queryToPrefix: true });
 
     return (
-        <DirectoryNavigation
+        <DiscoverNavigation
             title={'Explore'}
             CardsComponent={CardsComponent}
             searchPlaceholder={'Search groups'}

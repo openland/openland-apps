@@ -4,5 +4,4 @@
 .cache-loader
 .vscode
 node_modules
-yarn.lock
 packages

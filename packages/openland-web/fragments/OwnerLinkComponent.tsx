@@ -7,6 +7,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMutation } from 'openland-x/XMutation';
+import { XModalController } from 'openland-x/showModal';
 
 const InputClassName = css`
     border-radius: 8px !important;
@@ -68,6 +69,7 @@ interface OwnerLinkComponentProps {
     isRoom?: boolean;
     isOrganization?: boolean;
     withoutInput?: boolean;
+    modalContext?: XModalController;
 }
 
 export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
@@ -105,6 +107,9 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
             });
             if (this.props.onCopied) {
                 this.props.onCopied();
+            }
+            if (this.props.modalContext) {
+                this.props.modalContext.hide();
             }
         }, 1500);
     };

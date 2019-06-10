@@ -10,8 +10,8 @@ import CommunityIcon from 'openland-icons/dir-communities.svg';
 import RecommendationIcon from 'openland-icons/ic-cell-recommendation.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
-import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
+import { SearchBox } from 'openland-web/pages/main/discover/components/SearchBox';
+import { SortPicker } from 'openland-web/pages/main/discover/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from 'openland-web/components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -103,22 +103,23 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    !withoutSort && (
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                            options={sortOptions}
-                                        />
-                                    )
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        !withoutSort && (
+                                            <SortPicker
+                                                sort={sort}
+                                                onPick={setSort}
+                                                withoutFeatured={withoutFeatured}
+                                                options={sortOptions}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
@@ -139,7 +140,7 @@ export const SearchCardsOrShowProfile = XMemo(
     },
 );
 
-export const DirectoryNavigation = XMemo(
+export const DiscoverNavigation = XMemo(
     ({
         title = '',
         onlyFeatured,
@@ -177,36 +178,36 @@ export const DirectoryNavigation = XMemo(
         const isMobile = useIsMobile();
         return (
             <Navigation
-                title={isMobile ? title : 'Directory'}
+                title={isMobile ? title : 'Discover'}
                 swapFragmentsOnMobile
                 tab={tabs.empty}
                 menuRightContent={<NewOptionsButton />}
                 menuChildrenContent={
                     <>
                         <MenuItem
-                            path="/directory/discover"
+                            path="/discover/discover"
                             title="Chats for you"
                             icon={<RecommendationIconWrapper />}
                         />
                         <MenuItem
-                            path="/directory"
+                            path="/discover"
                             title="Groups and Channels"
                             icon={<RoomIcon />}
                         />
                         <MenuItem
-                            path="/directory/communities"
+                            path="/discover/communities"
                             title="Communities"
                             icon={<CommunityIcon />}
                         />
-                        <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
+                        <MenuItem path="/discover/people" title="People" icon={<PeopleIcon />} />
                         <MenuItem
-                            path="/directory/organizations"
+                            path="/discover/organizations"
                             title="Organizations"
                             icon={<OrganizationsIcon />}
                         />
                         <XWithRole role="feature-non-production">
                             <MenuItem
-                                path="/directory/explore"
+                                path="/discover/explore"
                                 title="Explore"
                                 icon={<CommunityIcon />}
                             />
@@ -290,8 +291,8 @@ export const ComponentWithSort = ({
     const finalQuery = variables.query
         ? variables.query
         : onlyFeatured
-        ? JSON.stringify({ featured: 'true' })
-        : variables.query;
+            ? JSON.stringify({ featured: 'true' })
+            : variables.query;
 
     const finalVariables = {
         ...(queryToPrefix
@@ -311,7 +312,6 @@ export const ComponentWithSort = ({
         ...(variables.page ? { page: variables.page } : {}),
     };
 
-    console.log(finalVariables);
     return (
         <React.Suspense
             fallback={

@@ -32,7 +32,6 @@ interface AdminToolsProps {
     setPublished: (e: boolean) => void;
     setEditorial: (e: boolean) => void;
     setFeatured: (e: boolean) => void;
-    // setSuperAccountId: (e: string) => void;
 }
 
 const AdminTools = (props: AdminToolsProps) => {
@@ -46,34 +45,48 @@ const AdminTools = (props: AdminToolsProps) => {
     const activated = data.superAccount.state === 'ACTIVATED';
     if (props.activated === null) {
         props.setActivated(activated);
-        // props.setSuperAccountId(data.superAccount.id);
     }
     return (
         <XView>
-            <XCheckbox
-                label="Activated"
-                checked={props.activated || false}
-                disabled={true}
-                // onChange={() => props.setActivated(!props.activated)}
-            />
-            <XCheckbox
-                label="Featured"
-                checked={props.featured}
-                onChange={() => props.setFeatured(!props.featured)}
-            />
-            <XCheckbox
-                label="Published"
-                checked={props.published}
-                onChange={() => props.setPublished(!props.published)}
-            />
-            <XCheckbox
-                label="Editorial"
-                checked={props.editorial}
-                onChange={() => props.setEditorial(!props.editorial)}
-            />
+            <XView flexDirection="row" marginBottom={20}>
+                <XView flexGrow={1} flexShrink={0} width={240}>
+                    <XCheckbox
+                        label="Activated"
+                        checked={props.activated || false}
+                        disabled={true}
+                    />
+                </XView>
+                <XView flexGrow={1} flexShrink={0} width={240}>
+                    <XCheckbox
+                        label="Featured"
+                        checked={props.featured}
+                        onChange={() => props.setFeatured(!props.featured)}
+                    />
+                </XView>
+            </XView>
+            <XView flexDirection="row">
+                <XView flexGrow={1} flexShrink={0} width={240}>
+                    <XCheckbox
+                        label="Published"
+                        checked={props.published}
+                        onChange={() => props.setPublished(!props.published)}
+                    />
+                </XView>
+                <XView flexGrow={1} flexShrink={0} width={240}>
+                    <XCheckbox
+                        label="Editorial"
+                        checked={props.editorial}
+                        onChange={() => props.setEditorial(!props.editorial)}
+                    />
+                </XView>
+            </XView>
         </XView>
     );
 };
+
+const CloseButton = Glamorous(XButton)({
+    border: 'solid 1px #E3E3E3',
+});
 
 const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
     width: 120,
@@ -101,9 +114,12 @@ const EditCommunityEntity = (props: {
     id: string;
     modalCtx: XModalController;
     isCommunity: boolean;
+    isOwner: boolean;
 }) => {
     const [newPhoto, setNewPhoto] = React.useState<UploadedFile | null>(null);
     const [savingData, setSavingData] = React.useState(false);
+    const [saveIsDone, setSaveIsDone] = React.useState(false);
+    const [saveShortNameIsDone, setSaveShortNameIsDone] = React.useState(false);
     const [savingShortName, setSavingShortName] = React.useState(false);
     const [nameError, setNameError] = React.useState<string | null>(null);
     const [shortNameError, setShortNameError] = React.useState<string | null>(null);
@@ -119,7 +135,6 @@ const EditCommunityEntity = (props: {
     const [featured, setFeatured] = React.useState(org.featured);
     const [editorial, setEditorial] = React.useState(org.editorial);
     const [published, setPublished] = React.useState(org.published);
-    // const [superAccountId, setSuperAccountId] = React.useState<null | string>(null);
     // end super account
 
     const form = useForm();
@@ -140,55 +155,63 @@ const EditCommunityEntity = (props: {
         setNewPhoto(file);
     };
 
-    const setShortName = async (shortname: string) => {
+    const setShortName = async (shortname: string, globalSave: boolean) => {
         setShortNameError(null);
-        await setSavingShortName(true);
+        let error = false;
+        if (!globalSave) {
+            await setSavingShortName(true);
+        }
         try {
             await client.mutateSetOrgShortname({ shortname: shortname, organizationId });
             await client.refetchOrganization({ organizationId });
             await client.refetchOrganizationProfile({ organizationId });
         } catch (e) {
+            error = true;
             setShortNameError(formatError(e));
             setTimeout(() => {
                 setShortNameError(null);
             }, 1500);
         }
-        await setTimeout(() => {
+        if (!globalSave && error) {
             setSavingShortName(false);
-        }, 500);
+            setSaveShortNameIsDone(false);
+        }
+        if (!globalSave && !error) {
+            await setTimeout(() => {
+                setSaveShortNameIsDone(true);
+                setTimeout(() => {
+                    setSavingShortName(false);
+                    setSaveShortNameIsDone(false);
+                }, 1000);
+            }, 1000);
+        }
     };
 
     const closeModal = async () => {
-        await setSavingData(false);
         await setTimeout(() => {
-            props.modalCtx.hide();
-        }, 500);
+            setSavingData(false);
+            setSaveIsDone(true);
+            setTimeout(() => {
+                props.modalCtx.hide();
+            }, 1000);
+        }, 1000);
     };
 
     const updateOrganizaton = async ({ input }: { input: UpdateOrganizationProfileInput }) => {
         await setSavingData(true);
-        // if (activated !== null && superAccountId) {
-        //     if (activated) {
-        //         await client.mutateSuperAccountActivate({
-        //             accountId: superAccountId,
-        //         });
-        //     } else {
-        //         await client.mutateSuperAccountPend({
-        //             accountId: superAccountId,
-        //         });
-        //     }
-        // }
         try {
             await client.mutateUpdateOrganization({ input, organizationId });
             await client.refetchOrganization({ organizationId });
             await client.refetchOrganizationProfile({ organizationId });
 
             if (shortNameField.value && shortNameField.value !== org.shortname) {
-                await setShortName(shortNameField.value);
+                await setShortName(shortNameField.value, true);
             }
             await closeModal();
         } catch (e) {
-            setNameError(formatError(e));
+            setNameError(
+                `Please enter a name for this ${props.isCommunity ? 'community' : 'organization'}`,
+            );
             setTimeout(() => {
                 setNameError(null);
                 setSavingData(false);
@@ -230,29 +253,52 @@ const EditCommunityEntity = (props: {
                                     {nameError}
                                 </XView>
                             )}
-                            {props.isCommunity && (
-                                <XView marginTop={16}>
-                                    <SelectWithDropdown
-                                        title="Community type"
-                                        value={typeField.value}
-                                        onChange={typeField.input.onChange}
-                                        selectOptions={[
-                                            {
-                                                value: CommunityType.COMMUNITY_PUBLIC,
-                                                label: `Public community`,
-                                                labelShort: 'Public',
-                                                subtitle: `Anyone can find and join this community`,
-                                            },
-                                            {
-                                                value: CommunityType.COMMUNITY_PRIVATE,
-                                                label: `Private community`,
-                                                labelShort: 'Private',
-                                                subtitle: `Only invited people can join community and view chats`,
-                                            },
-                                        ]}
-                                    />
-                                </XView>
-                            )}
+                            {props.isCommunity &&
+                                !props.isOwner && (
+                                    <XView
+                                        height={52}
+                                        marginTop={16}
+                                        paddingHorizontal={16}
+                                        backgroundColor="#f2f3f4"
+                                        borderRadius={8}
+                                        flexDirection="row"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <XView flexDirection="column" marginTop={-3}>
+                                            <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
+                                                Community type (set by creator)
+                                            </XView>
+                                            <XView fontSize={14} color="#000" marginTop={-4}>
+                                                {org.private ? 'Private' : 'Public'}
+                                            </XView>
+                                        </XView>
+                                    </XView>
+                                )}
+                            {props.isCommunity &&
+                                props.isOwner && (
+                                    <XView marginTop={16}>
+                                        <SelectWithDropdown
+                                            title="Community type"
+                                            value={typeField.value}
+                                            onChange={typeField.input.onChange}
+                                            selectOptions={[
+                                                {
+                                                    value: CommunityType.COMMUNITY_PUBLIC,
+                                                    label: `Public community`,
+                                                    labelShort: 'Public',
+                                                    subtitle: `Anyone can find and join this community`,
+                                                },
+                                                {
+                                                    value: CommunityType.COMMUNITY_PRIVATE,
+                                                    label: `Private community`,
+                                                    labelShort: 'Private',
+                                                    subtitle: `Only invited people can join community and view chats`,
+                                                },
+                                            ]}
+                                        />
+                                    </XView>
+                                )}
                         </XView>
                     </XView>
                     <XView marginBottom={28}>
@@ -267,6 +313,16 @@ const EditCommunityEntity = (props: {
                             mode="modern"
                             {...aboutField.input}
                         />
+                        <XView
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.5)"
+                            marginTop={6}
+                            marginLeft={16}
+                        >
+                            {`Publicly describe this ${
+                                props.isCommunity ? 'community' : 'organization'
+                            } for all to see`}
+                        </XView>
                         {!props.isCommunity && (
                             <XView marginTop={16}>
                                 <XView marginBottom={16}>
@@ -298,13 +354,25 @@ const EditCommunityEntity = (props: {
                                 />
                             </XView>
                             <ShortNameButton
-                                loading={savingShortName}
-                                text="Save"
+                                loading={savingShortName && !saveShortNameIsDone}
+                                text={saveShortNameIsDone ? 'Done!' : 'Save'}
                                 flexShrink={0}
-                                style="primary"
-                                onClick={() => setShortName(shortNameField.value)}
+                                style={saveShortNameIsDone ? 'success' : 'primary'}
+                                onClick={() => setShortName(shortNameField.value, false)}
                             />
                         </XView>
+                        {!shortNameError && (
+                            <XView
+                                fontSize={12}
+                                color="rgba(0, 0, 0, 0.5)"
+                                marginTop={6}
+                                marginLeft={16}
+                            >
+                                {`People will be able to find your ${
+                                    props.isCommunity ? 'community' : 'organization'
+                                } by this shortname`}
+                            </XView>
+                        )}
                         {shortNameError && (
                             <XView fontSize={12} color="#f6564e" marginTop={6} marginLeft={16}>
                                 {shortNameError}
@@ -326,7 +394,6 @@ const EditCommunityEntity = (props: {
                             setEditorial={setEditorial}
                             setPublished={setPublished}
                             setFeatured={setFeatured}
-                            // setSuperAccountId={setSuperAccountId}
                         />
                     </XWithRole>
                 </XView>
@@ -338,11 +405,14 @@ const EditCommunityEntity = (props: {
                     flexDirection="row"
                     justifyContent="flex-end"
                 >
+                    <XView marginRight={12}>
+                        <CloseButton text="Cancel" size="large" onClick={props.modalCtx.hide} />
+                    </XView>
                     <XButton
-                        loading={savingData}
-                        text={'save'}
+                        loading={savingData && !saveIsDone}
+                        text={saveIsDone ? 'Done!' : 'Save'}
                         size="large"
-                        style={'primary'}
+                        style={saveIsDone ? 'success' : 'primary'}
                         onClick={() =>
                             updateOrganizaton({
                                 input: {
@@ -388,7 +458,14 @@ const EditCommunityEntity = (props: {
     );
 };
 
-export const EditCommunityModal = (id: string, isCommunity: boolean) =>
+export const EditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) =>
     showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
-        return <EditCommunityEntity id={id} modalCtx={ctx} isCommunity={isCommunity} />;
+        return (
+            <EditCommunityEntity
+                id={id}
+                modalCtx={ctx}
+                isCommunity={isCommunity}
+                isOwner={isOwner}
+            />
+        );
     });

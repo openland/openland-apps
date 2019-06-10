@@ -31,35 +31,30 @@ const NewButton = makeActionable<{ onClick: () => void }>(props => (
     </XView>
 ));
 
-let iconBackgroundClass = css`
-    position: relative;
-    width: 36px;
-    height: 36px;
-    background-color: rgba(23, 144, 255, 0.1);
-    border-radius: 70px;
-`;
-
-let iconWrapperClass = css`
-    & > svg {
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-    }
-
+const iconWrapperClass = css`
     & > svg path {
         fill: #1a90ff;
         opacity: 1;
     }
 `;
 
+const textClassName = css`
+    letter-spacing: 0.02px;
+`;
+
 export const IconWithBackground = ({ children }: { children: any }) => {
     return (
-        <div className={iconBackgroundClass}>
+        <XView
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+            width={36}
+            height={36}
+            backgroundColor="rgba(23, 144, 255, 0.1)"
+            borderRadius={70}
+        >
             <div className={iconWrapperClass}>{children}</div>
-        </div>
+        </XView>
     );
 };
 
@@ -82,30 +77,30 @@ export const Item = ({
 }) => {
     return (
         <XMenuItem
-            style={'gray'}
+            style="gray"
             onClick={onClick}
             TextItemWrapper={TextItemWrapper}
             path={href}
             icon={
-                <XView marginRight={12} paddingTop={8} alignSelf="flex-start">
+                <XView marginRight={12} paddingTop={11} alignSelf="flex-start">
                     {icon}
                 </XView>
             }
         >
             <XView
-                paddingTop={9}
-                paddingBottom={9}
-                maxWidth={240}
+                paddingTop={10}
+                paddingBottom={10}
+                width={240}
                 flexGrow={1}
                 flexDirection="column"
-                justifyContent={'space-between'}
-                height={'100%'}
+                justifyContent="space-between"
+                height="100%"
             >
                 <XView fontSize={14} fontWeight={'600'} color={'#000000'}>
-                    {title}
+                    <span className={textClassName}>{title}</span>
                 </XView>
-                <XView marginTop={5} fontSize={13} opacity={0.5} color={'#000000'}>
-                    {description}
+                <XView marginTop={4} fontSize={13} opacity={0.5} color={'#000000'}>
+                    <span className={textClassName}>{description}</span>
                 </XView>
             </XView>
         </XMenuItem>
@@ -122,7 +117,7 @@ export const NewOptionsMenu = () => (
                 </IconWithBackground>
             }
             title="New group"
-            description="Group chat for your projects or topics"
+            description="Chat where everyone can write"
         />
         <Item
             href="/mail/create?channel=true"
@@ -132,7 +127,7 @@ export const NewOptionsMenu = () => (
                 </IconWithBackground>
             }
             title="New channel"
-            description="Broadcast messages to your audience"
+            description="Chat where you write, others comment"
         />
         <Item
             href="/mail/createOrganization?community=true"
@@ -142,7 +137,7 @@ export const NewOptionsMenu = () => (
                 </IconWithBackground>
             }
             title="New community"
-            description="A hub for groups and channels"
+            description="A hub for chats for the same audience"
         />
         <Item
             onClick={() => showCreateOrganization('organization')}
@@ -152,7 +147,7 @@ export const NewOptionsMenu = () => (
                 </IconWithBackground>
             }
             title="New organization"
-            description="Showcase your company and chat with co-workers"
+            description="A hub for chats with your teammates"
         />
     </>
 );
@@ -180,7 +175,7 @@ export const NewOptionsButton = XMemo(() => {
 
     return (
         <XPopper
-            contentContainer={<XMenuVertical paddingTop={8} paddingBottom={8} />}
+            contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
             placement="bottom-end"
             show={show}
             marginTop={10}

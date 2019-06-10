@@ -4,7 +4,7 @@ import { PagePagination } from './components/PagePagination';
 import { UserProfile } from '../profile/components/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
+import { DiscoverNavigation, ComponentWithSort } from './components/DiscoverNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -47,7 +47,7 @@ export const PeopleCards = ({ variables, error, tagsCount, notFoundText }: Peopl
                     ))}
                     <PagePagination
                         pageInfo={data.items.pageInfo}
-                        currentRoute="/directory/people"
+                        currentRoute="/discover/people"
                     />
                 </XContentWrapper>
             )}
@@ -78,7 +78,7 @@ export default withApp('People', 'viewer', () => {
     const page = router.routeQuery.page;
 
     return (
-        <DirectoryNavigation
+        <DiscoverNavigation
             id={getPeopleProfile(router.path)}
             title={'People'}
             ProfileComponent={SearchUserProfileComponent}

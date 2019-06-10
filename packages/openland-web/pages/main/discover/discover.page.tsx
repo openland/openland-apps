@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XImage, XView } from 'react-mental';
-import { DirectoryNavigation } from './components/DirectoryNavigation';
+import { DiscoverNavigation } from './components/DiscoverNavigation';
 import { withApp } from 'openland-web/components/withApp';
 import { useClient } from 'openland-web/utils/useClient';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -16,8 +16,8 @@ const EmptyComponent = () => (
             justifyContent="center"
         >
             <img
-                src="/static/X/directory/empty-discover.pngs"
-                srcSet="/static/X/directory/empty-discover.png, /static/X/directory/empty-discover@2x.png 2x, /static/X/directory/empty-discover@3x.png 3x"
+                src="/static/X/discover/empty-discover.pngs"
+                srcSet="/static/X/discover/empty-discover.png, /static/X/discover/empty-discover@2x.png 2x, /static/X/discover/empty-discover@3x.png 3x"
             />
             <XView fontSize={24} fontWeight="600" marginBottom={8} marginTop={32}>
                 Chats for you
@@ -58,7 +58,7 @@ export default withApp('Discover', 'viewer', () => {
     const data = client.useSuggestedRooms();
 
     return (
-        <DirectoryNavigation>
+        <DiscoverNavigation>
             {!data.isDiscoverDone && <EmptyComponent />}
             {data.isDiscoverDone && (
                 <XContentWrapper withPaddingBottom={true}>
@@ -80,6 +80,6 @@ export default withApp('Discover', 'viewer', () => {
                     })}
                 </XContentWrapper>
             )}
-        </DirectoryNavigation>
+        </DiscoverNavigation>
     );
 });

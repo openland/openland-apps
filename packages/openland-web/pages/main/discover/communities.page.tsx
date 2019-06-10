@@ -4,7 +4,7 @@ import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
-import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
+import { DiscoverNavigation, ComponentWithSort } from './components/DiscoverNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { withApp } from 'openland-web/components/withApp';
@@ -44,7 +44,7 @@ export const CommunitiesCards = (props: CommunitiesCardsProps) => {
                         ))}
                     <PagePagination
                         pageInfo={data.items.pageInfo}
-                        currentRoute="/directory/communities"
+                        currentRoute="/discover/communities"
                     />
                 </XContentWrapper>
             )}
@@ -76,7 +76,7 @@ export default withApp('Communities', 'viewer', () => {
     const page = router.routeQuery.page;
 
     return (
-        <DirectoryNavigation
+        <DiscoverNavigation
             id={getCommunityProfile(path)}
             title="Communities"
             ProfileComponent={SearchOrganizationProfileComponent}

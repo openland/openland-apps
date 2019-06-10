@@ -83,7 +83,7 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
                                 {mention.__typename === 'AllMention' && (
                                     <SuggestionsItemName
                                         theme={theme}
-                                        name="@all"
+                                        name="@All"
                                         description="Notify everyone in this chat"
                                     />
                                 )}

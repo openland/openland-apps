@@ -113,7 +113,7 @@ async function start() {
     );
 
     //
-    // Serving static directory
+    // Serving static discover
     //
     server.use(
         '/static',

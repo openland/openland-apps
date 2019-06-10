@@ -73,7 +73,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
         super(props);
     }
     PaginationFunc = (pagesCount: number, currentPage: number) => {
-        let route = this.props.currentRoute || '/directory';
+        let route = this.props.currentRoute || '/discover';
 
         let delta = 2;
         let left = currentPage - delta;
@@ -124,7 +124,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
     };
 
     render() {
-        let route = this.props.currentRoute || '/directory';
+        let route = this.props.currentRoute || '/discover';
 
         const { hasNextPage, pagesCount, currentPage } = this.props.pageInfo;
         if (pagesCount < 2) {

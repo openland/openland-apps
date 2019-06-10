@@ -4,9 +4,9 @@ import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
     SearchCardsOrShowProfile,
     ComponentWithSort,
-} from 'openland-web/pages/main/directory/components/DirectoryNavigation';
+} from 'openland-web/pages/main/discover/components/DiscoverNavigation';
 import { useClient } from 'openland-web/utils/useClient';
-import { EmptySearchBlock } from 'openland-web/pages/main/directory/components/EmptySearchBlock';
+import { EmptySearchBlock } from 'openland-web/pages/main/discover/components/EmptySearchBlock';
 
 interface WithChatSearchRoomsProps {
     customButton?: any;
@@ -75,9 +75,9 @@ export const RoomsExploreComponent = () => {
     return (
         <SearchCardsOrShowProfile
             CardsComponent={RoomsWithSort}
-            searchPlaceholder={'Search groups'}
-            noQueryText={'Featured groups'}
-            hasQueryText={'Groups'}
+            searchPlaceholder="Search groups"
+            noQueryText="Featured groups"
+            hasQueryText="Groups"
             defaultSortOption="membersCount"
             withoutFeatured
             sortOptions={{

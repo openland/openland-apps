@@ -4,7 +4,7 @@ export const TextAppBar = {
         room: 'Rooms',
         mail: 'Messenger',
         explore: 'Explore',
-        directory: 'Directory',
+        discover: 'Discover',
         feed: 'Feed',
         apps: 'Apps',
         addListing: 'Add listing',

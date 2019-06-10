@@ -12,6 +12,7 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import ArrowDownIcon from 'openland-icons/ic-arrow-down.svg';
 import { XImage } from 'react-mental';
+import { XModalController } from 'openland-x/showModal';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -71,7 +72,7 @@ const TextAlignCenter = ({ children }: { children: any }) => {
     return <div className={textAlignCenterClassName}>{children}</div>;
 };
 
-export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean }) => {
+export const InviteFragment = ({ asModalContent, modalContext }: { asModalContent?: boolean, modalContext?: XModalController }) => {
     const client = useClient();
 
     const founderChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
@@ -175,6 +176,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                             isRoom={true}
                             useRevoke={true}
                             withoutInput={isMobile}
+                            modalContext={modalContext}
                         />
                         <XView marginTop={36}>
                             <XView
@@ -200,6 +202,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                                 isOrganization={true}
                                 useRevoke={true}
                                 withoutInput={isMobile}
+                                modalContext={modalContext}
                             />
                         </XView>
                     </XView>
@@ -239,6 +242,7 @@ export const InviteFragment = ({ asModalContent }: { asModalContent?: boolean })
                                 footerNote="Anyone can use this link to join Openland"
                                 appInvite={openlandInvite}
                                 withoutInput={isMobile}
+                                modalContext={modalContext}
                             />
                         </XView>
                     )}

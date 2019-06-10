@@ -74,10 +74,10 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }
-    
+
         return props.children ? <ASText key={'unknown'}>{props.children}</ASText> : null;
     }
-    
+
     return renderSpans(SpanView, spans) || [];
 }
 
@@ -91,7 +91,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let hasText = !!(props.message.text);
     let hasUrlAug = !!augmenationAttach;
 
-    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji';
+    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji' && (props.message.attachments || []).length === 0 && (props.message.reply || []).length === 0;
 
     let imageLayout;
     if (hasImage) {
@@ -112,7 +112,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<ReplyContent key="msg-reply" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);

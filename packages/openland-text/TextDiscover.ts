@@ -1,4 +1,4 @@
-export const TextDirectory = {
+export const TextDiscover = {
     sidebar: {
         title: 'Directory',
         rooms: 'Rooms',
