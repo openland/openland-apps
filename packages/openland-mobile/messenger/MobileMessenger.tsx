@@ -219,7 +219,7 @@ export class MobileMessenger {
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
         startLoader();
         try {
-            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: 'LIKE' });
+            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap.LIKE });
         } catch (e) {
             Alert.alert(e.message);
         }
