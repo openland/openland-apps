@@ -67,7 +67,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
+                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
@@ -214,6 +214,16 @@ export class MobileMessenger {
         }
 
         builder.show();
+    }
+
+    private handleMessageDoublePress = (message: DataSourceMessageItem, chatId: string) => {
+        startLoader();
+        try {
+            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: 'LIKE' });
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+        stopLoader();
     }
 
     private handleReactionsClick = (message: DataSourceMessageItem) => {
