@@ -92,7 +92,15 @@ const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
     width: 120,
     height: 120,
     borderRadius: '50%',
+    border: 'none',
     backgroundColor: '#f4f4f4',
+    '&:hover': {
+        border: 'none',
+    },
+    '& > div:hover': {
+        backgroundColor: '#919292',
+        color: '#fff',
+    },
 });
 
 const ShortNameButton = Glamorous(XButton)({
@@ -231,6 +239,10 @@ const EditCommunityEntity = (props: {
                     >
                         <XAvatarUploadStyled
                             cropParams="1:1"
+                            placeholder={{
+                                add: 'Add photo',
+                                change: 'Change',
+                            }}
                             onChange={onAvatarChange}
                             value={
                                 newPhoto
