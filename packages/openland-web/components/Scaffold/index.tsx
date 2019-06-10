@@ -7,7 +7,6 @@ import { TextAppBar } from 'openland-text/TextAppBar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import RoomIcon from 'openland-icons/channel-2.svg';
-import DirectoryIcon from 'openland-icons/directory-3.svg';
 import ExploreIcon from 'openland-icons/ic-explore.svg';
 import MobileChatIcon from 'openland-icons/ic-chat.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -218,8 +217,8 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                 </XWithRole>
 
                                 <UniversalScafoldMenuItem
-                                    name={TextAppBar.items.directory}
-                                    path="/directory"
+                                    name={TextAppBar.items.discover}
+                                    path="/discover"
                                     icon={<ExploreIcon />}
                                 />
                             </>

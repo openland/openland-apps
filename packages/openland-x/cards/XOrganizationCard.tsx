@@ -8,7 +8,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { TextDirectory } from 'openland-text/TextDirectory';
+import { TextDiscover } from 'openland-text/TextDiscover';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
@@ -199,32 +199,32 @@ export const XOrganizationCard = (props: XOrganizationCardProps) => {
                         {extraMenu}
 
                         <XMenuItem href={'/directory/o/' + organization.id}>
-                            {TextDirectory.buttonViewProfile}
+                            {TextDiscover.buttonViewProfile}
                         </XMenuItem>
 
                         {organization.isMine && (
                             <XMenuItem query={{ field: 'createRoom', value: organization.id }}>
-                                {TextDirectory.buttonCreateRoom}
+                                {TextDiscover.buttonCreateRoom}
                             </XMenuItem>
                         )}
 
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <XMenuItem href={'/settings/organization/' + organization.id}>
-                                {TextDirectory.buttonEdit}
+                                {TextDiscover.buttonEdit}
                             </XMenuItem>
                         </XWithRole>
 
                         {!organization.isMine && (
                             <XWithRole role={['super-admin', 'editor']}>
                                 <XMenuItem href={'/settings/organization/' + organization.id}>
-                                    {TextDirectory.buttonEdit}
+                                    {TextDiscover.buttonEdit}
                                 </XMenuItem>
                             </XWithRole>
                         )}
 
                         {/* <XWithRole role={['super-admin', 'editor']}>
                             <AlterOrgPublishedButton orgId={organization.id} published={organization.published} />
-                            <XMenuItem href={'/super/orgs/' + organization.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
+                            <XMenuItem href={'/super/orgs/' + organization.superAccountId}>{TextDiscover.buttonSuperEdit}</XMenuItem>
                         </XWithRole> */}
                     </>
                 }

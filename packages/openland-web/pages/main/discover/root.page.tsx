@@ -3,12 +3,12 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { withApp } from 'openland-web/components/withApp';
 import { RoomsExploreComponent } from './components/RoomsExploreComponent';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-import { DirectoryNavigation } from './components/DirectoryNavigation';
+import { DiscoverNavigation } from './components/DiscoverNavigation';
 import { RoomProfile } from '../profile/components/RoomProfileComponent';
 import { tabs } from './tabs';
 
 export default withApp(
-    'Directory',
+    'Discover',
     'viewer',
     withRouter(props => {
         const { router } = props;
@@ -27,11 +27,11 @@ export default withApp(
             }
         }
         return (
-            <DirectoryNavigation title={'Groups'}>
+            <DiscoverNavigation title={'Groups'}>
                 {tab === tabs.invite && <MessengerFragment id={conversationId} />}
                 {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
                 {tab === tabs.rooms && <RoomsExploreComponent />}
-            </DirectoryNavigation>
+            </DiscoverNavigation>
         );
     }),
 );

@@ -11,8 +11,8 @@ export const EmptySearchBlock = (props: { text: string }) => (
             justifyContent="center"
         >
             <img
-                src="/static/X/directory/empty-state.pngs"
-                srcSet="/static/X/directory/empty-state.png, /static/X/directory/empty-state@2x.png 2x, /static/X/directory/empty-state@3x.png 3x"
+                src="/static/X/discover/empty-state.pngs"
+                srcSet="/static/X/discover/empty-state.png, /static/X/discover/empty-state@2x.png 2x, /static/X/discover/empty-state@3x.png 3x"
             />
             <XView fontSize={24} fontWeight="600" marginBottom={8} marginTop={32}>
                 No results

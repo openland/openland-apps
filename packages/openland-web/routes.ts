@@ -67,31 +67,33 @@ routes.add('/apps/:appId/', '/main/apps/apps');
 routes.add('/apps/:appId/*', '/main/apps/apps');
 
 //
-// Directory
+// Discover
 //
 
-routes.add('/directory', '/main/directory/root');
-routes.add('/directory/', '/main/directory/root');
-routes.add('/directory/people', '/main/directory/people');
-routes.add('/directory/people/', '/main/directory/people');
-routes.add('/directory/organizations', '/main/directory/organizations');
-routes.add('/directory/organizations/', '/main/directory/organizations');
-routes.add('/directory/communities', '/main/directory/communities');
-routes.add('/directory/communities/', '/main/directory/communities');
-routes.add('/directory/discover', '/main/directory/discover');
-routes.add('/directory/discover/', '/main/directory/discover');
-routes.add('/directory/explore', '/main/directory/explore');
-routes.add('/directory/explore/', '/main/directory/explore');
-routes.add('/directory/r/:conversationId', '/main/directory/root');
-routes.add('/directory/r/:conversationId/', '/main/directory/root');
-routes.add('/directory/p/:conversationId', '/main/directory/root');
-routes.add('/directory/p/:conversationId/', '/main/directory/root');
-routes.add('/directory/u/:userId', '/main/directory/people');
-routes.add('/directory/u/:userId/', '/main/directory/people');
-routes.add('/directory/o/:organizationId', '/main/directory/organizations');
-routes.add('/directory/o/:organizationId/', '/main/directory/organizations');
-routes.add('/directory/c/:organizationId', '/main/directory/communities');
-routes.add('/directory/c/:organizationId/', '/main/directory/communities');
+routes.add('/directory', '/main/discover/root');
+routes.add('/directory/', '/main/discover/root');
+routes.add('/discover', '/main/discover/root');
+routes.add('/discover/', '/main/discover/root');
+routes.add('/discover/people', '/main/discover/people');
+routes.add('/discover/people/', '/main/discover/people');
+routes.add('/discover/organizations', '/main/discover/organizations');
+routes.add('/discover/organizations/', '/main/discover/organizations');
+routes.add('/discover/communities', '/main/discover/communities');
+routes.add('/discover/communities/', '/main/discover/communities');
+routes.add('/discover/discover', '/main/discover/discover');
+routes.add('/discover/discover/', '/main/discover/discover');
+routes.add('/discover/explore', '/main/discover/explore');
+routes.add('/discover/explore/', '/main/discover/explore');
+routes.add('/directory/r/:conversationId', '/main/discover/root');
+routes.add('/directory/r/:conversationId/', '/main/discover/root');
+routes.add('/directory/p/:conversationId', '/main/discover/root');
+routes.add('/directory/p/:conversationId/', '/main/discover/root');
+routes.add('/directory/u/:userId', '/main/discover/people');
+routes.add('/directory/u/:userId/', '/main/discover/people');
+routes.add('/directory/o/:organizationId', '/main/discover/organizations');
+routes.add('/directory/o/:organizationId/', '/main/discover/organizations');
+routes.add('/directory/c/:organizationId', '/main/discover/communities');
+routes.add('/directory/c/:organizationId/', '/main/discover/communities');
 
 //
 // Profiles

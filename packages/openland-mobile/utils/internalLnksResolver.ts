@@ -130,7 +130,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         //
         // PROFILE ORGANIZATION
         //
-        let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)/(o)(c)/:id');
+        let profileOrgPattern = new UrlPattern(patternBase + '(mail)(discover)/(o)(c)/:id');
         let matchOrgProfile = profileOrgPattern.match(link);
         if (matchOrgProfile && matchOrgProfile.id) {
             resolved = true;
@@ -140,7 +140,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         //
         // PROFILE USER
         //
-        let profileUserPattern = new UrlPattern(patternBase + '(mail)(directory)/u/:id');
+        let profileUserPattern = new UrlPattern(patternBase + '(mail)(discover)/u/:id');
         let matchUserProfile = profileUserPattern.match(link);
         if (matchUserProfile && matchUserProfile.id) {
             resolved = true;
@@ -150,7 +150,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         //
         // PROFILE GROUP
         //
-        let profileGroupPattern = new UrlPattern(patternBase + '(mail)(directory)/p/:id');
+        let profileGroupPattern = new UrlPattern(patternBase + '(mail)(discover)/p/:id');
         let matchGroupProfile = profileGroupPattern.match(link);
         if (matchGroupProfile && matchGroupProfile.id) {
             resolved = true;

@@ -73,7 +73,7 @@ const MainWrapper = ({ entityKind, back, onBackClick, children }: MainWrapperT) 
                 )}
                 <LeaveAndDeleteModal
                     chatTypeStr={chatTypeStr}
-                    redirectPath={entityKind === EntityKind.COMMUNITY ? '/directory' : '/mail'}
+                    redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
                 />
             </XView>
             <XView

@@ -3,7 +3,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
-import { TextDirectory } from 'openland-text/TextDirectory';
+import { TextDiscover } from 'openland-text/TextDiscover';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
@@ -66,19 +66,19 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                             {extraMenu}
 
                             <XMenuItem href={'/directory/c/' + community.id}>
-                                {TextDirectory.buttonViewProfile}
+                                {TextDiscover.buttonViewProfile}
                             </XMenuItem>
 
                             <XWithRole role="admin" orgPermission={community.id}>
                                 <XMenuItem href="/settings/organization">
-                                    {TextDirectory.buttonEdit}
+                                    {TextDiscover.buttonEdit}
                                 </XMenuItem>
                             </XWithRole>
 
                             {!community.isMine && (
                                 <XWithRole role={['super-admin', 'editor']}>
                                     <XMenuItem href={'/settings/organization/' + community.id}>
-                                        {TextDirectory.buttonEdit}
+                                        {TextDiscover.buttonEdit}
                                     </XMenuItem>
                                 </XWithRole>
                             )}
