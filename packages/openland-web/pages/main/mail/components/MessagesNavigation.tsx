@@ -48,7 +48,8 @@ class ErrorBoundary extends React.Component<any, { error: any }> {
     }
 }
 
-export const MessagesNavigation = XMemo(
+export const
+    MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
         const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
