@@ -12,12 +12,6 @@ export const MyNotificationsQuery = gql`
                     comment {
                         ...CommentEntryFragment
                     }
-                    peer {
-                        id
-                        comments {
-                            ...CommentEntryFragment
-                        }
-                    }
                 }
             }
         }
