@@ -87,8 +87,32 @@ const NotCompactMessageContainerWrapper = ({
             marginBottom={-3}
             paddingTop={10}
             paddingBottom={5}
-            // paddingLeft={20}
-            // paddingRight={20}
+            paddingLeft={20}
+            paddingRight={20}
+            borderRadius={4}
+            onClick={onClick}
+        >
+            {children}
+        </XView>
+    );
+};
+
+const CommentsNotificationMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+    onClick,
+}: MessageContainerWrapperProps) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={9}
+            marginBottom={-3}
+            paddingTop={10}
+            paddingBottom={5}
             borderRadius={4}
             onClick={onClick}
         >
@@ -273,6 +297,8 @@ export const DesktopMessageContainer = ({
         MessageContainerWrapper = NotCompactModalMessageContainerWrapper;
     } else if (!compact) {
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
+    } else if (isCommentNotification) {
+        MessageContainerWrapper = CommentsNotificationMessageContainerWrapper;
     }
 
     return (

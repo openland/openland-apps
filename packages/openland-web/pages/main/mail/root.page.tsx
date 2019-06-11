@@ -31,7 +31,6 @@ export default withApp('Mail', 'viewer', () => {
                     uid={uid}
                     isCommentsNotifications={path === '/notifications/comments'}
                 />
-                ;
             </MessageStateProviderComponent>
         </XTrack>
     );
