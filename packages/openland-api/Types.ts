@@ -47622,6 +47622,662 @@ export interface MessageVariables {
 // GraphQL query operation: MyNotifications
 // ====================================================
 
+export interface MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_attachments = MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage;
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: MyNotifications_myNotifications_content_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_spans = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotifications_myNotifications_content_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: MyNotifications_myNotifications_content_comment_comment_attachments[];
+  quotedMessages: MyNotifications_myNotifications_content_comment_comment_quotedMessages[];
+  reactions: MyNotifications_myNotifications_content_comment_comment_reactions[];
+  spans: MyNotifications_myNotifications_content_comment_comment_spans[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: MyNotifications_myNotifications_content_comment_comment;
+  parentComment: MyNotifications_myNotifications_content_comment_parentComment | null;
+  childComments: MyNotifications_myNotifications_content_comment_childComments[];
+}
+
 export interface MyNotifications_myNotifications_content_peer_comments_comment_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -48286,6 +48942,7 @@ export interface MyNotifications_myNotifications_content_peer {
 
 export interface MyNotifications_myNotifications_content {
   __typename: "NewCommentNotification";
+  comment: MyNotifications_myNotifications_content_comment;
   peer: MyNotifications_myNotifications_content_peer;
 }
 

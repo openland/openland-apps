@@ -9,6 +9,9 @@ export const MyNotificationsQuery = gql`
             text
             content {
                 ... on NewCommentNotification {
+                    comment {
+                        ...CommentEntryFragment
+                    }
                     peer {
                         id
                         comments {

@@ -4,6 +4,10 @@ query MyNotifications($before: ID, $first: Int!) {
     content {
       __typename
       ... on NewCommentNotification {
+        comment {
+          __typename
+          ...CommentEntryFragment
+        }
         peer {
           __typename
           comments {

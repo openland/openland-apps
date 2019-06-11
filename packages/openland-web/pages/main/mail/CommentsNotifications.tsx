@@ -6,7 +6,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
 import { useClient } from 'openland-web/utils/useClient';
-import { MyNotifications_myNotifications_content_peer_comments_comment } from 'openland-api/Types';
+import { MyNotifications_myNotifications_content_comment_comment } from 'openland-api/Types';
 
 // add attaches document/photo
 const users = ['Ada Poole', 'Isaiah Schultz', 'Stanley Hughes', 'Dora Becker'];
@@ -77,22 +77,19 @@ export const CommentsNotifications = () => {
         first: 100,
     });
 
-    const content = notifications.myNotifications[0].content;
-    let comments;
-    if (content) {
-        const firstContent = content[0];
-        if (firstContent) {
-            comments = firstContent.peer.comments.map(({ comment }) => comment);
-        }
-    }
+    const comments = notifications.myNotifications
+        .filter(({ content }) => {
+            return !!content;
+        })
+        .map(({ content }) => {
+            return content[0]!!.comment!!.comment;
+        });
 
-    let testMessages: MyNotifications_myNotifications_content_peer_comments_comment[] = [];
+    let testMessages: MyNotifications_myNotifications_content_comment_comment[] = [];
 
     if (comments) {
         testMessages = comments;
     }
-
-    console.log(testMessages);
 
     return (
         <XView alignItems="center" paddingTop={24}>
