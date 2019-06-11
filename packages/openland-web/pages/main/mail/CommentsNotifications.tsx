@@ -82,7 +82,7 @@ export const CommentsNotifications = () => {
             return !!content;
         })
         .map(({ content }) => {
-            return content[0]!!.comment!!.comment;
+            return content!![0]!!.comment!!.comment;
         });
 
     let testMessages: MyNotifications_myNotifications_content_comment_comment[] = [];
