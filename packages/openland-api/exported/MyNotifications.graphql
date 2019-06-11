@@ -1,0 +1,20 @@
+query MyNotifications($before: ID, $first: Int!) {
+  myNotifications(before: $before, first: $first) {
+    __typename
+    content {
+      __typename
+      ... on NewCommentNotification {
+        peer {
+          __typename
+          comments {
+            __typename
+            ...CommentEntryFragment
+          }
+          id
+        }
+      }
+    }
+    id
+    text
+  }
+}

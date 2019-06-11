@@ -1439,6 +1439,26 @@ private val MyAppsSelector = obj(
                     fragment("AppProfile", AppFullSelector)
                 )))))
         )
+private val MyNotificationsSelector = obj(
+            field("myNotifications","myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("content","content", list(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            inline("NewCommentNotification", obj(
+                                field("peer","peer", notNull(obj(
+                                        field("__typename","__typename", notNull(scalar("String"))),
+                                        field("comments","comments", notNull(list(notNull(obj(
+                                                field("__typename","__typename", notNull(scalar("String"))),
+                                                fragment("CommentEntry", CommentEntryFragmentSelector)
+                                            ))))),
+                                        field("id","id", notNull(scalar("ID")))
+                                    )))
+                            ))
+                        ))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("text","text", scalar("String"))
+                )))))
+        )
 private val MyOrganizationsSelector = obj(
             field("myOrganizations","myOrganizations", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2961,6 +2981,12 @@ object Operations {
         override val body = "query MyApps{apps:myApps{__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = MyAppsSelector
     }
+    val MyNotifications = object: OperationDefinition {
+        override val name = "MyNotifications"
+        override val kind = OperationKind.QUERY
+        override val body = "query MyNotifications(\$before:ID,\$first:Int!){myNotifications(before:\$before,first:\$first){__typename content{__typename ... on NewCommentNotification{peer{__typename comments{__typename ...CommentEntryFragment}id}}}id text}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val selector = MyNotificationsSelector
+    }
     val MyOrganizations = object: OperationDefinition {
         override val name = "MyOrganizations"
         override val kind = OperationKind.QUERY
@@ -3896,6 +3922,7 @@ object Operations {
         if (name == "Message") return Message
         if (name == "MessageComments") return MessageComments
         if (name == "MyApps") return MyApps
+        if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
         if (name == "Online") return Online
         if (name == "Organization") return Organization

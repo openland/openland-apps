@@ -439,18 +439,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: QueryWatchParameters): Types.ResolvedInvite | null {
         return this.useQuery(Source.ResolvedInviteQuery, variables, opts);
     }
-    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
-        return this.client.query(Source.MessageCommentsQuery, variables, opts);
-    }
-    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
-        return this.refetch(Source.MessageCommentsQuery, variables);
-    }
-    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
-        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
-    }
-    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments | null {
-        return this.useQuery(Source.MessageCommentsQuery, variables, opts);
-    }
     async queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.client.query(Source.MessageQuery, variables, opts);
     }
@@ -462,6 +450,30 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderMessage(variables: Types.MessageVariables, opts?: QueryWatchParameters): Types.Message | null {
         return this.useQuery(Source.MessageQuery, variables, opts);
+    }
+    async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
+        return this.client.query(Source.MyNotificationsQuery, variables, opts);
+    }
+    async refetchMyNotifications(variables: Types.MyNotificationsVariables): Promise<Types.MyNotifications> {
+        return this.refetch(Source.MyNotificationsQuery, variables);
+    }
+    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications {
+        return this.useQuerySuspense(Source.MyNotificationsQuery, variables, opts);
+    }
+    useWithoutLoaderMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications | null {
+        return this.useQuery(Source.MyNotificationsQuery, variables, opts);
+    }
+    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
+        return this.client.query(Source.MessageCommentsQuery, variables, opts);
+    }
+    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
+        return this.refetch(Source.MessageCommentsQuery, variables);
+    }
+    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
+        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
+    }
+    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments | null {
+        return this.useQuery(Source.MessageCommentsQuery, variables, opts);
     }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
@@ -988,15 +1000,6 @@ export class OpenlandClient extends BaseApiClient {
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
     }
-    async mutateDeleteComment(variables: Types.DeleteCommentVariables): Promise<Types.DeleteComment> {
-        return this.client.mutate(Source.DeleteCommentMutation, variables);
-    }
-    async mutateCommentSetReaction(variables: Types.CommentSetReactionVariables): Promise<Types.CommentSetReaction> {
-        return this.client.mutate(Source.CommentSetReactionMutation, variables);
-    }
-    async mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
-        return this.client.mutate(Source.CommentUnsetReactionMutation, variables);
-    }
     async mutateRoomUpdate(variables: Types.RoomUpdateVariables): Promise<Types.RoomUpdate> {
         return this.client.mutate(Source.RoomUpdateMutation, variables);
     }
@@ -1017,6 +1020,15 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables): Promise<Types.UpdateWelcomeMessage> {
         return this.client.mutate(Source.UpdateWelcomeMessageMutation, variables);
+    }
+    async mutateDeleteComment(variables: Types.DeleteCommentVariables): Promise<Types.DeleteComment> {
+        return this.client.mutate(Source.DeleteCommentMutation, variables);
+    }
+    async mutateCommentSetReaction(variables: Types.CommentSetReactionVariables): Promise<Types.CommentSetReaction> {
+        return this.client.mutate(Source.CommentSetReactionMutation, variables);
+    }
+    async mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
+        return this.client.mutate(Source.CommentUnsetReactionMutation, variables);
     }
     async mutateConferenceJoin(variables: Types.ConferenceJoinVariables): Promise<Types.ConferenceJoin> {
         return this.client.mutate(Source.ConferenceJoinMutation, variables);

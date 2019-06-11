@@ -5,6 +5,8 @@ import { MessageComponent } from 'openland-web/components/messenger/message/Mess
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
+import { useClient } from 'openland-web/utils/useClient';
+import { MyNotifications_myNotifications_content_peer_comments_comment } from 'openland-api/Types';
 
 // add attaches document/photo
 const users = ['Ada Poole', 'Isaiah Schultz', 'Stanley Hughes', 'Dora Becker'];
@@ -70,23 +72,28 @@ const createMessage = ({ text }: { text: string }) => {
 };
 
 export const CommentsNotifications = () => {
-    const testMessages = [
-        createMessage({
-            text: messages[0],
-        }) as any,
-        createMessage({
-            text: messages[1],
-        }) as any,
-        createMessage({
-            text: messages[2],
-        }) as any,
-        createMessage({
-            text: messages[3],
-        }) as any,
-        createMessage({
-            text: messages[4],
-        }) as any,
-    ];
+    const client = useClient();
+    const notifications = client.useMyNotifications({
+        first: 100,
+    });
+
+    const content = notifications.myNotifications[0].content;
+    let comments;
+    if (content) {
+        const firstContent = content[0];
+        if (firstContent) {
+            comments = firstContent.peer.comments.map(({ comment }) => comment);
+        }
+    }
+
+    let testMessages: MyNotifications_myNotifications_content_peer_comments_comment[] = [];
+
+    if (comments) {
+        testMessages = comments;
+    }
+
+    console.log(testMessages);
+
     return (
         <XView alignItems="center" paddingTop={24}>
             <XView width={674}>
