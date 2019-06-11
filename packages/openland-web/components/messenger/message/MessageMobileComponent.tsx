@@ -17,7 +17,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
 import { XView } from 'react-mental';
-import { MobileMessageContainer } from './MessageContainer';
+import { MobileMessageContainer } from './MobileMessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
