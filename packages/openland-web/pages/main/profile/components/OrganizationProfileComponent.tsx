@@ -584,7 +584,7 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                             {extractHostname(organization.website)}
                         </HeaderWebsite>
                     )}
-                    {!organization.website && (
+                    {!organization.website && !organization.isCommunity && (
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <HeaderAddWebsite>
                                 <WebsitePlaceholder target={<EditButton text="Add website" />} />
