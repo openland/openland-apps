@@ -13,6 +13,8 @@ import NewIcon from 'openland-icons/ic-add-blue.svg';
 import { makeActionable } from 'openland-x/Actionable';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
+import NotificationsIcon from 'openland-icons/notifications-24.svg';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -30,6 +32,27 @@ const NewButton = makeActionable<{ onClick: () => void }>(props => (
         New
     </XView>
 ));
+
+const NotificationsButton = makeActionable<{ onClick: () => void }>(props => {
+    let router = React.useContext(XRouterContext)!;
+    return (
+        <XView
+            cursor="pointer"
+            fontSize={16}
+            fontWeight="600"
+            color="#1790ff"
+            flexDirection="row"
+            alignItems="center"
+            onClick={() => {
+                if (router) {
+                    router.push(`/notifications/comments`);
+                }
+            }}
+        >
+            <NotificationsIcon />
+        </XView>
+    );
+});
 
 const iconWrapperClass = css`
     & > svg path {
@@ -195,6 +218,9 @@ export const NewOptionsButton = XMemo(() => {
                     },
                 }}
             >
+                <XView marginRight={16} justifyContent="center">
+                    <NotificationsButton />
+                </XView>
                 <NewButton onClick={toggle} />
             </XShortcuts>
         </XPopper>

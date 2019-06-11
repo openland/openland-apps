@@ -8,6 +8,7 @@ import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView
 import { Navigation } from 'openland-web/components/Navigation';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
+import NotificationsIcon from 'notifications-24.svg';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { GlobalSearch_items } from 'openland-api/Types';
