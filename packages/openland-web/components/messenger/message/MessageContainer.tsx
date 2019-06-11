@@ -291,14 +291,14 @@ export const DesktopMessageContainer = ({
 
     let MessageContainerWrapper = CompactMessageContainerWrapper;
 
-    if (isComment) {
+    if (isCommentNotification) {
+        MessageContainerWrapper = CommentsNotificationMessageContainerWrapper;
+    } else if (isComment) {
         MessageContainerWrapper = NotCompactShortMessageContainerWrapper;
     } else if (isModal) {
         MessageContainerWrapper = NotCompactModalMessageContainerWrapper;
     } else if (!compact) {
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
-    } else if (isCommentNotification) {
-        MessageContainerWrapper = CommentsNotificationMessageContainerWrapper;
     }
 
     return (
