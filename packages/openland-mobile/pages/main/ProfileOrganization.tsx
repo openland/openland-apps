@@ -102,8 +102,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         const handleCreatePress = React.useCallback(() => {
             let builder = new ActionSheetBuilder();
 
-            builder.action('Create group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
-            builder.action('Create channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
+            builder.action('New group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
+            builder.action('New channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
 
             builder.show();
         }, [organization.id]);
@@ -138,7 +138,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             }
 
             if (organization.isOwner || organization.isAdmin) {
-                builder.action('Delete organization', () => {
+                builder.action('Delete', () => {
                     Alert.builder()
                         .title(`Delete ${organization.name}`)
                         .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
