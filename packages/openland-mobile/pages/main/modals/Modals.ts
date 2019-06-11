@@ -2,6 +2,23 @@ import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/Types';
 
 export const Modals = {
+    showGroupMuptiplePicker(
+        router: SRouter,
+        action: {
+            title: string,
+            action: (users: UserShort[]) => any,
+            titleEmpty?: string,
+            actionEmpty?: () => void,
+        },
+        title?: string,
+        pushAndReset?: boolean
+    ) {
+        if (pushAndReset) {
+            router.pushAndReset('GroupMultiplePicker', { action, title });
+        } else {
+            router.push('GroupMultiplePicker', { action, title });
+        }
+    },
     showUserMuptiplePicker(
         router: SRouter,
         action: {

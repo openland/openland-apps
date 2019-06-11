@@ -21,6 +21,7 @@ import { UpdateOrganizationProfileInput } from 'openland-api/Types';
 import { formatError } from 'openland-x-forms/errorHandling';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
+import CheckIcon from 'openland-icons/ic-check.svg';
 
 interface AdminToolsProps {
     id: string;
@@ -92,7 +93,15 @@ const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
     width: 120,
     height: 120,
     borderRadius: '50%',
+    border: 'none',
     backgroundColor: '#f4f4f4',
+    '&:hover': {
+        border: 'none',
+    },
+    '& > div:hover': {
+        backgroundColor: '#919292',
+        color: '#fff',
+    },
 });
 
 const ShortNameButton = Glamorous(XButton)({
@@ -121,7 +130,6 @@ const EditCommunityEntity = (props: {
     const [saveIsDone, setSaveIsDone] = React.useState(false);
     const [saveShortNameIsDone, setSaveShortNameIsDone] = React.useState(false);
     const [savingShortName, setSavingShortName] = React.useState(false);
-    const [nameError, setNameError] = React.useState<string | null>(null);
     const [shortNameError, setShortNameError] = React.useState<string | null>(null);
 
     const organizationId = props.id;
@@ -138,7 +146,15 @@ const EditCommunityEntity = (props: {
     // end super account
 
     const form = useForm();
-    const nameField = useField('input.name', org.name, form);
+
+    const nameField = useField('input.name', org.name, form, [
+        {
+            checkIsValid: value => !!value,
+            text: `Please enter a name for this ${
+                props.isCommunity ? 'community' : 'organization'
+            }`,
+        },
+    ]);
     const aboutField = useField('input.about', org.about || '', form);
     const websiteField = useField('input.website', org.website || '', form);
     const twitterField = useField('input.twitter', org.twitter || '', form);
@@ -197,32 +213,33 @@ const EditCommunityEntity = (props: {
         }, 1000);
     };
 
-    const updateOrganizaton = async ({ input }: { input: UpdateOrganizationProfileInput }) => {
-        await setSavingData(true);
-        try {
-            await client.mutateUpdateOrganization({ input, organizationId });
-            await client.refetchOrganization({ organizationId });
-            await client.refetchOrganizationProfile({ organizationId });
+    const updateOrganizaton = ({ input }: { input: UpdateOrganizationProfileInput }) =>
+        form.doAction(async () => {
+            await setSavingData(true);
+            try {
+                await client.mutateUpdateOrganization({ input, organizationId });
+                await client.refetchOrganization({ organizationId });
+                await client.refetchOrganizationProfile({ organizationId });
 
-            if (shortNameField.value && shortNameField.value !== org.shortname) {
-                await setShortName(shortNameField.value, true);
+                if (shortNameField.value && shortNameField.value !== org.shortname) {
+                    await setShortName(shortNameField.value, true);
+                }
+                await closeModal();
+            } catch (e) {
+                // setNameError(
+                //     `Please enter a name for this ${props.isCommunity ? 'community' : 'organization'}`,
+                // );
+                setTimeout(() => {
+                    // setNameError(null);
+                    setSavingData(false);
+                }, 1500);
             }
-            await closeModal();
-        } catch (e) {
-            setNameError(
-                `Please enter a name for this ${props.isCommunity ? 'community' : 'organization'}`,
-            );
-            setTimeout(() => {
-                setNameError(null);
-                setSavingData(false);
-            }, 1500);
-        }
-    };
+        });
 
     return (
         <XView borderRadius={8} overflow="hidden" flexShrink={1}>
             <XScrollView3 flexShrink={1} flexGrow={1}>
-                <XView paddingHorizontal={40}>
+                <XView paddingHorizontal={40} paddingBottom={34}>
                     <XView
                         flexDirection="row"
                         justifyContent="space-between"
@@ -231,74 +248,72 @@ const EditCommunityEntity = (props: {
                     >
                         <XAvatarUploadStyled
                             cropParams="1:1"
+                            placeholder={{
+                                add: 'Add photo',
+                                change: 'Change',
+                            }}
                             onChange={onAvatarChange}
                             value={
                                 newPhoto
                                     ? newPhoto
                                     : org.photoRef
-                                        ? fromValue({
-                                              uuid: org.photoRef.uuid,
-                                              isImage: true,
-                                              crop: org.photoRef.crop,
-                                              width: null,
-                                              height: null,
-                                          })
-                                        : null
+                                    ? fromValue({
+                                          uuid: org.photoRef.uuid,
+                                          isImage: true,
+                                          crop: org.photoRef.crop,
+                                          width: null,
+                                          height: null,
+                                      })
+                                    : null
                             }
                         />
                         <XView marginLeft={20} flexGrow={1} flexShrink={0}>
                             <InputField field={nameField} title={'Community name'} />
-                            {nameError && (
-                                <XView fontSize={12} color="#f6564e" marginTop={6} marginLeft={16}>
-                                    {nameError}
-                                </XView>
-                            )}
-                            {props.isCommunity &&
-                                !props.isOwner && (
-                                    <XView
-                                        height={52}
-                                        marginTop={16}
-                                        paddingHorizontal={16}
-                                        backgroundColor="#f2f3f4"
-                                        borderRadius={8}
-                                        flexDirection="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                    >
-                                        <XView flexDirection="column" marginTop={-3}>
-                                            <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
-                                                Community type (set by creator)
-                                            </XView>
-                                            <XView fontSize={14} color="#000" marginTop={-4}>
-                                                {org.private ? 'Private' : 'Public'}
-                                            </XView>
+
+                            {props.isCommunity && !props.isOwner && (
+                                <XView
+                                    height={52}
+                                    marginTop={16}
+                                    paddingHorizontal={16}
+                                    backgroundColor="#f2f3f4"
+                                    borderRadius={8}
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                >
+                                    <XView flexDirection="column" marginTop={-3}>
+                                        <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
+                                            Community type (set by creator)
+                                        </XView>
+                                        <XView fontSize={14} color="#000" marginTop={-4}>
+                                            {org.private ? 'Private' : 'Public'}
                                         </XView>
                                     </XView>
-                                )}
-                            {props.isCommunity &&
-                                props.isOwner && (
-                                    <XView marginTop={16}>
-                                        <SelectWithDropdown
-                                            title="Community type"
-                                            value={typeField.value}
-                                            onChange={typeField.input.onChange}
-                                            selectOptions={[
-                                                {
-                                                    value: CommunityType.COMMUNITY_PUBLIC,
-                                                    label: `Public community`,
-                                                    labelShort: 'Public',
-                                                    subtitle: `Anyone can find and join this community`,
-                                                },
-                                                {
-                                                    value: CommunityType.COMMUNITY_PRIVATE,
-                                                    label: `Private community`,
-                                                    labelShort: 'Private',
-                                                    subtitle: `Only invited people can join community and view chats`,
-                                                },
-                                            ]}
-                                        />
-                                    </XView>
-                                )}
+                                </XView>
+                            )}
+                            {props.isCommunity && props.isOwner && (
+                                <XView marginTop={16}>
+                                    <SelectWithDropdown
+                                        title="Community type"
+                                        value={typeField.value}
+                                        onChange={typeField.input.onChange}
+                                        selectOptions={[
+                                            {
+                                                value: CommunityType.COMMUNITY_PUBLIC,
+                                                label: `Public community`,
+                                                labelShort: 'Public',
+                                                subtitle: `Anyone can find and join this community`,
+                                            },
+                                            {
+                                                value: CommunityType.COMMUNITY_PRIVATE,
+                                                label: `Private community`,
+                                                labelShort: 'Private',
+                                                subtitle: `Only invited people can join community and view chats`,
+                                            },
+                                        ]}
+                                    />
+                                </XView>
+                            )}
                         </XView>
                     </XView>
                     <XView marginBottom={28}>
@@ -355,10 +370,11 @@ const EditCommunityEntity = (props: {
                             </XView>
                             <ShortNameButton
                                 loading={savingShortName && !saveShortNameIsDone}
-                                text={saveShortNameIsDone ? 'Done!' : 'Save'}
+                                text={saveShortNameIsDone ? 'Saved!' : 'Save'}
                                 flexShrink={0}
                                 style={saveShortNameIsDone ? 'success' : 'primary'}
                                 onClick={() => setShortName(shortNameField.value, false)}
+                                icon={saveShortNameIsDone ? <CheckIcon /> : undefined}
                             />
                         </XView>
                         {!shortNameError && (
@@ -398,7 +414,7 @@ const EditCommunityEntity = (props: {
                     </XWithRole>
                 </XView>
             </XScrollView3>
-            <XView marginTop={34} backgroundColor="#f4f4f4">
+            <XView backgroundColor="#f4f4f4">
                 <XView
                     paddingHorizontal={40}
                     paddingVertical={16}
@@ -410,9 +426,10 @@ const EditCommunityEntity = (props: {
                     </XView>
                     <XButton
                         loading={savingData && !saveIsDone}
-                        text={saveIsDone ? 'Done!' : 'Save'}
+                        text={saveIsDone ? 'Saved!' : 'Save'}
                         size="large"
                         style={saveIsDone ? 'success' : 'primary'}
+                        icon={saveIsDone ? <CheckIcon /> : undefined}
                         onClick={() =>
                             updateOrganizaton({
                                 input: {
@@ -443,11 +460,11 @@ const EditCommunityEntity = (props: {
                                                   : null,
                                           })
                                         : org.photoRef
-                                            ? sanitizeImageRef({
-                                                  uuid: org.photoRef.uuid,
-                                                  crop: org.photoRef.crop,
-                                              })
-                                            : null,
+                                        ? sanitizeImageRef({
+                                              uuid: org.photoRef.uuid,
+                                              crop: org.photoRef.crop,
+                                          })
+                                        : null,
                                 },
                             })
                         }

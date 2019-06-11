@@ -36,6 +36,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    onMessageDoublePress: (message: DataSourceMessageItem) => void;
     onMessageLongPress: (message: DataSourceMessageItem, chatId: string) => void;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -50,12 +51,25 @@ export interface AsyncMessageViewProps {
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let theme = useThemeGlobal();
+    let lastTap: number;
 
     let handleUserPress = (id: string) => {
         props.onUserPress(id);
     }
     let handleGroupPress = (id: string) => {
         props.onGroupPress(id);
+    }
+    let handleDoublePress = () => {
+        if (!props.message.isSending) {
+            const now = Date.now();
+            const DOUBLE_PRESS_DELAY = 300;
+
+            if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+                props.onMessageDoublePress(props.message);
+            } else {
+                lastTap = now;
+            }
+        }
     }
     let handleLongPress = () => {
         if (!props.message.isSending) {
@@ -102,7 +116,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
+        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
 
             <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
 

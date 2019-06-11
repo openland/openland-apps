@@ -22,6 +22,7 @@ class GroupsList extends React.PureComponent<{ groups: (Organization_organizatio
                                 key={v!!.id}
                                 item={v!}
                                 onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
+                                photo={v!.photo}
                             />
                         ))}
                 </ZListItemGroup>

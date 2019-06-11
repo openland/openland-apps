@@ -1,23 +1,25 @@
 import * as React from 'react';
-import { Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
+import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
 import { AppStyles, TextStyles } from '../styles/AppStyles';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 const styles = StyleSheet.create({
     container: {
         height: 18,
-        paddingLeft: 3,
-        paddingRight: 3,
-        backgroundColor: AppStyles.primaryColor,
+        padding: 2,
         borderRadius: 9,
-        borderWidth: 2,
         minWidth: 18,
         flexDirection: 'row',
     } as ViewStyle,
-    containerMuted: {
+    inner: {
+        backgroundColor: AppStyles.primaryColor,
+        paddingHorizontal: 3,
+        borderRadius: 7
+    } as ViewStyle,
+    innerMuted: {
         backgroundColor: '#bcc3cc'
     } as ViewStyle,
-    containerContrast: {
+    innerContrast: {
         backgroundColor: '#ff3b30'
     } as ViewStyle,
     text: {
@@ -75,8 +77,10 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
 
     render() {
         return (
-            <Animated.View style={[{ opacity: this.opacity }, styles.container, { borderColor: this.props.theme.backgroundColor }, this.props.appearance === 'muted' && styles.containerMuted, , this.props.appearance === 'contrast' && styles.containerContrast]}>
-                <Text style={styles.text}>{this.state.value}</Text>
+            <Animated.View style={[{ opacity: this.opacity }, styles.container, { backgroundColor: this.props.theme.backgroundColor }]}>
+                <View style={[styles.inner, this.props.appearance === 'muted' && styles.innerMuted, , this.props.appearance === 'contrast' && styles.innerContrast]}>
+                    <Text style={styles.text}>{this.state.value}</Text>
+                </View>
             </Animated.View>
         );
     }

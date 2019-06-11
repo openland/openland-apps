@@ -1,5 +1,5 @@
-query GlobalSearch($query: String!) {
-  items: alphaGlobalSearch(query: $query) {
+query GlobalSearch($kinds: [GlobalSearchEntryKind!], $query: String!) {
+  items: alphaGlobalSearch(kinds: $kinds, query: $query) {
     __typename
     ... on Organization {
       ...OrganizationShort

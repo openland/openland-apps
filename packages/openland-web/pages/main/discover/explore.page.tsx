@@ -58,9 +58,9 @@ export default withApp('Explore', 'viewer', () => {
         <DiscoverNavigation
             title={'Explore'}
             CardsComponent={CardsComponent}
-            searchPlaceholder={'Search groups'}
+            searchPlaceholder={'Search groups and channels'}
             noQueryText={'All groups'}
-            hasQueryText={'Groups'}
+            hasQueryText={'Groups and channels'}
             withoutFeatured
         />
     );

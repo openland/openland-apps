@@ -185,13 +185,13 @@ export const DiscoverNavigation = XMemo(
                 menuChildrenContent={
                     <>
                         <MenuItem
-                            path="/discover/discover"
+                            path="/discover/recommended"
                             title="Chats for you"
                             icon={<RecommendationIconWrapper />}
                         />
                         <MenuItem
                             path="/discover"
-                            title="Groups and Channels"
+                            title="Groups and channels"
                             icon={<RoomIcon />}
                         />
                         <MenuItem

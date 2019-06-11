@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View, LayoutChangeEvent, Image, Platform } from 'react-native';
-import { AppStyles } from '../../../styles/AppStyles';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';

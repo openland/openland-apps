@@ -49,6 +49,7 @@ import { MessageComments } from './pages/main/MessageComments';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
 import { CommunityList } from './pages/main/CommunityList';
+import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -72,6 +73,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', ProfileOrganizationLink)
+  .addRoute('GroupMultiplePicker', GroupMultiplePicker)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('UserPicker', UserPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)

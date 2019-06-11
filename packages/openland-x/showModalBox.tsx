@@ -60,6 +60,12 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
+const overlayFullScreenStyle = css`
+    position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
 const Loader = (
     <XView height="100%" alignItems="center" justifyContent="center">
         <XLoader loading={true} />
@@ -171,7 +177,8 @@ const ModalBoxComponent = React.memo<{
             <div
                 ref={containerRef}
                 className={className(
-                    overlayStyle,
+                    // overlayStyle,
+                    props.config.fullScreen ? overlayFullScreenStyle : overlayStyle,
                     state === 'showing' && overlayShowing,
                     state === 'visible' && overlayVisible,
                     state === 'hiding' && overlayHiding,
