@@ -8,6 +8,14 @@ query MyNotifications($before: ID, $first: Int!) {
           __typename
           ...CommentEntryFragment
         }
+        peer {
+          __typename
+          comments {
+            __typename
+            ...CommentEntryFragment
+          }
+          id
+        }
       }
     }
     id
