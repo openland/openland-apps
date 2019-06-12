@@ -2,8 +2,8 @@ import * as React from 'react';
 import UUID from 'uuid/v4';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { Platform, Button } from 'react-native';
-import { ActionButtonAndroid } from './navigation/buttons/ActionButtonAndroid';
-import { ActionButtonIOS } from './navigation/buttons/ActionButtonIOS';
+import { ActionButtonAndroid, ActionButtonAndroidView } from './navigation/buttons/ActionButtonAndroid';
+import { ActionButtonIOS, ActionButtonIOSView } from './navigation/buttons/ActionButtonIOS';
 import { SNavigationViewStyle } from './SNavigationView';
 
 export interface FastHeaderButtonDescription {
@@ -34,6 +34,19 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
             }
             return (<Button color={style.accentColor} onPress={this.handlePress} title={this.props.title} />);
         } else {
+            if (Platform.OS === 'android') {
+                return (
+                    <ActionButtonAndroidView onPress={this.handlePress}>
+                        {this.props.children}
+                    </ActionButtonAndroidView>
+                );
+            } else if (Platform.OS === 'ios') {
+                return (
+                    <ActionButtonIOSView onPress={this.handlePress}>
+                        {this.props.children}
+                    </ActionButtonIOSView>
+                );
+            }
             return (
                 <>
                     {this.props.children}

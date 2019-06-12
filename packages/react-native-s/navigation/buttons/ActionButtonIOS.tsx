@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export class ActionButtonIOS extends React.PureComponent<{ title: string, tintColor?: string, icon?: any, onPress?: () => void }> {
     render() {
@@ -13,3 +14,11 @@ export class ActionButtonIOS extends React.PureComponent<{ title: string, tintCo
         );
     }
 }
+
+export const ActionButtonIOSView = XMemo<{ onPress?: () => void; children?: any }>((props) => (
+    <TouchableOpacity onPress={props.onPress} hitSlop={{ bottom: 8, top: 8, left: 8, right: 8 }}>
+        <View style={{ height: 44, marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
+            {props.children}
+        </View>
+    </TouchableOpacity>
+));
