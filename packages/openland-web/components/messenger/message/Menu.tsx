@@ -6,6 +6,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     RoomChat_room,
     RoomChat_room_SharedRoom,
+    CommentSubscriptionType,
 } from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
@@ -153,6 +154,37 @@ interface MenuProps {
     deleted?: boolean;
 }
 
+const FollowUnfollowMenuButton = ({
+    isFollowed,
+    messageId,
+    type,
+}: {
+    isFollowed: boolean;
+    messageId: string;
+    type: CommentSubscriptionType;
+}) => {
+    const client = useClient();
+
+    return (
+        <XMenuItem
+            onClick={() => {
+                if (isFollowed) {
+                    client.mutateUnSubscribeMessageComments({
+                        messageId,
+                    });
+                } else {
+                    client.mutateSubscribeMessageComments({
+                        messageId,
+                        type,
+                    });
+                }
+            }}
+        >
+            {isFollowed ? 'Unfollow this thread' : 'Follow this thread'}
+        </XMenuItem>
+    );
+};
+
 export const Menu = React.memo(
     ({
         conversationId,
@@ -227,13 +259,13 @@ export const Menu = React.memo(
         if (isCommentNotification) {
             contentElem = (
                 <>
-                    <XMenuItem
-                        onClick={(e: any) => {
-                            console.log('Unfollow this thread');
-                        }}
-                    >
-                        Unfollow this thread
-                    </XMenuItem>
+                    <FollowUnfollowMenuButton
+                        // ALL = "ALL",
+                        // DIRECT = "DIRECT", ??
+                        isFollowed={true}
+                        messageId={message.id!!}
+                        type={CommentSubscriptionType.ALL}
+                    />
 
                     <XMenuItem
                         onClick={(e: any) => {

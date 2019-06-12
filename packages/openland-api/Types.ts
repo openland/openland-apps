@@ -49039,6 +49039,61 @@ export interface CommentUnsetReactionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ReadNotification
+// ====================================================
+
+export interface ReadNotification_readNotification {
+  __typename: "NotificationCenter";
+  id: string;
+  unread: number;
+}
+
+export interface ReadNotification {
+  readNotification: ReadNotification_readNotification;
+}
+
+export interface ReadNotificationVariables {
+  notificationId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: SubscribeMessageComments
+// ====================================================
+
+export interface SubscribeMessageComments {
+  subscribeMessageComments: boolean;
+}
+
+export interface SubscribeMessageCommentsVariables {
+  messageId: string;
+  type: CommentSubscriptionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UnSubscribeMessageComments
+// ====================================================
+
+export interface UnSubscribeMessageComments {
+  unSubscribeMessageComments: boolean;
+}
+
+export interface UnSubscribeMessageCommentsVariables {
+  messageId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Conference
 // ====================================================
 
@@ -74101,6 +74156,11 @@ export type DialogUpdateFragment = DialogUpdateFragment_DialogMentionedChanged |
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export enum CommentSubscriptionType {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+}
 
 /**
  * Deprecated

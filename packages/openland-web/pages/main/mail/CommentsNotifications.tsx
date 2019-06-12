@@ -71,6 +71,16 @@ const createMessage = ({ text }: { text: string }) => {
     };
 };
 
+const hackChangeCommentIdToMessageId = ({
+    item,
+    messageId,
+}: {
+    item: MyNotifications_myNotifications_content_comment_comment;
+    messageId: string;
+}): MyNotifications_myNotifications_content_comment_comment => {
+    return { ...item, id: messageId };
+};
+
 export const CommentsNotifications = () => {
     const client = useClient();
     const notifications = client.useMyNotifications({
@@ -85,6 +95,7 @@ export const CommentsNotifications = () => {
             return content!![0]!!.comment!!.comment;
         });
 
+    debugger;
     let testMessages: MyNotifications_myNotifications_content_comment_comment[] = [];
 
     if (comments) {
@@ -105,10 +116,18 @@ export const CommentsNotifications = () => {
                 </XView>
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     {testMessages.map((item: any, key: any) => {
+                        console.log(item);
                         return (
                             <MessageComponent
                                 key={key}
-                                message={convertDsMessage(convertMessage(item))}
+                                message={convertDsMessage(
+                                    convertMessage(
+                                        hackChangeCommentIdToMessageId({
+                                            item,
+                                            messageId: item.id,
+                                        }),
+                                    ),
+                                )}
                                 noSelector
                                 isCommentNotification
                             />

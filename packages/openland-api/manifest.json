@@ -716,6 +716,27 @@
       }
     },
     {
+      "signature": "29c53dc008fc663867b793520fbd33c99e7c608fff83053835722014bd424922",
+      "document": "mutation ReadNotification($notificationId:ID!){readNotification(notificationId:$notificationId){__typename id unread}}",
+      "metadata": {
+        "engineSignature": "mutation ReadNotification($notificationId:ID!){readNotification(notificationId:$notificationId){__typename id unread}}"
+      }
+    },
+    {
+      "signature": "b0c475dfe621a1919f7069da956f03720c1f17081b72a33b68358f4291661e4b",
+      "document": "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}",
+      "metadata": {
+        "engineSignature": "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}"
+      }
+    },
+    {
+      "signature": "c5e0eca1039fbd2257749cb9400ff286b85beaabd982874cec4b20979187dd1c",
+      "document": "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}",
+      "metadata": {
+        "engineSignature": "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}"
+      }
+    },
+    {
       "signature": "957488f00e908f612910841f3decbf820c3483a37cf6b3abfd99551a6299c9ba",
       "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}startTime}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Conference($id:ID!){conference(id:$id){__typename...ConferenceFull}}",
       "metadata": {

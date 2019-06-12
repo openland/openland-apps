@@ -2400,6 +2400,13 @@ private val ProfileUpdateSelector = obj(
                     field("website","website", scalar("String"))
                 )))
         )
+private val ReadNotificationSelector = obj(
+            field("readNotification","readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("unread","unread", notNull(scalar("Int")))
+                )))
+        )
 private val RefreshAppTokenSelector = obj(
             field("refreshAppToken","refreshAppToken", arguments(fieldValue("appId", refValue("appId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2577,6 +2584,9 @@ private val SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private val SubscribeMessageCommentsSelector = obj(
+            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+        )
 private val SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2640,6 +2650,9 @@ private val SuperAdminRemoveSelector = obj(
 private val SwitchReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
             field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean")))
+        )
+private val UnSubscribeMessageCommentsSelector = obj(
+            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
         )
 private val UnpinMessageSelector = obj(
             field("betaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -3523,6 +3536,12 @@ object Operations {
         override val body = "mutation ProfileUpdate(\$input:UpdateProfileInput!,\$uid:ID){updateProfile(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
         override val selector = ProfileUpdateSelector
     }
+    val ReadNotification = object: OperationDefinition {
+        override val name = "ReadNotification"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation ReadNotification(\$notificationId:ID!){readNotification(notificationId:\$notificationId){__typename id unread}}"
+        override val selector = ReadNotificationSelector
+    }
     val RefreshAppToken = object: OperationDefinition {
         override val name = "RefreshAppToken"
         override val kind = OperationKind.MUTATION
@@ -3739,6 +3758,12 @@ object Operations {
         override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsUpdateSelector
     }
+    val SubscribeMessageComments = object: OperationDefinition {
+        override val name = "SubscribeMessageComments"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation SubscribeMessageComments(\$messageId:ID!,\$type:CommentSubscriptionType!){subscribeMessageComments(messageId:\$messageId,type:\$type)}"
+        override val selector = SubscribeMessageCommentsSelector
+    }
     val SuperAccountActivate = object: OperationDefinition {
         override val name = "SuperAccountActivate"
         override val kind = OperationKind.MUTATION
@@ -3798,6 +3823,12 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SwitchReaction(\$from:String!,\$messageId:ID!,\$to:String!){betaReactionRemove(mid:\$messageId,reaction:\$from)betaReactionSet(mid:\$messageId,reaction:\$to)}"
         override val selector = SwitchReactionSelector
+    }
+    val UnSubscribeMessageComments = object: OperationDefinition {
+        override val name = "UnSubscribeMessageComments"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation UnSubscribeMessageComments(\$messageId:ID!){unSubscribeMessageComments(messageId:\$messageId)}"
+        override val selector = UnSubscribeMessageCommentsSelector
     }
     val UnpinMessage = object: OperationDefinition {
         override val name = "UnpinMessage"
@@ -4009,6 +4040,7 @@ object Operations {
         if (name == "PinMessage") return PinMessage
         if (name == "ProfileCreate") return ProfileCreate
         if (name == "ProfileUpdate") return ProfileUpdate
+        if (name == "ReadNotification") return ReadNotification
         if (name == "RefreshAppToken") return RefreshAppToken
         if (name == "RegisterPush") return RegisterPush
         if (name == "RegisterWebPush") return RegisterWebPush
@@ -4045,6 +4077,7 @@ object Operations {
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
+        if (name == "SubscribeMessageComments") return SubscribeMessageComments
         if (name == "SuperAccountActivate") return SuperAccountActivate
         if (name == "SuperAccountAdd") return SuperAccountAdd
         if (name == "SuperAccountMemberAdd") return SuperAccountMemberAdd
@@ -4055,6 +4088,7 @@ object Operations {
         if (name == "SuperAdminAdd") return SuperAdminAdd
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SwitchReaction") return SwitchReaction
+        if (name == "UnSubscribeMessageComments") return UnSubscribeMessageComments
         if (name == "UnpinMessage") return UnpinMessage
         if (name == "UpdateApp") return UpdateApp
         if (name == "UpdateOrganization") return UpdateOrganization

@@ -54,3 +54,25 @@ export const CommentUnsetReactionMutation = gql`
         commentReactionRemove(commentId: $commentId, reaction: $reaction)
     }
 `;
+
+export const ReadNotificationMutation = gql`
+    mutation ReadNotification($notificationId: ID!) {
+        readNotification(notificationId: $notificationId) {
+            id
+            unread
+            # state
+        }
+    }
+`;
+
+export const SubscribeMessageCommentsMutation = gql`
+    mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {
+        subscribeMessageComments(messageId: $messageId, type: $type)
+    }
+`;
+
+export const UnSubscribeMessageCommentsMutation = gql`
+    mutation UnSubscribeMessageComments($messageId: ID!) {
+        unSubscribeMessageComments(messageId: $messageId)
+    }
+`;

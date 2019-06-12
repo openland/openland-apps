@@ -2394,6 +2394,13 @@ private let ProfileUpdateSelector = obj(
                     field("website","website", scalar("String"))
                 )))
         )
+private let ReadNotificationSelector = obj(
+            field("readNotification","readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("unread","unread", notNull(scalar("Int")))
+                )))
+        )
 private let RefreshAppTokenSelector = obj(
             field("refreshAppToken","refreshAppToken", arguments(fieldValue("appId", refValue("appId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2571,6 +2578,9 @@ private let SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private let SubscribeMessageCommentsSelector = obj(
+            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+        )
 private let SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2634,6 +2644,9 @@ private let SuperAdminRemoveSelector = obj(
 private let SwitchReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
             field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean")))
+        )
+private let UnSubscribeMessageCommentsSelector = obj(
+            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
         )
 private let UnpinMessageSelector = obj(
             field("betaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -3520,6 +3533,12 @@ class Operations {
         "mutation ProfileUpdate($input:UpdateProfileInput!,$uid:ID){updateProfile(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
         ProfileUpdateSelector
     )
+    let ReadNotification = OperationDefinition(
+        "ReadNotification",
+        .mutation, 
+        "mutation ReadNotification($notificationId:ID!){readNotification(notificationId:$notificationId){__typename id unread}}",
+        ReadNotificationSelector
+    )
     let RefreshAppToken = OperationDefinition(
         "RefreshAppToken",
         .mutation, 
@@ -3736,6 +3755,12 @@ class Operations {
         "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
         SettingsUpdateSelector
     )
+    let SubscribeMessageComments = OperationDefinition(
+        "SubscribeMessageComments",
+        .mutation, 
+        "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}",
+        SubscribeMessageCommentsSelector
+    )
     let SuperAccountActivate = OperationDefinition(
         "SuperAccountActivate",
         .mutation, 
@@ -3795,6 +3820,12 @@ class Operations {
         .mutation, 
         "mutation SwitchReaction($from:String!,$messageId:ID!,$to:String!){betaReactionRemove(mid:$messageId,reaction:$from)betaReactionSet(mid:$messageId,reaction:$to)}",
         SwitchReactionSelector
+    )
+    let UnSubscribeMessageComments = OperationDefinition(
+        "UnSubscribeMessageComments",
+        .mutation, 
+        "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}",
+        UnSubscribeMessageCommentsSelector
     )
     let UnpinMessage = OperationDefinition(
         "UnpinMessage",
@@ -4007,6 +4038,7 @@ class Operations {
         if name == "PinMessage" { return PinMessage }
         if name == "ProfileCreate" { return ProfileCreate }
         if name == "ProfileUpdate" { return ProfileUpdate }
+        if name == "ReadNotification" { return ReadNotification }
         if name == "RefreshAppToken" { return RefreshAppToken }
         if name == "RegisterPush" { return RegisterPush }
         if name == "RegisterWebPush" { return RegisterWebPush }
@@ -4043,6 +4075,7 @@ class Operations {
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
+        if name == "SubscribeMessageComments" { return SubscribeMessageComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }
         if name == "SuperAccountMemberAdd" { return SuperAccountMemberAdd }
@@ -4053,6 +4086,7 @@ class Operations {
         if name == "SuperAdminAdd" { return SuperAdminAdd }
         if name == "SuperAdminRemove" { return SuperAdminRemove }
         if name == "SwitchReaction" { return SwitchReaction }
+        if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
         if name == "UnpinMessage" { return UnpinMessage }
         if name == "UpdateApp" { return UpdateApp }
         if name == "UpdateOrganization" { return UpdateOrganization }

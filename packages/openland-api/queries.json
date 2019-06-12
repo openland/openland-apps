@@ -8632,6 +8632,153 @@
 			"operationId": "d60882350e6c5b03ee3536480f68acc5a170f1c11395b23b98e7d6a432c808db"
 		},
 		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
+			"operationName": "ReadNotification",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "notificationId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
+			"fields": [
+				{
+					"responseName": "readNotification",
+					"fieldName": "readNotification",
+					"type": "NotificationCenter!",
+					"args": [
+						{
+							"name": "notificationId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "notificationId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "unread",
+							"fieldName": "unread",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
+			"operationId": "9d1e473f618863cd3c46c84d018a94541d6c974d555cba8c545389eb59cde65b"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
+			"operationName": "SubscribeMessageComments",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "messageId",
+					"type": "ID!"
+				},
+				{
+					"name": "type",
+					"type": "CommentSubscriptionType!"
+				}
+			],
+			"source": "mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {\n  subscribeMessageComments(messageId: $messageId, type: $type)\n}",
+			"fields": [
+				{
+					"responseName": "subscribeMessageComments",
+					"fieldName": "subscribeMessageComments",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "messageId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "messageId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "type",
+							"value": {
+								"kind": "Variable",
+								"variableName": "type"
+							},
+							"type": "CommentSubscriptionType!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {\n  subscribeMessageComments(messageId: $messageId, type: $type)\n}",
+			"operationId": "aa25a08edf5a7160393c42ad8a0f7f9bfc498145e01ab63c2a08f928a7a578eb"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
+			"operationName": "UnSubscribeMessageComments",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "messageId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation UnSubscribeMessageComments($messageId: ID!) {\n  unSubscribeMessageComments(messageId: $messageId)\n}",
+			"fields": [
+				{
+					"responseName": "unSubscribeMessageComments",
+					"fieldName": "unSubscribeMessageComments",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "messageId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "messageId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation UnSubscribeMessageComments($messageId: ID!) {\n  unSubscribeMessageComments(messageId: $messageId)\n}",
+			"operationId": "53680ced292f52a20496ea95c56c938a28ee787f4447af70e9015019c40ff41e"
+		},
+		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Conferences.ts",
 			"operationName": "Conference",
 			"operationType": "query",
@@ -24168,6 +24315,20 @@
 				},
 				{
 					"name": "ANGRY",
+					"isDeprecated": false
+				}
+			]
+		},
+		{
+			"kind": "EnumType",
+			"name": "CommentSubscriptionType",
+			"values": [
+				{
+					"name": "ALL",
+					"isDeprecated": false
+				},
+				{
+					"name": "DIRECT",
 					"isDeprecated": false
 				}
 			]
