@@ -195,12 +195,12 @@ const EditCommunityEntity = (props: {
             let errorText = '';
             if (formatError(e) === 'Shortname is too short' && !activated) {
                 errorText = 'Shortname must have at least 5 characters.';
-            }
-            if (formatError(e) === 'Shortname is too short' && activated) {
+            } else if (formatError(e) === 'Shortname is too short' && activated) {
                 errorText = 'Shortname must have at least 3 characters.';
-            }
-            if (formatError(e) === 'Invalid shortname') {
+            } else if (formatError(e) === 'Invalid shortname') {
                 errorText = 'Shortname can only contain a-z, 0-9, and underscores.';
+            } else {
+                errorText = formatError(e);
             }
             setShortNameError(errorText);
         }
