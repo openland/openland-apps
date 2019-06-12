@@ -21,7 +21,6 @@ class AsyncDataView(val context: ReactContext, val key: String) {
 
     fun applyModes(renderModes: Array<String>){
         this.applyModes = renderModes
-        Log.d("boom", this.applyModes.size.toString())
         val s = AsyncDataViewState(this.state.items.map {
             when (it.spec) {
                 is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))

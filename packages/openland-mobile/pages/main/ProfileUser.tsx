@@ -31,7 +31,6 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 if (groups.length > 0) {
                     startLoader();
                     try {
-                        console.warn('boom', groups);
                         await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) })
                     } catch (e) {
                         Alert.alert(formatError(e));

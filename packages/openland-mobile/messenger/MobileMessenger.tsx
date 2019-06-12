@@ -72,7 +72,7 @@ export class MobileMessenger {
         });
 
         AppNotifications.onNotificationClick = (data: any) => {
-            // Alert.alert(JSON.stringify(data));
+            Alert.alert(JSON.stringify(data));
         }
     }
 

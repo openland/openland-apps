@@ -161,7 +161,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         // CONVERSATION
         //
         let conversationPattern = new UrlPattern(patternBase + 'mail/:id');
-        let matchConversation = conversationPattern.match(link);
+        let conversationPatternDeep = new UrlPattern(patternBaseDeep + 'mail/:id');
+        let matchConversation = conversationPattern.match(link) || conversationPatternDeep.match(link);
         if (matchConversation && matchConversation.id) {
             resolved = true;
             getMessenger().history.navigationManager.push('Conversation', { id: matchConversation.id });

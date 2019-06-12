@@ -14,6 +14,11 @@ Push.configure({
     },
     senderID: '1095846783035',
     requestPermissions: false,
+    onNotification: (n) => {
+        // AppNotifications.onNotificationClick(n.data);
+        console.warn('boom', n);
+
+    }
 
 });
 

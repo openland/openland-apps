@@ -42,6 +42,7 @@ class ShareDummyActivity : Activity() {
 
     private fun onIntent(intent: Intent?) {
 
+
         if (intent != null && intent.action === Intent.ACTION_SEND) {
             var files = JSONArray()
             var strings = JSONArray()
