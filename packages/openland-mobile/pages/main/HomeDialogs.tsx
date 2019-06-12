@@ -18,7 +18,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { NotificationCenterButton } from './components/NotificationCenterButton';
+import { NotificationCenterButton } from './components/notificationCenter/NotificationCenterButton';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
