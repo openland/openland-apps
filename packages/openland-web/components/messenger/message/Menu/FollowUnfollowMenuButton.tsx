@@ -4,11 +4,11 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { useClient } from 'openland-web/utils/useClient';
 
 export const FollowUnfollowMenuButton = ({
-    isSubscribed,
+    isSubscribedMessageComments,
     messageId,
     type = CommentSubscriptionType.ALL,
 }: {
-    isSubscribed: boolean;
+    isSubscribedMessageComments: boolean;
     messageId: string;
     type?: CommentSubscriptionType;
 }) => {
@@ -17,7 +17,7 @@ export const FollowUnfollowMenuButton = ({
     return (
         <XMenuItem
             onClick={async () => {
-                if (isSubscribed) {
+                if (isSubscribedMessageComments) {
                     await client.mutateUnSubscribeMessageComments({
                         messageId,
                     });
@@ -33,7 +33,7 @@ export const FollowUnfollowMenuButton = ({
                 });
             }}
         >
-            {isSubscribed ? 'Unfollow this thread' : 'Follow this thread'}
+            {isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread'}
         </XMenuItem>
     );
 };

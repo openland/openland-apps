@@ -75,9 +75,9 @@ const hackChangeCommentIdToMessageId = ({
     item,
     messageId,
 }: {
-    item: MyNotifications_myNotifications_content_comment_comment & { isSubscribed: boolean };
+    item: MyNotifications_myNotifications_content_comment_comment & { isSubscribedMessageComments: boolean };
     messageId: string;
-}): MyNotifications_myNotifications_content_comment_comment & { isSubscribed: boolean } => {
+}): MyNotifications_myNotifications_content_comment_comment & { isSubscribedMessageComments: boolean } => {
     return { ...item, id: messageId };
 };
 
@@ -86,8 +86,6 @@ export const CommentsNotifications = () => {
     const notifications = client.useMyNotifications({
         first: 100,
     });
-
-    console.log(notifications);
 
     const comments = notifications.myNotifications
         .filter(({ content }) => {
@@ -99,7 +97,7 @@ export const CommentsNotifications = () => {
             return {
                 ...content!![0]!!.comment!!.comment,
                 peerId: content!![0]!!.peer!!.peerRoot.id,
-                isSubscribed: !!content!![0]!!.peer!!.subscription!!,
+                isSubscribedMessageComments: !!content!![0]!!.peer!!.subscription!!,
             };
         });
 
@@ -123,7 +121,6 @@ export const CommentsNotifications = () => {
                 </XView>
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     {testMessages.map((item: any, key: any) => {
-                        console.log(item);
                         return (
                             <MessageComponent
                                 key={key}

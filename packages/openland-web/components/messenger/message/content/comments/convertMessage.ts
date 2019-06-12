@@ -3,8 +3,8 @@ import { FullMessage } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export function convertMessage(
-    src: FullMessage & { repeatKey?: string; isSubscribed?: boolean },
-): DataSourceMessageItem & { isSubscribed?: boolean } {
+    src: FullMessage & { repeatKey?: string; isSubscribedMessageComments?: boolean },
+): DataSourceMessageItem & { isSubscribedMessageComments?: boolean } {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
@@ -39,6 +39,6 @@ export function convertMessage(
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
-        isSubscribed: src.isSubscribed,
+        isSubscribedMessageComments: src.isSubscribedMessageComments,
     };
 }

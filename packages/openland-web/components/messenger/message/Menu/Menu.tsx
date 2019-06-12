@@ -97,9 +97,9 @@ export const Menu = React.memo(
             if (!message.isSending) {
                 e.stopPropagation();
                 messagesContext.resetAll();
-                let singleReplyMessageMessage = new Set().add(message.text);
-                let singleReplyMessageId = new Set().add(message.id);
-                let singleReplyMessageSender = new Set().add(message.sender.name);
+                let singleReplyMessageMessage = new Set<string>().add(message.text!!);
+                let singleReplyMessageId = new Set<string>().add(message.id!!);
+                let singleReplyMessageSender = new Set<string>().add(message.sender.name);
 
                 let fileAttach = (message.attachments || []).filter(
                     a => a.__typename === 'MessageAttachmentFile',
@@ -109,9 +109,9 @@ export const Menu = React.memo(
                 )[0];
 
                 if (fileAttach && !richAttach) {
-                    singleReplyMessageMessage = new Set().add('File');
+                    singleReplyMessageMessage = new Set<string>().add('File');
                     if (fileAttach.fileMetadata.isImage) {
-                        singleReplyMessageMessage = new Set().add('Photo');
+                        singleReplyMessageMessage = new Set<string>().add('Photo');
                     }
                 }
                 messagesContext.setReplyMessages(
@@ -137,7 +137,7 @@ export const Menu = React.memo(
             contentElem = (
                 <>
                     <FollowUnfollowMenuButton
-                        isSubscribed={!!message.isSubscribed}
+                        isSubscribedMessageComments={!!message.isSubscribedMessageComments}
                         messageId={message.id!!}
                     />
 
