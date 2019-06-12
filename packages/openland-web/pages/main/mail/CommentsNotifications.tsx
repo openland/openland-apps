@@ -7,6 +7,7 @@ import { convertDsMessage } from 'openland-web/components/messenger/data/WebMess
 import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
 import { useClient } from 'openland-web/utils/useClient';
 import { MyNotifications_myNotifications_content_comment_comment } from 'openland-api/Types';
+import { css } from 'linaria';
 
 // add attaches document/photo
 const users = ['Ada Poole', 'Isaiah Schultz', 'Stanley Hughes', 'Dora Becker'];
@@ -75,10 +76,36 @@ const hackChangeCommentIdToMessageId = ({
     item,
     messageId,
 }: {
-    item: MyNotifications_myNotifications_content_comment_comment & { isSubscribedMessageComments: boolean };
+    item: MyNotifications_myNotifications_content_comment_comment & {
+        isSubscribedMessageComments: boolean;
+    };
     messageId: string;
-}): MyNotifications_myNotifications_content_comment_comment & { isSubscribedMessageComments: boolean } => {
+}): MyNotifications_myNotifications_content_comment_comment & {
+    isSubscribedMessageComments: boolean;
+} => {
     return { ...item, id: messageId };
+};
+
+const wrapperClassName = css`
+    min-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    @media (min-width: 1150px) {
+        min-width: 674px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const MessagesWrapper = ({ children }: { children: any }) => {
+    return (
+        <XView alignItems="center">
+            <div className={wrapperClassName}>{children}</div>
+        </XView>
+    );
 };
 
 export const CommentsNotifications = () => {
@@ -108,8 +135,8 @@ export const CommentsNotifications = () => {
     }
 
     return (
-        <XView alignItems="center" paddingTop={24}>
-            <XView width={674}>
+        <XView paddingTop={24} flexGrow={1} flexShrink={1}>
+            <MessagesWrapper>
                 <XView
                     opacity={0.9}
                     fontSize={18}
@@ -119,11 +146,13 @@ export const CommentsNotifications = () => {
                 >
                     Comments
                 </XView>
-                <XScrollView3 flexGrow={1} flexShrink={1}>
-                    {testMessages.map((item: any, key: any) => {
-                        return (
+            </MessagesWrapper>
+
+            <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
+                {testMessages.map((item: any, key: any) => {
+                    return (
+                        <MessagesWrapper key={key}>
                             <MessageComponent
-                                key={key}
                                 message={convertDsMessage(
                                     convertMessage(
                                         hackChangeCommentIdToMessageId({
@@ -135,10 +164,10 @@ export const CommentsNotifications = () => {
                                 noSelector
                                 isCommentNotification
                             />
-                        );
-                    })}
-                </XScrollView3>
-            </XView>
+                        </MessagesWrapper>
+                    );
+                })}
+            </XScrollView3>
         </XView>
     );
 };
