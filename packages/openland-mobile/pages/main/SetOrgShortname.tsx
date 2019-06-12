@@ -12,17 +12,15 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { SUPER_ADMIN } from '../Init';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
-    let account = getClient().useAccount();
-    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }).organization;
+    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
 
     const [shortname, setShortname] = React.useState(organization.shortname);
     const [error, setError] = React.useState<string | undefined>(undefined);
 
-    const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
-
-    const minLength = isSuperAdmin ? 3 : 5;
+    const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
     let ref = React.useRef<ZForm | null>(null);
