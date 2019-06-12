@@ -93,7 +93,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         {v.config.titleView && v.config.titleView()}
                     </SAnimated.View>
                     <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
-                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none">
+                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
                             {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </SAnimated.View>
                     </View>
@@ -112,7 +112,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         {v.config.titleView && v.config.titleView()}
                     </SAnimated.View>
                     <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
-                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none">
+                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
                             {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </SAnimated.View>
                     </View>
