@@ -503,6 +503,20 @@
             "sizes": [
                 28
             ]
+        },
+        {
+            "name": "ic-header-add",
+            "src": "ic-header-add.svg",
+            "sizes": [
+                26
+            ]
+        },
+        {
+            "name": "ic-header-notifications",
+            "src": "ic-header-notifications.svg",
+            "sizes": [
+                26
+            ]
         }
     ]
 }

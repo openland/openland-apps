@@ -16,10 +16,14 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { NON_PRODUCTION } from '../Init';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { NotificationCenterButton } from './components/NotificationCenterButton';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    let handlePress = React.useCallback((id: string, title: string) => {
+    const theme = React.useContext(ThemeContext);
 
+    let handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title('Openland').message('Share with ' + title + '?').button('Cancel', 'cancel').button('Ok', 'default', async () => {
                 if (props.router.params.share.files) {
@@ -42,7 +46,6 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         } else {
             getMessenger().history.navigationManager.push('Conversation', { id });
         }
-
     }, [props.router.params.share, props.router.params.callback]);
 
     let dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
@@ -64,11 +67,18 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                     {!props.router.params.share && !props.router.params.title && <CenteredHeader title="Messages" padding={98} />}
                 </>
             )}
-            {!props.router.params.share && !props.router.params.title && <SHeaderButton
-                title="New"
-                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
-                onPress={() => props.router.push('Compose')}
-            />}
+            {!props.router.params.share && !props.router.params.title && (
+                <>
+                    {NON_PRODUCTION && (
+                        <NotificationCenterButton dot={true} theme={theme} onPress={() => props.router.push('NotificationCenter')} />
+                    )}
+                    <SHeaderButton
+                        title="New"
+                        icon={Platform.OS === 'ios' ? require('assets/ic-header-add-26.png') : require('assets/ic-edit.png')}
+                        onPress={() => props.router.push('Compose')}
+                    />
+                </>
+            )}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
             <SSearchControler
