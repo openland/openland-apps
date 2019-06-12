@@ -4,7 +4,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { EntityKind, CommunityType, CreateEntity } from './createEntity';
+import { EntityKind, CreateEntity } from './createEntity';
 
 export default withApp(
     'Create Organization',
@@ -16,27 +16,13 @@ export default withApp(
 
         return (
             <>
-                <XDocumentHead title={'Create Community'} />
+                <XDocumentHead title={'Create Organization'} />
 
                 <CreateEntity
                     myId={user ? user.id : ''}
                     myOrgId={organization ? organization.id : ''}
                     inOrgId={inOrganization}
-                    entityKind={EntityKind.COMMUNITY}
-                    selectOptions={[
-                        {
-                            value: CommunityType.COMMUNITY_PUBLIC,
-                            label: `Public community`,
-                            labelShort: 'Public',
-                            subtitle: `Anyone can find and join this community`,
-                        },
-                        {
-                            value: CommunityType.COMMUNITY_PRIVATE,
-                            label: `Private community`,
-                            labelShort: 'Private',
-                            subtitle: `Only invited people can join community and view chats`,
-                        },
-                    ]}
+                    entityKind={EntityKind.ORGANIZATION}
                 />
             </>
         );

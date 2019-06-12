@@ -21,6 +21,7 @@ export enum EntityKind {
     GROUP = 'GROUP',
     CHANNEL = 'CHANNEL',
     COMMUNITY = 'COMMUNITY',
+    ORGANIZATION = 'ORGANIZATION',
 }
 
 export enum CommunityType {
@@ -163,7 +164,7 @@ interface CreateEntityProps {
     myOrgId: string;
     inOrgId?: string;
     entityKind: EntityKind;
-    selectOptions: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
+    selectOptions?: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
 }
 
 export const CreateEntity = ({
@@ -230,7 +231,7 @@ export const CreateEntity = ({
             const roomId: string = returnedData.room.id as string;
             router.replace('/mail/' + roomId);
         } else {
-            const isCommunity = true;
+            const isCommunity = entityKind === EntityKind.COMMUNITY;
 
             let res = await client.mutateCreateOrganization({
                 input: {
@@ -252,8 +253,7 @@ export const CreateEntity = ({
 
             await client.refetchAccount();
 
-            let redirect = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
-            window.location.href = redirect;
+            window.location.href = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
         }
     };
 
@@ -374,12 +374,27 @@ export const CreateEntity = ({
                                 <InputField field={titleField} title={`${chatTypeStr} name`} />
                             </XView>
 
-                            <SelectWithDropdown
-                                title={`${chatTypeStr} type`}
-                                value={typeField.value}
-                                onChange={handleChatTypeChange}
-                                selectOptions={selectOptions}
-                            />
+                            {selectOptions &&
+                                entityKind !== EntityKind.ORGANIZATION && (
+                                    <SelectWithDropdown
+                                        title={`${chatTypeStr} type`}
+                                        value={typeField.value}
+                                        onChange={handleChatTypeChange}
+                                        selectOptions={selectOptions}
+                                    />
+                                )}
+                            {entityKind === EntityKind.ORGANIZATION && (
+                                <XView flexGrow={1} flexDirection="row">
+                                    <XTextArea
+                                        flexGrow={1}
+                                        height={140}
+                                        resize={false}
+                                        title="Short description"
+                                        mode="modern"
+                                        {...aboutField.input}
+                                    />
+                                </XView>
+                            )}
                         </XView>
                     </XView>
 

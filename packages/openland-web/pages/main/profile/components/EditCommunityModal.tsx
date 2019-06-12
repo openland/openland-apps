@@ -125,18 +125,18 @@ const EditCommunityEntity = (props: {
     isCommunity: boolean;
     isOwner: boolean;
 }) => {
-    const [newPhoto, setNewPhoto] = React.useState<UploadedFile | null>(null);
-    const [savingData, setSavingData] = React.useState(false);
-    const [saveIsDone, setSaveIsDone] = React.useState(false);
-    const [saveShortNameIsDone, setSaveShortNameIsDone] = React.useState(false);
-    const [savingShortName, setSavingShortName] = React.useState(false);
-    const [shortNameError, setShortNameError] = React.useState<string | null>(null);
-
     const organizationId = props.id;
     const client = useClient();
     const data = client.useOrganizationProfile({ organizationId });
-
     const org = data.organizationProfile;
+
+    const [newPhoto, setNewPhoto] = React.useState<UploadedFile | null>(null);
+    const [savingData, setSavingData] = React.useState(false);
+    const [saveIsDone, setSaveIsDone] = React.useState(false);
+    const [shortName, setShortName] = React.useState(org.shortname || '');
+    const [saveShortNameIsDone, setSaveShortNameIsDone] = React.useState(false);
+    const [savingShortName, setSavingShortName] = React.useState(false);
+    const [shortNameError, setShortNameError] = React.useState<string | null>(null);
 
     // super account
     const [activated, setActivated] = React.useState<null | boolean>(null);
@@ -160,7 +160,6 @@ const EditCommunityEntity = (props: {
     const twitterField = useField('input.twitter', org.twitter || '', form);
     const facebookField = useField('input.facebook', org.facebook || '', form);
     const linkedinField = useField('input.linkedin', org.linkedin || '', form);
-    const shortNameField = useField('input.shortname', org.shortname || '', form);
     const typeField = useField<CommunityType>(
         'input.type',
         org.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
@@ -171,7 +170,17 @@ const EditCommunityEntity = (props: {
         setNewPhoto(file);
     };
 
-    const setShortName = async (shortname: string, globalSave: boolean) => {
+    const closeModal = async () => {
+        await setTimeout(() => {
+            setSavingData(false);
+            setSaveIsDone(true);
+            setTimeout(() => {
+                props.modalCtx.hide();
+            }, 1000);
+        }, 1000);
+    };
+
+    const saveShortName = async (shortname: string, globalSave: boolean) => {
         setShortNameError(null);
         let error = false;
         if (!globalSave) {
@@ -183,10 +192,17 @@ const EditCommunityEntity = (props: {
             await client.refetchOrganizationProfile({ organizationId });
         } catch (e) {
             error = true;
-            setShortNameError(formatError(e));
-            setTimeout(() => {
-                setShortNameError(null);
-            }, 1500);
+            let errorText = '';
+            if (formatError(e) === 'Shortname is too short' && !activated) {
+                errorText = 'Shortname must have at least 5 characters.';
+            }
+            if (formatError(e) === 'Shortname is too short' && activated) {
+                errorText = 'Shortname must have at least 3 characters.';
+            }
+            if (formatError(e) === 'Invalid shortname') {
+                errorText = 'Shortname can only contain a-z, 0-9, and underscores.';
+            }
+            setShortNameError(errorText);
         }
         if (!globalSave && error) {
             setSavingShortName(false);
@@ -201,16 +217,12 @@ const EditCommunityEntity = (props: {
                 }, 1000);
             }, 1000);
         }
-    };
-
-    const closeModal = async () => {
-        await setTimeout(() => {
+        if (globalSave && error) {
             setSavingData(false);
-            setSaveIsDone(true);
-            setTimeout(() => {
-                props.modalCtx.hide();
-            }, 1000);
-        }, 1000);
+        }
+        if (globalSave && !error) {
+            closeModal();
+        }
     };
 
     const updateOrganizaton = ({ input }: { input: UpdateOrganizationProfileInput }) =>
@@ -221,18 +233,13 @@ const EditCommunityEntity = (props: {
                 await client.refetchOrganization({ organizationId });
                 await client.refetchOrganizationProfile({ organizationId });
 
-                if (shortNameField.value && shortNameField.value !== org.shortname) {
-                    await setShortName(shortNameField.value, true);
+                if (shortName && shortName !== org.shortname) {
+                    await saveShortName(shortName, true);
+                } else {
+                    await closeModal();
                 }
-                await closeModal();
             } catch (e) {
-                // setNameError(
-                //     `Please enter a name for this ${props.isCommunity ? 'community' : 'organization'}`,
-                // );
-                setTimeout(() => {
-                    // setNameError(null);
-                    setSavingData(false);
-                }, 1500);
+                setSavingData(false);
             }
         });
 
@@ -257,63 +264,65 @@ const EditCommunityEntity = (props: {
                                 newPhoto
                                     ? newPhoto
                                     : org.photoRef
-                                    ? fromValue({
-                                          uuid: org.photoRef.uuid,
-                                          isImage: true,
-                                          crop: org.photoRef.crop,
-                                          width: null,
-                                          height: null,
-                                      })
-                                    : null
+                                        ? fromValue({
+                                              uuid: org.photoRef.uuid,
+                                              isImage: true,
+                                              crop: org.photoRef.crop,
+                                              width: null,
+                                              height: null,
+                                          })
+                                        : null
                             }
                         />
                         <XView marginLeft={20} flexGrow={1} flexShrink={0}>
                             <InputField field={nameField} title={'Community name'} />
 
-                            {props.isCommunity && !props.isOwner && (
-                                <XView
-                                    height={52}
-                                    marginTop={16}
-                                    paddingHorizontal={16}
-                                    backgroundColor="#f2f3f4"
-                                    borderRadius={8}
-                                    flexDirection="row"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                >
-                                    <XView flexDirection="column" marginTop={-3}>
-                                        <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
-                                            Community type (set by creator)
-                                        </XView>
-                                        <XView fontSize={14} color="#000" marginTop={-4}>
-                                            {org.private ? 'Private' : 'Public'}
+                            {props.isCommunity &&
+                                !props.isOwner && (
+                                    <XView
+                                        height={52}
+                                        marginTop={16}
+                                        paddingHorizontal={16}
+                                        backgroundColor="#f2f3f4"
+                                        borderRadius={8}
+                                        flexDirection="row"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <XView flexDirection="column" marginTop={-3}>
+                                            <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
+                                                Community type (set by creator)
+                                            </XView>
+                                            <XView fontSize={14} color="#000" marginTop={-4}>
+                                                {org.private ? 'Private' : 'Public'}
+                                            </XView>
                                         </XView>
                                     </XView>
-                                </XView>
-                            )}
-                            {props.isCommunity && props.isOwner && (
-                                <XView marginTop={16}>
-                                    <SelectWithDropdown
-                                        title="Community type"
-                                        value={typeField.value}
-                                        onChange={typeField.input.onChange}
-                                        selectOptions={[
-                                            {
-                                                value: CommunityType.COMMUNITY_PUBLIC,
-                                                label: `Public community`,
-                                                labelShort: 'Public',
-                                                subtitle: `Anyone can find and join this community`,
-                                            },
-                                            {
-                                                value: CommunityType.COMMUNITY_PRIVATE,
-                                                label: `Private community`,
-                                                labelShort: 'Private',
-                                                subtitle: `Only invited people can join community and view chats`,
-                                            },
-                                        ]}
-                                    />
-                                </XView>
-                            )}
+                                )}
+                            {props.isCommunity &&
+                                props.isOwner && (
+                                    <XView marginTop={16}>
+                                        <SelectWithDropdown
+                                            title="Community type"
+                                            value={typeField.value}
+                                            onChange={typeField.input.onChange}
+                                            selectOptions={[
+                                                {
+                                                    value: CommunityType.COMMUNITY_PUBLIC,
+                                                    label: `Public community`,
+                                                    labelShort: 'Public',
+                                                    subtitle: `Anyone can find and join this community`,
+                                                },
+                                                {
+                                                    value: CommunityType.COMMUNITY_PRIVATE,
+                                                    label: `Private community`,
+                                                    labelShort: 'Private',
+                                                    subtitle: `Only invited people can join community and view chats`,
+                                                },
+                                            ]}
+                                        />
+                                    </XView>
+                                )}
                         </XView>
                     </XView>
                     <XView marginBottom={28}>
@@ -362,10 +371,14 @@ const EditCommunityEntity = (props: {
                         <XView flexDirection="row">
                             <XView marginRight={16} flexGrow={1} flexShrink={0}>
                                 <XInput
-                                    {...shortNameField.input}
                                     size="large"
                                     flexGrow={1}
+                                    value={shortName}
                                     className={InputClassName}
+                                    onChange={(v: string) => {
+                                        setShortName(v);
+                                        setShortNameError(null);
+                                    }}
                                 />
                             </XView>
                             <ShortNameButton
@@ -373,7 +386,7 @@ const EditCommunityEntity = (props: {
                                 text={saveShortNameIsDone ? 'Saved!' : 'Save'}
                                 flexShrink={0}
                                 style={saveShortNameIsDone ? 'success' : 'primary'}
-                                onClick={() => setShortName(shortNameField.value, false)}
+                                onClick={() => saveShortName(shortName, false)}
                                 icon={saveShortNameIsDone ? <CheckIcon /> : undefined}
                             />
                         </XView>
@@ -460,11 +473,11 @@ const EditCommunityEntity = (props: {
                                                   : null,
                                           })
                                         : org.photoRef
-                                        ? sanitizeImageRef({
-                                              uuid: org.photoRef.uuid,
-                                              crop: org.photoRef.crop,
-                                          })
-                                        : null,
+                                            ? sanitizeImageRef({
+                                                  uuid: org.photoRef.uuid,
+                                                  crop: org.photoRef.crop,
+                                              })
+                                            : null,
                                 },
                             })
                         }

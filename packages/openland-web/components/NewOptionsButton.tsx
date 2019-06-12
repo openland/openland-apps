@@ -4,7 +4,6 @@ import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css } from 'linaria';
-import { showCreateOrganization } from 'openland-web/fragments/modals/showCreateOrganization';
 import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
 import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
@@ -153,7 +152,7 @@ export const NewOptionsMenu = () => (
             description="Chat where you write, others comment"
         />
         <Item
-            href="/mail/createOrganization?community=true"
+            href="/mail/createCommunity"
             icon={
                 <IconWithBackground>
                     <CreateCommunityIcon />
@@ -163,7 +162,7 @@ export const NewOptionsMenu = () => (
             description="A hub for chats for the same audience"
         />
         <Item
-            onClick={() => showCreateOrganization('organization')}
+            href="/mail/createOrganization"
             icon={
                 <IconWithBackground>
                     <OrganizationIcon />
