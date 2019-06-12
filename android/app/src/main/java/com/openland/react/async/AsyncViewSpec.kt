@@ -130,6 +130,7 @@ enum class AsyncFlexAlignSelf {
 
 class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
+    var rawStyle: AsyncViewStyle = AsyncViewStyle()
     var renderModes: MutableMap<String, AsyncViewStyle> = mutableMapOf()
     var direction: AsyncFlexDirection = AsyncFlexDirection.row
     var alignItems: AsyncFlexAlignItems = AsyncFlexAlignItems.start
@@ -145,16 +146,18 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
                 else -> it
             }
         }.toTypedArray())
-        res.style = this.style
+        res.style = this.rawStyle
+        res.rawStyle = this.rawStyle
         res.direction = this.direction
         res.alignItems = this.alignItems
         res.justifyContent = this.justifyContent
         res.touchableKey = this.touchableKey
         res.highlightColor = this.highlightColor
         res.overlay = this.overlay
+        res.renderModes = this.renderModes
 
         modesToApply.forEach { mode ->
-            renderModes[mode]?.let {
+            this.renderModes[mode]?.let {
                 res.style = res.style.merge(it)
             }
         }
@@ -292,6 +295,7 @@ fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
         val props = src["props"] as JSONObject
         val res = AsyncFlexSpec(key, resolveChildren(src, context))
         resolveStyle(src, res.style, context)
+        resolveStyle(src, res.rawStyle, context)
 
         // Direction
         res.direction = when (props.nullableString("flexDirection")) {

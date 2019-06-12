@@ -2,7 +2,7 @@ import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-ap
 
 class AppNotiticationsStub implements AppNotificationsApi {
     state: AppNotifcationsState = 'unsupported';
-    
+
     watch(handler: (state: AppNotifcationsState) => void) {
         // Do nothing
     }
@@ -18,6 +18,10 @@ class AppNotiticationsStub implements AppNotificationsApi {
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
+        // Do nothing
+    }
+
+    onNotificationClick = (data: any) => {
         // Do nothing
     }
 }
