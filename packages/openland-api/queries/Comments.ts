@@ -14,10 +14,16 @@ export const MyNotificationsQuery = gql`
                     }
                     peer {
                         id
-                        comments {
-                            ...CommentEntryFragment
+                        peerRoot {
+                            ... on GeneralMessage {
+                                id
+                            }
+                        }
+                        subscription {
+                            type
                         }
                     }
+                   
                 }
             }
         }

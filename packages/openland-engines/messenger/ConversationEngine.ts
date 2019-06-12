@@ -53,6 +53,7 @@ export interface DataSourceMessageItem {
     fallback?: string;
     textSpans: Span[];
     replyTextSpans: Span[][];
+    isSubscribed?: boolean;
 }
 
 export interface DataSourceDateItem {

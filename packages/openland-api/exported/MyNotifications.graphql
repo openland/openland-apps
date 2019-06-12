@@ -10,11 +10,17 @@ query MyNotifications($before: ID, $first: Int!) {
         }
         peer {
           __typename
-          comments {
-            __typename
-            ...CommentEntryFragment
-          }
           id
+          peerRoot {
+            __typename
+            ... on GeneralMessage {
+              id
+            }
+          }
+          subscription {
+            __typename
+            type
+          }
         }
       }
     }

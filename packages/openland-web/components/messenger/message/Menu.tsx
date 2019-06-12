@@ -155,32 +155,36 @@ interface MenuProps {
 }
 
 const FollowUnfollowMenuButton = ({
-    isFollowed,
+    isSubscribed,
     messageId,
-    type,
+    type = CommentSubscriptionType.ALL,
 }: {
-    isFollowed: boolean;
+    isSubscribed: boolean;
     messageId: string;
-    type: CommentSubscriptionType;
+    type?: CommentSubscriptionType;
 }) => {
     const client = useClient();
 
     return (
         <XMenuItem
-            onClick={() => {
-                if (isFollowed) {
-                    client.mutateUnSubscribeMessageComments({
+            onClick={async () => {
+                if (isSubscribed) {
+                    await client.mutateUnSubscribeMessageComments({
                         messageId,
                     });
                 } else {
-                    client.mutateSubscribeMessageComments({
+                    await client.mutateSubscribeMessageComments({
                         messageId,
                         type,
                     });
                 }
+
+                await client.refetchMyNotifications({
+                    first: 100,
+                });
             }}
         >
-            {isFollowed ? 'Unfollow this thread' : 'Follow this thread'}
+            {isSubscribed ? 'Unfollow this thread' : 'Follow this thread'}
         </XMenuItem>
     );
 };
@@ -260,11 +264,8 @@ export const Menu = React.memo(
             contentElem = (
                 <>
                     <FollowUnfollowMenuButton
-                        // ALL = "ALL",
-                        // DIRECT = "DIRECT", ??
-                        isFollowed={true}
+                        isSubscribed={!!message.isSubscribed}
                         messageId={message.id!!}
-                        type={CommentSubscriptionType.ALL}
                     />
 
                     <XMenuItem

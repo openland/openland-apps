@@ -75,9 +75,9 @@ const hackChangeCommentIdToMessageId = ({
     item,
     messageId,
 }: {
-    item: MyNotifications_myNotifications_content_comment_comment;
+    item: MyNotifications_myNotifications_content_comment_comment & { isSubscribed: boolean };
     messageId: string;
-}): MyNotifications_myNotifications_content_comment_comment => {
+}): MyNotifications_myNotifications_content_comment_comment & { isSubscribed: boolean } => {
     return { ...item, id: messageId };
 };
 
@@ -87,15 +87,22 @@ export const CommentsNotifications = () => {
         first: 100,
     });
 
+    console.log(notifications);
+
     const comments = notifications.myNotifications
         .filter(({ content }) => {
             return !!content;
         })
-        .map(({ content }) => {
-            return content!![0]!!.comment!!.comment;
+        .map(item => {
+            const { content } = item;
+
+            return {
+                ...content!![0]!!.comment!!.comment,
+                peerId: content!![0]!!.peer!!.peerRoot.id,
+                isSubscribed: !!content!![0]!!.peer!!.subscription!!,
+            };
         });
 
-    debugger;
     let testMessages: MyNotifications_myNotifications_content_comment_comment[] = [];
 
     if (comments) {
@@ -124,7 +131,7 @@ export const CommentsNotifications = () => {
                                     convertMessage(
                                         hackChangeCommentIdToMessageId({
                                             item,
-                                            messageId: item.id,
+                                            messageId: item.peerId,
                                         }),
                                     ),
                                 )}
