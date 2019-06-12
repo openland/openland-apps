@@ -21,6 +21,8 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-mobile/utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { NotificationCenterItemAsync } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterItemAsync';
+import { NotificationCenterHandlers } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterHandlers';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -50,6 +52,7 @@ export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
+    readonly notifications: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
@@ -58,6 +61,12 @@ export class MobileMessenger {
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
+            );
+        });
+
+        this.notifications = new ASDataView(engine.dialogList.dataSource, (item) => {
+            return (
+                <NotificationCenterItemAsync item={item} onPress={NotificationCenterHandlers.handlePress} onLongPress={NotificationCenterHandlers.handleLongPress} />
             );
         });
     }
@@ -231,5 +240,4 @@ export class MobileMessenger {
             showReactionsList(message.reactions);
         }
     }
-
 }
