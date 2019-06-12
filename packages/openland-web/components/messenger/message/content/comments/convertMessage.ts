@@ -3,8 +3,8 @@ import { FullMessage } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export function convertMessage(
-    src: FullMessage & { repeatKey?: string; isSubscribed: boolean },
-): DataSourceMessageItem & { isSubscribed: boolean } {
+    src: FullMessage & { repeatKey?: string; isSubscribed?: boolean },
+): DataSourceMessageItem & { isSubscribed?: boolean } {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
