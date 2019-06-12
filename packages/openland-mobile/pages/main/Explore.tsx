@@ -18,20 +18,20 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
+import { NON_PRODUCTION } from '../Init';
 
 const RoomsList = (props: { router: SRouter }) => {
     let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
-    let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
-
     let rooms = getClient().useAvailableRooms();
+
     let availableChats = rooms.availableChats || [];
     let availableChannels = rooms.availableChannels || [];
     let suggestedRooms = rooms.suggestedRooms || [];
     let communities = rooms.communities || [];
+
     return (
         <>
-            {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
-            {isSuper && <ZListItem text="Tasks" path="Apps/Tasks" />}
+            {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />}
             <ZListItemGroup
                 header="Chats for you"
                 divider={false}

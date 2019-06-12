@@ -50,6 +50,7 @@ import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
 import { CommunityList } from './pages/main/CommunityList';
 import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
+import { NotificationCenter } from './pages/main/NotificationCenter';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -82,6 +83,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupList', GroupList)
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('MessageComments', MessageComments)
+  .addRoute('NotificationCenter', NotificationCenter)
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetOrgShortname', SetOrgShortname)

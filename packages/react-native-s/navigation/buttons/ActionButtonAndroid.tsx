@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, Image, Platform } from 'react-native';
 import { STouchable } from 'react-native-s/STouchable';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export class ActionButtonAndroid extends React.PureComponent<{ title: string, icon?: any, tintColor?: string, onPress?: () => void }> {
     render() {
@@ -12,3 +13,9 @@ export class ActionButtonAndroid extends React.PureComponent<{ title: string, ic
         );
     }
 }
+
+export const ActionButtonAndroidView = XMemo<{ onPress?: () => void; children?: any }>((props) => (
+    <STouchable style={{ alignItems: 'center', justifyContent: 'center', padding: 4, margin: 8, backgroundColor: 'transparent' }} hitSlop={{ top: 13, left: 13, bottom: 13, right: 13 }} onPress={props.onPress}>
+        {props.children}
+    </STouchable>
+));

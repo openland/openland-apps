@@ -11,6 +11,7 @@ import { Clipboard, Text } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { SUPER_ADMIN } from '../Init';
 
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
@@ -68,9 +69,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
     const [shortname, setShortname] = React.useState(me!.shortname);
     const [error, setError] = React.useState<string | undefined>(undefined);
 
-    const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
-
-    const minLength = isSuperAdmin ? 3 : 5;
+    const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
     let ref = React.useRef<ZForm | null>(null);
