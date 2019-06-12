@@ -1,5 +1,6 @@
 package com.openland.react.async.views
 
+import android.util.Log
 import com.facebook.litho.Column
 import com.facebook.litho.Row
 import com.facebook.litho.annotations.FromEvent
@@ -10,10 +11,7 @@ import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.annotations.GroupSectionSpec
 import com.facebook.litho.sections.annotations.OnCreateChildren
 import com.facebook.litho.sections.annotations.OnViewportChanged
-import com.facebook.litho.sections.common.DataDiffSection
-import com.facebook.litho.sections.common.OnCheckIsSameItemEvent
-import com.facebook.litho.sections.common.RenderEvent
-import com.facebook.litho.sections.common.SingleComponentSection
+import com.facebook.litho.sections.common.*
 import com.facebook.litho.widget.ComponentRenderInfo
 import com.facebook.litho.widget.Progress
 import com.facebook.litho.widget.RenderInfo
@@ -80,9 +78,10 @@ object LithoSectionSpec {
                         .component(header))
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
-                        .detectMoves(false)
-                        // when enabled not relayouting updated items - height not changing
+// known bug: list resets position after all items updated, method below can fix it, but some how (possible litho bug, yet we cant use latest version because of androidX)
+// if this methods are enabled item height is not updating (requestLayout not called?)
 //                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
+//                        .onCheckIsSameContentEventHandler(LithoSection.isSameContent(c))
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
                 .child(SingleComponentSection.create(c)
                         .component(footer))
@@ -109,6 +108,13 @@ object LithoSectionSpec {
             c: SectionContext,
             @FromEvent previousItem: AsyncDataViewItem,
             @FromEvent nextItem: AsyncDataViewItem): Boolean = previousItem.key == nextItem.key
+
+    @OnEvent(OnCheckIsSameContentEvent::class)
+    @JvmName("isSameContent")
+    fun isSameContent(
+            c: SectionContext,
+            @FromEvent previousItem: AsyncDataViewItem,
+            @FromEvent nextItem: AsyncDataViewItem): Boolean = previousItem == nextItem
 
     @OnEvent(RenderEvent::class)
     @JvmName("onRenderEdge")

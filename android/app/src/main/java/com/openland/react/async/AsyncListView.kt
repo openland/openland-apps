@@ -80,6 +80,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         if (!inited) {
             inited = true
             this.dataView = AsyncDataViewManager.getDataView(key, this.context as ReactContext)
+            this.dataView!!.applyModes(this.applyModes)
             this.dataViewKey = key
             this.state = this.dataView!!.state
             this.dataViewSubscription = this.dataView!!.watch {
@@ -109,24 +110,22 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     fun setApplyModes(value: Array<String>) {
         if (!value.contentDeepEquals(this.applyModes)) {
             this.applyModes = value
+            if(this.inited){
+                this.dataView!!.applyModes(this.applyModes)
+            }
             updateData()
         }
     }
 
     private fun updateData() {
-        val items = this.state.items.map {
-            when (it.spec) {
-                is AsyncFlexSpec -> AsyncDataViewItem(it.key, it.spec.applyModes(this.applyModes))
-                else -> it
-            }
-        }
+
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else 0x00ffffff)
                 .clipToPadding(false)
                 .clipChildren(false)
                 .disablePTR(true)
                 .section(LithoSection.create(SectionContext(asyncContext))
-                        .dataModel(items)
+                        .dataModel(this.state.items)
                         .headerPadding(this.headerPadding)
                         .overflowColor(this.overflowColor)
                         .loaderColor(this.loaderColor)
@@ -134,10 +133,13 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .loading(!this.state.competed)
                         .dataViewKey(if (this.dataViewKey !== null) this.dataViewKey!! else "empty")
                 )
-                .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
+                .recyclerConfiguration(ListRecyclerConfiguration.create().orientation(LinearLayoutManager.VERTICAL).reverseLayout(this.inverted).build())
                 .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
                 .build()
+
+        recycler.clearCachedLayout()
+
 
         if (componentTree == null) {
             componentTree = ComponentTree.create(asyncContext,
