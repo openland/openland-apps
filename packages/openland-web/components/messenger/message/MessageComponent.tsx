@@ -13,6 +13,10 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
             message={props.message}
             me={props.me}
             conversationType={props.conversationType}
+            isChannel={props.isChannel}
+            conversationId={props.conversationId}
+            room={props.room}
+            isComment={props.isComment}
         />
     ) : (
         <>

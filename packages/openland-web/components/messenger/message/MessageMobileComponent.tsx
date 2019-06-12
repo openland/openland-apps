@@ -15,13 +15,13 @@ import {
     SharedRoomKind,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    RoomChat_room,
 } from 'openland-api/Types';
-import { XView } from 'react-mental';
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { emoji } from 'openland-y-utils/emoji';
+import { PostMessageButtons } from './PostMessageButtons';
 
 const MessageWrapper = Glamorous(XHorizontal)<{
     compact: boolean;
@@ -83,6 +83,11 @@ interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
+    room?: RoomChat_room;
+    isChannel?: boolean;
+    conversationId: string | null;
+    onlyLikes?: boolean;
+    isComment?: boolean;
 }
 
 export const MobileMessageComponentInner = React.memo((props: MessageComponentProps) => {
@@ -278,6 +283,15 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             src: message.senderName,
             size: 16,
         });
+        const postMessageButtons = props.isComment ? null : (
+            <PostMessageButtons
+                onlyLikes={!!props.onlyLikes}
+                isChannel={props.isChannel}
+                message={props.message}
+                conversationId={props.conversationId}
+                isComment={!!props.isComment}
+            />
+        );
         return (
             <MobileMessageContainer
                 senderNameEmojify={senderName}
@@ -285,13 +299,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 date={props.message.date}
             >
                 {content}
-                <XView alignItems="flex-start">
-                    <Reactions
-                        messageId={message.id ? message.id : ''}
-                        reactions={message.reactions || []}
-                        meId={(props.me && props.me.id) || ''}
-                    />
-                </XView>
+                {postMessageButtons}
             </MobileMessageContainer>
         );
     }
