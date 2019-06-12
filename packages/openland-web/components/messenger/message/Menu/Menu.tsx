@@ -1,75 +1,22 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     RoomChat_room,
     RoomChat_room_SharedRoom,
-    CommentSubscriptionType,
 } from 'openland-api/Types';
-import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
+import { CommentReactionButton, MessageReactionButton } from '../reactions/ReactionButton';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { MessagesStateContext } from '../MessagesStateContext';
+import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { MessagesStateContext } from '../../MessagesStateContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XOverflow, XOverflowDefalutTarget } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { XMutation } from 'openland-x/XMutation';
-import { useClient } from 'openland-web/utils/useClient';
-import { MutationFunc } from 'react-apollo';
-import { XButton } from 'openland-x/XButton';
-import { showModalBox } from 'openland-x/showModalBox';
-
-const DeleteMessageButton = ({ msgId, onSuccess }: { msgId: string; onSuccess: () => void }) => {
-    const client = useClient();
-    const pinMessage = async () => await client.mutateRoomDeleteMessages({ mids: [msgId] });
-
-    return (
-        <XMutation mutation={pinMessage as MutationFunc} onSuccess={onSuccess}>
-            <XButton text="Delete" style="danger" />
-        </XMutation>
-    );
-};
-
-function ShowDeleteMessageModal(msgId: string) {
-    showModalBox({}, ctx => (
-        <XView borderRadius={8} overflow="hidden">
-            <XView paddingHorizontal={24}>
-                <XView
-                    fontSize={18}
-                    fontWeight="600"
-                    color="rgba(0, 0, 0, 0.9)"
-                    height={64}
-                    alignItems="center"
-                    flexDirection="row"
-                    flexShrink={0}
-                >
-                    Delete message
-                </XView>
-                <XView paddingTop={6} paddingBottom={24}>
-                    Delete selected messages for everyone? This cannot be undone.
-                </XView>
-            </XView>
-            <XView height={1} flexShrink={0} backgroundColor="rgb(236, 236, 236)" />
-            <XView
-                paddingHorizontal={24}
-                backgroundColor="rgb(249, 249, 249)"
-                height={64}
-                flexShrink={0}
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="flex-end"
-            >
-                <XHorizontal separator={6}>
-                    <DeleteMessageButton msgId={msgId} onSuccess={ctx.hide} />
-                    <XButton text="Cancel" style="ghost" onClick={ctx.hide} />
-                </XHorizontal>
-            </XView>
-        </XView>
-    ));
-}
+import { FollowUnfollowMenuButton } from './FollowUnfollowMenuButton';
+import { PinMessageButton } from './PinMessageButton';
+import { ShowDeleteMessageModal } from './ShowDeleteMessageModal';
 
 let commentsIconWrapperClass = css`
     cursor: pointer;
@@ -103,45 +50,6 @@ const CommentsIconWrapper = ({
     );
 };
 
-const PinButtonStyle = Glamorous(XButton)({
-    fontSize: 14,
-    lineHeight: '24px',
-    padding: '7px 0 9px',
-    fontWeight: 400,
-    textAlign: 'left',
-    justifyContent: 'flex-start',
-    height: 40,
-    backgroundColor: '#fff',
-    color: '#000',
-    borderRadius: 0,
-    transition: 'none',
-    '&:hover, &:active': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#1790ff',
-    },
-    '& > div': {
-        padding: '0 16px',
-        justifyContent: 'flex-start',
-    },
-});
-
-const PinMessageButton = ({
-    variables,
-    onSuccess,
-}: {
-    variables: { chatId: string; messageId: string };
-    onSuccess: () => void;
-}) => {
-    const client = useClient();
-    const pinMessage = async () => await client.mutatePinMessage(variables);
-
-    return (
-        <XMutation mutation={pinMessage as MutationFunc} onSuccess={onSuccess}>
-            <PinButtonStyle text="Pin" />
-        </XMutation>
-    );
-};
-
 interface MenuProps {
     conversationId: string;
     message: DataSourceWebMessageItem;
@@ -153,41 +61,6 @@ interface MenuProps {
     room?: RoomChat_room;
     deleted?: boolean;
 }
-
-const FollowUnfollowMenuButton = ({
-    isSubscribed,
-    messageId,
-    type = CommentSubscriptionType.ALL,
-}: {
-    isSubscribed: boolean;
-    messageId: string;
-    type?: CommentSubscriptionType;
-}) => {
-    const client = useClient();
-
-    return (
-        <XMenuItem
-            onClick={async () => {
-                if (isSubscribed) {
-                    await client.mutateUnSubscribeMessageComments({
-                        messageId,
-                    });
-                } else {
-                    await client.mutateSubscribeMessageComments({
-                        messageId,
-                        type,
-                    });
-                }
-
-                await client.refetchMyNotifications({
-                    first: 100,
-                });
-            }}
-        >
-            {isSubscribed ? 'Unfollow this thread' : 'Follow this thread'}
-        </XMenuItem>
-    );
-};
 
 export const Menu = React.memo(
     ({

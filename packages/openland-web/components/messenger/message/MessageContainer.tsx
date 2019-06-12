@@ -4,7 +4,7 @@ import { MessageSelector } from './MessageSelector';
 import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { Menu } from './Menu';
+import { Menu } from './Menu/Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { Preambula } from './Preambula';
 import { NotCompactHeader } from './NotCompactHeader';
