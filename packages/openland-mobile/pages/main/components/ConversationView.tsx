@@ -82,26 +82,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     render() {
-        let screenHeight = Dimensions.get('screen').height;
-        let screenWidth = Dimensions.get('screen').width;
-
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
                 {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleGradientOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
-                {/* {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight), position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.3 }] }}>
-                    <View
-                        style={{ opacity: 0.1, left: 0, top: 0, width: screenHeight, height: screenHeight }}
-                    >
-                        <Image
-                            source={require('assets/h_1.png')}
-                            style={{
-                                width: screenHeight,
-                                height: screenHeight,
-                            }}
-                        />
-                    </View>
-                </Animated.View>} */}
                 <ConversationMessagesView
                     // ref={this.listRef}
                     inverted={this.props.inverted}
@@ -120,9 +104,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         </ASSafeAreaView>
                     )
                 }
-                {/* <ASSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
-                    <ZLoader transparent={true} enabled={this.state.conversation.loading} />
-                </ASSafeAreaView> */}
             </View >
         );
     }
