@@ -18,7 +18,7 @@ export default withApp('Mail', 'viewer', () => {
     const { path, routeQuery } = router;
     let cid = routeQuery.conversationId;
     let oid = routeQuery.organizationId;
-    let uid = routeQuery.userI;
+    let uid = routeQuery.userId;
 
     return (
         <XTrack event="mail_view">

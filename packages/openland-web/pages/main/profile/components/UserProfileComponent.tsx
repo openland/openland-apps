@@ -117,10 +117,11 @@ export const AvatarModal = (props: { photo?: string; title: string; id: string }
     }
     return (
         <XModal
-            useTopCloser={true}
+            useTopCloser={false}
             width={512}
             heading={null}
             transparent={true}
+            footer={null}
             body={
                 <ModalBody>
                     <ModalCloser autoClose={true} className="closer">
