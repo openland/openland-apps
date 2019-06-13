@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
+import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css } from 'linaria';
@@ -13,6 +14,7 @@ import { makeActionable } from 'openland-x/Actionable';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import NotificationsIcon from 'openland-icons/notifications-24.svg';
+import NotificationsNewIcon from 'openland-icons/notifications-new-24.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
@@ -32,7 +34,14 @@ const NewButton = makeActionable<{ onClick: () => void }>(props => (
     </XView>
 ));
 
-const NotificationsButton = makeActionable<{ onClick: () => void }>(props => {
+const NotificationButton = ({ haveNotification }: { haveNotification: boolean }) => {
+    return <>{haveNotification ? <NotificationsNewIcon /> : <NotificationsIcon />}</>;
+};
+
+const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
+    const client = useClient();
+    const notificationsCenter = client.useMyNotificationCenter();
+
     let router = React.useContext(XRouterContext)!;
     return (
         <XView
@@ -48,7 +57,9 @@ const NotificationsButton = makeActionable<{ onClick: () => void }>(props => {
                 }
             }}
         >
-            <NotificationsIcon />
+            <NotificationButton
+                haveNotification={!!notificationsCenter.myNotificationCenter.unread}
+            />
         </XView>
     );
 });

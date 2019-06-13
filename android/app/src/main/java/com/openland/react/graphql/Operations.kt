@@ -1444,6 +1444,13 @@ private val MyAppsSelector = obj(
                     fragment("AppProfile", AppFullSelector)
                 )))))
         )
+private val MyNotificationCenterSelector = obj(
+            field("myNotificationCenter","myNotificationCenter", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("unread","unread", notNull(scalar("Int")))
+                )))
+        )
 private val MyNotificationsSelector = obj(
             field("myNotifications","myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3010,6 +3017,12 @@ object Operations {
         override val body = "query MyApps{apps:myApps{__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = MyAppsSelector
     }
+    val MyNotificationCenter = object: OperationDefinition {
+        override val name = "MyNotificationCenter"
+        override val kind = OperationKind.QUERY
+        override val body = "query MyNotificationCenter{myNotificationCenter{__typename id unread}}"
+        override val selector = MyNotificationCenterSelector
+    }
     val MyNotifications = object: OperationDefinition {
         override val name = "MyNotifications"
         override val kind = OperationKind.QUERY
@@ -3969,6 +3982,7 @@ object Operations {
         if (name == "Message") return Message
         if (name == "MessageComments") return MessageComments
         if (name == "MyApps") return MyApps
+        if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
         if (name == "Online") return Online

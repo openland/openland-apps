@@ -159,7 +159,7 @@ const NotCompactShortMessageContainerWrapper = ({
     );
 };
 
-const ReplyQuote = ({ text }: { text?: string }) => {
+const ReplyQuote = ({ text }: { text?: string | null }) => {
     if (!text) {
         return null;
     }

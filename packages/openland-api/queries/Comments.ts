@@ -33,6 +33,15 @@ export const MyNotificationsQuery = gql`
     }
 `;
 
+export const MyNotificationCenterQuery = gql`
+    query MyNotificationCenter {
+        myNotificationCenter {
+            id
+            unread
+        }
+    }
+`;
+
 export const DeleteCommentMutation = gql`
     mutation DeleteComment($id: ID!) {
         deleteComment(id: $id)

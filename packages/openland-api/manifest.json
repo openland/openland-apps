@@ -688,6 +688,13 @@
       }
     },
     {
+      "signature": "09c9f610cbd4698d37479d30f0058a59d23ca70665cb3f8fe3de14da947da398",
+      "document": "query MyNotificationCenter{myNotificationCenter{__typename id unread}}",
+      "metadata": {
+        "engineSignature": "query MyNotificationCenter{myNotificationCenter{__typename id unread}}"
+      }
+    },
+    {
       "signature": "de1847762d8228c93c7a61a54c867d55860609dd89a3cc93bd0aa03cdbb15195",
       "document": "mutation DeleteComment($id:ID!){deleteComment(id:$id)}",
       "metadata": {

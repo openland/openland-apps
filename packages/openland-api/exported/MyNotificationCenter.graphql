@@ -1,0 +1,7 @@
+query MyNotificationCenter {
+  myNotificationCenter {
+    __typename
+    id
+    unread
+  }
+}

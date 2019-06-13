@@ -86,7 +86,7 @@ interface MessageComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     room?: RoomChat_room;
     isChannel?: boolean;
-    conversationId: string | null;
+    conversationId?: string | null;
     onlyLikes?: boolean;
     isComment?: boolean;
 }

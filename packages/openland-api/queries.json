@@ -8468,6 +8468,52 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
+			"operationName": "MyNotificationCenter",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [],
+			"source": "query MyNotificationCenter {\n  myNotificationCenter {\n    __typename\n    id\n    unread\n  }\n}",
+			"fields": [
+				{
+					"responseName": "myNotificationCenter",
+					"fieldName": "myNotificationCenter",
+					"type": "NotificationCenter!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "unread",
+							"fieldName": "unread",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query MyNotificationCenter {\n  myNotificationCenter {\n    __typename\n    id\n    unread\n  }\n}",
+			"operationId": "7e51575911b703f3b01c6930ae244ce0e6d648b7990d80c7e8c1bbccba834815"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
 			"operationName": "DeleteComment",
 			"operationType": "mutation",
 			"rootType": "Mutation",

@@ -463,6 +463,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications | null {
         return this.useQuery(Source.MyNotificationsQuery, variables, opts);
     }
+    async queryMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
+        return this.client.query(Source.MyNotificationCenterQuery, undefined, opts);
+    }
+    async refetchMyNotificationCenter(): Promise<Types.MyNotificationCenter> {
+        return this.refetch(Source.MyNotificationCenterQuery);
+    }
+    useMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter {
+        return this.useQuerySuspense(Source.MyNotificationCenterQuery, undefined, opts);
+    }
+    useWithoutLoaderMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter | null {
+        return this.useQuery(Source.MyNotificationCenterQuery, undefined, opts);
+    }
     async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
         return this.client.query(Source.MessageCommentsQuery, variables, opts);
     }

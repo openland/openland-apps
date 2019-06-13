@@ -48394,6 +48394,24 @@ export interface MyNotificationsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: MyNotificationCenter
+// ====================================================
+
+export interface MyNotificationCenter_myNotificationCenter {
+  __typename: "NotificationCenter";
+  id: string;
+  unread: number;
+}
+
+export interface MyNotificationCenter {
+  myNotificationCenter: MyNotificationCenter_myNotificationCenter;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: DeleteComment
 // ====================================================
 
