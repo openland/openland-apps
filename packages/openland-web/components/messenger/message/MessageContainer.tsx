@@ -112,7 +112,7 @@ const CommentsNotificationMessageContainerWrapper = ({
             onMouseLeave={onMouseLeave}
             marginTop={9}
             marginBottom={-3}
-            paddingTop={10}
+            paddingTop={13}
             paddingBottom={5}
             borderRadius={4}
             onClick={onClick}
@@ -165,7 +165,7 @@ const ReplyQuote = ({ text }: { text?: string | null }) => {
     }
     return (
         <XView flexDirection="row" marginTop={4} marginBottom={6}>
-            <XView width={2} backgroundColor={'#1790ff'} borderRadius={1} height={18} />
+            <XView width={2} backgroundColor={'#1790ff'} borderRadius={1} />
             <XView
                 marginLeft={12}
                 opacity={0.6}
@@ -299,7 +299,7 @@ export const DesktopMessageContainer = ({
     // Actions
     let actions = (
         <XView
-            width={85}
+            width={isCommentNotification ? 7 : 85}
             marginLeft={12}
             marginTop={!compact ? (isComment ? undefined : 24) : undefined}
             alignSelf="flex-start"
@@ -354,9 +354,10 @@ export const DesktopMessageContainer = ({
                 </XView>
             )}
             <Preambula
+                isCommentNotification={!!isCommentNotification}
+                isComment={!!isComment}
                 userPopperRef={userPopperRef}
                 commentDepth={commentDepth}
-                isComment={!!isComment}
                 compact={compact}
                 sender={sender}
                 date={date}

@@ -110,12 +110,23 @@ const NotCompactPreambulaContainer = ({ children }: PreambulaContainerProps) => 
     );
 };
 
+const NotCompactCommentsNotificationPreambulaContainer = ({
+    children,
+}: PreambulaContainerProps) => {
+    return (
+        <XView alignSelf="flex-start" minHeight={23} width={55} fontSize={12} whiteSpace={'nowrap'}>
+            {children}
+        </XView>
+    );
+};
+
 export const Preambula = ({
     compact,
     sender,
     date,
     deleted,
     isComment,
+    isCommentNotification,
     commentDepth,
     userPopperRef,
     hover,
@@ -125,11 +136,16 @@ export const Preambula = ({
     date: number;
     deleted?: boolean;
     isComment: boolean;
+    isCommentNotification?: boolean;
     commentDepth?: number;
     hover: boolean;
     userPopperRef: React.RefObject<UserPopper>;
 }) => {
     let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
+
+    if (isCommentNotification) {
+        PreambulaContainer = NotCompactCommentsNotificationPreambulaContainer;
+    }
 
     if (isComment) {
         PreambulaContainer = NotCompactNotDeepPreambulaContainer;
