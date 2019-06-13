@@ -1,7 +1,14 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { RoomHeader_room_PrivateRoom_user_primaryOrganization } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
+
+const titleClassName = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
 
 export const HeaderTitle = React.memo(
     (props: {
@@ -25,7 +32,7 @@ export const HeaderTitle = React.memo(
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
             >
-                <span>
+                <span className={titleClassName}>
                     {emoji({
                         src: props.value,
                         size: 16,
