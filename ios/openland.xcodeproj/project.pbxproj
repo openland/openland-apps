@@ -21,6 +21,7 @@
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */; };
+		A0930DE922B271D40018ECA1 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0930DE822B271D40018ECA1 /* NotificationHandler.swift */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA2281BC228A1DD100810848 /* readFromStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BB228A1DD100810848 /* readFromStore.swift */; };
 		AA2281BE228A244800810848 /* RecordStoreReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */; };
@@ -292,6 +293,7 @@
 		A0153A9A222426F400C026A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
 		A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incallmanager_busytone.mp3; sourceTree = "<group>"; };
+		A0930DE822B271D40018ECA1 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		AA2281BB228A1DD100810848 /* readFromStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = readFromStore.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				A0930DE822B271D40018ECA1 /* NotificationHandler.swift */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -1395,6 +1398,7 @@
 				AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */,
 				AA2281C8228A3C0400810848 /* Serialization.swift in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
+				A0930DE922B271D40018ECA1 /* NotificationHandler.swift in Sources */,
 				AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
 				AA2281CA228A4B7F00810848 /* collectMissingKeys.swift in Sources */,
