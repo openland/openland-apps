@@ -17,6 +17,7 @@ export const MyNotificationsQuery = gql`
                         peerRoot {
                             ... on GeneralMessage {
                                 id
+                                message
                             }
                         }
                         subscription {

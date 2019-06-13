@@ -1,8 +1,15 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { UserShort } from 'openland-api/Types';
+import {
+    UserShort,
+    RoomHeader_room_PrivateRoom,
+    RoomHeader_room_SharedRoom,
+    RoomHeader_room,
+} from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
+import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const DeletedCommentHeader = () => {
     return (
@@ -12,18 +19,35 @@ const DeletedCommentHeader = () => {
     );
 };
 
-export const NotCompactHeader = ({
-    sender,
-    date,
-    deleted,
-    isComment,
-    userPopperRef,
-    senderNameEmojify,
-    selecting,
-    isEditView,
-    isEdited,
-    isModal,
-}: {
+const RoomReplyAvatar = ({ room }: { room?: RoomHeader_room }) => {
+    if (!room) {
+        return null;
+    }
+    const sharedRoom =
+        room!!.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
+
+    const privateRoom =
+        room!!.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
+
+    const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;
+    const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
+    const id = sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : '';
+
+    const nameOfRoom = 'Friends of Openland';
+    return (
+        <XView>
+            <XView marginLeft={10} justifyContent="center">
+                <ReplyCommentsIcon />
+            </XView>
+            <XAvatar2 size={18} src={photo} title={avatarTitle} id={id} />
+            <XView marginLeft={8} fontSize={14}>
+                {nameOfRoom}
+            </XView>
+        </XView>
+    );
+};
+
+type NotCompactHeaderT = {
     sender: UserShort;
     date: number;
     deleted?: boolean;
@@ -34,7 +58,24 @@ export const NotCompactHeader = ({
     isEditView: boolean;
     isEdited: boolean;
     isModal?: boolean;
-}) => {
+    isCommentNotification?: boolean;
+    room?: RoomHeader_room;
+};
+
+export const NotCompactHeader = ({
+    sender,
+    date,
+    deleted,
+    isComment,
+    userPopperRef,
+    room,
+    senderNameEmojify,
+    selecting,
+    isEditView,
+    isEdited,
+    isModal,
+    isCommentNotification,
+}: NotCompactHeaderT) => {
     let onAvatarOrUserNameMouseEnter = () => {
         if (userPopperRef.current) {
             userPopperRef.current.showPopper();
@@ -64,7 +105,7 @@ export const NotCompactHeader = ({
                         {senderNameEmojify}
                     </XView>
                 )}
-                {sender.primaryOrganization && (
+                {!isCommentNotification && sender.primaryOrganization && (
                     <XView
                         as="a"
                         fontSize={12}
@@ -79,6 +120,9 @@ export const NotCompactHeader = ({
                         {sender.primaryOrganization.name}
                     </XView>
                 )}
+
+                <RoomReplyAvatar room={room} />
+
                 {isComment && (isEditView || isEdited) && (
                     <>
                         <XView
@@ -103,7 +147,7 @@ export const NotCompactHeader = ({
                     </>
                 )}
             </XView>
-            {!isComment && !isModal && (
+            {!isComment && !isCommentNotification && !isModal && (
                 <XView
                     paddingLeft={8}
                     fontSize={12}

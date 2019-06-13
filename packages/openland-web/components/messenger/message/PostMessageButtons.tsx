@@ -68,6 +68,7 @@ export type CommentPropsT = {
 };
 
 type PostMessageButtonsT = {
+    isCommentNotification: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
@@ -84,6 +85,7 @@ type PostMessageButtonsT = {
 
 export const PostMessageButtons = React.memo(
     ({
+        isCommentNotification,
         isComment,
         isChannel,
         isModal,
@@ -115,7 +117,8 @@ export const PostMessageButtons = React.memo(
             isChannel ||
             (!message.isSending && message.reactions && message.reactions.length !== 0);
 
-        const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
+        const showPostMessageButtons =
+            showReactionsButton || showDiscussButton || isComment || isCommentNotification;
 
         let canDelete = !!message.isOut;
         if (room && room.__typename === 'SharedRoom' && room.kind === 'GROUP') {
@@ -128,7 +131,7 @@ export const PostMessageButtons = React.memo(
 
         const postMessageButtons = (
             <>
-                {isComment && (
+                {(isComment || isCommentNotification) && (
                     <>
                         <XView flexDirection="row" marginTop={4}>
                             <XView
@@ -142,7 +145,6 @@ export const PostMessageButtons = React.memo(
                                     style={
                                         {
                                             fontSize: '100%',
-
                                             color: '#000',
                                             fontWeight: 600,
                                         } as any
@@ -150,6 +152,19 @@ export const PostMessageButtons = React.memo(
                                     date={message.date.toString()}
                                 />
                             </XView>
+                            {isCommentNotification && (
+                                <XView
+                                    color="#1790ff"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={() => {
+                                        //
+                                    }}
+                                >
+                                    Reply
+                                </XView>
+                            )}
                             {commentProps && (
                                 <>
                                     <XView

@@ -71,7 +71,7 @@ const CommentView = ({
         setShowInputId,
     });
 
-    const onCommentReplyClick = () => {
+    const onCommentClick = () => {
         setShowInputId(showInputId === message.key ? null : message.key);
     };
 
@@ -155,7 +155,7 @@ const CommentView = ({
                         noSelector
                         isComment
                         commentProps={{
-                            onCommentReplyClick,
+                            onCommentClick,
                             onCommentEditClick,
                             onCommentDeleteClick,
                             messageId: originalMessageId,
@@ -426,21 +426,18 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(
-        () => {
-            if (currentCommentsInputRef.current && scrollRef.current) {
-                const targetElem = currentCommentsInputRef.current.getElement()!!
-                    .parentNode as HTMLElement;
-                if (targetElem) {
-                    scrollRef.current.scrollToBottomOfElement({
-                        targetElem,
-                        offset: 10,
-                    });
-                }
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
             }
-        },
-        [showInputId],
-    );
+        }
+    }, [showInputId]);
 
     return (
         <UploadContextProvider>

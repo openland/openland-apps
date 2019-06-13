@@ -19,26 +19,27 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
             <IsActivePoliteContext.Consumer>
                 {isActive => (
                     <DesktopMessageComponentInner
+                        isModal={props.isModal}
                         isCommentNotification={props.isCommentNotification}
+                        isComment={props.isComment}
+                        isPinned={props.isPinned}
+                        isChannel={props.isChannel}
+                        isActive={isActive}
                         onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
                         showNumberOfComments={props.showNumberOfComments}
-                        isModal={props.isModal}
                         deleted={props.deleted}
-                        isPinned={props.isPinned}
                         commentDepth={props.commentDepth}
-                        isComment={props.isComment}
                         commentProps={props.commentProps}
                         noSelector={props.noSelector}
                         message={props.message}
                         conversationId={props.conversationId}
-                        isChannel={props.isChannel}
                         onlyLikes={props.onlyLikes}
                         me={props.me}
                         conversationType={props.conversationType}
                         messagesContext={messagesContextProps}
                         room={props.room}
-                        isActive={isActive}
+                        replyQuoteText={props.replyQuoteText}
                     />
                 )}
             </IsActivePoliteContext.Consumer>

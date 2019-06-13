@@ -121,18 +121,25 @@ export const CommentsNotifications = () => {
         .map(item => {
             const { content } = item;
 
+            const firstContent = content!![0];
+            const comment = firstContent!!.comment!!;
+            const peer = firstContent!!.peer!!;
+
+            let replyQuoteText;
+            if (comment.parentComment) {
+                const parentComment = comment.parentComment;
+                replyQuoteText = parentComment.comment.message;
+            } else {
+                replyQuoteText = peer.peerRoot.message;
+            }
+
             return {
-                ...content!![0]!!.comment!!.comment,
-                peerId: content!![0]!!.peer!!.peerRoot.id,
-                isSubscribedMessageComments: !!content!![0]!!.peer!!.subscription!!,
+                ...comment.comment,
+                peerId: peer.peerRoot.id,
+                isSubscribedMessageComments: !!peer.subscription!!,
+                replyQuoteText,
             };
         });
-
-    let testMessages: MyNotifications_myNotifications_content_comment_comment[] = [];
-
-    if (comments) {
-        testMessages = comments;
-    }
 
     return (
         <XView paddingTop={24} flexGrow={1} flexShrink={1}>
@@ -149,7 +156,7 @@ export const CommentsNotifications = () => {
             </MessagesWrapper>
 
             <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
-                {testMessages.map((item: any, key: any) => {
+                {comments.map((item, key: any) => {
                     return (
                         <MessagesWrapper key={key}>
                             <MessageComponent
@@ -161,6 +168,7 @@ export const CommentsNotifications = () => {
                                         }),
                                     ),
                                 )}
+                                replyQuoteText={item.replyQuoteText}
                                 noSelector
                                 isCommentNotification
                             />

@@ -10,6 +10,7 @@ import { Preambula } from './Preambula';
 import { NotCompactHeader } from './NotCompactHeader';
 
 export interface DesktopMessageContainerProps {
+    replyQuoteText?: string | null;
     deleted?: boolean;
     message: DataSourceWebMessageItem;
     conversationId: string;
@@ -158,28 +159,51 @@ const NotCompactShortMessageContainerWrapper = ({
     );
 };
 
+const ReplyQuote = ({ text }: { text?: string }) => {
+    if (!text) {
+        return null;
+    }
+    return (
+        <XView flexDirection="row" marginTop={4} marginBottom={6}>
+            <XView width={2} backgroundColor={'#1790ff'} borderRadius={1} height={18} />
+            <XView
+                marginLeft={12}
+                opacity={0.6}
+                fontSize={14}
+                color={'#000'}
+                flexShrink={1}
+                overflow="hidden"
+                flexWrap="nowrap"
+            >
+                {text}
+            </XView>
+        </XView>
+    );
+};
+
 export const DesktopMessageContainer = ({
     compact,
     deleted,
-    isComment,
     selecting,
     onSelected,
     selected,
     commentDepth,
     sender,
     date,
-    isEditView,
-    isEdited,
     noSelector,
-    isModal,
     children,
-    isPinned,
     conversationId,
     message,
     senderNameEmojify,
-    isCommentNotification,
     selectMessage,
     room,
+    isComment,
+    isCommentNotification,
+    isPinned,
+    isModal,
+    isEditView,
+    isEdited,
+    replyQuoteText,
 }: DesktopMessageContainerProps) => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
@@ -217,19 +241,26 @@ export const DesktopMessageContainer = ({
             ) : (
                 <>
                     {!compact && (
-                        <NotCompactHeader
-                            sender={sender}
-                            date={date}
-                            deleted={deleted}
-                            isComment={!!isComment}
-                            userPopperRef={userPopperRef}
-                            senderNameEmojify={senderNameEmojify}
-                            selecting={selecting}
-                            isEditView={isEditView}
-                            isEdited={isEdited}
-                            isModal={isModal}
-                        />
+                        <>
+                            <NotCompactHeader
+                                room={room as any}
+                                sender={sender}
+                                date={date}
+                                deleted={deleted}
+                                isComment={!!isComment}
+                                isCommentNotification={!!isCommentNotification}
+                                userPopperRef={userPopperRef}
+                                senderNameEmojify={senderNameEmojify}
+                                selecting={selecting}
+                                isEditView={isEditView}
+                                isEdited={isEdited}
+                                isModal={isModal}
+                            />
+
+                            <ReplyQuote text={replyQuoteText} />
+                        </>
                     )}
+
                     {isModal && (
                         <XView
                             marginBottom={8}

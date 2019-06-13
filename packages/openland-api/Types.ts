@@ -1573,8 +1573,21 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   spans: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -2234,8 +2247,21 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   spans: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
@@ -2904,8 +2930,21 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   spans: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -3565,8 +3604,21 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   spans: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
@@ -48259,8 +48311,21 @@ export interface MyNotifications_myNotifications_content_comment_comment {
   spans: MyNotifications_myNotifications_content_comment_comment_spans[];
 }
 
+export interface MyNotifications_myNotifications_content_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface MyNotifications_myNotifications_content_comment_parentComment {
   __typename: "CommentEntry";
+  comment: MyNotifications_myNotifications_content_comment_parentComment_comment;
   id: string;
 }
 
@@ -48284,6 +48349,10 @@ export interface MyNotifications_myNotifications_content_peer_peerRoot {
    * State
    */
   id: string;
+  /**
+   * Content
+   */
+  message: string | null;
 }
 
 export interface MyNotifications_myNotifications_content_peer_subscription {
@@ -48986,8 +49055,21 @@ export interface MessageComments_messageComments_comments_comment {
   spans: MessageComments_messageComments_comments_comment_spans[];
 }
 
+export interface MessageComments_messageComments_comments_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface MessageComments_messageComments_comments_parentComment {
   __typename: "CommentEntry";
+  comment: MessageComments_messageComments_comments_parentComment_comment;
   id: string;
 }
 
@@ -60283,8 +60365,21 @@ export interface CommentEntryFragment_comment {
   spans: CommentEntryFragment_comment_spans[];
 }
 
+export interface CommentEntryFragment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentEntryFragment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentEntryFragment_parentComment_comment;
   id: string;
 }
 
@@ -69224,8 +69319,21 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment {
   spans: CommentUpdateFragment_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentUpdateFragment_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentUpdateFragment_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentUpdateFragment_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -69885,8 +69993,21 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment {
   spans: CommentUpdateFragment_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentUpdateFragment_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentUpdateFragment_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentUpdateFragment_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
