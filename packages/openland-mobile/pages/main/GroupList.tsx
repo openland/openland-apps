@@ -45,8 +45,7 @@ const GroupListComponent = React.memo<PageProps>((props) => {
                                 key: item.id,
                                 title: item.title,
                             }}
-                            title={item.organization ? item.organization!.name : undefined}
-                            description={item.membersCount + ' members'}
+                            subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}
                             path="Conversation"
                             pathParams={{ flexibleId: item.id }}
                         />

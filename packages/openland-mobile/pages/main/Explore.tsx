@@ -60,14 +60,14 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Top chats"
+                header="Top groups"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         isChannel: false,
                         initial: availableChats,
-                        title: 'Top chats',
+                        title: 'Top groups',
                     })
                 }}
             >
@@ -136,7 +136,7 @@ const RoomsList = (props: { router: SRouter }) => {
                             key: v.id,
                             title: v.name,
                         }}
-                        subTitle={<>{v.betaPublicRooms.length + (v.betaPublicRooms.length === 1 ? 'group' : ' groups')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.membersCount + (v.membersCount === 1 ? 'member' : ' members')}</>}
+                        subTitle={<>{v.membersCount + (v.membersCount === 1 ? 'member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.betaPublicRooms.length + (v.betaPublicRooms.length === 1 ? ' chat' : ' chats')}</>}
                         navigationIcon={false}
                         path="ProfileOrganization"
                         pathParams={{ id: v.id }}

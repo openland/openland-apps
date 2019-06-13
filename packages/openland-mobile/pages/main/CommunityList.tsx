@@ -52,7 +52,7 @@ const CommunityListComponent = React.memo<PageProps>((props) => {
                                 key: item.id,
                                 title: item.name,
                             }}
-                            subTitle={<>{item.betaPublicRooms.length + (item.betaPublicRooms.length === 1 ? 'group' : ' groups')}<Text style={{ opacity: 0.5 }}> ∙</Text> {item.membersCount + (item.membersCount === 1 ? 'member' : ' members')}</>}
+                            subTitle={<>{item.membersCount + (item.membersCount === 1 ? 'member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {item.betaPublicRooms.length + (item.betaPublicRooms.length === 1 ? 'chat' : ' chats')}</>}
                             navigationIcon={false}
                             path="ProfileOrganization"
                             pathParams={{ id: item.id }}
