@@ -14,7 +14,6 @@ import { emoji } from 'openland-y-utils/emoji';
 import { MessageVideoComponent } from './MessageVideoComponent';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { Span } from 'openland-y-utils/spans/Span';
-import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;

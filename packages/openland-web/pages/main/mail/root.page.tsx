@@ -18,13 +18,19 @@ export default withApp('Mail', 'viewer', () => {
     const { path, routeQuery } = router;
     let cid = routeQuery.conversationId;
     let oid = routeQuery.organizationId;
-    let uid = routeQuery.userId;
+    let uid = routeQuery.userI;
 
     return (
         <XTrack event="mail_view">
             <MessageStateProviderComponent router={router} cid={cid}>
                 <CheckContextRerender />
-                <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />
+                <MessagesNavigation
+                    path={path}
+                    cid={cid}
+                    oid={oid}
+                    uid={uid}
+                    isCommentsNotifications={path === '/notifications/comments'}
+                />
             </MessageStateProviderComponent>
         </XTrack>
     );

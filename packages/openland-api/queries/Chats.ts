@@ -803,9 +803,9 @@ export const RoomMembersQuery = gql`
 export const RoomOrganizationAdminMembersQuery = gql`
     query RoomOrganizationAdminMembers($id: ID!) {
         room(id: $id) {
-            ... on SharedRoom{
+            ... on SharedRoom {
                 id
-                organization{
+                organization {
                     id
                     adminMembers: alphaOrganizationAdminMembers {
                         role
@@ -814,7 +814,7 @@ export const RoomOrganizationAdminMembersQuery = gql`
                         }
                     }
                 }
-            }   
+            }
         }
     }
     ${UserShort}
@@ -1026,41 +1026,6 @@ export const EditCommentMutation = gql`
             fileAttachments: $fileAttachments
             spans: $spans
         )
-    }
-`;
-
-export const DeleteCommentMutation = gql`
-    mutation DeleteComment($id: ID!) {
-        deleteComment(id: $id)
-    }
-`;
-
-export const MessageCommentsQuery = gql`
-    query MessageComments($messageId: ID!) {
-        messageComments(messageId: $messageId) {
-            id
-            state {
-                state
-            }
-            count
-            comments {
-                ...CommentEntryFragment
-            }
-        }
-    }
-    ${CommentEntryFragment}
-    ${FullMessage}
-`;
-
-export const CommentSetReactionMutation = gql`
-    mutation CommentSetReaction($commentId: ID!, $reaction: MessageReactionType!) {
-        commentReactionAdd(commentId: $commentId, reaction: $reaction)
-    }
-`;
-
-export const CommentUnsetReactionMutation = gql`
-    mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {
-        commentReactionRemove(commentId: $commentId, reaction: $reaction)
     }
 `;
 

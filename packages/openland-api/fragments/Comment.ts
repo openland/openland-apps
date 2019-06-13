@@ -9,6 +9,11 @@ export const CommentEntryFragment = gql`
             id
         }
         parentComment {
+            comment {
+                id
+                message
+            }
+
             id
         }
         childComments {

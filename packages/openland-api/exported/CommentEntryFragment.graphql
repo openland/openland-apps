@@ -13,6 +13,11 @@ fragment CommentEntryFragment on CommentEntry {
   id
   parentComment {
     __typename
+    comment {
+      __typename
+      id
+      message
+    }
     id
   }
 }

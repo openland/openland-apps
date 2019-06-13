@@ -97,24 +97,27 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 export interface MessageComponentProps {
-    deleted?: boolean;
-    showNumberOfComments?: boolean;
     isPinned?: boolean;
     isModal?: boolean;
+    isChannel?: boolean;
+    isCommentNotification?: boolean;
+    isComment?: boolean;
+    deleted?: boolean;
+    showNumberOfComments?: boolean;
     commentDepth?: number;
     message: DataSourceWebMessageItem & { depth?: number };
-    isChannel?: boolean;
     noSelector?: boolean;
-    isComment?: boolean;
     commentProps?: CommentPropsT;
-    conversationId: string | null;
+    conversationId?: string | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
-    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
     room?: RoomChat_room;
+    replyQuoteText?: string | null;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    onCommentNotificationsReplyClick?: (event: React.MouseEvent<any>) => void;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -488,12 +491,16 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         showNumberOfComments={this.props.showNumberOfComments}
                         isModal={!!this.props.isModal}
                         isComment={!!this.props.isComment}
+                        isCommentNotification={!!this.props.isCommentNotification}
                         onlyLikes={!!this.props.onlyLikes}
                         isChannel={this.props.isChannel}
                         message={this.props.message}
                         conversationId={this.props.conversationId}
                         me={this.props.me}
                         onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        onCommentNotificationsReplyClick={
+                            this.props.onCommentNotificationsReplyClick
+                        }
                         usernameOfRepliedUser={usernameOfRepliedUser}
                         commentProps={commentProps}
                         room={this.props.room}
@@ -502,13 +509,17 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
             return (
                 <DesktopMessageContainer
+                    replyQuoteText={this.props.replyQuoteText}
+                    isCommentNotification={this.props.isCommentNotification}
+                    isModal={this.props.isModal}
+                    isPinned={this.props.isPinned}
+                    isEditView={isEditView}
+                    isEdited={!!this.props.message.isEdited}
+                    isComment={this.props.isComment}
                     deleted={this.props.deleted}
                     conversationId={this.props.conversationId!!}
                     haveReactions={!!haveReactions}
-                    isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
-                    isModal={this.props.isModal}
-                    isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     message={this.props.message}
                     date={this.props.message.date}
@@ -520,8 +531,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={!!selected}
                     selectMessage={this.selectMessage}
                     room={this.props.room}
-                    isEditView={isEditView}
-                    isEdited={!!this.props.message.isEdited}
                 >
                     {content}
                     {postMessageButtons}

@@ -1573,8 +1573,21 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   spans: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -2234,8 +2247,21 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   spans: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
@@ -2904,8 +2930,21 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   spans: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -3565,8 +3604,21 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   spans: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
@@ -46525,741 +46577,6 @@ export interface EditCommentVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: DeleteComment
-// ====================================================
-
-export interface DeleteComment {
-  deleteComment: boolean;
-}
-
-export interface DeleteCommentVariables {
-  id: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: MessageComments
-// ====================================================
-
-export interface MessageComments_messageComments_state {
-  __typename: "CommentUpdatesState";
-  state: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_sender_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost";
-  fallback: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  fallback: string;
-  id: string;
-  fileId: string;
-  fileMetadata: MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon {
-  __typename: "Image";
-  url: string;
-  metadata: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon_metadata | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image {
-  __typename: "Image";
-  url: string;
-  metadata: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image_metadata | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard_buttons {
-  __typename: "ModernMessageButton";
-  id: string;
-  title: string;
-  style: ModernMessageButtonStyle;
-  url: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard {
-  __typename: "MessageKeyboard";
-  buttons: (MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
-}
-
-export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment";
-  fallback: string;
-  id: string;
-  title: string | null;
-  subTitle: string | null;
-  titleLink: string | null;
-  titleLinkHostname: string | null;
-  text: string | null;
-  icon: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon | null;
-  image: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image | null;
-  keyboard: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard | null;
-}
-
-export type MessageComments_messageComments_comments_comment_attachments = MessageComments_messageComments_comments_comment_attachments_MessageAttachmentPost | MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile | MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  /**
-   * Content
-   */
-  message: string | null;
-  sender: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender;
-  fallback: string;
-  spans: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans[];
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost";
-  fallback: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  fallback: string;
-  id: string;
-  fileId: string;
-  fileMetadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
-  __typename: "Image";
-  url: string;
-  metadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
-  __typename: "Image";
-  url: string;
-  metadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment";
-  fallback: string;
-  id: string;
-  title: string | null;
-  subTitle: string | null;
-  titleLink: string | null;
-  titleLinkHostname: string | null;
-  text: string | null;
-  icon: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
-
-export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  /**
-   * Content
-   */
-  message: string | null;
-  sender: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender;
-  fallback: string;
-  spans: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans[];
-  commentsCount: number;
-  edited: boolean;
-  attachments: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments[];
-}
-
-export type MessageComments_messageComments_comments_comment_quotedMessages = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage;
-
-export interface MessageComments_messageComments_comments_comment_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageComments_messageComments_comments_comment_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_reactions_user_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_reactions {
-  __typename: "ModernMessageReaction";
-  user: MessageComments_messageComments_comments_comment_reactions_user;
-  reaction: MessageReactionType;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface MessageComments_messageComments_comments_comment_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type MessageComments_messageComments_comments_comment_spans = MessageComments_messageComments_comments_comment_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_spans_MessageSpanDate;
-
-export interface MessageComments_messageComments_comments_comment {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: MessageComments_messageComments_comments_comment_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  edited: boolean;
-  commentsCount: number;
-  attachments: MessageComments_messageComments_comments_comment_attachments[];
-  quotedMessages: MessageComments_messageComments_comments_comment_quotedMessages[];
-  reactions: MessageComments_messageComments_comments_comment_reactions[];
-  spans: MessageComments_messageComments_comments_comment_spans[];
-}
-
-export interface MessageComments_messageComments_comments_parentComment {
-  __typename: "CommentEntry";
-  id: string;
-}
-
-export interface MessageComments_messageComments_comments_childComments {
-  __typename: "CommentEntry";
-  id: string;
-}
-
-export interface MessageComments_messageComments_comments {
-  __typename: "CommentEntry";
-  id: string;
-  deleted: boolean;
-  comment: MessageComments_messageComments_comments_comment;
-  parentComment: MessageComments_messageComments_comments_parentComment | null;
-  childComments: MessageComments_messageComments_comments_childComments[];
-}
-
-export interface MessageComments_messageComments {
-  __typename: "CommentsPeer";
-  id: string;
-  state: MessageComments_messageComments_state;
-  count: number;
-  comments: MessageComments_messageComments_comments[];
-}
-
-export interface MessageComments {
-  messageComments: MessageComments_messageComments;
-}
-
-export interface MessageCommentsVariables {
-  messageId: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: CommentSetReaction
-// ====================================================
-
-export interface CommentSetReaction {
-  commentReactionAdd: boolean;
-}
-
-export interface CommentSetReactionVariables {
-  commentId: string;
-  reaction: MessageReactionType;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: CommentUnsetReaction
-// ====================================================
-
-export interface CommentUnsetReaction {
-  commentReactionRemove: boolean;
-}
-
-export interface CommentUnsetReactionVariables {
-  commentId: string;
-  reaction: MessageReactionType;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: RoomUpdate
 // ====================================================
 
@@ -48346,6 +47663,1555 @@ export interface Message {
 }
 
 export interface MessageVariables {
+  messageId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: MyNotifications
+// ====================================================
+
+export interface MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_attachments = MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_quotedMessages = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage;
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: MyNotifications_myNotifications_content_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotifications_myNotifications_content_comment_comment_spans = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate;
+
+export interface MyNotifications_myNotifications_content_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotifications_myNotifications_content_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: MyNotifications_myNotifications_content_comment_comment_attachments[];
+  quotedMessages: MyNotifications_myNotifications_content_comment_comment_quotedMessages[];
+  reactions: MyNotifications_myNotifications_content_comment_comment_reactions[];
+  spans: MyNotifications_myNotifications_content_comment_comment_spans[];
+}
+
+export interface MyNotifications_myNotifications_content_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_comment_parentComment {
+  __typename: "CommentEntry";
+  comment: MyNotifications_myNotifications_content_comment_parentComment_comment;
+  id: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MyNotifications_myNotifications_content_comment {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: MyNotifications_myNotifications_content_comment_comment;
+  parentComment: MyNotifications_myNotifications_content_comment_parentComment | null;
+  childComments: MyNotifications_myNotifications_content_comment_childComments[];
+}
+
+export interface MyNotifications_myNotifications_content_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: MyNotifications_myNotifications_content_peer_peerRoot_message;
+}
+
+export interface MyNotifications_myNotifications_content_peer_subscription {
+  __typename: "CommentSubscription";
+  type: CommentSubscriptionType | null;
+}
+
+export interface MyNotifications_myNotifications_content_peer {
+  __typename: "CommentsPeer";
+  id: string;
+  peerRoot: MyNotifications_myNotifications_content_peer_peerRoot;
+  subscription: MyNotifications_myNotifications_content_peer_subscription | null;
+}
+
+export interface MyNotifications_myNotifications_content {
+  __typename: "NewCommentNotification";
+  comment: MyNotifications_myNotifications_content_comment;
+  peer: MyNotifications_myNotifications_content_peer;
+}
+
+export interface MyNotifications_myNotifications {
+  __typename: "Notification";
+  id: string;
+  text: string | null;
+  content: (MyNotifications_myNotifications_content | null)[] | null;
+}
+
+export interface MyNotifications {
+  myNotifications: MyNotifications_myNotifications[];
+}
+
+export interface MyNotificationsVariables {
+  first: number;
+  before?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: MyNotificationCenter
+// ====================================================
+
+export interface MyNotificationCenter_myNotificationCenter {
+  __typename: "NotificationCenter";
+  id: string;
+  unread: number;
+}
+
+export interface MyNotificationCenter {
+  myNotificationCenter: MyNotificationCenter_myNotificationCenter;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: DeleteComment
+// ====================================================
+
+export interface DeleteComment {
+  deleteComment: boolean;
+}
+
+export interface DeleteCommentVariables {
+  id: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: MessageComments
+// ====================================================
+
+export interface MessageComments_messageComments_state {
+  __typename: "CommentUpdatesState";
+  state: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_sender_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_icon | null;
+  image: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type MessageComments_messageComments_comments_comment_attachments = MessageComments_messageComments_comments_comment_attachments_MessageAttachmentPost | MessageComments_messageComments_comments_comment_attachments_MessageAttachmentFile | MessageComments_messageComments_comments_comment_attachments_MessageRichAttachment;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments = MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type MessageComments_messageComments_comments_comment_quotedMessages = MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage | MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage;
+
+export interface MessageComments_messageComments_comments_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageComments_messageComments_comments_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: MessageComments_messageComments_comments_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room = MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MessageComments_messageComments_comments_comment_spans = MessageComments_messageComments_comments_comment_spans_MessageSpanAllMention | MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention | MessageComments_messageComments_comments_comment_spans_MessageSpanRoomMention | MessageComments_messageComments_comments_comment_spans_MessageSpanLink | MessageComments_messageComments_comments_comment_spans_MessageSpanDate;
+
+export interface MessageComments_messageComments_comments_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MessageComments_messageComments_comments_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: MessageComments_messageComments_comments_comment_attachments[];
+  quotedMessages: MessageComments_messageComments_comments_comment_quotedMessages[];
+  reactions: MessageComments_messageComments_comments_comment_reactions[];
+  spans: MessageComments_messageComments_comments_comment_spans[];
+}
+
+export interface MessageComments_messageComments_comments_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface MessageComments_messageComments_comments_parentComment {
+  __typename: "CommentEntry";
+  comment: MessageComments_messageComments_comments_parentComment_comment;
+  id: string;
+}
+
+export interface MessageComments_messageComments_comments_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MessageComments_messageComments_comments {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: MessageComments_messageComments_comments_comment;
+  parentComment: MessageComments_messageComments_comments_parentComment | null;
+  childComments: MessageComments_messageComments_comments_childComments[];
+}
+
+export interface MessageComments_messageComments {
+  __typename: "CommentsPeer";
+  id: string;
+  state: MessageComments_messageComments_state;
+  count: number;
+  comments: MessageComments_messageComments_comments[];
+}
+
+export interface MessageComments {
+  messageComments: MessageComments_messageComments;
+}
+
+export interface MessageCommentsVariables {
+  messageId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CommentSetReaction
+// ====================================================
+
+export interface CommentSetReaction {
+  commentReactionAdd: boolean;
+}
+
+export interface CommentSetReactionVariables {
+  commentId: string;
+  reaction: MessageReactionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CommentUnsetReaction
+// ====================================================
+
+export interface CommentUnsetReaction {
+  commentReactionRemove: boolean;
+}
+
+export interface CommentUnsetReactionVariables {
+  commentId: string;
+  reaction: MessageReactionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: ReadNotification
+// ====================================================
+
+export interface ReadNotification_readNotification {
+  __typename: "NotificationCenter";
+  id: string;
+  unread: number;
+}
+
+export interface ReadNotification {
+  readNotification: ReadNotification_readNotification;
+}
+
+export interface ReadNotificationVariables {
+  notificationId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: SubscribeMessageComments
+// ====================================================
+
+export interface SubscribeMessageComments {
+  subscribeMessageComments: boolean;
+}
+
+export interface SubscribeMessageCommentsVariables {
+  messageId: string;
+  type: CommentSubscriptionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UnSubscribeMessageComments
+// ====================================================
+
+export interface UnSubscribeMessageComments {
+  unSubscribeMessageComments: boolean;
+}
+
+export interface UnSubscribeMessageCommentsVariables {
   messageId: string;
 }
 
@@ -59523,8 +60389,21 @@ export interface CommentEntryFragment_comment {
   spans: CommentEntryFragment_comment_spans[];
 }
 
+export interface CommentEntryFragment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentEntryFragment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentEntryFragment_parentComment_comment;
   id: string;
 }
 
@@ -68464,8 +69343,21 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment {
   spans: CommentUpdateFragment_CommentReceived_comment_comment_spans[];
 }
 
+export interface CommentUpdateFragment_CommentReceived_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentUpdateFragment_CommentReceived_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentUpdateFragment_CommentReceived_comment_parentComment_comment;
   id: string;
 }
 
@@ -69125,8 +70017,21 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment {
   spans: CommentUpdateFragment_CommentUpdated_comment_comment_spans[];
 }
 
+export interface CommentUpdateFragment_CommentUpdated_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
 export interface CommentUpdateFragment_CommentUpdated_comment_parentComment {
   __typename: "CommentEntry";
+  comment: CommentUpdateFragment_CommentUpdated_comment_parentComment_comment;
   id: string;
 }
 
@@ -73417,6 +74322,11 @@ export type DialogUpdateFragment = DialogUpdateFragment_DialogMentionedChanged |
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export enum CommentSubscriptionType {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+}
 
 /**
  * Deprecated

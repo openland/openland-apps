@@ -11,6 +11,7 @@ import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { RoomChat_room } from 'openland-api/Types';
+import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 
 const DiscussButton = React.memo(
     ({
@@ -67,34 +68,38 @@ export type CommentPropsT = {
 };
 
 type PostMessageButtonsT = {
+    isCommentNotification?: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
     isModal?: boolean;
     onlyLikes: boolean;
     message: DataSourceWebMessageItem;
-    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
-    conversationId: string | null;
+    conversationId?: string | null;
     me?: UserShort | null;
     commentProps?: CommentPropsT;
     room?: RoomChat_room;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    onCommentNotificationsReplyClick?: (event: React.MouseEvent<any>) => void;
 };
 
 export const PostMessageButtons = React.memo(
     ({
+        isCommentNotification,
         isComment,
         isChannel,
         isModal,
         onlyLikes,
         message,
         commentProps,
-        onCommentBackToUserMessageClick,
         usernameOfRepliedUser,
         conversationId,
         me,
         showNumberOfComments,
         room,
+        onCommentBackToUserMessageClick,
+        onCommentNotificationsReplyClick,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -114,7 +119,8 @@ export const PostMessageButtons = React.memo(
             isChannel ||
             (!message.isSending && message.reactions && message.reactions.length !== 0);
 
-        const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
+        const showPostMessageButtons =
+            showReactionsButton || showDiscussButton || isComment || isCommentNotification;
 
         let canDelete = !!message.isOut;
         if (room && room.__typename === 'SharedRoom' && room.kind === 'GROUP') {
@@ -127,7 +133,7 @@ export const PostMessageButtons = React.memo(
 
         const postMessageButtons = (
             <>
-                {isComment && (
+                {(isComment || isCommentNotification) && (
                     <>
                         <XView flexDirection="row" marginTop={4}>
                             <XView
@@ -137,8 +143,28 @@ export const PostMessageButtons = React.memo(
                                 color="#000"
                                 fontWeight="600"
                             >
-                                <XDate value={message.date.toString()} format="time" />
+                                <ZRelativeDate
+                                    style={
+                                        {
+                                            fontSize: '100%',
+                                            color: '#000',
+                                            fontWeight: 600,
+                                        } as any
+                                    }
+                                    date={message.date.toString()}
+                                />
                             </XView>
+                            {isCommentNotification && (
+                                <XView
+                                    color="#1790ff"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentNotificationsReplyClick}
+                                >
+                                    Reply
+                                </XView>
+                            )}
                             {commentProps && (
                                 <>
                                     <XView

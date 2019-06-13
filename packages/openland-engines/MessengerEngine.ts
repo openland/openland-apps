@@ -4,6 +4,7 @@ import { ConversationEngine } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
+import { NotificationCenterEngine } from './NotificationCenterEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
@@ -22,6 +23,7 @@ export class MessengerEngine {
     readonly client: OpenlandClient;
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
+    readonly notificationCenter: NotificationCenterEngine;
     readonly global: GlobalStateEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
@@ -54,6 +56,7 @@ export class MessengerEngine {
         this.onlineWatcher = new OnlineWatcher(this.client);
 
         this.dialogList = new DialogListEngine(this);
+        this.notificationCenter = new NotificationCenterEngine();
 
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
