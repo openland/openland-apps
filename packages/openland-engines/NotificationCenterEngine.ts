@@ -1,8 +1,9 @@
 import UUID from 'uuid/v4';
 import { MyNotifications_myNotifications_content_comment_comment } from 'openland-api/Types';
-import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
-import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { DataSourceMessageItem } from './messenger/ConversationEngine';
+// you cannot import from web to engines, that breaks other platforms
+// import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+// import { convertMessage } from 'openland-web/components/messenger/message/content/comments/convertMessage';
 
 // TODO add attaches document/photo
 const users = ['Ada Poole', 'Mario McGee', 'Stanley Hughes', 'Dora Becker'];
@@ -102,7 +103,10 @@ type NotificationCenterEngineOptions = {
 }
 
 export class NotificationCenterEngine {
-    commentsDataSource: DataSourceWebMessageItem[];
+    // just trying to complile it
+    // commentsDataSource: DataSourceWebMessageItem[];
+    commentsDataSource = [];
+
     constructor(options?: NotificationCenterEngineOptions) {
         const comments = [
             createMessage({
@@ -127,15 +131,15 @@ export class NotificationCenterEngine {
             }) as any,
         ];
 
-        this.commentsDataSource = comments.map(item => {
-            return convertDsMessage(
-                convertMessage(
-                    hackChangeCommentIdToMessageId({
-                        item,
-                        messageId: item.peerRootId,
-                    }),
-                ),
-            );
-        });
+        // this.commentsDataSource = comments.map(item => {
+        //     return convertDsMessage(
+        //         convertMessage(
+        //             hackChangeCommentIdToMessageId({
+        //                 item,
+        //                 messageId: item.peerRootId,
+        //             }),
+        //         ),
+        //     );
+        // });
     }
 }
