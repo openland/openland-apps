@@ -25,7 +25,6 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
                         isPinned={props.isPinned}
                         isChannel={props.isChannel}
                         isActive={isActive}
-                        onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
                         usernameOfRepliedUser={props.usernameOfRepliedUser}
                         showNumberOfComments={props.showNumberOfComments}
                         deleted={props.deleted}
@@ -40,6 +39,8 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
                         messagesContext={messagesContextProps}
                         room={props.room}
                         replyQuoteText={props.replyQuoteText}
+                        onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
+                        onCommentNotificationsReplyClick={props.onCommentNotificationsReplyClick}
                     />
                 )}
             </IsActivePoliteContext.Consumer>

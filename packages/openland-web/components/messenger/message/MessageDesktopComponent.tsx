@@ -113,10 +113,11 @@ export interface MessageComponentProps {
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
-    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
     room?: RoomChat_room;
     replyQuoteText?: string | null;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    onCommentNotificationsReplyClick?: (event: React.MouseEvent<any>) => void;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -497,6 +498,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         conversationId={this.props.conversationId}
                         me={this.props.me}
                         onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        onCommentNotificationsReplyClick={
+                            this.props.onCommentNotificationsReplyClick
+                        }
                         usernameOfRepliedUser={usernameOfRepliedUser}
                         commentProps={commentProps}
                         room={this.props.room}

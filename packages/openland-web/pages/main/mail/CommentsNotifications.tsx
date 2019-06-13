@@ -8,6 +8,7 @@ import { convertMessage } from 'openland-web/components/messenger/message/conten
 import { useClient } from 'openland-web/utils/useClient';
 import { MyNotifications_myNotifications_content_comment_comment } from 'openland-api/Types';
 import { css } from 'linaria';
+import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
 // add attaches document/photo
 const users = ['Ada Poole', 'Isaiah Schultz', 'Stanley Hughes', 'Dora Becker'];
@@ -135,7 +136,7 @@ export const CommentsNotifications = () => {
 
             return {
                 ...comment.comment,
-                peerId: peer.peerRoot.id,
+                peerRootId: peer.peerRoot.id,
                 isSubscribedMessageComments: !!peer.subscription!!,
                 replyQuoteText,
             };
@@ -156,21 +157,29 @@ export const CommentsNotifications = () => {
             </MessagesWrapper>
 
             <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
-                {comments.map((item, key: any) => {
+                {comments.map((item, key) => {
+                    const convertedMessage = convertDsMessage(
+                        convertMessage(
+                            hackChangeCommentIdToMessageId({
+                                item,
+                                messageId: item.peerRootId,
+                            }),
+                        ),
+                    );
+
                     return (
                         <MessagesWrapper key={key}>
                             <MessageComponent
-                                message={convertDsMessage(
-                                    convertMessage(
-                                        hackChangeCommentIdToMessageId({
-                                            item,
-                                            messageId: item.peerId,
-                                        }),
-                                    ),
-                                )}
+                                message={convertedMessage}
                                 replyQuoteText={item.replyQuoteText}
                                 noSelector
                                 isCommentNotification
+                                onCommentBackToUserMessageClick={() => {
+                                    // openCommentsModal({
+                                    //     messageId: item.peerRootId,
+                                    // conversationId: item.message,
+                                    // });
+                                }}
                             />
                         </MessagesWrapper>
                     );

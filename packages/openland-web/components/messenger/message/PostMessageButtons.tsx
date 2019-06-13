@@ -75,12 +75,13 @@ type PostMessageButtonsT = {
     isModal?: boolean;
     onlyLikes: boolean;
     message: DataSourceWebMessageItem;
-    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
     conversationId?: string | null;
     me?: UserShort | null;
     commentProps?: CommentPropsT;
     room?: RoomChat_room;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    onCommentNotificationsReplyClick?: (event: React.MouseEvent<any>) => void;
 };
 
 export const PostMessageButtons = React.memo(
@@ -92,12 +93,13 @@ export const PostMessageButtons = React.memo(
         onlyLikes,
         message,
         commentProps,
-        onCommentBackToUserMessageClick,
         usernameOfRepliedUser,
         conversationId,
         me,
         showNumberOfComments,
         room,
+        onCommentBackToUserMessageClick,
+        onCommentNotificationsReplyClick,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -158,9 +160,7 @@ export const PostMessageButtons = React.memo(
                                     fontWeight="600"
                                     fontSize={12}
                                     cursor="pointer"
-                                    onClick={() => {
-                                        //
-                                    }}
+                                    onClick={onCommentNotificationsReplyClick}
                                 >
                                     Reply
                                 </XView>
