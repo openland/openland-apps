@@ -4,6 +4,7 @@ import { XView } from 'react-mental';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 interface ExplorePeopleProps {
     variables: { query?: string };
@@ -27,7 +28,8 @@ const UsersPickerWrapperClassName = css`
 
 export const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
-
+    const userContext = React.useContext(UserInfoContext);
+    const myId = userContext!!.user!!.id!!;
     const data = client.useExplorePeople(props.variables, {
         fetchPolicy: 'network-only',
     });
@@ -48,6 +50,9 @@ export const ExplorePeople = (props: ExplorePeopleProps) => {
                         (props as any).selectedUsers &&
                         (props as any).selectedUsers.has(i.node.id)
                     ) {
+                        return null;
+                    }
+                    if (i.node.id === myId) {
                         return null;
                     }
                     return (
