@@ -14,7 +14,7 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const boldTextClassName = css`
-    font-weight: bold;
+    font-weight: 600;
 `;
 
 const italicTextClassName = css`
