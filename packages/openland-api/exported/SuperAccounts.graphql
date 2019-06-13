@@ -1,6 +1,7 @@
 query SuperAccounts {
   superAccounts {
     __typename
+    createdAt
     id
     orgId
     state

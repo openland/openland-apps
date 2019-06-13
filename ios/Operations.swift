@@ -1949,6 +1949,7 @@ private let SuperAccountSelector = obj(
 private let SuperAccountsSelector = obj(
             field("superAccounts","superAccounts", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
+                    field("createdAt","createdAt", scalar("String")),
                     field("id","id", notNull(scalar("ID"))),
                     field("orgId","orgId", notNull(scalar("ID"))),
                     field("state","state", notNull(scalar("String"))),
@@ -3171,7 +3172,7 @@ class Operations {
     let SuperAccounts = OperationDefinition(
         "SuperAccounts",
         .query, 
-        "query SuperAccounts{superAccounts{__typename id orgId state title}}",
+        "query SuperAccounts{superAccounts{__typename createdAt id orgId state title}}",
         SuperAccountsSelector
     )
     let SuperAdmins = OperationDefinition(

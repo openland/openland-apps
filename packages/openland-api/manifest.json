@@ -1073,10 +1073,10 @@
       }
     },
     {
-      "signature": "6abb906e8eb8cf0d1e1bed7e55929f02b6aa3f930406270d1f825092b6a95374",
-      "document": "query SuperAccounts{superAccounts{__typename id orgId state title}}",
+      "signature": "e631709f0fd6bd5e078a0a8f4f34f38481ac566cd2490567ddbd782ba039318e",
+      "document": "query SuperAccounts{superAccounts{__typename createdAt id orgId state title}}",
       "metadata": {
-        "engineSignature": "query SuperAccounts{superAccounts{__typename id orgId state title}}"
+        "engineSignature": "query SuperAccounts{superAccounts{__typename createdAt id orgId state title}}"
       }
     },
     {

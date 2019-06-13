@@ -56934,6 +56934,7 @@ export interface SuperAccounts_superAccounts {
   orgId: string;
   title: string;
   state: SuperAccountState;
+  createdAt: string | null;
 }
 
 export interface SuperAccounts {
@@ -73505,6 +73506,12 @@ export enum ModernMessageButtonStyle {
   LIGHT = "LIGHT",
 }
 
+export enum NotificationComments {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+  NONE = "NONE",
+}
+
 export enum NotificationMessages {
   ALL = "ALL",
   DIRECT = "DIRECT",
@@ -73747,6 +73754,7 @@ export interface UpdateSettingsInput {
   emailFrequency?: EmailFrequency | null;
   desktopNotifications?: NotificationMessages | null;
   mobileNotifications?: NotificationMessages | null;
+  commentNotifications?: NotificationComments | null;
   mobileAlert?: boolean | null;
   mobileIncludeText?: boolean | null;
   mute?: boolean | null;

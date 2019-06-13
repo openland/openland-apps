@@ -35,6 +35,7 @@ export const SuperAccountsQuery = gql`
             orgId
             title
             state
+            createdAt
         }
     }
 `;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserForMention } from 'openland-api/Types';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { LinkToRoom } from './service/views/LinkToRoom';
 import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
@@ -14,6 +14,10 @@ import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const boldTextClassName = css`
+    font-weight: bold;
+`;
+
+const boldTextServiceClassName = css`
     font-weight: 600;
 `;
 
@@ -163,13 +167,17 @@ const LinkComponent = (props: { link: string; children?: any }) => {
     );
 };
 
-export const SpanView = React.memo<{ span: Span; children?: any }>(props => {
+export const SpanView = React.memo<{ span: Span; children?: any; isService?: boolean }>(props => {
     const { span, children } = props;
 
     if (span.type === 'link') {
         return <LinkComponent link={span.link}>{children}</LinkComponent>;
     } else if (span.type === 'bold') {
-        return <span className={boldTextClassName}>{children}</span>;
+        return (
+            <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
+                {children}
+            </span>
+        );
     } else if (span.type === 'italic') {
         return <span className={italicTextClassName}>{children}</span>;
     } else if (span.type === 'loud') {
@@ -214,6 +222,6 @@ export const SpanView = React.memo<{ span: Span; children?: any }>(props => {
     return props.children ? <span>{props.children}</span> : null;
 });
 
-export const SpannedView = React.memo<{ spans: Span[] }>(props => {
-    return <>{renderSpans(SpanView, props.spans)}</>;
+export const SpannedView = React.memo<{ spans: Span[]; isService?: boolean }>(props => {
+    return <>{renderSpans(SpanView, props.spans, props.isService)}</>;
 });

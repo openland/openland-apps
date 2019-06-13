@@ -91,8 +91,8 @@ class FilteredOptions extends React.PureComponent<FilteredOptionsProps> {
         }
         return (
             <>
-                {nodes.map(v => (
-                    <XTable.Row key={v.id} noHover={true}>
+                {nodes.map((v, i) => (
+                    <XTable.Row key={v.orgId + i} noHover={true}>
                         <XTable.Cell>{v.title}</XTable.Cell>
                         <XTable.Cell>{v.state}</XTable.Cell>
                         <XTable.Cell>
@@ -120,6 +120,8 @@ export default withApp('Super Organizations', 'super-admin', () => {
     const [searchValue, setSearchValue] = React.useState('');
     const client = useClient();
     const orgs = client.useSuperAccounts().superAccounts;
+
+    // console.log(orgs);
     const router = useXRouter();
     const orgsCurrentTab = orgs.filter(o => o.state === (router.query.orgState || 'ACTIVATED'));
 
