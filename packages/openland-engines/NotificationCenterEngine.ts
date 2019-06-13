@@ -105,7 +105,7 @@ type NotificationCenterEngineOptions = {
 export class NotificationCenterEngine {
     // just trying to complile it
     // commentsDataSource: DataSourceWebMessageItem[];
-    commentsDataSource = [];
+    commentsDataSource: any[] = [];
 
     constructor(options?: NotificationCenterEngineOptions) {
         const comments = [
