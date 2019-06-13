@@ -16,6 +16,7 @@ import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import NotificationsIcon from 'openland-icons/notifications-24.svg';
 import NotificationsNewIcon from 'openland-icons/notifications-new-24.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { useWithWidth } from '../hooks/useWithWidth';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -188,6 +189,7 @@ export const NewOptionsMenu = () => (
 export const NewOptionsButton = XMemo(() => {
     let router = React.useContext(XRoutingContext)!;
     const [show, setShow] = React.useState(false);
+    const [width] = useWithWidth();
 
     const closer = React.useCallback(() => {
         setShow(false);
@@ -206,13 +208,21 @@ export const NewOptionsButton = XMemo(() => {
         setShow(!show);
     }, []);
 
+    let marginRight = -70;
+    if (width && width < 951) {
+        marginRight = -150;
+    }
+    if (width && width < 750) {
+        marginRight = 0;
+    }
+
     return (
         <XPopper
             contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
             placement="bottom-end"
             show={show}
             marginTop={10}
-            marginRight={-5}
+            marginRight={marginRight}
             arrow={null}
             onClickOutside={closer}
             content={<NewOptionsMenu />}
