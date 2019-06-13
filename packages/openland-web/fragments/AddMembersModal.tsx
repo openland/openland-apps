@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
 import {
@@ -89,6 +89,42 @@ interface OwnerLinkComponentProps {
     isOrganization: boolean;
     isCommunity?: boolean;
 }
+
+const CopyButtonClassName = css`
+    display: flex;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #e8f4ff;
+    color: #1790ff;
+    transition: all 0.3s ease, color 0.08s ease-in, border 0s, all 0.15s ease;
+    cursor: pointer;
+    margin-left: 12px;
+    &:hover {
+        background-color: #1790ff;
+        color: #fff;
+
+        & svg g path: last-child {
+            fill: #a3d2ff;
+        }
+    }
+`;
+
+const CopyButtonHoverClassName = css`
+    background-color: #69d06d;
+    color: #fff;
+    &:hover {
+        background-color: #69d06d;
+        & svg g path: last-child {
+            fill: #fff;
+        }
+    }
+`;
 
 // TODO reuse OwnerLinkComponent from openland-web/fragments/OwnerLinkComponent.tsx
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
@@ -190,24 +226,16 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                     </RenewInviteLinkButtonWrapper>
                                 </XPopper>
                             </XView>
-                            <XView
-                                height={40}
-                                borderRadius={8}
-                                paddingLeft={14}
-                                paddingRight={14}
-                                flexDirection="row"
-                                alignItems="center"
-                                fontSize={14}
-                                fontWeight="600"
-                                backgroundColor={copied ? '#69d06d' : '#E8F4FF'}
-                                color={copied ? '#ffffff' : '#1790ff'}
-                                cursor="pointer"
+                            <div
+                                className={cx(
+                                    CopyButtonClassName,
+                                    copied && CopyButtonHoverClassName,
+                                )}
                                 onClick={this.copy}
-                                marginLeft={12}
                             >
                                 {copied ? <CheckIcon /> : <CopiedIcon />}
                                 <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
-                            </XView>
+                            </div>
                         </XView>
                         <XView
                             fontSize={12}
