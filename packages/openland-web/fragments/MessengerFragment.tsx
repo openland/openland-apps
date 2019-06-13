@@ -23,6 +23,7 @@ import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+import { MessengerWrongFragment } from 'openland-web/fragments/MessengerWrongFragment';
 
 interface MessengerComponentLoaderProps {
     state: MessagesStateContextProps;
@@ -33,7 +34,7 @@ interface MessengerComponentLoaderProps {
 const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
     const isActive = React.useContext(IsActivePoliteContext).useValue();
 
-    if (isActive === false) {
+    if (!isActive) {
         return null;
     }
 
@@ -120,7 +121,16 @@ class MessagengerFragmentInner extends React.PureComponent<
 export const MessengerFragment = React.memo<{ id: string }>(props => {
     const client = useClient();
 
-    let data = client.useRoomChat({ id: props.id })!!;
+    let data = null;
+    let wrongRequest = false;
+    try {
+        data = client.useRoomChat({ id: props.id })!!;
+    } catch (e) {
+        wrongRequest = true;
+    }
+    if (wrongRequest) {
+        return <MessengerWrongFragment />;
+    }
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
@@ -133,7 +143,8 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                 id={props.id}
                 state={state}
                 user={user}
-                room={data.room || null}
+                // room={data.room || null}
+                room={data ? data.room : null}
                 client={client}
             />
         </React.Suspense>
