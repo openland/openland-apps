@@ -140,7 +140,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
             marginTop={props.compact ? undefined : 12}
         >
             {!props.compact && (
-                <XView alignSelf="stretch" flexDirection="row" marginBottom={4}>
+                <XView alignSelf="stretch" flexDirection="row">
                     <XView marginRight={12}>
                         <UserPopper
                             isMe={props.sender.isYou}
@@ -206,7 +206,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                     </XView>
                 </XView>
             )}
-            <XView flexShrink={0} marginTop={props.compact ? 0 : 4}>
+            <XView flexShrink={0} marginTop={4}>
                 {content}
             </XView>
         </XView>
