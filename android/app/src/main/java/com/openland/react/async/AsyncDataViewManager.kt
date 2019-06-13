@@ -7,15 +7,29 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import org.json.JSONArray
 import java.util.concurrent.CopyOnWriteArrayList
 
-data class AsyncDataViewItem(val key: String, val spec: AsyncViewSpec)
+data class AsyncDataViewItem(val key: String, var spec: AsyncViewSpec)
 
-data class AsyncDataViewState(val items: List<AsyncDataViewItem>, val competed: Boolean)
+data class AsyncDataViewState(var items: List<AsyncDataViewItem>, val competed: Boolean)
 
 class AsyncDataView(val context: ReactContext, val key: String) {
+    private var applyModes: Array<String> = arrayOf()
+
     var state: AsyncDataViewState = AsyncDataViewState(emptyList(), false)
 
     private var listeners = CopyOnWriteArrayList<(state: AsyncDataViewState) -> Unit>()
     private var isRequested = false
+
+    fun applyModes(renderModes: Array<String>){
+        this.applyModes = renderModes
+        val s = AsyncDataViewState(this.state.items.map {
+            when (it.spec) {
+                is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))
+                else -> it
+            }
+        }, this.state.competed)
+        this.state = s
+        notifyWatchers(s)
+    }
 
     fun watch(handler: (state: AsyncDataViewState) -> Unit): () -> Unit {
         synchronized(listeners) {
@@ -45,13 +59,13 @@ class AsyncDataView(val context: ReactContext, val key: String) {
     }
 
     fun handleAddItem(item: AsyncDataViewItem, index: Int) {
-        val s = AsyncDataViewState(this.state.items.subList(0, index) + item + this.state.items.subList(index, this.state.items.size), this.state.competed)
+        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index, this.state.items.size), this.state.competed)
         this.state = s
         notifyWatchers(s)
     }
 
     fun handleUpdateItem(item: AsyncDataViewItem, index: Int) {
-        val s = AsyncDataViewState(this.state.items.subList(0, index) + item + this.state.items.subList(index + 1, this.state.items.size), this.state.competed)
+        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index + 1, this.state.items.size), this.state.competed)
         this.state = s
         notifyWatchers(s)
     }
@@ -73,7 +87,12 @@ class AsyncDataView(val context: ReactContext, val key: String) {
     }
 
     fun handleLoadedMore(items: List<AsyncDataViewItem>, completed: Boolean) {
-        val s = AsyncDataViewState(this.state.items + items, completed)
+        val s = AsyncDataViewState(this.state.items + items.map {
+            when (it.spec) {
+                is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))
+                else -> it
+            }
+        }, completed)
         this.state = s
         notifyWatchers(s)
         this.isRequested = false

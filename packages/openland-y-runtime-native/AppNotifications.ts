@@ -14,6 +14,12 @@ Push.configure({
     },
     senderID: '1095846783035',
     requestPermissions: false,
+    onNotification: (n) => {
+        // AppNotifications.onNotificationClick(n.data);
+        console.warn('boom', n);
+
+    }
+
 });
 
 class AppNotiticationsIOS implements AppNotificationsApi {
@@ -57,6 +63,10 @@ class AppNotiticationsIOS implements AppNotificationsApi {
 
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         // Do not show local notifications since remote one is good enougth
+    }
+
+    onNotificationClick = (data: any) => {
+        // to be replaced from messenger
     }
 }
 

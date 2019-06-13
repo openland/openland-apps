@@ -23,6 +23,8 @@ import android.provider.MediaStore
 import com.beust.klaxon.JsonArray
 import org.json.JSONArray
 import java.net.URLEncoder
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class MainActivity : ReactActivity() {
@@ -133,6 +135,26 @@ class MainActivity : ReactActivity() {
     override fun onDestroy() {
         super.onDestroy()
         provider!!.close()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        onIntent(intent)
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        onIntent(intent)
+    }
+
+    private fun onIntent(intent: Intent?) {
+        if (intent != null && intent.getStringExtra("conversationId") !== null) {
+            val res = Intent(Intent.ACTION_VIEW)
+            val data = JSONObject()
+            res.data = Uri.parse("openland://deep/mail/" + intent.getStringExtra("conversationId"))
+            startActivity(res)
+        }
     }
 
 }

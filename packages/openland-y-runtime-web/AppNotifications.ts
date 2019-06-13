@@ -14,14 +14,14 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     private blinkFaviconAlreadyStarted: boolean;
     private sound = canUseDOM
         ? new Howl({
-              src: ['/static/sounds/notification.mp3'],
-              onloaderror: () => {
-                  console.warn('sound error');
-              },
-              onplayerror: () => {
-                  console.warn('sound play error');
-              },
-          })
+            src: ['/static/sounds/notification.mp3'],
+            onloaderror: () => {
+                console.warn('sound error');
+            },
+            onplayerror: () => {
+                console.warn('sound play error');
+            },
+        })
         : undefined;
 
     constructor() {
@@ -186,7 +186,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                     silent: true,
                 } as any);
                 let router = this.router;
-                notification.onclick = function() {
+                notification.onclick = function () {
                     if (router) {
                         router.replaceRoute(content.path);
                     }
@@ -201,6 +201,10 @@ class AppNotiticationsWeb implements AppNotificationsApi {
 
     setRouter(router: { replaceRoute(path: string): void }) {
         this.router = router;
+    }
+
+    onNotificationClick = (data: any) => {
+        // to be replaced from messenger
     }
 }
 

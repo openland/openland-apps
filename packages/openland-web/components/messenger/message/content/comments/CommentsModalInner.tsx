@@ -7,7 +7,6 @@ import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useI
 import { CommentWatch_event_CommentUpdateSingle_update, UserForMention } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
@@ -36,6 +35,7 @@ import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,
     FullMessage_GeneralMessage_spans_MessageSpanAllMention,
 } from 'openland-api/Types';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const CommentView = ({
     selectedCommentMessageId,
@@ -50,6 +50,7 @@ const CommentView = ({
     currentCommentsInputRef,
     room,
     scrollToComment,
+    isMobile,
 }: {
     selectedCommentMessageId: string;
     originalMessageId: string;
@@ -63,6 +64,7 @@ const CommentView = ({
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
     room?: RoomChat_room;
     scrollToComment: Function;
+    isMobile?: boolean;
 }) => {
     const messenger = React.useContext(MessengerContext);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
@@ -71,7 +73,7 @@ const CommentView = ({
         setShowInputId,
     });
 
-    const onCommentClick = () => {
+    const onCommentReplyClick = () => {
         setShowInputId(showInputId === message.key ? null : message.key);
     };
 
@@ -128,7 +130,6 @@ const CommentView = ({
         commentEntryId &&
         (!commentsMap[commentEntryId].deleted ||
             commentsMap[commentEntryId].childComments.length !== 0);
-
     return (
         <div
             data-comment-id={message.id}
@@ -143,6 +144,7 @@ const CommentView = ({
                 key={message.key}
                 marginLeft={offset}
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
+                maxWidth={`calc(100% - ${isMobile ? offset : 0}px)`}
             >
                 {showComment && (
                     <MessageComponent
@@ -155,7 +157,7 @@ const CommentView = ({
                         noSelector
                         isComment
                         commentProps={{
-                            onCommentClick,
+                            onCommentReplyClick,
                             onCommentEditClick,
                             onCommentDeleteClick,
                             messageId: originalMessageId,
@@ -224,7 +226,7 @@ export const CommentsBlockView = ({
     room?: RoomChat_room;
 }) => {
     const client = useClient();
-    const isMobile = React.useContext(IsMobileContext);
+    const isMobile = useIsMobile();
     const commentsMap = {};
 
     const messageComments = client.useMessageComments(
@@ -299,6 +301,7 @@ export const CommentsBlockView = ({
                     commentsMap={commentsMap}
                     scrollToComment={scrollToComment}
                     selectedCommentMessageId={selectedCommentMessageId}
+                    isMobile={!!isMobile}
                 />
             );
         });
@@ -318,7 +321,7 @@ export const CommentsBlockView = ({
                         </XView>
 
                         <XView flexDirection="row" marginBottom={16}>
-                            <XView flexGrow={1}>
+                            <XView flexGrow={1} flexShrink={1}>
                                 <XView>{commentsElements}</XView>
                             </XView>
                         </XView>

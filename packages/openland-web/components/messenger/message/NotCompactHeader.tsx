@@ -121,7 +121,7 @@ export const NotCompactHeader = ({
                     </XView>
                 )}
 
-                <RoomReplyAvatar room={room} />
+                {!!isCommentNotification && <RoomReplyAvatar room={room} />}
 
                 {isComment && (isEditView || isEdited) && (
                     <>

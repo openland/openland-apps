@@ -117,8 +117,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     }
 
     handleOpenURL = async (event: { url: string }) => {
-        this.pendingDeepLink = event.url;
-        await this.tryResolveLink(this.state.state);
+        if (event.url) {
+            this.pendingDeepLink = event.url;
+            await this.tryResolveLink(this.state.state);
+        }
     }
 
     tryResolveLink = async (state: string) => {

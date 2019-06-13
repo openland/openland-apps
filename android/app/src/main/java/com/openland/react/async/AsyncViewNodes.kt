@@ -10,7 +10,7 @@ import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 import android.graphics.PorterDuff
 import android.R.color
 import android.graphics.PorterDuffColorFilter
-
+import java.util.*
 
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
@@ -71,6 +71,7 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
 fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: ReactContext): Component {
     return when (spec) {
         is AsyncFlexSpec -> return LithoFlex.create(context)
+                .key(Date().toString())
                 .spec(spec)
                 .reactContext(reactContext)
                 .clipToOutline(false)

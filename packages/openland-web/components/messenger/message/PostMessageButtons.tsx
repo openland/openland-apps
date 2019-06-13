@@ -68,7 +68,7 @@ export type CommentPropsT = {
 };
 
 type PostMessageButtonsT = {
-    isCommentNotification: boolean;
+    isCommentNotification?: boolean;
     showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel?: boolean;
