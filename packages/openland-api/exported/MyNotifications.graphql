@@ -1,0 +1,36 @@
+query MyNotifications($before: ID, $first: Int!) {
+  myNotifications(before: $before, first: $first) {
+    __typename
+    content {
+      __typename
+      ... on NewCommentNotification {
+        comment {
+          __typename
+          ...CommentEntryFragment
+        }
+        peer {
+          __typename
+          id
+          peerRoot {
+            __typename
+            ... on CommentPeerRootMessage {
+              message {
+                __typename
+                ... on GeneralMessage {
+                  id
+                  message
+                }
+              }
+            }
+          }
+          subscription {
+            __typename
+            type
+          }
+        }
+      }
+    }
+    id
+    text
+  }
+}

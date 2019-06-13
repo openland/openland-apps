@@ -1,27 +1,28 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { MessageSelector } from './MessageSelector';
 import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { Menu } from './Menu';
+import { Menu } from './Menu/Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import CommentIcon from 'openland-icons/ic-comment-channel.svg';
+import { Preambula } from './Preambula';
+import { NotCompactHeader } from './NotCompactHeader';
 
 export interface DesktopMessageContainerProps {
+    replyQuoteText?: string | null;
     deleted?: boolean;
     message: DataSourceWebMessageItem;
     conversationId: string;
     compact: boolean;
+    isCommentNotification?: boolean;
+    senderNameEmojify?: any;
     isModal?: boolean;
     isPinned?: boolean;
     commentDepth?: number;
     isComment?: boolean;
     noSelector?: boolean;
     sender: UserShort;
-    senderNameEmojify?: any;
     date: number;
 
     // Selection
@@ -36,69 +37,6 @@ export interface DesktopMessageContainerProps {
     isEdited: boolean;
     isEditView: boolean;
 }
-
-interface PreambulaContainerProps {
-    children: any;
-    onClick?: () => void;
-    haveReactions?: boolean;
-}
-
-const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
-    return (
-        <XView
-            alignSelf="flex-start"
-            minHeight={23}
-            width={55}
-            fontSize={11}
-            whiteSpace={'nowrap'}
-            overflow={'hidden'}
-            fontWeight={'600'}
-            lineHeight={'22px'}
-            color="rgba(0, 0, 0, 0.4)"
-        >
-            {children}
-        </XView>
-    );
-};
-
-const NotCompactNotDeepPreambulaContainer = ({ children }: PreambulaContainerProps) => {
-    return (
-        <XView alignSelf="flex-start" minHeight={23} width={52} fontSize={12} whiteSpace={'nowrap'}>
-            {children}
-        </XView>
-    );
-};
-
-const NotCompactDeepPreambulaContainer = ({ children }: PreambulaContainerProps) => {
-    return (
-        <XView
-            alignSelf="flex-start"
-            minHeight={23}
-            width={42}
-            fontSize={12}
-            whiteSpace={'nowrap'}
-            paddingTop={3}
-        >
-            {children}
-        </XView>
-    );
-};
-
-const NotCompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
-    return (
-        <XView
-            alignSelf="flex-start"
-            minHeight={23}
-            width={55}
-            fontSize={12}
-            whiteSpace={'nowrap'}
-            paddingTop={3}
-            paddingLeft={3}
-        >
-            {children}
-        </XView>
-    );
-};
 
 interface MessageContainerWrapperProps {
     children: any;
@@ -160,6 +98,30 @@ const NotCompactMessageContainerWrapper = ({
     );
 };
 
+const CommentsNotificationMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+    onClick,
+}: MessageContainerWrapperProps) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={9}
+            marginBottom={-3}
+            paddingTop={13}
+            paddingBottom={5}
+            borderRadius={4}
+            onClick={onClick}
+        >
+            {children}
+        </XView>
+    );
+};
+
 const NotCompactModalMessageContainerWrapper = ({
     children,
     onMouseEnter,
@@ -190,7 +152,6 @@ const NotCompactShortMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={20}
             paddingRight={isEditView ? 0 : 20}
         >
             {children}
@@ -198,80 +159,66 @@ const NotCompactShortMessageContainerWrapper = ({
     );
 };
 
-let commentsIconWrapperClass = css`
-    width: 17px;
-    height: 15.2px;
-
-    & svg {
-        width: 17px;
-        height: 15.2px;
+const ReplyQuote = ({ text }: { text?: string | null }) => {
+    if (!text) {
+        return null;
     }
-
-    & svg g path {
-        fill: #000;
-        opacity: 0.2;
-    }
-`;
-
-const CommentsIconWrapper = () => {
     return (
-        <div className={commentsIconWrapperClass}>
-            <CommentIcon />
-        </div>
-    );
-};
-
-const DeletedCommentHeader = () => {
-    return (
-        <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.5)">
-            Deleted
-        </XView>
-    );
-};
-
-const DeletedCommentAvatar = () => {
-    return (
-        <XView width={44} minHeight={23}>
+        <XView flexDirection="row" marginTop={4} marginBottom={6}>
+            <XView width={2} backgroundColor={'#1790ff'} borderRadius={1} />
             <XView
-                width={26}
-                height={26}
-                backgroundColor={'rgba(0, 0, 0, 0.05)'}
-                borderRadius={18}
-                alignItems="center"
-                justifyContent="center"
+                marginLeft={12}
+                opacity={0.6}
+                fontSize={14}
+                color={'#000'}
+                flexShrink={1}
+                overflow="hidden"
+                flexWrap="nowrap"
             >
-                <CommentsIconWrapper />
+                {text}
             </XView>
         </XView>
     );
 };
 
-export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => {
+export const DesktopMessageContainer = ({
+    compact,
+    deleted,
+    selecting,
+    onSelected,
+    selected,
+    commentDepth,
+    sender,
+    date,
+    noSelector,
+    children,
+    conversationId,
+    message,
+    senderNameEmojify,
+    selectMessage,
+    room,
+    isComment,
+    isCommentNotification,
+    isPinned,
+    isModal,
+    isEditView,
+    isEdited,
+    replyQuoteText,
+}: DesktopMessageContainerProps) => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 
     let onClick = React.useCallback(
         e => {
-            if (props.selecting) {
+            if (selecting) {
                 e.preventDefault();
                 e.stopPropagation();
-                props.onSelected();
+                onSelected();
             }
         },
-        [props.selecting],
+        [selecting],
     );
 
-    let onAvatarOrUserNameMouseEnter = () => {
-        if (userPopperRef.current) {
-            userPopperRef.current.showPopper();
-        }
-    };
-
-    let onAvatarOrUserNameMouseLeave = () => {
-        if (userPopperRef.current) {
-            userPopperRef.current.hidePopper();
-        }
-    };
     let onMouseEnter = React.useCallback(() => {
         onHover(true);
     }, []);
@@ -279,152 +226,6 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         onHover(false);
     }, []);
 
-    // Selector Icon
-    let selector = (
-        <XView marginRight={20} width={19} height={22} alignSelf="center" padding={2}>
-            {(hover || props.selecting) && (
-                <MessageSelector
-                    selected={props.selected}
-                    onClick={() => {
-                        if (!props.selecting) {
-                            props.onSelected();
-                        }
-                    }}
-                />
-            )}
-        </XView>
-    );
-
-    // Left side of message
-    const { compact, sender, date, deleted, isComment } = props;
-
-    let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
-
-    if (isComment) {
-        PreambulaContainer = NotCompactNotDeepPreambulaContainer;
-        if (props.commentDepth && props.commentDepth > 0) {
-            PreambulaContainer = NotCompactDeepPreambulaContainer;
-        }
-    }
-
-    const preambula = React.useMemo(
-        () => (
-            <PreambulaContainer>
-                {!compact ? (
-                    deleted ? (
-                        <DeletedCommentAvatar />
-                    ) : (
-                        <UserPopper
-                            isMe={props.sender.isYou}
-                            startSelected={false}
-                            user={props.sender}
-                            ref={userPopperRef}
-                        >
-                            <XAvatar2
-                                id={sender.id}
-                                title={sender.name}
-                                src={sender.photo}
-                                size={props.commentDepth && props.commentDepth > 0 ? 26 : 36}
-                            />
-                        </UserPopper>
-                    )
-                ) : (
-                    <XView lineHeight="23px">
-                        {hover && <XDate value={date.toString()} format="time" />}
-                    </XView>
-                )}
-            </PreambulaContainer>
-        ),
-        [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
-    );
-
-    const notCompactHeader =
-        !props.compact &&
-        React.useMemo(
-            () => (
-                <XView flexDirection="row" marginBottom={4}>
-                    <XView flexDirection="row">
-                        {deleted ? (
-                            <DeletedCommentHeader />
-                        ) : (
-                            <XView
-                                flexDirection="row"
-                                fontSize={14}
-                                fontWeight="600"
-                                color="rgba(0, 0, 0, 0.8)"
-                                onMouseEnter={onAvatarOrUserNameMouseEnter}
-                                onMouseLeave={onAvatarOrUserNameMouseLeave}
-                            >
-                                {props.senderNameEmojify}
-                            </XView>
-                        )}
-                        {props.sender.primaryOrganization && (
-                            <XView
-                                as="a"
-                                fontSize={12}
-                                fontWeight="600"
-                                color="rgba(0, 0, 0, 0.4)"
-                                paddingLeft={8}
-                                alignSelf="flex-end"
-                                marginBottom={-1}
-                                path={
-                                    props.selecting
-                                        ? undefined
-                                        : `/mail/o/${props.sender.primaryOrganization.id}`
-                                }
-                                hoverTextDecoration="none"
-                            >
-                                {props.sender.primaryOrganization.name}
-                            </XView>
-                        )}
-                        {props.isComment && (props.isEditView || props.isEdited) && (
-                            <>
-                                <XView
-                                    marginLeft={8}
-                                    alignSelf="center"
-                                    width={3}
-                                    height={3}
-                                    borderRadius={'50%'}
-                                    marginBottom={-1}
-                                    backgroundColor="rgba(0, 0, 0, 0.3)"
-                                />
-                                <XView
-                                    marginLeft={7}
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    fontSize={12}
-                                    alignSelf="flex-end"
-                                    fontWeight={'600'}
-                                    marginBottom={-1}
-                                >
-                                    {props.isEditView
-                                        ? 'Editing message'
-                                        : props.isEdited && 'Edited'}
-                                </XView>
-                            </>
-                        )}
-                    </XView>
-                    {!props.isComment && !props.isModal && (
-                        <XView
-                            paddingLeft={8}
-                            fontSize={12}
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                        >
-                            <XDate value={props.date.toString()} format="time" />
-                        </XView>
-                    )}
-                </XView>
-            ),
-            [
-                props.date,
-                props.sender,
-                props.sender.primaryOrganization,
-                props.selecting,
-                props.isEditView,
-            ],
-        );
     // Content
     const content = (
         <XView
@@ -435,12 +236,32 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             minWidth={0}
             alignItems="stretch"
         >
-            {props.compact ? (
-                props.children
+            {compact ? (
+                children
             ) : (
                 <>
-                    {notCompactHeader}
-                    {props.isModal && (
+                    {!compact && (
+                        <>
+                            <NotCompactHeader
+                                room={room as any}
+                                sender={sender}
+                                date={date}
+                                deleted={deleted}
+                                isComment={!!isComment}
+                                isCommentNotification={!!isCommentNotification}
+                                userPopperRef={userPopperRef}
+                                senderNameEmojify={senderNameEmojify}
+                                selecting={selecting}
+                                isEditView={isEditView}
+                                isEdited={isEdited}
+                                isModal={isModal}
+                            />
+
+                            <ReplyQuote text={replyQuoteText} />
+                        </>
+                    )}
+
+                    {isModal && (
                         <XView
                             marginBottom={8}
                             flexDirection="row"
@@ -449,8 +270,8 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                             fontWeight="600"
                             fontSize={12}
                         >
-                            <XDate value={props.date.toString()} format="datetime_short" />
-                            {props.isPinned && (
+                            <XDate value={date.toString()} format="datetime_short" />
+                            {isPinned && (
                                 <XView
                                     width={3}
                                     height={3}
@@ -461,15 +282,15 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                                     marginHorizontal={5}
                                 />
                             )}
-                            {props.isPinned && <XView>Pinned</XView>}
+                            {isPinned && <XView>Pinned</XView>}
                         </XView>
                     )}
-                    {props.isModal && (
+                    {isModal && (
                         <XView flexDirection="column" marginLeft={-55}>
-                            {props.children}
+                            {children}
                         </XView>
                     )}
-                    {!props.isModal && <XView flexDirection="column">{props.children}</XView>}
+                    {!isModal && <XView flexDirection="column">{children}</XView>}
                 </>
             )}
         </XView>
@@ -478,20 +299,21 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
     // Actions
     let actions = (
         <XView
-            width={85}
+            width={isCommentNotification ? 7 : 85}
             marginLeft={12}
             marginTop={!compact ? (isComment ? undefined : 24) : undefined}
             alignSelf="flex-start"
         >
             <Menu
-                conversationId={props.conversationId}
+                conversationId={conversationId}
                 hover={hover}
                 deleted={deleted}
-                message={props.message}
-                isComment={!!props.isComment}
-                isModal={!!props.isModal}
-                selectMessage={props.selectMessage}
-                room={props.room}
+                message={message}
+                isCommentNotification={!!isCommentNotification}
+                isComment={!!isComment}
+                isModal={!!isModal}
+                selectMessage={selectMessage}
+                room={room}
             />
         </XView>
     );
@@ -500,11 +322,13 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
 
     let MessageContainerWrapper = CompactMessageContainerWrapper;
 
-    if (props.isComment) {
+    if (isCommentNotification) {
+        MessageContainerWrapper = CommentsNotificationMessageContainerWrapper;
+    } else if (isComment) {
         MessageContainerWrapper = NotCompactShortMessageContainerWrapper;
-    } else if (props.isModal) {
+    } else if (isModal) {
         MessageContainerWrapper = NotCompactModalMessageContainerWrapper;
-    } else if (!props.compact) {
+    } else if (!compact) {
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
     }
 
@@ -512,104 +336,36 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
         <MessageContainerWrapper
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            isEditView={props.isEditView}
+            isEditView={isEditView}
             onClick={onClick}
         >
-            {!props.noSelector && selector}
-            {preambula}
-            {content}
-            {props.isEditView ? null : actions}
-        </MessageContainerWrapper>
-    );
-};
-
-const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
-    return (
-        <XView
-            alignItems="center"
-            flexDirection="row"
-            marginTop={12}
-            paddingTop={7}
-            paddingLeft={18}
-            paddingRight={20}
-            paddingBottom={3}
-        >
-            {children}
-        </XView>
-    );
-};
-
-export interface MobileMessageContainerProps {
-    children: any;
-    sender: UserShort;
-    senderNameEmojify: any;
-    date: number;
-}
-
-export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
-    const { sender, date } = props;
-
-    const preambula = (
-        <NotCompactPreambulaContainer>
-            <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
-        </NotCompactPreambulaContainer>
-    );
-
-    // Content
-    const content = (
-        <XView
-            flexDirection="column"
-            flexGrow={1}
-            flexShrink={1}
-            flexBasis={0}
-            minWidth={0}
-            alignItems="stretch"
-        >
-            <XView flexDirection="row" marginBottom={4}>
-                <XView flexDirection="row">
-                    <XView
-                        flexDirection="row"
-                        fontSize={14}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.8)"
-                    >
-                        {props.senderNameEmojify}
-                    </XView>
-                    {props.sender.primaryOrganization && (
-                        <XView
-                            as="a"
-                            fontSize={12}
-                            fontWeight="600"
-                            color="rgba(0, 0, 0, 0.4)"
-                            paddingLeft={8}
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                            path={`/mail/o/${props.sender.primaryOrganization.id}`}
-                            hoverTextDecoration="none"
-                        >
-                            {props.sender.primaryOrganization.name}
-                        </XView>
+            {!noSelector && (
+                <XView marginRight={20} width={19} height={22} alignSelf="center" padding={2}>
+                    {(hover || selecting) && (
+                        <MessageSelector
+                            selected={selected}
+                            onClick={() => {
+                                if (!selecting) {
+                                    onSelected();
+                                }
+                            }}
+                        />
                     )}
                 </XView>
-                <XView
-                    paddingLeft={8}
-                    fontSize={12}
-                    color="rgba(0, 0, 0, 0.4)"
-                    fontWeight="600"
-                    alignSelf="flex-end"
-                    marginBottom={-1}
-                >
-                    <XDate value={date.toString()} format="time" />
-                </XView>
-            </XView>
-            <XView flexDirection="column">{props.children}</XView>
-        </XView>
-    );
-
-    return (
-        <MobileMessageContainerWrapper>
-            {preambula}
+            )}
+            <Preambula
+                isCommentNotification={!!isCommentNotification}
+                isComment={!!isComment}
+                userPopperRef={userPopperRef}
+                commentDepth={commentDepth}
+                compact={compact}
+                sender={sender}
+                date={date}
+                deleted={deleted}
+                hover={hover}
+            />
             {content}
-        </MobileMessageContainerWrapper>
+            {isEditView ? null : actions}
+        </MessageContainerWrapper>
     );
 };

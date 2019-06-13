@@ -5,7 +5,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 26 | 28 | 24;
+type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 26 | 28 | 24 | 18;
 
 export interface XAvatar2Props {
     title: string;
@@ -196,6 +196,20 @@ const OnlineDot24 = () => (
     />
 );
 
+const OnlineDot18 = () => (
+    <XView
+        position="absolute"
+        bottom={0}
+        right={0}
+        width={6}
+        height={6}
+        borderRadius={3}
+        borderWidth={1}
+        borderColor="#ffffff"
+        backgroundColor="#5eb2ff"
+    />
+);
+
 interface AvatarContainerProps {
     content: any;
     online?: boolean;
@@ -271,6 +285,16 @@ const AvatarContainer24 = (props: AvatarContainerProps) => (
     </XView>
 );
 
+const AvatarContainer18 = (props: AvatarContainerProps) => (
+    <XView width={18} height={18}>
+        <XView width="100%" height="100%" borderRadius={12} overflow="hidden">
+            {props.content}
+        </XView>
+
+        {props.online && <OnlineDot18 />}
+    </XView>
+);
+
 const AvatarContainer40 = (props: AvatarContainerProps) => (
     <XView width={40} height={40}>
         <XView width="100%" height="100%" borderRadius={20} overflow="hidden">
@@ -308,6 +332,8 @@ export const XAvatar2 = XMemo<XAvatar2Props>(props => {
         return <AvatarContainer26 content={content} online={props.online} />;
     } else if (props.size === 24) {
         return <AvatarContainer24 content={content} online={props.online} />;
+    } else if (props.size === 18) {
+        return <AvatarContainer18 content={content} online={props.online} />;
     } else {
         return <AvatarContainer40 content={content} online={props.online} />;
     }

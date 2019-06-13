@@ -8,9 +8,11 @@ import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView
 import { Navigation } from 'openland-web/components/Navigation';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
+import NotificationsIcon from 'notifications-24.svg';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { GlobalSearch_items } from 'openland-api/Types';
+import { CommentsNotifications } from '../CommentsNotifications';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -48,9 +50,20 @@ class ErrorBoundary extends React.Component<any, { error: any }> {
     }
 }
 
-export const
-    MessagesNavigation = XMemo(
-    ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
+export const MessagesNavigation = XMemo(
+    ({
+        path,
+        cid,
+        oid,
+        uid,
+        isCommentsNotifications,
+    }: {
+        cid?: string;
+        oid?: string;
+        uid?: string;
+        path?: any;
+        isCommentsNotifications: boolean;
+    }) => {
         let tab: tabsT = tabs.empty;
         const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
 
@@ -99,6 +112,17 @@ export const
             tab = tabs.roomProfile;
         }
 
+        let elem;
+        if (!isCommentsNotifications) {
+            elem = (
+                <ConversationContainerWrapper
+                    {...{ tab, conversationId: chatId, oid, uid, cid: chatId }}
+                />
+            );
+        } else {
+            elem = <CommentsNotifications />;
+        }
+
         return (
             <>
                 <XShortcuts
@@ -117,14 +141,13 @@ export const
                         menuRightContent={<NewOptionsButton />}
                         secondFragmentHeader={
                             <React.Suspense fallback={null}>
-                                {chatId &&
-                                    !isRoomProfile && (
-                                        <ChatHeaderViewLoader
-                                            variables={{
-                                                id: chatId,
-                                            }}
-                                        />
-                                    )}
+                                {chatId && !isRoomProfile && (
+                                    <ChatHeaderViewLoader
+                                        variables={{
+                                            id: chatId,
+                                        }}
+                                    />
+                                )}
                                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
                         }
@@ -137,11 +160,7 @@ export const
                         }
                         secondFragment={
                             <ErrorBoundary>
-                                <React.Suspense fallback={null}>
-                                    <ConversationContainerWrapper
-                                        {...{ tab, conversationId: chatId, oid, uid, cid: chatId }}
-                                    />
-                                </React.Suspense>
+                                <React.Suspense fallback={null}>{elem}</React.Suspense>
                             </ErrorBoundary>
                         }
                     />

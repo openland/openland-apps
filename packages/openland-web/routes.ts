@@ -152,6 +152,8 @@ routes.add('/mail/p/:conversationId', '/main/mail/root');
 routes.add('/mail/p/:conversationId/', '/main/mail/root');
 routes.add('/mail/u/:userId', '/main/mail/root');
 routes.add('/mail/u/:userId/', '/main/mail/root');
+routes.add('/notifications/comments', '/main/mail/root');
+routes.add('/notifications/comments/', '/main/mail/root');
 
 //
 // UI

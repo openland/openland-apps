@@ -17,7 +17,8 @@ import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     RoomChat_room,
 } from 'openland-api/Types';
-import { MobileMessageContainer } from './MessageContainer';
+import { XView } from 'react-mental';
+import { MobileMessageContainer } from './MobileMessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { emoji } from 'openland-y-utils/emoji';
@@ -85,7 +86,7 @@ interface MessageComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     room?: RoomChat_room;
     isChannel?: boolean;
-    conversationId: string | null;
+    conversationId?: string | null;
     onlyLikes?: boolean;
     isComment?: boolean;
 }

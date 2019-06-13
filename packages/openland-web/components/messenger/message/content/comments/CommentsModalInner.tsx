@@ -38,6 +38,7 @@ import {
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const CommentView = ({
+    selectedCommentMessageId,
     originalMessageId,
     commentEntryId,
     roomId,
@@ -46,11 +47,12 @@ const CommentView = ({
     showInputId,
     getMentionsSuggestions,
     commentsMap,
-    scrollRef,
     currentCommentsInputRef,
     room,
+    scrollToComment,
     isMobile,
 }: {
+    selectedCommentMessageId: string;
     originalMessageId: string;
     commentEntryId: string;
     roomId: string;
@@ -59,44 +61,13 @@ const CommentView = ({
     message: DataSourceWebMessageItem & { depth: number };
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     commentsMap: any;
-    scrollRef: React.RefObject<XScrollView3 | null>;
     currentCommentsInputRef: React.RefObject<XRichTextInput2RefMethods | null>;
     room?: RoomChat_room;
+    scrollToComment: Function;
     isMobile?: boolean;
 }) => {
     const messenger = React.useContext(MessengerContext);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
-
-    const getCommentElem = (commentId: string) => {
-        const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
-        if (items.length === 1) {
-            return items[0] as HTMLElement;
-        }
-        return null;
-    };
-
-    const scrollToComment = ({
-        commentId,
-        mode = 'bottom',
-    }: {
-        commentId: string;
-        mode?: 'top' | 'bottom';
-    }) => {
-        let targetElem = getCommentElem(commentId);
-        if (targetElem) {
-            if (mode === 'bottom') {
-                scrollRef!!.current!!.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
-            } else {
-                scrollRef!!.current!!.scrollToTopOfElement({
-                    targetElem,
-                    offset: 10,
-                });
-            }
-        }
-    };
 
     const { onSendFile, onSend } = useSendMethods({
         setShowInputId,
@@ -160,8 +131,16 @@ const CommentView = ({
         (!commentsMap[commentEntryId].deleted ||
             commentsMap[commentEntryId].childComments.length !== 0);
     return (
-        <div data-comment-id={message.id}>
+        <div
+            data-comment-id={message.id}
+            style={{
+                marginTop: 20,
+                backgroundColor:
+                    selectedCommentMessageId === message.id ? '#fffee8' : 'transparent',
+            }}
+        >
             <XView
+                paddingHorizontal={32}
                 key={message.key}
                 marginLeft={offset}
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
@@ -226,6 +205,7 @@ const CommentView = ({
 };
 
 export const CommentsBlockView = ({
+    selectedCommentMessageId,
     roomId,
     originalMessageId,
     setShowInputId,
@@ -235,6 +215,7 @@ export const CommentsBlockView = ({
     currentCommentsInputRef,
     room,
 }: {
+    selectedCommentMessageId: string;
     roomId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
@@ -259,6 +240,45 @@ export const CommentsBlockView = ({
         commentsMap[comment.id] = comment;
     });
 
+    const getCommentElem = (commentId: string) => {
+        const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
+        if (items.length === 1) {
+            return items[0] as HTMLElement;
+        }
+        return null;
+    };
+
+    const scrollToComment = ({
+        commentId,
+        mode = 'bottom',
+    }: {
+        commentId: string;
+        mode?: 'top' | 'bottom';
+    }) => {
+        let targetElem = getCommentElem(commentId);
+        if (targetElem) {
+            if (mode === 'bottom') {
+                scrollRef!!.current!!.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            } else {
+                scrollRef!!.current!!.scrollToTopOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        if (selectedCommentMessageId) {
+            scrollToComment({
+                commentId: selectedCommentMessageId,
+            });
+        }
+    });
+
     const commentsElements = sortComments(messageComments.messageComments.comments, commentsMap)
         .map(item => {
             const res = convertDsMessage(convertMessage(item.comment));
@@ -273,14 +293,15 @@ export const CommentsBlockView = ({
                     commentEntryId={message.entryId}
                     originalMessageId={originalMessageId}
                     key={`comment_${message.id}`}
-                    scrollRef={scrollRef}
                     message={message}
                     setShowInputId={setShowInputId}
                     showInputId={showInputId}
                     getMentionsSuggestions={getMentionsSuggestions}
                     currentCommentsInputRef={currentCommentsInputRef}
                     commentsMap={commentsMap}
-                    isMobile={isMobile || false}
+                    scrollToComment={scrollToComment}
+                    selectedCommentMessageId={selectedCommentMessageId}
+                    isMobile={!!isMobile}
                 />
             );
         });
@@ -289,13 +310,8 @@ export const CommentsBlockView = ({
         <>
             {commentsElements.length ? (
                 <>
-                    <XView
-                        paddingHorizontal={32}
-                        paddingTop={isMobile ? 0 : 30}
-                        paddingBottom={28}
-                        flexDirection="column"
-                    >
-                        <XView flexDirection="row" alignItems="center">
+                    <XView paddingTop={isMobile ? 0 : 30} paddingBottom={28} flexDirection="column">
+                        <XView flexDirection="row" alignItems="center" paddingHorizontal={32}>
                             <XView fontSize={16} fontWeight="600">
                                 Comments
                             </XView>
@@ -365,9 +381,11 @@ const ModalCloser = () => {
 export const CommentsModalInnerNoRouter = ({
     messageId,
     roomId,
+    selectedCommentMessageId,
 }: {
     messageId: string;
     roomId: string;
+    selectedCommentMessageId: string;
 }) => {
     const client = useClient();
 
@@ -411,21 +429,18 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(
-        () => {
-            if (currentCommentsInputRef.current && scrollRef.current) {
-                const targetElem = currentCommentsInputRef.current.getElement()!!
-                    .parentNode as HTMLElement;
-                if (targetElem) {
-                    scrollRef.current.scrollToBottomOfElement({
-                        targetElem,
-                        offset: 10,
-                    });
-                }
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
             }
-        },
-        [showInputId],
-    );
+        }
+    }, [showInputId]);
 
     return (
         <UploadContextProvider>
@@ -459,6 +474,7 @@ export const CommentsModalInnerNoRouter = ({
                             getMentionsSuggestions={getMentionsSuggestions}
                             scrollRef={scrollRef}
                             currentCommentsInputRef={currentCommentsInputRef}
+                            selectedCommentMessageId={selectedCommentMessageId}
                         />
                     </XScrollView3>
                     <XView>
@@ -496,11 +512,13 @@ export const CommentsModalInnerNoRouter = ({
 
 const Modal = (props: { messageId: string; conversationId: string }) => {
     let router = React.useContext(XRouterContext)!;
+
     return (
         <UploadContextProvider>
             <XShortcutsRoot>
                 <MessageStateProviderComponent router={router} cid={props.conversationId}>
                     <CommentsModalInnerNoRouter
+                        selectedCommentMessageId={'ygMnXAkbk5CK5gLMrXo3fM0Z1W'}
                         messageId={props.messageId}
                         roomId={props.conversationId}
                     />

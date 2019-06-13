@@ -1,0 +1,3 @@
+mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {
+  subscribeMessageComments(messageId: $messageId, type: $type)
+}
