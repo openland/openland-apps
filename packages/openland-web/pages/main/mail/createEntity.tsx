@@ -16,6 +16,7 @@ import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdo
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from './InputField';
 import { XTextArea } from 'openland-x/XTextArea';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -38,9 +39,26 @@ type MainWrapperT = {
     onBackClick: () => void;
     children: any;
     entityKind: EntityKind;
+    showLeaveModal: boolean;
 };
 
-const MainWrapper = ({ entityKind, back, onBackClick, children }: MainWrapperT) => {
+const CloseModalTarget = (props: { path?: string }) => (
+    <XView
+        cursor="pointer"
+        alignItems="center"
+        justifyContent="center"
+        padding={8}
+        width={32}
+        height={32}
+        borderRadius={50}
+        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+        path={props.path}
+    >
+        <CloseIcon />
+    </XView>
+);
+
+const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }: MainWrapperT) => {
     let chatTypeStr = entityKind.toLowerCase();
     return (
         <XView
@@ -72,10 +90,18 @@ const MainWrapper = ({ entityKind, back, onBackClick, children }: MainWrapperT) 
                         <span>Back</span>
                     </XView>
                 )}
-                <LeaveAndDeleteModal
-                    chatTypeStr={chatTypeStr}
-                    redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                />
+                {showLeaveModal && (
+                    <LeaveAndDeleteModal
+                        chatTypeStr={chatTypeStr}
+                        redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
+                        target={<CloseModalTarget />}
+                    />
+                )}
+                {!showLeaveModal && (
+                    <CloseModalTarget
+                        path={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
+                    />
+                )}
             </XView>
             <XView
                 flexDirection="row"
@@ -253,7 +279,8 @@ export const CreateEntity = ({
 
             await client.refetchAccount();
 
-            window.location.href = (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
+            window.location.href =
+                (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
         }
     };
 
@@ -350,8 +377,19 @@ export const CreateEntity = ({
         setSelectedUsers(new Map(selected));
     };
 
+    let showLeaveModal = false;
+
+    if (aboutField.value || titleField.value || coverSrc) {
+        showLeaveModal = true;
+    }
+
     return (
-        <MainWrapper back={!settingsPage} onBackClick={handleBackClick} entityKind={entityKind}>
+        <MainWrapper
+            back={!settingsPage}
+            onBackClick={handleBackClick}
+            entityKind={entityKind}
+            showLeaveModal={showLeaveModal}
+        >
             {settingsPage && (
                 <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                     <XView
