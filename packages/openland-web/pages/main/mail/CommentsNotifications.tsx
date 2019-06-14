@@ -12,6 +12,7 @@ import {
 } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
+import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
 const wrapperClassName = css`
     width: 100%;
@@ -65,18 +66,20 @@ export const CommentsNotifications = () => {
     });
 
     const renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
+        const data = i as any;
         return (
             <MessageComponent
-                message={i as any}
-                replyQuoteText={(i as any).replyQuoteText}
-                room={(i as any).room}
+                message={data}
+                replyQuoteText={data.replyQuoteText}
+                room={data.room}
                 noSelector
                 isCommentNotification
-                onCommentBackToUserMessageClick={() => {
-                    // openCommentsModal({
-                    //     messageId: item.peerRootId,
-                    // conversationId: item.message,
-                    // });
+                onCommentNotificationsReplyClick={() => {
+                    openCommentsModal({
+                        messageId: data.peerRootId,
+                        conversationId: data.room.id,
+                        selectedCommentMessageId: data.id,
+                    });
                 }}
             />
         );

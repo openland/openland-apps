@@ -52,7 +52,7 @@ const CommentView = ({
     scrollToComment,
     isMobile,
 }: {
-    selectedCommentMessageId: string;
+    selectedCommentMessageId?: string;
     originalMessageId: string;
     commentEntryId: string;
     roomId: string;
@@ -215,7 +215,7 @@ export const CommentsBlockView = ({
     currentCommentsInputRef,
     room,
 }: {
-    selectedCommentMessageId: string;
+    selectedCommentMessageId?: string;
     roomId: string;
     setShowInputId: (a: string | null) => void;
     showInputId: string | null;
@@ -385,7 +385,7 @@ export const CommentsModalInnerNoRouter = ({
 }: {
     messageId: string;
     roomId: string;
-    selectedCommentMessageId: string;
+    selectedCommentMessageId?: string;
 }) => {
     const client = useClient();
 
@@ -429,18 +429,21 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(() => {
-        if (currentCommentsInputRef.current && scrollRef.current) {
-            const targetElem = currentCommentsInputRef.current.getElement()!!
-                .parentNode as HTMLElement;
-            if (targetElem) {
-                scrollRef.current.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
+    React.useEffect(
+        () => {
+            if (currentCommentsInputRef.current && scrollRef.current) {
+                const targetElem = currentCommentsInputRef.current.getElement()!!
+                    .parentNode as HTMLElement;
+                if (targetElem) {
+                    scrollRef.current.scrollToBottomOfElement({
+                        targetElem,
+                        offset: 10,
+                    });
+                }
             }
-        }
-    }, [showInputId]);
+        },
+        [showInputId],
+    );
 
     return (
         <UploadContextProvider>
@@ -510,7 +513,11 @@ export const CommentsModalInnerNoRouter = ({
     );
 };
 
-const Modal = (props: { messageId: string; conversationId: string }) => {
+const Modal = (props: {
+    messageId: string;
+    conversationId: string;
+    selectedCommentMessageId?: string;
+}) => {
     let router = React.useContext(XRouterContext)!;
 
     return (
@@ -518,7 +525,7 @@ const Modal = (props: { messageId: string; conversationId: string }) => {
             <XShortcutsRoot>
                 <MessageStateProviderComponent router={router} cid={props.conversationId}>
                     <CommentsModalInnerNoRouter
-                        selectedCommentMessageId={'ygMnXAkbk5CK5gLMrXo3fM0Z1W'}
+                        selectedCommentMessageId={props.selectedCommentMessageId}
                         messageId={props.messageId}
                         roomId={props.conversationId}
                     />
@@ -531,14 +538,22 @@ const Modal = (props: { messageId: string; conversationId: string }) => {
 export const openCommentsModal = ({
     messageId,
     conversationId,
+    selectedCommentMessageId,
 }: {
     messageId: string;
     conversationId: string;
+    selectedCommentMessageId?: string;
 }) => {
     showModalBox(
         {
             width: 800,
         },
-        () => <Modal messageId={messageId} conversationId={conversationId} />,
+        () => (
+            <Modal
+                messageId={messageId}
+                conversationId={conversationId}
+                selectedCommentMessageId={selectedCommentMessageId}
+            />
+        ),
     );
 };
