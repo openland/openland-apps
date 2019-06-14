@@ -8,6 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { NON_PRODUCTION } from '../Init';
 
 const SettingsNotificationsContent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
@@ -31,6 +32,7 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                     input: {
                         mobileNotifications: settings.mobileNotifications,
                         desktopNotifications: settings.desktopNotifications,
+                        commentNotifications: settings.commentNotifications,
                         emailFrequency: settings.emailFrequency,
                         mobileAlert: settings.mobileAlert,
                         mobileIncludeText: settings.mobileIncludeText,
@@ -41,6 +43,13 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                     <ZListItem text="Alert" toggleField={{ key: 'input.mobileAlert' }} />
                     <ZListItem text="Include preview of messages" toggleField={{ key: 'input.mobileIncludeText' }} />
                 </ZListItemGroup>
+                {NON_PRODUCTION && (
+                    <ZListItemGroup header="Comment notifications">
+                        <ZListItem text="All" checkmarkField={{ key: 'input.commentNotifications', value: 'ALL' }} />
+                        {/* <ZListItem text="Direct" checkmarkField={{ key: 'input.commentNotifications', value: 'DIRECT' }} /> */}
+                        <ZListItem text="Never notify me" checkmarkField={{ key: 'input.commentNotifications', value: 'NONE' }} />
+                    </ZListItemGroup>
+                )}
                 <ZListItemGroup header="Send notification about">
                     <ZListItem text="All new messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'ALL' }} />
                     <ZListItem text="Direct messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'DIRECT' }} />
