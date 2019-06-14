@@ -54,7 +54,8 @@ export interface DataSourceMessageItem {
     textSpans: Span[];
     replyTextSpans: Span[][];
     isSubscribedMessageComments?: boolean;
-    replyQuoteText?: string;
+    replyQuoteText?: string | null;
+    peerRootId?: string;
 }
 
 export interface DataSourceDateItem {

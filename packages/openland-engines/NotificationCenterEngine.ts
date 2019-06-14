@@ -76,14 +76,14 @@ export class NotificationCenterEngine {
                                 replyQuoteText = peer.peerRoot.message.message;
                             }
 
-                            items.push(
-                                convertMessage({
+                            items.push({
+                                ...convertMessage({
                                     ...comment.comment,
-                                    peerRootId: peer.peerRoot.message.id,
-                                    isSubscribedMessageComments: !!peer.subscription!!,
-                                    replyQuoteText,
                                 }),
-                            );
+                                peerRootId: peer.peerRoot.message.id,
+                                isSubscribedMessageComments: !!peer.subscription!!,
+                                replyQuoteText,
+                            });
                         }
                     }
 
