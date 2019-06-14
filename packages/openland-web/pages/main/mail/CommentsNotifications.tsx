@@ -50,8 +50,6 @@ export const CommentsNotifications = () => {
     const [isFirstRender, setFirstRender] = React.useState(true);
     const [isEmpty, setIsEmpty] = React.useState(false);
 
-  
-
     React.useEffect(() => {
         setFirstRender(false);
         dataSource.watch({
