@@ -132,6 +132,14 @@ export class NotificationCenterEngine {
 
     handleNotificationDeleted = async (event: any) => {
         await this.engine.client.refetchMyNotificationCenter();
+
+        const notification = event.notification
+
+        const convertedNotification = this.convertNotification(notification)
+
+        if (convertedNotification && convertedNotification.id) {
+            await this._dataSourceStored.removeItem(convertedNotification.id);
+        }
     }
 
     handleNotificationRead = async (event: any) => {
