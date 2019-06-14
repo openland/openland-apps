@@ -4,7 +4,6 @@ import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { ModelMessage } from 'openland-engines/messenger/types';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { TypingsView } from './typings/TypingsView';
 

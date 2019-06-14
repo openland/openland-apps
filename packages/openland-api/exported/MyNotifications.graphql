@@ -13,6 +13,7 @@ query MyNotifications($before: ID, $first: Int!) {
           id
           peerRoot {
             __typename
+            id
             ... on CommentPeerRootMessage {
               message {
                 __typename

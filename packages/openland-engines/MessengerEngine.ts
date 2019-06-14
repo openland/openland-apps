@@ -56,7 +56,9 @@ export class MessengerEngine {
         this.onlineWatcher = new OnlineWatcher(this.client);
 
         this.dialogList = new DialogListEngine(this);
-        this.notificationCenter = new NotificationCenterEngine();
+        this.notificationCenter = new NotificationCenterEngine({
+            engine: this
+        });
 
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);

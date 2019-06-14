@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
-import { XScrollView3 } from 'openland-x/XScrollView3';
-import { useClient } from 'openland-web/utils/useClient';
 import { css } from 'linaria';
-import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine'
-import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { DataSourceRender } from 'openland-web/components/messenger/view/DataSourceRender';
+import { XLoader } from 'openland-x/XLoader';
+import { XScrollView3 } from 'openland-x/XScrollView3';
+import glamorous from 'glamorous';
+import {
+    DataSourceWebMessageItem,
+    buildMessagesDataSource,
+} from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
+import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 
 const wrapperClassName = css`
     width: 100%;
@@ -29,42 +35,51 @@ const MessagesWrapper = ({ children }: { children: any }) => {
     );
 };
 
+const LoadingWrapper = glamorous.div({
+    height: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'relative',
+});
+
 export const CommentsNotifications = () => {
-    // const client = useClient();
-    const notificationCenterEngine = new NotificationCenterEngine({mocked: true});
+    const messenger = React.useContext(MessengerContext);
+    const dataSource = buildMessagesDataSource(messenger.notificationCenter.dataSource);
 
-    // const notifications = client.useMyNotifications({
-    //     first: 100,
-    // });
+    const renderLoading = React.memo(() => {
+        return (
+            <LoadingWrapper>
+                <XLoader loading={true} />
+            </LoadingWrapper>
+        );
+    });
 
-    // let comments = notifications.myNotifications
-    //     .filter(({ content }) => {
-    //         return !!content;
-    //     })
-    //     .map(item => {
-    //         const { content } = item;
+    const dataSourceWrapper = React.memo((props: any) => {
+        return (
+            <>
+                <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
+                    <MessagesWrapper>{props.children}</MessagesWrapper>
+                </XScrollView3>
+            </>
+        );
+    });
 
-    //         const firstContent = content!![0];
-    //         const comment = firstContent!!.comment!!;
-    //         const peer = firstContent!!.peer!!;
-
-    //         let replyQuoteText;
-    //         if (comment.parentComment) {
-    //             const parentComment = comment.parentComment;
-    //             replyQuoteText = parentComment.comment.message;
-    //         } else {
-    //             replyQuoteText = peer.peerRoot.message;
-    //         }
-
-    //         return {
-    //             ...comment.comment,
-    //             peerRootId: peer.peerRoot.id,
-    //             isSubscribedMessageComments: !!peer.subscription!!,
-    //             replyQuoteText,
-    //         };
-    //     });
-
-    let comments = notificationCenterEngine.commentsDataSource
+    const renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
+        return (
+            <MessageComponent
+                message={i as any}
+                replyQuoteText={(i as any).replyQuoteText}
+                noSelector
+                isCommentNotification
+                onCommentBackToUserMessageClick={() => {
+                    // openCommentsModal({
+                    //     messageId: item.peerRootId,
+                    // conversationId: item.message,
+                    // });
+                }}
+            />
+        );
+    });
 
     return (
         <XView paddingTop={24} flexGrow={1} flexShrink={1}>
@@ -79,28 +94,13 @@ export const CommentsNotifications = () => {
                     Comments
                 </XView>
             </MessagesWrapper>
-
-            <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
-                {comments.map((message, key) => {
-             
-                    return (
-                        <MessagesWrapper key={key}>
-                            <MessageComponent
-                                message={message}
-                                replyQuoteText={message.replyQuoteText}
-                                noSelector
-                                isCommentNotification
-                                onCommentBackToUserMessageClick={() => {
-                                    // openCommentsModal({
-                                    //     messageId: item.peerRootId,
-                                    // conversationId: item.message,
-                                    // });
-                                }}
-                            />
-                        </MessagesWrapper>
-                    );
-                })}
-            </XScrollView3>
+            <DataSourceRender
+                dataSource={dataSource}
+                reverce={true}
+                wrapWith={dataSourceWrapper}
+                renderItem={renderMessage}
+                renderLoading={renderLoading}
+            />
         </XView>
     );
 };
