@@ -21,8 +21,6 @@ const hackChangeCommentIdToMessageId = ({
     return { ...item, id: messageId };
 };
 
-// mocked
-
 type NotificationCenterEngineOptions = {
     engine: MessengerEngine;
     mocked?: boolean;
@@ -44,11 +42,50 @@ export class NotificationCenterEngine {
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
-                return {
-                    items: createComments().map(convertMessage),
-                    cursor: undefined,
-                    state: '',
-                };
+                if (this.isMocked) {
+                    return {
+                        items: createComments().map(convertMessage),
+                        cursor: undefined,
+                        state: '',
+                    };
+                } else {
+                    let notifications = await this.engine.client.queryMyNotifications(
+                        { first: 100 },
+                        { fetchPolicy: 'network-only' },
+                    );
+
+                    const items = notifications.myNotifications
+                        .filter(({ content }) => !!content)
+                        .map(item => {
+                            const { content } = item;
+
+                            const firstContent = content!![0];
+                            const comment = firstContent!!.comment!!;
+                            const peer = firstContent!!.peer!!;
+
+                            let replyQuoteText;
+                            if (comment.parentComment) {
+                                const parentComment = comment.parentComment;
+                                replyQuoteText = parentComment.comment.message;
+                            } else {
+                                replyQuoteText = peer.peerRoot.message;
+                            }
+
+                            return {
+                                ...comment.comment,
+                                peerRootId: peer.peerRoot.message.id,
+                                isSubscribedMessageComments: !!peer.subscription!!,
+                                replyQuoteText,
+                            };
+                        })
+                        .map(convertMessage);
+
+                    return {
+                        items,
+                        cursor: undefined,
+                        state: '',
+                    };
+                }
             },
             onStarted: (state: string) => {
                 console.log('notifications started');
