@@ -13,6 +13,7 @@ import {
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
 
 const wrapperClassName = css`
     width: 100%;
@@ -46,6 +47,14 @@ const LoadingWrapper = glamorous.div({
 export const CommentsNotifications = () => {
     const messenger = React.useContext(MessengerContext);
     const dataSource = buildMessagesDataSource(messenger.notificationCenter.dataSource);
+
+    if (dataSource.getSize() === 0) {
+        return (
+            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                <MessengerEmptyFragment text="You'll see here new replies to your messages and comments" />
+            </XView>
+        );
+    }
 
     const renderLoading = React.memo(() => {
         return (

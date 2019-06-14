@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-export const MessengerEmptyFragment = XMemo(() => {
+export const MessengerEmptyFragment = XMemo((props: { text?: string }) => {
     return (
         <XView
             position="relative"
@@ -31,7 +31,7 @@ export const MessengerEmptyFragment = XMemo(() => {
                     marginBottom={50}
                 />
                 <XView fontSize={16} lineHeight="24px" color="rgba(0, 0, 0, 0.4)" marginBottom={32}>
-                    Select a chat to start messaging
+                    {props.text ? props.text : 'Select a chat to start messaging'}
                 </XView>
             </XView>
         </XView>
