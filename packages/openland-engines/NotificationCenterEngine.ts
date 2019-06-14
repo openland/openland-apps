@@ -3,7 +3,7 @@ import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { createComments } from './mocks';
 import { DataSource } from 'openland-y-utils/DataSource';
-// import { convertMessage } from 'openland-engines/utils/convertMessage';
+import { convertMessage } from 'openland-engines/utils/convertMessage';
 // import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 
@@ -45,7 +45,7 @@ export class NotificationCenterEngine {
         let provider: DataSourceStoredProvider<NotificationsDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
                 return {
-                    items: createComments(),
+                    items: createComments().map(convertMessage),
                     cursor: undefined,
                     state: '',
                 };
