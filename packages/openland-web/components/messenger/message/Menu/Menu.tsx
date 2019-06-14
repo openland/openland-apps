@@ -140,7 +140,7 @@ export const Menu = React.memo(
                 <>
                     <FollowUnfollowMenuButton
                         isSubscribedMessageComments={!!message.isSubscribedMessageComments}
-                        messageId={message.id!!}
+                        messageId={message.peerRootId!!}
                     />
 
                     <XMenuItem

@@ -47675,7 +47675,7 @@ export interface MessageVariables {
 // GraphQL query operation: MyNotifications
 // ====================================================
 
-export interface MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47683,7 +47683,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_sender_
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_sender {
+export interface MyNotifications_myNotifications_items_content_comment_comment_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -47696,15 +47696,15 @@ export interface MyNotifications_myNotifications_content_comment_comment_sender 
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_sender_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_sender_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -47715,16 +47715,16 @@ export interface MyNotifications_myNotifications_content_comment_comment_attachm
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   id: string;
   fileId: string;
-  fileMetadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -47735,13 +47735,13 @@ export interface MyNotifications_myNotifications_content_comment_comment_attachm
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -47752,13 +47752,13 @@ export interface MyNotifications_myNotifications_content_comment_comment_attachm
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
   title: string;
@@ -47766,12 +47766,12 @@ export interface MyNotifications_myNotifications_content_comment_comment_attachm
   url: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_keyboard {
   __typename: "MessageKeyboard";
-  buttons: (MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+  buttons: (MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment {
+export interface MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   id: string;
@@ -47780,14 +47780,14 @@ export interface MyNotifications_myNotifications_content_comment_comment_attachm
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_icon | null;
-  image: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_image | null;
-  keyboard: MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+  icon: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_attachments = MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_attachments_MessageRichAttachment;
+export type MyNotifications_myNotifications_items_content_comment_comment_attachments = MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentPost | MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageAttachmentFile | MyNotifications_myNotifications_items_content_comment_comment_attachments_MessageRichAttachment;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47795,7 +47795,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -47808,16 +47808,16 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
   __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47825,7 +47825,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -47838,17 +47838,17 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47856,7 +47856,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -47869,60 +47869,60 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   title: string;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
   __typename: "MessageSpanDate";
   offset: number;
   length: number;
   date: any;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
@@ -47933,12 +47933,12 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
    * Content
    */
   message: string | null;
-  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  sender: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_sender;
   fallback: string;
-  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+  spans: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage_spans[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47946,7 +47946,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -47959,16 +47959,16 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
   __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -47976,7 +47976,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -47989,17 +47989,17 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -48007,7 +48007,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -48020,65 +48020,65 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   title: string;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
   __typename: "MessageSpanDate";
   offset: number;
   length: number;
   date: any;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -48089,16 +48089,16 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   id: string;
   fileId: string;
-  fileMetadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -48109,13 +48109,13 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -48126,13 +48126,13 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   imageFormat: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   id: string;
@@ -48141,13 +48141,13 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage {
+export interface MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
@@ -48158,17 +48158,17 @@ export interface MyNotifications_myNotifications_content_comment_comment_quotedM
    * Content
    */
   message: string | null;
-  sender: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  sender: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_sender;
   fallback: string;
-  spans: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  spans: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_spans[];
   commentsCount: number;
   edited: boolean;
-  attachments: MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+  attachments: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_quotedMessages = MyNotifications_myNotifications_content_comment_comment_quotedMessages_ServiceMessage | MyNotifications_myNotifications_content_comment_comment_quotedMessages_GeneralMessage;
+export type MyNotifications_myNotifications_items_content_comment_comment_quotedMessages = MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_ServiceMessage | MyNotifications_myNotifications_items_content_comment_comment_quotedMessages_GeneralMessage;
 
-export interface MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_reactions_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -48176,7 +48176,7 @@ export interface MyNotifications_myNotifications_content_comment_comment_reactio
   isCommunity: boolean;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_reactions_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -48189,116 +48189,116 @@ export interface MyNotifications_myNotifications_content_comment_comment_reactio
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_reactions_user_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_reactions_user_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_reactions {
+export interface MyNotifications_myNotifications_items_content_comment_comment_reactions {
   __typename: "ModernMessageReaction";
-  user: MyNotifications_myNotifications_content_comment_comment_reactions_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_reactions_user;
   reaction: MessageReactionType;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanAllMention {
   __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   isYou: boolean;
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   isYou: boolean;
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+  primaryOrganization: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+  users: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   title: string;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+export type MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention_room;
+  room: MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention_room;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate {
+export interface MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanDate {
   __typename: "MessageSpanDate";
   offset: number;
   length: number;
   date: any;
 }
 
-export type MyNotifications_myNotifications_content_comment_comment_spans = MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanAllMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanRoomMention | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanLink | MyNotifications_myNotifications_content_comment_comment_spans_MessageSpanDate;
+export type MyNotifications_myNotifications_items_content_comment_comment_spans = MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanAllMention | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanUserMention | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanRoomMention | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanLink | MyNotifications_myNotifications_items_content_comment_comment_spans_MessageSpanDate;
 
-export interface MyNotifications_myNotifications_content_comment_comment {
+export interface MyNotifications_myNotifications_items_content_comment_comment {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: MyNotifications_myNotifications_content_comment_comment_sender;
+  sender: MyNotifications_myNotifications_items_content_comment_comment_sender;
   /**
    * Content
    */
@@ -48306,13 +48306,13 @@ export interface MyNotifications_myNotifications_content_comment_comment {
   fallback: string;
   edited: boolean;
   commentsCount: number;
-  attachments: MyNotifications_myNotifications_content_comment_comment_attachments[];
-  quotedMessages: MyNotifications_myNotifications_content_comment_comment_quotedMessages[];
-  reactions: MyNotifications_myNotifications_content_comment_comment_reactions[];
-  spans: MyNotifications_myNotifications_content_comment_comment_spans[];
+  attachments: MyNotifications_myNotifications_items_content_comment_comment_attachments[];
+  quotedMessages: MyNotifications_myNotifications_items_content_comment_comment_quotedMessages[];
+  reactions: MyNotifications_myNotifications_items_content_comment_comment_reactions[];
+  spans: MyNotifications_myNotifications_items_content_comment_comment_spans[];
 }
 
-export interface MyNotifications_myNotifications_content_comment_parentComment_comment {
+export interface MyNotifications_myNotifications_items_content_comment_parentComment_comment {
   __typename: "GeneralMessage";
   /**
    * State
@@ -48324,27 +48324,27 @@ export interface MyNotifications_myNotifications_content_comment_parentComment_c
   message: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_comment_parentComment {
+export interface MyNotifications_myNotifications_items_content_comment_parentComment {
   __typename: "CommentEntry";
-  comment: MyNotifications_myNotifications_content_comment_parentComment_comment;
+  comment: MyNotifications_myNotifications_items_content_comment_parentComment_comment;
   id: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment_childComments {
+export interface MyNotifications_myNotifications_items_content_comment_childComments {
   __typename: "CommentEntry";
   id: string;
 }
 
-export interface MyNotifications_myNotifications_content_comment {
+export interface MyNotifications_myNotifications_items_content_comment {
   __typename: "CommentEntry";
   id: string;
   deleted: boolean;
-  comment: MyNotifications_myNotifications_content_comment_comment;
-  parentComment: MyNotifications_myNotifications_content_comment_parentComment | null;
-  childComments: MyNotifications_myNotifications_content_comment_childComments[];
+  comment: MyNotifications_myNotifications_items_content_comment_comment;
+  parentComment: MyNotifications_myNotifications_items_content_comment_parentComment | null;
+  childComments: MyNotifications_myNotifications_items_content_comment_childComments[];
 }
 
-export interface MyNotifications_myNotifications_content_peer_peerRoot_message {
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
    * State
@@ -48356,61 +48356,67 @@ export interface MyNotifications_myNotifications_content_peer_peerRoot_message {
   message: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom_user {
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot_chat_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom {
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom_user;
+  user: MyNotifications_myNotifications_items_content_peer_peerRoot_chat_PrivateRoom_user;
 }
 
-export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_SharedRoom {
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   title: string;
   photo: string;
 }
 
-export type MyNotifications_myNotifications_content_peer_peerRoot_chat = MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom | MyNotifications_myNotifications_content_peer_peerRoot_chat_SharedRoom;
+export type MyNotifications_myNotifications_items_content_peer_peerRoot_chat = MyNotifications_myNotifications_items_content_peer_peerRoot_chat_PrivateRoom | MyNotifications_myNotifications_items_content_peer_peerRoot_chat_SharedRoom;
 
-export interface MyNotifications_myNotifications_content_peer_peerRoot {
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot {
   __typename: "CommentPeerRootMessage";
-  message: MyNotifications_myNotifications_content_peer_peerRoot_message;
-  chat: MyNotifications_myNotifications_content_peer_peerRoot_chat;
+  message: MyNotifications_myNotifications_items_content_peer_peerRoot_message;
+  chat: MyNotifications_myNotifications_items_content_peer_peerRoot_chat;
 }
 
-export interface MyNotifications_myNotifications_content_peer_subscription {
+export interface MyNotifications_myNotifications_items_content_peer_subscription {
   __typename: "CommentSubscription";
   type: CommentSubscriptionType | null;
 }
 
-export interface MyNotifications_myNotifications_content_peer {
+export interface MyNotifications_myNotifications_items_content_peer {
   __typename: "CommentsPeer";
   id: string;
-  peerRoot: MyNotifications_myNotifications_content_peer_peerRoot;
-  subscription: MyNotifications_myNotifications_content_peer_subscription | null;
+  peerRoot: MyNotifications_myNotifications_items_content_peer_peerRoot;
+  subscription: MyNotifications_myNotifications_items_content_peer_subscription | null;
 }
 
-export interface MyNotifications_myNotifications_content {
+export interface MyNotifications_myNotifications_items_content {
   __typename: "NewCommentNotification";
-  comment: MyNotifications_myNotifications_content_comment;
-  peer: MyNotifications_myNotifications_content_peer;
+  comment: MyNotifications_myNotifications_items_content_comment;
+  peer: MyNotifications_myNotifications_items_content_peer;
 }
 
-export interface MyNotifications_myNotifications {
+export interface MyNotifications_myNotifications_items {
   __typename: "Notification";
   id: string;
   text: string | null;
-  content: MyNotifications_myNotifications_content[];
+  content: MyNotifications_myNotifications_items_content[];
+}
+
+export interface MyNotifications_myNotifications {
+  __typename: "NotificationConnection";
+  items: MyNotifications_myNotifications_items[];
+  cursor: string | null;
 }
 
 export interface MyNotifications {
-  myNotifications: MyNotifications_myNotifications[];
+  myNotifications: MyNotifications_myNotifications;
 }
 
 export interface MyNotificationsVariables {

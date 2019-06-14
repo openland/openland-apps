@@ -1,11 +1,15 @@
 query MyNotifications($before: ID, $first: Int!) {
   myNotifications(before: $before, first: $first) {
     __typename
-    content {
+    cursor
+    items {
       __typename
-      ...NotificationFragment
+      content {
+        __typename
+        ...NotificationFragment
+      }
+      id
+      text
     }
-    id
-    text
   }
 }

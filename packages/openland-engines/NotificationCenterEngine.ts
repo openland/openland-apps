@@ -48,7 +48,7 @@ export class NotificationCenterEngine {
 
                     const items = [];
 
-                    for (let notification of notifications.myNotifications) {
+                    for (let notification of notifications.myNotifications.items) {
                         const convertedNotification = this.convertNotification(notification)
                         if (convertedNotification) {
                             items.push(convertedNotification);

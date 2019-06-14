@@ -44,11 +44,14 @@ export const NotificationFragment = gql`
 export const MyNotificationsQuery = gql`
     query MyNotifications($first: Int!, $before: ID) {
         myNotifications(first: $first, before: $before) {
-            id
-            text
-            content {
-                ... NotificationFragment
+            items {
+                id
+                text
+                content {
+                    ... NotificationFragment
+                }
             }
+            cursor
         }
         ${FullMessage}
         ${CommentEntryFragment}
