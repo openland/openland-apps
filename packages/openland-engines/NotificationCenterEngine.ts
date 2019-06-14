@@ -7,7 +7,7 @@ import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/Dat
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import {
-    MyNotifications_myNotifications
+    MyNotifications_myNotifications_items
 } from 'openland-api/Types';
 
 const log = createLogger('Engine-NotificationCenter');
@@ -79,7 +79,7 @@ export class NotificationCenterEngine {
         this.dataSource = this._dataSourceStored.dataSource;
     }
 
-    convertNotification = (notification: MyNotifications_myNotifications) => {
+    convertNotification = (notification: MyNotifications_myNotifications_items) => {
         const content = notification.content;
         // TODO go through notification.content, now take only first
         if (
