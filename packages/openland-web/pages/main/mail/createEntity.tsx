@@ -94,7 +94,6 @@ const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }
                     <LeaveAndDeleteModal
                         chatTypeStr={chatTypeStr}
                         redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                        target={<CloseModalTarget />}
                     />
                 )}
                 {!showLeaveModal && (
@@ -379,7 +378,7 @@ export const CreateEntity = ({
 
     let showLeaveModal = false;
 
-    if (aboutField.value || titleField.value || coverSrc) {
+    if (aboutField.value || titleField.value || coverSrc || !settingsPage) {
         showLeaveModal = true;
     }
 

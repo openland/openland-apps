@@ -2,15 +2,14 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XModal, XModalBody, XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 export const LeaveAndDeleteModal = ({
     chatTypeStr,
     redirectPath,
-    target
 }: {
     chatTypeStr: string;
     redirectPath: string;
-    target: any;
 }) => {
     return (
         <XModal
@@ -30,7 +29,20 @@ export const LeaveAndDeleteModal = ({
                     <XButton text="Leave and delete" style="ghost" path={redirectPath} />
                 </XModalFooter>
             }
-            target={target}
+            target={
+                <XView
+                    cursor="pointer"
+                    alignItems="center"
+                    justifyContent="center"
+                    padding={8}
+                    width={32}
+                    height={32}
+                    borderRadius={50}
+                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                >
+                    <CloseIcon />
+                </XView>
+            }
         />
     );
 };
