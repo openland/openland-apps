@@ -6,6 +6,7 @@ export const SettingsFull = gql`
         primaryEmail
         emailFrequency
         desktopNotifications
+        commentNotifications
         mobileNotifications
         mobileAlert
         mobileIncludeText

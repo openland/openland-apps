@@ -1,5 +1,6 @@
 fragment SettingsFull on Settings {
   __typename
+  commentNotifications
   desktopNotifications
   emailFrequency
   id

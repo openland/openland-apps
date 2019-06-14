@@ -19,6 +19,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { NON_PRODUCTION } from '../Init';
+import { NotificationCenterButton } from './components/notificationCenter/NotificationCenterButton';
 
 const RoomsList = (props: { router: SRouter }) => {
     let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
@@ -176,15 +177,16 @@ const ExplorePage = (props: PageProps) => {
         <>
             {Platform.OS === 'ios' && <SHeader title="Discover" />}
             {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
+
+            {NON_PRODUCTION && (
+                <NotificationCenterButton dot={false} theme={theme} onPress={() => props.router.push('NotificationCenter')} />
+            )}
             <SHeaderButton
                 title="New"
-                icon={
-                    Platform.OS === 'ios'
-                        ? require('assets/ic-compose-26.png')
-                        : require('assets/ic-edit.png')
-                }
+                icon={Platform.OS === 'ios' ? require('assets/ic-header-add-26.png') : require('assets/ic-edit.png')}
                 onPress={() => props.router.push('Compose')}
             />
+
             <SSearchControler
                 searchRender={(p) => (
                     <GlobalSearch

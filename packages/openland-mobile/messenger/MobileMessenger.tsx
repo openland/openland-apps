@@ -24,6 +24,7 @@ import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterItemAsync';
 import { NotificationCenterHandlers } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterHandlers';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
+import { NotificationsDataSourceItemStored } from 'openland-engines/NotificationCenterEngine';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -53,7 +54,7 @@ export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
-    readonly notifications: ASDataView<DialogDataSourceItem>;
+    readonly notifications: ASDataView<NotificationsDataSourceItemStored>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
@@ -65,7 +66,7 @@ export class MobileMessenger {
             );
         });
 
-        this.notifications = new ASDataView(engine.dialogList.dataSource, (item) => {
+        this.notifications = new ASDataView(engine.notificationCenter.dataSource, (item) => {
             return (
                 <NotificationCenterItemAsync item={item} onPress={NotificationCenterHandlers.handlePress} onLongPress={NotificationCenterHandlers.handleLongPress} />
             );
