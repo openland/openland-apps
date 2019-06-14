@@ -2,52 +2,57 @@ import gql from 'graphql-tag';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { FullMessage } from 'openland-api/fragments/Message';
 
+export const NotificationFragment = gql`
+    fragment NotificationFragment on NewCommentNotification {
+        comment {
+            ...CommentEntryFragment
+        }
+        peer {
+            id
+            peerRoot {
+                ... on CommentPeerRootMessage {
+                    message {
+                        ... on GeneralMessage {
+                            id
+                            message
+                        }
+                    }
+                    chat {
+                        ... on PrivateRoom {
+                            id
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                        }
+                        ... on SharedRoom {
+                            id
+                            title
+                            photo
+                        }
+                    }
+                }
+            }
+            subscription {
+                type
+            }
+        }
+    }
+`;
+
 export const MyNotificationsQuery = gql`
     query MyNotifications($first: Int!, $before: ID) {
         myNotifications(first: $first, before: $before) {
             id
             text
             content {
-                ... on NewCommentNotification {
-                    comment {
-                        ...CommentEntryFragment
-                    }
-                    peer {
-                        id
-                        peerRoot {
-                            ... on CommentPeerRootMessage {
-                                message {
-                                    ... on GeneralMessage {
-                                        id
-                                        message
-                                    }
-                                }
-                                chat {
-                                    ... on PrivateRoom {
-                                        id
-                                        user {
-                                            id
-                                            name
-                                            photo
-                                        }
-                                    }
-                                    ... on SharedRoom {
-                                        id
-                                        title
-                                        photo
-                                    }
-                                }
-                            }
-                        }
-                        subscription {
-                            type
-                        }
-                    }
-                }
+                ... NotificationFragment
             }
         }
-        ${CommentEntryFragment}
         ${FullMessage}
+        ${CommentEntryFragment}
+        ${NotificationFragment}
     }
 `;
 
@@ -55,9 +60,21 @@ export const NotificationCenterUpdateFragment = gql`
     fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
         ... on NotificationReceived {
             unread
+            notification {
+                id
+                content {
+                    ... NotificationFragment
+                }
+            }
         }
         ... on NotificationDeleted {
             unread
+            notification {
+                id
+                content {
+                    ... NotificationFragment
+                }
+            }
         }
         ... on NotificationRead {
             unread
@@ -85,6 +102,9 @@ export const MyNotificationsCenterSubscription = gql`
             }
         }
     }
+    ${FullMessage}
+    ${CommentEntryFragment}
+    ${NotificationFragment}
     ${NotificationCenterUpdateFragment}
 `;
 

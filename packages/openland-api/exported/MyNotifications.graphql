@@ -3,49 +3,7 @@ query MyNotifications($before: ID, $first: Int!) {
     __typename
     content {
       __typename
-      ... on NewCommentNotification {
-        comment {
-          __typename
-          ...CommentEntryFragment
-        }
-        peer {
-          __typename
-          id
-          peerRoot {
-            __typename
-            ... on CommentPeerRootMessage {
-              chat {
-                __typename
-                ... on PrivateRoom {
-                  id
-                  user {
-                    __typename
-                    id
-                    name
-                    photo
-                  }
-                }
-                ... on SharedRoom {
-                  id
-                  photo
-                  title
-                }
-              }
-              message {
-                __typename
-                ... on GeneralMessage {
-                  id
-                  message
-                }
-              }
-            }
-          }
-          subscription {
-            __typename
-            type
-          }
-        }
-      }
+      ...NotificationFragment
     }
     id
     text

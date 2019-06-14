@@ -254,4 +254,5 @@ export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny)
 export const CommentUpdateFragmentFragment = typedFragment<Types.CommentUpdateFragment>(Chats.CommentUpdateFragment);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);
 export const DialogUpdateFragmentFragment = typedFragment<Types.DialogUpdateFragment>(Chats.DialogUpdateFragment);
+export const NotificationFragmentFragment = typedFragment<Types.NotificationFragment>(Comments.NotificationFragment);
 export const NotificationCenterUpdateFragmentFragment = typedFragment<Types.NotificationCenterUpdateFragment>(Comments.NotificationCenterUpdateFragment);
