@@ -1045,6 +1045,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
         return this.client.mutate(Source.ReadNotificationMutation, variables);
     }
+    async mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
+        return this.client.mutate(Source.DeleteNotificationMutation, variables);
+    }
     async mutateSubscribeMessageComments(variables: Types.SubscribeMessageCommentsVariables): Promise<Types.SubscribeMessageComments> {
         return this.client.mutate(Source.SubscribeMessageCommentsMutation, variables);
     }
@@ -1194,6 +1197,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables> {
         return this.client.subscribe(Source.ChatOnlinesCountWatchSubscription, variables);
+    }
+    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
+        return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);
     }
     subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
         return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);

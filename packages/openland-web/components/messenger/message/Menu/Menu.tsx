@@ -17,6 +17,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { FollowUnfollowMenuButton } from './FollowUnfollowMenuButton';
 import { PinMessageButton } from './PinMessageButton';
 import { ShowDeleteMessageModal } from './ShowDeleteMessageModal';
+import { useClient } from 'openland-web/utils/useClient';
 
 let commentsIconWrapperClass = css`
     cursor: pointer;
@@ -74,6 +75,7 @@ export const Menu = React.memo(
         selectMessage,
         room,
     }: MenuProps) => {
+        const client = useClient();
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
@@ -142,8 +144,14 @@ export const Menu = React.memo(
                     />
 
                     <XMenuItem
-                        onClick={(e: any) => {
-                            console.log('Remove this notification');
+                        onClick={async () => {
+                            await client.mutateDeleteNotification({
+                                notificationId: message.notificationId!!,
+                            });
+
+                            await client.refetchMyNotifications({
+                                first: 100,
+                            });
                         }}
                     >
                         Remove this notification

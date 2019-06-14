@@ -2194,6 +2194,9 @@ private let DebugMailsSelector = obj(
 private let DeleteCommentSelector = obj(
             field("deleteComment","deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private let DeleteNotificationSelector = obj(
+            field("deleteNotification","deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
+        )
 private let DeleteOrganizationSelector = obj(
             field("deleteOrganization","deleteOrganization", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
         )
@@ -2809,6 +2812,28 @@ private let DialogsWatchSelector = obj(
                     ))
                 )))
         )
+private let MyNotificationsCenterSelector = obj(
+            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("DialogUpdateSingle", obj(
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("update","update", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("DialogUpdateBatch", obj(
+                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("updates","updates", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
 private let OnlineWatchSelector = obj(
             field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3399,6 +3424,12 @@ class Operations {
         "mutation DeleteComment($id:ID!){deleteComment(id:$id)}",
         DeleteCommentSelector
     )
+    let DeleteNotification = OperationDefinition(
+        "DeleteNotification",
+        .mutation, 
+        "mutation DeleteNotification($notificationId:ID!){deleteNotification(notificationId:$notificationId)}",
+        DeleteNotificationSelector
+    )
     let DeleteOrganization = OperationDefinition(
         "DeleteOrganization",
         .mutation, 
@@ -3939,6 +3970,12 @@ class Operations {
         "subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}",
         DialogsWatchSelector
     )
+    let MyNotificationsCenter = OperationDefinition(
+        "MyNotificationsCenter",
+        .subscription, 
+        "subscription MyNotificationsCenter($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}",
+        MyNotificationsCenterSelector
+    )
     let OnlineWatch = OperationDefinition(
         "OnlineWatch",
         .subscription, 
@@ -4050,6 +4087,7 @@ class Operations {
         if name == "CreateUserProfileAndOrganization" { return CreateUserProfileAndOrganization }
         if name == "DebugMails" { return DebugMails }
         if name == "DeleteComment" { return DeleteComment }
+        if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
         if name == "EditComment" { return EditComment }
@@ -4140,6 +4178,7 @@ class Operations {
         if name == "ConferenceWatch" { return ConferenceWatch }
         if name == "DebugEventsWatch" { return DebugEventsWatch }
         if name == "DialogsWatch" { return DialogsWatch }
+        if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "TypingsWatch" { return TypingsWatch }

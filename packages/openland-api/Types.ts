@@ -48400,6 +48400,1255 @@ export interface MyNotificationsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: MyNotificationsCenter
+// ====================================================
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived_message;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_message;
+  prevMessage: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump_topMessage | null;
+  haveMention: boolean;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateSingle_update = MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMentionedChanged | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageReceived | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageUpdated | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageDeleted | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMessageRead | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogTitleUpdated | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogMuteChanged | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogPhotoUpdated | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogDeleted | MyNotificationsCenter_event_DialogUpdateSingle_update_DialogBump;
+
+export interface MyNotificationsCenter_event_DialogUpdateSingle {
+  __typename: "DialogUpdateSingle";
+  seq: number;
+  state: string;
+  update: MyNotificationsCenter_event_DialogUpdateSingle_update;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_message;
+  prevMessage: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  haveMention: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  isMentioned: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump_topMessage | null;
+  haveMention: boolean;
+}
+
+export type MyNotificationsCenter_event_DialogUpdateBatch_updates = MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMentionedChanged | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageReceived | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageUpdated | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageDeleted | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMessageRead | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogTitleUpdated | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogMuteChanged | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogPhotoUpdated | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogDeleted | MyNotificationsCenter_event_DialogUpdateBatch_updates_DialogBump;
+
+export interface MyNotificationsCenter_event_DialogUpdateBatch {
+  __typename: "DialogUpdateBatch";
+  fromSeq: number;
+  seq: number;
+  state: string;
+  updates: MyNotificationsCenter_event_DialogUpdateBatch_updates[];
+}
+
+export type MyNotificationsCenter_event = MyNotificationsCenter_event_DialogUpdateSingle | MyNotificationsCenter_event_DialogUpdateBatch;
+
+export interface MyNotificationsCenter {
+  event: MyNotificationsCenter_event;
+}
+
+export interface MyNotificationsCenterVariables {
+  state?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyNotificationCenter
 // ====================================================
 
@@ -49180,6 +50429,22 @@ export interface ReadNotification {
 }
 
 export interface ReadNotificationVariables {
+  notificationId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: DeleteNotification
+// ====================================================
+
+export interface DeleteNotification {
+  deleteNotification: boolean;
+}
+
+export interface DeleteNotificationVariables {
   notificationId: string;
 }
 

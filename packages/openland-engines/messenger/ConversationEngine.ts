@@ -56,6 +56,7 @@ export interface DataSourceMessageItem {
     isSubscribedMessageComments?: boolean;
     replyQuoteText?: string | null;
     peerRootId?: string;
+    notificationId?: string;
 }
 
 export interface DataSourceDateItem {

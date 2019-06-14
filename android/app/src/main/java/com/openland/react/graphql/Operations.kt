@@ -2200,6 +2200,9 @@ private val DebugMailsSelector = obj(
 private val DeleteCommentSelector = obj(
             field("deleteComment","deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private val DeleteNotificationSelector = obj(
+            field("deleteNotification","deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
+        )
 private val DeleteOrganizationSelector = obj(
             field("deleteOrganization","deleteOrganization", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
         )
@@ -2815,6 +2818,28 @@ private val DialogsWatchSelector = obj(
                     ))
                 )))
         )
+private val MyNotificationsCenterSelector = obj(
+            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("DialogUpdateSingle", obj(
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("update","update", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("DialogUpdateBatch", obj(
+                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("updates","updates", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
 private val OnlineWatchSelector = obj(
             field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3402,6 +3427,12 @@ object Operations {
         override val body = "mutation DeleteComment(\$id:ID!){deleteComment(id:\$id)}"
         override val selector = DeleteCommentSelector
     }
+    val DeleteNotification = object: OperationDefinition {
+        override val name = "DeleteNotification"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation DeleteNotification(\$notificationId:ID!){deleteNotification(notificationId:\$notificationId)}"
+        override val selector = DeleteNotificationSelector
+    }
     val DeleteOrganization = object: OperationDefinition {
         override val name = "DeleteOrganization"
         override val kind = OperationKind.MUTATION
@@ -3942,6 +3973,12 @@ object Operations {
         override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = DialogsWatchSelector
     }
+    val MyNotificationsCenter = object: OperationDefinition {
+        override val name = "MyNotificationsCenter"
+        override val kind = OperationKind.SUBSCRIPTION
+        override val body = "subscription MyNotificationsCenter(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val selector = MyNotificationsCenterSelector
+    }
     val OnlineWatch = object: OperationDefinition {
         override val name = "OnlineWatch"
         override val kind = OperationKind.SUBSCRIPTION
@@ -4052,6 +4089,7 @@ object Operations {
         if (name == "CreateUserProfileAndOrganization") return CreateUserProfileAndOrganization
         if (name == "DebugMails") return DebugMails
         if (name == "DeleteComment") return DeleteComment
+        if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
         if (name == "EditComment") return EditComment
@@ -4142,6 +4180,7 @@ object Operations {
         if (name == "ConferenceWatch") return ConferenceWatch
         if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
+        if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch

@@ -688,6 +688,13 @@
       }
     },
     {
+      "signature": "a7a6eef697f4cb246db6b690bcd6b50eff119f316c8b43c9d993b68c9cc39b92",
+      "document": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}fragment DialogUpdateFragment on DialogUpdate{__typename...on DialogMessageReceived{message:alphaMessage{__typename...TinyMessage}cid globalUnread haveMention unread}...on DialogMessageUpdated{message:alphaMessage{__typename...TinyMessage}cid haveMention}...on DialogMessageDeleted{message:alphaMessage{__typename...TinyMessage}prevMessage:alphaPrevMessage{__typename...TinyMessage}cid globalUnread haveMention unread}...on DialogMessageRead{cid globalUnread haveMention unread}...on DialogTitleUpdated{cid title}...on DialogMuteChanged{cid mute}...on DialogPhotoUpdated{cid photo}...on DialogDeleted{cid globalUnread}...on DialogBump{cid globalUnread haveMention topMessage{__typename...TinyMessage}unread}}subscription MyNotificationsCenter($state:String){event:dialogsUpdates(fromState:$state){__typename...on DialogUpdateSingle{seq state update{__typename...DialogUpdateFragment}}...on DialogUpdateBatch{fromSeq seq state updates{__typename...DialogUpdateFragment}}}}",
+      "metadata": {
+        "engineSignature": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}fragment DialogUpdateFragment on DialogUpdate{__typename...on DialogMessageReceived{alphaMessage{__typename...TinyMessage}cid globalUnread haveMention unread}...on DialogMessageUpdated{alphaMessage{__typename...TinyMessage}cid haveMention}...on DialogMessageDeleted{alphaMessage{__typename...TinyMessage}alphaPrevMessage{__typename...TinyMessage}cid globalUnread haveMention unread}...on DialogMessageRead{cid globalUnread haveMention unread}...on DialogTitleUpdated{cid title}...on DialogMuteChanged{cid mute}...on DialogPhotoUpdated{cid photo}...on DialogDeleted{cid globalUnread}...on DialogBump{cid globalUnread haveMention topMessage{__typename...TinyMessage}unread}}subscription MyNotificationsCenter($state:String){dialogsUpdates(fromState:$state){__typename...on DialogUpdateSingle{seq state update{__typename...DialogUpdateFragment}}...on DialogUpdateBatch{fromSeq seq state updates{__typename...DialogUpdateFragment}}}}"
+      }
+    },
+    {
       "signature": "09c9f610cbd4698d37479d30f0058a59d23ca70665cb3f8fe3de14da947da398",
       "document": "query MyNotificationCenter{myNotificationCenter{__typename id unread}}",
       "metadata": {
@@ -727,6 +734,13 @@
       "document": "mutation ReadNotification($notificationId:ID!){readNotification(notificationId:$notificationId){__typename id unread}}",
       "metadata": {
         "engineSignature": "mutation ReadNotification($notificationId:ID!){readNotification(notificationId:$notificationId){__typename id unread}}"
+      }
+    },
+    {
+      "signature": "755292f705a7f65430ad7b07bb7c12c9aad720088ead1da4ffe8f2b8a61aa4f5",
+      "document": "mutation DeleteNotification($notificationId:ID!){deleteNotification(notificationId:$notificationId)}",
+      "metadata": {
+        "engineSignature": "mutation DeleteNotification($notificationId:ID!){deleteNotification(notificationId:$notificationId)}"
       }
     },
     {

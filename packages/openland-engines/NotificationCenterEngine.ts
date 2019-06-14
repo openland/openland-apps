@@ -1,4 +1,3 @@
-import { MyNotifications_myNotifications_content_comment_comment } from 'openland-api/Types';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { createComments } from './mocks';
@@ -9,20 +8,6 @@ import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 
 const log = createLogger('Engine-NotificationCenter');
-
-const hackChangeCommentIdToMessageId = ({
-    item,
-    messageId,
-}: {
-    item: MyNotifications_myNotifications_content_comment_comment & {
-        isSubscribedMessageComments: boolean;
-    };
-    messageId: string;
-}): MyNotifications_myNotifications_content_comment_comment & {
-    isSubscribedMessageComments: boolean;
-} => {
-    return { ...item, id: messageId };
-};
 
 type NotificationCenterEngineOptions = {
     engine: MessengerEngine;
@@ -56,7 +41,6 @@ export class NotificationCenterEngine {
                 } else {
                     let notifications = await this.engine.client.queryMyNotifications(
                         { first: 100 },
-                        { fetchPolicy: 'network-only' },
                     );
 
                     const items = [];
@@ -88,6 +72,7 @@ export class NotificationCenterEngine {
                                 }),
                                 peerRootId: peer.peerRoot.message.id,
                                 isSubscribedMessageComments: !!peer.subscription!!,
+                                notificationId: notification.id,
                                 replyQuoteText,
                             });
                         }
@@ -102,7 +87,8 @@ export class NotificationCenterEngine {
             },
             onStarted: (state: string) => {
                 log.log('onStarted');
-                //
+                
+                this.engine.global.handleNotificationsCenterStarted(state);
             },
         };
 
@@ -114,5 +100,21 @@ export class NotificationCenterEngine {
         );
 
         this.dataSource = this._dataSourceStored.dataSource;
+    }
+
+    handleNotificationReceived = async (event: any) => {
+        await this.engine.client.refetchMyNotificationCenter();
+    }
+
+    handleNotificationDeleted = async (event: any) => {
+        await this.engine.client.refetchMyNotificationCenter();
+    }
+
+    handleNotificationRead = async (event: any) => {
+        await this.engine.client.refetchMyNotificationCenter();
+    }
+
+    handleStateProcessed = async (state: string) => {
+        await this._dataSourceStored.updateState(state);
     }
 }

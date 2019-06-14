@@ -36,6 +36,43 @@ export const MyNotificationsQuery = gql`
     }
 `;
 
+export const NotificationCenterUpdateFragment = gql`
+    fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
+        ... on NotificationReceived {
+            unread
+        }
+        ... on NotificationDeleted {
+            unread
+        }
+        ... on NotificationRead {
+            unread
+        }
+    }
+`;
+
+export const MyNotificationsCenterSubscription = gql`
+    subscription MyNotificationsCenter($state: String) {
+        event: notificationCenterUpdates(fromState: $state) {
+            ... on NotificationCenterUpdateSingle {
+                seq
+                state
+                update {
+                    ...NotificationCenterUpdateFragment
+                }
+            }
+            ... on NotificationCenterUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...NotificationCenterUpdateFragment
+                }
+            }
+        }
+    }
+    ${NotificationCenterUpdateFragment}
+`;
+
 export const MyNotificationCenterQuery = gql`
     query MyNotificationCenter {
         myNotificationCenter {
@@ -87,6 +124,12 @@ export const ReadNotificationMutation = gql`
             unread
             # state
         }
+    }
+`;
+
+export const DeleteNotificationMutation = gql`
+    mutation DeleteNotification($notificationId: ID!) {
+        deleteNotification(notificationId: $notificationId)
     }
 `;
 
