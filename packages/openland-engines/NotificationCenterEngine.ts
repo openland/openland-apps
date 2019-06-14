@@ -76,11 +76,14 @@ export class NotificationCenterEngine {
                                 replyQuoteText = peer.peerRoot.message.message;
                             }
 
+                            let room = peer.peerRoot.chat;
+
                             items.push({
                                 ...convertMessage({
                                     ...comment.comment,
                                 }),
                                 peerRootId: peer.peerRoot.message.id,
+                                room: room,
                                 isSubscribedMessageComments: !!peer.subscription!!,
                                 replyQuoteText,
                             });

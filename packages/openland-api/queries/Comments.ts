@@ -16,10 +16,25 @@ export const MyNotificationsQuery = gql`
                         id
                         peerRoot {
                             ... on CommentPeerRootMessage {
-                                    message {
+                                message {
                                     ... on GeneralMessage {
                                         id
                                         message
+                                    }
+                                }
+                                chat {
+                                    ... on PrivateRoom {
+                                        id
+                                        user {
+                                            id
+                                            name
+                                            photo
+                                        }
+                                    }
+                                    ... on SharedRoom {
+                                        id
+                                        title
+                                        photo
                                     }
                                 }
                             }

@@ -48355,9 +48355,32 @@ export interface MyNotifications_myNotifications_content_peer_peerRoot_message {
   message: string | null;
 }
 
+export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom_user;
+}
+
+export interface MyNotifications_myNotifications_content_peer_peerRoot_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+  photo: string;
+}
+
+export type MyNotifications_myNotifications_content_peer_peerRoot_chat = MyNotifications_myNotifications_content_peer_peerRoot_chat_PrivateRoom | MyNotifications_myNotifications_content_peer_peerRoot_chat_SharedRoom;
+
 export interface MyNotifications_myNotifications_content_peer_peerRoot {
   __typename: "CommentPeerRootMessage";
   message: MyNotifications_myNotifications_content_peer_peerRoot_message;
+  chat: MyNotifications_myNotifications_content_peer_peerRoot_chat;
 }
 
 export interface MyNotifications_myNotifications_content_peer_subscription {

@@ -69,6 +69,7 @@ export const CommentsNotifications = () => {
             <MessageComponent
                 message={i as any}
                 replyQuoteText={(i as any).replyQuoteText}
+                room={(i as any).room}
                 noSelector
                 isCommentNotification
                 onCommentBackToUserMessageClick={() => {
