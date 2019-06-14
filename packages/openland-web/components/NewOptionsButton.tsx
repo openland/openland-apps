@@ -9,7 +9,7 @@ import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
 import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
-import NewIcon from 'openland-icons/ic-add-blue.svg';
+import NewIcon from 'openland-icons/add-24.svg';
 import { makeActionable } from 'openland-x/Actionable';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
@@ -31,7 +31,6 @@ const NewButton = makeActionable<{ onClick: () => void }>(props => (
         <XView marginRight={5}>
             <NewIcon />
         </XView>
-        New
     </XView>
 ));
 
@@ -208,7 +207,7 @@ export const NewOptionsButton = XMemo(() => {
         setShow(!show);
     }, []);
 
-    let marginRight = -70;
+    let marginRight = -62;
     if (width && width < 951) {
         marginRight = -150;
     }
