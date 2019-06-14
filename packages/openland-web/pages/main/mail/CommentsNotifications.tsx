@@ -47,11 +47,16 @@ const LoadingWrapper = glamorous.div({
 export const CommentsNotifications = () => {
     const messenger = React.useContext(MessengerContext);
     const dataSource = buildMessagesDataSource(messenger.notificationCenter.dataSource);
-    const  [isEmpty, setIsEmpty] = React.useState(dataSource.getSize() === 0)
+    const [isFirstRender, setFirstRender] = React.useState(true);
+    const [isEmpty, setIsEmpty] = React.useState(false);
+
+  
 
     React.useEffect(() => {
+        setFirstRender(false);
         dataSource.watch({
             onDataSourceInited: () => {
+
                 setIsEmpty(dataSource.getSize() === 0)
             },
             onDataSourceItemAdded: () => {
@@ -120,6 +125,10 @@ export const CommentsNotifications = () => {
             />
         );
     });
+
+    if (isFirstRender) {
+        return null;
+    }
 
     return (
         <XView paddingTop={24} flexGrow={1} flexShrink={1}>
