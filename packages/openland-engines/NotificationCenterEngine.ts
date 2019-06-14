@@ -5,6 +5,9 @@ import { createComments } from './mocks';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('Engine-NotificationCenter');
 
 const hackChangeCommentIdToMessageId = ({
     item,
@@ -41,6 +44,8 @@ export class NotificationCenterEngine {
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
+                log.log('loadMore (cursor: ' + cursor + ')');
+
                 if (this.isMocked) {
                     return {
                         items: createComments().map(convertMessage),
@@ -95,7 +100,7 @@ export class NotificationCenterEngine {
                 }
             },
             onStarted: (state: string) => {
-                console.log('notifications started');
+                log.log('onStarted');
                 //
             },
         };
