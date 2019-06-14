@@ -70,7 +70,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             {!props.router.params.share && !props.router.params.title && (
                 <>
                     {NON_PRODUCTION && (
-                        <NotificationCenterButton dot={true} theme={theme} onPress={() => props.router.push('NotificationCenter')} />
+                        <NotificationCenterButton dot={false} theme={theme} onPress={() => props.router.push('NotificationCenter')} />
                     )}
                     <SHeaderButton
                         title="New"
