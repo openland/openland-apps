@@ -13,7 +13,7 @@ import Foundation
     let conversationId = userInfo.object(forKey: "conversationId");
     switch conversationId {
     case is String:
-      UIApplication.shared.openURL(URL(string: "openland://deep/mail/\(conversationId!)")!)
+      UIApplication.shared.openURL(URL(string: "https://openland.com/mail/\(conversationId!)")!)
     default:
       print("ok swift, here is your default executable statement")
     }
