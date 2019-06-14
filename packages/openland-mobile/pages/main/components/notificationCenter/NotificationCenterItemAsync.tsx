@@ -33,7 +33,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
             onPress={handlePress}
             onLongPress={handleLongPress}
         >
-            <ASText color={theme.textColor}>{JSON.stringify(item)}</ASText>
+            <ASText color={theme.textColor}>{item.text}</ASText>
         </ASFlex>
     );
 });

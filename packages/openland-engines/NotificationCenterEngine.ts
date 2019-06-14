@@ -6,6 +6,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { createLogger } from 'mental-log';
+import { DataSourceMessageItem } from './messenger/ConversationEngine';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -28,7 +29,7 @@ type NotificationCenterEngineOptions = {
     mocked?: boolean;
 };
 
-export type NotificationsDataSourceItemStored = any;
+export type NotificationsDataSourceItemStored = DataSourceMessageItem;
 
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;
