@@ -47,8 +47,35 @@ const LoadingWrapper = glamorous.div({
 export const CommentsNotifications = () => {
     const messenger = React.useContext(MessengerContext);
     const dataSource = buildMessagesDataSource(messenger.notificationCenter.dataSource);
+    const  [isEmpty, setIsEmpty] = React.useState(dataSource.getSize() === 0)
 
-    if (dataSource.getSize() === 0) {
+    React.useEffect(() => {
+        dataSource.watch({
+            onDataSourceInited: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceItemAdded: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceItemUpdated: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceItemRemoved: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceItemMoved: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceLoadedMore: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+            onDataSourceCompleted: () => {
+                setIsEmpty(dataSource.getSize() === 0)
+            },
+        })
+    }, [])
+
+    if (isEmpty) {
         return (
             <XView flexDirection="row" alignItems="center" flexGrow={1}>
                 <MessengerEmptyFragment text="You'll see here new replies to your messages and comments" />
