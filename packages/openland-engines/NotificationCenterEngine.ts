@@ -25,7 +25,7 @@ type NotificationCenterEngineOptions = {
     mocked?: boolean;
 };
 
-type NotificationsDataSourceItemStored = any;
+export type NotificationsDataSourceItemStored = any;
 
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;
