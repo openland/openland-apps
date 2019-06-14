@@ -40,7 +40,7 @@ export class NotificationCenterEngine {
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
         this.client = this.engine.client;
-        this.isMocked = options.engine.options.mocked;
+        this.isMocked = !!options.engine.options.mocked;
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
