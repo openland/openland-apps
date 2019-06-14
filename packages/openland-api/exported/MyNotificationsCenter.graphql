@@ -1,21 +1,21 @@
 subscription MyNotificationsCenter($state: String) {
-  event: dialogsUpdates(fromState: $state) {
+  event: notificationCenterUpdates(fromState: $state) {
     __typename
-    ... on DialogUpdateSingle {
+    ... on NotificationCenterUpdateSingle {
       seq
       state
       update {
         __typename
-        ...DialogUpdateFragment
+        ...NotificationCenterUpdateFragment
       }
     }
-    ... on DialogUpdateBatch {
+    ... on NotificationCenterUpdateBatch {
       fromSeq
       seq
       state
       updates {
         __typename
-        ...DialogUpdateFragment
+        ...NotificationCenterUpdateFragment
       }
     }
   }

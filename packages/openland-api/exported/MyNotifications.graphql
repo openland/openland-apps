@@ -14,6 +14,23 @@ query MyNotifications($before: ID, $first: Int!) {
           peerRoot {
             __typename
             ... on CommentPeerRootMessage {
+              chat {
+                __typename
+                ... on PrivateRoom {
+                  id
+                  user {
+                    __typename
+                    id
+                    name
+                    photo
+                  }
+                }
+                ... on SharedRoom {
+                  id
+                  photo
+                  title
+                }
+              }
               message {
                 __typename
                 ... on GeneralMessage {

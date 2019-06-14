@@ -686,6 +686,19 @@ private val DialogUpdateFragmentSelector = obj(
             ))
         )
 
+private val NotificationCenterUpdateFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("NotificationReceived", obj(
+                field("unread","unread", notNull(scalar("Int")))
+            )),
+            inline("NotificationDeleted", obj(
+                field("unread","unread", notNull(scalar("Int")))
+            )),
+            inline("NotificationRead", obj(
+                field("unread","unread", notNull(scalar("Int")))
+            ))
+        )
+
 private val UserFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
@@ -1455,7 +1468,7 @@ private val MyNotificationCenterSelector = obj(
 private val MyNotificationsSelector = obj(
             field("myNotifications","myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("content","content", list(obj(
+                    field("content","content", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             inline("NewCommentNotification", obj(
                                 field("comment","comment", notNull(obj(
@@ -1468,6 +1481,23 @@ private val MyNotificationsSelector = obj(
                                         field("peerRoot","peerRoot", notNull(obj(
                                                 field("__typename","__typename", notNull(scalar("String"))),
                                                 inline("CommentPeerRootMessage", obj(
+                                                    field("chat","chat", notNull(obj(
+                                                            field("__typename","__typename", notNull(scalar("String"))),
+                                                            inline("PrivateRoom", obj(
+                                                                field("id","id", notNull(scalar("ID"))),
+                                                                field("user","user", notNull(obj(
+                                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                                        field("id","id", notNull(scalar("ID"))),
+                                                                        field("name","name", notNull(scalar("String"))),
+                                                                        field("photo","photo", scalar("String"))
+                                                                    )))
+                                                            )),
+                                                            inline("SharedRoom", obj(
+                                                                field("id","id", notNull(scalar("ID"))),
+                                                                field("photo","photo", notNull(scalar("String"))),
+                                                                field("title","title", notNull(scalar("String")))
+                                                            ))
+                                                        ))),
                                                     field("message","message", notNull(obj(
                                                             field("__typename","__typename", notNull(scalar("String"))),
                                                             inline("GeneralMessage", obj(
@@ -1483,7 +1513,7 @@ private val MyNotificationsSelector = obj(
                                             ))
                                     )))
                             ))
-                        ))),
+                        ))))),
                     field("id","id", notNull(scalar("ID"))),
                     field("text","text", scalar("String"))
                 )))))
@@ -2819,26 +2849,26 @@ private val DialogsWatchSelector = obj(
                 )))
         )
 private val MyNotificationsCenterSelector = obj(
-            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+            field("notificationCenterUpdates","event", arguments(fieldValue("fromState", refValue("state"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    inline("DialogUpdateSingle", obj(
+                    inline("NotificationCenterUpdateSingle", obj(
                         field("seq","seq", notNull(scalar("Int"))),
                         field("state","state", notNull(scalar("String"))),
                         field("update","update", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                                fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))
                     )),
-                    inline("DialogUpdateBatch", obj(
+                    inline("NotificationCenterUpdateBatch", obj(
                         field("fromSeq","fromSeq", notNull(scalar("Int"))),
                         field("seq","seq", notNull(scalar("Int"))),
                         field("state","state", notNull(scalar("String"))),
                         field("updates","updates", notNull(list(notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("DialogUpdate", DialogUpdateFragmentSelector)
+                                fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))))
                     ))
-                )))
+                ))
         )
 private val OnlineWatchSelector = obj(
             field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
@@ -3058,7 +3088,7 @@ object Operations {
     val MyNotifications = object: OperationDefinition {
         override val name = "MyNotifications"
         override val kind = OperationKind.QUERY
-        override val body = "query MyNotifications(\$before:ID,\$first:Int!){myNotifications(before:\$before,first:\$first){__typename content{__typename ... on NewCommentNotification{comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}}id text}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query MyNotifications(\$before:ID,\$first:Int!){myNotifications(before:\$before,first:\$first){__typename content{__typename ... on NewCommentNotification{comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}}id text}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MyNotificationsSelector
     }
     val MyOrganizations = object: OperationDefinition {
@@ -3976,7 +4006,7 @@ object Operations {
     val MyNotificationsCenter = object: OperationDefinition {
         override val name = "MyNotificationsCenter"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription MyNotificationsCenter(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "subscription MyNotificationsCenter(\$state:String){event:notificationCenterUpdates(fromState:\$state){__typename ... on NotificationCenterUpdateSingle{seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{unread}... on NotificationDeleted{unread}... on NotificationRead{unread}}"
         override val selector = MyNotificationsCenterSelector
     }
     val OnlineWatch = object: OperationDefinition {

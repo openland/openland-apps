@@ -1,0 +1,12 @@
+fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
+  __typename
+  ... on NotificationReceived {
+    unread
+  }
+  ... on NotificationDeleted {
+    unread
+  }
+  ... on NotificationRead {
+    unread
+  }
+}
