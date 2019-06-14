@@ -21,7 +21,6 @@ const DeletedCommentHeader = () => {
 };
 
 const RoomReplyAvatar = ({ room }: { room?: RoomHeader_room }) => {
-    console.log(room);
     if (!room) {
         return null;
     }
