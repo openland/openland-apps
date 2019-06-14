@@ -2,9 +2,17 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { FullMessage } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 
+type MixAdditionalFields = {
+    isSubscribedMessageComments?: boolean;
+    peerRootId?: string;
+    replyQuoteText?: string | null;
+};
+
 export function convertMessage(
-    src: FullMessage & { repeatKey?: string; isSubscribedMessageComments?: boolean },
-): DataSourceMessageItem & { isSubscribedMessageComments?: boolean } {
+    src: FullMessage & {
+        repeatKey?: string;
+    } & MixAdditionalFields,
+): DataSourceMessageItem & MixAdditionalFields {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
@@ -40,5 +48,7 @@ export function convertMessage(
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         isSubscribedMessageComments: src.isSubscribedMessageComments,
+        peerRootId: src.peerRootId,
+        replyQuoteText: src.replyQuoteText,
     };
 }

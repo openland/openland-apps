@@ -53,11 +53,17 @@ export class NotificationCenterEngine {
                         { fetchPolicy: 'network-only' },
                     );
 
-                    const items = notifications.myNotifications
-                        .filter(({ content }) => !!content)
-                        .map(item => {
-                            const { content } = item;
+                    const items = [];
 
+                    for (let notification of notifications.myNotifications) {
+                        const content = notification.content;
+
+                        // TODO go through notification.content, now take only first
+                        if (
+                            notification.content &&
+                            notification.content.length &&
+                            notification.content[0]!!.__typename === 'NewCommentNotification'
+                        ) {
                             const firstContent = content!![0];
                             const comment = firstContent!!.comment!!;
                             const peer = firstContent!!.peer!!;
@@ -67,17 +73,19 @@ export class NotificationCenterEngine {
                                 const parentComment = comment.parentComment;
                                 replyQuoteText = parentComment.comment.message;
                             } else {
-                                replyQuoteText = peer.peerRoot.message;
+                                replyQuoteText = peer.peerRoot.message.message;
                             }
 
-                            return {
-                                ...comment.comment,
-                                peerRootId: peer.peerRoot.message.id,
-                                isSubscribedMessageComments: !!peer.subscription!!,
-                                replyQuoteText,
-                            };
-                        })
-                        .map(convertMessage);
+                            items.push(
+                                convertMessage({
+                                    ...comment.comment,
+                                    peerRootId: peer.peerRoot.message.id,
+                                    isSubscribedMessageComments: !!peer.subscription!!,
+                                    replyQuoteText,
+                                }),
+                            );
+                        }
+                    }
 
                     return {
                         items,
