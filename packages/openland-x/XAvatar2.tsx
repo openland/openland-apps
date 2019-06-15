@@ -33,6 +33,7 @@ const PlaceholderFontSize = {
     32: 15,
     28: 13,
     24: 12,
+    18: 10,
 };
 
 const AvatarPlaceholder = React.memo((props: XAvatar2Props) => {

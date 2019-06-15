@@ -21,28 +21,20 @@ const DeletedCommentHeader = () => {
 };
 
 const RoomReplyAvatar = ({ room }: { room?: RoomHeader_room }) => {
-    if (!room) {
+    const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomHeader_room_SharedRoom : null;
+
+    if (!sharedRoom) {
         return null;
     }
-    const sharedRoom =
-        room!!.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
 
-    const privateRoom =
-        room!!.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
-
-    const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;
-    const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
-    const id = sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : '';
-
-    const nameOfRoom = 'Friends of Openland';
     return (
         <XView flexDirection="row" alignItems="center" marginLeft={10}>
             <XView marginRight={10} justifyContent="center">
                 <ReplyCommentsIcon />
             </XView>
-            <XAvatar2 size={18} src={photo} title={avatarTitle} id={id} />
-            <XLink2 marginLeft={8} fontSize={14} path={'/mail/' + room.id} color="#000">
-                {nameOfRoom}
+            <XAvatar2 size={18} src={sharedRoom.photo} title={sharedRoom.title} id={sharedRoom.id} />
+            <XLink2 marginLeft={8} fontSize={14} path={'/mail/' + sharedRoom.id} color="#000">
+                {sharedRoom.title}
             </XLink2>
         </XView>
     );
