@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { DialogListComponent } from './components/DialogListComponent';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { Platform } from 'react-native';
 import { CenteredHeader } from './components/CenteredHeader';
@@ -16,9 +15,8 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { NotificationCenterButton } from './components/notificationCenter/NotificationCenterButton';
+import { MainHeaderButtons } from './components/MainHeaderButtons';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -68,16 +66,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                 </>
             )}
             {!props.router.params.share && !props.router.params.title && (
-                <>
-                    {NON_PRODUCTION && (
-                        <NotificationCenterButton theme={theme} onPress={() => props.router.push('NotificationCenter')} />
-                    )}
-                    <SHeaderButton
-                        title="New"
-                        icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
-                        onPress={() => props.router.push('Compose')}
-                    />
-                </>
+                <MainHeaderButtons theme={theme} router={props.router} />
             )}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}

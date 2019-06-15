@@ -1,20 +1,14 @@
 import * as React from 'react';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform, View, Image } from 'react-native';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { AppTheme } from 'openland-mobile/themes/themes';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { SRouter } from 'react-native-s/SRouter';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
-interface NotificationCenterButtonProps {
-    theme: AppTheme;
-    onPress: () => void;
-}
-
-export const NotificationCenterButton = XMemo<NotificationCenterButtonProps>((props) => {
-    const { theme, onPress } = props;
-
-    const notificationCenter = getClient().useWithoutLoaderMyNotificationCenter();
-    const dot = notificationCenter && notificationCenter.myNotificationCenter.unread > 0;
+const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress: () => void }>((props) => {
+    const { dot, theme, onPress } = props;
 
     const icon = Platform.OS === 'ios' ? require('assets/ic-header-notifications-26.png') : require('assets/ic-notifications-24.png');
     const size = Platform.OS === 'ios' ? 26 : 24;
@@ -44,4 +38,25 @@ export const NotificationCenterButton = XMemo<NotificationCenterButtonProps>((pr
             </View>
         </SHeaderButton>
     );
+});
+
+export const MainHeaderButtons = XMemo<{ router: SRouter, theme: AppTheme }>((props) => {
+    const { router, theme } = props;
+
+    const notificationCenter = getClient().useWithoutLoaderMyNotificationCenter();
+    const dot = notificationCenter && notificationCenter.myNotificationCenter.unread > 0 || false;
+
+    return (
+        <>
+            {NON_PRODUCTION && (
+                <NotificationCenterButton dot={dot} theme={theme} onPress={() => router.push('NotificationCenter')} />
+            )}
+            <SHeaderButton
+                key={'compose-button-' + dot}
+                title="New"
+                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
+                onPress={() => props.router.push('Compose')}
+            />
+        </>
+    )
 });
