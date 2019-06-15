@@ -13,6 +13,7 @@ import { AsyncAvatar } from 'openland-mobile/messenger/components/AsyncAvatar';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { isPad } from 'openland-mobile/pages/Root';
 import { RoomNano_SharedRoom } from 'openland-api/Types';
+import { ASImage } from 'react-native-async-view/ASImage';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
@@ -83,24 +84,27 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                 </ASFlex>
 
                 {sharedRoom && (
-                    <ASFlex onPress={() => messenger.handleGroupClick(sharedRoom.id)} marginLeft={10}>
-                        <AsyncAvatar
-                            size={18}
-                            src={sharedRoom.photo}
-                            placeholderKey={sharedRoom.id}
-                            placeholderTitle={sharedRoom.title}
-                        />
+                    <>
+                        <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.textLabelColor} />
+                        <ASFlex onPress={() => messenger.handleGroupClick(sharedRoom.id)} marginLeft={7}>
+                            <AsyncAvatar
+                                size={18}
+                                src={sharedRoom.photo}
+                                placeholderKey={sharedRoom.id}
+                                placeholderTitle={sharedRoom.title}
+                            />
 
-                        <ASText
-                            fontSize={14}
-                            lineHeight={18}
-                            fontWeight={TextStyles.weight.medium}
-                            color={theme.textColor}
-                            marginLeft={8}
-                        >
-                            {sharedRoom.title}
-                        </ASText>
-                    </ASFlex>
+                            <ASText
+                                fontSize={14}
+                                lineHeight={18}
+                                fontWeight={TextStyles.weight.medium}
+                                color={theme.textColor}
+                                marginLeft={8}
+                            >
+                                {sharedRoom.title}
+                            </ASText>
+                        </ASFlex>
+                    </>
                 )}
             </ASFlex>
 

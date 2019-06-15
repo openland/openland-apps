@@ -524,6 +524,13 @@
             "sizes": [
                 22
             ]
+        },
+        {
+            "name": "ic-reply-comments",
+            "src": "ic-reply-comments.svg",
+            "sizes": [
+                18
+            ]
         }
     ]
 }
