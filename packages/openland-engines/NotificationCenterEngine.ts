@@ -158,7 +158,7 @@ export class NotificationCenterEngine {
     }
 
     handleNotificationRead = async (event: Types.NotificationCenterUpdateFragment_NotificationRead) => {
-        // Wonderfull SpaceX
+        // Wonderfull SpaceX & Apollo
     }
 
     handleStateProcessed = async (state: string) => {

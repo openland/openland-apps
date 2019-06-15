@@ -9,9 +9,8 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { NotificationCenterStateHandler, NotificationCenterState } from 'openland-engines/NotificationCenterState';
 import { AppTheme } from 'openland-mobile/themes/themes';
-import { View, Text } from 'react-native';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
+import { NotificationCenterEmpty } from './components/notificationCenter/NotificationCenterEmpty';
 
 interface NotificationCenterPageProps {
     theme: AppTheme;
@@ -51,8 +50,6 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     render() {
         const { theme } = this.props;
 
-        console.warn('boom', this.state.state.notifications);
-
         return (
             <>
                 <NotificationCenterHeader theme={theme} />
@@ -60,15 +57,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
                     {area => (
                         <>
                             {this.state.state.notifications.length <= 0 && (
-                                <View>
-                                    <Text>Empty</Text>
-                                    <Text>Empty</Text>
-                                    <Text>Empty</Text>
-                                    <Text>Empty</Text>
-                                    <Text>Empty</Text>
-                                    <Text>Empty</Text>
-                                    <Text>{this.state.state.notifications.length}</Text>
-                                </View>
+                                <NotificationCenterEmpty />
                             )}
                             {this.state.state.notifications.length > 0 && (
                                 <ASListView
