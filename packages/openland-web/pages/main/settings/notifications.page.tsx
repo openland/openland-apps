@@ -236,6 +236,7 @@ interface NotificationsSettingsPageProps {
 interface NotificationsSettingsPageState {
     isNotificationSelectChanged: boolean;
     isEmailSelectChanged: boolean;
+    isCommentSelectChanged: boolean;
 }
 
 class NotificationsSettingsPageInner extends React.Component<
@@ -248,6 +249,7 @@ class NotificationsSettingsPageInner extends React.Component<
         this.state = {
             isNotificationSelectChanged: false,
             isEmailSelectChanged: false,
+            isCommentSelectChanged: false,
         };
     }
 
@@ -263,6 +265,12 @@ class NotificationsSettingsPageInner extends React.Component<
         });
     };
 
+    handleCommentSelectChange = () => {
+        this.setState({
+            isCommentSelectChanged: true,
+        });
+    };
+
     handleNotificationSelectSaved = () => {
         this.setState({
             isNotificationSelectChanged: false,
@@ -275,8 +283,15 @@ class NotificationsSettingsPageInner extends React.Component<
         });
     };
 
+    handleCommentSelectSaved = () => {
+        this.setState({
+            isCommentSelectChanged: false,
+        });
+    };
+
     render() {
         let notificationParams = this.props.settings.desktopNotifications;
+        let commentParams = this.props.settings.commentNotifications;
 
         if (notificationParams === NotificationMessages.NONE) {
             notificationParams = NotificationMessages.DIRECT;
@@ -339,6 +354,57 @@ class NotificationsSettingsPageInner extends React.Component<
                                         style="primary"
                                         alignSelf="flex-start"
                                         onSuccessAnimationEnd={this.handleNotificationSelectSaved}
+                                    />
+                                )}
+                            </XVertical>
+                        </XForm>
+
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    comment: commentParams,
+                                },
+                            }}
+                            defaultAction={async data => {
+                                await this.props.client.mutateSettingsUpdate({
+                                    input: {
+                                        commentNotifications: data.input.comment,
+                                    },
+                                });
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XFormError onlyGeneralErrors={true} />
+                            <XVertical separator={8}>
+                                <Group>
+                                    <GroupTitle>Comment notifications</GroupTitle>
+                                    <XView maxWidth={440}>
+                                        <XSelect
+                                            field="input.comment"
+                                            searchable={false}
+                                            clearable={false}
+                                            onChange={this.handleCommentSelectChange}
+                                            options={[
+                                                {
+                                                    value: 'ALL',
+                                                    label: 'All',
+                                                },
+                                                {
+                                                    value: 'NONE',
+                                                    label: 'None',
+                                                },
+                                            ]}
+                                        />
+                                    </XView>
+                                </Group>
+
+                                {this.state.isCommentSelectChanged && (
+                                    <XFormSubmit
+                                        successText="Saved!"
+                                        text="Save changes"
+                                        style="primary"
+                                        alignSelf="flex-start"
+                                        onSuccessAnimationEnd={this.handleCommentSelectSaved}
                                     />
                                 )}
                             </XVertical>
