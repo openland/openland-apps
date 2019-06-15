@@ -126,7 +126,7 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
     render() {
         const { state } = this.state;
 
-        if (state.notifications.length <= 0) {
+        if (!state.loading && state.notifications.length <= 0) {
             return (
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />

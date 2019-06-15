@@ -60,7 +60,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         const { theme } = this.props;
         const { state } = this.state;
 
-        const isEmpty = state.notifications.length <= 0;
+        const isEmpty = !state.loading && state.notifications.length <= 0;
         const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
         return (

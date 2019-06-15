@@ -2,9 +2,11 @@ import { NotificationsDataSourceItem } from './NotificationCenterEngine';
 
 export class NotificationCenterState {
     readonly notifications: NotificationsDataSourceItem[];
+    readonly loading: boolean;
 
-    constructor(notifications: NotificationsDataSourceItem[]) {
+    constructor(loading: boolean, notifications: NotificationsDataSourceItem[]) {
         this.notifications = notifications;
+        this.loading = loading;
     }
 }
 

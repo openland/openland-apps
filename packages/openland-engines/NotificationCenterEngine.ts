@@ -73,7 +73,7 @@ export class NotificationCenterEngine {
         this.engine = options.engine;
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
-        this.state = new NotificationCenterState([]);
+        this.state = new NotificationCenterState(true, []);
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
@@ -104,7 +104,7 @@ export class NotificationCenterEngine {
                     }
 
                     this.notifications = [...items, ...this.notifications];
-                    this.state = new NotificationCenterState(this.notifications);
+                    this.state = new NotificationCenterState(false, this.notifications);
 
                     this.onNotificationsUpdated();
 
@@ -121,7 +121,7 @@ export class NotificationCenterEngine {
                 this.engine.global.handleNotificationsCenterStarted(state);
 
                 this.notifications = [...items, ...this.notifications];
-                this.state = new NotificationCenterState(this.notifications);
+                this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
             },
@@ -147,7 +147,7 @@ export class NotificationCenterEngine {
             await this._dataSourceStored.addItem(convertedNotification, 0);
 
             this.notifications = [convertedNotification, ...this.notifications];
-            this.state = new NotificationCenterState(this.notifications);
+            this.state = new NotificationCenterState(false, this.notifications);
 
             this.onNotificationsUpdated();
         }
@@ -160,7 +160,7 @@ export class NotificationCenterEngine {
             await this._dataSourceStored.removeItem(id);
 
             this.notifications = this.notifications.filter(n => n.key !== id);
-            this.state = new NotificationCenterState(this.notifications);
+            this.state = new NotificationCenterState(false, this.notifications);
 
             this.onNotificationsUpdated();
         }
