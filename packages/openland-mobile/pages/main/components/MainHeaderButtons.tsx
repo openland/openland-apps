@@ -5,7 +5,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SRouter } from 'react-native-s/SRouter';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress: () => void }>((props) => {
     const { dot, theme, onPress } = props;
@@ -48,9 +47,7 @@ export const MainHeaderButtons = XMemo<{ router: SRouter, theme: AppTheme }>((pr
 
     return (
         <>
-            {NON_PRODUCTION && (
-                <NotificationCenterButton dot={dot} theme={theme} onPress={() => router.push('NotificationCenter')} />
-            )}
+            <NotificationCenterButton dot={dot} theme={theme} onPress={() => router.push('NotificationCenter')} />
             <SHeaderButton
                 key={'compose-button-' + dot}
                 title="New"
