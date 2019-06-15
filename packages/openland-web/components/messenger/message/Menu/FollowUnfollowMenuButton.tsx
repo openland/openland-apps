@@ -27,10 +27,6 @@ export const FollowUnfollowMenuButton = ({
                         type,
                     });
                 }
-
-                await client.refetchMyNotifications({
-                    first: 100,
-                });
             }}
         >
             {isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread'}

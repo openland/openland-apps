@@ -148,10 +148,6 @@ export const Menu = React.memo(
                             await client.mutateDeleteNotification({
                                 notificationId: message.notificationId!!,
                             });
-
-                            await client.refetchMyNotifications({
-                                first: 100,
-                            });
                         }}
                     >
                         Remove this notification
