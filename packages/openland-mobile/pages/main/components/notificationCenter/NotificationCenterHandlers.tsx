@@ -8,7 +8,7 @@ import { CommentSubscriptionType } from 'openland-api/Types';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
-        Alert.alert('onPress: ' + id);
+        // ignore
     }
 
     handleLongPress = (id: string, item: NotificationsDataSourceItem) => {

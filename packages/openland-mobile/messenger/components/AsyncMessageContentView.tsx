@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, Linking } from 'react-native';
-import { DataSourceMessageItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -27,7 +27,6 @@ export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out"
 
 interface AsyncMessageTextViewProps {
     theme: AppTheme;
-    engine: ConversationEngine;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -131,7 +130,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         bottomContent = [];
     }
 
-    if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
+    if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument && compensateBubble) {
         topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + props.theme.linkColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.theme.linkColor}>{props.message.senderName}</ASText>);
     }
 

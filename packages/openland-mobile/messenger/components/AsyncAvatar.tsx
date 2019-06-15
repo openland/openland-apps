@@ -39,6 +39,9 @@ export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
         }
         let textSize = 28;
+        if (this.props.size === 18) {
+            textSize = 10;
+        }
         if (this.props.size === 40) {
             textSize = 16;
         }

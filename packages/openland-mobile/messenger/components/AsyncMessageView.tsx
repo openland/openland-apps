@@ -91,7 +91,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res =
-            <AsyncMessageContentView theme={theme} key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onUserPress} onGroupPress={handleGroupPress} />;
+            <AsyncMessageContentView theme={theme} key={'message-content'} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onUserPress} onGroupPress={handleGroupPress} />;
     }
     if (!res) {
         res =

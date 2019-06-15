@@ -42,12 +42,15 @@ export const convertNotification = (notification: Types.NotificationFragment): N
                 ...comment.comment,
             }),
 
-            key: notification.id,
             peerRootId: peer.peerRoot.message.id,
             room: peer.peerRoot.chat,
             isSubscribedMessageComments: !!peer.subscription!!,
             notificationId: notification.id,
             replyQuoteText,
+
+            // rewrite results from convertMessage
+            key: notification.id,
+            isOut: false
         }
     }
 

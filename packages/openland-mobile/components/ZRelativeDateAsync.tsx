@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { Text, TextProps } from 'react-native';
 import { formatRelativeTime } from 'openland-mobile/utils/formatTime';
+import { ASTextProps, ASText } from 'react-native-async-view/ASText';
 
-interface ZRelativeDateProps extends TextProps {
+interface ZRelativeDateAsyncProps extends ASTextProps {
     date: string | number;
 }
 
-interface ZRelativeDateState {
+interface ZRelativeDateAsyncState {
     huminizedDate: string;
 }
 
-export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelativeDateState> {
+export class ZRelativeDateAsync extends React.Component<ZRelativeDateAsyncProps, ZRelativeDateAsyncState> {
     private interval: NodeJS.Timeout | undefined = undefined;
 
-    constructor(props: ZRelativeDateProps) {
+    constructor(props: ZRelativeDateAsyncProps) {
         super(props);
 
         this.state = {
@@ -39,7 +39,7 @@ export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelative
         const { date, ...other } = this.props;
 
         return (
-            <Text {...other}>{this.state.huminizedDate}</Text>
+            <ASText {...other}>{this.state.huminizedDate}</ASText>
         )
     }
 };
