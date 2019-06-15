@@ -1,44 +1,38 @@
-fragment NotificationFragment on NewCommentNotification {
+fragment NotificationFragment on Notification {
   __typename
-  comment {
+  content {
     __typename
-    ...CommentEntryFragment
-  }
-  peer {
-    __typename
-    id
-    peerRoot {
-      __typename
-      ... on CommentPeerRootMessage {
-        chat {
+    ... on NewCommentNotification {
+      comment {
+        __typename
+        ...CommentEntryFragment
+      }
+      peer {
+        __typename
+        id
+        peerRoot {
           __typename
-          ... on PrivateRoom {
-            id
-            user {
+          ... on CommentPeerRootMessage {
+            chat {
               __typename
-              id
-              name
-              photo
+              ...RoomNano
+            }
+            message {
+              __typename
+              ... on GeneralMessage {
+                id
+                message
+              }
             }
           }
-          ... on SharedRoom {
-            id
-            photo
-            title
-          }
         }
-        message {
+        subscription {
           __typename
-          ... on GeneralMessage {
-            id
-            message
-          }
+          type
         }
       }
     }
-    subscription {
-      __typename
-      type
-    }
   }
+  id
+  text
 }

@@ -24,7 +24,7 @@ import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterItemAsync';
 import { NotificationCenterHandlers } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterHandlers';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
-import { NotificationsDataSourceItemStored } from 'openland-engines/NotificationCenterEngine';
+import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -54,7 +54,7 @@ export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
-    readonly notifications: ASDataView<NotificationsDataSourceItemStored>;
+    readonly notifications: ASDataView<NotificationsDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {

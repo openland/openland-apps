@@ -680,77 +680,105 @@ private let DialogUpdateFragmentSelector = obj(
             ))
         )
 
+private let RoomNanoSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("user","user", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("name","name", notNull(scalar("String"))),
+                        field("photo","photo", scalar("String"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("id","id", notNull(scalar("ID"))),
+                field("isChannel","isChannel", notNull(scalar("Boolean"))),
+                field("kind","kind", notNull(scalar("String"))),
+                field("photo","photo", notNull(scalar("String"))),
+                field("settings","settings", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("mute","mute", scalar("Boolean"))
+                    ))),
+                field("title","title", notNull(scalar("String")))
+            ))
+        )
+
 private let NotificationFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("comment","comment", notNull(obj(
+            field("content","content", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("CommentEntry", CommentEntryFragmentSelector)
-                ))),
-            field("peer","peer", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("peerRoot","peerRoot", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            inline("CommentPeerRootMessage", obj(
-                                field("chat","chat", notNull(obj(
+                    inline("NewCommentNotification", obj(
+                        field("comment","comment", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("CommentEntry", CommentEntryFragmentSelector)
+                            ))),
+                        field("peer","peer", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("peerRoot","peerRoot", notNull(obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
-                                        inline("PrivateRoom", obj(
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("user","user", notNull(obj(
+                                        inline("CommentPeerRootMessage", obj(
+                                            field("chat","chat", notNull(obj(
                                                     field("__typename","__typename", notNull(scalar("String"))),
-                                                    field("id","id", notNull(scalar("ID"))),
-                                                    field("name","name", notNull(scalar("String"))),
-                                                    field("photo","photo", scalar("String"))
+                                                    fragment("Room", RoomNanoSelector)
+                                                ))),
+                                            field("message","message", notNull(obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    inline("GeneralMessage", obj(
+                                                        field("id","id", notNull(scalar("ID"))),
+                                                        field("message","message", scalar("String"))
+                                                    ))
                                                 )))
-                                        )),
-                                        inline("SharedRoom", obj(
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("photo","photo", notNull(scalar("String"))),
-                                            field("title","title", notNull(scalar("String")))
                                         ))
                                     ))),
-                                field("message","message", notNull(obj(
+                                field("subscription","subscription", obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
-                                        inline("GeneralMessage", obj(
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("message","message", scalar("String"))
-                                        ))
-                                    )))
-                            ))
-                        ))),
-                    field("subscription","subscription", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("type","type", scalar("String"))
-                        ))
-                )))
+                                        field("type","type", scalar("String"))
+                                    ))
+                            )))
+                    ))
+                ))))),
+            field("id","id", notNull(scalar("ID"))),
+            field("text","text", scalar("String"))
         )
 
 private let NotificationCenterUpdateFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("NotificationReceived", obj(
+                field("center","center", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("unread","unread", notNull(scalar("Int")))
+                    ))),
                 field("notification","notification", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        field("content","content", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("NewCommentNotification", NotificationFragmentSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID")))
-                    ))),
-                field("unread","unread", notNull(scalar("Int")))
+                        fragment("Notification", NotificationFragmentSelector)
+                    )))
             )),
             inline("NotificationDeleted", obj(
+                field("center","center", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("unread","unread", notNull(scalar("Int")))
+                    ))),
                 field("notification","notification", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        field("content","content", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("NewCommentNotification", NotificationFragmentSelector)
-                            ))))),
                         field("id","id", notNull(scalar("ID")))
-                    ))),
-                field("unread","unread", notNull(scalar("Int")))
+                    )))
             )),
             inline("NotificationRead", obj(
-                field("unread","unread", notNull(scalar("Int")))
+                field("center","center", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("unread","unread", notNull(scalar("Int")))
+                    )))
             ))
         )
 
@@ -1039,36 +1067,6 @@ private let RoomFullWithoutMembersSelector = obj(
                                 field("name","name", notNull(scalar("String")))
                             ))
                     ))
-            ))
-        )
-
-private let RoomNanoSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
-                    ))),
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("name","name", notNull(scalar("String"))),
-                        field("photo","photo", scalar("String"))
-                    )))
-            )),
-            inline("SharedRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                field("kind","kind", notNull(scalar("String"))),
-                field("photo","photo", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
-                    ))),
-                field("title","title", notNull(scalar("String")))
             ))
         )
 
@@ -1517,6 +1515,10 @@ private let MyNotificationCenterSelector = obj(
             field("myNotificationCenter","myNotificationCenter", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
+                    field("state","state", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("state","state", scalar("String"))
+                        ))),
                     field("unread","unread", notNull(scalar("Int")))
                 )))
         )
@@ -1526,12 +1528,7 @@ private let MyNotificationsSelector = obj(
                     field("cursor","cursor", scalar("String")),
                     field("items","items", notNull(list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
-                            field("content","content", notNull(list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("NewCommentNotification", NotificationFragmentSelector)
-                                ))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("text","text", scalar("String"))
+                            fragment("Notification", NotificationFragmentSelector)
                         )))))
                 )))
         )
@@ -3102,13 +3099,13 @@ class Operations {
     let MyNotificationCenter = OperationDefinition(
         "MyNotificationCenter",
         .query, 
-        "query MyNotificationCenter{myNotificationCenter{__typename id unread}}",
+        "query MyNotificationCenter{myNotificationCenter{__typename id state{__typename state}unread}}",
         MyNotificationCenterSelector
     )
     let MyNotifications = OperationDefinition(
         "MyNotifications",
         .query, 
-        "query MyNotifications($before:ID,$first:Int!){myNotifications(before:$before,first:$first){__typename cursor items{__typename content{__typename ...NotificationFragment}id text}}}fragment NotificationFragment on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
+        "query MyNotifications($before:ID,$first:Int!){myNotifications(before:$before,first:$first){__typename cursor items{__typename ...NotificationFragment}}}fragment NotificationFragment on Notification{__typename content{__typename ... on NewCommentNotification{comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{chat{__typename ...RoomNano}message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}}id text}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}",
         MyNotificationsSelector
     )
     let MyOrganizations = OperationDefinition(
@@ -4026,7 +4023,7 @@ class Operations {
     let MyNotificationsCenter = OperationDefinition(
         "MyNotificationsCenter",
         .subscription, 
-        "subscription MyNotificationsCenter($state:String){event:notificationCenterUpdates(fromState:$state){__typename ... on NotificationCenterUpdateSingle{seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{notification{__typename content{__typename ...NotificationFragment}id}unread}... on NotificationDeleted{notification{__typename content{__typename ...NotificationFragment}id}unread}... on NotificationRead{unread}}fragment NotificationFragment on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
+        "subscription MyNotificationsCenter($state:String){event:notificationCenterUpdates(fromState:$state){__typename ... on NotificationCenterUpdateSingle{seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationDeleted{center{__typename id unread}notification{__typename id}}... on NotificationRead{center{__typename id unread}}}fragment NotificationFragment on Notification{__typename content{__typename ... on NewCommentNotification{comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{chat{__typename ...RoomNano}message{__typename ... on GeneralMessage{id message}}}}subscription{__typename type}}}}id text}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}",
         MyNotificationsCenterSelector
     )
     let OnlineWatch = OperationDefinition(

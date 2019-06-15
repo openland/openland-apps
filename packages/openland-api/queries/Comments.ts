@@ -1,41 +1,36 @@
 import gql from 'graphql-tag';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { FullMessage } from 'openland-api/fragments/Message';
+import { RoomNano } from 'openland-api/fragments/RoomNano';
 
 export const NotificationFragment = gql`
-    fragment NotificationFragment on NewCommentNotification {
-        comment {
-            ...CommentEntryFragment
-        }
-        peer {
-            id
-            peerRoot {
-                ... on CommentPeerRootMessage {
-                    message {
-                        ... on GeneralMessage {
-                            id
-                            message
-                        }
-                    }
-                    chat {
-                        ... on PrivateRoom {
-                            id
-                            user {
-                                id
-                                name
-                                photo
+    fragment NotificationFragment on Notification {
+        id
+        text
+        content {
+            ... on NewCommentNotification {
+                comment {
+                    ...CommentEntryFragment
+                }
+                peer {
+                    id
+                    peerRoot {
+                        ... on CommentPeerRootMessage {
+                            message {
+                                ... on GeneralMessage {
+                                    id
+                                    message
+                                }
+                            }
+                            chat {
+                                ...RoomNano
                             }
                         }
-                        ... on SharedRoom {
-                            id
-                            title
-                            photo
-                        }
+                    }
+                    subscription {
+                        type
                     }
                 }
-            }
-            subscription {
-                type
             }
         }
     }
@@ -45,42 +40,44 @@ export const MyNotificationsQuery = gql`
     query MyNotifications($first: Int!, $before: ID) {
         myNotifications(first: $first, before: $before) {
             items {
-                id
-                text
-                content {
-                    ... NotificationFragment
-                }
+                ...NotificationFragment
             }
+
             cursor
         }
+
         ${FullMessage}
         ${CommentEntryFragment}
         ${NotificationFragment}
+        ${RoomNano}
     }
 `;
 
 export const NotificationCenterUpdateFragment = gql`
     fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
         ... on NotificationReceived {
-            unread
-            notification {
+            center {
                 id
-                content {
-                    ... NotificationFragment
-                }
+                unread
+            }
+            notification {
+                ...NotificationFragment
             }
         }
         ... on NotificationDeleted {
-            unread
+            center {
+                id
+                unread
+            }
             notification {
                 id
-                content {
-                    ... NotificationFragment
-                }
             }
         }
         ... on NotificationRead {
-            unread
+            center {
+                id
+                unread
+            }
         }
     }
 `;
@@ -105,6 +102,8 @@ export const MyNotificationsCenterSubscription = gql`
             }
         }
     }
+
+    ${RoomNano}
     ${FullMessage}
     ${CommentEntryFragment}
     ${NotificationFragment}
@@ -116,6 +115,9 @@ export const MyNotificationCenterQuery = gql`
         myNotificationCenter {
             id
             unread
+            state {
+                state
+            }
         }
     }
 `;
@@ -139,6 +141,7 @@ export const MessageCommentsQuery = gql`
             }
         }
     }
+
     ${CommentEntryFragment}
     ${FullMessage}
 `;

@@ -40,7 +40,7 @@ const NotificationButton = ({ haveNotification }: { haveNotification: boolean })
 
 const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
     const client = useClient();
-    const notificationsCenter = client.useMyNotificationCenter();
+    const notificationsCenter = client.useMyNotificationCenter({ fetchPolicy: 'network-only' });
 
     let router = React.useContext(XRouterContext)!;
     return (

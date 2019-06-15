@@ -6,9 +6,7 @@ import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
-import {
-    MyNotifications_myNotifications_items
-} from 'openland-api/Types';
+import * as Types from 'openland-api/Types';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -17,21 +15,55 @@ type NotificationCenterEngineOptions = {
     mocked?: boolean;
 };
 
-export type NotificationsDataSourceItemStored = DataSourceMessageItem;
+export type NotificationsDataSourceItem = DataSourceMessageItem;
+
+export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
+    const content = notification.content;
+
+    // TODO go through notification.content, now take only first
+    if (content && content.length && content[0]!!.__typename === 'NewCommentNotification') {
+        const firstContent = content[0]!!;
+        const comment = firstContent.comment;
+        const peer = firstContent.peer;
+
+        let replyQuoteText;
+
+        if (comment.parentComment) {
+            replyQuoteText = comment.parentComment.comment.message;
+        } else {
+            replyQuoteText = peer.peerRoot.message.message;
+        }
+
+        return {
+            ...convertMessage({
+                ...comment.comment,
+            }),
+
+            key: notification.id,
+            peerRootId: peer.peerRoot.message.id,
+            room: peer.peerRoot.chat,
+            isSubscribedMessageComments: !!peer.subscription!!,
+            notificationId: notification.id,
+            replyQuoteText,
+        }
+    }
+
+    return null
+}
 
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;
     readonly client: OpenlandClient;
     readonly isMocked: boolean;
-    readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItemStored>;
-    readonly dataSource: DataSource<NotificationsDataSourceItemStored>;
+    readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItem>;
+    readonly dataSource: DataSource<NotificationsDataSourceItem>;
 
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
 
-        let provider: DataSourceStoredProvider<NotificationsDataSourceItemStored> = {
+        let provider: DataSourceStoredProvider<NotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
                 log.log('loadMore (cursor: ' + cursor + ')');
 
@@ -42,14 +74,18 @@ export class NotificationCenterEngine {
                         state: '',
                     };
                 } else {
-                    let notifications = await this.engine.client.queryMyNotifications(
-                        { first: 100 },
+                    const notificationsQuery = await this.engine.client.queryMyNotifications(
+                        { first: 20, before: cursor },
+                        { fetchPolicy: 'network-only' }
                     );
+                    const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
 
+                    const notifications = notificationsQuery.myNotifications.items;
                     const items = [];
 
-                    for (let notification of notifications.myNotifications.items) {
-                        const convertedNotification = this.convertNotification(notification)
+                    for (let notification of notifications) {
+                        const convertedNotification = convertNotification(notification);
+
                         if (convertedNotification) {
                             items.push(convertedNotification);
                         }
@@ -57,8 +93,8 @@ export class NotificationCenterEngine {
 
                     return {
                         items,
-                        cursor: undefined,
-                        state: '',
+                        cursor: notificationsQuery.myNotifications.cursor || undefined,
+                        state: notificationCenterQuery.myNotificationCenter.state.state!!,
                     };
                 }
             },
@@ -70,7 +106,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications',
+            'notifications2',
             options.engine.options.store,
             20,
             provider,
@@ -79,49 +115,9 @@ export class NotificationCenterEngine {
         this.dataSource = this._dataSourceStored.dataSource;
     }
 
-    convertNotification = (notification: MyNotifications_myNotifications_items) => {
-        const content = notification.content;
-        // TODO go through notification.content, now take only first
-        if (
-            notification.content &&
-            notification.content.length &&
-            notification.content[0]!!.__typename === 'NewCommentNotification'
-        ) {
-            const firstContent = content!![0];
-            const comment = firstContent!!.comment!!;
-            const peer = firstContent!!.peer!!;
+    handleNotificationReceived = async (event: Types.NotificationCenterUpdateFragment_NotificationReceived) => {
+        const convertedNotification = convertNotification(event.notification);
 
-            let replyQuoteText;
-            if (comment.parentComment) {
-                const parentComment = comment.parentComment;
-                replyQuoteText = parentComment.comment.message;
-            } else {
-                replyQuoteText = peer.peerRoot.message.message;
-            }
-
-            let room = peer.peerRoot.chat;
-
-            return {
-                ...convertMessage({
-                    ...comment.comment,
-                }),
-                peerRootId: peer.peerRoot.message.id,
-                room: room,
-                isSubscribedMessageComments: !!peer.subscription!!,
-                notificationId: notification.id,
-                replyQuoteText,
-            }
-        }
-
-        return null
-    }
-
-    handleNotificationReceived = async (event: any) => {
-        await this.engine.client.refetchMyNotificationCenter();
-
-        const notification = event.notification
-
-        const convertedNotification = this.convertNotification(notification)
         if (convertedNotification) {
             await this._dataSourceStored.addItem(
                 convertedNotification,
@@ -130,20 +126,16 @@ export class NotificationCenterEngine {
         }
     }
 
-    handleNotificationDeleted = async (event: any) => {
-        await this.engine.client.refetchMyNotificationCenter();
+    handleNotificationDeleted = async (event: Types.NotificationCenterUpdateFragment_NotificationDeleted) => {
+        const id = event.notification.id;
 
-        const notification = event.notification
-
-        const convertedNotification = this.convertNotification(notification)
-
-        if (convertedNotification && convertedNotification.id) {
-            await this._dataSourceStored.removeItem(convertedNotification.id);
+        if (await this._dataSourceStored.hasItem(id)) {
+            await this._dataSourceStored.removeItem(id);
         }
     }
 
-    handleNotificationRead = async (event: any) => {
-        await this.engine.client.refetchMyNotificationCenter();
+    handleNotificationRead = async (event: Types.NotificationCenterUpdateFragment_NotificationRead) => {
+        // Wonderfull SpaceX
     }
 
     handleStateProcessed = async (state: string) => {

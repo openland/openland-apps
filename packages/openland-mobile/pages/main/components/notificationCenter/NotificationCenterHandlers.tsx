@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { NotificationsDataSourceItemStored } from 'openland-engines/NotificationCenterEngine';
+import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
 class NotificationCenterHandlersClass {
-    handlePress = (id: string, item: NotificationsDataSourceItemStored) => {
+    handlePress = (id: string, item: NotificationsDataSourceItem) => {
         Alert.alert('onPress: ' + id);
     }
 
-    handleLongPress = (id: string, item: NotificationsDataSourceItemStored) => {
+    handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
         const builder = new ActionSheetBuilder();
 
         builder.action('Turn off notifications', () => {

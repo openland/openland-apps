@@ -53,10 +53,13 @@ export interface DataSourceMessageItem {
     fallback?: string;
     textSpans: Span[];
     replyTextSpans: Span[][];
+
+    // legacy
     isSubscribedMessageComments?: boolean;
     replyQuoteText?: string | null;
     peerRootId?: string;
     notificationId?: string;
+    room?: Types.RoomNano;
 }
 
 export interface DataSourceDateItem {

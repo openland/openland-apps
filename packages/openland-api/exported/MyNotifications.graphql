@@ -4,12 +4,7 @@ query MyNotifications($before: ID, $first: Int!) {
     cursor
     items {
       __typename
-      content {
-        __typename
-        ...NotificationFragment
-      }
-      id
-      text
+      ...NotificationFragment
     }
   }
 }

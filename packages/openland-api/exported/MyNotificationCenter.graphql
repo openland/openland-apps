@@ -2,6 +2,10 @@ query MyNotificationCenter {
   myNotificationCenter {
     __typename
     id
+    state {
+      __typename
+      state
+    }
     unread
   }
 }

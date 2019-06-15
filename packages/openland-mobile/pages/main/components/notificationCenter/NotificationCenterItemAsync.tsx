@@ -4,13 +4,13 @@ import { ASText } from 'react-native-async-view/ASText';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { NotificationsDataSourceItemStored } from 'openland-engines/NotificationCenterEngine';
+import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
 interface NotificationCenterItemAsyncProps {
-    item: NotificationsDataSourceItemStored;
+    item: NotificationsDataSourceItem;
     
-    onPress?: (id: string, item: NotificationsDataSourceItemStored) => void;
-    onLongPress?: (id: string, item: NotificationsDataSourceItemStored) => void;
+    onPress?: (id: string, item: NotificationsDataSourceItem) => void;
+    onLongPress?: (id: string, item: NotificationsDataSourceItem) => void;
 }
 
 const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps & { theme: AppTheme }>((props) => {
