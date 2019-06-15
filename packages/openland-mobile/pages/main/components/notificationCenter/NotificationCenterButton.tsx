@@ -3,22 +3,25 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform, View, Image } from 'react-native';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 interface NotificationCenterButtonProps {
-    dot: boolean;
     theme: AppTheme;
     onPress: () => void;
 }
 
 export const NotificationCenterButton = XMemo<NotificationCenterButtonProps>((props) => {
-    const { dot, theme, onPress } = props;
+    const { theme, onPress } = props;
+
+    const notificationCenter = getClient().useWithoutLoaderMyNotificationCenter();
+    const dot = notificationCenter && notificationCenter.myNotificationCenter.unread > 0;
 
     const icon = Platform.OS === 'ios' ? require('assets/ic-header-notifications-26.png') : require('assets/ic-notifications-24.png');
     const size = Platform.OS === 'ios' ? 26 : 24;
     const color = Platform.OS === 'ios' ? theme.accentColor : theme.textColor;
 
     return (
-        <SHeaderButton onPress={onPress}>
+        <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
             <View width={Platform.OS === 'ios' ? 44 : undefined} height={44} alignItems="center" justifyContent="center">
                 <Image source={icon} style={{ width: size, height: size, tintColor: color }} resizeMode="contain" />
     
