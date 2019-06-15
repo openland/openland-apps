@@ -187,6 +187,8 @@ export class NotificationCenterEngine {
 
     subscribe = (listener: NotificationCenterStateHandler) => {
         this.listeners.push(listener);
+
+        this.markReadIfNeeded();
         listener.onNotificationCenterUpdated(this.state);
 
         return () => {

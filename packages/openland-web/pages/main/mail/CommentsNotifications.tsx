@@ -9,11 +9,15 @@ import glamorous from 'glamorous';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
+    DataSourceWebDateItem,
 } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
+import { NotificationCenterState, NotificationCenterStateHandler } from 'openland-engines/NotificationCenterState';
+import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
+import { DataSource } from 'openland-y-utils/DataSource';
 
 const wrapperClassName = css`
     width: 100%;
@@ -44,56 +48,51 @@ const LoadingWrapper = glamorous.div({
     position: 'relative',
 });
 
-export const CommentsNotifications = () => {
-    const messenger = React.useContext(MessengerContext);
-    const dataSource = buildMessagesDataSource(messenger.notificationCenter.dataSource);
-    const [isFirstRender, setFirstRender] = React.useState(true);
-    const [isEmpty, setIsEmpty] = React.useState(false);
+interface CommentsNotificationsProps {
+    engine: NotificationCenterEngine;
+}
 
-    React.useEffect(() => {
-        setFirstRender(false);
-        dataSource.watch({
-            onDataSourceInited: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceItemAdded: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceItemUpdated: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceItemRemoved: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceItemMoved: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceLoadedMore: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-            onDataSourceCompleted: () => {
-                setIsEmpty(dataSource.getSize() === 0);
-            },
-        });
-    }, []);
+interface CommentsNotificationsState {
+    state: NotificationCenterState;
+}
 
-    if (isEmpty) {
-        return (
-            <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
-            </XView>
-        );
+class CommentsNotificationsInner extends React.PureComponent<CommentsNotificationsProps, CommentsNotificationsState> implements NotificationCenterStateHandler {
+    private unmount: (() => void) | null = null;
+    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
+
+    constructor(props: CommentsNotificationsProps) {
+        super(props);
+
+        this.dataSource = buildMessagesDataSource(this.props.engine.dataSource);
+        this.state = {
+            state: this.props.engine.getState()
+        }
     }
 
-    const renderLoading = React.memo(() => {
+    componentWillMount() {
+        this.unmount = this.props.engine.subscribe(this);
+    }
+
+    componentWillUnmount() {
+        if (this.unmount) {
+            this.unmount();
+            this.unmount = null;
+        }
+    }
+
+    onNotificationCenterUpdated(state: NotificationCenterState) {
+        this.setState({ state });
+    }
+    
+    private renderLoading = () => {
         return (
             <LoadingWrapper>
                 <XLoader loading={true} />
             </LoadingWrapper>
         );
-    });
+    }
 
-    const dataSourceWrapper = React.memo((props: any) => {
+    private dataSourceWrapper = (props: { children?: any }) => {
         return (
             <>
                 <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
@@ -101,10 +100,11 @@ export const CommentsNotifications = () => {
                 </XScrollView3>
             </>
         );
-    });
+    }
 
-    const renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
+    private renderMessage = (i: DataSourceWebMessageItem | DataSourceDateItem) => {
         const data = i as any;
+
         return (
             <MessageComponent
                 message={data}
@@ -121,32 +121,46 @@ export const CommentsNotifications = () => {
                 }}
             />
         );
-    });
-
-    if (isFirstRender) {
-        return null;
     }
 
-    return (
-        <XView paddingTop={24} flexGrow={1} flexShrink={1}>
-            <MessagesWrapper>
-                <XView
-                    opacity={0.9}
-                    fontSize={18}
-                    fontWeight={'600'}
-                    lineHeight={1.33}
-                    color="#000"
-                >
-                    Comments
+    render() {
+        const { state } = this.state;
+
+        if (state.notifications.length <= 0) {
+            return (
+                <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                    <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
                 </XView>
-            </MessagesWrapper>
-            <DataSourceRender
-                dataSource={dataSource}
-                reverce={true}
-                wrapWith={dataSourceWrapper}
-                renderItem={renderMessage}
-                renderLoading={renderLoading}
-            />
-        </XView>
-    );
+            );
+        }
+
+        return (
+            <XView paddingTop={24} flexGrow={1} flexShrink={1}>
+                <MessagesWrapper>
+                    <XView
+                        opacity={0.9}
+                        fontSize={18}
+                        fontWeight={'600'}
+                        lineHeight={1.33}
+                        color="#000"
+                    >
+                        Comments
+                    </XView>
+                </MessagesWrapper>
+                <DataSourceRender
+                    dataSource={this.dataSource}
+                    reverce={true}
+                    wrapWith={this.dataSourceWrapper}
+                    renderItem={this.renderMessage}
+                    renderLoading={this.renderLoading}
+                />
+            </XView>
+        );
+    }
+}
+
+export const CommentsNotifications = () => {
+    const messenger = React.useContext(MessengerContext);
+
+    return <CommentsNotificationsInner engine={messenger.notificationCenter} />;
 };

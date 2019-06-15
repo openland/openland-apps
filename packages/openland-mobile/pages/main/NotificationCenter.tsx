@@ -28,7 +28,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         super(props);
 
         this.state = {
-            state: getMessenger().engine.notificationCenter.getState()
+            state: this.props.engine.getState()
         }
     }
 
@@ -49,6 +49,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
 
     render() {
         const { theme } = this.props;
+        const { state } = this.state;
 
         return (
             <>
@@ -56,10 +57,10 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
-                            {this.state.state.notifications.length <= 0 && (
+                            {state.notifications.length <= 0 && (
                                 <NotificationCenterEmpty />
                             )}
-                            {this.state.state.notifications.length > 0 && (
+                            {state.notifications.length > 0 && (
                                 <ASListView
                                     contentPaddingTop={area.top}
                                     contentPaddingBottom={area.bottom}
