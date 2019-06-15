@@ -17,6 +17,8 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from 
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
+    maxWidth?: number;
+    compensateBubble?: boolean;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
@@ -26,8 +28,7 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message } = this.props;
-        let mainTextColor = message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
+        let { message, maxWidth, compensateBubble } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -70,9 +71,9 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             <RenderSpans
                                                 spans={message.replyTextSpans[i]}
                                                 message={message}
-                                                padded={(!message.text && (i + 1 === message.reply!!.length))}
+                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
                                                 theme={this.props.theme}
-                                                maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetTop={4}

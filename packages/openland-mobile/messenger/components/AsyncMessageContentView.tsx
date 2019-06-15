@@ -108,10 +108,10 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let topContent = [];
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} maxWidth={maxSize} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} maxWidth={maxSize} emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
