@@ -32,18 +32,36 @@ class NotificationCenterHandlersClass {
         });
 
         builder.action('Remove this notification', async () => {
-            startLoader();
-
-            try {
-                await client.mutateDeleteNotification({ notificationId: id });
-            } catch (e) {
-                console.warn(e);
-            } finally {
-                stopLoader();
-            }
+            await this.deleteNotifications([id]);
         });
 
         builder.show();
+    }
+
+    handleManagePress = (items: NotificationsDataSourceItem[]) => {
+        const builder = new ActionSheetBuilder();
+
+        builder.action('Clear All', async () => {
+            await this.deleteNotifications(items.map(item => item.key));
+        });
+
+        builder.show();
+    }
+
+    private deleteNotifications = async (ids: string[]) => {
+        const client = getClient();
+
+        startLoader();
+
+        try {
+            for (let id of ids) {
+                await client.mutateDeleteNotification({ notificationId: id });
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            stopLoader();
+        }
     }
 }
 
