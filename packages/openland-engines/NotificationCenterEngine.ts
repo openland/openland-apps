@@ -8,6 +8,8 @@ import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
 import { NotificationCenterState, NotificationCenterStateHandler } from './NotificationCenterState';
+import { ReadNotificationMutation } from 'openland-api';
+import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -58,10 +60,11 @@ export class NotificationCenterEngine {
     readonly isMocked: boolean;
     readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItem>;
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
-
+    private lastNotificationRead: string | null = null;
     private notifications: NotificationsDataSourceItem[] = [];
     private state: NotificationCenterState;
     private listeners: NotificationCenterStateHandler[] = [];
+    private isVisible: boolean = true;
 
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
@@ -129,6 +132,9 @@ export class NotificationCenterEngine {
         );
 
         this.dataSource = this._dataSourceStored.dataSource;
+
+        AppVisibility.watch(this.handleVisibleChanged);
+        this.handleVisibleChanged(AppVisibility.isVisible);
     }
 
     handleNotificationReceived = async (event: Types.NotificationCenterUpdateFragment_NotificationReceived) => {
@@ -169,7 +175,11 @@ export class NotificationCenterEngine {
         return this.state;
     }
 
-    onNotificationsUpdated = () => {
+    private onNotificationsUpdated = () => {
+        if (this.listeners.length > 0) {
+            this.markReadIfNeeded();
+        }
+
         for (let l of this.listeners) {
             l.onNotificationCenterUpdated(this.state);
         }
@@ -178,6 +188,7 @@ export class NotificationCenterEngine {
     subscribe = (listener: NotificationCenterStateHandler) => {
         this.listeners.push(listener);
         listener.onNotificationCenterUpdated(this.state);
+
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {
@@ -186,5 +197,27 @@ export class NotificationCenterEngine {
                 this.listeners.splice(index, 1);
             }
         };
+    }
+
+    private handleVisibleChanged = (isVisible: boolean) => {
+        if (this.isVisible === isVisible) {
+            return;
+        }
+
+        this.isVisible = isVisible;
+        this.onNotificationsUpdated();
+    }
+
+    private markReadIfNeeded = () => {
+        if (this.isVisible && this.notifications.length > 0) {
+            const id = this.notifications[0].key;
+
+            if (id !== this.lastNotificationRead) {
+                this.lastNotificationRead = id;
+                this.engine.client.client.mutate(ReadNotificationMutation, {
+                    notificationId: id
+                });
+            }
+        }
     }
 }
