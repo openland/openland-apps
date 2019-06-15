@@ -16,7 +16,7 @@ export interface AsyncAvatarProps {
 
 export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
     render() {
-        if (this.props.src) {
+        if (this.props.src && !this.props.src.startsWith('ph://')) {
             let url = this.props.src;
             url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
             return (

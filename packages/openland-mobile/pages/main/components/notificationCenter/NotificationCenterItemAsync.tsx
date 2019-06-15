@@ -12,6 +12,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncAvatar } from 'openland-mobile/messenger/components/AsyncAvatar';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { isPad } from 'openland-mobile/pages/Root';
+import { RoomNano_SharedRoom } from 'openland-api/Types';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
@@ -49,6 +50,8 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
     const lineBackgroundPatch = Image.resolveAssetSource(require('assets/chat-link-line-my.png'));
     const capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
+    const sharedRoom = item.room && item.room.__typename === 'SharedRoom' ? item.room as RoomNano_SharedRoom : undefined;
+
     return (
         <ASFlex
             onPress={handlePress}
@@ -78,6 +81,27 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         {item.senderName}
                     </ASText>
                 </ASFlex>
+
+                {sharedRoom && (
+                    <ASFlex onPress={() => messenger.handleGroupClick(sharedRoom.id)} marginLeft={10}>
+                        <AsyncAvatar
+                            size={18}
+                            src={sharedRoom.photo}
+                            placeholderKey={sharedRoom.id}
+                            placeholderTitle={sharedRoom.title}
+                        />
+
+                        <ASText
+                            fontSize={14}
+                            lineHeight={18}
+                            fontWeight={TextStyles.weight.medium}
+                            color={theme.textColor}
+                            marginLeft={8}
+                        >
+                            {sharedRoom.title}
+                        </ASText>
+                    </ASFlex>
+                )}
             </ASFlex>
 
             <ASFlex marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.accentColor}>
