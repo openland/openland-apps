@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { View, Text, Platform, TouchableOpacity, TextStyle, Image } from 'react-native';
+import { View, Platform, TouchableOpacity, Image } from 'react-native';
 import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { forward } from 'openland-mobile/messenger/MobileMessenger';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface ChatSelectedActionsProps {
     conversation: ConversationEngine
@@ -35,13 +33,29 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
         props.conversation.messagesActionsState.clear();
     }, [])
     let height = Platform.OS === 'ios' ? 50 : 64;
+
+    let canDelete = true;
+
+    if (!SUPER_ADMIN) {
+        props.conversation.messagesActionsState.getState().messages.map(m => {
+            if (m.senderId !== getMessenger().engine.user.id) {
+                canDelete = false;
+            }
+        });
+    }
+
     let res =
         <View flexGrow={1} flexDirection="row" alignItems="center">
-            <TouchableOpacity onPress={del}>
-                <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
-                    <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
-                </View>
-            </TouchableOpacity>
+            {canDelete && (
+                <TouchableOpacity onPress={del}>
+                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
+                        <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
+                    </View>
+                </TouchableOpacity>
+            )}
+            {!canDelete && (
+                <View style={{ height: height, width: 26, marginLeft: 30 }} />
+            )}
             <View flexGrow={1} />
             <TouchableOpacity onPress={cancel}>
                 <View style={{ height: height, alignItems: 'center', justifyContent: 'center' }}>
