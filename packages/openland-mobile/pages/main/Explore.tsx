@@ -179,11 +179,11 @@ const ExplorePage = (props: PageProps) => {
             {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
 
             {NON_PRODUCTION && (
-                <NotificationCenterButton dot={false} theme={theme} onPress={() => props.router.push('NotificationCenter')} />
+                <NotificationCenterButton theme={theme} onPress={() => props.router.push('NotificationCenter')} />
             )}
             <SHeaderButton
                 title="New"
-                icon={Platform.OS === 'ios' ? require('assets/ic-header-add-26.png') : require('assets/ic-edit.png')}
+                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
                 onPress={() => props.router.push('Compose')}
             />
 
