@@ -7,28 +7,91 @@ import { NotificationCenterHeader } from './components/notificationCenter/Notifi
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { NotificationCenterStateHandler, NotificationCenterState } from 'openland-engines/NotificationCenterState';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { View, Text } from 'react-native';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 
-const NotificationCenterComponent = XMemo<PageProps>((props) => {
+interface NotificationCenterPageProps {
+    theme: AppTheme;
+    engine: NotificationCenterEngine;
+}
+
+interface NotificationCenterPageState {
+    state: NotificationCenterState;
+}
+
+class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, NotificationCenterPageState> implements NotificationCenterStateHandler {
+    private unmount: (() => void) | null = null;
+
+    constructor(props: NotificationCenterPageProps) {
+        super(props);
+
+        this.state = {
+            state: getMessenger().engine.notificationCenter.getState()
+        }
+    }
+
+    componentWillMount() {
+        this.unmount = this.props.engine.subscribe(this);
+    }
+
+    componentWillUnmount() {
+        if (this.unmount) {
+            this.unmount();
+            this.unmount = null;
+        }
+    }
+
+    onNotificationCenterUpdated(state: NotificationCenterState) {
+        this.setState({ state });
+    }
+
+    render() {
+        const { theme } = this.props;
+
+        console.warn('boom', this.state.state.notifications);
+
+        return (
+            <>
+                <NotificationCenterHeader theme={theme} />
+                <ASSafeAreaContext.Consumer>
+                    {area => (
+                        <>
+                            {this.state.state.notifications.length <= 0 && (
+                                <View>
+                                    <Text>Empty</Text>
+                                    <Text>Empty</Text>
+                                    <Text>Empty</Text>
+                                    <Text>Empty</Text>
+                                    <Text>Empty</Text>
+                                    <Text>Empty</Text>
+                                    <Text>{this.state.state.notifications.length}</Text>
+                                </View>
+                            )}
+                            {this.state.state.notifications.length > 0 && (
+                                <ASListView
+                                    contentPaddingTop={area.top}
+                                    contentPaddingBottom={area.bottom}
+                                    dataView={getMessenger().notifications}
+                                    style={{ flexGrow: 1 }}
+                                    headerPadding={4}
+                                />
+                            )}
+                        </>
+                    )}
+                </ASSafeAreaContext.Consumer>
+            </>
+        );
+    }
+}
+
+const NotificationCenterWrapper = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
+    const engine = getMessenger().engine.notificationCenter;
 
-    return (
-        <>
-            <NotificationCenterHeader theme={theme} />
-            <ASSafeAreaContext.Consumer>
-                {area => (
-                    <>
-                        <ASListView
-                            contentPaddingTop={area.top}
-                            contentPaddingBottom={area.bottom}
-                            dataView={getMessenger().notifications}
-                            style={{ flexGrow: 1 }}
-                            headerPadding={4}
-                        />
-                    </>
-                )}
-            </ASSafeAreaContext.Consumer>
-        </>
-    );
+    return <NotificationCenterPage theme={theme} engine={engine} />;
 });
 
-export const NotificationCenter = withApp(NotificationCenterComponent, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
+export const NotificationCenter = withApp(NotificationCenterWrapper, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });

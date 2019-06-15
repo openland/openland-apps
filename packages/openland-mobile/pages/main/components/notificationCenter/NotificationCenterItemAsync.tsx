@@ -41,7 +41,5 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
 export const NotificationCenterItemAsync = XMemo<NotificationCenterItemAsyncProps>((props) => {
     let theme = useThemeGlobal();
 
-    console.warn('boom', props.item);
-
     return <NotificationCenterItemAsyncRender theme={theme} {...props} />;
 });

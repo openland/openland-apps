@@ -19,12 +19,10 @@ class NotificationCenterHandlersClass {
             startLoader();
 
             try {
-                if (item.peerRootId) {
-                    if (item.isSubscribedMessageComments) {
-                        await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId });
-                    } else {
-                        await client.mutateSubscribeMessageComments({ messageId: item.peerRootId, type: CommentSubscriptionType.ALL });
-                    }
+                if (item.isSubscribedMessageComments) {
+                    await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId!! });
+                } else {
+                    await client.mutateSubscribeMessageComments({ messageId: item.peerRootId!!, type: CommentSubscriptionType.ALL });
                 }
             } catch (e) {
                 console.warn(e);

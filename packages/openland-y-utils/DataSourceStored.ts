@@ -7,7 +7,7 @@ import { currentTimeMillis } from './currentTime';
 const log = createLogger('datasource');
 
 export interface DataSourceStoredProvider<T extends DataSourceItem> {
-    onStarted: (state: string) => void;
+    onStarted: (state: string, items?: T[]) => void;
     loadMore: (cursor?: string) => Promise<{ state: string, cursor?: string, items: T[] }>
 }
 
@@ -130,7 +130,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
                 this._state = state;
             }
-            this._provider.onStarted(this._state);
+            this._provider.onStarted(this._state, items);
 
             this._inited = true; // Mark inited before data source loading to avoid "loading" hanging
             this.dataSource.initialize(items, this._loadCompleted && !this._cursor);

@@ -7,6 +7,7 @@ import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/Dat
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
+import { NotificationCenterState, NotificationCenterStateHandler } from './NotificationCenterState';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -58,10 +59,15 @@ export class NotificationCenterEngine {
     readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItem>;
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
 
+    private notifications: NotificationsDataSourceItem[] = [];
+    private state: NotificationCenterState;
+    private listeners: NotificationCenterStateHandler[] = [];
+
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
+        this.state = new NotificationCenterState([]);
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
@@ -91,6 +97,11 @@ export class NotificationCenterEngine {
                         }
                     }
 
+                    this.notifications = [...items, ...this.notifications];
+                    this.state = new NotificationCenterState(this.notifications);
+
+                    this.onNotificationsUpdated();
+
                     return {
                         items,
                         cursor: notificationsQuery.myNotifications.cursor || undefined,
@@ -98,10 +109,15 @@ export class NotificationCenterEngine {
                     };
                 }
             },
-            onStarted: (state: string) => {
+            onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
                 
                 this.engine.global.handleNotificationsCenterStarted(state);
+
+                this.notifications = [...items, ...this.notifications];
+                this.state = new NotificationCenterState(this.notifications);
+
+                this.onNotificationsUpdated();
             },
         };
 
@@ -119,10 +135,12 @@ export class NotificationCenterEngine {
         const convertedNotification = convertNotification(event.notification);
 
         if (convertedNotification) {
-            await this._dataSourceStored.addItem(
-                convertedNotification,
-                0
-            );
+            await this._dataSourceStored.addItem(convertedNotification, 0);
+
+            this.notifications = [convertedNotification, ...this.notifications];
+            this.state = new NotificationCenterState(this.notifications);
+
+            this.onNotificationsUpdated();
         }
     }
 
@@ -131,6 +149,11 @@ export class NotificationCenterEngine {
 
         if (await this._dataSourceStored.hasItem(id)) {
             await this._dataSourceStored.removeItem(id);
+
+            this.notifications = this.notifications.filter(n => n.key !== id);
+            this.state = new NotificationCenterState(this.notifications);
+
+            this.onNotificationsUpdated();
         }
     }
 
@@ -140,5 +163,28 @@ export class NotificationCenterEngine {
 
     handleStateProcessed = async (state: string) => {
         await this._dataSourceStored.updateState(state);
+    }
+
+    getState = () => {
+        return this.state;
+    }
+
+    onNotificationsUpdated = () => {
+        for (let l of this.listeners) {
+            l.onNotificationCenterUpdated(this.state);
+        }
+    }
+
+    subscribe = (listener: NotificationCenterStateHandler) => {
+        this.listeners.push(listener);
+        listener.onNotificationCenterUpdated(this.state);
+        return () => {
+            let index = this.listeners.indexOf(listener);
+            if (index < 0) {
+                log.warn('Double unsubscribe detected!');
+            } else {
+                this.listeners.splice(index, 1);
+            }
+        };
     }
 }
