@@ -3,17 +3,17 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { NotificationCenterHeader } from './components/notificationCenter/NotificationCenterHeader';
+import { NotificationCenterHeader } from 'openland-mobile/notificationCenter/NotificationCenterHeader';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { NotificationCenterStateHandler, NotificationCenterState } from 'openland-engines/NotificationCenterState';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
-import { NotificationCenterEmpty } from './components/notificationCenter/NotificationCenterEmpty';
+import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/NotificationCenterEmpty';
 import { Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { NotificationCenterHandlers } from './components/notificationCenter/NotificationCenterHandlers';
+import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 
 interface NotificationCenterPageProps {
     theme: AppTheme;

@@ -21,8 +21,8 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-mobile/utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
-import { NotificationCenterItemAsync } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterItemAsync';
-import { NotificationCenterHandlers } from 'openland-mobile/pages/main/components/notificationCenter/NotificationCenterHandlers';
+import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
+import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
