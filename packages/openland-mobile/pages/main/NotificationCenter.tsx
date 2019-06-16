@@ -61,30 +61,33 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         const { state } = this.state;
 
         const isEmpty = !state.loading && state.notifications.length <= 0;
+
+        if (isEmpty) {
+            return (
+                <>
+                    <NotificationCenterHeader theme={theme} />
+                    <SHeaderButton key={'btn-' + isEmpty} />
+                    <NotificationCenterEmpty />
+                </>
+            )
+        }
+
         const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
         return (
             <>
                 <NotificationCenterHeader theme={theme} />
-
-                {!isEmpty && <SHeaderButton key={'manage-btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />}
-                {isEmpty && <SHeaderButton key={'manage-btn-' + isEmpty} />}
-
+                <SHeaderButton key={'btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
-                            {isEmpty && (
-                                <NotificationCenterEmpty />
-                            )}
-                            {!isEmpty && (
-                                <ASListView
-                                    contentPaddingTop={area.top}
-                                    contentPaddingBottom={area.bottom}
-                                    dataView={getMessenger().notifications}
-                                    style={{ flexGrow: 1 }}
-                                    headerPadding={4}
-                                />
-                            )}
+                            <ASListView
+                                contentPaddingTop={area.top}
+                                contentPaddingBottom={area.bottom}
+                                dataView={getMessenger().notifications}
+                                style={{ flexGrow: 1 }}
+                                headerPadding={4}
+                            />
                         </>
                     )}
                 </ASSafeAreaContext.Consumer>

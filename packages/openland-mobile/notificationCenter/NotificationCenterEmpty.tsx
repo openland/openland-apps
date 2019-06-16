@@ -8,10 +8,10 @@ export const NotificationCenterEmpty = XMemo((props) => {
     let theme = React.useContext(ThemeContext);
 
     return (
-        <ASSafeAreaView flexGrow={1} paddingHorizontal={16} alignItems="center" justifyContent="center">
+        <ASSafeAreaView flexGrow={1} paddingHorizontal={48} alignItems="center" justifyContent="center">
             <Image source={theme.imageEmpty} style={{ width: 224, height: 224, marginBottom: 30 }} />
             <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center' }} allowFontScaling={false}>
-                Notifications will be right here
+                Comments in threads you are involved in will be right here
             </Text>
         </ASSafeAreaView>
     );
