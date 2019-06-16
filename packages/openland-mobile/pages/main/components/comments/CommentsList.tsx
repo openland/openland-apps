@@ -93,7 +93,7 @@ export const CommentsList = (props: CommentsListProps) => {
                         depth={getDepthOfComment(commentEntry, commentsMap)}
                         onReplyPress={onReplyPress}
                         onLongPress={handleLongPress}
-                        highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.id) ? true : false}
+                        highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false}
                         theme={theme}
                     />
                 ))}

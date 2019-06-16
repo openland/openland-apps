@@ -22,7 +22,6 @@ import { showReactionsList } from 'openland-mobile/components/message/showReacti
 import { formatDateTime } from 'openland-mobile/utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
-import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
@@ -68,7 +67,7 @@ export class MobileMessenger {
 
         this.notifications = new ASDataView(engine.notificationCenter.dataSource, (item) => {
             return (
-                <NotificationCenterItemAsync item={item} onPress={NotificationCenterHandlers.handlePress} onLongPress={NotificationCenterHandlers.handleLongPress} />
+                <NotificationCenterItemAsync item={item} />
             );
         });
 

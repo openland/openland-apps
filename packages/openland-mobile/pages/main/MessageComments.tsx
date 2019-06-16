@@ -36,12 +36,13 @@ interface MessageCommentsInnerProps {
     messenger: MobileMessenger;
 
     room?: RoomShort_SharedRoom;
+    highlightId?: string;
 }
 
 const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const inputRef = React.createRef<TextInput>();
 
-    const { message, comments, room, messenger } = props;
+    const { message, comments, room, messenger, highlightId } = props;
 
     // state
     const [replied, setReplied] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
@@ -51,6 +52,16 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
+
+    React.useEffect(() => {
+        if (highlightId) {
+            const filteredComments = comments.filter(c => c.comment.id === highlightId);
+
+            if (filteredComments.length > 0) {
+                setReplied(filteredComments[0].comment);
+            }
+        }
+    }, []);
 
     // callbacks
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
@@ -293,17 +304,18 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 }
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
-    let chatId = props.router.params.chatId;
-    let messageId = props.router.params.messageId;
+    const chatId = props.router.params.chatId;
+    const messageId = props.router.params.messageId;
+    const highlightId = props.router.params.highlightCommentId;
 
-    let messenger = getMessenger();
-    let client = getClient();
+    const messenger = getMessenger();
+    const client = getClient();
 
-    let message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message as FullMessage_GeneralMessage;
-    let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
+    const message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message as FullMessage_GeneralMessage;
+    const comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
-    let room = client.useRoomTiny({ id: chatId }).room;
-    let sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomShort_SharedRoom : undefined;
+    const room = client.useRoomTiny({ id: chatId }).room;
+    const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomShort_SharedRoom : undefined;
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
@@ -325,6 +337,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
             comments={comments}
             messenger={messenger}
             room={sharedRoom}
+            highlightId={highlightId}
         />
     );
 });

@@ -14,12 +14,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { isPad } from 'openland-mobile/pages/Root';
 import { RoomNano_SharedRoom } from 'openland-api/Types';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { NotificationCenterHandlers } from './NotificationCenterHandlers';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
-    
-    onPress?: (id: string, item: NotificationsDataSourceItem) => void;
-    onLongPress?: (id: string, item: NotificationsDataSourceItem) => void;
 }
 
 const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps & { theme: AppTheme }>((props) => {
@@ -28,16 +26,16 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);
 
     const handlePress = React.useCallback(() => {
-        if (props.onPress) {
-            props.onPress(item.key, item);
-        }
-    }, [item.key]);
+        NotificationCenterHandlers.handlePress(item.key, item);
+    }, [item]);
 
     const handleLongPress = React.useCallback(() => {
-        if (props.onLongPress) {
-            props.onLongPress(item.key, item);
-        }
-    }, [item.key]);
+        NotificationCenterHandlers.handleLongPress(item.key, item);
+    }, [item]);
+
+    const handleReplyPress = React.useCallback(() => {
+        NotificationCenterHandlers.handleReplyPress(item.key, item);
+    }, [item]);
 
     const { topContent, bottomContent } = extractContent({
         theme,
@@ -139,6 +137,19 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                     color={theme.textLabelColor}
                     date={item.date}
                 />
+
+                <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
+                    <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentColor} width={16} height={16} opacity={0.7} />
+                    <ASText
+                        fontWeight={TextStyles.weight.medium}
+                        color={theme.accentColor}
+                        fontSize={13}
+                        lineHeight={20}
+                        marginLeft={6}
+                    >
+                        Reply
+                    </ASText>
+                </ASFlex>
             </ASFlex>
         </ASFlex>
     );

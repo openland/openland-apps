@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { CommentSubscriptionType } from 'openland-api/Types';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
@@ -46,6 +45,14 @@ class NotificationCenterHandlersClass {
         });
 
         builder.show();
+    }
+
+    handleReplyPress = (id: string, item: NotificationsDataSourceItem) => {
+        getMessenger().history.navigationManager.push('MessageComments', {
+            chatId: item.room!!.id,
+            messageId: item.peerRootId,
+            highlightCommentId: item.id
+        });
     }
 
     private deleteNotifications = async (ids: string[]) => {
