@@ -27,8 +27,8 @@ export interface ZAvatarProps {
 }
 
 const placeholderSizeInterpolator = createInterpolator(
-    [22, 28, 30, 36, 40, 42, 56, 96],
-    [12, 12, 13, 14, 16, 16, 26, 28]
+    [16, 22, 28, 30, 36, 40, 42, 56, 96],
+    [8, 12, 12, 13, 14, 16, 16, 26, 28]
 );
 
 const XPAvatarInner = XMemo<ZAvatarProps>((props) => {
