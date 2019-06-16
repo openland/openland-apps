@@ -14,6 +14,7 @@ import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/Noti
 import { Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
+import { NON_PRODUCTION } from '../Init';
 
 interface NotificationCenterPageProps {
     theme: AppTheme;
@@ -66,7 +67,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
             return (
                 <>
                     <NotificationCenterHeader theme={theme} />
-                    <SHeaderButton key={'btn-' + isEmpty} />
+                    {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
             )
@@ -77,7 +78,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         return (
             <>
                 <NotificationCenterHeader theme={theme} />
-                <SHeaderButton key={'btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />
+                {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
