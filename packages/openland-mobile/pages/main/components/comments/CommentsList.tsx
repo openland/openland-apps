@@ -6,8 +6,6 @@ import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { Prompt } from 'openland-mobile/components/Prompt';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 

@@ -178,16 +178,6 @@ export class NotificationCenterEngine {
         return this.state;
     }
 
-    private onNotificationsUpdated = () => {
-        if (this.listeners.length > 0) {
-            this.markReadIfNeeded();
-        }
-
-        for (let l of this.listeners) {
-            l.onNotificationCenterUpdated(this.state);
-        }
-    }
-
     subscribe = (listener: NotificationCenterStateHandler) => {
         this.listeners.push(listener);
 
@@ -204,6 +194,14 @@ export class NotificationCenterEngine {
         };
     }
 
+    private onNotificationsUpdated = () => {
+        this.markReadIfNeeded();
+
+        for (let l of this.listeners) {
+            l.onNotificationCenterUpdated(this.state);
+        }
+    }
+
     private handleVisibleChanged = (isVisible: boolean) => {
         if (this.isVisible === isVisible) {
             return;
@@ -214,7 +212,7 @@ export class NotificationCenterEngine {
     }
 
     private markReadIfNeeded = () => {
-        if (this.isVisible && this.notifications.length > 0) {
+        if (this.isVisible && this.notifications.length > 0 && this.listeners.length > 0) {
             const id = this.notifications[0].key;
 
             if (id !== this.lastNotificationRead) {
