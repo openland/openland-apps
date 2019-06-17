@@ -256,7 +256,6 @@ export const DesktopMessageContainer = ({
                                 isEdited={isEdited}
                                 isModal={isModal}
                             />
-
                             <ReplyQuote text={replyQuoteText} />
                         </>
                     )}
@@ -301,7 +300,15 @@ export const DesktopMessageContainer = ({
         <XView
             width={isCommentNotification ? 7 : 85}
             marginLeft={12}
-            marginTop={!compact ? (isComment ? undefined : 24) : undefined}
+            marginTop={
+                isCommentNotification
+                    ? undefined
+                    : !compact
+                    ? isComment
+                        ? undefined
+                        : 24
+                    : undefined
+            }
             alignSelf="flex-start"
         >
             <Menu
