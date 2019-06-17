@@ -7,5 +7,4 @@ export interface AppNotificationsApi {
     requestPermission(): void;
     playIncomingSound(): void;
     displayNotification(content: { path: string, title: string, body: string, image?: string }): void;
-    onNotificationClick(handler: (data: any) => void): void;
 }

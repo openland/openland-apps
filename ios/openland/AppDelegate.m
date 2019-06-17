@@ -2,7 +2,7 @@
 #import "AppCenterReactNative.h"
 #import "AppCenterReactNativeCrashes.h"
 #import "AppCenterReactNativeAnalytics.h"
-
+#import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -53,6 +53,19 @@
   UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
   launchScreenView.frame = self.window.bounds;
   rootView.loadingView = launchScreenView;
+  
+  /*
+   * Handle notification if app nont started
+   */
+  NSDictionary *notification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (notification) {
+    NotificationHandler *nhandler = [[NotificationHandler alloc]init];
+    [[nhandler getSharedInstance] handleNotificationWithUserInfo:notification];
+  }
+  
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+  
   return YES;
 }
 
@@ -71,6 +84,18 @@
                     restorationHandler:restorationHandler];
 }
 
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+  // do nothing
+  completionHandler(UNNotificationPresentationOptionAlert);
+}
+
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
+  
+  NotificationHandler *nhandler = [[NotificationHandler alloc]init];
+  [[nhandler getSharedInstance] handleNotificationWithUserInfo:response.notification.request.content.userInfo];
+  
+}
+
 // Required to register for notifications
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
@@ -82,13 +107,13 @@
   [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 // Required for the notification event. You must call the completion handler after handling the remote notification.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-{
-  NotificationHandler *nhandler = [[NotificationHandler alloc]init];
-  [nhandler handleNotificationWithUserInfo:userInfo];
-  [RCTPushNotificationManager didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
-}
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+//fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//  NotificationHandler *nhandler = [[NotificationHandler alloc]init];
+//  [[nhandler getSharedInstance] handleNotificationWithUserInfo:userInfo];
+//  completionHandler(UIBackgroundFetchResultNoData);
+//}
 // Required for the registrationError event.
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {

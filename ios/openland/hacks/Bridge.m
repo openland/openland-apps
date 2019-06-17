@@ -55,6 +55,11 @@ RCT_EXTERN_METHOD(stopTask)
 RCT_EXTERN_METHOD(supportedEvents)
 @end
 
+@interface RCT_EXTERN_MODULE(RNNotificationHandler, RCTEventEmitter)
+RCT_EXTERN_METHOD(supportedEvents)
+RCT_EXTERN_METHOD(requestInitialUrl)
+@end
+
 @interface RCT_EXTERN_MODULE(RNAsyncDataViewManager, NSObject)
 RCT_EXTERN_METHOD(dataViewInit:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed)
 RCT_EXTERN_METHOD(dataViewAddItem:(NSString *)dataSourceKey key: (NSString *)key config: (NSString *)config index: (nonnull NSNumber)key)

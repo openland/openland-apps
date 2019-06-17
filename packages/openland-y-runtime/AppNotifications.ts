@@ -20,10 +20,6 @@ class AppNotiticationsStub implements AppNotificationsApi {
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         // Do nothing
     }
-
-    onNotificationClick = (data: any) => {
-        // Do nothing
-    }
 }
 
 export const AppNotifications = new AppNotiticationsStub();

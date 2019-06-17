@@ -202,10 +202,6 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     setRouter(router: { replaceRoute(path: string): void }) {
         this.router = router;
     }
-
-    onNotificationClick = (data: any) => {
-        // to be replaced from messenger
-    }
 }
 
 export const AppNotifications = new AppNotiticationsWeb();

@@ -59,10 +59,6 @@ class AppNotiticationsIOS implements AppNotificationsApi {
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         // Do not show local notifications since remote one is good enougth
     }
-
-    onNotificationClick = (data: any) => {
-        // to be replaced from messenger
-    }
 }
 
 export const AppNotifications = new AppNotiticationsIOS();

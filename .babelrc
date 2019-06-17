@@ -1,15 +1,24 @@
 {
     "env": {
         "default": {
-            "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
+            "presets": [
+                "next/babel",
+                "@zeit/next-typescript/babel",
+                "linaria/babel"
+            ],
             "plugins": [
                 "graphql-tag",
-                ["module-resolver", {
-                    "root": ["./packages/"],
-                    // "alias": {
-                    //     "openland-icons": "openland-icons"
-                    // }
-                }],
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "./packages/"
+                        ],
+                        // "alias": {
+                        //     "openland-icons": "openland-icons"
+                        // }
+                    }
+                ],
                 "inline-react-svg",
                 "transform-react-constant-elements",
                 "transform-react-remove-prop-types",
@@ -23,15 +32,24 @@
             ]
         },
         "webproduction": {
-            "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
+            "presets": [
+                "next/babel",
+                "@zeit/next-typescript/babel",
+                "linaria/babel"
+            ],
             "plugins": [
                 "graphql-tag",
-                ["module-resolver", {
-                    "root": ["./packages/"],
-                    // "alias": {
-                    //     "openland-icons": "openland-icons"
-                    // }
-                }],
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "./packages/"
+                        ],
+                        // "alias": {
+                        //     "openland-icons": "openland-icons"
+                        // }
+                    }
+                ],
                 "transform-mental",
                 "inline-react-svg",
                 "transform-react-constant-elements",
@@ -46,32 +64,40 @@
             ]
         },
         "production": {
-            "presets": ["module:metro-react-native-babel-preset"],
+            "presets": [
+                "module:metro-react-native-babel-preset"
+            ],
             "plugins": [
                 "graphql-tag",
-                ["module-resolver", {
-                    "root": ["./build/native"],
-                    "alias": {
-                        "openland-mobile": "./build/native/openland-mobile",
-                        "react-native-s": "./build/native/react-native-s",
-                        "react-native-async-view": "./build/native/react-native-async-view",
-                        "react-native-auth0-s": "./build/native/react-native-auth0-s",
-                        "openland-api": "./build/native/openland-api",
-                        "openland-graphql": "./build/native/openland-graphql",
-                        "openland-y-graphql": "./build/native/openland-y-graphql",
-                        "openland-engines": "./build/native/openland-engines",
-                        "openland-y-utils": "./build/native/openland-y-utils",
-                        "openland-y-runtime": "./build/native/openland-y-runtime-native",
-                        "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
-                        "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
-                        "openland-y-forms": "./build/native/openland-y-forms",
-                        "openland-xp": "./build/native/openland-xp",
-                        "openland-shared": "./build/native/openland-shared",
-                        "openland-form": "./build/native/openland-form",
-                        "assets": "./packages/openland-mobile/assets",
-                        "assets-s": "./packages/react-native-s/assets"
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "./build/native"
+                        ],
+                        "alias": {
+                            "openland-mobile": "./build/native/openland-mobile",
+                            "react-native-s": "./build/native/react-native-s",
+                            "react-native-async-view": "./build/native/react-native-async-view",
+                            "react-native-notification-handler": "./build/native/react-native-notification-handler",
+                            "react-native-auth0-s": "./build/native/react-native-auth0-s",
+                            "openland-api": "./build/native/openland-api",
+                            "openland-graphql": "./build/native/openland-graphql",
+                            "openland-y-graphql": "./build/native/openland-y-graphql",
+                            "openland-engines": "./build/native/openland-engines",
+                            "openland-y-utils": "./build/native/openland-y-utils",
+                            "openland-y-runtime": "./build/native/openland-y-runtime-native",
+                            "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
+                            "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
+                            "openland-y-forms": "./build/native/openland-y-forms",
+                            "openland-xp": "./build/native/openland-xp",
+                            "openland-shared": "./build/native/openland-shared",
+                            "openland-form": "./build/native/openland-form",
+                            "assets": "./packages/openland-mobile/assets",
+                            "assets-s": "./packages/react-native-s/assets"
+                        }
                     }
-                }],
+                ],
                 "transform-remove-console",
                 // "@babel/plugin-transform-react-inline-elements",
                 // "@babel/plugin-transform-react-constant-elements",
@@ -79,32 +105,40 @@
             ]
         },
         "development": {
-            "presets": ["module:metro-react-native-babel-preset"],
+            "presets": [
+                "module:metro-react-native-babel-preset"
+            ],
             "plugins": [
-                ["module-resolver", {
-                    "root": ["."],
-                    "alias": {
-                        "openland-mobile": "./build/native/openland-mobile",
-                        "react-native-s": "./build/native/react-native-s",
-                        "react-native-async-view": "./build/native/react-native-async-view",
-                        "react-native-auth0-s": "./build/native/react-native-auth0-s",
-                        "openland-api": "./build/native/openland-api",
-                        "openland-graphql": "./build/native/openland-graphql",
-                        "openland-y-graphql": "./build/native/openland-y-graphql",
-                        "openland-engines": "./build/native/openland-engines",
-                        "openland-y-utils": "./build/native/openland-y-utils",
-                        "openland-y-runtime": "./build/native/openland-y-runtime-native",
-                        "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
-                        "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
-                        "openland-y-forms": "./build/native/openland-y-forms",
-                        "openland-y-store": "./build/native/openland-y-store",
-                        "openland-xp": "./build/native/openland-xp",
-                        "openland-shared": "./build/native/openland-shared",
-                        "openland-form": "./build/native/openland-form",
-                        "assets": "./packages/openland-mobile/assets",
-                        "assets-s": "./packages/react-native-s/assets"
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "."
+                        ],
+                        "alias": {
+                            "openland-mobile": "./build/native/openland-mobile",
+                            "react-native-s": "./build/native/react-native-s",
+                            "react-native-async-view": "./build/native/react-native-async-view",
+                            "react-native-notification-handler": "./build/native/react-native-notification-handler",
+                            "react-native-auth0-s": "./build/native/react-native-auth0-s",
+                            "openland-api": "./build/native/openland-api",
+                            "openland-graphql": "./build/native/openland-graphql",
+                            "openland-y-graphql": "./build/native/openland-y-graphql",
+                            "openland-engines": "./build/native/openland-engines",
+                            "openland-y-utils": "./build/native/openland-y-utils",
+                            "openland-y-runtime": "./build/native/openland-y-runtime-native",
+                            "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
+                            "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
+                            "openland-y-forms": "./build/native/openland-y-forms",
+                            "openland-y-store": "./build/native/openland-y-store",
+                            "openland-xp": "./build/native/openland-xp",
+                            "openland-shared": "./build/native/openland-shared",
+                            "openland-form": "./build/native/openland-form",
+                            "assets": "./packages/openland-mobile/assets",
+                            "assets-s": "./packages/react-native-s/assets"
+                        }
                     }
-                }],
+                ],
                 // "@babel/plugin-transform-react-constant-elements",
                 "./packages/react-native-async-view-babel/lib"
                 // "@babel/plugin-transform-react-inline-elements"

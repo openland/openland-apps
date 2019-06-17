@@ -70,10 +70,6 @@ export class MobileMessenger {
                 <NotificationCenterItemAsync item={item} />
             );
         });
-
-        AppNotifications.onNotificationClick = (data: any) => {
-            Alert.alert(JSON.stringify(data));
-        }
     }
 
     getConversation(id: string) {

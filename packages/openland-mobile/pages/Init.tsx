@@ -24,6 +24,7 @@ import { SAnimated } from 'react-native-s/SAnimated';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { Track } from 'openland-engines/Tracking';
+import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -216,6 +217,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     if (authenticated) {
                         if (res && res.me) {
                             this.setState({ state: 'app' });
+                            NotificationHandler.init();
+
                         } else {
                             this.setState({ state: 'signup' });
                         }

@@ -489,6 +489,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				A0930DF722B77DFA0018ECA1 /* RNNotificationHandler */,
 				AA3DDA122284E76F0078A762 /* SpaceX */,
 				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
@@ -503,7 +504,6 @@
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				A0930DE822B271D40018ECA1 /* NotificationHandler.swift */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -595,6 +595,14 @@
 				A0153A9A222426F400C026A4 /* Info.plist */,
 			);
 			path = "openland-share-ex";
+			sourceTree = "<group>";
+		};
+		A0930DF722B77DFA0018ECA1 /* RNNotificationHandler */ = {
+			isa = PBXGroup;
+			children = (
+				A0930DE822B271D40018ECA1 /* NotificationHandler.swift */,
+			);
+			path = RNNotificationHandler;
 			sourceTree = "<group>";
 		};
 		A21F2EEA1424181CA30DDA9B /* Pods */ = {
