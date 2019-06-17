@@ -328,7 +328,7 @@ export const CommentsBlockView = ({
             });
             setShowInputId(selectedCommentMessageId);
         }
-    });
+    }, []);
 
     const commentsElements = sortComments(messageComments.messageComments.comments, commentsMap)
         .map(item => {
@@ -481,21 +481,18 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(
-        () => {
-            if (currentCommentsInputRef.current && scrollRef.current) {
-                const targetElem = currentCommentsInputRef.current.getElement()!!
-                    .parentNode as HTMLElement;
-                if (targetElem) {
-                    scrollRef.current.scrollToBottomOfElement({
-                        targetElem,
-                        offset: 10,
-                    });
-                }
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
             }
-        },
-        [showInputId],
-    );
+        }
+    }, [showInputId]);
 
     return (
         <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>
