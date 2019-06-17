@@ -19,6 +19,7 @@ import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { showDeleteCommentConfirmation } from './DeleteCommentConfirmModal';
+import { css, cx } from 'linaria';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
@@ -36,6 +37,25 @@ import {
     FullMessage_GeneralMessage_spans_MessageSpanAllMention,
 } from 'openland-api/Types';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+
+const commentViewClassName = css`
+     {
+        margin-top: 20px;
+    }
+`;
+
+const selectedViewClassName = css`
+     {
+        transition: background-color 2s ease;
+        background-color: #fffee8;
+    }
+`;
+
+const selectedFadeAwayViewClassName = css`
+     {
+        background-color: transparent;
+    }
+`;
 
 const CommentView = ({
     selectedCommentMessageId,
@@ -66,6 +86,14 @@ const CommentView = ({
     scrollToComment: Function;
     isMobile?: boolean;
 }) => {
+    const [isFirstRender, setIsFirstRender] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsFirstRender(true);
+        }, 500);
+    });
+
     const messenger = React.useContext(MessengerContext);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
@@ -130,14 +158,17 @@ const CommentView = ({
         commentEntryId &&
         (!commentsMap[commentEntryId].deleted ||
             commentsMap[commentEntryId].childComments.length !== 0);
+
     return (
         <div
             data-comment-id={message.id}
-            style={{
-                marginTop: 20,
-                backgroundColor:
-                    selectedCommentMessageId === message.id ? '#fffee8' : 'transparent',
-            }}
+            className={cx(
+                commentViewClassName,
+                selectedCommentMessageId === message.id && selectedViewClassName,
+                selectedCommentMessageId === message.id &&
+                    isFirstRender &&
+                    selectedFadeAwayViewClassName,
+            )}
         >
             <XView
                 paddingHorizontal={32}
