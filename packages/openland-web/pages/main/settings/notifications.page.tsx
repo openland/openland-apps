@@ -28,6 +28,7 @@ import {
 } from './components/SettingComponents';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { XCheckbox } from 'openland-x/XCheckbox';
 
 const Instruction = (props: { children?: any }) => (
     <XView paddingTop={4} paddingBottom={40}>
@@ -379,21 +380,12 @@ class NotificationsSettingsPageInner extends React.Component<
                                 <Group>
                                     <GroupTitle>Comment notifications</GroupTitle>
                                     <XView maxWidth={440}>
-                                        <XSelect
+                                        <XCheckbox
+                                            label="Notify me about comments in threads I'm following"
+                                            trueValue="ALL"
+                                            falseValue="NONE"
                                             field="input.comment"
-                                            searchable={false}
-                                            clearable={false}
                                             onChange={this.handleCommentSelectChange}
-                                            options={[
-                                                {
-                                                    value: 'ALL',
-                                                    label: 'All',
-                                                },
-                                                {
-                                                    value: 'NONE',
-                                                    label: 'None',
-                                                },
-                                            ]}
                                         />
                                     </XView>
                                 </Group>

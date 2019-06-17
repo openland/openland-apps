@@ -121,12 +121,7 @@ interface XCheckboxBasicProps {
     falseValue?: string;
     value?: string;
     switcher?: boolean;
-    onChange?: (
-        checked: {
-            label: string;
-            checked: boolean;
-        },
-    ) => void;
+    onChange?: (checked: { label: string; checked: boolean }) => void;
     checked?: boolean;
     disabled?: boolean;
     hint?: string;
@@ -293,9 +288,13 @@ class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XSto
                 ? this.props.trueValue
                 : 'true'
             : this.props.falseValue !== undefined
-                ? this.props.falseValue
-                : 'false';
+            ? this.props.falseValue
+            : 'false';
         this.props.store.writeValue(this.props.valueStoreKey || 'fields.' + this.props.field, val);
+
+        if (this.props.onChange) {
+            this.props.onChange(src);
+        }
     };
 
     render() {
