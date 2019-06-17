@@ -14,6 +14,7 @@ import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const log = createLogger('Engine-Messages');
 
@@ -68,6 +69,12 @@ export interface DataSourceDateItem {
     date: number;
     month: number;
     year: number;
+}
+
+export interface DataSourceNewDividerItem {
+    key: string;
+    type: 'new_divider';
+    date: undefined
 }
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
@@ -147,11 +154,19 @@ const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
     }
 }
 
+const createNewMessageDividerSourceItem = (messageId: string): DataSourceNewDividerItem => {
+    return {
+        type: 'new_divider',
+        date: undefined,
+        key: 'new_divider-' + messageId,
+    }
+}
+
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
-    readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>;
-    // private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem>;
+    readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
+    // private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
@@ -160,6 +175,7 @@ export class ConversationEngine implements MessageSendHandler {
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
+    private lastReadedMessageId?: string;
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
@@ -209,6 +225,21 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = [...(initialChat).messages];
         this.messages.reverse();
 
+        this.lastReadedMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
+        let pagesToload = 1;
+
+        while (this.messages.length > 0 && ((!this.messages.find(m => isServerMessage(m) && m.id === this.lastReadedMessageId)) || pagesToload--)) {
+            let serverMessages = this.messages.filter(m => isServerMessage(m));
+            let first = serverMessages[0];
+            if (!first) {
+                break;
+            }
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 40 }));
+            let batch = [...loaded.messages];
+            batch.reverse();
+            this.messages.unshift(...batch);
+        }
+
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
         this.canPin = this.canEdit || (initialChat.room && initialChat.room.__typename === 'PrivateRoom') || false;
@@ -226,10 +257,17 @@ export class ConversationEngine implements MessageSendHandler {
         this.onMessagesUpdated();
 
         // Update Data Source
-        let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
+        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
         let sourceFragments = [...(initialChat as any).messages as FullMessage[]];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
+
+            // append unread mark
+            if (sourceFragments[i].id === this.lastReadedMessageId) {
+                // Alert.alert(sourceFragments[i].id);
+                dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
+                this.lastReadedMessageId = sourceFragments[i].id;
+            }
 
             // Append new date if needed
             if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
@@ -256,6 +294,13 @@ export class ConversationEngine implements MessageSendHandler {
 
     onClosed = () => {
         this.isOpen = false;
+        if (this.lastReadedMessageId) {
+            let toDelete = createNewMessageDividerSourceItem(this.lastReadedMessageId);
+            if (this.dataSource.hasItem(toDelete.key)) {
+                this.dataSource.removeItem(toDelete.key);
+                this.lastReadedMessageId = undefined;
+            }
+        }
     }
 
     getState = () => {
@@ -292,7 +337,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = undefined;
 
             // Data Source
-            let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
+            let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
             let prevDate: string | undefined;
             if (this.dataSource.getSize() > 0) {
                 prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
@@ -645,12 +690,16 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private appendMessage = (src: ModelMessage) => {
-        let prev: DataSourceMessageItem | DataSourceDateItem | undefined;
+        let prev: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | undefined;
         if (this.dataSource.getSize() > 0) {
             prev = this.dataSource.getAt(0);
         }
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
+            if (!this.lastReadedMessageId && prev && this.lastTopMessageRead) {
+                this.dataSource.addItem(createNewMessageDividerSourceItem(this.lastTopMessageRead), 0);
+                this.lastReadedMessageId = this.lastTopMessageRead;
+            }
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;

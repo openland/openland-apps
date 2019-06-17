@@ -508,6 +508,9 @@ export const ChatInitQuery = gql`
         room(id: $chatId) {
             ...RoomShort
         }
+        lastReadedMessage(chatId: $chatId){
+            id
+        }
     }
     ${FullMessage}
     ${UserTiny}
