@@ -14,7 +14,10 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentsInput } from './CommentsInput';
-import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
+import {
+    UploadContextProvider,
+    UploadContext,
+} from 'openland-web/modules/FileUploading/UploadContext';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
@@ -436,6 +439,7 @@ export const CommentsModalInnerNoRouter = ({
     selectedCommentMessageId?: string;
 }) => {
     const client = useClient();
+    const uploadContext = React.useContext(UploadContext);
 
     let room = client.useRoomChat({ id: roomId })!!;
 
@@ -491,70 +495,72 @@ export const CommentsModalInnerNoRouter = ({
     }, [showInputId]);
 
     return (
-        <UploadContextProvider>
-            <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>
-                <XView>
-                    <XScrollView3
-                        useDefaultScroll
-                        flexGrow={1}
-                        flexShrink={1}
-                        maxHeight={'calc(100vh - 48px - 114px)'}
-                        ref={scrollRef}
-                    >
-                        <XView position="absolute" zIndex={100} right={32} top={28}>
-                            <ModalCloser />
-                        </XView>
-                        <XView paddingHorizontal={32} paddingTop={28}>
-                            <OriginalMessageComponent messageId={messageId} roomId={roomId} />
-                        </XView>
-                        <XView
-                            marginTop={28}
-                            height={1}
-                            backgroundColor={'rgba(216, 218, 229, 0.45)'}
-                            width="100%"
-                        />
-                        <CommentsBlockView
-                            room={room.room ? room.room : undefined}
-                            roomId={roomId}
-                            originalMessageId={messageId}
-                            setShowInputId={setShowInputId}
-                            showInputId={showInputId}
-                            getMentionsSuggestions={getMentionsSuggestions}
-                            scrollRef={scrollRef}
-                            currentCommentsInputRef={currentCommentsInputRef}
-                            selectedCommentMessageId={selectedCommentMessageId}
-                        />
-                    </XScrollView3>
-                    <XView>
-                        <CommentsInput
-                            getMentionsSuggestions={getMentionsSuggestions}
-                            onSendFile={onSendFile}
-                            onSend={async (
-                                msgToSend: string,
-                                mentions:
-                                    | (
-                                          | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                                          | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
-                                    | null,
-                                uploadedFileKey: string,
-                            ) => {
-                                await onSend({
-                                    messageId,
-                                    replyComment: null,
-                                    msgToSend,
-                                    mentions,
-                                    uploadedFileKey,
-                                });
-
-                                if (scrollRef && scrollRef.current) {
-                                    scrollRef.current.scrollToBottom();
-                                }
-                            }}
-                        />
+        <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>
+            <XView>
+                <XScrollView3
+                    useDefaultScroll
+                    flexGrow={1}
+                    flexShrink={1}
+                    maxHeight={
+                        !uploadContext.file
+                            ? 'calc(100vh - 48px - 114px)'
+                            : 'calc(100vh - 48px - 181px)'
+                    }
+                    ref={scrollRef}
+                >
+                    <XView position="absolute" zIndex={100} right={32} top={28}>
+                        <ModalCloser />
                     </XView>
+                    <XView paddingHorizontal={32} paddingTop={28}>
+                        <OriginalMessageComponent messageId={messageId} roomId={roomId} />
+                    </XView>
+                    <XView
+                        marginTop={28}
+                        height={1}
+                        backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                        width="100%"
+                    />
+                    <CommentsBlockView
+                        room={room.room ? room.room : undefined}
+                        roomId={roomId}
+                        originalMessageId={messageId}
+                        setShowInputId={setShowInputId}
+                        showInputId={showInputId}
+                        getMentionsSuggestions={getMentionsSuggestions}
+                        scrollRef={scrollRef}
+                        currentCommentsInputRef={currentCommentsInputRef}
+                        selectedCommentMessageId={selectedCommentMessageId}
+                    />
+                </XScrollView3>
+                <XView>
+                    <CommentsInput
+                        getMentionsSuggestions={getMentionsSuggestions}
+                        onSendFile={onSendFile}
+                        onSend={async (
+                            msgToSend: string,
+                            mentions:
+                                | (
+                                      | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                                      | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                                | null,
+                            uploadedFileKey: string,
+                        ) => {
+                            await onSend({
+                                messageId,
+                                replyComment: null,
+                                msgToSend,
+                                mentions,
+                                uploadedFileKey,
+                            });
+
+                            if (scrollRef && scrollRef.current) {
+                                scrollRef.current.scrollToBottom();
+                            }
+                        }}
+                    />
                 </XView>
-            </IsActivePoliteContext.Provider>
-        </UploadContextProvider>
+            </XView>
+        </IsActivePoliteContext.Provider>
     );
 };
 
