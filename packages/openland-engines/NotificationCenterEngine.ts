@@ -29,14 +29,8 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const comment = firstContent.comment;
         const peer = firstContent.peer;
 
-        let replyQuoteText;
-
-        if (comment.parentComment) {
-            replyQuoteText = comment.parentComment.comment.message;
-        } else {
-            replyQuoteText = peer.peerRoot.message.message;
-        }
-
+        let replyQuoteText = peer.peerRoot.message.message;
+        
         return {
             ...convertMessage({
                 ...comment.comment,
