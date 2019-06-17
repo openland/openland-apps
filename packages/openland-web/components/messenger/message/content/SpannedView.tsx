@@ -202,7 +202,7 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
         span.users.map(j => {
             otherItems.push({
                 title: j.name,
-                subtitle: '',
+                subtitle: j.primaryOrganization ? j.primaryOrganization.name : '',
                 photo: j.photo || '',
                 id: j.id,
             });

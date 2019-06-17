@@ -460,6 +460,8 @@ class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting 
                             source={imageLink ? imageLink : props.photoRef!!}
                             width={imageWidth}
                             height={imageHeight}
+                            minWidth={props.minWidth}
+                            minHeight={props.minHeight}
                         />
                     </StyledAvatar>
                 )}

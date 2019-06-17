@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const contentWrapperClassName = css`
     cursor: pointer;
@@ -31,13 +31,7 @@ export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPo
             height={36}
             path={'/mail/u/' + id}
         >
-            <XAvatar
-                style="user"
-                cloudImageUuid={photo === null ? undefined : photo}
-                objectName={title}
-                objectId={id}
-                size="m-small"
-            />
+            <XAvatar2 src={photo} title={title} id={id} size={28} />
             <XView
                 marginLeft={12}
                 flexDirection="column"

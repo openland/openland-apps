@@ -1,6 +1,9 @@
 import * as React from 'react';
 
-function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null }) {
+function buildBaseImageUrl(source?: {
+    uuid: string;
+    crop?: { x: number; y: number; w: number; h: number } | null;
+}) {
     if (!source) {
         return undefined;
     }
@@ -12,10 +15,15 @@ function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: numbe
 }
 
 export interface XImageProps {
-    source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null } | string | null;
+    source?:
+        | { uuid: string; crop?: { x: number; y: number; w: number; h: number } | null }
+        | string
+        | null;
     width: number;
     height: number;
-    imageSize?: { width: number, height: number };
+    minWidth?: number | string;
+    minHeight?: number | string;
+    imageSize?: { width: number; height: number };
     resize?: 'fill' | 'fit' | 'none';
     borderRadius?: number;
     borderBottomLeftRadius?: number;
@@ -37,20 +45,63 @@ export class XImage extends React.Component<XImageProps> {
             }
         }
 
-        if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
+        if (
+            baseUrl &&
+            baseUrl.startsWith('https://ucarecdn.com/') &&
+            this.props.resize !== 'none'
+        ) {
             // Optimize image for CDN-based images
             let ops: string = '';
             let opsRetina: string = '';
             if (this.props.resize === 'fill') {
-                ops += '-/format/jpeg/-/scale_crop/' + (this.props.width + 'x' + this.props.height) + '/center/-/progressive/yes/';
-                opsRetina += '-/format/jpeg/-/scale_crop/' + ((this.props.width * 2) + 'x' + (this.props.height * 2)) + '/center/-/quality/lighter/-/progressive/yes/';
+                ops +=
+                    '-/format/jpeg/-/scale_crop/' +
+                    (this.props.width + 'x' + this.props.height) +
+                    '/center/-/progressive/yes/';
+                opsRetina +=
+                    '-/format/jpeg/-/scale_crop/' +
+                    (this.props.width * 2 + 'x' + this.props.height * 2) +
+                    '/center/-/quality/lighter/-/progressive/yes/';
             } else {
-                ops += '-/format/jpeg/-/preview/' + (this.props.width + 'x' + this.props.height) + '/-/setfill/ffffff/-/crop/' + (this.props.width + 'x' + this.props.height) + '/center/-/progressive/yes/';
-                opsRetina += '-/format/jpeg/-/preview/' + ((this.props.width * 2) + 'x' + (this.props.height * 2)) + '/-/setfill/ffffff/-/crop/' + ((this.props.width * 2) + 'x' + (this.props.height * 2)) + '/center/-/quality/lighter/-/progressive/yes/';
+                ops +=
+                    '-/format/jpeg/-/preview/' +
+                    (this.props.width + 'x' + this.props.height) +
+                    '/-/setfill/ffffff/-/crop/' +
+                    (this.props.width + 'x' + this.props.height) +
+                    '/center/-/progressive/yes/';
+                opsRetina +=
+                    '-/format/jpeg/-/preview/' +
+                    (this.props.width * 2 + 'x' + this.props.height * 2) +
+                    '/-/setfill/ffffff/-/crop/' +
+                    (this.props.width * 2 + 'x' + this.props.height * 2) +
+                    '/center/-/quality/lighter/-/progressive/yes/';
             }
-            return <img style={{ width: this.props.width, height: this.props.height, borderRadius: this.props.borderRadius }} src={baseUrl + ops} srcSet={baseUrl + opsRetina} />;
+            return (
+                <img
+                    style={{
+                        width: this.props.width,
+                        height: this.props.height,
+                        minWidth: this.props.minWidth,
+                        minHeight: this.props.minHeight,
+                        borderRadius: this.props.borderRadius,
+                    }}
+                    src={baseUrl + ops}
+                    srcSet={baseUrl + opsRetina}
+                />
+            );
         } else {
-            return <img style={{ width: this.props.width, height: this.props.height, borderRadius: this.props.borderRadius }} src={baseUrl} />;
+            return (
+                <img
+                    style={{
+                        width: this.props.width,
+                        height: this.props.height,
+                        minWidth: this.props.minWidth,
+                        minHeight: this.props.minHeight,
+                        borderRadius: this.props.borderRadius,
+                    }}
+                    src={baseUrl}
+                />
+            );
         }
     }
 }
