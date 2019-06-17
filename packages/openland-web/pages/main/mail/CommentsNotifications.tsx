@@ -149,7 +149,7 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
                 </MessagesWrapper>
                 <DataSourceRender
                     dataSource={this.dataSource}
-                    reverce={true}
+                    reverce={false}
                     wrapWith={this.dataSourceWrapper}
                     renderItem={this.renderMessage}
                     renderLoading={this.renderLoading}
