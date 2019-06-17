@@ -243,7 +243,7 @@ const likeClassName = css`
     cursor: pointer;
     & svg {
         height: 13.5px;
-        width: 15.5px;
+        width: 15px;
     }
 
     &:hover svg > path  {
