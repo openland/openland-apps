@@ -55,25 +55,47 @@ const InputInvalidStyledClassName = css`
     & .input-placeholder {
         color: #d75454 !important;
     }
+    &:focus-within {
+        border-bottom: 1px solid #d75454 !important;
+        & .input-placeholder {
+            color: #d75454 !important;
+        }
+    }
 `;
 
-export const InputField = ({ field, title }: { field: FormField<string>; title: string }) => {
+interface InputProps {
+    field: FormField<string>;
+    title: string;
+    ref?: any;
+    setFocusOnError?: boolean;
+    hideErrorText?: boolean;
+}
+
+export const InputField = (props: InputProps) => {
+    const ref: any = React.useRef(null);
+    if (props.setFocusOnError && props.field.input.invalid) {
+        if (ref && ref.current) {
+            ref.current.focus();
+        }
+    }
     return (
         <>
             <XInput
-                {...field.input}
-                title={title}
+                {...props.field.input}
+                title={props.title}
+                ref={ref}
                 className={cx(
                     InputStyledClassName,
-                    field.input.value !== '' && InputValueStyledClassName,
-                    field.input.invalid && InputInvalidStyledClassName,
+                    props.field.input.value !== '' && InputValueStyledClassName,
+                    props.field.input.invalid && InputInvalidStyledClassName,
                 )}
             />
-            {field.input.invalid && (
-                <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                    {field.input.errorText}
-                </XView>
-            )}
+            {props.field.input.invalid &&
+                !props.hideErrorText && (
+                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                        {props.field.input.errorText}
+                    </XView>
+                )}
         </>
     );
 };

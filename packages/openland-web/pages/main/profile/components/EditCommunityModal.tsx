@@ -275,7 +275,12 @@ const EditCommunityEntity = (props: {
                             }
                         />
                         <XView marginLeft={20} flexGrow={1} flexShrink={0}>
-                            <InputField field={nameField} title={'Community name'} />
+                            <InputField
+                                field={nameField}
+                                title={'Community name'}
+                                setFocusOnError
+                                hideErrorText
+                            />
 
                             {props.isCommunity &&
                                 !props.isOwner && (
