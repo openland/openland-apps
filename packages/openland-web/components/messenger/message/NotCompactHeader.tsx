@@ -21,7 +21,8 @@ const DeletedCommentHeader = () => {
 };
 
 const RoomReplyAvatar = ({ room }: { room?: RoomHeader_room }) => {
-    const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomHeader_room_SharedRoom : null;
+    const sharedRoom =
+        room && room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
 
     if (!sharedRoom) {
         return null;
@@ -32,7 +33,12 @@ const RoomReplyAvatar = ({ room }: { room?: RoomHeader_room }) => {
             <XView marginRight={10} justifyContent="center">
                 <ReplyCommentsIcon />
             </XView>
-            <XAvatar2 size={18} src={sharedRoom.photo} title={sharedRoom.title} id={sharedRoom.id} />
+            <XAvatar2
+                size={18}
+                src={sharedRoom.photo}
+                title={sharedRoom.title}
+                id={sharedRoom.id}
+            />
             <XLink2 marginLeft={8} fontSize={14} path={'/mail/' + sharedRoom.id} color="#000">
                 {sharedRoom.title}
             </XLink2>
@@ -98,66 +104,60 @@ export const NotCompactHeader = ({
                         {senderNameEmojify}
                     </XView>
                 )}
-                {!isCommentNotification &&
-                    sender.primaryOrganization && (
-                        <XView
-                            as="a"
-                            fontSize={12}
-                            fontWeight="600"
-                            color="rgba(0, 0, 0, 0.4)"
-                            paddingLeft={8}
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                            path={
-                                selecting ? undefined : `/mail/o/${sender.primaryOrganization.id}`
-                            }
-                            hoverTextDecoration="none"
-                        >
-                            {sender.primaryOrganization.name}
-                        </XView>
-                    )}
+                {!isCommentNotification && sender.primaryOrganization && (
+                    <XView
+                        as="a"
+                        fontSize={12}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.4)"
+                        paddingLeft={8}
+                        alignSelf="flex-end"
+                        marginBottom={-1}
+                        path={selecting ? undefined : `/mail/o/${sender.primaryOrganization.id}`}
+                        hoverTextDecoration="none"
+                    >
+                        {sender.primaryOrganization.name}
+                    </XView>
+                )}
 
                 {!!isCommentNotification && <RoomReplyAvatar room={room} />}
 
-                {isComment &&
-                    (isEditView || isEdited) && (
-                        <>
-                            <XView
-                                marginLeft={8}
-                                alignSelf="center"
-                                width={3}
-                                height={3}
-                                borderRadius={'50%'}
-                                marginBottom={-1}
-                                backgroundColor="rgba(0, 0, 0, 0.3)"
-                            />
-                            <XView
-                                marginLeft={7}
-                                color="rgba(0, 0, 0, 0.4)"
-                                fontSize={12}
-                                alignSelf="flex-end"
-                                fontWeight={'600'}
-                                marginBottom={-1}
-                            >
-                                {isEditView ? 'Editing message' : isEdited && 'Edited'}
-                            </XView>
-                        </>
-                    )}
-            </XView>
-            {!isComment &&
-                !isCommentNotification &&
-                !isModal && (
-                    <XView
-                        paddingLeft={8}
-                        fontSize={12}
-                        color="rgba(0, 0, 0, 0.4)"
-                        fontWeight="600"
-                        alignSelf="flex-end"
-                        marginBottom={-1}
-                    >
-                        <XDate value={date.toString()} format="time" />
-                    </XView>
+                {isComment && (isEditView || isEdited) && (
+                    <>
+                        <XView
+                            marginLeft={7}
+                            alignSelf="center"
+                            width={3}
+                            height={3}
+                            borderRadius={'50%'}
+                            marginBottom={-1}
+                            backgroundColor="rgba(0, 0, 0, 0.3)"
+                        />
+                        <XView
+                            marginLeft={7}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontSize={12}
+                            alignSelf="flex-end"
+                            fontWeight={'600'}
+                            marginBottom={-1}
+                        >
+                            {isEditView ? 'Editing message' : isEdited && 'Edited'}
+                        </XView>
+                    </>
                 )}
+            </XView>
+            {!isComment && !isCommentNotification && !isModal && (
+                <XView
+                    paddingLeft={8}
+                    fontSize={12}
+                    color="rgba(0, 0, 0, 0.4)"
+                    fontWeight="600"
+                    alignSelf="flex-end"
+                    marginBottom={-1}
+                >
+                    <XDate value={date.toString()} format="time" />
+                </XView>
+            )}
         </XView>
     );
 };
