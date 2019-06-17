@@ -111,9 +111,9 @@ const CommentView = ({
         setShowInputId,
     });
 
-    const onCommentReplyClick = () => {
+    const onCommentReplyClick = React.useCallback(() => {
         setShowInputId(showInputId === message.key ? null : message.key);
-    };
+    }, [showInputId]);
 
     const onCommentEditClick = async (e: React.MouseEvent) => {
         if (!message.isSending) {
@@ -149,7 +149,7 @@ const CommentView = ({
             : null;
     const parentComment = commentsMap[parentCommentId];
 
-    const onCommentBackToUserMessageClick = () => {
+    const onCommentBackToUserMessageClick = React.useCallback(() => {
         return parentComment
             ? () => {
                   scrollToComment({
@@ -157,7 +157,7 @@ const CommentView = ({
                   });
               }
             : undefined;
-    };
+    }, [parentCommentId]);
 
     const usernameOfRepliedUser =
         parentComment && message.depth >= DEPTH_LIMIT
@@ -290,36 +290,33 @@ export const CommentsBlockView = ({
         commentsMap[comment.id] = comment;
     });
 
-    const getCommentElem = (commentId: string) => {
+    const getCommentElem = React.useCallback((commentId: string) => {
         const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
         if (items.length === 1) {
             return items[0] as HTMLElement;
         }
         return null;
-    };
+    }, []);
 
-    const scrollToComment = ({
-        commentId,
-        mode = 'bottom',
-    }: {
-        commentId: string;
-        mode?: 'top' | 'bottom';
-    }) => {
-        let targetElem = getCommentElem(commentId);
-        if (targetElem) {
-            if (mode === 'bottom') {
-                scrollRef!!.current!!.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
-            } else {
-                scrollRef!!.current!!.scrollToTopOfElement({
-                    targetElem,
-                    offset: 10,
-                });
+    const scrollToComment = React.useCallback(
+        ({ commentId, mode = 'bottom' }: { commentId: string; mode?: 'top' | 'bottom' }) => {
+            let targetElem = getCommentElem(commentId);
+            if (targetElem) {
+                if (mode === 'bottom') {
+                    scrollRef!!.current!!.scrollToBottomOfElement({
+                        targetElem,
+                        offset: 10,
+                    });
+                } else {
+                    scrollRef!!.current!!.scrollToTopOfElement({
+                        targetElem,
+                        offset: 10,
+                    });
+                }
             }
-        }
-    };
+        },
+        [],
+    );
 
     React.useEffect(() => {
         if (selectedCommentMessageId) {
