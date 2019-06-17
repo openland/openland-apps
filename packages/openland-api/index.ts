@@ -13,6 +13,7 @@ import * as Conferences from './queries/Conferences';
 import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
+import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Settings from './queries/Settings';
@@ -137,9 +138,7 @@ export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}
 export const ChatOnlinesCountWatchSubscription = typedSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables>(Chats.ChatOnlinesCountWatchSubscription);
 export const UpdateWelcomeMessageMutation = typedMutation<Types.UpdateWelcomeMessage, Types.UpdateWelcomeMessageVariables>(Chats.UpdateWelcomeMessageMutation);
 export const MessageQuery = typedQuery<Types.Message, Types.MessageVariables>(Chats.MessageQuery);
-export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(Comments.MyNotificationsQuery);
-export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(Comments.MyNotificationsCenterSubscription);
-export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(Comments.MyNotificationCenterQuery);
+export const CommentUpdatesGlobalSubscription = typedSubscription<Types.CommentUpdatesGlobal, Types.CommentUpdatesGlobalVariables>(Comments.CommentUpdatesGlobalSubscription);
 export const DeleteCommentMutation = typedMutation<Types.DeleteComment, Types.DeleteCommentVariables>(Comments.DeleteCommentMutation);
 export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Comments.MessageCommentsQuery);
 export const CommentSetReactionMutation = typedMutation<Types.CommentSetReaction, Types.CommentSetReactionVariables>(Comments.CommentSetReactionMutation);
@@ -176,6 +175,9 @@ export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, 
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
 export const FeedHomeQuery = typedQuery<Types.FeedHome, {}>(Feed.FeedHomeQuery);
 export const FeedPostMutation = typedMutation<Types.FeedPost, Types.FeedPostVariables>(Feed.FeedPostMutation);
+export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
+export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
+export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
@@ -254,5 +256,6 @@ export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny)
 export const CommentUpdateFragmentFragment = typedFragment<Types.CommentUpdateFragment>(Chats.CommentUpdateFragment);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);
 export const DialogUpdateFragmentFragment = typedFragment<Types.DialogUpdateFragment>(Chats.DialogUpdateFragment);
-export const NotificationFragmentFragment = typedFragment<Types.NotificationFragment>(Comments.NotificationFragment);
-export const NotificationCenterUpdateFragmentFragment = typedFragment<Types.NotificationCenterUpdateFragment>(Comments.NotificationCenterUpdateFragment);
+export const CommentGlobalUpdateFragmentFragment = typedFragment<Types.CommentGlobalUpdateFragment>(Comments.CommentGlobalUpdateFragment);
+export const NotificationFragmentFragment = typedFragment<Types.NotificationFragment>(MyNotificationsCenter.NotificationFragment);
+export const NotificationCenterUpdateFragmentFragment = typedFragment<Types.NotificationCenterUpdateFragment>(MyNotificationsCenter.NotificationCenterUpdateFragment);

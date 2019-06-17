@@ -1,0 +1,22 @@
+subscription CommentUpdatesGlobal($state: String) {
+  event: commentUpdatesGlobal(fromState: $state) {
+    __typename
+    ... on CommentGlobalUpdateSingle {
+      seq
+      state
+      update {
+        __typename
+        ...CommentGlobalUpdateFragment
+      }
+    }
+    ... on CommentGlobalUpdateBatch {
+      fromSeq
+      seq
+      state
+      updates {
+        __typename
+        ...CommentGlobalUpdateFragment
+      }
+    }
+  }
+}

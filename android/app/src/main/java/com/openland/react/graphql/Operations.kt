@@ -476,6 +476,21 @@ private val CommentEntryFragmentSelector = obj(
                 ))
         )
 
+private val CommentGlobalUpdateFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("CommentPeerUpdated", obj(
+                field("peer","peer", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("subscription","subscription", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("type","type", scalar("String"))
+                            ))
+                    ))),
+                field("seq","seq", notNull(scalar("Int")))
+            ))
+        )
+
 private val CommentUpdateFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("CommentReceived", obj(
@@ -2798,6 +2813,28 @@ private val ChatWatchSelector = obj(
                     ))
                 )))
         )
+private val CommentUpdatesGlobalSelector = obj(
+            field("commentUpdatesGlobal","event", arguments(fieldValue("fromState", refValue("state"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("CommentGlobalUpdateSingle", obj(
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("update","update", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("CommentGlobalUpdate", CommentGlobalUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("CommentGlobalUpdateBatch", obj(
+                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
+                        field("seq","seq", notNull(scalar("Int"))),
+                        field("state","state", notNull(scalar("String"))),
+                        field("updates","updates", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("CommentGlobalUpdate", CommentGlobalUpdateFragmentSelector)
+                            )))))
+                    ))
+                ))
+        )
 private val CommentWatchSelector = obj(
             field("commentUpdates","event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3993,6 +4030,12 @@ object Operations {
         override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = ChatWatchSelector
     }
+    val CommentUpdatesGlobal = object: OperationDefinition {
+        override val name = "CommentUpdatesGlobal"
+        override val kind = OperationKind.SUBSCRIPTION
+        override val body = "subscription CommentUpdatesGlobal(\$state:String){event:commentUpdatesGlobal(fromState:\$state){__typename ... on CommentGlobalUpdateSingle{seq state update{__typename ...CommentGlobalUpdateFragment}}... on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename ...CommentGlobalUpdateFragment}}}}fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename ... on CommentPeerUpdated{peer{__typename id subscription{__typename type}}seq}}"
+        override val selector = CommentUpdatesGlobalSelector
+    }
     val CommentWatch = object: OperationDefinition {
         override val name = "CommentWatch"
         override val kind = OperationKind.SUBSCRIPTION
@@ -4225,6 +4268,7 @@ object Operations {
         if (name == "UserStorageSet") return UserStorageSet
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
+        if (name == "CommentUpdatesGlobal") return CommentUpdatesGlobal
         if (name == "CommentWatch") return CommentWatch
         if (name == "ConferenceMediaWatch") return ConferenceMediaWatch
         if (name == "ConferenceWatch") return ConferenceWatch

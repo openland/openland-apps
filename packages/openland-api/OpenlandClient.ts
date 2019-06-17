@@ -451,30 +451,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMessage(variables: Types.MessageVariables, opts?: QueryWatchParameters): Types.Message | null {
         return this.useQuery(Source.MessageQuery, variables, opts);
     }
-    async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
-        return this.client.query(Source.MyNotificationsQuery, variables, opts);
-    }
-    async refetchMyNotifications(variables: Types.MyNotificationsVariables): Promise<Types.MyNotifications> {
-        return this.refetch(Source.MyNotificationsQuery, variables);
-    }
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications {
-        return this.useQuerySuspense(Source.MyNotificationsQuery, variables, opts);
-    }
-    useWithoutLoaderMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications | null {
-        return this.useQuery(Source.MyNotificationsQuery, variables, opts);
-    }
-    async queryMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
-        return this.client.query(Source.MyNotificationCenterQuery, undefined, opts);
-    }
-    async refetchMyNotificationCenter(): Promise<Types.MyNotificationCenter> {
-        return this.refetch(Source.MyNotificationCenterQuery);
-    }
-    useMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter {
-        return this.useQuerySuspense(Source.MyNotificationCenterQuery, undefined, opts);
-    }
-    useWithoutLoaderMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter | null {
-        return this.useQuery(Source.MyNotificationCenterQuery, undefined, opts);
-    }
     async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
         return this.client.query(Source.MessageCommentsQuery, variables, opts);
     }
@@ -618,6 +594,30 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderFeedHome(opts?: QueryWatchParameters): Types.FeedHome | null {
         return this.useQuery(Source.FeedHomeQuery, undefined, opts);
+    }
+    async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
+        return this.client.query(Source.MyNotificationsQuery, variables, opts);
+    }
+    async refetchMyNotifications(variables: Types.MyNotificationsVariables): Promise<Types.MyNotifications> {
+        return this.refetch(Source.MyNotificationsQuery, variables);
+    }
+    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications {
+        return this.useQuerySuspense(Source.MyNotificationsQuery, variables, opts);
+    }
+    useWithoutLoaderMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications | null {
+        return this.useQuery(Source.MyNotificationsQuery, variables, opts);
+    }
+    async queryMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
+        return this.client.query(Source.MyNotificationCenterQuery, undefined, opts);
+    }
+    async refetchMyNotificationCenter(): Promise<Types.MyNotificationCenter> {
+        return this.refetch(Source.MyNotificationCenterQuery);
+    }
+    useMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter {
+        return this.useQuerySuspense(Source.MyNotificationCenterQuery, undefined, opts);
+    }
+    useWithoutLoaderMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter | null {
+        return this.useQuery(Source.MyNotificationCenterQuery, undefined, opts);
     }
     async queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery, undefined, opts);
@@ -1198,14 +1198,17 @@ export class OpenlandClient extends BaseApiClient {
     subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables> {
         return this.client.subscribe(Source.ChatOnlinesCountWatchSubscription, variables);
     }
-    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
-        return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);
+    subscribeCommentUpdatesGlobal(variables: Types.CommentUpdatesGlobalVariables): GraphqlActiveSubscription<Types.CommentUpdatesGlobal, Types.CommentUpdatesGlobalVariables> {
+        return this.client.subscribe(Source.CommentUpdatesGlobalSubscription, variables);
     }
     subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
         return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);
     }
     subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
         return this.client.subscribe(Source.ConferenceWatchSubscription, variables);
+    }
+    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
+        return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);
     }
     subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables): GraphqlActiveSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables> {
         return this.client.subscribe(Source.DebugEventsWatchSubscription, variables);
