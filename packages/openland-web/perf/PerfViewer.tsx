@@ -58,38 +58,44 @@ export const PerfViewer = () => {
     const [maxMeasureCacheComponent, setMaxMeasureCacheComponent] = React.useState<any>(null);
     const [hasError, setHasError] = React.useState<any>(false);
 
-    React.useEffect(() => {
-        let newMaxMeasureDisplayNone = maxMeasureDisplayNone;
-        let newMaxMeasureCacheComponent = maxMeasureCacheComponent;
-        for (let key of Object.keys(perfState)) {
-            if (key === 'CacheComponent') {
-                if (perfState[key].measure > newMaxMeasureCacheComponent) {
-                    newMaxMeasureCacheComponent = perfState[key].measure;
+    React.useEffect(
+        () => {
+            let newMaxMeasureDisplayNone = maxMeasureDisplayNone;
+            let newMaxMeasureCacheComponent = maxMeasureCacheComponent;
+            for (let key of Object.keys(perfState)) {
+                if (key === 'CacheComponent') {
+                    if (perfState[key].measure > newMaxMeasureCacheComponent) {
+                        newMaxMeasureCacheComponent = perfState[key].measure;
+                    }
+                }
+
+                if (key.indexOf('DisplayNone') !== -1) {
+                    if (perfState[key].measure > newMaxMeasureDisplayNone) {
+                        newMaxMeasureDisplayNone = perfState[key].measure;
+                    }
                 }
             }
+            if (newMaxMeasureCacheComponent !== maxMeasureCacheComponent) {
+                setMaxMeasureCacheComponent(newMaxMeasureCacheComponent);
+            }
+            if (maxMeasureDisplayNone !== newMaxMeasureDisplayNone) {
+                setMaxMeasureDisplayNone(newMaxMeasureDisplayNone);
+            }
+        },
+        [perfState],
+    );
 
-            if (key.indexOf('DisplayNone') !== -1) {
-                if (perfState[key].measure > newMaxMeasureDisplayNone) {
-                    newMaxMeasureDisplayNone = perfState[key].measure;
+    React.useEffect(
+        () => {
+            if (hasError) {
+                if (timeout) {
+                    clearInterval(timeout);
+                    setIntervalTimeout(null);
                 }
             }
-        }
-        if (newMaxMeasureCacheComponent !== maxMeasureCacheComponent) {
-            setMaxMeasureCacheComponent(newMaxMeasureCacheComponent);
-        }
-        if (maxMeasureDisplayNone !== newMaxMeasureDisplayNone) {
-            setMaxMeasureDisplayNone(newMaxMeasureDisplayNone);
-        }
-    }, [perfState]);
-
-    React.useEffect(() => {
-        if (hasError) {
-            if (timeout) {
-                clearInterval(timeout);
-                setIntervalTimeout(null);
-            }
-        }
-    }, [hasError]);
+        },
+        [hasError],
+    );
 
     if (!timeout && firstRender) {
         setFirstRender(false);

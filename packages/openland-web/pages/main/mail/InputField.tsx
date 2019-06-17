@@ -90,12 +90,11 @@ export const InputField = (props: InputProps) => {
                     props.field.input.invalid && InputInvalidStyledClassName,
                 )}
             />
-            {props.field.input.invalid &&
-                !props.hideErrorText && (
-                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                        {props.field.input.errorText}
-                    </XView>
-                )}
+            {props.field.input.invalid && !props.hideErrorText && (
+                <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                    {props.field.input.errorText}
+                </XView>
+            )}
         </>
     );
 };

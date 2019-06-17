@@ -103,23 +103,22 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        !withoutSort && (
-                                            <SortPicker
-                                                sort={sort}
-                                                onPick={setSort}
-                                                withoutFeatured={withoutFeatured}
-                                                options={sortOptions}
-                                            />
-                                        )
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    !withoutSort && (
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                            options={sortOptions}
+                                        />
+                                    )
+                                }
+                            />
+                        )}
                         <CardsComponent
                             onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
@@ -291,8 +290,8 @@ export const ComponentWithSort = ({
     const finalQuery = variables.query
         ? variables.query
         : onlyFeatured
-            ? JSON.stringify({ featured: 'true' })
-            : variables.query;
+        ? JSON.stringify({ featured: 'true' })
+        : variables.query;
 
     const finalVariables = {
         ...(queryToPrefix

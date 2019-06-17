@@ -72,12 +72,15 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return;
     };
 
-    React.useEffect(() => {
-        if (selectedIndex !== null) {
-            props.onSearchItemSelected(items[selectedIndex]);
-            return;
-        }
-    }, [selectedIndex]);
+    React.useEffect(
+        () => {
+            if (selectedIndex !== null) {
+                props.onSearchItemSelected(items[selectedIndex]);
+                return;
+            }
+        },
+        [selectedIndex],
+    );
 
     if (items.length === 0) {
         return (

@@ -17,8 +17,7 @@ export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
     const data = client.useAvailableRooms();
 
-    let noData =
-        data === undefined || (data.availableChats === undefined);
+    let noData = data === undefined || data.availableChats === undefined;
 
     let rooms = data ? [...(data.availableChats || [])] : [];
 

@@ -72,7 +72,13 @@ const TextAlignCenter = ({ children }: { children: any }) => {
     return <div className={textAlignCenterClassName}>{children}</div>;
 };
 
-export const InviteFragment = ({ asModalContent, modalContext }: { asModalContent?: boolean, modalContext?: XModalController }) => {
+export const InviteFragment = ({
+    asModalContent,
+    modalContext,
+}: {
+    asModalContent?: boolean;
+    modalContext?: XModalController;
+}) => {
     const client = useClient();
 
     const founderChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';

@@ -21,7 +21,7 @@ const SpanRenderClass = css`
     line-height: 22px;
     letter-spacing: 0;
     font-weight: 400;
-    color: rgba(0,0,0,0.8);
+    color: rgba(0, 0, 0, 0.8);
 `;
 
 export default withApp('UI Framework - Spans', 'viewer', props => {
@@ -29,9 +29,12 @@ export default withApp('UI Framework - Spans', 'viewer', props => {
     const [spans, setSpans] = React.useState<FullMessage_GeneralMessage_spans[]>([]);
     const [processed, setProcessed] = React.useState<Span[]>([]);
 
-    React.useEffect(() => {
-        setProcessed(processSpans(text, spans));
-    }, [text, spans]);
+    React.useEffect(
+        () => {
+            setProcessed(processSpans(text, spans));
+        },
+        [text, spans],
+    );
 
     return (
         <DevDocsScaffold title="Spans">

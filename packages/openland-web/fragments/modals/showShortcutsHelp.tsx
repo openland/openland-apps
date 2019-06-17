@@ -90,7 +90,7 @@ const SpanPreview = ({
                     type: spanType,
                     offset: 0,
                     length: text.length,
-                } as (SpanCodeBlock | SpanCodeInline | SpanItalic | SpanBold | SpanIrony | SpanLoud)
+                } as SpanCodeBlock | SpanCodeInline | SpanItalic | SpanBold | SpanIrony | SpanLoud
             }
         >
             {text}

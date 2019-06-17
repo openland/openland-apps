@@ -264,14 +264,14 @@ const EditCommunityEntity = (props: {
                                 newPhoto
                                     ? newPhoto
                                     : org.photoRef
-                                        ? fromValue({
-                                              uuid: org.photoRef.uuid,
-                                              isImage: true,
-                                              crop: org.photoRef.crop,
-                                              width: null,
-                                              height: null,
-                                          })
-                                        : null
+                                    ? fromValue({
+                                          uuid: org.photoRef.uuid,
+                                          isImage: true,
+                                          crop: org.photoRef.crop,
+                                          width: null,
+                                          height: null,
+                                      })
+                                    : null
                             }
                         />
                         <XView marginLeft={20} flexGrow={1} flexShrink={0}>
@@ -282,52 +282,50 @@ const EditCommunityEntity = (props: {
                                 hideErrorText
                             />
 
-                            {props.isCommunity &&
-                                !props.isOwner && (
-                                    <XView
-                                        height={52}
-                                        marginTop={16}
-                                        paddingHorizontal={16}
-                                        backgroundColor="#f2f3f4"
-                                        borderRadius={8}
-                                        flexDirection="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                    >
-                                        <XView flexDirection="column" marginTop={-3}>
-                                            <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
-                                                Community type (set by creator)
-                                            </XView>
-                                            <XView fontSize={14} color="#000" marginTop={-4}>
-                                                {org.private ? 'Private' : 'Public'}
-                                            </XView>
+                            {props.isCommunity && !props.isOwner && (
+                                <XView
+                                    height={52}
+                                    marginTop={16}
+                                    paddingHorizontal={16}
+                                    backgroundColor="#f2f3f4"
+                                    borderRadius={8}
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                >
+                                    <XView flexDirection="column" marginTop={-3}>
+                                        <XView color="rgba(0, 0, 0, 0.5)" fontSize={12}>
+                                            Community type (set by creator)
+                                        </XView>
+                                        <XView fontSize={14} color="#000" marginTop={-4}>
+                                            {org.private ? 'Private' : 'Public'}
                                         </XView>
                                     </XView>
-                                )}
-                            {props.isCommunity &&
-                                props.isOwner && (
-                                    <XView marginTop={16}>
-                                        <SelectWithDropdown
-                                            title="Community type"
-                                            value={typeField.value}
-                                            onChange={typeField.input.onChange}
-                                            selectOptions={[
-                                                {
-                                                    value: CommunityType.COMMUNITY_PUBLIC,
-                                                    label: `Public community`,
-                                                    labelShort: 'Public',
-                                                    subtitle: `Anyone can find and join this community`,
-                                                },
-                                                {
-                                                    value: CommunityType.COMMUNITY_PRIVATE,
-                                                    label: `Private community`,
-                                                    labelShort: 'Private',
-                                                    subtitle: `Only invited people can join community and view chats`,
-                                                },
-                                            ]}
-                                        />
-                                    </XView>
-                                )}
+                                </XView>
+                            )}
+                            {props.isCommunity && props.isOwner && (
+                                <XView marginTop={16}>
+                                    <SelectWithDropdown
+                                        title="Community type"
+                                        value={typeField.value}
+                                        onChange={typeField.input.onChange}
+                                        selectOptions={[
+                                            {
+                                                value: CommunityType.COMMUNITY_PUBLIC,
+                                                label: `Public community`,
+                                                labelShort: 'Public',
+                                                subtitle: `Anyone can find and join this community`,
+                                            },
+                                            {
+                                                value: CommunityType.COMMUNITY_PRIVATE,
+                                                label: `Private community`,
+                                                labelShort: 'Private',
+                                                subtitle: `Only invited people can join community and view chats`,
+                                            },
+                                        ]}
+                                    />
+                                </XView>
+                            )}
                         </XView>
                     </XView>
                     <XView marginBottom={28}>
@@ -478,11 +476,11 @@ const EditCommunityEntity = (props: {
                                                   : null,
                                           })
                                         : org.photoRef
-                                            ? sanitizeImageRef({
-                                                  uuid: org.photoRef.uuid,
-                                                  crop: org.photoRef.crop,
-                                              })
-                                            : null,
+                                        ? sanitizeImageRef({
+                                              uuid: org.photoRef.uuid,
+                                              crop: org.photoRef.crop,
+                                          })
+                                        : null,
                                 },
                             })
                         }

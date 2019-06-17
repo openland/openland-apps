@@ -15,7 +15,10 @@ import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngin
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
-import { NotificationCenterState, NotificationCenterStateHandler } from 'openland-engines/NotificationCenterState';
+import {
+    NotificationCenterState,
+    NotificationCenterStateHandler,
+} from 'openland-engines/NotificationCenterState';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 
@@ -56,7 +59,9 @@ interface CommentsNotificationsState {
     state: NotificationCenterState;
 }
 
-class CommentsNotificationsInner extends React.PureComponent<CommentsNotificationsProps, CommentsNotificationsState> implements NotificationCenterStateHandler {
+class CommentsNotificationsInner
+    extends React.PureComponent<CommentsNotificationsProps, CommentsNotificationsState>
+    implements NotificationCenterStateHandler {
     private unmount: (() => void) | null = null;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
 
@@ -65,8 +70,8 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
 
         this.dataSource = buildMessagesDataSource(this.props.engine.dataSource);
         this.state = {
-            state: this.props.engine.getState()
-        }
+            state: this.props.engine.getState(),
+        };
     }
 
     componentWillMount() {
@@ -83,14 +88,14 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
     onNotificationCenterUpdated(state: NotificationCenterState) {
         this.setState({ state });
     }
-    
+
     private renderLoading = () => {
         return (
             <LoadingWrapper>
                 <XLoader loading={true} />
             </LoadingWrapper>
         );
-    }
+    };
 
     private dataSourceWrapper = (props: { children?: any }) => {
         return (
@@ -100,7 +105,7 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
                 </XScrollView3>
             </>
         );
-    }
+    };
 
     private renderMessage = (i: DataSourceWebMessageItem | DataSourceDateItem) => {
         const data = i as any;
@@ -121,7 +126,7 @@ class CommentsNotificationsInner extends React.PureComponent<CommentsNotificatio
                 }}
             />
         );
-    }
+    };
 
     render() {
         const { state } = this.state;

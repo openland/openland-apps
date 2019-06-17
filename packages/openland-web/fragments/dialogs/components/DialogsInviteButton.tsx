@@ -43,7 +43,7 @@ export const DialogsInviteButton = XMemo(() => {
     return (
         <InviteWrapper
             onClick={() =>
-                showModalBox({ fullScreen: true }, (ctx) => (
+                showModalBox({ fullScreen: true }, ctx => (
                     <XScrollView3 flexGrow={1} flexShrink={1}>
                         <InviteFragment asModalContent modalContext={ctx} />
                     </XScrollView3>

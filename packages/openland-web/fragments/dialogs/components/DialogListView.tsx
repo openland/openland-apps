@@ -40,11 +40,14 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     let router = React.useContext(XViewRouterContext);
     let route = React.useContext(XViewRouteContext);
 
-    React.useEffect(() => {
-        if (isSearching === false) {
-            props.onSearchItemSelected(null);
-        }
-    }, [isSearching]);
+    React.useEffect(
+        () => {
+            if (isSearching === false) {
+                props.onSearchItemSelected(null);
+            }
+        },
+        [isSearching],
+    );
 
     let conversationId: null | string = null;
     if (route) {
@@ -68,18 +71,21 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, []);
 
-    const renderDialog = React.useMemo(() => {
-        return (item: DialogListWebItem) => {
-            let selected = false;
-            if (
-                conversationId &&
-                (conversationId === item.key || conversationId === item.flexibleId)
-            ) {
-                selected = true;
-            }
-            return <DialogView item={item} selected={selected} />;
-        };
-    }, [props.onDialogClick, conversationId]);
+    const renderDialog = React.useMemo(
+        () => {
+            return (item: DialogListWebItem) => {
+                let selected = false;
+                if (
+                    conversationId &&
+                    (conversationId === item.key || conversationId === item.flexibleId)
+                ) {
+                    selected = true;
+                }
+                return <DialogView item={item} selected={selected} />;
+            };
+        },
+        [props.onDialogClick, conversationId],
+    );
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
