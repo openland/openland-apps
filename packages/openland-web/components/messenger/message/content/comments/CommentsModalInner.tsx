@@ -40,7 +40,14 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const commentViewClassName = css`
      {
-        margin-top: 20px;
+        margin-top: 10px;
+    }
+`;
+
+const messageComponentClassName = css`
+     {
+        padding-top: 10px;
+        padding-bottom: 6px;
     }
 `;
 
@@ -86,12 +93,12 @@ const CommentView = ({
     scrollToComment: Function;
     isMobile?: boolean;
 }) => {
-    const [isFirstRender, setIsFirstRender] = React.useState<boolean>(false);
+    const [isFaddingSelected, setFaddingSelected] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         setTimeout(() => {
-            setIsFirstRender(true);
-        }, 500);
+            setFaddingSelected(true);
+        }, 2000);
     });
 
     const messenger = React.useContext(MessengerContext);
@@ -160,16 +167,47 @@ const CommentView = ({
             commentsMap[commentEntryId].childComments.length !== 0);
 
     return (
-        <div
-            data-comment-id={message.id}
-            className={cx(
-                commentViewClassName,
-                selectedCommentMessageId === message.id && selectedViewClassName,
-                selectedCommentMessageId === message.id &&
-                    isFirstRender &&
-                    selectedFadeAwayViewClassName,
-            )}
-        >
+        <div data-comment-id={message.id} className={cx(commentViewClassName)}>
+            <div
+                className={cx(
+                    messageComponentClassName,
+                    selectedCommentMessageId === message.id && selectedViewClassName,
+                    selectedCommentMessageId === message.id &&
+                        isFaddingSelected &&
+                        selectedFadeAwayViewClassName,
+                )}
+            >
+                <XView
+                    paddingHorizontal={32}
+                    key={message.key}
+                    marginLeft={offset}
+                    width={`calc(800px - 32px - 32px - ${offset}px)`}
+                    maxWidth={`calc(100% - ${isMobile ? offset : 0}px)`}
+                >
+                    {showComment && (
+                        <MessageComponent
+                            room={room}
+                            conversationId={roomId}
+                            onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                            usernameOfRepliedUser={usernameOfRepliedUser}
+                            commentDepth={message.depth}
+                            deleted={commentEntryId ? commentsMap[commentEntryId].deleted : false}
+                            noSelector
+                            isComment
+                            commentProps={{
+                                onCommentReplyClick,
+                                onCommentEditClick,
+                                onCommentDeleteClick,
+                                messageId: originalMessageId,
+                            }}
+                            message={message}
+                            onlyLikes={true}
+                            me={messenger.user}
+                        />
+                    )}
+                </XView>
+            </div>
+
             <XView
                 paddingHorizontal={32}
                 key={message.key}
@@ -177,28 +215,6 @@ const CommentView = ({
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
                 maxWidth={`calc(100% - ${isMobile ? offset : 0}px)`}
             >
-                {showComment && (
-                    <MessageComponent
-                        room={room}
-                        conversationId={roomId}
-                        onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
-                        usernameOfRepliedUser={usernameOfRepliedUser}
-                        commentDepth={message.depth}
-                        deleted={commentEntryId ? commentsMap[commentEntryId].deleted : false}
-                        noSelector
-                        isComment
-                        commentProps={{
-                            onCommentReplyClick,
-                            onCommentEditClick,
-                            onCommentDeleteClick,
-                            messageId: originalMessageId,
-                        }}
-                        message={message}
-                        onlyLikes={true}
-                        me={messenger.user}
-                    />
-                )}
-
                 {showInputId === message.key && (
                     <UploadContextProvider>
                         <CommentsInput

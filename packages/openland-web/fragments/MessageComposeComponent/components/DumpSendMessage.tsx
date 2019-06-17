@@ -47,7 +47,7 @@ const SendMessageWrapper = Glamorous.div<{
         backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
         paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 16,
         paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
-        paddingTop: 12,
+        paddingTop: minimal ? 6 : 12,
         paddingBottom: minimal ? 0 : 12,
         borderTopStyle: 'solid',
         borderTopWidth: minimal ? undefined : '1px',
