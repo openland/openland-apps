@@ -41,8 +41,8 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
         this.isMocked = !!options.engine.options.mocked;
 
         (async () => {
-            const commentGlobalUpdatesState = await options.engine.client.queryCommentGlobalUpdatesState();
-            const state = commentGlobalUpdatesState.commentGlobalUpdatesState.state
+            const state =
+                (await options.engine.options.store.readKey('comments_global_updates')) || '';
 
             this.watcher = new SequenceModernWatcher(
                 'notificationCenter',
@@ -53,10 +53,10 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
                 undefined,
                 state,
                 async st => {
-                    console.log(st);
+                    await this.engine.options.store.writeKey('comments_global_updates', st);
                 },
             );
-        })()
+        })();
 
         AppVisibility.watch(this.handleVisibleChanged);
         this.handleVisibleChanged(AppVisibility.isVisible);
