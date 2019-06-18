@@ -10,24 +10,51 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
-    let invite = getClient().useRoomInviteLink({ roomId: props.router.params.id }, { fetchPolicy: 'network-only' }).link;
-    let link = 'https://openland.com/invite/' + invite;
+    const room = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
+    const invite = getClient().useRoomInviteLink({ roomId: room.id }, { fetchPolicy: 'network-only' }).link;
+    const link = 'https://openland.com/invite/' + invite;
+    const chatType = room.isChannel ? 'channel' : 'group';
+
+    const handleCopyClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: chatType,
+            action_type: 'link_copied'
+        });
+
+        Clipboard.setString(link);
+    }, [link]);
+
+    const handleShareClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: chatType,
+            action_type: 'link_shared'
+        });
+
+        Share.share({ message: link });
+    }, [link]);
 
     return (
-        <>
+        <ZTrack event="invite_view" params={{ invite_type: chatType }}>
             <ZListItemGroup header={null} footer="Anyone with link can join as group member">
                 <ZListItem
                     key="add"
                     text={link}
                     appearance="action"
-                    onPress={() => Share.share({ message: link })}
+                    onPress={handleShareClick}
                     copy={true}
                 />
             </ZListItemGroup>
-            <ZListItemGroup >
-                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(link)} />
+            <ZListItemGroup>
+                <ZListItem
+                    appearance="action"
+                    text="Copy link"
+                    onPress={handleCopyClick}
+                />
                 <ZListItem
                     appearance="action"
                     text="Revoke link"
@@ -44,18 +71,20 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
-            <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: link })} />
-        </>
+            <ZListItem
+                appearance="action"
+                text="Share link"
+                onPress={handleShareClick}
+            />
+        </ZTrack>
     )
 });
 
 class ProfileGroupLinkComponent extends React.PureComponent<PageProps> {
-
     render() {
         return (
             <>
                 <SHeader title="Invitation link" />
-                {/* <SHeaderButton title="Done" onPress={() => this.props.router.dismiss()} /> */}
                 <SScrollView>
                     <ProfileGroupLinkContent {...this.props} />
                 </SScrollView>

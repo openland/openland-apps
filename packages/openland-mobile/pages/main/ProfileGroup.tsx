@@ -114,7 +114,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             },
             'Add members',
             members.map(m => m.user.id),
-            { path: 'ProfileGroupLink', pathParams: { id: room.id } }
+            { path: 'ProfileGroupLink', pathParams: { room } }
         );
     }, [members]);
 
@@ -207,7 +207,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text={`Invite to ${chatTypeStr} with a link`}
-                        onPress={() => props.router.present('ProfileGroupLink', { id: room!.id })}
+                        onPress={() => props.router.present('ProfileGroupLink', { room })}
                         navigationIcon={false}
                     />
                 )}

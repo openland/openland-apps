@@ -12,23 +12,48 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { OrganizationMembersShortPaginated_organization } from 'openland-api/Types';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
-    let invite = getClient().useOrganizationPublicInvite({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).publicInvite!;
+    const organization = props.router.params.organization as OrganizationMembersShortPaginated_organization;
+    const invite = getClient().useOrganizationPublicInvite({ organizationId: organization.id }, { fetchPolicy: 'network-only' }).publicInvite!;
+    const link = 'https://openland.com/join/' + invite.key;
+    const orgType = organization.isCommunity ? 'community' : 'organization';
+
+    const handleCopyClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: orgType,
+            action_type: 'link_copied'
+        });
+
+        Clipboard.setString(link);
+    }, [link]);
+
+    const handleShareClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: orgType,
+            action_type: 'link_shared'
+        });
+
+        Share.share({ message: link });
+    }, [link]);
+
     return (
-        <>
-            <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">
+        <ZTrack event="invite_view" params={{ invite_type: orgType }}>
+            <ZListItemGroup footer={'People can join ' + orgType + ' by following this link. You can renew the link at any time'}>
                 <ZListItem
                     key="add"
-                    text={`https://openland.com/join/${invite.key}`}
+                    text={link}
                     appearance="action"
-                    onPress={() => Share.share({ message: `https://openland.com/join/${invite.key}` })}
+                    onPress={handleShareClick}
                     copy={true}
                 />
             </ZListItemGroup>
             <ZListItemGroup >
-                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${invite.key}`)} />
-                <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${invite.key}` })} />
+                <ZListItem appearance="action" text="Copy link" onPress={handleCopyClick} />
+                <ZListItem appearance="action" text="Share link" onPress={handleShareClick} />
                 <ZListItem
                     appearance="action"
                     text="Renew link"
@@ -45,16 +70,17 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
-        </>
+        </ZTrack>
     )
 });
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
-
     render() {
+        const organization = this.props.router.params.organization as OrganizationMembersShortPaginated_organization;
+
         return (
             <>
-                <SHeader title="Organization invite link" />
+                <SHeader title={(organization.isCommunity ? 'Community' : 'Organization') + ' invite link'} />
                 <SScrollView>
                     <OrganizationInviteLinkContent {...this.props} />
                 </SScrollView>
