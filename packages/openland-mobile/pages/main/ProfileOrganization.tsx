@@ -76,7 +76,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const myUserID = getMessenger().engine.user.id;
     const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
-    const showManageBtn = canMakePrimary || canEdit;
+    const canLeave = organization.isMine;
+    const showManageBtn = canMakePrimary || canEdit || canLeave;
+    const typeString = organization.isCommunity ? 'community' : 'organization';
 
     const [ members, setMembers ] = React.useState(organization.members);
     const [ loading, setLoading ] = React.useState(false);
@@ -150,6 +152,28 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 });
             }
 
+            if (canLeave) {
+                builder.action('Leave ' + typeString,
+                    () => {
+                        Alert.builder()
+                            .title('Are you sure want to leave?')
+                            .button('Cancel', 'cancel')
+                            .action('Leave', 'destructive', async () => {
+                                await getClient().mutateOrganizationRemoveMember({
+                                    memberId: myUserID,
+                                    organizationId: props.router.params.id,
+                                });
+                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                await getClient().refetchAccountSettings();
+
+                                props.router.back();
+                            })
+                            .show();
+                    },
+                    true,
+                );
+            }
+
             if (canEdit) {
                 builder.action('Delete', () => {
                     Alert.builder()
@@ -182,7 +206,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
                         () => {
                             Alert.builder()
-                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? 'Admin? Admins have full control over the organization account.' : 'Member? Members can participate in the organization\'s chats.'}`)
+                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
                                 .button('Cancel', 'cancel')
                                 .action('Change role', 'default', async () => {
                                     await getClient().mutateOrganizationChangeMemberRole({
@@ -199,7 +223,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 }
 
                 if (user.id === myUserID) {
-                    builder.action('Leave organization',
+                    builder.action('Leave ' + typeString,
                         () => {
                             Alert.builder()
                                 .title('Are you sure want to leave?')
@@ -221,7 +245,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 }
 
                 if (canEdit && user.id !== myUserID) {
-                    builder.action('Remove from organization',
+                    builder.action('Remove from ' + typeString,
                         () => {
                             Alert.builder()
                                 .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
