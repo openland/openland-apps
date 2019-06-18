@@ -20,6 +20,7 @@ import {
     DeleteMessageComponent,
 } from 'openland-web/fragments/MessengerRootComponent';
 import { CacheComponent } from './CacheComponent';
+import { CommentsNotifications } from '../CommentsNotifications';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -89,7 +90,7 @@ export const ConversationContainerWrapper = ({
                         id: conversationId,
                     }}
                 />
-
+                {tab === tabs.notifications && <CommentsNotifications />}
                 {tab === tabs.empty && <MessengerEmptyFragment />}
                 {tab === tabs.roomInvite && <RoomInviteFromLink />}
                 {tab === tabs.organizationInvite && <OrganizationInviteFromLink />}

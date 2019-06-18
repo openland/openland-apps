@@ -9,7 +9,8 @@ export type tabsT =
     | 'user'
     | 'conference'
     | 'chat'
-    | 'roomProfile';
+    | 'roomProfile'
+    | 'notifications';
 
 export const tabs: { [K in tabsT]: tabsT } = {
     empty: 'empty',
@@ -23,4 +24,5 @@ export const tabs: { [K in tabsT]: tabsT } = {
     conference: 'conference',
     chat: 'chat',
     roomProfile: 'roomProfile',
+    notifications: 'notifications',
 };
