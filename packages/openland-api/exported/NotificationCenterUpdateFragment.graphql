@@ -11,6 +11,17 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
       ...NotificationFragment
     }
   }
+  ... on NotificationUpdated {
+    center {
+      __typename
+      id
+      unread
+    }
+    notification {
+      __typename
+      ...NotificationFragment
+    }
+  }
   ... on NotificationDeleted {
     center {
       __typename

@@ -228,8 +228,6 @@ export class NotificationCenterEngine {
 
                 this.onNotificationsUpdated();
             }
-        } else if (event.__typename === 'NotificationRead') {
-            // Ignore.
         } else if (event.__typename === 'NotificationDeleted') {
             const id = event.notification.id;
 
@@ -241,6 +239,25 @@ export class NotificationCenterEngine {
 
                 this.onNotificationsUpdated();
             }
+        } else if (event.__typename === 'NotificationUpdated') {
+            const id = event.notification.id;
+            const convertedNotification = convertNotification(event.notification);
+
+            if (convertedNotification && await this._dataSourceStored.hasItem(id)) {
+                await this._dataSourceStored.updateItem(convertedNotification);
+
+                this.notifications.map((n, i) => {
+                    if (n.key === id) {
+                        this.notifications[i] = convertedNotification;
+                    }
+                })
+
+                this.state = new NotificationCenterState(false, this.notifications);
+
+                this.onNotificationsUpdated();
+            }
+        } else if (event.__typename === 'NotificationRead') {
+            // Ignore.
         } else {
             log.log('Unhandled update');
         }

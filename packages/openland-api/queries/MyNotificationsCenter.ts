@@ -66,6 +66,15 @@ export const NotificationCenterUpdateFragment = gql`
                 ...NotificationFragment
             }
         }
+        ... on NotificationUpdated {
+            center {
+                id
+                unread
+            }
+            notification {
+                ...NotificationFragment
+            }
+        }
         ... on NotificationDeleted {
             center {
                 id
