@@ -12,6 +12,7 @@ import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } fro
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
+import { CommentsGlobalUpdatesEngine } from './CommentsGlobalUpdatesEngine';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -65,6 +66,7 @@ export class NotificationCenterEngine {
     private listeners: NotificationCenterStateHandler[] = [];
     private isVisible: boolean = true;
     private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
+    private commentsGlobalUpdatesEngine?: CommentsGlobalUpdatesEngine;
     private maxSeq = 0;
     private lastReportedSeq = 0;
 
@@ -141,8 +143,19 @@ export class NotificationCenterEngine {
         this.handleVisibleChanged(AppVisibility.isVisible);
     }
 
+    // init CommentsGlobalStateEngine just after first updates handled - poore man's sync
+    // looks like separate events are mistake ¯\_(ツ)_/¯
+    initCommentsGlobalStateEngine = () => {
+        if (!this.commentsGlobalUpdatesEngine) {
+            this.commentsGlobalUpdatesEngine = new CommentsGlobalUpdatesEngine({
+                engine: this.engine, notificationCenterEngine: this
+            });
+        }
+    }
+
     handleStateProcessed = async (state: string) => {
         await this._dataSourceStored.updateState(state);
+        this.initCommentsGlobalStateEngine();
     }
 
     getState = () => {
@@ -217,13 +230,13 @@ export class NotificationCenterEngine {
         const peerRootId = event.peer.peerRoot.message.id;
         const subscription = !!event.peer.subscription;
         let updatedItems: NotificationsDataSourceItem[] = [];
-        await this.notifications.map(i => {
-            if (i.peerRootId === peerRootId) {
-                i.isSubscribedMessageComments = subscription;
-                this._dataSourceStored.updateItem(i);
+        for (let n of this.notifications) {
+            if (n.peerRootId === peerRootId) {
+                n.isSubscribedMessageComments = subscription;
+                await this._dataSourceStored.updateItem(n);
             }
-            updatedItems.push(i);
-        });
+            updatedItems.push(n);
+        }
         this.notifications = updatedItems;
         this.state = new NotificationCenterState(false, this.notifications);
     };
@@ -231,7 +244,7 @@ export class NotificationCenterEngine {
     private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);
 
-         if (event.__typename === 'NotificationReceived') {
+        if (event.__typename === 'NotificationReceived') {
             const convertedNotification = convertNotification(event.notification);
 
             if (convertedNotification) {

@@ -3,39 +3,31 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { createLogger } from 'mental-log';
 import * as Types from 'openland-api/Types';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
+import { NotificationCenterEngine } from './NotificationCenterEngine';
 
 const log = createLogger('Engine-CommentsGlobalUpdatesEngine');
 
 type CommentsGlobalUpdatesEngineOptions = {
     engine: MessengerEngine;
+    notificationCenterEngine: NotificationCenterEngine;
     mocked?: boolean;
 };
 
-export interface CommentsNotificationsDataSourceItem {
-    type: 'comments_notification';
-    key: string;
-}
-
 export class CommentsGlobalUpdatesEngine {
-    readonly engine: MessengerEngine;
-    readonly client: OpenlandClient;
-    readonly isMocked: boolean;
+    private readonly options: CommentsGlobalUpdatesEngineOptions;
     private watcher: SequenceModernWatcher<
         Types.CommentUpdatesGlobal,
         Types.CommentUpdatesGlobalVariables
     > | null = null;
 
     constructor(options: CommentsGlobalUpdatesEngineOptions) {
-        this.engine = options.engine;
-        this.client = this.engine.client;
-        this.isMocked = !!options.engine.options.mocked;
-
+        this.options = options;
         (async () => {
             const state =
-                (await options.engine.options.store.readKey('comments_global_updates_state')) || '';
+                (await options.engine.options.store.readKey('comments_global_updates_state'));
 
             this.watcher = new SequenceModernWatcher(
-                'notificationCenter',
+                'commentsGlobalUpdatesEngine',
                 options.engine.client.subscribeCommentUpdatesGlobal({ state }),
                 options.engine.client.client,
                 this.handleEvent,
@@ -43,7 +35,7 @@ export class CommentsGlobalUpdatesEngine {
                 undefined,
                 state,
                 async st => {
-                    await this.engine.options.store.writeKey('comments_global_updates_state', st);
+                    await this.options.engine.options.store.writeKey('comments_global_updates_state', st);
                 },
             );
         })();
@@ -53,7 +45,7 @@ export class CommentsGlobalUpdatesEngine {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'CommentPeerUpdated') {
-            this.engine.notificationCenter.handleCommentSubscriptionUpdate(event);
+            await this.options.notificationCenterEngine.handleCommentSubscriptionUpdate(event);
         } else {
             log.log('Unhandled update');
         }

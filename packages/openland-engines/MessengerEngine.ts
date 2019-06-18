@@ -25,7 +25,6 @@ export class MessengerEngine {
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly notificationCenter: NotificationCenterEngine;
-    readonly commentsNotificationsCenter: CommentsGlobalUpdatesEngine;
     readonly global: GlobalStateEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
@@ -65,11 +64,6 @@ export class MessengerEngine {
 
         this.dialogList = new DialogListEngine(this);
         this.notificationCenter = new NotificationCenterEngine({
-            engine: this,
-        });
-
-        // CommentsNotifications
-        this.commentsNotificationsCenter = new CommentsGlobalUpdatesEngine({
             engine: this,
         });
 
