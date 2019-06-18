@@ -16,9 +16,11 @@ export const NotificationFragment = gql`
                     id
                     peerRoot {
                         ... on CommentPeerRootMessage {
+                       
                             message {
                                 ... on GeneralMessage {
                                     id
+                                    fallback
                                     message
                                 }
                             }

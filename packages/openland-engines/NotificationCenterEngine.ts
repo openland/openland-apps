@@ -31,7 +31,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const comment = firstContent.comment;
         const peer = firstContent.peer;
 
-        let replyQuoteText = peer.peerRoot.message.message;
+        let replyQuoteText = peer.peerRoot.message.message || peer.peerRoot.message.fallback;
         
         return {
             ...convertMessage({

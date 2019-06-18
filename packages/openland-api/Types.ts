@@ -52136,6 +52136,7 @@ export interface MyNotifications_myNotifications_items_content_peer_peerRoot_mes
    * State
    */
   id: string;
+  fallback: string;
   /**
    * Content
    */
@@ -52919,6 +52920,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
    * State
    */
   id: string;
+  fallback: string;
   /**
    * Content
    */
@@ -53722,6 +53724,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
    * State
    */
   id: string;
+  fallback: string;
   /**
    * Content
    */
@@ -76802,6 +76805,7 @@ export interface NotificationFragment_content_peer_peerRoot_message {
    * State
    */
   id: string;
+  fallback: string;
   /**
    * Content
    */
@@ -77570,6 +77574,7 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
    * State
    */
   id: string;
+  fallback: string;
   /**
    * Content
    */
