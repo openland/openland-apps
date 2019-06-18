@@ -42,7 +42,7 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
 
         (async () => {
             const state =
-                (await options.engine.options.store.readKey('comments_global_updates')) || '';
+                (await options.engine.options.store.readKey('comments_global_updates_state')) || '';
 
             this.watcher = new SequenceModernWatcher(
                 'notificationCenter',
@@ -53,7 +53,7 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
                 undefined,
                 state,
                 async st => {
-                    await this.engine.options.store.writeKey('comments_global_updates', st);
+                    await this.engine.options.store.writeKey('comments_global_updates_state', st);
                 },
             );
         })();
