@@ -139,6 +139,7 @@ export const ChatOnlinesCountWatchSubscription = typedSubscription<Types.ChatOnl
 export const UpdateWelcomeMessageMutation = typedMutation<Types.UpdateWelcomeMessage, Types.UpdateWelcomeMessageVariables>(Chats.UpdateWelcomeMessageMutation);
 export const MessageQuery = typedQuery<Types.Message, Types.MessageVariables>(Chats.MessageQuery);
 export const CommentUpdatesGlobalSubscription = typedSubscription<Types.CommentUpdatesGlobal, Types.CommentUpdatesGlobalVariables>(Comments.CommentUpdatesGlobalSubscription);
+export const CommentGlobalUpdatesStateQuery = typedQuery<Types.CommentGlobalUpdatesState, {}>(Comments.CommentGlobalUpdatesStateQuery);
 export const DeleteCommentMutation = typedMutation<Types.DeleteComment, Types.DeleteCommentVariables>(Comments.DeleteCommentMutation);
 export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Comments.MessageCommentsQuery);
 export const CommentSetReactionMutation = typedMutation<Types.CommentSetReaction, Types.CommentSetReactionVariables>(Comments.CommentSetReactionMutation);

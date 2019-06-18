@@ -1297,6 +1297,12 @@ private val ChatSearchGroupSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 ))
         )
+private val CommentGlobalUpdatesStateSelector = obj(
+            field("commentGlobalUpdatesState","commentGlobalUpdatesState", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("state","state", scalar("String"))
+                )))
+        )
 private val ConferenceSelector = obj(
             field("conference","conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3037,6 +3043,12 @@ object Operations {
         override val body = "query ChatSearchGroup(\$members:[ID!]!){group:alphaChatSearch(members:\$members){__typename flexibleId id}}"
         override val selector = ChatSearchGroupSelector
     }
+    val CommentGlobalUpdatesState = object: OperationDefinition {
+        override val name = "CommentGlobalUpdatesState"
+        override val kind = OperationKind.QUERY
+        override val body = "query CommentGlobalUpdatesState{commentGlobalUpdatesState{__typename state}}"
+        override val selector = CommentGlobalUpdatesStateSelector
+    }
     val Conference = object: OperationDefinition {
         override val name = "Conference"
         override val kind = OperationKind.QUERY
@@ -4111,6 +4123,7 @@ object Operations {
         if (name == "ChatHistory") return ChatHistory
         if (name == "ChatInit") return ChatInit
         if (name == "ChatSearchGroup") return ChatSearchGroup
+        if (name == "CommentGlobalUpdatesState") return CommentGlobalUpdatesState
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "Dialogs") return Dialogs

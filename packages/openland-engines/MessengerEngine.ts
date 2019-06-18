@@ -5,6 +5,7 @@ import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
+import { CommentsGlobalUpdatesEngine } from './CommentsGlobalUpdatesEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
@@ -24,6 +25,7 @@ export class MessengerEngine {
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly notificationCenter: NotificationCenterEngine;
+    readonly commentsNotificationsCenter: CommentsGlobalUpdatesEngine;
     readonly global: GlobalStateEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
@@ -42,11 +44,17 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
+    constructor(
+        client: OpenlandClient,
+        user: UserShort,
+        platform: string,
+        options?: Partial<EngineOptions>,
+    ) {
         this.options = {
-            conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
-            store: options && options.store ? options.store : new InMemoryKeyValueStore()
-        }
+            conversationBatchSize:
+                options && options.conversationBatchSize ? options.conversationBatchSize : 15,
+            store: options && options.store ? options.store : new InMemoryKeyValueStore(),
+        };
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
@@ -57,7 +65,12 @@ export class MessengerEngine {
 
         this.dialogList = new DialogListEngine(this);
         this.notificationCenter = new NotificationCenterEngine({
-            engine: this
+            engine: this,
+        });
+
+        // CommentsNotifications
+        this.commentsNotificationsCenter = new CommentsGlobalUpdatesEngine({
+            engine: this,
         });
 
         this.global = new GlobalStateEngine(this);
@@ -115,8 +128,8 @@ export class MessengerEngine {
     }
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
-        this.dialogList.handleChatNewMessage(message, cid)
-    }
+        this.dialogList.handleChatNewMessage(message, cid);
+    };
 
     getConversation(conversationId: string) {
         if (!this.activeConversations.has(conversationId)) {

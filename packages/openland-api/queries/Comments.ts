@@ -36,6 +36,15 @@ export const CommentUpdatesGlobalSubscription = gql`
             }
         }
     }
+    ${CommentGlobalUpdateFragment}
+`;
+
+export const CommentGlobalUpdatesStateQuery = gql`
+    query CommentGlobalUpdatesState {
+        commentGlobalUpdatesState {
+            state
+        }
+    }
 `;
 
 export const DeleteCommentMutation = gql`

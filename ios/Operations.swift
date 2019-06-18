@@ -1291,6 +1291,12 @@ private let ChatSearchGroupSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 ))
         )
+private let CommentGlobalUpdatesStateSelector = obj(
+            field("commentGlobalUpdatesState","commentGlobalUpdatesState", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("state","state", scalar("String"))
+                )))
+        )
 private let ConferenceSelector = obj(
             field("conference","conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3034,6 +3040,12 @@ class Operations {
         "query ChatSearchGroup($members:[ID!]!){group:alphaChatSearch(members:$members){__typename flexibleId id}}",
         ChatSearchGroupSelector
     )
+    let CommentGlobalUpdatesState = OperationDefinition(
+        "CommentGlobalUpdatesState",
+        .query, 
+        "query CommentGlobalUpdatesState{commentGlobalUpdatesState{__typename state}}",
+        CommentGlobalUpdatesStateSelector
+    )
     let Conference = OperationDefinition(
         "Conference",
         .query, 
@@ -4109,6 +4121,7 @@ class Operations {
         if name == "ChatHistory" { return ChatHistory }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatSearchGroup" { return ChatSearchGroup }
+        if name == "CommentGlobalUpdatesState" { return CommentGlobalUpdatesState }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }

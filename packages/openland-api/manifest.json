@@ -688,6 +688,13 @@
       }
     },
     {
+      "signature": "eeb6699591f56fa6f242314c495ebc09ef7cc02f47c3c5049d4b5455ea791ab4",
+      "document": "query CommentGlobalUpdatesState{commentGlobalUpdatesState{__typename state}}",
+      "metadata": {
+        "engineSignature": "query CommentGlobalUpdatesState{commentGlobalUpdatesState{__typename state}}"
+      }
+    },
+    {
       "signature": "de1847762d8228c93c7a61a54c867d55860609dd89a3cc93bd0aa03cdbb15195",
       "document": "mutation DeleteComment($id:ID!){deleteComment(id:$id)}",
       "metadata": {

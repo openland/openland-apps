@@ -47739,6 +47739,23 @@ export interface CommentUpdatesGlobalVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: CommentGlobalUpdatesState
+// ====================================================
+
+export interface CommentGlobalUpdatesState_commentGlobalUpdatesState {
+  __typename: "CommentGlobalUpdatesState";
+  state: string | null;
+}
+
+export interface CommentGlobalUpdatesState {
+  commentGlobalUpdatesState: CommentGlobalUpdatesState_commentGlobalUpdatesState;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: DeleteComment
 // ====================================================
 
