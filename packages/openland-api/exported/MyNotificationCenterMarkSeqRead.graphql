@@ -1,0 +1,3 @@
+mutation MyNotificationCenterMarkSeqRead($seq: Int!) {
+  notificationCenterMarkSeqRead(toSeq: $seq)
+}

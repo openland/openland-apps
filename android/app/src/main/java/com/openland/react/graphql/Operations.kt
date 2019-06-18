@@ -2398,6 +2398,9 @@ private val MessageSetReactionSelector = obj(
 private val MessageUnsetReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
+private val MyNotificationCenterMarkSeqReadSelector = obj(
+            field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
+        )
 private val OrganizationActivateByInviteSelector = obj(
             field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -3622,6 +3625,12 @@ object Operations {
         override val body = "mutation MessageUnsetReaction(\$messageId:ID!,\$reaction:String!){betaReactionRemove(mid:\$messageId,reaction:\$reaction)}"
         override val selector = MessageUnsetReactionSelector
     }
+    val MyNotificationCenterMarkSeqRead = object: OperationDefinition {
+        override val name = "MyNotificationCenterMarkSeqRead"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation MyNotificationCenterMarkSeqRead(\$seq:Int!){notificationCenterMarkSeqRead(toSeq:\$seq)}"
+        override val selector = MyNotificationCenterMarkSeqReadSelector
+    }
     val OrganizationActivateByInvite = object: OperationDefinition {
         override val name = "OrganizationActivateByInvite"
         override val kind = OperationKind.MUTATION
@@ -4200,6 +4209,7 @@ object Operations {
         if (name == "MediaOffer") return MediaOffer
         if (name == "MessageSetReaction") return MessageSetReaction
         if (name == "MessageUnsetReaction") return MessageUnsetReaction
+        if (name == "MyNotificationCenterMarkSeqRead") return MyNotificationCenterMarkSeqRead
         if (name == "OrganizationActivateByInvite") return OrganizationActivateByInvite
         if (name == "OrganizationAddMember") return OrganizationAddMember
         if (name == "OrganizationAlterPublished") return OrganizationAlterPublished

@@ -2392,6 +2392,9 @@ private let MessageSetReactionSelector = obj(
 private let MessageUnsetReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
+private let MyNotificationCenterMarkSeqReadSelector = obj(
+            field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
+        )
 private let OrganizationActivateByInviteSelector = obj(
             field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -3619,6 +3622,12 @@ class Operations {
         "mutation MessageUnsetReaction($messageId:ID!,$reaction:String!){betaReactionRemove(mid:$messageId,reaction:$reaction)}",
         MessageUnsetReactionSelector
     )
+    let MyNotificationCenterMarkSeqRead = OperationDefinition(
+        "MyNotificationCenterMarkSeqRead",
+        .mutation, 
+        "mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}",
+        MyNotificationCenterMarkSeqReadSelector
+    )
     let OrganizationActivateByInvite = OperationDefinition(
         "OrganizationActivateByInvite",
         .mutation, 
@@ -4198,6 +4207,7 @@ class Operations {
         if name == "MediaOffer" { return MediaOffer }
         if name == "MessageSetReaction" { return MessageSetReaction }
         if name == "MessageUnsetReaction" { return MessageUnsetReaction }
+        if name == "MyNotificationCenterMarkSeqRead" { return MyNotificationCenterMarkSeqRead }
         if name == "OrganizationActivateByInvite" { return OrganizationActivateByInvite }
         if name == "OrganizationAddMember" { return OrganizationAddMember }
         if name == "OrganizationAlterPublished" { return OrganizationAlterPublished }

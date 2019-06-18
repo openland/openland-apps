@@ -8,8 +8,10 @@ import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
 import { NotificationCenterState, NotificationCenterStateHandler } from './NotificationCenterState';
-import { ReadNotificationMutation } from 'openland-api';
+import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } from 'openland-api';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
+import { SequenceModernWatcher } from './core/SequenceModernWatcher';
+import { backoff } from 'openland-y-utils/timer';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -62,6 +64,9 @@ export class NotificationCenterEngine {
     private state: NotificationCenterState;
     private listeners: NotificationCenterStateHandler[] = [];
     private isVisible: boolean = true;
+    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null; 
+    private maxSeq = 0;
+    private lastReportedSeq = 0;
 
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
@@ -112,7 +117,9 @@ export class NotificationCenterEngine {
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
                 
-                this.engine.global.handleNotificationsCenterStarted(state);
+                this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
+                    await this.handleStateProcessed(st);
+                });
 
                 this.notifications = [...items, ...this.notifications];
                 this.state = new NotificationCenterState(false, this.notifications);
@@ -132,36 +139,6 @@ export class NotificationCenterEngine {
 
         AppVisibility.watch(this.handleVisibleChanged);
         this.handleVisibleChanged(AppVisibility.isVisible);
-    }
-
-    handleNotificationReceived = async (event: Types.NotificationCenterUpdateFragment_NotificationReceived) => {
-        const convertedNotification = convertNotification(event.notification);
-
-        if (convertedNotification) {
-            await this._dataSourceStored.addItem(convertedNotification, 0);
-
-            this.notifications = [convertedNotification, ...this.notifications];
-            this.state = new NotificationCenterState(false, this.notifications);
-
-            this.onNotificationsUpdated();
-        }
-    }
-
-    handleNotificationDeleted = async (event: Types.NotificationCenterUpdateFragment_NotificationDeleted) => {
-        const id = event.notification.id;
-
-        if (await this._dataSourceStored.hasItem(id)) {
-            await this._dataSourceStored.removeItem(id);
-
-            this.notifications = this.notifications.filter(n => n.key !== id);
-            this.state = new NotificationCenterState(false, this.notifications);
-
-            this.onNotificationsUpdated();
-        }
-    }
-
-    handleNotificationRead = async (event: Types.NotificationCenterUpdateFragment_NotificationRead) => {
-        // Wonderfull SpaceX & Apollo
     }
 
     handleStateProcessed = async (state: string) => {
@@ -202,7 +179,9 @@ export class NotificationCenterEngine {
         }
 
         this.isVisible = isVisible;
-        this.onNotificationsUpdated();
+
+        this.markReadIfNeeded();
+        this.reportSeqIfNeeded();
     }
 
     private markReadIfNeeded = () => {
@@ -215,6 +194,54 @@ export class NotificationCenterEngine {
                     notificationId: id
                 });
             }
+        }
+    }
+
+    private handleSeqUpdated = (seq: number) => {
+        this.maxSeq = Math.max(seq, this.maxSeq);
+
+        this.reportSeqIfNeeded();
+    }
+
+    private reportSeqIfNeeded = () => {
+        if (this.isVisible && this.listeners.length > 0 && this.lastReportedSeq < this.maxSeq) {
+            this.lastReportedSeq = this.maxSeq;
+            let seq = this.maxSeq;
+            (async () => {
+                backoff(() => this.engine.client.client.mutate(MyNotificationCenterMarkSeqReadMutation, { seq }));
+            })();
+        }
+    }
+
+    private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
+        log.log('Event Recieved: ' + event.__typename);
+
+         if (event.__typename === 'NotificationReceived') {
+            const convertedNotification = convertNotification(event.notification);
+
+            if (convertedNotification) {
+                await this._dataSourceStored.addItem(convertedNotification, 0);
+
+                this.notifications = [convertedNotification, ...this.notifications];
+                this.state = new NotificationCenterState(false, this.notifications);
+
+                this.onNotificationsUpdated();
+            }
+        } else if (event.__typename === 'NotificationRead') {
+            // Ignore.
+        } else if (event.__typename === 'NotificationDeleted') {
+            const id = event.notification.id;
+
+            if (await this._dataSourceStored.hasItem(id)) {
+                await this._dataSourceStored.removeItem(id);
+
+                this.notifications = this.notifications.filter(n => n.key !== id);
+                this.state = new NotificationCenterState(false, this.notifications);
+
+                this.onNotificationsUpdated();
+            }
+        } else {
+            log.log('Unhandled update');
         }
     }
 }

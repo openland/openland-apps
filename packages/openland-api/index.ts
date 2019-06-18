@@ -178,6 +178,7 @@ export const FeedPostMutation = typedMutation<Types.FeedPost, Types.FeedPostVari
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);
+export const MyNotificationCenterMarkSeqReadMutation = typedMutation<Types.MyNotificationCenterMarkSeqRead, Types.MyNotificationCenterMarkSeqReadVariables>(MyNotificationsCenter.MyNotificationCenterMarkSeqReadMutation);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
