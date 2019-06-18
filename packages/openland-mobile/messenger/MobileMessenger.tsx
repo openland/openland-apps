@@ -131,6 +131,9 @@ export class MobileMessenger {
     handleGroupClick = (id: string) => {
         this.history.navigationManager.push('ProfileGroup', { id });
     }
+    handleConversationClick = (id: string) => {
+        this.history.navigationManager.push('Conversation', { id });
+    }
 
     handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
         startLoader();

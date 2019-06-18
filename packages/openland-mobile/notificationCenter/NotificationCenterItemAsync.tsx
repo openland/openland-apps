@@ -84,7 +84,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                 {sharedRoom && (
                     <>
                         <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.textLabelColor} />
-                        <ASFlex onPress={() => messenger.handleGroupClick(sharedRoom.id)} marginLeft={7}>
+                        <ASFlex onPress={() => messenger.handleConversationClick(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
                                 size={18}
                                 src={sharedRoom.photo}
