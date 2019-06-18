@@ -82,6 +82,15 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const [ loading, setLoading ] = React.useState(false);
 
     // callbacks
+        const resetMembersList = React.useCallback(async () => {
+            const loaded = await getClient().queryOrganizationMembersShortPaginated({
+                organizationId: organization.id,
+                first: 10,
+            }, { fetchPolicy: 'network-only' });
+
+            setMembers(loaded.organization.members);
+        }, [organization.id]);
+
         const handleAddMember = React.useCallback(() => {
             Modals.showUserMuptiplePicker(props.router, {
                 title: 'Add',
@@ -250,15 +259,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 setLoading(false);
             }
         }, [ organization, members, loading ]);
-
-        const resetMembersList = React.useCallback(async () => {
-            const loaded = await getClient().queryOrganizationMembersShortPaginated({
-                organizationId: organization.id,
-                first: 10,
-            }, { fetchPolicy: 'network-only' });
-
-            setMembers(loaded.organization.members);
-        }, [organization.id]);
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
