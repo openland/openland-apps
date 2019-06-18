@@ -8419,8 +8419,8 @@
 			"fragmentsReferenced": [
 				"CommentGlobalUpdateFragment"
 			],
-			"sourceWithFragments": "subscription CommentUpdatesGlobal($state: String) {\n  event: commentUpdatesGlobal(fromState: $state) {\n    __typename\n    ... on CommentGlobalUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...CommentGlobalUpdateFragment\n      }\n    }\n    ... on CommentGlobalUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...CommentGlobalUpdateFragment\n      }\n    }\n  }\n}\nfragment CommentGlobalUpdateFragment on CommentGlobalUpdate {\n  __typename\n  ... on CommentPeerUpdated {\n    seq\n    peer {\n      __typename\n      id\n      subscription {\n        __typename\n        type\n      }\n    }\n  }\n}",
-			"operationId": "120e9ce5060c5e528a5233f3f4a0ff968531e90bdbb6e409528f34689ed10735"
+			"sourceWithFragments": "subscription CommentUpdatesGlobal($state: String) {\n  event: commentUpdatesGlobal(fromState: $state) {\n    __typename\n    ... on CommentGlobalUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...CommentGlobalUpdateFragment\n      }\n    }\n    ... on CommentGlobalUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...CommentGlobalUpdateFragment\n      }\n    }\n  }\n}\nfragment CommentGlobalUpdateFragment on CommentGlobalUpdate {\n  __typename\n  ... on CommentPeerUpdated {\n    seq\n    peer {\n      __typename\n      id\n      subscription {\n        __typename\n        type\n      }\n      peerRoot {\n        __typename\n        ... on CommentPeerRootMessage {\n          message {\n            __typename\n            id\n          }\n        }\n      }\n    }\n  }\n}",
+			"operationId": "20601549475c4ba2c1bb11ad389cbbea2029b8240597e511c43145e58df2020b"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
@@ -24342,7 +24342,7 @@
 			],
 			"fragmentName": "CommentGlobalUpdateFragment",
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Comments.ts",
-			"source": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate {\n  __typename\n  ... on CommentPeerUpdated {\n    seq\n    peer {\n      __typename\n      id\n      subscription {\n        __typename\n        type\n      }\n    }\n  }\n}",
+			"source": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate {\n  __typename\n  ... on CommentPeerUpdated {\n    seq\n    peer {\n      __typename\n      id\n      subscription {\n        __typename\n        type\n      }\n      peerRoot {\n        __typename\n        ... on CommentPeerRootMessage {\n          message {\n            __typename\n            id\n          }\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -24396,6 +24396,48 @@
 									"type": "CommentSubscriptionType",
 									"isConditional": false,
 									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "peerRoot",
+							"fieldName": "peerRoot",
+							"type": "CommentPeerRoot!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "message",
+									"fieldName": "message",
+									"type": "GeneralMessage!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"description": "State",
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
 								}
 							],
 							"fragmentSpreads": [],

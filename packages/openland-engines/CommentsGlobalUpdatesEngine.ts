@@ -20,7 +20,6 @@ export interface CommentsNotificationsDataSourceItem {
 }
 
 interface SequenceHolder {
-    handleStateProcessed: (a: string) => Promise<void>;
     handleSeqUpdated: (seq: number) => void;
     handleEvent: (event: Types.CommentGlobalUpdateFragment) => any;
     reportSeqIfNeeded: () => void;
@@ -30,8 +29,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
     readonly engine: MessengerEngine;
     readonly client: OpenlandClient;
     readonly isMocked: boolean;
-    readonly _dataSourceStored: DataSourceStored<CommentsNotificationsDataSourceItem>;
-    readonly dataSource: DataSource<CommentsNotificationsDataSourceItem>;
     private isVisible: boolean = true;
     private watcher: SequenceModernWatcher<
         Types.CommentUpdatesGlobal,
@@ -45,54 +42,27 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
 
-        let provider: DataSourceStoredProvider<CommentsNotificationsDataSourceItem> = {
-            loadMore: async (cursor?: string) => {
-                log.log('loadMore (cursor: ' + cursor + ')');
+        (async () => {
+            const commentGlobalUpdatesState = await options.engine.client.queryCommentGlobalUpdatesState();
+            const state = commentGlobalUpdatesState.commentGlobalUpdatesState.state
 
-                const commentGlobalUpdatesState = await this.engine.client.queryCommentGlobalUpdatesState();
-                const state = commentGlobalUpdatesState.commentGlobalUpdatesState.state;
-                const items: any = [];
-
-                return {
-                    items,
-                    cursor: cursor,
-                    state: state!!,
-                };
-            },
-            onStarted: (state: string) => {
-                log.log('onStarted');
-
-                this.watcher = new SequenceModernWatcher(
-                    'notificationCenter',
-                    this.engine.client.subscribeCommentUpdatesGlobal({ state }),
-                    this.engine.client.client,
-                    this.handleEvent,
-                    this.handleSeqUpdated,
-                    undefined,
-                    state,
-                    async st => {
-                        await this.handleStateProcessed(st);
-                    },
-                );
-            },
-        };
-
-        this._dataSourceStored = new DataSourceStored(
-            'comments_notifications',
-            options.engine.options.store,
-            20,
-            provider,
-        );
-
-        this.dataSource = this._dataSourceStored.dataSource;
+            this.watcher = new SequenceModernWatcher(
+                'notificationCenter',
+                options.engine.client.subscribeCommentUpdatesGlobal({ state }),
+                options.engine.client.client,
+                this.handleEvent,
+                this.handleSeqUpdated,
+                undefined,
+                state,
+                async st => {
+                    console.log(st);
+                },
+            );
+        })()
 
         AppVisibility.watch(this.handleVisibleChanged);
         this.handleVisibleChanged(AppVisibility.isVisible);
     }
-
-    handleStateProcessed = async (state: string) => {
-        await this._dataSourceStored.updateState(state);
-    };
 
     handleVisibleChanged = (isVisible: boolean) => {
         if (this.isVisible === isVisible) {
