@@ -204,7 +204,7 @@ export class NotificationCenterEngine {
     }
 
     private reportSeqIfNeeded = () => {
-        if (this.isVisible && this.listeners.length > 0 && this.lastReportedSeq < this.maxSeq) {
+        if (this.isVisible && this.lastReportedSeq < this.maxSeq) {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
