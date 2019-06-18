@@ -14,7 +14,7 @@ class NotificationCenterHandlersClass {
         const client = getClient();
         const builder = new ActionSheetBuilder();
 
-        builder.action(item.isSubscribedMessageComments ? 'Turn off notifications' : 'Turn on notifications', async () => {
+        builder.action(item.isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread', async () => {
             startLoader();
 
             try {
