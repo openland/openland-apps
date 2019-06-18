@@ -681,10 +681,10 @@
       }
     },
     {
-      "signature": "c4ab96a50c0a01e9753a01fae833dd285f97ece6662612fbff7de8b76407c856",
-      "document": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename...on CommentPeerUpdated{peer{__typename id subscription{__typename type}}seq}}subscription CommentUpdatesGlobal($state:String){event:commentUpdatesGlobal(fromState:$state){__typename...on CommentGlobalUpdateSingle{seq state update{__typename...CommentGlobalUpdateFragment}}...on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename...CommentGlobalUpdateFragment}}}}",
+      "signature": "d034fd3915489945e9e3d63f4171574d9a4c8c4795b9117a6041821d34d22c26",
+      "document": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename...on CommentPeerUpdated{peer{__typename id peerRoot{__typename...on CommentPeerRootMessage{message{__typename id}}}subscription{__typename type}}seq}}subscription CommentUpdatesGlobal($state:String){event:commentUpdatesGlobal(fromState:$state){__typename...on CommentGlobalUpdateSingle{seq state update{__typename...CommentGlobalUpdateFragment}}...on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename...CommentGlobalUpdateFragment}}}}",
       "metadata": {
-        "engineSignature": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename...on CommentPeerUpdated{peer{__typename id subscription{__typename type}}seq}}subscription CommentUpdatesGlobal($state:String){commentUpdatesGlobal(fromState:$state){__typename...on CommentGlobalUpdateSingle{seq state update{__typename...CommentGlobalUpdateFragment}}...on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename...CommentGlobalUpdateFragment}}}}"
+        "engineSignature": "fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename...on CommentPeerUpdated{peer{__typename id peerRoot{__typename...on CommentPeerRootMessage{message{__typename id}}}subscription{__typename type}}seq}}subscription CommentUpdatesGlobal($state:String){commentUpdatesGlobal(fromState:$state){__typename...on CommentGlobalUpdateSingle{seq state update{__typename...CommentGlobalUpdateFragment}}...on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename...CommentGlobalUpdateFragment}}}}"
       }
     },
     {

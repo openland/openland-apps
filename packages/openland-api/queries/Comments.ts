@@ -11,6 +11,13 @@ export const CommentGlobalUpdateFragment = gql`
                 subscription {
                     type
                 }
+                peerRoot {
+                    ... on CommentPeerRootMessage {
+                        message {
+                            id
+                        }
+                    }
+                }
             }
         }
     }

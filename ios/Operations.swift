@@ -476,6 +476,15 @@ private let CommentGlobalUpdateFragmentSelector = obj(
                 field("peer","peer", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID"))),
+                        field("peerRoot","peerRoot", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                inline("CommentPeerRootMessage", obj(
+                                    field("message","message", notNull(obj(
+                                            field("__typename","__typename", notNull(scalar("String"))),
+                                            field("id","id", notNull(scalar("ID")))
+                                        )))
+                                ))
+                            ))),
                         field("subscription","subscription", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("type","type", scalar("String"))
@@ -4051,7 +4060,7 @@ class Operations {
     let CommentUpdatesGlobal = OperationDefinition(
         "CommentUpdatesGlobal",
         .subscription, 
-        "subscription CommentUpdatesGlobal($state:String){event:commentUpdatesGlobal(fromState:$state){__typename ... on CommentGlobalUpdateSingle{seq state update{__typename ...CommentGlobalUpdateFragment}}... on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename ...CommentGlobalUpdateFragment}}}}fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename ... on CommentPeerUpdated{peer{__typename id subscription{__typename type}}seq}}",
+        "subscription CommentUpdatesGlobal($state:String){event:commentUpdatesGlobal(fromState:$state){__typename ... on CommentGlobalUpdateSingle{seq state update{__typename ...CommentGlobalUpdateFragment}}... on CommentGlobalUpdateBatch{fromSeq seq state updates{__typename ...CommentGlobalUpdateFragment}}}}fragment CommentGlobalUpdateFragment on CommentGlobalUpdate{__typename ... on CommentPeerUpdated{peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{message{__typename id}}}subscription{__typename type}}seq}}",
         CommentUpdatesGlobalSelector
     )
     let CommentWatch = OperationDefinition(

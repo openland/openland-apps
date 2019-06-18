@@ -47680,10 +47680,24 @@ export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_pee
   type: CommentSubscriptionType | null;
 }
 
+export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_peerRoot_message;
+}
+
 export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer {
   __typename: "CommentsPeer";
   id: string;
   subscription: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_subscription | null;
+  peerRoot: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_peerRoot;
 }
 
 export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update {
@@ -47704,10 +47718,24 @@ export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_pee
   type: CommentSubscriptionType | null;
 }
 
+export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_peerRoot_message;
+}
+
 export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer {
   __typename: "CommentsPeer";
   id: string;
   subscription: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_subscription | null;
+  peerRoot: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_peerRoot;
 }
 
 export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates {
@@ -76124,10 +76152,24 @@ export interface CommentGlobalUpdateFragment_peer_subscription {
   type: CommentSubscriptionType | null;
 }
 
+export interface CommentGlobalUpdateFragment_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface CommentGlobalUpdateFragment_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: CommentGlobalUpdateFragment_peer_peerRoot_message;
+}
+
 export interface CommentGlobalUpdateFragment_peer {
   __typename: "CommentsPeer";
   id: string;
   subscription: CommentGlobalUpdateFragment_peer_subscription | null;
+  peerRoot: CommentGlobalUpdateFragment_peer_peerRoot;
 }
 
 export interface CommentGlobalUpdateFragment {

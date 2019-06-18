@@ -121,7 +121,7 @@ export class NotificationCenterEngine {
                     await this.handleStateProcessed(st);
                 });
 
-                this.notifications = [...items, ...this.notifications];
+                this.notifications = [...items];
                 this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
@@ -212,6 +212,23 @@ export class NotificationCenterEngine {
             })();
         }
     }
+    
+    handleCommentSubscriptionUpdate = async (event: Types.CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update) => {
+        const peerRootId = event.peer.peerRoot.message.id;
+        const subscription = !!event.peer.subscription;
+        let updatedItems: NotificationsDataSourceItem[] = [];
+        await this.notifications.map(i => {
+            if (i.peerRootId === peerRootId) {
+                i.isSubscribedMessageComments = subscription;
+            }
+            updatedItems.push(i)
+        });
+        await updatedItems.forEach(i => {
+            this._dataSourceStored.updateItem(i);
+        })
+        this.notifications = updatedItems;
+        this.state = new NotificationCenterState(false, this.notifications);
+    };
 
     private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);

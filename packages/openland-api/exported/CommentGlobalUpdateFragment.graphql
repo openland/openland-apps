@@ -4,6 +4,15 @@ fragment CommentGlobalUpdateFragment on CommentGlobalUpdate {
     peer {
       __typename
       id
+      peerRoot {
+        __typename
+        ... on CommentPeerRootMessage {
+          message {
+            __typename
+            id
+          }
+        }
+      }
       subscription {
         __typename
         type

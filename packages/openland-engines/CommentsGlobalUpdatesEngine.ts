@@ -165,17 +165,7 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'CommentPeerUpdated') {
-            console.log(event);
-            // const convertedNotification = convertNotification(event.notification);
-
-            // if (convertedNotification) {
-            //     await this._dataSourceStored.addItem(convertedNotification, 0);
-
-            //     this.notifications = [convertedNotification, ...this.notifications];
-            //     this.state = new NotificationCenterState(false, this.notifications);
-
-            //     this.onNotificationsUpdated();
-            // }
+            this.engine.notificationCenter.handleCommentSubscriptionUpdate(event);
         } else {
             log.log('Unhandled update');
         }
