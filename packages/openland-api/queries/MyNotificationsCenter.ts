@@ -121,3 +121,9 @@ export const MyNotificationCenterQuery = gql`
         }
     }
 `;
+
+export const MyNotificationCenterMarkSeqReadMutation = gql`
+    mutation MyNotificationCenterMarkSeqRead($seq: Int!) {
+        notificationCenterMarkSeqRead(toSeq: $seq)
+    }
+`;

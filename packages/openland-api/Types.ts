@@ -53880,6 +53880,22 @@ export interface MyNotificationCenter {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: MyNotificationCenterMarkSeqRead
+// ====================================================
+
+export interface MyNotificationCenterMarkSeqRead {
+  notificationCenterMarkSeqRead: boolean;
+}
+
+export interface MyNotificationCenterMarkSeqReadVariables {
+  seq: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyOrganizations
 // ====================================================
 
@@ -77678,6 +77694,11 @@ export enum CommentSubscriptionType {
   DIRECT = "DIRECT",
 }
 
+export enum CommentsNotificationDelivery {
+  ALL = "ALL",
+  NONE = "NONE",
+}
+
 /**
  * Deprecated
  */
@@ -78015,6 +78036,7 @@ export interface UpdateSettingsInput {
   desktopNotifications?: NotificationMessages | null;
   mobileNotifications?: NotificationMessages | null;
   commentNotifications?: NotificationComments | null;
+  commentNotificationsDelivery?: CommentsNotificationDelivery | null;
   mobileAlert?: boolean | null;
   mobileIncludeText?: boolean | null;
   mute?: boolean | null;

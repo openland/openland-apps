@@ -13,7 +13,6 @@ const log = createLogger('Engine-Global');
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
     private watcher: SequenceModernWatcher<Types.DialogsWatch, Types.DialogsWatchVariables> | null = null;
-    private notificationsCenterWatcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
     private visibleConversations = new Set<string>();
     private isVisible = true;
     private maxSeq = 0;
@@ -66,12 +65,6 @@ export class GlobalStateEngine {
     handleDialogsStarted = (state: string) => {
         this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
             await this.engine.dialogList.handleStateProcessed(st);
-        });
-    }
-
-    handleNotificationsCenterStarted = (state: string) => {
-        this.notificationsCenterWatcher = new SequenceModernWatcher('global.myNotifications', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
-            await this.engine.notificationCenter.handleStateProcessed(st);
         });
     }
 
@@ -129,13 +122,7 @@ export class GlobalStateEngine {
         log.log('Event Received');
         // console.log('handleGlobalEvent', event);
         
-        if (event.__typename === 'NotificationReceived') {
-            await this.engine.notificationCenter.handleNotificationReceived(event);
-        } else if (event.__typename === 'NotificationDeleted') {
-            await this.engine.notificationCenter.handleNotificationDeleted(event);
-        } else if (event.__typename === 'NotificationRead') {
-            await this.engine.notificationCenter.handleNotificationRead(event);
-        } else if (event.__typename === 'DialogMessageReceived') {
+        if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
 
             // Global counter

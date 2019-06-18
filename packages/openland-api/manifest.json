@@ -961,6 +961,13 @@
       }
     },
     {
+      "signature": "1b1cf3f451f4454497d69c4d58d994eafe84611f80296411a4369b1f7bf2da3c",
+      "document": "mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}",
+      "metadata": {
+        "engineSignature": "mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}"
+      }
+    },
+    {
       "signature": "64e232179226f97651db5e80b5ab202537bcf1c4ac5aa49d4e9d0c94ad96705d",
       "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary...OrganizationShort}}",
       "metadata": {

@@ -9545,6 +9545,22 @@
             "deprecationReason": null
           },
           {
+            "name": "commentNotificationsDelivery",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "CommentsNotificationDelivery",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "mobileAlert",
             "description": null,
             "args": [],
@@ -9667,6 +9683,29 @@
           },
           {
             "name": "DIRECT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NONE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "CommentsNotificationDelivery",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "ALL",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -22768,6 +22807,16 @@
             "type": {
               "kind": "ENUM",
               "name": "NotificationComments",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "commentNotificationsDelivery",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "CommentsNotificationDelivery",
               "ofType": null
             },
             "defaultValue": null
