@@ -11,6 +11,13 @@ export const CommentGlobalUpdateFragment = gql`
                 subscription {
                     type
                 }
+                peerRoot {
+                    ... on CommentPeerRootMessage {
+                        message {
+                            id
+                        }
+                    }
+                }
             }
         }
     }
@@ -36,6 +43,8 @@ export const CommentUpdatesGlobalSubscription = gql`
             }
         }
     }
+    
+    ${CommentGlobalUpdateFragment}
 `;
 
 export const DeleteCommentMutation = gql`

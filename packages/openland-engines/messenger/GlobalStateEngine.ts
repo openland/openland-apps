@@ -14,6 +14,7 @@ export class GlobalStateEngine {
     readonly engine: MessengerEngine;
     private watcher: SequenceModernWatcher<Types.DialogsWatch, Types.DialogsWatchVariables> | null = null;
     private notificationsCenterWatcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
+    private commentsCenterWatcher: SequenceModernWatcher<Types.CommentUpdatesGlobal, Types.CommentUpdatesGlobalVariables> | null = null;
     private visibleConversations = new Set<string>();
     private isVisible = true;
     private maxSeq = 0;
@@ -64,15 +65,46 @@ export class GlobalStateEngine {
     }
 
     handleDialogsStarted = (state: string) => {
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
-            await this.engine.dialogList.handleStateProcessed(st);
-        });
+        this.watcher = new SequenceModernWatcher(
+            'global',
+            this.engine.client.subscribeDialogsWatch({ state }),
+            this.engine.client.client,
+            this.handleGlobalEvent,
+            this.handleSeqUpdated,
+            undefined,
+            state,
+            async (st) => {
+                await this.engine.dialogList.handleStateProcessed(st);
+            }
+        );
     }
 
     handleNotificationsCenterStarted = (state: string) => {
-        this.notificationsCenterWatcher = new SequenceModernWatcher('global.myNotifications', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
-            await this.engine.notificationCenter.handleStateProcessed(st);
-        });
+        this.notificationsCenterWatcher = new SequenceModernWatcher(
+            'global.myNotifications',
+            this.engine.client.subscribeMyNotificationsCenter({ state }),
+            this.engine.client.client,
+            this.handleGlobalEvent,
+            this.handleSeqUpdated,
+            undefined,
+            state,
+            async (st) => {
+                await this.engine.notificationCenter.handleStateProcessed(st);
+            }
+        );
+    }
+
+    handleCommentsCenterStarted = (state: string) => {
+        this.commentsCenterWatcher = new SequenceModernWatcher(
+            'global.comments',
+            this.engine.client.subscribeCommentUpdatesGlobal({state}),
+            this.engine.client.client,
+            this.handleGlobalEvent,
+            this.handleSeqUpdated,
+            undefined,
+            '',
+            undefined
+        )
     }
 
     resolvePrivateConversation = async (uid: string) => {
@@ -124,11 +156,13 @@ export class GlobalStateEngine {
     }
 
     private handleGlobalEvent = async (event: any) => {
-        console.log(event);
+        // console.log(event);
         let start = currentTimeMillis();
         log.log('Event Received');
         // console.log('handleGlobalEvent', event);
-        
+        if (event.__typename === 'CommentPeerUpdated') {
+            await this.engine.notificationCenter.handleCommentSubscriptionUpdate(event);
+        }
         if (event.__typename === 'NotificationReceived') {
             await this.engine.notificationCenter.handleNotificationReceived(event);
         } else if (event.__typename === 'NotificationDeleted') {

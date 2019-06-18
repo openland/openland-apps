@@ -115,7 +115,6 @@ class CommentsNotificationsInner
 
     private renderMessage = (i: DataSourceWebMessageItem | DataSourceDateItem) => {
         const data = i as any;
-
         return (
             <MessageComponent
                 message={data}

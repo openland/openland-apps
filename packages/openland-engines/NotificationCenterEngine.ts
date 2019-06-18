@@ -20,7 +20,9 @@ type NotificationCenterEngineOptions = {
 
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
-export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
+export const convertNotification = (
+    notification: Types.NotificationFragment,
+): NotificationsDataSourceItem | null => {
     const content = notification.content;
 
     // TODO go through notification.content, now take only first
@@ -30,7 +32,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const peer = firstContent.peer;
 
         let replyQuoteText = peer.peerRoot.message.message;
-        
+
         return {
             ...convertMessage({
                 ...comment.comment,
@@ -44,12 +46,12 @@ export const convertNotification = (notification: Types.NotificationFragment): N
 
             // rewrite results from convertMessage
             key: notification.id,
-            isOut: false
-        }
+            isOut: false,
+        };
     }
 
-    return null
-}
+    return null;
+};
 
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;
@@ -82,9 +84,11 @@ export class NotificationCenterEngine {
                 } else {
                     const notificationsQuery = await this.engine.client.queryMyNotifications(
                         { first: 20, before: cursor },
-                        { fetchPolicy: 'network-only' }
+                        { fetchPolicy: 'network-only' },
                     );
-                    const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
+                    const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter(
+                        { fetchPolicy: 'network-only' },
+                    );
 
                     const notifications = notificationsQuery.myNotifications.items;
                     const items = [];
@@ -111,10 +115,11 @@ export class NotificationCenterEngine {
             },
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
-                
-                this.engine.global.handleNotificationsCenterStarted(state);
 
-                this.notifications = [...items, ...this.notifications];
+                this.engine.global.handleNotificationsCenterStarted(state);
+                this.engine.global.handleCommentsCenterStarted(state);
+
+                this.notifications = [...items];
                 this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
@@ -134,7 +139,9 @@ export class NotificationCenterEngine {
         this.handleVisibleChanged(AppVisibility.isVisible);
     }
 
-    handleNotificationReceived = async (event: Types.NotificationCenterUpdateFragment_NotificationReceived) => {
+    handleNotificationReceived = async (
+        event: Types.NotificationCenterUpdateFragment_NotificationReceived,
+    ) => {
         const convertedNotification = convertNotification(event.notification);
 
         if (convertedNotification) {
@@ -145,9 +152,11 @@ export class NotificationCenterEngine {
 
             this.onNotificationsUpdated();
         }
-    }
+    };
 
-    handleNotificationDeleted = async (event: Types.NotificationCenterUpdateFragment_NotificationDeleted) => {
+    handleNotificationDeleted = async (
+        event: Types.NotificationCenterUpdateFragment_NotificationDeleted,
+    ) => {
         const id = event.notification.id;
 
         if (await this._dataSourceStored.hasItem(id)) {
@@ -158,19 +167,38 @@ export class NotificationCenterEngine {
 
             this.onNotificationsUpdated();
         }
-    }
+    };
 
-    handleNotificationRead = async (event: Types.NotificationCenterUpdateFragment_NotificationRead) => {
+    handleCommentSubscriptionUpdate = async (event: Types.CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update) => {
+        const peerRootId = event.peer.peerRoot.message.id;
+        const subscription = !!event.peer.subscription;
+        let updatedItems: NotificationsDataSourceItem[] = [];
+        await this.notifications.map(i => {
+            if (i.peerRootId === peerRootId) {
+                i.isSubscribedMessageComments = subscription;
+            }
+            updatedItems.push(i)
+        });
+        await updatedItems.forEach(i => {
+            this._dataSourceStored.updateItem(i);
+        })
+        this.notifications = updatedItems;
+        this.state = new NotificationCenterState(false, this.notifications);
+    };
+
+    handleNotificationRead = async (
+        event: Types.NotificationCenterUpdateFragment_NotificationRead,
+    ) => {
         // Wonderfull SpaceX & Apollo
-    }
+    };
 
     handleStateProcessed = async (state: string) => {
         await this._dataSourceStored.updateState(state);
-    }
+    };
 
     getState = () => {
         return this.state;
-    }
+    };
 
     subscribe = (listener: NotificationCenterStateHandler) => {
         this.listeners.push(listener);
@@ -186,7 +214,7 @@ export class NotificationCenterEngine {
                 this.listeners.splice(index, 1);
             }
         };
-    }
+    };
 
     private onNotificationsUpdated = () => {
         this.markReadIfNeeded();
@@ -194,7 +222,7 @@ export class NotificationCenterEngine {
         for (let l of this.listeners) {
             l.onNotificationCenterUpdated(this.state);
         }
-    }
+    };
 
     private handleVisibleChanged = (isVisible: boolean) => {
         if (this.isVisible === isVisible) {
@@ -203,7 +231,7 @@ export class NotificationCenterEngine {
 
         this.isVisible = isVisible;
         this.onNotificationsUpdated();
-    }
+    };
 
     private markReadIfNeeded = () => {
         if (this.isVisible && this.notifications.length > 0 && this.listeners.length > 0) {
@@ -212,9 +240,9 @@ export class NotificationCenterEngine {
             if (id !== this.lastNotificationRead) {
                 this.lastNotificationRead = id;
                 this.engine.client.client.mutate(ReadNotificationMutation, {
-                    notificationId: id
+                    notificationId: id,
                 });
             }
         }
-    }
+    };
 }
