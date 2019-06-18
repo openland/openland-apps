@@ -100,8 +100,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     startLoader();
                     try {
                         await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id });
-
-                        resetMembersList();
+                        await resetMembersList();
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
@@ -215,8 +214,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                         newRole: (member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER),
                                     });
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
-
-                                    resetMembersList();
+                                    await resetMembersList();
                                 }).show();
                         },
                     );
@@ -257,7 +255,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     });
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
 
-                                    resetMembersList();
+                                    await resetMembersList();
                                 })
                                 .show();
                         },

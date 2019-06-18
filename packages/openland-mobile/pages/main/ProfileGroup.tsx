@@ -43,6 +43,15 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
     // callbacks
+    const resetMembersList = React.useCallback(async () => {
+        const loaded = await client.queryRoomMembersPaginated({
+            roomId,
+            first: 10,
+        }, { fetchPolicy: 'network-only' });
+
+        setMembers(loaded.members);
+    }, [roomId]);
+
     const handleSend = React.useCallback(() => {
         props.router.pushAndReset('Conversation', { flexibleId: roomId });
     }, [roomId]);
@@ -62,6 +71,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action('Kick', 'destructive', async () => {
                 await client.mutateRoomKick({ userId: user.id, roomId });
+                await resetMembersList();
             })
             .show();
     }, [roomId]);
@@ -71,6 +81,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action('Promote', 'destructive', async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
+                await resetMembersList();
             })
             .show();
     }, [roomId]);
@@ -105,7 +116,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     startLoader();
                     try {
                         await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
-                        props.router.back();
+                        await resetMembersList();
                     } catch (e) {
                         Alert.alert(e.message);
                     }
