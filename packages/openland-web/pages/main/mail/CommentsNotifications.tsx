@@ -4,7 +4,7 @@ import { css } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DataSourceRender } from 'openland-web/components/messenger/view/DataSourceRender';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import glamorous from 'glamorous';
 import {
     DataSourceWebMessageItem,
@@ -97,10 +97,16 @@ class CommentsNotificationsInner
         );
     };
 
+    private handleScroll = (e: XScrollValues) => {
+        if (e.scrollTop < 300) {
+            this.dataSource.needMore();
+        }
+    };
+
     private dataSourceWrapper = (props: { children?: any }) => {
         return (
             <>
-                <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
+                <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1} onScroll={this.handleScroll}>
                     <MessagesWrapper>{props.children}</MessagesWrapper>
                 </XScrollView3>
             </>
