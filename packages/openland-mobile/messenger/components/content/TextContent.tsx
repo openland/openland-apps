@@ -32,7 +32,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 textAlign={emojiOnly && message.isOut ? 'right' : 'left'}
                 fontStyle={fontStyle}
                 theme={theme}
-                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 40}
+                maxWidth={(maxWidth && !compensateBubble) ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 40}
                 insetLeft={compensateBubble ? contentInsetsHorizontal : 16}
                 insetRight={compensateBubble ? contentInsetsHorizontal : 16}
                 insetTop={8}
