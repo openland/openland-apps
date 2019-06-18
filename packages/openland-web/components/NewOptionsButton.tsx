@@ -237,10 +237,12 @@ export const NewOptionsButton = XMemo(() => {
                     },
                 }}
             >
-                <XView marginRight={16} justifyContent="center">
-                    <NotificationsButton />
+                <XView flexDirection="row" alignItems="center">
+                    <XView marginRight={16} justifyContent="center">
+                        <NotificationsButton />
+                    </XView>
+                    <NewButton onClick={toggle} />
                 </XView>
-                <NewButton onClick={toggle} />
             </XShortcuts>
         </XPopper>
     );
