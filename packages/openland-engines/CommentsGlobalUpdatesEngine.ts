@@ -4,12 +4,8 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import * as Types from 'openland-api/Types';
-import { NotificationCenterState } from './NotificationCenterState';
-import { MyNotificationCenterMarkSeqReadMutation } from 'openland-api';
-import { backoff } from 'openland-y-utils/timer';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
-import { CommentsGlobalUpdatesStateHandler } from './CommentsGlobalUpdatesState';
 
 const log = createLogger('Engine-CommentsGlobalUpdatesEngine');
 
@@ -36,8 +32,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
     readonly isMocked: boolean;
     readonly _dataSourceStored: DataSourceStored<CommentsNotificationsDataSourceItem>;
     readonly dataSource: DataSource<CommentsNotificationsDataSourceItem>;
-    private state: NotificationCenterState;
-    private listeners: CommentsGlobalUpdatesStateHandler[] = [];
     private isVisible: boolean = true;
     private watcher: SequenceModernWatcher<
         Types.CommentUpdatesGlobal,
@@ -50,7 +44,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
         this.engine = options.engine;
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
-        this.state = new NotificationCenterState(true, []);
 
         let provider: DataSourceStoredProvider<CommentsNotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
@@ -59,8 +52,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
                 const commentGlobalUpdatesState = await this.engine.client.queryCommentGlobalUpdatesState();
                 const state = commentGlobalUpdatesState.commentGlobalUpdatesState.state;
                 const items: any = [];
-
-                this.onNotificationsUpdated();
 
                 return {
                     items,
@@ -83,8 +74,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
                         await this.handleStateProcessed(st);
                     },
                 );
-
-                this.onNotificationsUpdated();
             },
         };
 
@@ -103,31 +92,6 @@ export class CommentsGlobalUpdatesEngine implements SequenceHolder {
 
     handleStateProcessed = async (state: string) => {
         await this._dataSourceStored.updateState(state);
-    };
-
-    getState = () => {
-        return this.state;
-    };
-
-    subscribe = (listener: CommentsGlobalUpdatesStateHandler) => {
-        this.listeners.push(listener);
-
-        listener.onStateUpdated(this.state);
-
-        return () => {
-            let index = this.listeners.indexOf(listener);
-            if (index < 0) {
-                log.warn('Double unsubscribe detected!');
-            } else {
-                this.listeners.splice(index, 1);
-            }
-        };
-    };
-
-    private onNotificationsUpdated = () => {
-        for (let l of this.listeners) {
-            l.onStateUpdated(this.state);
-        }
     };
 
     handleVisibleChanged = (isVisible: boolean) => {
