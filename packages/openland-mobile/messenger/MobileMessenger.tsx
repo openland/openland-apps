@@ -22,8 +22,8 @@ import { showReactionsList } from 'openland-mobile/components/message/showReacti
 import { formatDateTime } from 'openland-mobile/utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
-import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
+import { trackEvent } from 'openland-mobile/analytics';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -139,6 +139,8 @@ export class MobileMessenger {
             if (remove) {
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             } else {
+                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: 'not' });
+
                 this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             }
         } catch (e) {
@@ -229,6 +231,8 @@ export class MobileMessenger {
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
         startLoader();
         try {
+            trackEvent('reaction_sent', { reaction_type: 'like', double_tap: 'yes' });
+
             this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap.LIKE });
         } catch (e) {
             Alert.alert(e.message);

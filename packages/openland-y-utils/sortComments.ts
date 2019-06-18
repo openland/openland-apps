@@ -66,3 +66,17 @@ export function getDepthOfComment(
 
     return currentDepth - 1;
 }
+
+export function getDepthOfCommentByID(
+    commentID: string,
+    comments: MessageComments_messageComments_comments[],
+): number {
+    const commentEntry = comments.filter(c => c.comment.id === commentID)[0];
+    const commentsMap = {};
+                
+    comments.map(comment => {
+        commentsMap[comment.id] = comment;
+    });
+
+    return getDepthOfComment(commentEntry, commentsMap);
+}

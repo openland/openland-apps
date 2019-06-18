@@ -17,6 +17,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
     let onPress = React.useCallback(() => {
@@ -102,6 +103,8 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
     }, [])
 
     let onAdd = React.useCallback(() => {
+        trackEvent('chats_after_navigator', { count: selected.size });
+
         if (selected.size) {
             join([...selected.values()]);
         } else {

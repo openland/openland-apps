@@ -29,6 +29,8 @@ import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
+import { trackEvent } from 'openland-mobile/analytics';
+import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -78,6 +80,14 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     mentions: prepareLegacyMentionsForSend(text, mentions),
                 });
             } else {
+                let newCommentDepth = 0;
+
+                if (replied) {
+                    newCommentDepth = getDepthOfCommentByID(replied.id, comments) + 1;
+                }
+
+                trackEvent('comment_sent', { comment_level: newCommentDepth });
+
                 await getClient().mutateAddMessageComment({
                     messageId: message.id,
                     message: text,
@@ -94,7 +104,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             setSending(false);
             setMentions([]);
         }
-    }, [message, inputText, mentions, replied, edited]);
+    }, [message, inputText, mentions, replied, edited, comments]);
 
     const handleEmojiPress = React.useCallback((word: string | undefined, emoji: string) => {
         if (typeof word !== 'string') {
