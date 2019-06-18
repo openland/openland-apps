@@ -32,7 +32,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const peer = firstContent.peer;
 
         let replyQuoteText = peer.peerRoot.message.message;
-        
+
         return {
             ...convertMessage({
                 ...comment.comment,
@@ -64,7 +64,7 @@ export class NotificationCenterEngine {
     private state: NotificationCenterState;
     private listeners: NotificationCenterStateHandler[] = [];
     private isVisible: boolean = true;
-    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null; 
+    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
     private maxSeq = 0;
     private lastReportedSeq = 0;
 
@@ -116,7 +116,7 @@ export class NotificationCenterEngine {
             },
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
-                
+
                 this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
                     await this.handleStateProcessed(st);
                 });
@@ -212,7 +212,7 @@ export class NotificationCenterEngine {
             })();
         }
     }
-    
+
     handleCommentSubscriptionUpdate = async (event: Types.CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update) => {
         const peerRootId = event.peer.peerRoot.message.id;
         const subscription = !!event.peer.subscription;
@@ -220,12 +220,10 @@ export class NotificationCenterEngine {
         await this.notifications.map(i => {
             if (i.peerRootId === peerRootId) {
                 i.isSubscribedMessageComments = subscription;
+                this._dataSourceStored.updateItem(i);
             }
-            updatedItems.push(i)
+            updatedItems.push(i);
         });
-        await updatedItems.forEach(i => {
-            this._dataSourceStored.updateItem(i);
-        })
         this.notifications = updatedItems;
         this.state = new NotificationCenterState(false, this.notifications);
     };
