@@ -5,7 +5,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from 'openland-x/XButton';
 
-const PinButtonStyle = Glamorous(XButton)({
+export const PinButtonStyle = Glamorous(XButton)({
     fontSize: 14,
     lineHeight: '24px',
     padding: '7px 0 9px',
