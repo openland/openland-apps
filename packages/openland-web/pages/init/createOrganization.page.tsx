@@ -16,6 +16,7 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
+import { trackEvent } from 'openland-x-analytics';
 
 const OrganizationsSelectorOptionsFetcher = (props: {
     children: any;
@@ -91,6 +92,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                             },
                         },
                     });
+                    trackEvent('registration_complete');
                     switchOrganization(result.organization.id, router.query.redirect);
                     await delayForewer();
                 }}
