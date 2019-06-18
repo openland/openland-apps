@@ -14,6 +14,7 @@ import { useClient } from 'openland-mobile/utils/useClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { trackEvent } from 'openland-mobile/analytics';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -48,6 +49,11 @@ let SettingsContent = ((props: PageProps) => {
         try {
             const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
             const inviteLink = 'https://openland.com/invite/' + inviteCode.invite;
+
+            trackEvent('invite_link_action', {
+                invite_type: 'Openland',
+                action_type: 'link_shared'
+            });
 
             Share.share({ message: inviteLink });
         } catch (e) {

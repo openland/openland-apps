@@ -96,8 +96,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             },
                 'Add members',
                 organization.members.map(u => u.user.id),
-                { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
-        }, [organization.id]);
+                { path: 'OrganizationInviteLinkModal', pathParams: { organization } });
+        }, [organization]);
 
         const handleCreatePress = React.useCallback(() => {
             let builder = new ActionSheetBuilder();

@@ -112,7 +112,7 @@ const CreateGroupComponent = (props: PageProps) => {
                             path: 'ProfileGroupLink',
                             pathParams: { id: res.room.id },
                             onPress: () => {
-                                props.router.push('ProfileGroupLink', { id: res.room.id });
+                                props.router.push('ProfileGroupLink', { room: res.room });
                             }
                         },
                         true
