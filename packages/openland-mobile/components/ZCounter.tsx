@@ -1,35 +1,31 @@
 import * as React from 'react';
-import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
-import { AppStyles, TextStyles } from '../styles/AppStyles';
+import { Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
+import { AppStyles } from '../styles/AppStyles';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 const styles = StyleSheet.create({
     container: {
-        height: 18,
-        padding: 2,
-        borderRadius: 9,
-        minWidth: 18,
+        height: 16,
+        paddingLeft: 4,
+        paddingRight: 4,
+        backgroundColor: AppStyles.primaryColor,
+        borderRadius: 8,
+        minWidth: 16,
         flexDirection: 'row',
     } as ViewStyle,
-    inner: {
-        backgroundColor: AppStyles.primaryColor,
-        paddingHorizontal: 3,
-        borderRadius: 7
-    } as ViewStyle,
-    innerMuted: {
+    containerMuted: {
         backgroundColor: '#bcc3cc'
     } as ViewStyle,
-    innerContrast: {
+    containerContrast: {
         backgroundColor: '#ff3b30'
     } as ViewStyle,
     text: {
         color: '#fff',
-        fontSize: 10,
+        fontSize: 12,
         lineHeight: 12,
         minWidth: 8,
         textAlign: 'center',
-        fontWeight: TextStyles.weight.bold,
-        marginTop: 1,
+        marginTop: 3,
     } as TextStyle
 });
 
@@ -77,10 +73,8 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
 
     render() {
         return (
-            <Animated.View style={[{ opacity: this.opacity }, styles.container, { backgroundColor: this.props.theme.backgroundColor }]}>
-                <View style={[styles.inner, this.props.appearance === 'muted' && styles.innerMuted, , this.props.appearance === 'contrast' && styles.innerContrast]}>
-                    <Text style={styles.text}>{this.state.value}</Text>
-                </View>
+            <Animated.View style={[{ opacity: this.opacity }, styles.container, this.props.appearance === 'muted' && styles.containerMuted, , this.props.appearance === 'contrast' && styles.containerContrast]}>
+                <Text style={styles.text}>{this.state.value}</Text>
             </Animated.View>
         );
     }
