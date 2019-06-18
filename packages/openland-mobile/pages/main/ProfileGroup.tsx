@@ -142,9 +142,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 roomId,
                 first: 10,
                 after: members[members.length - 1].user.id,
-            });
+            }, { fetchPolicy: 'cache-and-network' });
 
-            setMembers([...members, ...loaded.members]);
+            setMembers([...members, ...loaded.members.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
     }, [room, roomId, members, loading]);
