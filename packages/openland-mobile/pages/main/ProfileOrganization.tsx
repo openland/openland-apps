@@ -73,7 +73,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         return <PrivateProfile {...props} organization={organization} />
     }
 
-    const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
+    const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
+    const canEdit = organization.isOwner || organization.isAdmin;
+    const showManageBtn = canMakePrimary || canEdit;
 
     const [ members, setMembers ] = React.useState(organization.members);
     const [ loading, setLoading ] = React.useState(false);
@@ -111,7 +113,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         const handleManageClick = React.useCallback(() => {
             let builder = new ActionSheetBuilder();
 
-            if (organization.isOwner || organization.isAdmin) {
+            if (canEdit) {
                 if (organization.isCommunity) {
                     builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }));
                 } else {
@@ -137,7 +139,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 });
             }
 
-            if (organization.isOwner || organization.isAdmin) {
+            if (canEdit) {
                 builder.action('Delete', () => {
                     Alert.builder()
                         .title(`Delete ${organization.name}`)
@@ -326,7 +328,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title={organization.name} />
 
-            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
+            {showManageBtn && <SHeaderButton key={'manage-btn-' + showManageBtn} title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <SFlatList
                 data={members}
