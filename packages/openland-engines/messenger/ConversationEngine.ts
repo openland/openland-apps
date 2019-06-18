@@ -175,7 +175,7 @@ export class ConversationEngine implements MessageSendHandler {
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
-    private lastReadedMessageId?: string;
+    private lastReadedDividerMessageId?: string;
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
@@ -222,14 +222,14 @@ export class ConversationEngine implements MessageSendHandler {
         if (!this.isStarted) {
             return;
         }
-        this.messages = [...(initialChat).messages];
-        this.messages.reverse();
+        let messages = [...(initialChat).messages];
+        messages.reverse();
 
-        this.lastReadedMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
+        this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
         let pagesToload = 1;
 
-        while (this.messages.length > 0 && ((!this.messages.find(m => isServerMessage(m) && m.id === this.lastReadedMessageId)) || pagesToload--)) {
-            let serverMessages = this.messages.filter(m => isServerMessage(m));
+        while (messages.length > 0 && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || pagesToload--)) {
+            let serverMessages = messages.filter(m => isServerMessage(m));
             let first = serverMessages[0];
             if (!first) {
                 break;
@@ -237,8 +237,10 @@ export class ConversationEngine implements MessageSendHandler {
             let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 40 }));
             let batch = [...loaded.messages];
             batch.reverse();
-            this.messages.unshift(...batch);
+            messages.unshift(...batch);
         }
+
+        this.messages = messages;
 
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
@@ -250,23 +252,23 @@ export class ConversationEngine implements MessageSendHandler {
             this.user = initialChat.room.user
         }
 
-        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-        this.historyFullyLoaded = this.messages.length < this.engine.options.conversationBatchSize;
+        this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.historyFullyLoaded = messages.length < this.engine.options.conversationBatchSize;
         log.log('Initial state for ' + this.conversationId);
         this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
-        let sourceFragments = [...(initialChat as any).messages as FullMessage[]];
+        let sourceFragments = messages as FullMessage[];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
 
             // append unread mark
-            if (sourceFragments[i].id === this.lastReadedMessageId) {
+            if (sourceFragments[i].id === this.lastReadedDividerMessageId) {
                 // Alert.alert(sourceFragments[i].id);
                 dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
-                this.lastReadedMessageId = sourceFragments[i].id;
+                this.lastReadedDividerMessageId = sourceFragments[i].id;
             }
 
             // Append new date if needed
@@ -294,11 +296,11 @@ export class ConversationEngine implements MessageSendHandler {
 
     onClosed = () => {
         this.isOpen = false;
-        if (this.lastReadedMessageId) {
-            let toDelete = createNewMessageDividerSourceItem(this.lastReadedMessageId);
+        if (this.lastReadedDividerMessageId) {
+            let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
             if (this.dataSource.hasItem(toDelete.key)) {
                 this.dataSource.removeItem(toDelete.key);
-                this.lastReadedMessageId = undefined;
+                this.lastReadedDividerMessageId = undefined;
             }
         }
     }
@@ -696,9 +698,9 @@ export class ConversationEngine implements MessageSendHandler {
         }
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            if (!this.lastReadedMessageId && prev && this.lastTopMessageRead) {
+            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead) {
                 this.dataSource.addItem(createNewMessageDividerSourceItem(this.lastTopMessageRead), 0);
-                this.lastReadedMessageId = this.lastTopMessageRead;
+                this.lastReadedDividerMessageId = this.lastTopMessageRead;
             }
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
