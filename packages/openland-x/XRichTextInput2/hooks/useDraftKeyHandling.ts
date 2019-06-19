@@ -68,7 +68,9 @@ export function useDraftKeyHandling({
             } else if (mentionState.isSelecting) {
                 addMention(mentionState.suggestions[mentionState.selectedEntryIndex]);
                 return 'handled';
-            } else if (onSubmit) {
+            }
+
+            if (onSubmit) {
                 onSubmit().then(() => {
                     updateEditorStateFromTextAndMentions({ text: '', mentions: [] });
                 });
