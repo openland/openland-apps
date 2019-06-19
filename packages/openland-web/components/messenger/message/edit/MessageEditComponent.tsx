@@ -14,6 +14,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import {
     UserWithOffset,
     convertSpansToUserWithOffset,
+    convertMentionsFromMessage,
     convertToMentionInputNoText,
 } from 'openland-engines/legacy/legacymentions';
 import { SharedRoomKind } from 'openland-api/Types';
@@ -28,6 +29,7 @@ import {
     uploadFile,
     getUploadCareFile,
 } from 'openland-web/components/messenger/message/content/comments/useSendMethods';
+import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -298,6 +300,12 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                     defaultData={{
                         message: {
                             text: message.text,
+                            mentions: message.text
+                                ? prepareLegacyMentions(
+                                      message.text,
+                                      convertMentionsFromMessage(message.text, message.spans),
+                                  )
+                                : [],
                         },
                     }}
                 >
