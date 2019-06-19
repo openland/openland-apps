@@ -8,6 +8,7 @@ import { XInput } from 'openland-x/XInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMutation } from 'openland-x/XMutation';
 import { XModalController } from 'openland-x/showModal';
+import { trackEvent } from 'openland-x-analytics';
 
 const InputClassName = css`
     border-radius: 8px !important;
@@ -93,6 +94,11 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
     };
 
     private copy = (e: any) => {
+        const { props } = this;
+        const objType = props.isRoom ? 'group' : (props.isOrganization ? 'organization' : 'Openland');
+
+        trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
+
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
