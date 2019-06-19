@@ -8,7 +8,7 @@ import { UserForMention } from 'openland-api/Types';
 import { useEmojiSuggestions } from './modules/emoji/EmojiSuggestions/useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './hooks/useInputMethods';
 import { useHandleEditorChange } from './hooks/useHandleEditorChange/useHandleEditorChange';
-import { useDraftKeyHandling, XEditorCommands } from './hooks/useDraftKeyHandling';
+import { useDraftKeyHandling } from './hooks/useDraftKeyHandling';
 import { usePasteFiles } from './hooks/usePasteFiles';
 import { useHandlePastedText } from './hooks/useHandlePastedText';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
@@ -103,10 +103,6 @@ export const XRichTextInput2 = React.memo(
                 addEmoji,
             });
 
-            const onEnter = () => {
-                onHandleKey(XEditorCommands.EditorSubmit);
-            };
-
             return (
                 <XShortcuts
                     supressOtherShortcuts={emojiState.isSelecting || mentionState.isSelecting}
@@ -115,13 +111,9 @@ export const XRichTextInput2 = React.memo(
                             emojiState.setClosed(true);
                             mentionState.setClosed(true);
                         },
-                        ENTER: onEnter,
                     }}
                     keymap={{
-                        ENTER: {
-                            osx: ['enter'],
-                            windows: ['enter'],
-                        },
+                        ESC: 'esc',
                     }}
                 >
                     <EditorContainer
