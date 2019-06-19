@@ -7,6 +7,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { css } from 'linaria';
 import { AuthRouter } from '../../root/AuthRouter';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 const InfoText = css`
     margin-bottom: 15px;
@@ -42,19 +43,21 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         return null;
     }
     return (
-        <AuthRouter>
-            <XDocumentHead
-                title={InitTexts.invite.pageTitle}
-                titleSocial={InitTexts.socialPageTitle}
-            />
-            <MessagePage>
-                {data.invite || (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
-                {!(data.invite || data.appInvite) && (
-                    <MessagePageContent title="Invite">
-                        <div className={InfoText}>{InitTexts.invite.unableToFindInvite}</div>
-                    </MessagePageContent>
-                )}
-            </MessagePage>
-        </AuthRouter>
+        <XTrack event="invite_landing_view" params={{ invite_type: 'Openland' }}>
+            <AuthRouter>
+                <XDocumentHead
+                    title={InitTexts.invite.pageTitle}
+                    titleSocial={InitTexts.socialPageTitle}
+                />
+                <MessagePage>
+                    {data.invite || (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
+                    {!(data.invite || data.appInvite) && (
+                        <MessagePageContent title="Invite">
+                            <div className={InfoText}>{InitTexts.invite.unableToFindInvite}</div>
+                        </MessagePageContent>
+                    )}
+                </MessagePage>
+            </AuthRouter>
+        </XTrack>
     );
 };
