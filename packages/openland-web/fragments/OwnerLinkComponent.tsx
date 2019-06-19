@@ -132,6 +132,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
         const { copied, resetLink } = this.state;
         const { props } = this;
         const copyText = props.withoutInput ? 'Copy Invite Link' : 'Copy';
+        const inviteHref = props.isOrganization ? 'join/' : 'invite/';
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {props.appInvite && (
@@ -144,7 +145,9 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                                         flexGrow={1}
                                         ref={this.handleRef}
                                         className={InputClassName}
-                                        value={'https://openland.com/invite/' + props.appInvite}
+                                        value={
+                                            'https://openland.com/' + inviteHref + props.appInvite
+                                        }
                                     />
                                     {props.useRevoke &&
                                         props.id &&
