@@ -7,7 +7,6 @@ class AppStorageImpl implements AppStorageApi {
             throw Error('');
         }
         let res = localStorage.getItem(key);
-
         if (res) {
             return JSON.parse(res);
         } else {

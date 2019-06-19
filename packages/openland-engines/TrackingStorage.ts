@@ -47,24 +47,6 @@ export class TrackingStorage {
         });
     }
 
-    async removeItem(id: string) {
-        return new Promise<null>((resolve, reject) => {
-            this.queue.post(async () => {
-                try {
-                    let items = await AppStorage.readKey<PendingEvent[]>(this.storageKey) || [];
-
-                    items = items.filter(item => item.id !== id);
-
-                    await AppStorage.writeKey<PendingEvent[]>(this.storageKey, items);
-
-                    resolve(null);
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-    }
-
     async removeItems(ids: string[]) {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
@@ -74,20 +56,6 @@ export class TrackingStorage {
                     items = items.filter(item => !ids.includes(item.id));
 
                     await AppStorage.writeKey<PendingEvent[]>(this.storageKey, items);
-
-                    resolve(null);
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-    }
-
-    async clear() {
-        return new Promise<null>((resolve, reject) => {
-            this.queue.post(async () => {
-                try {
-                    await AppStorage.writeKey(this.storageKey, null);
 
                     resolve(null);
                 } catch (e) {
