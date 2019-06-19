@@ -11,9 +11,10 @@ export interface XFormSubmitProps extends XButtonStyleProps {
     dataTestId?: string;
     onSuccessAnimationEnd?: () => any;
     useOnlyEnterKey?: boolean;
+    disableEnterKey?: boolean;
 }
 
-class FormSubmit extends React.PureComponent<
+export class FormSubmit extends React.PureComponent<
     XFormSubmitProps & { form: XFormContextValue },
     { loading: boolean; success: boolean }
 > {
@@ -24,7 +25,12 @@ class FormSubmit extends React.PureComponent<
 
     keydownHandler = async (e: any) => {
         const { props } = this;
-        if (e.keyCode === 13 && props.useOnlyEnterKey && props.keyDownSubmit !== false && !e.shiftKey) {
+        if (
+            e.keyCode === 13 &&
+            props.useOnlyEnterKey &&
+            props.keyDownSubmit !== false &&
+            !e.shiftKey
+        ) {
             await this.submit();
         }
         if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && props.keyDownSubmit !== false) {
@@ -33,10 +39,16 @@ class FormSubmit extends React.PureComponent<
     };
 
     componentDidMount() {
+        if (this.props.disableEnterKey) {
+            return;
+        }
         document.addEventListener('keydown', this.keydownHandler);
     }
 
     componentWillUnmount() {
+        if (this.props.disableEnterKey) {
+            return;
+        }
         document.removeEventListener('keydown', this.keydownHandler);
     }
 
@@ -82,15 +94,17 @@ class FormSubmit extends React.PureComponent<
     }
 }
 
-export function XFormSubmit(props: XFormSubmitProps) {
-    return (
-        <XFormContext.Consumer>
-            {form => {
-                if (!form) {
-                    throw Error('Unable to find form!');
-                }
-                return <FormSubmit {...props} form={form} />;
-            }}
-        </XFormContext.Consumer>
-    );
-}
+export const XFormSubmit = React.forwardRef<FormSubmit, XFormSubmitProps>(
+    (props: XFormSubmitProps, ref) => {
+        return (
+            <XFormContext.Consumer>
+                {form => {
+                    if (!form) {
+                        throw Error('Unable to find form!');
+                    }
+                    return <FormSubmit {...props} form={form} ref={ref} />;
+                }}
+            </XFormContext.Consumer>
+        );
+    },
+);

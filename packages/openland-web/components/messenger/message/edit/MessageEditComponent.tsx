@@ -6,7 +6,7 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XShortcuts } from 'openland-x/XShortcuts';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { XFormSubmit, FormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
@@ -183,9 +183,19 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
 };
 
 const EditMessageInlineInner = (props: EditMessageInlineT) => {
+    const xFormSubmitRef = React.useRef<FormSubmit>(null);
+
     const { file, fileId, fileSrc, handleSetImage, handleSetFile } = React.useContext(
         UploadContext,
     );
+
+    const onEnter = () => {
+        setTimeout(() => {
+            if (xFormSubmitRef.current) {
+                xFormSubmitRef.current.submit();
+            }
+        }, 0);
+    };
 
     React.useEffect(() => {
         if (props.message.attachments && props.message.attachments.length === 1) {
@@ -261,6 +271,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 handlerMap={{
                     COMMAND_DOWN: onClose,
                     ESC: onClose,
+                    ENTER: onEnter,
                 }}
                 keymap={{
                     COMMAND_DOWN: {
@@ -270,6 +281,10 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                     ESC: {
                         osx: ['esc'],
                         windows: ['esc'],
+                    },
+                    ENTER: {
+                        osx: ['enter'],
+                        windows: ['enter'],
                     },
                 }}
             >
@@ -308,7 +323,12 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                     </XView>
                     {!minimal && (
                         <Footer separator={5}>
-                            <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
+                            <XFormSubmit
+                                text="Save"
+                                style="primary"
+                                ref={xFormSubmitRef}
+                                disableEnterKey={true}
+                            />
                             <XButton text="Cancel" size="default" onClick={onClose} />
                         </Footer>
                     )}
