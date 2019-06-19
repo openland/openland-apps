@@ -27,6 +27,7 @@ import { XPopper } from 'openland-x/XPopper';
 import RevokeIcon from 'openland-icons/ic-revoke.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -462,6 +463,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 invitesUsersIds.push(v);
             });
         }
+        const objType = props.isRoom ? (props.isChannel ? 'channel' : 'group') : (props.isCommunity ? 'community' : 'organization');
         return (
             <XModalForm
                 autoClose={1500}
@@ -500,6 +502,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 }}
                 onClosed={this.onClosed}
             >
+                <XTrack event="invite_view" params={{ invite_type: objType }} />
                 <XView
                     height={props.isMobile ? '100%' : '65vh'}
                     flexGrow={1}
