@@ -129,7 +129,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications2',
+            'notifications3',
             options.engine.options.store,
             20,
             provider,
