@@ -11,6 +11,7 @@ import { ReactionItem } from './MessageReaction';
 import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { trackEvent } from 'openland-x-analytics';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -135,6 +136,16 @@ const PopperArrow = Glamorous(XPopper.Arrow)({
     },
 });
 
+// need for analytics
+export const reactionEmojiMap = {
+    '❤️': 'LIKE',
+    '👍': 'THUMB_UP',
+    '😂': 'JOY',
+    '😱': 'SCREAM',
+    '😢': 'CRYING',
+    '🤬': 'ANGRY',
+};
+
 export const MessageReactionButton = ({
     onlyLikes,
     messageId,
@@ -151,6 +162,11 @@ export const MessageReactionButton = ({
 
     let client = useClient();
     const handler = async (it: MessageReactionType) => {
+        trackEvent('reaction_sent', {
+            reaction_type: reactionEmojiMap[it].toLowerCase(),
+            double_tap: 'not'
+        });
+
         await client.mutateMessageSetReaction({
             messageId,
             reaction: it,
