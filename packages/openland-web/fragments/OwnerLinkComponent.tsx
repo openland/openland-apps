@@ -151,7 +151,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                                 overflow="hidden"
                                 width={props.withoutInput ? 40 : undefined}
                                 position={props.withoutInput ? 'absolute' : undefined}
-                                left={props.withoutInput ? -80 : undefined}
+                                left={props.withoutInput ? 0 : undefined}
                             >
                                 <XInput
                                     size="large"
