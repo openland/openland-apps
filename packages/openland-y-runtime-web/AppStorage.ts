@@ -8,8 +8,6 @@ class AppStorageImpl implements AppStorageApi {
         }
         let res = localStorage.getItem(key);
 
-        console.warn('Engine-Tracking', res);
-
         if (res) {
             return JSON.parse(res);
         } else {
