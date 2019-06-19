@@ -97,14 +97,14 @@ export const InviteFragment = ({
                 <XView flexGrow={0} flexShrink={0} alignItems="center" width="100%">
                     {!isMobile && (
                         <XView marginTop={91}>
-                            <ImgMembersEmpty />
+                            <ImgMembersEmpty style={{ width: 252, height: 248 }} />
                         </XView>
                     )}
 
                     <XView
                         fontSize={22}
-                        maxWidth={isMobile ? 440 : 328}
-                        marginTop={isMobile ? 100 : undefined}
+                        maxWidth={isMobile ? 440 : 320}
+                        marginTop={isMobile ? 100 : -20}
                         fontWeight={'600'}
                         lineHeight={1.36}
                         color={'#000'}

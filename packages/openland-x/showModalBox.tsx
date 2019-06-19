@@ -143,10 +143,10 @@ const ModalBoxComponent = React.memo<{
                 }, 1);
             }
         });
-        containerRef.current!!.addEventListener('touchmove', e => e.preventDefault(), {
-            passive: false,
-        });
-        boxRef.current!!.addEventListener('touchmove', e => e.preventDefault());
+        // containerRef.current!!.addEventListener('touchmove', e => e.preventDefault(), {
+        //     passive: false,
+        // });
+        // boxRef.current!!.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
         observer.observe(boxRef.current!);
         observer.observe(containerRef.current!);
         return () => observer.disconnect();

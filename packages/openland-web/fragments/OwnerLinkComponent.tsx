@@ -101,7 +101,9 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
 
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
-            document.execCommand('copy');
+            setTimeout(() => {
+                document.execCommand('copy');
+            }, 100);
         }
         this.setState({
             copied: true,

@@ -144,7 +144,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         this.isWebkit =
             (window as any).safari !== undefined /* Chrome */ ||
             (window as any).chrome !== undefined /* Safari */ ||
-            /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) /* Mobile */ ||
+            !!navigator.userAgent.match(/iPhone|iPad|iPod|Android/i) ||
             !!(global as any).require /* Electron */;
     }
 
