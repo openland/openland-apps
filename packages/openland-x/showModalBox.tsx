@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XModal, showModal, XModalController } from './showModal';
-import { css } from 'linaria';
-import * as className from 'classnames';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
@@ -176,7 +175,7 @@ const ModalBoxComponent = React.memo<{
         >
             <div
                 ref={containerRef}
-                className={className(
+                className={cx(
                     // overlayStyle,
                     props.config.fullScreen ? overlayFullScreenStyle : overlayStyle,
                     state === 'showing' && overlayShowing,
@@ -187,7 +186,7 @@ const ModalBoxComponent = React.memo<{
             >
                 <div
                     ref={boxRef}
-                    className={className(
+                    className={cx(
                         boxStyle,
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
