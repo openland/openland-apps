@@ -103,9 +103,9 @@ export const XRichTextInput2 = React.memo(
                 addEmoji,
             });
 
-            const onEnter = () => {
-                onHandleKey(XEditorCommands.EditorSubmit);
-            };
+            const onEnter = React.useCallback(() => {
+                // empty stub function enter is handled in useDraftKeyHandling here we just supress enter while XRich is active
+            }, []);
 
             return (
                 <XShortcuts
