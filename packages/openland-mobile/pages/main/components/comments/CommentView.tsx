@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
-import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -45,10 +45,11 @@ export interface CommentViewProps {
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onLayout?: (e: LayoutChangeEvent) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, deleted, depth, highlighted, theme } = props;
+    const { comment, deleted, depth, highlighted, theme, onLayout } = props;
     const { sender, date, reactions } = comment;
 
     let messenger = getMessenger();
@@ -159,7 +160,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">

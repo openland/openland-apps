@@ -43,6 +43,7 @@ interface MessageCommentsInnerProps {
 
 const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const inputRef = React.createRef<TextInput>();
+    const scrollRef = React.createRef<ScrollView>();
 
     const { message, comments, chat, messenger, highlightId } = props;
 
@@ -54,20 +55,19 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
+    const [needScrollTo, setNeedScrollTo] = React.useState<boolean>(false);
 
     const canPin = (chat.__typename === 'PrivateRoom') || (chat.__typename === 'SharedRoom' && chat.canEdit);
 
-    React.useEffect(() => {
-        if (highlightId) {
-            const filteredComments = comments.filter(c => c.comment.id === highlightId);
-
-            if (filteredComments.length > 0) {
-                setReplied(filteredComments[0].comment);
-            }
-        }
-    }, []);
-
     // callbacks
+    const handleScrollToView = (y: number) => {
+        if (scrollRef.current && needScrollTo) {
+            scrollRef.current.scrollTo(y);
+
+            setNeedScrollTo(false);
+        }
+    };
+
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
         let text = inputText.trim();
 
@@ -233,6 +233,17 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const handleInputFocus = React.useCallback(() => { setInputFocused(true); }, []);
     const handleInputBlur = React.useCallback(() => { setInputFocused(false); }, []);
 
+    React.useEffect(() => {
+        if (highlightId) {
+            const filteredComments = comments.filter(c => c.comment.id === highlightId);
+
+            if (filteredComments.length > 0) {
+                setNeedScrollTo(true);
+                setReplied(filteredComments[0].comment);
+            }
+        }
+    }, []);
+
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
     let activeWord = findActiveWord(inputText, inputSelection);
@@ -265,6 +276,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 onReplyPress={handleReplyPress}
                 onEditPress={handleEditPress}
                 highlightedId={replied ? replied.id : undefined}
+                handleScrollTo={handleScrollToView}
             />
         </View>
     );
@@ -279,12 +291,12 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 {area => (
                     <>
                         {Platform.OS === 'ios' && (
-                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
+                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
                                 {content}
                             </ScrollView>
                         )}
                         {Platform.OS === 'android' && (
-                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
+                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
                                 {content}
                             </ScrollView>
                         )}

@@ -79,13 +79,13 @@ export const getEditorStateFromText = ({
                             return {
                                 ...mention,
                                 __typename: 'AllMention' as 'AllMention',
-                                name: 'All',
+                                name: 'All' as 'All',
                             };
                         } else if (text.slice(mention.offset, mention.length) === '@all') {
                             return {
                                 ...mention,
                                 __typename: 'AllMention' as 'AllMention',
-                                name: 'all',
+                                name: 'all' as 'all',
                             };
                         }
 

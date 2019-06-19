@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
-import { View, Image, Text, TextStyle, Clipboard } from 'react-native';
+import { View, Image, Text, TextStyle, Clipboard, LayoutChangeEvent } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
@@ -15,10 +15,11 @@ interface CommentsListProps {
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onEditPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    handleScrollTo: (y: number) => void;
 }
 
 export const CommentsList = (props: CommentsListProps) => {
-    const { comments, highlightedId, onReplyPress, onEditPress } = props;
+    const { comments, highlightedId, onReplyPress, onEditPress, handleScrollTo } = props;
 
     const theme = React.useContext(ThemeContext);
 
@@ -57,6 +58,10 @@ export const CommentsList = (props: CommentsListProps) => {
         builder.show();
     }, []);
 
+    const handleLayout = (e: LayoutChangeEvent) => {
+        handleScrollTo(e.nativeEvent.layout.y);
+    };
+
     if (comments.length === 0) {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
@@ -83,18 +88,23 @@ export const CommentsList = (props: CommentsListProps) => {
             </View>
 
             <View marginHorizontal={-16}>
-                {commentsSorted.map((commentEntry, index) => (
-                    <CommentView
-                        key={'comment-' + index}
-                        comment={commentEntry.comment}
-                        deleted={commentEntry.deleted}
-                        depth={getDepthOfComment(commentEntry, commentsMap)}
-                        onReplyPress={onReplyPress}
-                        onLongPress={handleLongPress}
-                        highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false}
-                        theme={theme}
-                    />
-                ))}
+                {commentsSorted.map((commentEntry, index) => {
+                    const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false;
+
+                    return (
+                        <CommentView
+                            key={'comment-' + index}
+                            onLayout={isHighlighted ? handleLayout : undefined}
+                            comment={commentEntry.comment}
+                            deleted={commentEntry.deleted}
+                            depth={getDepthOfComment(commentEntry, commentsMap)}
+                            onReplyPress={onReplyPress}
+                            onLongPress={handleLongPress}
+                            highlighted={isHighlighted}
+                            theme={theme}
+                        />
+                    )
+                })}
 
                 <View backgroundColor={theme.backgroundColor} height={8} zIndex={2} marginTop={-8} marginBottom={8} />
             </View>
