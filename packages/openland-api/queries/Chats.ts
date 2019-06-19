@@ -378,7 +378,7 @@ export const RoomSuperQuery = gql`
 
 export const PinMessageMutation = gql`
     mutation PinMessage($chatId: ID!, $messageId: ID!) {
-        pinMessage: alphaPinMessage(chatId: $chatId, messageId: $messageId) {
+        pinMessage: gammaPinMessage(chatId: $chatId, messageId: $messageId) {
             ...RoomShort
         }
     }
@@ -387,7 +387,7 @@ export const PinMessageMutation = gql`
 
 export const UnpinMessageMutation = gql`
     mutation UnpinMessage($chatId: ID!) {
-        unpinMessage: alphaUnpinMessage(chatId: $chatId) {
+        unpinMessage: gammaUnpinMessage(chatId: $chatId) {
             ...RoomShort
         }
     }
