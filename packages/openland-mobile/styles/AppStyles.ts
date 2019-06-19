@@ -11,12 +11,12 @@ export const AppStyles = {
 
 export const TextStyles = {
     weight: {
-        thin: '100',
-        light: '300',
-        regular: '400',
+        thin: '100' as '100',
+        light: '300' as '300',
+        regular: '400' as '400',
         medium: Platform.OS === 'ios' ? '600' : '500' as ('600' | '500'),
-        bold: '700',
-        black: '900',
+        bold: '700' as '700',
+        black: '900' as '900',
     },
     family: {
         monospace: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace'

@@ -201,7 +201,7 @@ export class MobileMessenger {
             });
         }
 
-        if (conversation.canEdit) {
+        if (conversation.canPin) {
             builder.action('Pin', async () => {
                 startLoader();
                 try {

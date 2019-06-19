@@ -27,6 +27,8 @@ import { XPopper } from 'openland-x/XPopper';
 import RevokeIcon from 'openland-icons/ic-revoke.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
+import { XTrack } from 'openland-x-analytics/XTrack';
+import { trackEvent } from 'openland-x-analytics';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -148,6 +150,11 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     };
 
     private copy = (e: any) => {
+        const { props } = this;
+        const objType = props.isRoom ? (props.isChannel ? 'channel' : 'group') : (props.isCommunity ? 'community' : 'organization');
+
+        trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
+
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
@@ -462,6 +469,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 invitesUsersIds.push(v);
             });
         }
+        const objType = props.isRoom ? (props.isChannel ? 'channel' : 'group') : (props.isCommunity ? 'community' : 'organization');
         return (
             <XModalForm
                 autoClose={1500}
@@ -500,6 +508,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 }}
                 onClosed={this.onClosed}
             >
+                <XTrack event="invite_view" params={{ invite_type: objType }} />
                 <XView
                     height={props.isMobile ? '100%' : '65vh'}
                     flexGrow={1}

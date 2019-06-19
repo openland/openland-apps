@@ -15,7 +15,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { View, Platform, Text, Dimensions } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Organization_organization_members, Organization_organization_members_user, OrganizationMembersShortPaginated_organization } from 'openland-api/Types';
+import { Organization_organization_members, Organization_organization_members_user, OrganizationMembersShortPaginated_organization, OrganizationMemberRole } from 'openland-api/Types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -73,12 +73,25 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         return <PrivateProfile {...props} organization={organization} />
     }
 
-    const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
+    const myUserID = getMessenger().engine.user.id;
+    const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
+    const canEdit = organization.isOwner || organization.isAdmin;
+    const canLeave = organization.isMine;
+    const showManageBtn = canMakePrimary || canEdit || canLeave;
+    const typeString = organization.isCommunity ? 'community' : 'organization';
 
     const [ members, setMembers ] = React.useState(organization.members);
     const [ loading, setLoading ] = React.useState(false);
 
     // callbacks
+        const resetMembersList = React.useCallback(async () => {
+            const loaded = await getClient().queryOrganizationMembersShortPaginated({
+                organizationId: organization.id,
+                first: 10,
+            }, { fetchPolicy: 'network-only' });
+
+            setMembers(loaded.organization.members);
+        }, [organization.id]);
 
         const handleAddMember = React.useCallback(() => {
             Modals.showUserMuptiplePicker(props.router, {
@@ -86,7 +99,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 action: async (users) => {
                     startLoader();
                     try {
-                        await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id })
+                        await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id });
+                        await resetMembersList();
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
@@ -111,7 +125,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         const handleManageClick = React.useCallback(() => {
             let builder = new ActionSheetBuilder();
 
-            if (organization.isOwner || organization.isAdmin) {
+            if (canEdit) {
                 if (organization.isCommunity) {
                     builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }));
                 } else {
@@ -137,7 +151,29 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 });
             }
 
-            if (organization.isOwner || organization.isAdmin) {
+            if (canLeave) {
+                builder.action('Leave ' + typeString,
+                    () => {
+                        Alert.builder()
+                            .title('Are you sure want to leave?')
+                            .button('Cancel', 'cancel')
+                            .action('Leave', 'destructive', async () => {
+                                await getClient().mutateOrganizationRemoveMember({
+                                    memberId: myUserID,
+                                    organizationId: props.router.params.id,
+                                });
+                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                await getClient().refetchAccountSettings();
+
+                                props.router.back();
+                            })
+                            .show();
+                    },
+                    true,
+                );
+            }
+
+            if (canEdit) {
                 builder.action('Delete', () => {
                     Alert.builder()
                         .title(`Delete ${organization.name}`)
@@ -159,32 +195,33 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             props.router.push('ProfileUser', { id: user.id });
         }, []);
 
-        const handleMemberLongPress = React.useCallback(async (member: Organization_organization_members) => {
+        const handleMemberLongPress = React.useCallback((member: Organization_organization_members) => {
             const { user } = member;
 
-            if (user.id === getMessenger().engine.user.id || (organization.isOwner || organization.isAdmin)) {
+            if (user.id === myUserID || canEdit) {
                 let builder = new ActionSheetBuilder();
 
-                if (user.id !== getMessenger().engine.user.id && organization.isOwner) {
+                if (user.id !== myUserID && organization.isOwner) {
                     builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
                         () => {
                             Alert.builder()
-                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? 'Admin? Admins have full control over the organization account.' : 'Member? Members can participate in the organization\'s chats.'}`)
+                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
                                 .button('Cancel', 'cancel')
                                 .action('Change role', 'default', async () => {
                                     await getClient().mutateOrganizationChangeMemberRole({
                                         memberId: user.id,
                                         organizationId: props.router.params.id,
-                                        newRole: (member.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                        newRole: (member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER),
                                     });
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                    await resetMembersList();
                                 }).show();
                         },
                     );
                 }
 
-                if (user.id === getMessenger().engine.user.id) {
-                    builder.action('Leave organization',
+                if (user.id === myUserID) {
+                    builder.action('Leave ' + typeString,
                         () => {
                             Alert.builder()
                                 .title('Are you sure want to leave?')
@@ -196,6 +233,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     });
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
                                     await getClient().refetchAccountSettings();
+
+                                    props.router.back();
                                 })
                                 .show();
                         },
@@ -203,8 +242,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     );
                 }
 
-                if ((organization.isOwner || organization.isAdmin) && user.id !== getMessenger().engine.user.id) {
-                    builder.action('Remove from organization',
+                if (canEdit && user.id !== myUserID) {
+                    builder.action('Remove from ' + typeString,
                         () => {
                             Alert.builder()
                                 .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
@@ -215,6 +254,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                         organizationId: props.router.params.id,
                                     });
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
+
+                                    await resetMembersList();
                                 })
                                 .show();
                         },
@@ -224,7 +265,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
                 builder.show();
             }
-
         }, [ organization ]);
 
         const handleLoadMore = React.useCallback(async () => {
@@ -235,9 +275,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     organizationId: organization.id,
                     first: 10,
                     after: members[members.length - 1].user.id,
-                });
+                }, { fetchPolicy: 'network-only' });
 
-                setMembers([...members, ...loaded.organization.members]);
+                setMembers([...members, ...loaded.organization.members.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
                 setLoading(false);
             }
         }, [ organization, members, loading ]);
@@ -326,7 +366,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title={organization.name} />
 
-            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
+            {showManageBtn && <SHeaderButton key={'manage-btn-' + showManageBtn} title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <SFlatList
                 data={members}
@@ -340,7 +380,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 )}
                 keyExtractor={(item, index) => index + '-' + item.user.id}
                 ListHeaderComponent={content}
-                onEndReached={handleLoadMore}
+                onEndReached={() => handleLoadMore()}
                 refreshing={loading}
             />
         </>

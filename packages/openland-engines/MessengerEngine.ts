@@ -5,7 +5,6 @@ import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
-import { CommentsGlobalUpdatesEngine } from './CommentsGlobalUpdatesEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';

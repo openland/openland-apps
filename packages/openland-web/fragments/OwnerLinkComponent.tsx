@@ -8,6 +8,7 @@ import { XInput } from 'openland-x/XInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMutation } from 'openland-x/XMutation';
 import { XModalController } from 'openland-x/showModal';
+import { trackEvent } from 'openland-x-analytics';
 
 const InputClassName = css`
     border-radius: 8px !important;
@@ -93,10 +94,15 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
     };
 
     private copy = (e: any) => {
+        const { props } = this;
+        const objType = props.isRoom ? 'group' : props.isOrganization ? 'organization' : 'Openland';
+
+        trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
+
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
+            document.execCommand('copy');
         }
-        document.execCommand('copy');
         this.setState({
             copied: true,
         });
@@ -132,39 +138,46 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
         const { copied, resetLink } = this.state;
         const { props } = this;
         const copyText = props.withoutInput ? 'Copy Invite Link' : 'Copy';
+        const inviteHref = props.isOrganization ? 'join/' : 'invite/';
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {props.appInvite && (
                     <XView flexDirection="column">
                         <XView flexDirection="row" alignItems="center">
-                            {!props.withoutInput && (
-                                <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                                    <XInput
-                                        size="large"
-                                        flexGrow={1}
-                                        ref={this.handleRef}
-                                        className={InputClassName}
-                                        value={'https://openland.com/invite/' + props.appInvite}
-                                    />
-                                    {props.useRevoke &&
-                                        props.id &&
-                                        (props.isOrganization || props.isRoom) && (
-                                            <XView
-                                                position="absolute"
-                                                right={16}
-                                                top={10}
-                                                cursor="pointer"
-                                            >
-                                                <RenewInviteLinkButton
-                                                    onClick={this.resetLink}
-                                                    id={props.id}
-                                                    isOrganization={props.isOrganization}
-                                                    isRoom={props.isRoom}
-                                                />
-                                            </XView>
-                                        )}
-                                </XView>
-                            )}
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                flexGrow={1}
+                                overflow="hidden"
+                                width={props.withoutInput ? 40 : undefined}
+                                position={props.withoutInput ? 'absolute' : undefined}
+                                left={props.withoutInput ? -80 : undefined}
+                            >
+                                <XInput
+                                    size="large"
+                                    flexGrow={1}
+                                    ref={this.handleRef}
+                                    className={InputClassName}
+                                    value={'https://openland.com/' + inviteHref + props.appInvite}
+                                />
+                                {props.useRevoke &&
+                                    props.id &&
+                                    (props.isOrganization || props.isRoom) && (
+                                        <XView
+                                            position="absolute"
+                                            right={16}
+                                            top={10}
+                                            cursor="pointer"
+                                        >
+                                            <RenewInviteLinkButton
+                                                onClick={this.resetLink}
+                                                id={props.id}
+                                                isOrganization={props.isOrganization}
+                                                isRoom={props.isRoom}
+                                            />
+                                        </XView>
+                                    )}
+                            </XView>
                             <XView
                                 height={40}
                                 borderRadius={8}

@@ -6,7 +6,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, FileAttachmentInput, RoomShort } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
@@ -36,15 +36,16 @@ interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
     comments: MessageComments_messageComments_comments[];
     messenger: MobileMessenger;
+    chat: RoomShort;
 
-    room?: RoomShort_SharedRoom;
     highlightId?: string;
 }
 
 const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const inputRef = React.createRef<TextInput>();
+    const scrollRef = React.createRef<ScrollView>();
 
-    const { message, comments, room, messenger, highlightId } = props;
+    const { message, comments, chat, messenger, highlightId } = props;
 
     // state
     const [replied, setReplied] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
@@ -54,18 +55,19 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
+    const [needScrollTo, setNeedScrollTo] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        if (highlightId) {
-            const filteredComments = comments.filter(c => c.comment.id === highlightId);
-
-            if (filteredComments.length > 0) {
-                setReplied(filteredComments[0].comment);
-            }
-        }
-    }, []);
+    const canPin = (chat.__typename === 'PrivateRoom') || (chat.__typename === 'SharedRoom' && chat.canEdit);
 
     // callbacks
+    const handleScrollToView = (y: number) => {
+        if (scrollRef.current && needScrollTo) {
+            scrollRef.current.scrollTo(y);
+
+            setNeedScrollTo(false);
+        }
+    };
+
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
         let text = inputText.trim();
 
@@ -137,25 +139,23 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         let client = messenger.engine.client;
         let router = messenger.history.navigationManager;
 
-        if (room) {
-            let builder = new ActionSheetBuilder();
+        let builder = new ActionSheetBuilder();
 
-            if (room.canEdit) {
-                builder.action('Unpin', async () => {
-                    startLoader();
-                    try {
-                        await client.mutateUnpinMessage({ chatId: room!.id });
+        if (canPin) {
+            builder.action('Unpin', async () => {
+                startLoader();
+                try {
+                    await client.mutateUnpinMessage({ chatId: chat.id });
 
-                        router.pop();
-                    } finally {
-                        stopLoader();
-                    }
-                });
-            }
-
-            builder.show();
+                    router.pop();
+                } finally {
+                    stopLoader();
+                }
+            });
         }
-    }, [messenger, room]);
+
+        builder.show();
+    }, [messenger, chat]);
 
     const handleAttach = React.useCallback(() => {
         showAttachMenu((type, name, path, size) => {
@@ -233,6 +233,17 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const handleInputFocus = React.useCallback(() => { setInputFocused(true); }, []);
     const handleInputBlur = React.useCallback(() => { setInputFocused(false); }, []);
 
+    React.useEffect(() => {
+        if (highlightId) {
+            const filteredComments = comments.filter(c => c.comment.id === highlightId);
+
+            if (filteredComments.length > 0) {
+                setNeedScrollTo(true);
+                setReplied(filteredComments[0].comment);
+            }
+        }
+    }, []);
+
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
     let activeWord = findActiveWord(inputText, inputSelection);
@@ -240,8 +251,8 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     let suggestions: JSX.Element;
     let quoted: JSX.Element;
 
-    if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />;
+    if (chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
+        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
@@ -265,6 +276,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 onReplyPress={handleReplyPress}
                 onEditPress={handleEditPress}
                 highlightedId={replied ? replied.id : undefined}
+                handleScrollTo={handleScrollToView}
             />
         </View>
     );
@@ -273,18 +285,18 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         <>
             <SHeader title="Comments" />
 
-            {room && room.canEdit && room.pinnedMessage && (room.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManagePress} />}
+            {canPin && chat.pinnedMessage && (chat.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManagePress} />}
 
             <ASSafeAreaContext.Consumer>
                 {area => (
                     <>
                         {Platform.OS === 'ios' && (
-                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
+                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
                                 {content}
                             </ScrollView>
                         )}
                         {Platform.OS === 'android' && (
-                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
+                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
                                 {content}
                             </ScrollView>
                         )}
@@ -324,8 +336,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     const message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message as FullMessage_GeneralMessage;
     const comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
-    const room = client.useRoomTiny({ id: chatId }).room;
-    const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomShort_SharedRoom : undefined;
+    const room = client.useRoomTiny({ id: chatId }).room!;
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
@@ -346,7 +357,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
             message={message}
             comments={comments}
             messenger={messenger}
-            room={sharedRoom}
+            chat={room}
             highlightId={highlightId}
         />
     );

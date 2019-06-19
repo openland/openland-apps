@@ -62,7 +62,7 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
                 marginRight: horizontal ? 0 : undefined,
             },
         },
-        zIndex: active ? 11 : undefined,
+        zIndex: active ? 2 : undefined,
     }),
 );
 

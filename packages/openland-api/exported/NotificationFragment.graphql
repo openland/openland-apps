@@ -20,6 +20,7 @@ fragment NotificationFragment on Notification {
             message {
               __typename
               ... on GeneralMessage {
+                fallback
                 id
                 message
               }

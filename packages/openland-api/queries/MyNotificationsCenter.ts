@@ -19,6 +19,7 @@ export const NotificationFragment = gql`
                             message {
                                 ... on GeneralMessage {
                                     id
+                                    fallback
                                     message
                                 }
                             }
@@ -64,6 +65,15 @@ export const NotificationCenterUpdateFragment = gql`
                 ...NotificationFragment
             }
         }
+        ... on NotificationUpdated {
+            center {
+                id
+                unread
+            }
+            notification {
+                ...NotificationFragment
+            }
+        }
         ... on NotificationDeleted {
             center {
                 id
@@ -77,6 +87,27 @@ export const NotificationCenterUpdateFragment = gql`
             center {
                 id
                 unread
+            }
+        }
+        ... on NotificationContentUpdated {
+            content {
+                ... on UpdatedNotificationContentComment {
+                    peer {
+                        peerRoot {
+                            ... on CommentPeerRootMessage {
+                                message {
+                                    ... on GeneralMessage {
+                                        id
+                                    }
+                                }
+                            }
+                        }
+                        id
+                        subscription {
+                            type
+                        }
+                    }
+                }
             }
         }
     }

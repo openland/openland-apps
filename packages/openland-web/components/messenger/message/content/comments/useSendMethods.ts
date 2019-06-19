@@ -7,6 +7,7 @@ import {
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 import { useAddComment } from './useAddComment';
+import { trackEvent } from 'openland-x-analytics';
 
 export const getUploadCareFile = (fileForUc: any): UploadCare.File => {
     return UploadCare.fileFrom('object', fileForUc);
@@ -43,8 +44,10 @@ export const uploadFile = async ({
 
 export const useSendMethods = ({
     setShowInputId,
+    depth,
 }: {
     setShowInputId: (a: string | null) => void;
+    depth: number;
 }) => {
     const addComment = useAddComment();
     const onSendFile = async (file: UploadCare.File) => {
@@ -80,6 +83,9 @@ export const useSendMethods = ({
             replyComment,
             fileAttachments: uploadedFileKey ? [{ fileId: uploadedFileKey }] : [],
         });
+
+        trackEvent('comment_sent', { comment_level: depth });
+
         setShowInputId(null);
         return newCommentId;
     };

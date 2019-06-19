@@ -19,12 +19,12 @@ export type MentionSuggestionsStateT = {
     isLoaded: boolean;
 };
 
-export type SuggestionTypeT =
-    | UserForMention
-    | {
-          __typename: 'AllMention';
-          name: 'All' | 'all';
-      };
+export type AllMentionType = {
+    __typename: 'AllMention';
+    name: 'All' | 'all';
+};
+
+export type SuggestionTypeT = UserForMention | AllMentionType;
 
 export const useMentionSuggestions = ({
     showAllMentionsSuggestion,

@@ -75,6 +75,20 @@ export const getEditorStateFromText = ({
                 text,
                 mentions.map(mention => {
                     if (mention.typename === 'UserWithOffset') {
+                        if (text.slice(mention.offset, mention.length) === '@All') {
+                            return {
+                                ...mention,
+                                __typename: 'AllMention' as 'AllMention',
+                                name: 'All' as 'All',
+                            };
+                        } else if (text.slice(mention.offset, mention.length) === '@all') {
+                            return {
+                                ...mention,
+                                __typename: 'AllMention' as 'AllMention',
+                                name: 'all' as 'all',
+                            };
+                        }
+
                         return mention.user;
                     }
                     return { __typename: 'AllMention' as 'AllMention', name: 'all' as 'all' };
@@ -92,9 +106,9 @@ export function useHandleEditorChange({
 }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState(value);
     const [activeWord, setActiveWord] = React.useState<string>('');
-    const [editorState, setEditorState] = React.useState(() =>
-        getEditorStateFromText({ text: value, mentions: initialMentions || [] }),
-    );
+    const [editorState, setEditorState] = React.useState(() => {
+        return getEditorStateFromText({ text: value, mentions: initialMentions || [] });
+    });
 
     const updateEditorState = (newEditorState: EditorState) => {
         const newPlainText = newEditorState.getCurrentContent().getPlainText();

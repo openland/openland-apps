@@ -18,54 +18,12 @@ const textAlignCenterClassName = css`
     text-align: center;
 `;
 
-const illustrationStyles = css`
-    margin-top: -90px;
-    margin-bottom: -55px;
-
-    @media (max-height: 800px) {
-        display: none;
-    }
-`;
-
 const contentWrapperStyles = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-
-    @media (max-height: 570px) {
-        justify-content: flex-start;
-    }
-`;
-
-const spanStyles = css`
-    flex-grow: 1;
-    flex-shrink: 1;
-    height: 0;
-    min-height: 100px;
-
-    @media (max-height: 500px) and (min-width: 750px) {
-        flex-grow: 0;
-        min-height: 150px;
-    }
-`;
-
-const logoWrapperStyles = css`
-    top: 19px;
-    left: 32px;
-    align-self: flex-start;
-    position: fixed;
-
-    @media (max-width: 950px) {
-        position: absolute;
-    }
-
-    @media (max-width: 750px) {
-        position: absolute;
-        left: unset;
-        align-self: center;
-    }
 `;
 
 const TextAlignCenter = ({ children }: { children: any }) => {
@@ -107,7 +65,6 @@ export const InviteFragment = ({
             position={'relative'}
             flexGrow={1}
             justifyContent={'center'}
-            backgroundColor={'#FFF'}
             paddingLeft={isMobile ? 40 : 0}
             paddingRight={isMobile ? 40 : 0}
         >
@@ -133,23 +90,21 @@ export const InviteFragment = ({
             )}
             <div className={contentWrapperStyles}>
                 {asModalContent && (
-                    <div className={logoWrapperStyles}>
+                    <XView position="absolute" top={19} left={32}>
                         <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-                    </div>
+                    </XView>
                 )}
-                <div className={spanStyles} />
-                <XView
-                    flexGrow={0}
-                    flexShrink={0}
-                    alignItems="center"
-                    marginTop={isMobile ? 0 : -68}
-                    width="100%"
-                >
-                    {!isMobile && <ImgMembersEmpty className={illustrationStyles} />}
+                <XView flexGrow={0} flexShrink={0} alignItems="center" width="100%">
+                    {!isMobile && (
+                        <XView marginTop={91}>
+                            <ImgMembersEmpty />
+                        </XView>
+                    )}
 
                     <XView
                         fontSize={22}
                         maxWidth={isMobile ? 440 : 328}
+                        marginTop={isMobile ? 100 : undefined}
                         fontWeight={'600'}
                         lineHeight={1.36}
                         color={'#000'}
@@ -213,7 +168,7 @@ export const InviteFragment = ({
                         </XView>
                     </XView>
                 </XView>
-                <XView width={isMobile ? '100%' : 540} flexGrow={1} flexShrink={1} height={0}>
+                <XView width={isMobile ? '100%' : 540} flexGrow={1} flexShrink={1}>
                     {!moreInvite && (
                         <XView
                             flexDirection="row"

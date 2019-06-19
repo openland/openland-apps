@@ -12,6 +12,8 @@ import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
 import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emojifyReactions } from './emojifyReactions';
+import { trackEvent } from 'openland-x-analytics';
+import { reactionEmojiMap } from './ReactionButton';
 
 const LikeIconClassName = css`
     width: 18px;
@@ -104,9 +106,14 @@ const SingleReactionSetInner = (props: SingleReactionSetT) => {
     let client = useClient();
     return (
         <SingleReaction
-            handler={it =>
+            handler={it => {
+                trackEvent('reaction_sent', {
+                    reaction_type: reactionEmojiMap[it].toLowerCase(),
+                    double_tap: 'not'
+                });
+
                 client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
-            }
+            }}
             reaction={props.reaction}
             isMy={props.isMy}
             unset={false}
