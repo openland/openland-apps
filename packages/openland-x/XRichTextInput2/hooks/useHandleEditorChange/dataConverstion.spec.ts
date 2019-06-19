@@ -2,7 +2,7 @@ import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 const {
     preprocessMentions,
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention, AllMentionType } from 'openland-api/Types';
 
 const makeIncrementFunc = () => {
     let i = 0;
@@ -190,6 +190,61 @@ describe('Draft data conversion', () => {
                 '2': { type: 'emoji', mutability: 'IMMUTABLE' },
                 '3': { type: 'emoji', mutability: 'IMMUTABLE' },
                 '4': { type: 'MENTION', mutability: 'IMMUTABLE', data: { name: 'dev lapin 🎉' } },
+            },
+        });
+    });
+
+    it('should convert @All mention to draft format', () => {
+        const mentions = [
+            {
+                __typename: 'AllMention',
+                name: 'All',
+            },
+        ] as AllMentionType[];
+
+        const text = '@All';
+
+        let parsedMentions = preprocessMentions(text, mentions, undefined);
+        const genKeyFunction = makeIncrementFunc();
+
+        const { blocks, entityMap } = getEmojiAndMentionBlocksAndEntityMap(
+            text,
+            mentions,
+            genKeyFunction,
+        );
+
+        const expectedParsedMentions = [
+            { text: 'All', type: 'user', user: { __typename: 'AllMention', name: 'All' } },
+        ];
+
+        expect(parsedMentions).toEqual(expectedParsedMentions);
+
+        expect({
+            blocks,
+            entityMap,
+        }).toEqual({
+            blocks: [
+                {
+                    text: '@All',
+                    type: 'unstyled',
+                    entityRanges: [
+                        {
+                            key: 0,
+                            offset: 0,
+                            length: 4,
+                        },
+                    ],
+                },
+            ],
+            entityMap: {
+                '0': {
+                    type: 'MENTION',
+                    mutability: 'IMMUTABLE',
+                    data: {
+                        __typename: 'AllMention',
+                        name: 'All',
+                    },
+                },
             },
         });
     });
