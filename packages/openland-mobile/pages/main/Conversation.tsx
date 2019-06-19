@@ -21,7 +21,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -228,11 +227,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handlePinnedMessagePress = (mid: string) => {
-        let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
-
-        if (sharedRoom) {
-            this.props.router.push('MessageComments', { messageId: mid, chatId: sharedRoom.id });
-        }
+        this.props.router.push('MessageComments', { messageId: mid, chatId: this.props.chat.id });
     }
 
     onQuotedClearPress = () => {
@@ -304,6 +299,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
         let showSelectedMessagesActions = this.state.messagesActionsState.messages.length > 0 && !this.state.messagesActionsState.action;
+        let pinnedMessage = this.props.chat.pinnedMessage;
 
         return (
             <>
@@ -320,11 +316,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         <View style={{ height: '100%', flexDirection: 'column' }}>
                             <ConversationView inverted={true} engine={this.engine} />
 
-                            {sharedRoom && sharedRoom.pinnedMessage && (
+                            {pinnedMessage && (
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
                                         <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.headerColor} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
-                                            <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
+                                            <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(pinnedMessage!.id)}>
                                                 <View flexDirection="row" paddingRight={16} alignItems="center">
                                                     <View width={50} height={showPinAuthor ? 52 : 44} alignItems="center" justifyContent="center">
                                                         <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentColor }} source={require('assets/ic-pinned.png')} />
@@ -332,18 +328,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                                                     <View height={showPinAuthor ? 52 : 44} flexGrow={1} flexShrink={1} paddingTop={9} >
                                                         {showPinAuthor && <View flexDirection="row">
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, fontWeight: TextStyles.weight.medium } as TextStyle}>
-                                                                {sharedRoom!.pinnedMessage!.sender.name}
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, fontWeight: TextStyles.weight.medium }}>
+                                                                {pinnedMessage!.sender.name}
                                                             </Text>
 
                                                             {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textLabelColor, marginLeft: 8, fontWeight: TextStyles.weight.medium } as TextStyle}>
-                                                                    {sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textLabelColor, marginLeft: 8, fontWeight: TextStyles.weight.medium }}>
+                                                                    {pinnedMessage!.sender.primaryOrganization!.name}
                                                                 </Text>
                                                             }
                                                         </View>}
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor } as TextStyle}>
-                                                            {formatMessage(sharedRoom!.pinnedMessage as any)}
+                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor }}>
+                                                            {pinnedMessage!.fallback}
                                                         </Text>
                                                     </View>
                                                 </View>
