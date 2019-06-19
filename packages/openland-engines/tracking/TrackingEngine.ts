@@ -18,13 +18,22 @@ export interface TrackPlatform {
 class TrackingEngine {
     private queue = new ExecutionQueue();
     private client!: OpenlandClient;
-    private initPromise: Promise<void> | undefined;
     private deviceId!: string;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
     private storage: TrackingStorage;
 
     constructor() {
         this.storage = new TrackingStorage('tracking-pending-' + TRACKING_STORAGE_VERSION);
+        this.queue.post(async () => {
+            let did = await AppStorage.readKey<string>('device-id');
+            if (!did) {
+                did = uuid();
+                await AppStorage.writeKey<string>('device-id', did);
+            }
+            this.deviceId = did;
+
+            log.log('DEVICE-ID: ' + did);
+        });
     }
 
     setClient(client: OpenlandClient) {
@@ -61,21 +70,6 @@ class TrackingEngine {
         if (pending.length <= 0) {
             return;
         }
-
-        if (!this.initPromise) {
-            this.initPromise = (async () => {
-                let did = await AppStorage.readKey<string>('device-id');
-                if (!did) {
-                    did = uuid();
-                    await AppStorage.writeKey<string>('device-id', did);
-                }
-                this.deviceId = did;
-
-                log.log('DEVICE-ID: ' + did);
-            })();
-        }
-
-        await this.initPromise;
 
         await backoff(async () => {
             await this.client.mutatePersistEvents({
