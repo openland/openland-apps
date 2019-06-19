@@ -101,7 +101,9 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
 
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
-            document.execCommand('copy');
+            setTimeout(() => {
+                document.execCommand('copy');
+            }, 100);
         }
         this.setState({
             copied: true,
@@ -151,7 +153,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                                 overflow="hidden"
                                 width={props.withoutInput ? 40 : undefined}
                                 position={props.withoutInput ? 'absolute' : undefined}
-                                left={props.withoutInput ? 0 : undefined}
+                                left={props.withoutInput ? -80 : undefined}
                             >
                                 <XInput
                                     size="large"
