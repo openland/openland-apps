@@ -275,9 +275,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     organizationId: organization.id,
                     first: 10,
                     after: members[members.length - 1].user.id,
-                });
+                }, { fetchPolicy: 'network-only' });
 
-                setMembers([...members, ...loaded.organization.members]);
+                setMembers([...members, ...loaded.organization.members.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
                 setLoading(false);
             }
         }, [ organization, members, loading ]);
