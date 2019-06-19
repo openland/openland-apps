@@ -3,20 +3,25 @@ import uuid from 'uuid/v4';
 import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { EventPlatform, Event } from 'openland-api/Types';
+import { createLogger } from 'mental-log';
+
+const PENDING_STORAGE_VERSION = 1;
+const log = createLogger('Engine-Tracking');
 
 export interface TrackPlatform {
     name: EventPlatform;
     isProd: boolean;
 }
 
-class TrackingEngine {
+type PendingEvent = Event;
 
+class TrackingEngine {
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
-    private pending: Event[] = [];
     private isSending = false;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
+    private storageKey = 'tracking-pending' + PENDING_STORAGE_VERSION;
 
     setClient(client: OpenlandClient) {
         if (!this.client) {
@@ -34,23 +39,22 @@ class TrackingEngine {
         };
 
         this.platform = platform;
-        this.pending.push(item);
 
+        this.addPending(item);
         this.flush();
-
-        console.log('Event: ', item);
     }
 
     private async flush() {
-        if (!this.client) {
+        if (!this.client || this.isSending) {
             return;
         }
-        if (this.isSending) {
+
+        const pending = await this.getPending();
+
+        if (pending.length <= 0) {
             return;
         }
-        if (this.pending.length === 0) {
-            return;
-        }
+        log.log('Flush');
 
         this.isSending = true;
         if (!this.initPromise) {
@@ -62,25 +66,47 @@ class TrackingEngine {
                 }
                 this.deviceId = did;
 
-                console.log('DEVICE-ID: ' + did);
+                log.log('DEVICE-ID: ' + did);
             })();
         }
 
         await this.initPromise;
 
-        let events = [...this.pending];
-        this.pending = [];
         await backoff(async () => {
             await this.client.mutatePersistEvents({
                 did: this.deviceId,
-                events: events,
+                events: pending,
                 platform: this.platform.name,
                 isProd: this.platform.isProd
             });
         })
 
+        this.clearPending();
+
         this.isSending = false;
         this.flush();
+    }
+
+    private async addPending(event: Event) {
+        log.log('New pending event: ' + JSON.stringify(event));
+
+        let pending = await this.getPending();
+
+        pending.push(event);
+
+        await AppStorage.writeKey<PendingEvent[]>(this.storageKey, pending);
+    }
+
+    private async getPending(): Promise<PendingEvent[]> {
+        const pending = await AppStorage.readKey<PendingEvent[]>(this.storageKey);
+
+        return pending || [];
+    }
+
+    private async clearPending() {
+        log.log('Clear pending events');
+
+        await AppStorage.writeKey(this.storageKey, null);
     }
 }
 
