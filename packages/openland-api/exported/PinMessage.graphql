@@ -1,5 +1,5 @@
 mutation PinMessage($chatId: ID!, $messageId: ID!) {
-  pinMessage: betaPinMessage(chatId: $chatId, messageId: $messageId) {
+  pinMessage: gammaPinMessage(chatId: $chatId, messageId: $messageId) {
     __typename
     ...RoomShort
   }
