@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XImage, XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
@@ -9,7 +9,7 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { NotificationComments, NotificationMessages, Settings_settings } from 'openland-api/Types';
+import { NotificationMessages, Settings_settings } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
@@ -20,14 +20,15 @@ import NotificationsFirefoxIcon from 'openland-icons/ic-notifications-firefox-2.
 import { SettingsNavigation } from './components/SettingsNavigation';
 import {
     Content,
+    Header,
     Group,
     GroupSubTitle,
-    GroupText,
     GroupTitle,
-    Header,
+    GroupText,
 } from './components/SettingComponents';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { XCheckbox } from 'openland-x/XCheckbox';
 
 const Instruction = (props: { children?: any }) => (
     <XView paddingTop={4} paddingBottom={40}>
@@ -384,25 +385,12 @@ class NotificationsSettingsPageInner extends React.Component<
                                 <Group>
                                     <GroupTitle>Comment notifications</GroupTitle>
                                     <XView maxWidth={440}>
-                                        <XSelect
+                                        <XCheckbox
+                                            label="Notify me about comments in threads I'm following"
+                                            trueValue="ALL"
+                                            falseValue="NONE"
                                             field="input.comment"
-                                            searchable={false}
-                                            clearable={false}
                                             onChange={this.handleCommentSelectChange}
-                                            options={[
-                                                {
-                                                    value: NotificationComments.ALL,
-                                                    label: 'About all new comments',
-                                                },
-                                                {
-                                                    value: NotificationComments.DIRECT,
-                                                    label: 'About direct comments',
-                                                },
-                                                {
-                                                    value: NotificationComments.NONE,
-                                                    label: 'Never',
-                                                },
-                                            ]}
                                         />
                                     </XView>
                                 </Group>
