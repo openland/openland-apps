@@ -2,13 +2,16 @@ import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import { Event } from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 
-const TRACKING_STORAGE_VERSION = 2;
 const log = createLogger('Engine-TrackingStorage');
 
 export type PendingEvent = Event;
 
 export class TrackingStorage {
-    private storageKey = 'tracking-pending-' + TRACKING_STORAGE_VERSION + '-';
+    private storageKey: string;
+
+    constructor(name: string) {
+        this.storageKey = name + '-';
+    }
 
     private async addIndex(id: string) {
         const indexes = await this.getIndexes();
