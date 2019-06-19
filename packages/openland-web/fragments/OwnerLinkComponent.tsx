@@ -138,36 +138,40 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                 {props.appInvite && (
                     <XView flexDirection="column">
                         <XView flexDirection="row" alignItems="center">
-                            {!props.withoutInput && (
-                                <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                                    <XInput
-                                        size="large"
-                                        flexGrow={1}
-                                        ref={this.handleRef}
-                                        className={InputClassName}
-                                        value={
-                                            'https://openland.com/' + inviteHref + props.appInvite
-                                        }
-                                    />
-                                    {props.useRevoke &&
-                                        props.id &&
-                                        (props.isOrganization || props.isRoom) && (
-                                            <XView
-                                                position="absolute"
-                                                right={16}
-                                                top={10}
-                                                cursor="pointer"
-                                            >
-                                                <RenewInviteLinkButton
-                                                    onClick={this.resetLink}
-                                                    id={props.id}
-                                                    isOrganization={props.isOrganization}
-                                                    isRoom={props.isRoom}
-                                                />
-                                            </XView>
-                                        )}
-                                </XView>
-                            )}
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                flexGrow={1}
+                                overflow="hidden"
+                                width={props.withoutInput ? 40 : undefined}
+                                position={props.withoutInput ? 'absolute' : undefined}
+                                left={props.withoutInput ? -100 : undefined}
+                            >
+                                <XInput
+                                    size="large"
+                                    flexGrow={1}
+                                    ref={this.handleRef}
+                                    className={InputClassName}
+                                    value={'https://openland.com/' + inviteHref + props.appInvite}
+                                />
+                                {props.useRevoke &&
+                                    props.id &&
+                                    (props.isOrganization || props.isRoom) && (
+                                        <XView
+                                            position="absolute"
+                                            right={16}
+                                            top={10}
+                                            cursor="pointer"
+                                        >
+                                            <RenewInviteLinkButton
+                                                onClick={this.resetLink}
+                                                id={props.id}
+                                                isOrganization={props.isOrganization}
+                                                isRoom={props.isRoom}
+                                            />
+                                        </XView>
+                                    )}
+                            </XView>
                             <XView
                                 height={40}
                                 borderRadius={8}
