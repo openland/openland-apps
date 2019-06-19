@@ -109,6 +109,7 @@ const CommentView = ({
 
     const { onSendFile, onSend } = useSendMethods({
         setShowInputId,
+        depth: message.depth + 1
     });
 
     const onCommentReplyClick = React.useCallback(() => {
@@ -455,6 +456,7 @@ export const CommentsModalInnerNoRouter = ({
 
     const { onSendFile, onSend } = useSendMethods({
         setShowInputId,
+        depth: 0
     });
 
     React.useEffect(() => {
