@@ -222,19 +222,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         // Fallback
         return (
-            <XView
-                overflow="hidden"
-                flexGrow={props.flexGrow}
-                flexShrink={props.flexShrink}
-                height={props.height}
-                minHeight={props.minHeight}
-                width={props.width}
-                minWidth={props.minWidth}
-                alignSelf={props.alignSelf}
-                alignItems={props.alignItems}
-                flexDirection={props.flexDirection}
-                justifyContent={props.justifyContent}
-            >
+            <XView overflow="hidden" {...other}>
                 <CustomBackend onScroll={this.onScroll}>
                     <XView flexDirection="column" alignItems="stretch" flexGrow={1} flexShrink={0}>
                         {children}
