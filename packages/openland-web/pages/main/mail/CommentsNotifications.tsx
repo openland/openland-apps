@@ -106,7 +106,12 @@ class CommentsNotificationsInner
     private dataSourceWrapper = (props: { children?: any }) => {
         return (
             <>
-                <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1} onScroll={this.handleScroll}>
+                <XScrollView3
+                    useDefaultScroll
+                    flexGrow={1}
+                    flexShrink={1}
+                    onScroll={this.handleScroll}
+                >
                     <MessagesWrapper>{props.children}</MessagesWrapper>
                 </XScrollView3>
             </>
@@ -119,7 +124,7 @@ class CommentsNotificationsInner
         return (
             <MessageComponent
                 message={data}
-                replyQuoteText={data.replyQuoteText}
+                replyQuoteText={data.replyQuoteTextEmojify || data.replyQuoteText}
                 room={data.room}
                 noSelector
                 isCommentNotification

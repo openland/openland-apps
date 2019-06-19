@@ -8,6 +8,7 @@ import { emoji } from 'openland-y-utils/emoji';
 export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderNameEmojify?: any;
     replySenderNameEmojify: (string | JSX.Element)[];
+    replyQuoteTextEmojify?: string | JSX.Element;
 }
 
 export interface DataSourceWebDateItem extends DataSourceDateItem {
@@ -17,6 +18,12 @@ export interface DataSourceWebDateItem extends DataSourceDateItem {
 export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessageItem {
     return {
         ...src,
+        replyQuoteTextEmojify: src.replyQuoteText
+            ? emoji({
+                  src: src.replyQuoteText,
+                  size: 16,
+              })
+            : undefined,
         senderNameEmojify:
             src.type === 'message' && !src.attachTop
                 ? emoji({
