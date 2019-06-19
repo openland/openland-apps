@@ -3,7 +3,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XTrack } from 'openland-x-analytics/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
 import { InitTexts } from './_text';
@@ -59,7 +58,6 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                 title={InitTexts.join.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <XTrack event="Join" />
 
             <Root>
                 <Content>

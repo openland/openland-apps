@@ -526,26 +526,17 @@ export const SignInPage = (props: any) => {
         title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
     }
 
-    let event;
-    if (isSignInInvite) {
-        event = 'Invite';
-    } else {
-        event = signin ? 'View Signin' : 'View Signup';
-    }
-
     return (
         <AuthRouter>
             <XDocumentHead title={title} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event={event}>
-                {canUseDOM && (
-                    <SignInComponent
-                        redirect={redirect}
-                        router={props.router}
-                        roomView={!!fromRoom}
-                        isSignInInvite={isSignInInvite}
-                    />
-                )}
-            </XTrack>
+            {canUseDOM && (
+                <SignInComponent
+                    redirect={redirect}
+                    router={props.router}
+                    roomView={!!fromRoom}
+                    isSignInInvite={isSignInInvite}
+                />
+            )}
         </AuthRouter>
     );
 };

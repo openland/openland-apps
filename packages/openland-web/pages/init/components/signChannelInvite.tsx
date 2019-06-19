@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessagePageContent } from '../../../components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
 import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
@@ -67,27 +66,25 @@ export const InviteInfoInner = (props: any) => {
             />
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
-                <XTrack event="Join Room">
-                    <Root>
-                        <Content>
-                            {data.invite && (
-                                <InviteLandingComponent
-                                    noLogin={true}
-                                    room={data.invite.room as any}
-                                    invite={data.invite}
-                                    inviteLink={variables.invite}
-                                    signup={'/signup?redirect=' + encodeURIComponent(redirect)}
-                                />
-                            )}
-                            {!data.invite && !loading && (
-                                <MessagePageContent title="Join">
-                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                </MessagePageContent>
-                            )}
-                            {!data.invite && loading && <XLoader loading={true} />}
-                        </Content>
-                    </Root>
-                </XTrack>
+                <Root>
+                    <Content>
+                        {data.invite && (
+                            <InviteLandingComponent
+                                noLogin={true}
+                                room={data.invite.room as any}
+                                invite={data.invite}
+                                inviteLink={variables.invite}
+                                signup={'/signup?redirect=' + encodeURIComponent(redirect)}
+                            />
+                        )}
+                        {!data.invite && !loading && (
+                            <MessagePageContent title="Join">
+                                <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                            </MessagePageContent>
+                        )}
+                        {!data.invite && loading && <XLoader loading={true} />}
+                    </Content>
+                </Root>
             )}
         </>
     );
@@ -108,13 +105,11 @@ export const SignInInvite = ({ invite }: { invite: string }) => {
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <XTrack event="Invite">
-                <InviteInfoInner
-                    variables={{ invite }}
-                    redirect={`/acceptChannelInvite/${invite}`}
-                    instantRedirect={instantRedirect}
-                />
-            </XTrack>
+            <InviteInfoInner
+                variables={{ invite }}
+                redirect={`/acceptChannelInvite/${invite}`}
+                instantRedirect={instantRedirect}
+            />
         </>
     );
 };
