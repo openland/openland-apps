@@ -5,8 +5,6 @@ import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
 const log = createLogger('Engine-TrackingStorage');
 
-export type PendingEvent = Event;
-
 export class TrackingStorage {
     private storageKey: string;
     private queue = new ExecutionQueue();
@@ -19,11 +17,11 @@ export class TrackingStorage {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    const items = await AppStorage.readKey<PendingEvent[]>(this.storageKey) || [];
+                    const items = await AppStorage.readKey<Event[]>(this.storageKey) || [];
 
                     items.push(item);
 
-                    await AppStorage.writeKey<PendingEvent[]>(this.storageKey, items);
+                    await AppStorage.writeKey<Event[]>(this.storageKey, items);
 
                     resolve(null);
                 } catch (e) {
@@ -34,10 +32,10 @@ export class TrackingStorage {
     }
 
     async getItems() {
-        return new Promise<PendingEvent[]>((resolve, reject) => {
+        return new Promise<Event[]>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    const res: PendingEvent[] = await AppStorage.readKey<PendingEvent[]>(this.storageKey) || [];
+                    const res: Event[] = await AppStorage.readKey<Event[]>(this.storageKey) || [];
 
                     resolve(res);
                 } catch (e) {
@@ -51,11 +49,11 @@ export class TrackingStorage {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    let items = await AppStorage.readKey<PendingEvent[]>(this.storageKey) || [];
+                    let items = await AppStorage.readKey<Event[]>(this.storageKey) || [];
 
                     items = items.filter(item => !ids.includes(item.id));
 
-                    await AppStorage.writeKey<PendingEvent[]>(this.storageKey, items);
+                    await AppStorage.writeKey<Event[]>(this.storageKey, items);
 
                     resolve(null);
                 } catch (e) {
