@@ -5,6 +5,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { EventPlatform, Event } from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { TrackingStorage } from './TrackingStorage';
+import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
 const log = createLogger('Engine-Tracking');
 
@@ -14,10 +15,10 @@ export interface TrackPlatform {
 }
 
 class TrackingEngine {
+    private queue = new ExecutionQueue();
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
-    private isSending = false;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
     private storage: TrackingStorage;
 
@@ -28,7 +29,9 @@ class TrackingEngine {
     setClient(client: OpenlandClient) {
         if (!this.client) {
             this.client = client;
-            this.flush();
+            this.queue.post(async () => {
+                await this.flush();
+            });
         }
     }
 
@@ -41,24 +44,20 @@ class TrackingEngine {
         };
 
         this.platform = platform;
-
-        await this.storage.addItem(item);
-
-        this.flush();
+        this.queue.post(async () => {
+            await this.storage.addItem(item);
+            await this.flush();
+        });
     }
 
     private async flush() {
-        if (!this.client || this.isSending) {
+        if (!this.client) {
             return;
         }
-
-        this.isSending = true;
 
         const pending = await this.storage.getItems();
 
         if (pending.length <= 0) {
-            this.isSending = false;
-
             return;
         }
 
@@ -90,8 +89,9 @@ class TrackingEngine {
 
         await this.storage.removeItems(pending.map(p => p.id));
 
-        this.isSending = false;
-        this.flush();
+        this.queue.post(async () => {
+            await this.flush();
+        });
     }
 }
 
