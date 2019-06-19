@@ -146,7 +146,7 @@ const ModalBoxComponent = React.memo<{
         containerRef.current!!.addEventListener('touchmove', e => e.preventDefault(), {
             passive: false,
         });
-        boxRef.current!!.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+        boxRef.current!!.addEventListener('touchmove', e => e.preventDefault());
         observer.observe(boxRef.current!);
         observer.observe(containerRef.current!);
         return () => observer.disconnect();
