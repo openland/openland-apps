@@ -55,27 +55,40 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let engine = messenger.engine;
     let client = getClient();
     let router = messenger.history.navigationManager;
+    let lastTap: number = 0;
 
-    const handleReactionPress = React.useCallback(() => {
+    const handleReactionPress = React.useCallback(async () => {
         let r = MessageReactionType.LIKE;
 
         startLoader();
         try {
             let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;        
             if (remove) {
-                client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: r });
+                await client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: r });
             } else {
-                client.mutateCommentSetReaction({ commentId: comment.id, reaction: r });
+                await client.mutateCommentSetReaction({ commentId: comment.id, reaction: r });
             }
         } catch (e) {
             Alert.alert(e.message);
+        } finally {
+            stopLoader();
         }
-        stopLoader();
     }, [ comment, reactions ]);
 
     const handleReactionLongPress = React.useCallback(() => {
         showReactionsList(reactions);
     }, [ comment, reactions ]);
+
+    const handleDoublePress = React.useCallback(() => {
+        const now = Date.now();
+        const DOUBLE_PRESS_DELAY = 300;
+
+        if (now - lastTap < DOUBLE_PRESS_DELAY) {
+            client.mutateCommentSetReaction({ commentId: comment.id, reaction: MessageReactionType.LIKE });
+        } else {
+            lastTap = now;
+        }
+    }, [ comment, lastTap ]);
 
     const branchIndent = (depth > 0) ? ((15 * depth) + 16) : 16;
 
@@ -145,7 +158,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }
 
     return (
-        <TouchableWithoutFeedback disabled={deleted} onLongPress={() => props.onLongPress(comment)}>
+        <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
             <View style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
