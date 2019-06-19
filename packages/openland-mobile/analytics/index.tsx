@@ -1,4 +1,4 @@
-import { Track, TrackPlatform } from 'openland-engines/Tracking';
+import { Track, TrackPlatform } from 'openland-engines/tracking/TrackingEngine';
 import { Platform, AsyncStorage } from 'react-native';
 import { EventPlatform } from 'openland-api/Types';
 

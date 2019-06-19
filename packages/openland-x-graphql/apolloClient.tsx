@@ -1,7 +1,7 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { buildClient } from 'openland-y-graphql/apolloClient';
-import { Track } from 'openland-engines/Tracking';
+import { Track } from 'openland-engines/tracking/TrackingEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { createWorkerClient } from 'openland-web/api/createWorkerClient';

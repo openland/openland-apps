@@ -1,5 +1,5 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { Track, TrackPlatform } from 'openland-engines/Tracking';
+import { Track, TrackPlatform } from 'openland-engines/tracking/TrackingEngine';
 import { EventPlatform } from 'openland-api/Types';
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
