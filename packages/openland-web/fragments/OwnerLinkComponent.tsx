@@ -95,14 +95,14 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
 
     private copy = (e: any) => {
         const { props } = this;
-        const objType = props.isRoom ? 'group' : (props.isOrganization ? 'organization' : 'Openland');
+        const objType = props.isRoom ? 'group' : props.isOrganization ? 'organization' : 'Openland';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
         if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
+            document.execCommand('copy');
         }
-        document.execCommand('copy');
         this.setState({
             copied: true,
         });
@@ -151,7 +151,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                                 overflow="hidden"
                                 width={props.withoutInput ? 40 : undefined}
                                 position={props.withoutInput ? 'absolute' : undefined}
-                                left={props.withoutInput ? -100 : undefined}
+                                left={props.withoutInput ? -80 : undefined}
                             >
                                 <XInput
                                     size="large"
