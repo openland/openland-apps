@@ -7,7 +7,7 @@ import { createLogger } from 'mental-log';
 import { TrackingStorage } from './TrackingStorage';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
-const TRACKING_STORAGE_VERSION = 2;
+const TRACKING_STORAGE_VERSION = 3;
 const log = createLogger('Engine-Tracking');
 
 export interface TrackPlatform {
@@ -45,7 +45,7 @@ class TrackingEngine {
         }
     }
 
-    track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
+    async track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
         let item: Event = {
             id: uuid(),
             event: event,
@@ -53,9 +53,13 @@ class TrackingEngine {
             time: Date.now().toString()
         };
 
+        log.log('New event: ' + JSON.stringify(item));
+
         this.platform = platform;
+
+        await this.storage.addItem(item);
+
         this.queue.post(async () => {
-            await this.storage.addItem(item);
             await this.flush();
         });
     }

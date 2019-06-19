@@ -23,7 +23,7 @@ import { NativeKeyValue } from 'openland-mobile/spacex/NativeKeyValue';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { Track } from 'openland-engines/tracking/TrackingEngine';
+import { Track } from 'openland-engines/TrackingEngine';
 import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {

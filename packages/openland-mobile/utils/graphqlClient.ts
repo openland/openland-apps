@@ -1,4 +1,4 @@
-import { Track } from 'openland-engines/tracking/TrackingEngine';
+import { Track } from 'openland-engines/TrackingEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { NativeSpaceXClient } from 'openland-mobile/spacex/NativeSpaceXClient';
 
