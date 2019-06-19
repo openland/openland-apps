@@ -56,7 +56,7 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
                 <ZListItem appearance="action" text="Share link" onPress={handleShareClick} />
                 <ZListItem
                     appearance="action"
-                    text="Renew link"
+                    text="Revoke link"
                     onPress={async () => {
                         startLoader();
                         try {

@@ -57,6 +57,11 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                 />
                 <ZListItem
                     appearance="action"
+                    text="Share link"
+                    onPress={handleShareClick}
+                />
+                <ZListItem
+                    appearance="action"
                     text="Revoke link"
                     onPress={async () => {
                         startLoader();
@@ -71,11 +76,6 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
-            <ZListItem
-                appearance="action"
-                text="Share link"
-                onPress={handleShareClick}
-            />
         </ZTrack>
     )
 });
