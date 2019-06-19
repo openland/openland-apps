@@ -1,6 +1,0 @@
-query CommentGlobalUpdatesState {
-  commentGlobalUpdatesState {
-    __typename
-    state
-  }
-}
