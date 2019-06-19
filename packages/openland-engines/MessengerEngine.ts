@@ -42,17 +42,11 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(
-        client: OpenlandClient,
-        user: UserShort,
-        platform: string,
-        options?: Partial<EngineOptions>,
-    ) {
+    constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
         this.options = {
-            conversationBatchSize:
-                options && options.conversationBatchSize ? options.conversationBatchSize : 15,
-            store: options && options.store ? options.store : new InMemoryKeyValueStore(),
-        };
+            conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
+            store: options && options.store ? options.store : new InMemoryKeyValueStore()
+        }
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
@@ -63,7 +57,7 @@ export class MessengerEngine {
 
         this.dialogList = new DialogListEngine(this);
         this.notificationCenter = new NotificationCenterEngine({
-            engine: this,
+            engine: this
         });
 
         this.global = new GlobalStateEngine(this);
@@ -121,8 +115,8 @@ export class MessengerEngine {
     }
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
-        this.dialogList.handleChatNewMessage(message, cid);
-    };
+        this.dialogList.handleChatNewMessage(message, cid)
+    }
 
     getConversation(conversationId: string) {
         if (!this.activeConversations.has(conversationId)) {
