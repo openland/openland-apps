@@ -12,7 +12,7 @@ import SwiftyJSON
 fileprivate let queue = DispatchQueue(label: "rn-data-view")
 
 class RNAsyncDataViewItem {
-  let key: String
+  var key: String
   let config: AsyncViewSpec
   init(key: String, config: AsyncViewSpec) {
     self.key = key
@@ -28,6 +28,7 @@ protocol RNAsyncDataViewDelegate {
   func onRemoved(index: Int, state: RNAsyncDataViewState)
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState)
   func onCompleted(state: RNAsyncDataViewState)
+  func onScrollToRequested(index: Int)
 }
 
 class RNAsyncDataViewState {
@@ -160,6 +161,18 @@ class RNAsyncDataView {
     self.state = st
     for i in watchers.all() {
       i.value.onLoadedMore(from: start, count: items.count, state: st)
+    }
+  }
+  
+  func handleScrollToRequest(key: String) {
+    print("boom ", index)
+    for i in watchers.all() {
+      let index = self.state.items.firstIndex { item -> Bool in
+        return item.key == key
+      }
+      if(index ?? -1 > -1){
+        i.value.onScrollToRequested(index: index!)
+      }
     }
   }
   
@@ -413,6 +426,10 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     }
   }
   
+  func onScrollToRequested(index: Int) {
+    // Stub
+  }
+
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
     queue.async {
@@ -468,8 +485,8 @@ class RNAsyncDataViewManager: NSObject {
     RNAsyncDataView.getDataView(key: dataSourceKey).handleMoved(fromIndex: Int(fromIndex), toIndex: Int(toIndex))
   }
   
-  @objc(dataViewLoadedMore:config:completed:)
-  func dataViewLoadedMore(dataSourceKey: String, config: String, completed: Bool) -> Void {
+  @objc(dataViewLoadedMore:config:completed:scrollToKey:)
+  func dataViewLoadedMore(dataSourceKey: String, config: String, completed: Bool, scrollToKey: String?) -> Void {
     let parsed = JSON(parseJSON: config)
     var items: [RNAsyncDataViewItem] = []
     for i in parsed.arrayValue {
@@ -478,6 +495,9 @@ class RNAsyncDataViewManager: NSObject {
       items.append(RNAsyncDataViewItem(key: key, config: config))
     }
     RNAsyncDataView.getDataView(key: dataSourceKey).handleLoadedMore(items: items, completed: completed)
+    if(scrollToKey != nil){
+      RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToRequest(key: scrollToKey!)
+    }
   }
   
   @objc(dataViewCompleted:)

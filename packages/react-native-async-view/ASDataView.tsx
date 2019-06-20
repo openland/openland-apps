@@ -55,7 +55,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         NativeDataView.dataViewInit(this.key, '[]', false);
     }
 
-    onDataSourceInited = (data: T[], completed: boolean) => {
+    onDataSourceInited = (data: T[], completed: boolean, scrollToKey?: string) => {
         this.queue.push(async () => {
             // Create initial items
             let start = Date.now();
@@ -66,7 +66,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 config: v.currentState
             })));
             console.log('DataSource inited in ' + (Date.now() - start) + ' ms');
-            NativeDataView.dataViewLoadedMore(this.key, config, completed);
+            NativeDataView.dataViewLoadedMore(this.key, config, completed, scrollToKey || null);
         });
     }
     onDataSourceItemAdded = (item: T, index: number) => {
@@ -124,7 +124,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 key: v.item.key,
                 config: v.currentState
             })));
-            NativeDataView.dataViewLoadedMore(this.key, config, completed);
+            NativeDataView.dataViewLoadedMore(this.key, config, completed, null);
         });
     }
 

@@ -22,7 +22,7 @@ export interface DataSourceItem {
 }
 
 export interface DataSourceWatcher<T extends DataSourceItem> {
-    onDataSourceInited(data: T[], completed: boolean): void;
+    onDataSourceInited(data: T[], completed: boolean, scrollToKey?: string): void;
     onDataSourceItemAdded(item: T, index: number): void;
     onDataSourceItemUpdated(item: T, index: number): void;
     onDataSourceItemRemoved(item: T, index: number): void;
@@ -77,7 +77,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         return this.data.length;
     }
 
-    initialize(data: T[], completed: boolean) {
+    initialize(data: T[], completed: boolean, scrollToKey?: string) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
@@ -91,7 +91,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
         this.inited = true;
         for (let w of this.watchers) {
-            w.onDataSourceInited(data, completed);
+            w.onDataSourceInited(data, completed, scrollToKey);
         }
     }
 

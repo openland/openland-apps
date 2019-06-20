@@ -545,6 +545,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
+  func onScrollToRequested(index: Int) {
+     print("boom ", index)
+    self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .right, animated: false)
+  }
+  
   //
   // Collection Node delegate
   //

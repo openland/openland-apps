@@ -228,17 +228,17 @@ export class ConversationEngine implements MessageSendHandler {
         this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
         let pagesToload = 1;
 
-        // while (messages.length > 0 && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || pagesToload--)) {
-        //     let serverMessages = messages.filter(m => isServerMessage(m));
-        //     let first = serverMessages[0];
-        //     if (!first) {
-        //         break;
-        //     }
-        //     let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 40 }));
-        //     let batch = [...loaded.messages];
-        //     batch.reverse();
-        //     messages.unshift(...batch);
-        // }
+        while (messages.length > 0 && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || pagesToload--)) {
+            let serverMessages = messages.filter(m => isServerMessage(m));
+            let first = serverMessages[0];
+            if (!first) {
+                break;
+            }
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 40 }));
+            let batch = [...loaded.messages];
+            batch.reverse();
+            messages.unshift(...batch);
+        }
 
         this.messages = messages;
 
@@ -262,12 +262,14 @@ export class ConversationEngine implements MessageSendHandler {
         let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
         let sourceFragments = messages as FullMessage[];
         let prevDate: string | undefined;
+        let newMessagesDivider: DataSourceNewDividerItem | undefined;
         for (let i = sourceFragments.length - 1; i >= 0; i--) {
 
             // append unread mark
             if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
                 // Alert.alert(sourceFragments[i].id);
-                dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
+                newMessagesDivider = createNewMessageDividerSourceItem(sourceFragments[i].id);
+                dsItems.push(newMessagesDivider);
             }
 
             // Append new date if needed
@@ -285,7 +287,7 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, this.historyFullyLoaded);
+        this.dataSource.initialize(dsItems, this.historyFullyLoaded, newMessagesDivider && newMessagesDivider.key);
     }
 
     onOpen = () => {
