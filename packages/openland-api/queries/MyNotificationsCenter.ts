@@ -21,6 +21,10 @@ export const NotificationFragment = gql`
                                     id
                                     fallback
                                     message
+                                    sender {
+                                        id
+                                        name
+                                    }
                                 }
                             }
                             chat {

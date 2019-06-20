@@ -195,7 +195,7 @@ export class NotificationCenterEngine {
 
             if (convertedNotification) {
                 await this._dataSourceStored.addItem(convertedNotification, 0);
-
+                this.engine.notifications.handleIncomingNotification(event);
                 this.onNotificationsUpdated();
             }
         } else if (event.__typename === 'NotificationDeleted') {

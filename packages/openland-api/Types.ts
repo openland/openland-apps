@@ -53908,6 +53908,12 @@ export interface MyNotifications_myNotifications_items_content_comment {
   childComments: MyNotifications_myNotifications_items_content_comment_childComments[];
 }
 
+export interface MyNotifications_myNotifications_items_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotifications_myNotifications_items_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -53919,6 +53925,7 @@ export interface MyNotifications_myNotifications_items_content_peer_peerRoot_mes
    * Content
    */
   message: string | null;
+  sender: MyNotifications_myNotifications_items_content_peer_peerRoot_message_sender;
 }
 
 export interface MyNotifications_myNotifications_items_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -54688,6 +54695,12 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   childComments: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_notification_content_comment_childComments[];
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -54699,6 +54712,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
    * Content
    */
   message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_notification_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -55451,6 +55465,12 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   childComments: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated_notification_content_comment_childComments[];
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -55462,6 +55482,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
    * Content
    */
   message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated_notification_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -56286,6 +56307,12 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   childComments: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_notification_content_comment_childComments[];
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -56297,6 +56324,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
    * Content
    */
   message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_notification_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -57049,6 +57077,12 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   childComments: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated_notification_content_comment_childComments[];
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -57060,6 +57094,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
    * Content
    */
   message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated_notification_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -80143,6 +80178,12 @@ export interface NotificationFragment_content_comment {
   childComments: NotificationFragment_content_comment_childComments[];
 }
 
+export interface NotificationFragment_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface NotificationFragment_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -80154,6 +80195,7 @@ export interface NotificationFragment_content_peer_peerRoot_message {
    * Content
    */
   message: string | null;
+  sender: NotificationFragment_content_peer_peerRoot_message_sender;
 }
 
 export interface NotificationFragment_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -80908,6 +80950,12 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   childComments: NotificationCenterUpdateFragment_NotificationReceived_notification_content_comment_childComments[];
 }
 
+export interface NotificationCenterUpdateFragment_NotificationReceived_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface NotificationCenterUpdateFragment_NotificationReceived_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -80919,6 +80967,7 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
    * Content
    */
   message: string | null;
+  sender: NotificationCenterUpdateFragment_NotificationReceived_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface NotificationCenterUpdateFragment_NotificationReceived_notification_content_peer_peerRoot_chat_PrivateRoom_user {
@@ -81671,6 +81720,12 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   childComments: NotificationCenterUpdateFragment_NotificationUpdated_notification_content_comment_childComments[];
 }
 
+export interface NotificationCenterUpdateFragment_NotificationUpdated_notification_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface NotificationCenterUpdateFragment_NotificationUpdated_notification_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
@@ -81682,6 +81737,7 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
    * Content
    */
   message: string | null;
+  sender: NotificationCenterUpdateFragment_NotificationUpdated_notification_content_peer_peerRoot_message_sender;
 }
 
 export interface NotificationCenterUpdateFragment_NotificationUpdated_notification_content_peer_peerRoot_chat_PrivateRoom_user {

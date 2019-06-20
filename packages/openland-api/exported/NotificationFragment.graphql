@@ -23,6 +23,11 @@ fragment NotificationFragment on Notification {
                 fallback
                 id
                 message
+                sender {
+                  __typename
+                  id
+                  name
+                }
               }
             }
           }
