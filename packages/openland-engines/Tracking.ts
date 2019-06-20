@@ -69,7 +69,7 @@ class TrackingEngine {
             return;
         }
 
-        const pending = await this.storage.getItems();
+        const pending = await this.storage.getItemsBatch(100);
 
         if (pending.length <= 0) {
             return;
@@ -87,10 +87,6 @@ class TrackingEngine {
         });
 
         await this.storage.removeItems(pending.map(p => p.id));
-
-        this.queue.post(async () => {
-            await this.flush();
-        });
     }
 }
 

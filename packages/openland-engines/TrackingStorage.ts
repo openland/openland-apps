@@ -45,6 +45,20 @@ export class TrackingStorage {
         });
     }
 
+    async getItemsBatch(batchSize: number) {
+        return new Promise<Event[]>((resolve, reject) => {
+            this.queue.post(async () => {
+                try {
+                    const res: Event[] = await AppStorage.readKey<Event[]>(this.storageKey) || [];
+
+                    resolve(res.slice(0, batchSize));
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    }
+
     async removeItems(ids: string[]) {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
