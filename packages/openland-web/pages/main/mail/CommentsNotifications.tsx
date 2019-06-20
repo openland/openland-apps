@@ -51,8 +51,10 @@ interface CommentsNotificationsProps {
     engine: NotificationCenterEngine;
 }
 
-class CommentsNotificationsInner
-    extends React.PureComponent<CommentsNotificationsProps, { dataSourceGeneration: number }> {
+class CommentsNotificationsInner extends React.PureComponent<
+    CommentsNotificationsProps,
+    { dataSourceGeneration: number }
+> {
     private unmount?: () => void;
     private unmount1?: () => void;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
@@ -66,7 +68,9 @@ class CommentsNotificationsInner
 
     componentWillMount() {
         this.unmount = this.props.engine.subscribe();
-        this.unmount1 = this.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
+        this.unmount1 = this.dataSource.dumbWatch(() =>
+            this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }),
+        );
     }
 
     componentWillUnmount() {
@@ -128,6 +132,13 @@ class CommentsNotificationsInner
     };
 
     render() {
+        if (!this.dataSource.isInited()) {
+            return (
+                <XView flexGrow={1} flexShrink={0}>
+                    <XLoader loading={true} />
+                </XView>
+            );
+        }
         if (this.dataSource.getSize() === 0 && this.dataSource.isInited()) {
             return (
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
