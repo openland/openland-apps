@@ -128,7 +128,7 @@ class CommentsNotificationsInner
     };
 
     render() {
-        if (this.dataSource.getSize() === 0 && this.dataSource.isIited()) {
+        if (this.dataSource.getSize() === 0 && this.dataSource.isInited()) {
             return (
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />

@@ -95,8 +95,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         this.inited = true;
     }
 
-    isIited = () => {
-        return this.isIited;
+    isInited = () => {
+        return this.isInited;
     }
 
     getAt(index: number) {

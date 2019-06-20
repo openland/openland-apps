@@ -50,7 +50,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     render() {
         const { theme } = this.props;
 
-        const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isIited();
+        const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isInited();
 
         if (isEmpty) {
             return (
