@@ -131,6 +131,10 @@ const Image = Glamorous.div({
         width: 846,
         marginLeft: -500,
     },
+    '@media (max-height: 600px)': {
+        background: 'none',
+        backgroundImage: 'none',
+    },
 });
 
 export const FooterImage = () => {
