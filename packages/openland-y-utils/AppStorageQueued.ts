@@ -1,11 +1,11 @@
 import { AppStorage } from 'openland-y-runtime-native/AppStorage';
-import { Event } from 'openland-api/Types';
-import { createLogger } from 'mental-log';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
-const log = createLogger('Engine-TrackingStorage');
+interface AppStorageQueuedItem {
+    id: string;
+}
 
-export class TrackingStorage {
+export class AppStorageQueued<T extends AppStorageQueuedItem> {
     private storageKey: string;
     private queue = new ExecutionQueue();
 
@@ -13,15 +13,15 @@ export class TrackingStorage {
         this.storageKey = name;
     }
 
-    async addItem(item: Event) {
+    async addItem(item: T) {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    const items = await AppStorage.readKey<Event[]>(this.storageKey) || [];
+                    const items = await AppStorage.readKey<T[]>(this.storageKey) || [];
 
                     items.push(item);
 
-                    await AppStorage.writeKey<Event[]>(this.storageKey, items);
+                    await AppStorage.writeKey<T[]>(this.storageKey, items);
 
                     resolve(null);
                 } catch (e) {
@@ -32,10 +32,10 @@ export class TrackingStorage {
     }
 
     async getItems() {
-        return new Promise<Event[]>((resolve, reject) => {
+        return new Promise<T[]>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    const res: Event[] = await AppStorage.readKey<Event[]>(this.storageKey) || [];
+                    const res: T[] = await AppStorage.readKey<T[]>(this.storageKey) || [];
 
                     resolve(res);
                 } catch (e) {
@@ -46,10 +46,10 @@ export class TrackingStorage {
     }
 
     async getItemsBatch(batchSize: number) {
-        return new Promise<Event[]>((resolve, reject) => {
+        return new Promise<T[]>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    const res: Event[] = await AppStorage.readKey<Event[]>(this.storageKey) || [];
+                    const res: T[] = await AppStorage.readKey<T[]>(this.storageKey) || [];
 
                     resolve(res.slice(0, batchSize));
                 } catch (e) {
@@ -59,15 +59,15 @@ export class TrackingStorage {
         });
     }
 
-    async removeItems(ids: string[]) {
+    async removeItems(keys: string[]) {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
-                    let items = await AppStorage.readKey<Event[]>(this.storageKey) || [];
+                    let items = await AppStorage.readKey<T[]>(this.storageKey) || [];
 
-                    items = items.filter(item => !ids.includes(item.id));
+                    items = items.filter(item => !keys.includes(item.id));
 
-                    await AppStorage.writeKey<Event[]>(this.storageKey, items);
+                    await AppStorage.writeKey<T[]>(this.storageKey, items);
 
                     resolve(null);
                 } catch (e) {

@@ -4,8 +4,8 @@ import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { EventPlatform, Event } from 'openland-api/Types';
 import { createLogger } from 'mental-log';
-import { TrackingStorage } from './TrackingStorage';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
+import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
 
 const TRACKING_STORAGE_VERSION = 3;
 const log = createLogger('Engine-Tracking');
@@ -20,10 +20,10 @@ class TrackingEngine {
     private client!: OpenlandClient;
     private deviceId!: string;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
-    private storage: TrackingStorage;
+    private storage: AppStorageQueued<Event>;
 
     constructor() {
-        this.storage = new TrackingStorage('tracking-pending-' + TRACKING_STORAGE_VERSION);
+        this.storage = new AppStorageQueued('tracking-pending-' + TRACKING_STORAGE_VERSION);
         this.queue.post(async () => {
             let did = await AppStorage.readKey<string>('device-id');
             if (!did) {
@@ -83,7 +83,7 @@ class TrackingEngine {
                 isProd: this.platform.isProd
             });
 
-            log.log('Flush: send ' + pending.length + ' events');
+            log.log('Send events. Count: ' + pending.length);
         });
 
         await this.storage.removeItems(pending.map(p => p.id));
