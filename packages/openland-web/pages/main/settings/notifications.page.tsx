@@ -297,11 +297,7 @@ class NotificationsSettingsPageInner extends React.Component<
 
     render() {
         let notificationParams = this.props.settings.desktopNotifications;
-        let commentParams = this.props.settings.commentNotifications;
-
-        if (notificationParams === NotificationMessages.NONE) {
-            notificationParams = NotificationMessages.DIRECT;
-        }
+        let commentParams = this.props.settings.commentNotificationsDelivery;
 
         return (
             <SettingsNavigation title="Notifications">
@@ -374,7 +370,7 @@ class NotificationsSettingsPageInner extends React.Component<
                             defaultAction={async data => {
                                 await this.props.client.mutateSettingsUpdate({
                                     input: {
-                                        commentNotifications: data.input.comment,
+                                        commentNotificationsDelivery: data.input.comment,
                                     },
                                 });
                             }}

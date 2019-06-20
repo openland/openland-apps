@@ -115,6 +115,7 @@ export interface SettingsWatch_watchSettings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -54079,6 +54080,10 @@ export interface MyNotificationsVariables {
 // GraphQL subscription operation: MyNotificationsCenter
 // ====================================================
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_center {
   __typename: "NotificationCenter";
   id: string;
@@ -55633,13 +55638,17 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   center: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead_center;
 }
 
-export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead;
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle {
   __typename: "NotificationCenterUpdateSingle";
   seq: number;
   state: string;
   update: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_center {
@@ -57196,7 +57205,7 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   center: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead_center;
 }
 
-export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead;
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch {
   __typename: "NotificationCenterUpdateBatch";
@@ -63481,6 +63490,7 @@ export interface Settings_settings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -63505,6 +63515,7 @@ export interface SettingsUpdate_updateSettings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -73716,6 +73727,7 @@ export interface SettingsFull {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -80251,6 +80263,10 @@ export interface NotificationFragment {
 // GraphQL fragment: NotificationCenterUpdateFragment
 // ====================================================
 
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
+}
+
 export interface NotificationCenterUpdateFragment_NotificationReceived_center {
   __typename: "NotificationCenter";
   id: string;
@@ -81805,7 +81821,7 @@ export interface NotificationCenterUpdateFragment_NotificationRead {
   center: NotificationCenterUpdateFragment_NotificationRead_center;
 }
 
-export type NotificationCenterUpdateFragment = NotificationCenterUpdateFragment_NotificationReceived | NotificationCenterUpdateFragment_NotificationUpdated | NotificationCenterUpdateFragment_NotificationDeleted | NotificationCenterUpdateFragment_NotificationRead;
+export type NotificationCenterUpdateFragment = NotificationCenterUpdateFragment_NotificationContentUpdated | NotificationCenterUpdateFragment_NotificationReceived | NotificationCenterUpdateFragment_NotificationUpdated | NotificationCenterUpdateFragment_NotificationDeleted | NotificationCenterUpdateFragment_NotificationRead;
 
 /* tslint:disable */
 /* eslint-disable */

@@ -1117,6 +1117,7 @@ private val SessionStateFullSelector = obj(
 private val SettingsFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("commentNotifications","commentNotifications", notNull(scalar("String"))),
+            field("commentNotificationsDelivery","commentNotificationsDelivery", notNull(scalar("String"))),
             field("desktopNotifications","desktopNotifications", notNull(scalar("String"))),
             field("emailFrequency","emailFrequency", notNull(scalar("String"))),
             field("id","id", notNull(scalar("ID"))),
@@ -3358,7 +3359,7 @@ object Operations {
     val Settings = object: OperationDefinition {
         override val name = "Settings"
         override val kind = OperationKind.QUERY
-        override val body = "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
+        override val body = "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsSelector
     }
     val SuggestedRooms = object: OperationDefinition {
@@ -3934,7 +3935,7 @@ object Operations {
     val SettingsUpdate = object: OperationDefinition {
         override val name = "SettingsUpdate"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
+        override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsUpdateSelector
     }
     val SubscribeMessageComments = object: OperationDefinition {
@@ -4102,7 +4103,7 @@ object Operations {
     val SettingsWatch = object: OperationDefinition {
         override val name = "SettingsWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
+        override val body = "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsWatchSelector
     }
     val TypingsWatch = object: OperationDefinition {

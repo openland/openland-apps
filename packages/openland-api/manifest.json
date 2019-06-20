@@ -16,10 +16,10 @@
       }
     },
     {
-      "signature": "b562cfe64fb0f07e57a7663e4e756e29273d16818a6ce4c986125f82269ea046",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
+      "signature": "6d07b90fd7a317e2f31d31ad13768f4c201a7f04e95824b7c98cffc2c827978c",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
       }
     },
     {
@@ -1248,17 +1248,17 @@
       }
     },
     {
-      "signature": "727e3b566ddcec8e320c8de6642385e58bbfc0e7aa976e089c71c7d661268793",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "signature": "7709f5918551a5d0620bc49c0035f9c455827f7bfefeb7cc8ace41038c39e996",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
       }
     },
     {
-      "signature": "2536a1d91fbb1fab43271164803ac8fbcf05fae703f6e81422c4dc11a5918ea9",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
+      "signature": "fae57374f7f6a95b11d535d97c624e510a94d429bb30c1a5ba80574ff5db7a18",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
       }
     },
     {
