@@ -89,14 +89,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         for (let d of data) {
             this.dataByKey.set(d.key, d);
         }
+        this.inited = true;
         for (let w of this.watchers) {
             w.onDataSourceInited(data, completed);
         }
-        this.inited = true;
     }
 
     isInited = () => {
-        return this.isInited;
+        return this.inited;
     }
 
     getAt(index: number) {
