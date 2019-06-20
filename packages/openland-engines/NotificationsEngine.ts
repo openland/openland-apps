@@ -4,6 +4,7 @@ import {
     RoomTiny_room_SharedRoom,
     RoomTiny_room_PrivateRoom,
     MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived,
+    DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message,
 } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
@@ -12,6 +13,7 @@ import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
 interface NewNotification
     extends MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived {}
+type NewMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
@@ -81,7 +83,8 @@ export class NotificationsEngine {
         }
     };
 
-    handleIncomingMessage = async (cid: string, msg: any) => {
+    handleIncomingMessage = async (cid: string, event: NewMessage) => {
+        const msg = event;
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
 
         let room = (await this.engine.client.client.query(RoomTinyQuery, { id: cid })).room!;
@@ -98,30 +101,35 @@ export class NotificationsEngine {
             }
         }
 
-        if (!(sharedRoom || privateRoom)!.settings.mute || msg.isMentioned) {
+        if (!(sharedRoom || privateRoom)!.settings.mute || (event && (event as any).isMentioned)) {
             AppNotifications.playIncomingSound();
             let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
-            if (msg.message) {
+            const messageAttachment = (msg as any).attachments && (msg as any).attachments[0];
+            const messageAttachmentImage = messageAttachment
+                ? (messageAttachment as any).fileMetadata.isImage
+                : false;
+            if (sharedRoom) {
                 AppNotifications.displayNotification({
-                    title: 'New Message',
-                    body:
-                        msg.sender.name +
-                        (!privateRoom ? '@' + sharedRoom!.title : '') +
-                        ': ' +
-                        msg.message,
+                    title: msg.sender.name + ' @' + (room as any).title,
+                    body: msg.message
+                        ? msg.message
+                        : messageAttachmentImage
+                            ? '<photo>'
+                            : '<document>',
                     path: '/mail/' + cid,
-                    image: msg.sender.picture,
+                    image: msg.sender.photo || '',
                     id: doSimpleHash(cid).toString(),
                 });
-            } else {
+            } else if (privateRoom) {
                 AppNotifications.displayNotification({
-                    title: 'New Message',
-                    body:
-                        msg.sender.name +
-                        (!privateRoom ? '@' + sharedRoom!.title : '') +
-                        ': <file>',
+                    title: msg.sender.name,
+                    body: msg.message
+                        ? msg.message
+                        : messageAttachmentImage
+                            ? '<photo>'
+                            : '<document>',
                     path: '/mail/' + conversationId,
-                    image: msg.sender.picture,
+                    image: msg.sender.photo || '',
                     id: doSimpleHash(cid).toString(),
                 });
             }
