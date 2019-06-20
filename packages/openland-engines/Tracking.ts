@@ -71,7 +71,7 @@ class TrackingEngine {
             return;
         }
 
-        const pending = useStorage ? await this.storage.getItems() : this.events;
+        const pending = (useStorage ? await this.storage.getItems() : this.events).slice(0, 100);
 
         if (pending.length <= 0) {
             return;
