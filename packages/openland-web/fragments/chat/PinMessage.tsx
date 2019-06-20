@@ -459,7 +459,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                                                     <XView marginRight={6}>
                                                         <IconImage />
                                                     </XView>
-                                                    <XView color="rgba(0, 0, 0, 0.5)">Image</XView>
+                                                    <XView color="rgba(0, 0, 0, 0.5)">Photo</XView>
                                                 </XView>
                                             )}
                                             {!attach.fileMetadata.isImage && (
