@@ -117,11 +117,10 @@ export class GlobalStateEngine {
     }
 
     private handleGlobalEvent = async (event: any) => {
-        console.log(event);
+        // console.log(event);
         let start = currentTimeMillis();
         log.log('Event Received');
-        // console.log('handleGlobalEvent', event);
-        
+
         if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
 
