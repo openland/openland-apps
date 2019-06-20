@@ -9,7 +9,7 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { NotificationMessages, Settings_settings } from 'openland-api/Types';
+import { Settings_settings } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
@@ -297,11 +297,7 @@ class NotificationsSettingsPageInner extends React.Component<
 
     render() {
         let notificationParams = this.props.settings.desktopNotifications;
-        let commentParams = this.props.settings.commentNotifications;
-
-        if (notificationParams === NotificationMessages.NONE) {
-            notificationParams = NotificationMessages.DIRECT;
-        }
+        let commentParams = this.props.settings.commentNotificationsDelivery;
 
         return (
             <SettingsNavigation title="Notifications">
@@ -374,7 +370,7 @@ class NotificationsSettingsPageInner extends React.Component<
                             defaultAction={async data => {
                                 await this.props.client.mutateSettingsUpdate({
                                     input: {
-                                        commentNotifications: data.input.comment,
+                                        commentNotificationsDelivery: data.input.comment,
                                     },
                                 });
                             }}

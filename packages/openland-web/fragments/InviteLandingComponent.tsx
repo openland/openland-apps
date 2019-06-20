@@ -131,6 +131,10 @@ const Image = Glamorous.div({
         width: 846,
         marginLeft: -500,
     },
+    '@media (max-height: 600px)': {
+        background: 'none',
+        backgroundImage: 'none',
+    },
 });
 
 export const FooterImage = () => {
@@ -255,7 +259,7 @@ const RoomInfoColumn = ({
                 paddingRight={12}
                 height={23}
                 borderRadius={16}
-                backgroundColor={'rgba(23, 144, 255, 0.1)'}
+                backgroundColor={'#eaf4ff'}
                 justifyContent="center"
             >
                 <XView
@@ -286,18 +290,21 @@ const RoomInfoColumn = ({
     );
 };
 
+const FooterClassName = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    margin-top: auto;
+    height: 60px;
+    background-color: #f9f9f9;
+    flex-shrink: 0;
+`;
+
 const Footer = () => {
     return (
-        <XView
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="row"
-            width="100%"
-            bottom={0}
-            position="absolute"
-            height={60}
-            backgroundColor={'#f9f9f9'}
-        >
+        <div className={FooterClassName}>
             <XView marginTop={-10}>
                 <LogoWithName />
             </XView>
@@ -311,7 +318,7 @@ const Footer = () => {
             <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'} fontWeight="600">
                 Professional messenger of the future
             </XView>
-        </XView>
+        </div>
     );
 };
 
@@ -359,16 +366,17 @@ export const InviteLandingComponentLayout = ({
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
                 alignItems="center"
             >
-                {isMobile && !noLogin && (
-                    <XView
-                        fontSize={20}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.9)"
-                        marginLeft={20}
-                    >
-                        {`${whereToInvite} invitation`}
-                    </XView>
-                )}
+                {isMobile &&
+                    !noLogin && (
+                        <XView
+                            fontSize={20}
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.9)"
+                            marginLeft={20}
+                        >
+                            {`${whereToInvite} invitation`}
+                        </XView>
+                    )}
                 {!noLogin && (
                     <XView
                         zIndex={100}
@@ -456,32 +464,35 @@ export const InviteLandingComponent = ({
                     room.membership === 'KICKED' ||
                     room.membership === 'LEFT') &&
                 !inviteLink && <JoinButton roomId={room.id!} text="Join group" />}
-            {room && inviteLink && (
-                <JoinLinkButton
-                    invite={inviteLink}
-                    refetchVars={{ conversationId: room.id! }}
-                    text="Accept invite"
-                />
-            )}
-            {room && room.membership === 'REQUESTED' && (
-                <XButton
-                    style="ghost"
-                    size="large"
-                    text="Pending"
-                    alignSelf="center"
-                    flexShrink={0}
-                />
-            )}
-            {room && room.membership === 'MEMBER' && (
-                <XButton
-                    style="primary"
-                    size="large"
-                    text="Open room"
-                    alignSelf="center"
-                    flexShrink={0}
-                    path={'/mail/' + room.id}
-                />
-            )}
+            {room &&
+                inviteLink && (
+                    <JoinLinkButton
+                        invite={inviteLink}
+                        refetchVars={{ conversationId: room.id! }}
+                        text="Accept invite"
+                    />
+                )}
+            {room &&
+                room.membership === 'REQUESTED' && (
+                    <XButton
+                        style="ghost"
+                        size="large"
+                        text="Pending"
+                        alignSelf="center"
+                        flexShrink={0}
+                    />
+                )}
+            {room &&
+                room.membership === 'MEMBER' && (
+                    <XButton
+                        style="primary"
+                        size="large"
+                        text="Open room"
+                        alignSelf="center"
+                        flexShrink={0}
+                        path={'/mail/' + room.id}
+                    />
+                )}
             {organization && (
                 <XButton
                     text={'Accept invite'}
@@ -505,8 +516,8 @@ export const InviteLandingComponent = ({
             ? 'Channel'
             : 'Group'
         : organization && organization.isCommunity
-        ? 'Community'
-        : 'Organization';
+            ? 'Community'
+            : 'Organization';
 
     return (
         <>

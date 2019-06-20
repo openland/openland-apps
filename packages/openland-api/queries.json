@@ -171,8 +171,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "subscription SettingsWatch {\n  watchSettings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "80d8c8f699da234f8317869134c886433b9544813ad260a10ef68564ece3b52c"
+			"sourceWithFragments": "subscription SettingsWatch {\n  watchSettings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
+			"operationId": "f0a4dd6c5b935b12a9f5a3c48b6068a88deb6c0e515363eb3982172ed8ec1638"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
@@ -15589,8 +15589,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "query Settings {\n  settings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "743f0fc6444daddd2ba0b11d15b038a29aa4b412fc474e81b5f2fef3501fb8b7"
+			"sourceWithFragments": "query Settings {\n  settings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
+			"operationId": "73ec2b5fb03c40d974e377ddeb3894521d8b7681040e1fb3b3b9f721a20d83e2"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Settings.ts",
@@ -15641,8 +15641,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "mutation SettingsUpdate($input: UpdateSettingsInput) {\n  updateSettings(settings: $input) {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "a1e57f6051d8ad5afc488966db2683aa1016516727fbf7b07fdbdf12775e0e62"
+			"sourceWithFragments": "mutation SettingsUpdate($input: UpdateSettingsInput) {\n  updateSettings(settings: $input) {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
+			"operationId": "78e8fa3c801beb5334a134109125875ea622b78ba3f99b6438a0c94407727bd8"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Track.ts",
@@ -22913,7 +22913,7 @@
 			],
 			"fragmentName": "SettingsFull",
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/SettingsFragment.ts",
-			"source": "fragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
+			"source": "fragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -22953,6 +22953,13 @@
 					"responseName": "commentNotifications",
 					"fieldName": "commentNotifications",
 					"type": "NotificationComments!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "commentNotificationsDelivery",
+					"fieldName": "commentNotificationsDelivery",
+					"type": "CommentsNotificationDelivery!",
 					"isConditional": false,
 					"isDeprecated": false
 				},

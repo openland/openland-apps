@@ -100,10 +100,13 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
         if (this.input && this.input.inputRef) {
+            const isIos = window.navigator.userAgent.match(/iPhone|iPad|iPod/i);
             this.input.inputRef.inputRef.select();
-            setTimeout(() => {
-                document.execCommand('copy');
-            }, 100);
+            if (isIos) {
+                this.input.inputRef.inputRef.setSelectionRange(0, 99999);
+            }
+            document.execCommand('copy');
+            this.input.inputRef.inputRef.blur();
         }
         this.setState({
             copied: true,

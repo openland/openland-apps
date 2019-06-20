@@ -115,6 +115,7 @@ export interface SettingsWatch_watchSettings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -63484,6 +63485,7 @@ export interface Settings_settings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -63508,6 +63510,7 @@ export interface SettingsUpdate_updateSettings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
@@ -73719,6 +73722,7 @@ export interface SettingsFull {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   commentNotifications: NotificationComments;
+  commentNotificationsDelivery: CommentsNotificationDelivery;
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;

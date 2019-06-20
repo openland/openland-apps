@@ -111,7 +111,7 @@ const CopyButtonClassName = css`
         background-color: #1790ff;
         color: #fff;
 
-        &svg g path: last-child {
+        & svg g path:last-child {
             fill: #a3d2ff;
         }
     }
@@ -122,7 +122,7 @@ const CopyButtonHoverClassName = css`
     color: #fff;
     &:hover {
         background-color: #69d06d;
-        &svg g path: last-child {
+        & svg g path:last-child {
             fill: #fff;
         }
     }
@@ -151,14 +151,25 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
     private copy = (e: any) => {
         const { props } = this;
-        const objType = props.isRoom ? (props.isChannel ? 'channel' : 'group') : (props.isCommunity ? 'community' : 'organization');
+        const objType = props.isRoom
+            ? props.isChannel
+                ? 'channel'
+                : 'group'
+            : props.isCommunity
+                ? 'community'
+                : 'organization';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
         if (this.input && this.input.inputRef) {
+            const isIos = window.navigator.userAgent.match(/iPhone|iPad|iPod/i);
             this.input.inputRef.inputRef.select();
+            if (isIos) {
+                this.input.inputRef.inputRef.setSelectionRange(0, 99999);
+            }
+            document.execCommand('copy');
+            this.input.inputRef.inputRef.blur();
         }
-        document.execCommand('copy');
         this.setState({
             copied: true,
         });
@@ -469,7 +480,13 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 invitesUsersIds.push(v);
             });
         }
-        const objType = props.isRoom ? (props.isChannel ? 'channel' : 'group') : (props.isCommunity ? 'community' : 'organization');
+        const objType = props.isRoom
+            ? props.isChannel
+                ? 'channel'
+                : 'group'
+            : props.isCommunity
+                ? 'community'
+                : 'organization';
         return (
             <XModalForm
                 autoClose={1500}

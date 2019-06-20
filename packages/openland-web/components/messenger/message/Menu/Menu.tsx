@@ -145,13 +145,14 @@ export const Menu = React.memo(
                     />
 
                     <XMenuItem
+                        style="danger"
                         onClick={async () => {
                             await client.mutateDeleteNotification({
                                 notificationId: message.notificationId!!,
                             });
                         }}
                     >
-                        Remove this notification
+                        Clear
                     </XMenuItem>
                 </>
             );
