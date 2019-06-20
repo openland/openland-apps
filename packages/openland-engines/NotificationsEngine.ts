@@ -35,34 +35,49 @@ export class NotificationsEngine {
     };
 
     handleIncomingNotification = async (event: NewNotification) => {
-        const commentData = event.notification.content[0];
-        const comment = commentData.comment.comment;
-        const commentPeer = commentData.peer;
-        const commentId = comment.id;
-        const commentMessage = comment.message;
-        const commentSenderName = comment.sender.name;
-        const commentSenderPhoto = comment.sender.photo;
-        const commentChat = commentPeer.peerRoot.chat;
-        const privateRoom = commentChat.__typename === 'PrivateRoom';
-        const sharedRoom = commentChat.__typename === 'SharedRoom';
-        AppNotifications.playIncomingSound();
-        if (privateRoom) {
-            AppNotifications.displayNotification({
-                title: commentSenderName + ' commented',
-                body: commentMessage ? commentMessage : 'document',
-                path: '/notifications/comments',
-                image: commentSenderPhoto || '',
-                id: doSimpleHash(commentId).toString(),
-            });
-        }
-        if (sharedRoom) {
-            AppNotifications.displayNotification({
-                title: commentSenderName + ' commented in ' + (commentChat as any).title,
-                body: commentMessage ? commentMessage : 'document',
-                path: '/notifications/comments',
-                image: commentSenderPhoto || '',
-                id: doSimpleHash(commentId).toString(),
-            });
+        let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
+        if (settings.commentNotificationsDelivery === 'ALL') {
+            const commentData = event.notification.content[0];
+            const comment = commentData.comment.comment;
+            const commentPeer = commentData.peer;
+            const commentId = comment.id;
+            const commentMessage = comment.message;
+            const commentAttachment = comment.attachments.length && comment.attachments[0];
+            const commentAttachmentImage = commentAttachment
+                ? (commentAttachment as any).fileMetadata.isImage
+                : false;
+            const commentSenderName = comment.sender.name;
+            const commentSenderPhoto = comment.sender.photo;
+            const commentChat = commentPeer.peerRoot.chat;
+            const privateRoom = commentChat.__typename === 'PrivateRoom';
+            const sharedRoom = commentChat.__typename === 'SharedRoom';
+            AppNotifications.playIncomingSound();
+            if (privateRoom) {
+                AppNotifications.displayNotification({
+                    title: commentSenderName + ' commented',
+                    body: commentMessage
+                        ? commentMessage
+                        : commentAttachmentImage
+                            ? '<photo>'
+                            : '<document>',
+                    path: '/notifications/comments',
+                    image: commentSenderPhoto || '',
+                    id: doSimpleHash(commentId).toString(),
+                });
+            }
+            if (sharedRoom) {
+                AppNotifications.displayNotification({
+                    title: commentSenderName + ' commented in @' + (commentChat as any).title,
+                    body: commentMessage
+                        ? commentMessage
+                        : commentAttachmentImage
+                            ? '<photo>'
+                            : '<document>',
+                    path: '/notifications/comments',
+                    image: commentSenderPhoto || '',
+                    id: doSimpleHash(commentId).toString(),
+                });
+            }
         }
     };
 
