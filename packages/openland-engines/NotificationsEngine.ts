@@ -11,8 +11,7 @@ import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
-interface NewNotification
-    extends MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived {}
+type NewNotification = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived;
 type NewMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
 
 export class NotificationsEngine {

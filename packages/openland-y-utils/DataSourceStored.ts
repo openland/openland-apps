@@ -355,8 +355,8 @@ export class DataSourceStored<T extends DataSourceItem> {
     updateIndex = (index: string[]) => {
         this._index = index;
         // TODO: implement correct store limit: call index save in one place, limit from end
-        //if (this._limit && index.length > this._limit) {
+        // if (this._limit && index.length > this._limit) {
         //    this._storage.writeKeys(index.splice(0, index.length - this._limit).map(key => ({ key: key, value: null })));
-        //}
+        // }
     }
 }
