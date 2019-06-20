@@ -183,7 +183,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
         if (this.dataSource.hasItem(item.key)) {
             this.dataSource.updateItem(item);
-            console.warn("updated " + item.key);
+            // console.warn("updated " + item.key);
         }
     }
 
@@ -201,13 +201,13 @@ export class DataSourceStored<T extends DataSourceItem> {
             throw new Error('updateAllItems should not be used without limit!')
         }
         await this._queue.sync(async () => {
-            console.warn(this._index, await this.getItemUnsafe(this._index[0]));
+            // console.warn(this._index, await this.getItemUnsafe(this._index[0]));
             for (let key of this._index) {
                 let oldItem = await this.getItemUnsafe(key);
                 if (oldItem) {
                     let updated = updateFn(oldItem);
                     if (updated) {
-                        console.warn('updated', oldItem, updated)
+                        // console.warn('updated', oldItem, updated)
                         await this.updateItemUnsafe(updated);
                     }
                 }
