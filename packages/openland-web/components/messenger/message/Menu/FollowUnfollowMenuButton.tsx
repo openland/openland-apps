@@ -29,7 +29,7 @@ export const FollowUnfollowMenuButton = ({
                 }
             }}
         >
-            {isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread'}
+            {isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread'}
         </XMenuItem>
     );
 };

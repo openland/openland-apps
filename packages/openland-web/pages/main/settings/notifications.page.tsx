@@ -9,7 +9,7 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { NotificationMessages, Settings_settings } from 'openland-api/Types';
+import { Settings_settings } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
