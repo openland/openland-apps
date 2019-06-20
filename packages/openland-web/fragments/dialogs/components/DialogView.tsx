@@ -126,7 +126,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     <PhotoIcon className={active ? iconActiveClass : iconClass} />
                                 )}
                             </XViewSelectedContext.Consumer>
-                            Image
+                            Photo
                         </span>
                     );
                 } else {
