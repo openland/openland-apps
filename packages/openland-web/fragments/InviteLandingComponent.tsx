@@ -130,8 +130,6 @@ const Image = Glamorous.div({
     '@media (max-height: 800px)': {
         width: 846,
         marginLeft: -500,
-    },
-    '@media (max-height: 600px)': {
         background: 'none',
         backgroundImage: 'none',
     },
