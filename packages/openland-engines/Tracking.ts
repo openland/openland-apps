@@ -8,6 +8,8 @@ import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
 
 const TRACKING_STORAGE_VERSION = 3;
+const BATCH_SIZE = 100;
+
 const log = createLogger('Engine-Tracking');
 
 export interface TrackPlatform {
@@ -16,33 +18,28 @@ export interface TrackPlatform {
 }
 
 class TrackingEngine {
-    private queue = new ExecutionQueue();
     private client!: OpenlandClient;
+    private initPromise: Promise<void> | undefined;
     private deviceId!: string;
+    private pending: Event[] = [];
+    private isSending = false;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
     private storage: AppStorageQueued<Event>;
-    private events: Event[] = [];
 
     constructor() {
         this.storage = new AppStorageQueued('tracking-pending-' + TRACKING_STORAGE_VERSION);
-        this.queue.post(async () => {
-            let did = await AppStorage.readKey<string>('device-id');
-            if (!did) {
-                did = uuid();
-                await AppStorage.writeKey<string>('device-id', did);
-            }
-            this.deviceId = did;
-
-            log.log('DEVICE-ID: ' + did);
-        });
     }
 
-    setClient(client: OpenlandClient) {
+    async setClient(client: OpenlandClient) {
         if (!this.client) {
             this.client = client;
-            this.queue.post(async () => {
-                await this.flush(true);
-            });
+
+            const fromStorage = await this.storage.getItems();
+
+            log.log('Found in storage. Count: ' + fromStorage.length);
+
+            this.pending = [...fromStorage, ...this.pending];
+            this.processEvents();
         }
     }
 
@@ -57,42 +54,57 @@ class TrackingEngine {
         log.log('New event: ' + JSON.stringify(item));
 
         this.platform = platform;
-        this.events.push(item);
+        this.pending.push(item);
 
         await this.storage.addItem(item);
 
-        this.queue.post(async () => {
-            await this.flush();
-        });
+        this.processEvents();
     }
 
-    private async flush(useStorage?: boolean) {
-        if (!this.client) {
+    private async processEvents() {
+        if (!this.client || this.isSending || this.pending.length <= 0) {
             return;
         }
 
-        const pending = (useStorage ? await this.storage.getItems() : this.events).slice(0, 100);
+        this.isSending = true;
 
-        if (pending.length <= 0) {
-            return;
+        if (!this.initPromise) {
+            this.initPromise = (async () => {
+                let did = await AppStorage.readKey<string>('device-id');
+                if (!did) {
+                    did = uuid();
+                    await AppStorage.writeKey<string>('device-id', did);
+                }
+                this.deviceId = did;
+
+                log.log('DEVICE-ID: ' + did);
+            })();
         }
 
-        await backoff(async () => {
-            await this.client.mutatePersistEvents({
-                did: this.deviceId,
-                events: pending,
-                platform: this.platform.name,
-                isProd: this.platform.isProd
+        await this.initPromise;
+        
+        while (this.pending.length > 0) {
+            const batch = this.pending.slice(0, BATCH_SIZE);
+
+            await backoff(async () => {
+                await this.client.mutatePersistEvents({
+                    did: this.deviceId,
+                    events: batch,
+                    platform: this.platform.name,
+                    isProd: this.platform.isProd
+                });
+    
+                log.log('Send events. Count: ' + batch.length);
             });
 
-            log.log('Send events. Count: ' + pending.length);
-        });
+            const ids = batch.map(p => p.id);
+    
+            this.pending.splice(0, BATCH_SIZE);
 
-        const ids = pending.map(p => p.id);
+            await this.storage.removeItems(ids);
+        }
 
-        this.events = this.events.filter(p => !ids.includes(p.id));
-
-        await this.storage.removeItems(ids);
+        this.isSending = false;
     }
 }
 
