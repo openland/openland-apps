@@ -111,7 +111,7 @@ const CopyButtonClassName = css`
         background-color: #1790ff;
         color: #fff;
 
-        &svg g path: last-child {
+        & svg g path:last-child {
             fill: #a3d2ff;
         }
     }
@@ -122,7 +122,7 @@ const CopyButtonHoverClassName = css`
     color: #fff;
     &:hover {
         background-color: #69d06d;
-        &svg g path: last-child {
+        & svg g path:last-child {
             fill: #fff;
         }
     }
