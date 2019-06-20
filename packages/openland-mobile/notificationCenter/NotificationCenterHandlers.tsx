@@ -14,7 +14,7 @@ class NotificationCenterHandlersClass {
         const client = getClient();
         const builder = new ActionSheetBuilder();
 
-        builder.action(item.isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread', async () => {
+        builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
             startLoader();
 
             try {
@@ -30,9 +30,9 @@ class NotificationCenterHandlersClass {
             }
         });
 
-        builder.action('Remove this notification', async () => {
+        builder.action('Clear', async () => {
             await this.deleteNotifications([id]);
-        });
+        }, true);
 
         builder.show();
     }
