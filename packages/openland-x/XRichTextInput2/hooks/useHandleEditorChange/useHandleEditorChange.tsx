@@ -75,13 +75,17 @@ export const getEditorStateFromText = ({
                 text,
                 mentions.map(mention => {
                     if (mention.typename === 'UserWithOffset') {
-                        if (text.slice(mention.offset, mention.length) === '@All') {
+                        if (
+                            text.slice(mention.offset, mention.offset + mention.length) === '@All'
+                        ) {
                             return {
                                 ...mention,
                                 __typename: 'AllMention' as 'AllMention',
                                 name: 'All' as 'All',
                             };
-                        } else if (text.slice(mention.offset, mention.length) === '@all') {
+                        } else if (
+                            text.slice(mention.offset, mention.offset + mention.length) === '@all'
+                        ) {
                             return {
                                 ...mention,
                                 __typename: 'AllMention' as 'AllMention',

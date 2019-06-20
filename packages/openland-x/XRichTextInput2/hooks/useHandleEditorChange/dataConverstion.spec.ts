@@ -248,4 +248,53 @@ describe('Draft data conversion', () => {
             },
         });
     });
+
+    it('should convert @All mention to draft format with text before', () => {
+        const mentions = [
+            {
+                __typename: 'AllMention',
+                name: 'All',
+            },
+        ] as AllMentionType[];
+
+        const text = '1234 @All';
+
+        let parsedMentions = preprocessMentions(text, mentions, undefined);
+        const genKeyFunction = makeIncrementFunc();
+
+        const { blocks, entityMap } = getEmojiAndMentionBlocksAndEntityMap(
+            text,
+            mentions,
+            genKeyFunction,
+        );
+
+        const expectedParsedMentions = [
+            { text: '1234 ', type: 'text' },
+            { text: 'All', type: 'user', user: { __typename: 'AllMention', name: 'All' } },
+        ];
+
+        expect(parsedMentions).toEqual(expectedParsedMentions);
+
+        expect({
+            blocks,
+            entityMap,
+        }).toEqual({
+            blocks: [
+                {
+                    entityRanges: [{ key: 0, length: 4, offset: 5 }],
+                    text: '1234 @All',
+                    type: 'unstyled',
+                },
+            ],
+            entityMap: {
+                '0': {
+                    data: { __typename: 'AllMention', name: 'All' },
+                    mutability: 'IMMUTABLE',
+                    type: 'MENTION',
+                },
+            },
+        });
+    });
+
+    // TODO add test with entity and text
 });
