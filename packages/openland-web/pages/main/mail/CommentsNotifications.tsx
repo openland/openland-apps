@@ -15,10 +15,6 @@ import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngin
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
-import {
-    NotificationCenterState,
-    NotificationCenterStateHandler,
-} from 'openland-engines/NotificationCenterState';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 
@@ -55,38 +51,31 @@ interface CommentsNotificationsProps {
     engine: NotificationCenterEngine;
 }
 
-interface CommentsNotificationsState {
-    state: NotificationCenterState;
-}
-
 class CommentsNotificationsInner
-    extends React.PureComponent<CommentsNotificationsProps, CommentsNotificationsState>
-    implements NotificationCenterStateHandler {
-    private unmount: (() => void) | null = null;
+    extends React.PureComponent<CommentsNotificationsProps, { dataSourceGeneration: number }> {
+    private unmount?: () => void;
+    private unmount1?: () => void;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
 
     constructor(props: CommentsNotificationsProps) {
         super(props);
 
         this.dataSource = buildMessagesDataSource(this.props.engine.dataSource);
-        this.state = {
-            state: this.props.engine.getState(),
-        };
+        this.state = { dataSourceGeneration: 0 };
     }
 
     componentWillMount() {
-        this.unmount = this.props.engine.subscribe(this);
+        this.unmount = this.props.engine.subscribe();
+        this.unmount1 = this.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
     }
 
     componentWillUnmount() {
         if (this.unmount) {
             this.unmount();
-            this.unmount = null;
         }
-    }
-
-    onNotificationCenterUpdated(state: NotificationCenterState) {
-        this.setState({ state });
+        if (this.unmount1) {
+            this.unmount1();
+        }
     }
 
     private renderLoading = () => {
@@ -120,7 +109,6 @@ class CommentsNotificationsInner
 
     private renderMessage = (i: DataSourceWebMessageItem | DataSourceDateItem) => {
         const data = i as any;
-
         return (
             <MessageComponent
                 message={data}
@@ -140,9 +128,7 @@ class CommentsNotificationsInner
     };
 
     render() {
-        const { state } = this.state;
-
-        if (!state.loading && state.notifications.length <= 0) {
+        if (this.dataSource.getSize() === 0 && this.dataSource.isIited()) {
             return (
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />

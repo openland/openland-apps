@@ -141,6 +141,7 @@ export const Menu = React.memo(
                     <FollowUnfollowMenuButton
                         isSubscribedMessageComments={!!message.isSubscribedMessageComments}
                         messageId={message.peerRootId!!}
+                        onSuccess={() => setShowMenu(false)}
                     />
 
                     <XMenuItem

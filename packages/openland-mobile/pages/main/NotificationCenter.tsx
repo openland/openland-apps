@@ -7,7 +7,6 @@ import { NotificationCenterHeader } from 'openland-mobile/notificationCenter/Not
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { NotificationCenterStateHandler, NotificationCenterState } from 'openland-engines/NotificationCenterState';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/NotificationCenterEmpty';
@@ -21,47 +20,37 @@ interface NotificationCenterPageProps {
     engine: NotificationCenterEngine;
 }
 
-interface NotificationCenterPageState {
-    state: NotificationCenterState;
-}
-
-class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, NotificationCenterPageState> implements NotificationCenterStateHandler {
-    private unmount: (() => void) | null = null;
-
-    constructor(props: NotificationCenterPageProps) {
+class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, { dataSourceGeneration: number }> {
+    constructor(props: any) {
         super(props);
-
-        this.state = {
-            state: this.props.engine.getState()
-        }
+        this.state = { dataSourceGeneration: 0 };
     }
 
+    private unmount?: () => void;
+    private unmount1?: () => void;
+
     componentWillMount() {
-        this.unmount = this.props.engine.subscribe(this);
+        this.unmount = this.props.engine.subscribe();
+        this.unmount1 = this.props.engine.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
     }
 
     componentWillUnmount() {
         if (this.unmount) {
             this.unmount();
-            this.unmount = null;
+        }
+        if (this.unmount1) {
+            this.unmount1();
         }
     }
 
-    onNotificationCenterUpdated(state: NotificationCenterState) {
-        this.setState({ state });
-    }
-
     handleManagePress = () => {
-        const notifications = this.state.state.notifications;
-
-        NotificationCenterHandlers.handleManagePress(notifications);
+        NotificationCenterHandlers.handleManagePress(this.props.engine.dataSource.getItems());
     }
 
     render() {
         const { theme } = this.props;
-        const { state } = this.state;
 
-        const isEmpty = !state.loading && state.notifications.length <= 0;
+        const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isIited();
 
         if (isEmpty) {
             return (

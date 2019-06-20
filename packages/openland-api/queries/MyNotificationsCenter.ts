@@ -16,7 +16,6 @@ export const NotificationFragment = gql`
                     id
                     peerRoot {
                         ... on CommentPeerRootMessage {
-                       
                             message {
                                 ... on GeneralMessage {
                                     id
@@ -88,6 +87,27 @@ export const NotificationCenterUpdateFragment = gql`
             center {
                 id
                 unread
+            }
+        }
+        ... on NotificationContentUpdated {
+            content {
+                ... on UpdatedNotificationContentComment {
+                    peer {
+                        peerRoot {
+                            ... on CommentPeerRootMessage {
+                                message {
+                                    ... on GeneralMessage {
+                                        id
+                                    }
+                                }
+                            }
+                        }
+                        id
+                        subscription {
+                            type
+                        }
+                    }
+                }
             }
         }
     }

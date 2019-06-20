@@ -2,42 +2,6 @@ import gql from 'graphql-tag';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { FullMessage } from 'openland-api/fragments/Message';
 
-export const CommentGlobalUpdateFragment = gql`
-    fragment CommentGlobalUpdateFragment on CommentGlobalUpdate {
-        ... on CommentPeerUpdated {
-            seq
-            peer {
-                id
-                subscription {
-                    type
-                }
-            }
-        }
-    }
-`;
-
-export const CommentUpdatesGlobalSubscription = gql`
-    subscription CommentUpdatesGlobal($state: String) {
-        event: commentUpdatesGlobal(fromState: $state) {
-            ... on CommentGlobalUpdateSingle {
-                seq
-                state
-                update {
-                    ...CommentGlobalUpdateFragment
-                }
-            }
-            ... on CommentGlobalUpdateBatch {
-                fromSeq
-                seq
-                state
-                updates {
-                    ...CommentGlobalUpdateFragment
-                }
-            }
-        }
-    }
-`;
-
 export const DeleteCommentMutation = gql`
     mutation DeleteComment($id: ID!) {
         deleteComment(id: $id)

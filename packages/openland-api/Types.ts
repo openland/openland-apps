@@ -49517,73 +49517,6 @@ export interface MessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: CommentUpdatesGlobal
-// ====================================================
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_subscription {
-  __typename: "CommentSubscription";
-  type: CommentSubscriptionType | null;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer {
-  __typename: "CommentsPeer";
-  id: string;
-  subscription: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer_subscription | null;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update {
-  __typename: "CommentPeerUpdated";
-  seq: number;
-  peer: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update_peer;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateSingle {
-  __typename: "CommentGlobalUpdateSingle";
-  seq: number;
-  state: string;
-  update: CommentUpdatesGlobal_event_CommentGlobalUpdateSingle_update;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_subscription {
-  __typename: "CommentSubscription";
-  type: CommentSubscriptionType | null;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer {
-  __typename: "CommentsPeer";
-  id: string;
-  subscription: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer_subscription | null;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates {
-  __typename: "CommentPeerUpdated";
-  seq: number;
-  peer: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates_peer;
-}
-
-export interface CommentUpdatesGlobal_event_CommentGlobalUpdateBatch {
-  __typename: "CommentGlobalUpdateBatch";
-  fromSeq: number;
-  seq: number;
-  state: string;
-  updates: CommentUpdatesGlobal_event_CommentGlobalUpdateBatch_updates[];
-}
-
-export type CommentUpdatesGlobal_event = CommentUpdatesGlobal_event_CommentGlobalUpdateSingle | CommentUpdatesGlobal_event_CommentGlobalUpdateBatch;
-
-export interface CommentUpdatesGlobal {
-  event: CommentUpdatesGlobal_event | null;
-}
-
-export interface CommentUpdatesGlobalVariables {
-  state?: string | null;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: DeleteComment
 // ====================================================
 
@@ -54080,10 +54013,6 @@ export interface MyNotificationsVariables {
 // GraphQL subscription operation: MyNotificationsCenter
 // ====================================================
 
-export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated {
-  __typename: "NotificationContentUpdated";
-}
-
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived_center {
   __typename: "NotificationCenter";
   id: string;
@@ -55638,17 +55567,48 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   center: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead_center;
 }
 
-export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead;
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_subscription {
+  __typename: "CommentSubscription";
+  type: CommentSubscriptionType | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer {
+  __typename: "CommentsPeer";
+  peerRoot: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot;
+  id: string;
+  subscription: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_subscription | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content {
+  __typename: "UpdatedNotificationContentComment";
+  peer: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
+  content: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle {
   __typename: "NotificationCenterUpdateSingle";
   seq: number;
   state: string;
   update: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update;
-}
-
-export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated {
-  __typename: "NotificationContentUpdated";
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived_center {
@@ -57205,7 +57165,42 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   center: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead_center;
 }
 
-export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead;
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_subscription {
+  __typename: "CommentSubscription";
+  type: CommentSubscriptionType | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer {
+  __typename: "CommentsPeer";
+  peerRoot: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot;
+  id: string;
+  subscription: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_subscription | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content {
+  __typename: "UpdatedNotificationContentComment";
+  peer: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
+  content: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationReceived | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationUpdated | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationDeleted | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch {
   __typename: "NotificationCenterUpdateBatch";
@@ -79476,31 +79471,6 @@ export type DialogUpdateFragment = DialogUpdateFragment_DialogMentionedChanged |
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: CommentGlobalUpdateFragment
-// ====================================================
-
-export interface CommentGlobalUpdateFragment_peer_subscription {
-  __typename: "CommentSubscription";
-  type: CommentSubscriptionType | null;
-}
-
-export interface CommentGlobalUpdateFragment_peer {
-  __typename: "CommentsPeer";
-  id: string;
-  subscription: CommentGlobalUpdateFragment_peer_subscription | null;
-}
-
-export interface CommentGlobalUpdateFragment {
-  __typename: "CommentPeerUpdated";
-  seq: number;
-  peer: CommentGlobalUpdateFragment_peer;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL fragment: NotificationFragment
 // ====================================================
 
@@ -80262,10 +80232,6 @@ export interface NotificationFragment {
 // ====================================================
 // GraphQL fragment: NotificationCenterUpdateFragment
 // ====================================================
-
-export interface NotificationCenterUpdateFragment_NotificationContentUpdated {
-  __typename: "NotificationContentUpdated";
-}
 
 export interface NotificationCenterUpdateFragment_NotificationReceived_center {
   __typename: "NotificationCenter";
@@ -81821,7 +81787,42 @@ export interface NotificationCenterUpdateFragment_NotificationRead {
   center: NotificationCenterUpdateFragment_NotificationRead_center;
 }
 
-export type NotificationCenterUpdateFragment = NotificationCenterUpdateFragment_NotificationContentUpdated | NotificationCenterUpdateFragment_NotificationReceived | NotificationCenterUpdateFragment_NotificationUpdated | NotificationCenterUpdateFragment_NotificationDeleted | NotificationCenterUpdateFragment_NotificationRead;
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot {
+  __typename: "CommentPeerRootMessage";
+  message: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_subscription {
+  __typename: "CommentSubscription";
+  type: CommentSubscriptionType | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer {
+  __typename: "CommentsPeer";
+  peerRoot: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot;
+  id: string;
+  subscription: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_subscription | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content {
+  __typename: "UpdatedNotificationContentComment";
+  peer: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated {
+  __typename: "NotificationContentUpdated";
+  content: NotificationCenterUpdateFragment_NotificationContentUpdated_content;
+}
+
+export type NotificationCenterUpdateFragment = NotificationCenterUpdateFragment_NotificationReceived | NotificationCenterUpdateFragment_NotificationUpdated | NotificationCenterUpdateFragment_NotificationDeleted | NotificationCenterUpdateFragment_NotificationRead | NotificationCenterUpdateFragment_NotificationContentUpdated;
 
 /* tslint:disable */
 /* eslint-disable */

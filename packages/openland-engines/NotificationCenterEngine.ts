@@ -7,7 +7,6 @@ import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/Dat
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
-import { NotificationCenterState, NotificationCenterStateHandler } from './NotificationCenterState';
 import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } from 'openland-api';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
@@ -32,7 +31,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const peer = firstContent.peer;
 
         let replyQuoteText = peer.peerRoot.message.message || peer.peerRoot.message.fallback;
-        
+
         return {
             ...convertMessage({
                 ...comment.comment,
@@ -60,19 +59,16 @@ export class NotificationCenterEngine {
     readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItem>;
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
     private lastNotificationRead: string | null = null;
-    private notifications: NotificationsDataSourceItem[] = [];
-    private state: NotificationCenterState;
-    private listeners: NotificationCenterStateHandler[] = [];
     private isVisible: boolean = true;
-    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null; 
+    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
     private maxSeq = 0;
     private lastReportedSeq = 0;
+    private listenersCount = 0;
 
     constructor(options: NotificationCenterEngineOptions) {
         this.engine = options.engine;
         this.client = this.engine.client;
         this.isMocked = !!options.engine.options.mocked;
-        this.state = new NotificationCenterState(true, []);
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
@@ -87,7 +83,6 @@ export class NotificationCenterEngine {
                 } else {
                     const notificationsQuery = await this.engine.client.queryMyNotifications(
                         { first: 20, before: cursor },
-                        { fetchPolicy: 'network-only' }
                     );
                     const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
 
@@ -102,9 +97,6 @@ export class NotificationCenterEngine {
                         }
                     }
 
-                    this.notifications = [...items, ...this.notifications];
-                    this.state = new NotificationCenterState(false, this.notifications);
-
                     this.onNotificationsUpdated();
 
                     return {
@@ -116,24 +108,21 @@ export class NotificationCenterEngine {
             },
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
-                
+
                 this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
                     await this.handleStateProcessed(st);
                 });
-
-                this.notifications = items;
-
-                this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
             },
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications2',
+            'notifications3',
             options.engine.options.store,
             20,
             provider,
+            100
         );
 
         this.dataSource = this._dataSourceStored.dataSource;
@@ -146,32 +135,16 @@ export class NotificationCenterEngine {
         await this._dataSourceStored.updateState(state);
     }
 
-    getState = () => {
-        return this.state;
-    }
-
-    subscribe = (listener: NotificationCenterStateHandler) => {
-        this.listeners.push(listener);
-
+    subscribe = () => {
+        ++this.listenersCount;
         this.markReadIfNeeded();
-        listener.onNotificationCenterUpdated(this.state);
-
         return () => {
-            let index = this.listeners.indexOf(listener);
-            if (index < 0) {
-                log.warn('Double unsubscribe detected!');
-            } else {
-                this.listeners.splice(index, 1);
-            }
+            --this.listenersCount;
         };
     }
 
     private onNotificationsUpdated = () => {
         this.markReadIfNeeded();
-
-        for (let l of this.listeners) {
-            l.onNotificationCenterUpdated(this.state);
-        }
     }
 
     private handleVisibleChanged = (isVisible: boolean) => {
@@ -186,8 +159,8 @@ export class NotificationCenterEngine {
     }
 
     private markReadIfNeeded = () => {
-        if (this.isVisible && this.notifications.length > 0 && this.listeners.length > 0) {
-            const id = this.notifications[0].key;
+        if (this.isVisible && this.dataSource.getSize() > 0 && this.listenersCount > 0) {
+            const id = this.dataSource.getAt(0).key;
 
             if (id !== this.lastNotificationRead) {
                 this.lastNotificationRead = id;
@@ -217,14 +190,11 @@ export class NotificationCenterEngine {
     private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);
 
-         if (event.__typename === 'NotificationReceived') {
+        if (event.__typename === 'NotificationReceived') {
             const convertedNotification = convertNotification(event.notification);
 
             if (convertedNotification) {
                 await this._dataSourceStored.addItem(convertedNotification, 0);
-
-                this.notifications = [convertedNotification, ...this.notifications];
-                this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
             }
@@ -234,9 +204,6 @@ export class NotificationCenterEngine {
             if (await this._dataSourceStored.hasItem(id)) {
                 await this._dataSourceStored.removeItem(id);
 
-                this.notifications = this.notifications.filter(n => n.key !== id);
-                this.state = new NotificationCenterState(false, this.notifications);
-
                 this.onNotificationsUpdated();
             }
         } else if (event.__typename === 'NotificationUpdated') {
@@ -245,17 +212,18 @@ export class NotificationCenterEngine {
 
             if (convertedNotification && await this._dataSourceStored.hasItem(id)) {
                 await this._dataSourceStored.updateItem(convertedNotification);
-
-                this.notifications.map((n, i) => {
-                    if (n.key === id) {
-                        this.notifications[i] = convertedNotification;
-                    }
-                })
-
-                this.state = new NotificationCenterState(false, this.notifications);
-
                 this.onNotificationsUpdated();
             }
+        } else if (event.__typename === 'NotificationContentUpdated') {
+            const peerRootId = event.content.peer.peerRoot.message.id;
+            const subscription = !!event.content.peer.subscription;
+            await this._dataSourceStored.updateAllItems(oldItem => {
+                if (oldItem.peerRootId === peerRootId) {
+                    oldItem.isSubscribedMessageComments = subscription
+                    return oldItem;
+                }
+                return undefined;
+            });
         } else if (event.__typename === 'NotificationRead') {
             // Ignore.
         } else {

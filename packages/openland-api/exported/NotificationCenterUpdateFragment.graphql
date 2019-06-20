@@ -40,4 +40,30 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
       unread
     }
   }
+  ... on NotificationContentUpdated {
+    content {
+      __typename
+      ... on UpdatedNotificationContentComment {
+        peer {
+          __typename
+          id
+          peerRoot {
+            __typename
+            ... on CommentPeerRootMessage {
+              message {
+                __typename
+                ... on GeneralMessage {
+                  id
+                }
+              }
+            }
+          }
+          subscription {
+            __typename
+            type
+          }
+        }
+      }
+    }
+  }
 }
