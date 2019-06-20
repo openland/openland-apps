@@ -42,25 +42,20 @@ export class NotificationsEngine {
             const comment = commentData.comment.comment;
             const commentPeer = commentData.peer;
             const commentId = comment.id;
-            const commentMessage = comment.message;
-            const commentAttachment = comment.attachments.length && comment.attachments[0];
-            const commentAttachmentImage = commentAttachment
-                ? (commentAttachment as any).fileMetadata.isImage
-                : false;
+            const commentMessage = comment.message || comment.fallback;
             const commentSenderName = comment.sender.name;
             const commentSenderPhoto = comment.sender.photo;
-            const commentChat = commentPeer.peerRoot.chat;
-            const privateRoom = commentChat.__typename === 'PrivateRoom';
-            const sharedRoom = commentChat.__typename === 'SharedRoom';
+
+            const room = commentPeer.peerRoot.chat;
+            const privateRoom = room.__typename === 'PrivateRoom' ? (room as RoomTiny_room_PrivateRoom) : null;
+            const sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
+
             AppNotifications.playIncomingSound();
+
             if (privateRoom) {
                 AppNotifications.displayNotification({
                     title: commentSenderName + ' commented',
-                    body: commentMessage
-                        ? commentMessage
-                        : commentAttachmentImage
-                            ? '<photo>'
-                            : '<document>',
+                    body: commentMessage,
                     path: '/notifications/comments',
                     image: commentSenderPhoto || '',
                     id: doSimpleHash(commentId).toString(),
@@ -68,12 +63,8 @@ export class NotificationsEngine {
             }
             if (sharedRoom) {
                 AppNotifications.displayNotification({
-                    title: commentSenderName + ' commented in @' + (commentChat as any).title,
-                    body: commentMessage
-                        ? commentMessage
-                        : commentAttachmentImage
-                            ? '<photo>'
-                            : '<document>',
+                    title: commentSenderName + ' commented in @' + sharedRoom.title,
+                    body: commentMessage,
                     path: '/notifications/comments',
                     image: commentSenderPhoto || '',
                     id: doSimpleHash(commentId).toString(),
@@ -103,18 +94,12 @@ export class NotificationsEngine {
         if (!(sharedRoom || privateRoom)!.settings.mute || (event && (event as any).isMentioned)) {
             AppNotifications.playIncomingSound();
             let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
-            const messageAttachment = (msg as any).attachments && (msg as any).attachments[0];
-            const messageAttachmentImage = messageAttachment
-                ? (messageAttachment as any).fileMetadata.isImage
-                : false;
+            let message = msg.message || msg.fallback;
+
             if (sharedRoom) {
                 AppNotifications.displayNotification({
-                    title: msg.sender.name + ' @' + (room as any).title,
-                    body: msg.message
-                        ? msg.message
-                        : messageAttachmentImage
-                            ? '<photo>'
-                            : '<document>',
+                    title: msg.sender.name + ' @' + sharedRoom.title,
+                    body: message,
                     path: '/mail/' + cid,
                     image: msg.sender.photo || '',
                     id: doSimpleHash(cid).toString(),
@@ -122,11 +107,7 @@ export class NotificationsEngine {
             } else if (privateRoom) {
                 AppNotifications.displayNotification({
                     title: msg.sender.name,
-                    body: msg.message
-                        ? msg.message
-                        : messageAttachmentImage
-                            ? '<photo>'
-                            : '<document>',
+                    body: message,
                     path: '/mail/' + conversationId,
                     image: msg.sender.photo || '',
                     id: doSimpleHash(cid).toString(),
