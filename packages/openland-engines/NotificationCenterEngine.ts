@@ -121,7 +121,7 @@ export class NotificationCenterEngine {
                     await this.handleStateProcessed(st);
                 });
 
-                this.notifications = [...items];
+                this.notifications = items;
                 this.state = new NotificationCenterState(false, this.notifications);
 
                 this.onNotificationsUpdated();
