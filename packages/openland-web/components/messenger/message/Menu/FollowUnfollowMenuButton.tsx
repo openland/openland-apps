@@ -37,7 +37,7 @@ export const FollowUnfollowMenuButton = ({
     return (
         <XMutation mutation={followResolver as MutationFunc} onSuccess={onSuccess}>
             <PinButtonStyle
-                text={isSubscribedMessageComments ? 'Unfollow this thread' : 'Follow this thread'}
+                text={isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread'}
             />
         </XMutation>
 
