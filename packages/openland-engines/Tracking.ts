@@ -99,7 +99,7 @@ class TrackingEngine {
 
             const ids = batch.map(p => p.id);
     
-            this.pending.splice(0, BATCH_SIZE);
+            this.pending.splice(0, batch.length);
 
             await this.storage.removeItems(ids);
         }
