@@ -255,7 +255,7 @@ const RoomInfoColumn = ({
                 paddingRight={12}
                 height={23}
                 borderRadius={16}
-                backgroundColor={'rgba(23, 144, 255, 0.1)'}
+                backgroundColor={'#eaf4ff'}
                 justifyContent="center"
             >
                 <XView
