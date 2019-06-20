@@ -45,20 +45,6 @@ export class AppStorageQueued<T extends AppStorageQueuedItem> {
         });
     }
 
-    async getItemsBatch(batchSize: number) {
-        return new Promise<T[]>((resolve, reject) => {
-            this.queue.post(async () => {
-                try {
-                    const res: T[] = await AppStorage.readKey<T[]>(this.storageKey) || [];
-
-                    resolve(res.slice(0, batchSize));
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-    }
-
     async removeItems(keys: string[]) {
         return new Promise<null>((resolve, reject) => {
             this.queue.post(async () => {

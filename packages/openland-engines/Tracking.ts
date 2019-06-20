@@ -21,6 +21,7 @@ class TrackingEngine {
     private deviceId!: string;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
     private storage: AppStorageQueued<Event>;
+    private events: Event[] = [];
 
     constructor() {
         this.storage = new AppStorageQueued('tracking-pending-' + TRACKING_STORAGE_VERSION);
@@ -40,7 +41,7 @@ class TrackingEngine {
         if (!this.client) {
             this.client = client;
             this.queue.post(async () => {
-                await this.flush();
+                await this.flush(true);
             });
         }
     }
@@ -56,6 +57,7 @@ class TrackingEngine {
         log.log('New event: ' + JSON.stringify(item));
 
         this.platform = platform;
+        this.events.push(item);
 
         await this.storage.addItem(item);
 
@@ -64,12 +66,12 @@ class TrackingEngine {
         });
     }
 
-    private async flush() {
+    private async flush(useStorage?: boolean) {
         if (!this.client) {
             return;
         }
 
-        const pending = await this.storage.getItemsBatch(100);
+        const pending = useStorage ? await this.storage.getItems() : this.events;
 
         if (pending.length <= 0) {
             return;
@@ -86,7 +88,11 @@ class TrackingEngine {
             log.log('Send events. Count: ' + pending.length);
         });
 
-        await this.storage.removeItems(pending.map(p => p.id));
+        const ids = pending.map(p => p.id);
+
+        this.events = this.events.filter(p => !ids.includes(p.id));
+
+        await this.storage.removeItems(ids);
     }
 }
 
