@@ -47,8 +47,9 @@ export class DataSourceStored<T extends DataSourceItem> {
     private _storage: KeyValueStore;
     private _loaded: number = 0;
     private _loadCompleted = false;
+    private _limit?: number;
 
-    constructor(name: string, storage: KeyValueStore, pageSize: number, provider: DataSourceStoredProvider<T>) {
+    constructor(name: string, storage: KeyValueStore, pageSize: number, provider: DataSourceStoredProvider<T>, limit?: number) {
         this._queue = new ExecutionQueue();
         this._provider = provider;
         this.name = name;
@@ -56,6 +57,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         this.dataSource = new DataSource<T>(() => { this.needMore(); });
         storage = new KeyValueStoreVersioned(storage)
         this._storage = storage;
+        this._limit = limit;
         this._queue.post(async () => {
             let start = currentTimeMillis();
             let ind = await storage.readKeys(['ds.' + name + '.version', 'ds.' + name + '.state', 'ds.' + name + '.index'])
@@ -93,13 +95,13 @@ export class DataSourceStored<T extends DataSourceItem> {
                 await storage.writeKey('ds.' + name + '.version', this._wireVersion.toString());
 
                 // Save local index
-                this._index = data.items.map((v) => v.key);
+                this.updateIndex(data.items.map((v) => v.key));
                 this._loadCompleted = true;
             } else {
                 log.log(this.name + '| Loading initial data from storage');
 
                 // Read index
-                this._index = JSON.parse(index) as string[];
+                this.updateIndex(JSON.parse(index) as string[]);
 
                 // Read page
                 let toLoad = this._index;
@@ -153,7 +155,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
     removeItem = async (key: string) => {
         await this._queue.sync(async () => {
-            this._index = this._index.filter((v) => v !== key);
+            this.updateIndex(this._index.filter((v) => v !== key));
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
             await this._storage.writeKey('ds.' + this.name + '.item.' + key, null);
             if (this.dataSource.hasItem(key)) {
@@ -162,22 +164,53 @@ export class DataSourceStored<T extends DataSourceItem> {
         });
     }
 
+    private getItemUnsafe = async (id: string) => {
+        let v = await this._storage.readKey('ds.' + this.name + '.item.' + id);
+        if (v) {
+            return JSON.parse(v) as T;
+        } else {
+            return null;
+        }
+    }
+
     getItem = async (id: string) => {
         return await this._queue.sync(async () => {
-            let v = await this._storage.readKey('ds.' + this.name + '.item.' + id);
-            if (v) {
-                return JSON.parse(v) as T;
-            } else {
-                return null;
-            }
+            return await this.getItemUnsafe(id);
         });
+    }
+
+    private updateItemUnsafe = async (item: T) => {
+        await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
+        if (this.dataSource.hasItem(item.key)) {
+            this.dataSource.updateItem(item);
+            console.warn("updated " + item.key);
+        }
     }
 
     updateItem = async (item: T) => {
         await this._queue.sync(async () => {
-            await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
-            if (this.dataSource.hasItem(item.key)) {
-                this.dataSource.updateItem(item);
+            await this.updateItemUnsafe(item);
+        });
+    }
+
+    /**
+     * Do not use without limit!
+     */
+    updateAllItems = async (updateFn: (item: T) => T | undefined) => {
+        if (!this._limit) {
+            throw new Error('updateAllItems should not be used without limit!')
+        }
+        await this._queue.sync(async () => {
+            console.warn(this._index, await this.getItemUnsafe(this._index[0]));
+            for (let key of this._index) {
+                let oldItem = await this.getItemUnsafe(key);
+                if (oldItem) {
+                    let updated = updateFn(oldItem);
+                    if (updated) {
+                        console.warn('updated', oldItem, updated)
+                        await this.updateItemUnsafe(updated);
+                    }
+                }
             }
         });
     }
@@ -199,7 +232,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                 let ex = res[i];
                 res.splice(i, 1);
                 res.splice(index, 0, ex);
-                this._index = res;
+                this.updateIndex(res);
                 await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
 
                 if (this._loadCompleted) {
@@ -237,7 +270,7 @@ export class DataSourceStored<T extends DataSourceItem> {
             }
             let r = [...this._index];
             r.splice(index, 0, item.key);
-            this._index = r;
+            this.updateIndex(r);
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
             if (this._loadCompleted) {
                 this.dataSource.addItem(item, index);
@@ -301,7 +334,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                 }
                 index.push(d.key);
             }
-            this._index = index;
+            this.updateIndex(index);
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
 
             // Write cursor and datasource
@@ -317,5 +350,12 @@ export class DataSourceStored<T extends DataSourceItem> {
 
             this._loadingMore = false;
         });
+    }
+
+    updateIndex = (index: string[]) => {
+        this._index = index;
+        if (this._limit && index.length > this._limit) {
+            this._storage.writeKeys(index.splice(0, index.length - this._limit).map(key => ({ key: key, value: null })));
+        }
     }
 }

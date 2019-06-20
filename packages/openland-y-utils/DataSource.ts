@@ -70,6 +70,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     getItem(key: string) {
         return this.dataByKey.get(key);
     }
+    getItems() {
+        return [...this.dataByKey.values()];
+    }
     getSize() {
         return this.data.length;
     }
@@ -90,6 +93,10 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             w.onDataSourceInited(data, completed);
         }
         this.inited = true;
+    }
+
+    isIited = () => {
+        return this.isIited;
     }
 
     getAt(index: number) {
@@ -240,6 +247,32 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 this.watchers.splice(index, 1);
             }
         };
+    }
+
+    dumbWatch(callback: () => void): WatchSubscription {
+        return this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                callback();
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                callback();
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                callback();
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                callback();
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                callback();
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                callback();
+            },
+            onDataSourceCompleted() {
+                callback();
+            },
+        });
     }
 
     destroy() {

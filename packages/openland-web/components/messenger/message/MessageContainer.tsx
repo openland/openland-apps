@@ -239,59 +239,59 @@ export const DesktopMessageContainer = ({
             {compact ? (
                 children
             ) : (
-                <>
-                    {!compact && (
-                        <>
-                            <NotCompactHeader
-                                room={room as any}
-                                sender={sender}
-                                date={date}
-                                deleted={deleted}
-                                isComment={!!isComment}
-                                isCommentNotification={!!isCommentNotification}
-                                userPopperRef={userPopperRef}
-                                senderNameEmojify={senderNameEmojify}
-                                selecting={selecting}
-                                isEditView={isEditView}
-                                isEdited={isEdited}
-                                isModal={isModal}
-                            />
-                            <ReplyQuote text={replyQuoteText} />
-                        </>
-                    )}
-
-                    {isModal && (
-                        <XView
-                            marginBottom={8}
-                            flexDirection="row"
-                            alignItems="center"
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            fontSize={12}
-                        >
-                            <XDate value={date.toString()} format="datetime_short" />
-                            {isPinned && (
-                                <XView
-                                    width={3}
-                                    height={3}
-                                    opacity={0.3}
-                                    backgroundColor="#000"
-                                    borderRadius="100%"
-                                    flexShrink={0}
-                                    marginHorizontal={5}
+                    <>
+                        {!compact && (
+                            <>
+                                <NotCompactHeader
+                                    room={room as any}
+                                    sender={sender}
+                                    date={date}
+                                    deleted={deleted}
+                                    isComment={!!isComment}
+                                    isCommentNotification={!!isCommentNotification}
+                                    userPopperRef={userPopperRef}
+                                    senderNameEmojify={senderNameEmojify}
+                                    selecting={selecting}
+                                    isEditView={isEditView}
+                                    isEdited={isEdited}
+                                    isModal={isModal}
                                 />
-                            )}
-                            {isPinned && <XView>Pinned</XView>}
-                        </XView>
-                    )}
-                    {isModal && (
-                        <XView flexDirection="column" marginLeft={-55}>
-                            {children}
-                        </XView>
-                    )}
-                    {!isModal && <XView flexDirection="column">{children}</XView>}
-                </>
-            )}
+                                <ReplyQuote text={replyQuoteText} />
+                            </>
+                        )}
+
+                        {isModal && (
+                            <XView
+                                marginBottom={8}
+                                flexDirection="row"
+                                alignItems="center"
+                                color="rgba(0, 0, 0, 0.4)"
+                                fontWeight="600"
+                                fontSize={12}
+                            >
+                                <XDate value={date.toString()} format="datetime_short" />
+                                {isPinned && (
+                                    <XView
+                                        width={3}
+                                        height={3}
+                                        opacity={0.3}
+                                        backgroundColor="#000"
+                                        borderRadius="100%"
+                                        flexShrink={0}
+                                        marginHorizontal={5}
+                                    />
+                                )}
+                                {isPinned && <XView>Pinned</XView>}
+                            </XView>
+                        )}
+                        {isModal && (
+                            <XView flexDirection="column" marginLeft={-55}>
+                                {children}
+                            </XView>
+                        )}
+                        {!isModal && <XView flexDirection="column">{children}</XView>}
+                    </>
+                )}
         </XView>
     );
 
@@ -304,10 +304,10 @@ export const DesktopMessageContainer = ({
                 isCommentNotification
                     ? undefined
                     : !compact
-                    ? isComment
-                        ? undefined
-                        : 24
-                    : undefined
+                        ? isComment
+                            ? undefined
+                            : 24
+                        : undefined
             }
             alignSelf="flex-start"
         >
