@@ -1,10 +1,11 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
 import { EventPlatform } from 'openland-api/Types';
+import { isMobile } from 'openland-web/hooks/useIsMobile';
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
     const platform: TrackPlatform = {
-        name: EventPlatform.WEB,
+        name: isMobile() ? EventPlatform.MobileWeb : EventPlatform.WEB,
         isProd: location.hostname === 'openland.com'
     };
 
