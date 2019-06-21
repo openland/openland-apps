@@ -21,6 +21,27 @@ type NotificationCenterEngineOptions = {
 
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
+const convertCommentNotification = (id: string, peer: Types.NotificationFragment_content_peer, comment: Types.NotificationFragment_content_comment): NotificationsDataSourceItem => {
+    const replyQuoteText = peer.peerRoot.message.message || peer.peerRoot.message.fallback;
+
+    return {
+        ...convertMessage({
+            ...comment.comment,
+        }),
+
+        peerRootId: peer.peerRoot.message.id,
+        room: peer.peerRoot.chat,
+        isSubscribedMessageComments: !!peer.subscription!!,
+        notificationId: id,
+        replyQuoteText,
+        notificationType: 'new_comment',
+
+        // rewrite results from convertMessage
+        key: id,
+        isOut: false
+    }
+}
+
 export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
     const content = notification.content;
 
@@ -30,24 +51,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const comment = firstContent.comment;
         const peer = firstContent.peer;
 
-        let replyQuoteText = peer.peerRoot.message.message || peer.peerRoot.message.fallback;
-
-        return {
-            ...convertMessage({
-                ...comment.comment,
-            }),
-
-            peerRootId: peer.peerRoot.message.id,
-            room: peer.peerRoot.chat,
-            isSubscribedMessageComments: !!peer.subscription!!,
-            notificationId: notification.id,
-            replyQuoteText,
-            notificationType: 'new_comment',
-
-            // rewrite results from convertMessage
-            key: notification.id,
-            isOut: false
-        }
+        return convertCommentNotification(notification.id, peer, comment);
     } else {
         return notificationUnsupported(notification.id);
     }
@@ -217,16 +221,26 @@ export class NotificationCenterEngine {
                 this.onNotificationsUpdated();
             }
         } else if (event.__typename === 'NotificationContentUpdated') {
-            const peerRootId = event.content.peer.peerRoot.message.id;
-            const subscription = !!event.content.peer.subscription;
+            if (event.content.__typename === 'UpdatedNotificationContentComment') {
+                const peer = event.content.peer;
+                const peerMessage = peer.peerRoot.message;
+                const peerRootId = peerMessage.id;
+                const comment = event.content.comment;
+                const subscription = !!event.content.peer.subscription;
 
-            await this._dataSourceStored.updateAllItems(oldItem => {
-                if (oldItem.peerRootId === peerRootId) {
-                    oldItem.isSubscribedMessageComments = subscription
-                    return oldItem;
-                }
-                return undefined;
-            });
+                await this._dataSourceStored.updateAllItems(oldItem => {
+                    if (comment && (oldItem.id === comment.comment.id)) {
+                        return convertCommentNotification(oldItem.key, peer, comment);
+                    }
+                    if (oldItem.peerRootId === peerRootId) {
+                        oldItem.replyQuoteText = peerMessage.message || peerMessage.fallback;
+                        oldItem.isSubscribedMessageComments = subscription;
+    
+                        return oldItem;
+                    }
+                    return undefined;
+                });
+            }
         } else if (event.__typename === 'NotificationRead') {
             // Ignore.
         } else {

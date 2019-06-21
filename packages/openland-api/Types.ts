@@ -55588,17 +55588,68 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   center: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationRead_center;
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
+  fallback: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message_sender;
 }
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user;
+  settings: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  settings: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot {
   __typename: "CommentPeerRootMessage";
   message: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_message;
+  chat: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_peerRoot_chat;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_subscription {
@@ -55613,9 +55664,679 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   subscription: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer_subscription | null;
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_attachments[];
+  quotedMessages: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_quotedMessages[];
+  reactions: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_reactions[];
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment_spans[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_parentComment {
+  __typename: "CommentEntry";
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_parentComment_comment;
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_comment;
+  parentComment: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_parentComment | null;
+  childComments: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment_childComments[];
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content {
   __typename: "UpdatedNotificationContentComment";
   peer: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_peer;
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated_content_comment | null;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationContentUpdated {
@@ -57200,17 +57921,68 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   center: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationRead_center;
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
+  fallback: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message_sender;
 }
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user;
+  settings: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  settings: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom;
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot {
   __typename: "CommentPeerRootMessage";
   message: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_message;
+  chat: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_peerRoot_chat;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_subscription {
@@ -57225,9 +57997,679 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   subscription: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer_subscription | null;
 }
 
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans = MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink | MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate;
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_attachments[];
+  quotedMessages: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_quotedMessages[];
+  reactions: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_reactions[];
+  spans: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment_spans[];
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_parentComment {
+  __typename: "CommentEntry";
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_parentComment_comment;
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_comment;
+  parentComment: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_parentComment | null;
+  childComments: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment_childComments[];
+}
+
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content {
   __typename: "UpdatedNotificationContentComment";
   peer: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_peer;
+  comment: MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated_content_comment | null;
 }
 
 export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates_NotificationContentUpdated {
@@ -81843,17 +83285,68 @@ export interface NotificationCenterUpdateFragment_NotificationRead {
   center: NotificationCenterUpdateFragment_NotificationRead_center;
 }
 
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
 export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
+  fallback: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message_sender;
 }
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_user;
+  settings: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom_settings;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  settings: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom_settings;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat = NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_PrivateRoom | NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat_SharedRoom;
 
 export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot {
   __typename: "CommentPeerRootMessage";
   message: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_message;
+  chat: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_peerRoot_chat;
 }
 
 export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_subscription {
@@ -81868,9 +83361,679 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   subscription: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer_subscription | null;
 }
 
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentPost | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageAttachmentFile | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments_MessageRichAttachment;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanDate;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanDate;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  id: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_ServiceMessage | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages_GeneralMessage;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention {
+  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  offset: number;
+  length: number;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  isYou: boolean;
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate {
+  __typename: "MessageSpanDate";
+  offset: number;
+  length: number;
+  date: any;
+}
+
+export type NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans = NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanAllMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanMultiUserMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanRoomMention | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanLink | NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans_MessageSpanDate;
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_attachments[];
+  quotedMessages: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_quotedMessages[];
+  reactions: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_reactions[];
+  spans: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment_spans[];
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_parentComment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_parentComment {
+  __typename: "CommentEntry";
+  comment: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_parentComment_comment;
+  id: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment {
+  __typename: "CommentEntry";
+  id: string;
+  deleted: boolean;
+  comment: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_comment;
+  parentComment: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_parentComment | null;
+  childComments: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment_childComments[];
+}
+
 export interface NotificationCenterUpdateFragment_NotificationContentUpdated_content {
   __typename: "UpdatedNotificationContentComment";
   peer: NotificationCenterUpdateFragment_NotificationContentUpdated_content_peer;
+  comment: NotificationCenterUpdateFragment_NotificationContentUpdated_content_comment | null;
 }
 
 export interface NotificationCenterUpdateFragment_NotificationContentUpdated {
