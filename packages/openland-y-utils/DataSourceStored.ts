@@ -47,7 +47,7 @@ export class DataSourceStored<T extends DataSourceItem> {
     private _storage: KeyValueStore;
     private _loaded: number = 0;
     private _loadCompleted = false;
-    private _limit?: number;
+    private _limitStored?: number;
 
     constructor(name: string, storage: KeyValueStore, pageSize: number, provider: DataSourceStoredProvider<T>, limit?: number) {
         this._queue = new ExecutionQueue();
@@ -57,7 +57,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         this.dataSource = new DataSource<T>(() => { this.needMore(); });
         storage = new KeyValueStoreVersioned(storage)
         this._storage = storage;
-        this._limit = limit;
+        this._limitStored = limit;
         this._queue.post(async () => {
             let start = currentTimeMillis();
             let ind = await storage.readKeys(['ds.' + name + '.version', 'ds.' + name + '.state', 'ds.' + name + '.index'])
@@ -73,9 +73,6 @@ export class DataSourceStored<T extends DataSourceItem> {
                 for (let i of data.items) {
                     await storage.writeKey('ds.' + name + '.item.' + i.key, JSON.stringify(i))
                 }
-
-                // Write index
-                await storage.writeKey('ds.' + name + '.index', JSON.stringify(data.items.map((v) => v.key)))
 
                 // Write cursor
                 if (data.cursor) {
@@ -94,14 +91,15 @@ export class DataSourceStored<T extends DataSourceItem> {
                 // Write version
                 await storage.writeKey('ds.' + name + '.version', this._wireVersion.toString());
 
+                // Write index
                 // Save local index
-                this.updateIndex(data.items.map((v) => v.key));
+                await this.updateIndex(data.items.map((v) => v.key), true);
                 this._loadCompleted = true;
             } else {
                 log.log(this.name + '| Loading initial data from storage');
 
                 // Read index
-                this.updateIndex(JSON.parse(index) as string[]);
+                await this.updateIndex(JSON.parse(index) as string[]);
 
                 // Read page
                 let toLoad = this._index;
@@ -155,8 +153,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
     removeItem = async (key: string) => {
         await this._queue.sync(async () => {
-            this.updateIndex(this._index.filter((v) => v !== key));
-            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            await this.updateIndex(this._index.filter((v) => v !== key), true);
             await this._storage.writeKey('ds.' + this.name + '.item.' + key, null);
             if (this.dataSource.hasItem(key)) {
                 this.dataSource.removeItem(key);
@@ -197,7 +194,7 @@ export class DataSourceStored<T extends DataSourceItem> {
      * Do not use without limit!
      */
     updateAllItems = async (updateFn: (item: T) => T | undefined) => {
-        if (!this._limit) {
+        if (!this._limitStored) {
             throw new Error('updateAllItems should not be used without limit!')
         }
         await this._queue.sync(async () => {
@@ -232,8 +229,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                 let ex = res[i];
                 res.splice(i, 1);
                 res.splice(index, 0, ex);
-                this.updateIndex(res);
-                await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+                await this.updateIndex(res, true);
 
                 if (this._loadCompleted) {
                     this.dataSource.moveItem(key, index);
@@ -270,8 +266,7 @@ export class DataSourceStored<T extends DataSourceItem> {
             }
             let r = [...this._index];
             r.splice(index, 0, item.key);
-            this.updateIndex(r);
-            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            await this.updateIndex(r, true);
             if (this._loadCompleted) {
                 this.dataSource.addItem(item, index);
             } else {
@@ -334,8 +329,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                 }
                 index.push(d.key);
             }
-            this.updateIndex(index);
-            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            await this.updateIndex(index, true);
 
             // Write cursor and datasource
             if (data.cursor) {
@@ -352,11 +346,15 @@ export class DataSourceStored<T extends DataSourceItem> {
         });
     }
 
-    updateIndex = (index: string[]) => {
+    updateIndex = async (index: string[], save?: boolean) => {
         this._index = index;
-        // TODO: implement correct store limit: call index save in one place, limit from end
-        // if (this._limit && index.length > this._limit) {
-        //    this._storage.writeKeys(index.splice(0, index.length - this._limit).map(key => ({ key: key, value: null })));
-        // }
+        if (save) {
+            let toSave = [...this._index];
+            if (this._limitStored) {
+                // todo: save filtered items index, clean up on next init
+                toSave = toSave.filter((v, i) => i < this._limitStored!);
+            }
+            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(toSave));
+        }
     }
 }
