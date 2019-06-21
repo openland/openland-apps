@@ -130,6 +130,8 @@ const Image = Glamorous.div({
     '@media (max-height: 800px)': {
         width: 846,
         marginLeft: -500,
+    },
+    '@media (max-height: 600px)': {
         background: 'none',
         backgroundImage: 'none',
     },
@@ -187,6 +189,11 @@ const JoinLinkButton = (props: {
 
 const textAlignCenter = css`
     text-align: center;
+    text-shadow: 0 0 6px #fff, 0 0 6px #fff;
+`;
+
+const titleClassName = css`
+    text-shadow: 0 0 6px #fff, 0 0 6px #fff;
 `;
 
 const InviteByRow = ({
@@ -247,7 +254,7 @@ const RoomInfoColumn = ({
         <XView marginTop={60} alignSelf="center" alignItems="center" maxWidth={428} zIndex={1}>
             <RoomAvatar src={photo || undefined} title={title} id={id} size={74} />
             <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
-                {title}
+                <span className={titleClassName}>{title}</span>
             </XView>
             <XView
                 marginTop={12}
