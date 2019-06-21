@@ -1,6 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { createComments } from './mocks';
+import { createComments, notificationUnsupported } from './mocks';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
@@ -21,7 +21,7 @@ type NotificationCenterEngineOptions = {
 
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
-export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
+export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
     const content = notification.content;
 
     // TODO go through notification.content, now take only first
@@ -42,14 +42,15 @@ export const convertNotification = (notification: Types.NotificationFragment): N
             isSubscribedMessageComments: !!peer.subscription!!,
             notificationId: notification.id,
             replyQuoteText,
+            notificationType: 'new_comment',
 
             // rewrite results from convertMessage
             key: notification.id,
             isOut: false
         }
+    } else {
+        return notificationUnsupported(notification.id);
     }
-
-    return null
 }
 
 export class NotificationCenterEngine {
@@ -83,6 +84,7 @@ export class NotificationCenterEngine {
                 } else {
                     const notificationsQuery = await this.engine.client.queryMyNotifications(
                         { first: 20, before: cursor },
+                        { fetchPolicy: 'network-only' }
                     );
                     const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
 
@@ -90,11 +92,9 @@ export class NotificationCenterEngine {
                     const items = [];
 
                     for (let notification of notifications) {
-                        const convertedNotification = convertNotification(notification);
+                        const converted = convertNotification(notification);
 
-                        if (convertedNotification) {
-                            items.push(convertedNotification);
-                        }
+                        items.push(converted);
                     }
 
                     this.onNotificationsUpdated();
@@ -118,7 +118,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications3',
+            'notifications5',
             options.engine.options.store,
             20,
             provider,
@@ -191,13 +191,15 @@ export class NotificationCenterEngine {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'NotificationReceived') {
-            const convertedNotification = convertNotification(event.notification);
+            const converted = convertNotification(event.notification);
 
-            if (convertedNotification) {
-                await this._dataSourceStored.addItem(convertedNotification, 0);
+            await this._dataSourceStored.addItem(converted, 0);
+
+            if (converted.notificationType === 'new_comment') {
                 this.engine.notifications.handleIncomingNotification(event);
-                this.onNotificationsUpdated();
             }
+
+            this.onNotificationsUpdated();
         } else if (event.__typename === 'NotificationDeleted') {
             const id = event.notification.id;
 
@@ -208,15 +210,16 @@ export class NotificationCenterEngine {
             }
         } else if (event.__typename === 'NotificationUpdated') {
             const id = event.notification.id;
-            const convertedNotification = convertNotification(event.notification);
+            const converted = convertNotification(event.notification);
 
-            if (convertedNotification && await this._dataSourceStored.hasItem(id)) {
-                await this._dataSourceStored.updateItem(convertedNotification);
+            if (await this._dataSourceStored.hasItem(id)) {
+                await this._dataSourceStored.updateItem(converted);
                 this.onNotificationsUpdated();
             }
         } else if (event.__typename === 'NotificationContentUpdated') {
             const peerRootId = event.content.peer.peerRoot.message.id;
             const subscription = !!event.content.peer.subscription;
+
             await this._dataSourceStored.updateAllItems(oldItem => {
                 if (oldItem.peerRootId === peerRootId) {
                     oldItem.isSubscribedMessageComments = subscription

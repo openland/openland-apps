@@ -1,4 +1,6 @@
 import UUID from 'uuid/v4';
+import { convertMessage } from 'openland-engines/utils/convertMessage';
+import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 
 // TODO add attaches document/photo
 export const users = ['Ada Poole', 'Mario McGee', 'Stanley Hughes', 'Dora Becker'];
@@ -49,6 +51,48 @@ export const createSender = ({ userName }: { userName: string }) => {
             __typename: 'Organization',
         },
         __typename: 'User',
+    };
+};
+
+export const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
+    const date = Date.now();
+
+    return {
+        ...convertMessage({
+            __typename: 'GeneralMessage',
+            id: id,
+            date: date,
+            sender: {
+                __typename: 'User',
+                id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
+                name: 'Openland Support',
+                firstName: 'Openland Support',
+                photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
+                online: true,
+                isYou: false,
+                isBot: false,
+                lastName: null,
+                email: null,
+                lastSeen: null,
+                shortname: null,
+                primaryOrganization: null
+            },
+            message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+            fallback: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+            edited: false,
+            commentsCount: 0,
+            attachments: [],
+            quotedMessages: [],
+            reactions: [],
+            spans: [{__typename: 'MessageSpanBold', offset: 0, length: 33}],
+        }),
+
+        notificationId: id,
+        notificationType: 'unsupported',
+
+        // rewrite results from convertMessage
+        key: id,
+        isOut: false
     };
 };
 
