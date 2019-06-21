@@ -4,7 +4,7 @@ import { UserShort } from 'openland-api/Types';
 import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { XView } from 'react-mental';
-import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
+import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
 import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -43,14 +43,14 @@ const DiscussButton = React.memo(
             >
                 {commentsCount ? (
                     <XView flexDirection="row">
-                        <CommentChannelIcon />{' '}
+                        <CommentIcon />{' '}
                         <XView marginLeft={4}>
                             {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
                         </XView>
                     </XView>
                 ) : (
                     <XView flexDirection="row">
-                        <CommentChannelIcon /> <XView marginLeft={4}>Comment</XView>
+                        <CommentIcon /> <XView marginLeft={4}>Comment</XView>
                     </XView>
                 )}
             </XView>
