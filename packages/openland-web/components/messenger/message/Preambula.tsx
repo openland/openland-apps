@@ -13,7 +13,7 @@ interface PreambulaContainerProps {
     haveReactions?: boolean;
 }
 
-let commentsIconWrapperClass = css`
+const commentsIconWrapperClass = css`
     width: 17px;
     height: 15.2px;
 
@@ -26,6 +26,10 @@ let commentsIconWrapperClass = css`
         fill: #000;
         opacity: 0.2;
     }
+`;
+
+const dateClassName = css`
+    letter-spacing: 0.5px;
 `;
 
 const CommentsIconWrapper = () => {
@@ -62,9 +66,8 @@ const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
             fontSize={11}
             whiteSpace={'nowrap'}
             overflow={'hidden'}
-            fontWeight={'600'}
             lineHeight={'22px'}
-            color="rgba(0, 0, 0, 0.4)"
+            color="#7A7A7A"
         >
             {children}
         </XView>
@@ -176,7 +179,11 @@ export const Preambula = ({
                 )
             ) : (
                 <XView lineHeight="23px">
-                    {hover && <XDate value={date.toString()} format="time" />}
+                    {hover && (
+                        <span className={dateClassName}>
+                            <XDate value={date.toString()} format="time" />
+                        </span>
+                    )}
                 </XView>
             )}
         </PreambulaContainer>

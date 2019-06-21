@@ -266,7 +266,6 @@ export const DesktopMessageContainer = ({
                                 flexDirection="row"
                                 alignItems="center"
                                 color="rgba(0, 0, 0, 0.4)"
-                                fontWeight="600"
                                 fontSize={12}
                             >
                                 <XDate value={date.toString()} format="datetime_short" />
