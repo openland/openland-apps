@@ -81943,6 +81943,7 @@ export enum EmailFrequency {
 
 export enum EventPlatform {
   Android = "Android",
+  MobileWeb = "MobileWeb",
   WEB = "WEB",
   iOS = "iOS",
 }
@@ -82112,6 +82113,9 @@ export interface Event {
   event: string;
   params?: string | null;
   time?: any | null;
+  os?: string | null;
+  deviceModel?: string | null;
+  platform?: EventPlatform | null;
 }
 
 export interface FileAttachmentInput {
