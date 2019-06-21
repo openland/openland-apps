@@ -16,7 +16,9 @@ export class EventEmitterHolder {
     }
 
     init = () => {
-        NativeModules.RNNotificationHandler.requestInitialUrl();
+        if (Platform.OS === 'ios') {
+            NativeModules.RNNotificationHandler.requestInitialUrl();
+        }
     }
 }
 
