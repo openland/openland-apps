@@ -22,7 +22,6 @@ import { NON_PRODUCTION } from '../Init';
 import { MainHeaderButtons } from './components/MainHeaderButtons';
 
 const RoomsList = (props: { router: SRouter }) => {
-    let resp = getClient().useAccountSettings({ fetchPolicy: 'network-only' });
     let rooms = getClient().useAvailableRooms();
 
     let availableChats = rooms.availableChats || [];
@@ -178,7 +177,11 @@ const ExplorePage = (props: PageProps) => {
             {Platform.OS === 'ios' && <SHeader title="Discover" />}
             {Platform.OS === 'android' && <CenteredHeader title="Discover" padding={98} />}
 
-            <MainHeaderButtons theme={theme} router={props.router} />
+            <SHeaderButton
+                title="New"
+                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
+                onPress={() => props.router.push('Compose')}
+            />
 
             <SSearchControler
                 searchRender={(p) => (
