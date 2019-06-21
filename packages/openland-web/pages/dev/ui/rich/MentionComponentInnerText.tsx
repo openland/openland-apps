@@ -15,7 +15,8 @@ type MentionComponentInnerTextProps = {
 
 let isYouClassname = css`
     cursor: pointer;
-    backgroundcolor: #fff6e5;
+    background-color: #e2f1fe;
+    padding: 0 4px;
     color: #1790ff;
 `;
 
