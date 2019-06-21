@@ -5,7 +5,6 @@ import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { XView } from 'react-mental';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
-import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -32,12 +31,12 @@ const DiscussButton = React.memo(
             <XView
                 cursor="pointer"
                 borderRadius={14}
-                backgroundColor="rgba(23, 144, 255, 0.1)"
+                backgroundColor="#f4f4f4"
                 height={28}
                 fontSize={13}
                 justifyContent="center"
                 alignItems="center"
-                color="#1790ff"
+                color="#7A7A7A"
                 paddingLeft={12}
                 paddingRight={12}
                 onClick={openModal}
@@ -51,7 +50,7 @@ const DiscussButton = React.memo(
                     </XView>
                 ) : (
                     <XView flexDirection="row">
-                        <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
+                        <CommentChannelIcon /> <XView marginLeft={4}>Comment</XView>
                     </XView>
                 )}
             </XView>

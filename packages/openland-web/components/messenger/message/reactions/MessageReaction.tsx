@@ -52,7 +52,7 @@ export const ReactionItem = Glamorous.div<{
 }));
 
 const UsersLabel = Glamorous.div({
-    color: 'rgba(0, 0, 0, 0.5)',
+    color: '#7A7A7A',
     fontSize: 12,
     paddingLeft: 7,
 });
