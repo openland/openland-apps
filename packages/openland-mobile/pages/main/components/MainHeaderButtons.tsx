@@ -16,7 +16,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress:
     return (
         <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
             <View width={Platform.OS === 'ios' ? 44 : undefined} height={44} alignItems="center" justifyContent="center">
-                <Image source={icon} style={{ width: size, height: size, tintColor: color }} resizeMode="contain" />
+                <Image source={icon} style={{ width: size, height: size, tintColor: color, marginTop: Platform.OS === 'ios' ? 4 : undefined }} resizeMode="contain" />
     
                 {dot && (
                     <View
