@@ -5,7 +5,7 @@ import { UserPopper } from 'openland-web/components/UserPopper';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { css } from 'linaria';
-import CommentIcon from 'openland-icons/ic-comment-channel.svg';
+import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
 
 interface PreambulaContainerProps {
     children: any;

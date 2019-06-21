@@ -7,7 +7,7 @@ import {
     RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from '../reactions/ReactionButton';
-import CommentIcon from 'openland-icons/ic-comment-channel.svg';
+import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../MessagesStateContext';
