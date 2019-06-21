@@ -19,7 +19,6 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { NON_PRODUCTION } from '../Init';
-import { MainHeaderButtons } from './components/MainHeaderButtons';
 
 const RoomsList = (props: { router: SRouter }) => {
     let rooms = getClient().useAvailableRooms();
@@ -32,32 +31,6 @@ const RoomsList = (props: { router: SRouter }) => {
     return (
         <>
             {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />}
-            <ZListItemGroup
-                header="Chats for you"
-                divider={false}
-                actionRight={{
-                    title: 'See all', onPress: () => props.router.push('GroupList', {
-                        initial: suggestedRooms,
-                        title: 'Chats for you',
-                    })
-                }}
-            >
-                {suggestedRooms.filter((s, i) => i < 3).map(v => (
-                    v.__typename === 'SharedRoom' ? <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            key: v.id,
-                            title: v.title,
-                        }}
-                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
-                        path="Conversation"
-                        navigationIcon={false}
-                        pathParams={{ flexibleId: v.id }}
-                    /> : null
-                ))}
-            </ZListItemGroup>
 
             <ZListItemGroup
                 header="Top groups"
@@ -144,6 +117,32 @@ const RoomsList = (props: { router: SRouter }) => {
                 ))}
             </ZListItemGroup>
 
+            <ZListItemGroup
+                header="Chats for you"
+                divider={false}
+                actionRight={{
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                        initial: suggestedRooms,
+                        title: 'Chats for you',
+                    })
+                }}
+            >
+                {suggestedRooms.filter((s, i) => i < 3).map(v => (
+                    v.__typename === 'SharedRoom' ? <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            key: v.id,
+                            title: v.title,
+                        }}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
+                        path="Conversation"
+                        navigationIcon={false}
+                        pathParams={{ flexibleId: v.id }}
+                    /> : null
+                ))}
+            </ZListItemGroup>
         </>
     );
 };
