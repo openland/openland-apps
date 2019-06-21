@@ -6,7 +6,7 @@ import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFra
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/ConversationContainerWrapper';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from 'openland-web/components/Navigation';
-import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
+import { NewOptionsButton, NotificationsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
@@ -129,7 +129,14 @@ export const MessagesNavigation = XMemo(
                     <Navigation
                         title="Messages"
                         tab={tab}
-                        menuRightContent={<NewOptionsButton />}
+                        menuRightContent={
+                            <XView flexDirection="row" alignItems="center">
+                                <XView marginRight={16} justifyContent="center">
+                                    <NotificationsButton />
+                                </XView>
+                                <NewOptionsButton />
+                            </XView>
+                        }
                         secondFragmentHeader={
                             <React.Suspense fallback={null}>
                                 {chatId &&

@@ -38,7 +38,7 @@ const NotificationButton = ({ haveNotification }: { haveNotification: boolean })
     return <>{haveNotification ? <NotificationsNewIcon /> : <NotificationsIcon />}</>;
 };
 
-const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
+export const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
     const client = useClient();
     const notificationsCenter = client.useMyNotificationCenter({ fetchPolicy: 'network-only' });
 
@@ -207,7 +207,7 @@ export const NewOptionsButton = XMemo(() => {
         setShow(!show);
     }, []);
 
-    let marginRight = -62;
+    let marginRight = -5;
     if (width && width < 951) {
         marginRight = -150;
     }
@@ -237,12 +237,7 @@ export const NewOptionsButton = XMemo(() => {
                     },
                 }}
             >
-                <XView flexDirection="row" alignItems="center">
-                    <XView marginRight={16} justifyContent="center">
-                        <NotificationsButton />
-                    </XView>
-                    <NewButton onClick={toggle} />
-                </XView>
+                <NewButton onClick={toggle} />
             </XShortcuts>
         </XPopper>
     );
