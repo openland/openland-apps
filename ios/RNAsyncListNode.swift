@@ -220,8 +220,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   var prevScroll: CGFloat = 0.0
+  var settingScroll = false
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if(settingScroll){
+      return
+    }
     
     // Fixing scrollbars
     let bottomInsetCalculated = max(self.keyboardHeight, CGFloat(self.bottomInset))
@@ -546,8 +550,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func onScrollToRequested(index: Int) {
-     print("boom ", index)
-    self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .right, animated: false)
+    self.queue.async {
+      DispatchQueue.main.async {
+        self.settingScroll = true
+        print("boom onScrollToRequested target", index)
+        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .bottom, animated: false)
+        self.settingScroll = false
+      }
+    }
   }
   
   //

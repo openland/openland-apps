@@ -105,6 +105,7 @@ class RNAsyncDataView {
   
   var state = RNAsyncDataViewState(items: [], completed: false, inited: false)
   var watchers = WeakMap<RNAsyncDataViewDelegate>()
+  var scrollTo: String?
   
   let dataSourceKey: String
   
@@ -162,16 +163,23 @@ class RNAsyncDataView {
     for i in watchers.all() {
       i.value.onLoadedMore(from: start, count: items.count, state: st)
     }
+    if(self.scrollTo != nil){
+      self.handleScrollToRequest(key: self.scrollTo!)
+      self.scrollTo = nil
+    }
   }
   
   func handleScrollToRequest(key: String) {
-    print("boom ", index)
-    for i in watchers.all() {
-      let index = self.state.items.firstIndex { item -> Bool in
-        return item.key == key
-      }
-      if(index ?? -1 > -1){
-        i.value.onScrollToRequested(index: index!)
+    let index = self.state.items.firstIndex { item -> Bool in
+      return item.key == key
+    }
+    if(index == nil || watchers.all().count == 0){
+      self.scrollTo = key
+    }else{
+      if(index! > -1){
+        for i in watchers.all() {
+          i.value.onScrollToRequested(index: index!)
+        }
       }
     }
   }
@@ -196,6 +204,10 @@ class RNAsyncDataView {
     if st.inited {
       delegate.onInited(state: st)
     }
+    if(self.scrollTo != nil){
+      self.handleScrollToRequest(key: self.scrollTo!)
+      self.scrollTo = nil
+    }
     return {
       self.watchers.remove(key: key)
     }
@@ -209,20 +221,22 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   private var latestState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   var source: RNAsyncDataView
   var windowSize: Int = 0
+  var windowSizeBatchSize: Int = 20
   var unwatch: (() -> Void)!
   var completed = false
+  var scrollTo: Int?
   
   init(source: RNAsyncDataView) {
     self.source = source
     
     self.unwatch = self.source.watch(delegate: self)
     if source.state.inited {
-      if source.state.items.count <= 20 {
+      if source.state.items.count <= self.windowSizeBatchSize {
         self.completed = true
         self.latestState = source.state
         self.state = source.state
       } else {
-        self.windowSize = min(source.state.items.count, 20)
+        self.windowSize = min(source.state.items.count, self.windowSizeBatchSize)
         let s = RNAsyncDataViewState(items: Array(source.state.items[0...max(self.windowSize-1, 0)]), completed: source.state.completed &&  self.windowSize == source.state.items.count, inited: true)
         self.latestState = source.state
         self.state = s
@@ -234,14 +248,14 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     queue.async {
       self.latestState = state
       
-      if self.latestState.items.count <= 20 {
+      if self.latestState.items.count <= self.windowSizeBatchSize {
         self.completed = true
         self.state = self.latestState
         for i in self.watchers.all() {
           i.value.onInited(state: state)
         }
       } else {
-        self.windowSize = min(state.items.count, 20)
+        self.windowSize = min(state.items.count, self.windowSizeBatchSize)
         let s = RNAsyncDataViewState(items: Array(state.items[0..<self.windowSize]), completed: false, inited: true)
         self.latestState = self.source.state
         self.state = s
@@ -393,8 +407,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
             self.source.loadMore()
             return
           }
-          if self.windowSize + 20 <= self.latestState.items.count {
-            let loaded = min(self.latestState.items.count - self.windowSize, 20)
+          if self.windowSize + self.windowSizeBatchSize <= self.latestState.items.count {
+            let loaded = min(self.latestState.items.count - self.windowSize, self.windowSizeBatchSize)
             var itms = self.state.items.map {$0}
             for i in self.windowSize..<(self.windowSize+loaded) {
               itms.append(self.latestState.items[i])
@@ -421,13 +435,27 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
               }
             }
           }
+          self.windowSizeBatchSize = 20
         }
       }
     }
   }
   
   func onScrollToRequested(index: Int) {
-    // Stub
+    if(index > self.windowSize){
+      self.windowSizeBatchSize = self.latestState.items.count - self.windowSize
+      self.loadMore()
+    }
+    queue.asyncAfter(deadline: .now() + .milliseconds(51)) {
+      if(self.watchers.all().count == 0){
+        self.scrollTo = index;
+      }else{
+        
+        for i in self.watchers.all() {
+          i.value.onScrollToRequested(index: index)
+        }
+      }
+    }
   }
 
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
@@ -437,7 +465,12 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         delegate.onInited(state: self.state)
       }
       self.watchers.set(key: key, value: delegate)
+      if(self.scrollTo != nil){
+        self.onScrollToRequested(index: self.scrollTo!);
+        self.scrollTo = nil
+      }
     }
+   
     return {
       queue.async {
         self.watchers.remove(key: key)
@@ -485,8 +518,8 @@ class RNAsyncDataViewManager: NSObject {
     RNAsyncDataView.getDataView(key: dataSourceKey).handleMoved(fromIndex: Int(fromIndex), toIndex: Int(toIndex))
   }
   
-  @objc(dataViewLoadedMore:config:completed:scrollToKey:)
-  func dataViewLoadedMore(dataSourceKey: String, config: String, completed: Bool, scrollToKey: String?) -> Void {
+  @objc(dataViewLoadedMore:config:completed:)
+  func dataViewLoadedMore(dataSourceKey: String, config: String, completed: Bool) -> Void {
     let parsed = JSON(parseJSON: config)
     var items: [RNAsyncDataViewItem] = []
     for i in parsed.arrayValue {
@@ -495,9 +528,11 @@ class RNAsyncDataViewManager: NSObject {
       items.append(RNAsyncDataViewItem(key: key, config: config))
     }
     RNAsyncDataView.getDataView(key: dataSourceKey).handleLoadedMore(items: items, completed: completed)
-    if(scrollToKey != nil){
-      RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToRequest(key: scrollToKey!)
-    }
+  }
+  @objc(dataViewScrollToKeyReqested:scrollToKey:)
+  func dataViewScrollToKeyReqested(dataSourceKey: String, scrollToKey: String) -> Void {
+    print("boom", "dataViewScrollToKeyReqested", scrollToKey)
+    RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToRequest(key: scrollToKey)
   }
   
   @objc(dataViewCompleted:)

@@ -287,7 +287,10 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, this.historyFullyLoaded, newMessagesDivider && newMessagesDivider.key);
+        this.dataSource.initialize(dsItems, this.historyFullyLoaded);
+        if (newMessagesDivider) {
+            this.dataSource.requestScrollToKey(newMessagesDivider.key);
+        }
     }
 
     onOpen = () => {
@@ -301,8 +304,9 @@ export class ConversationEngine implements MessageSendHandler {
             let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
             if (this.dataSource.hasItem(toDelete.key)) {
                 this.dataSource.removeItem(toDelete.key);
-                this.lastReadedDividerMessageId = undefined;
             }
+            this.lastReadedDividerMessageId = undefined;
+
         }
     }
 
@@ -703,10 +707,14 @@ export class ConversationEngine implements MessageSendHandler {
         if (this.dataSource.getSize() > 0) {
             prev = this.dataSource.getAt(0);
         }
+        let scrollTo: string | undefined = undefined;
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
+            console.warn('boom', !this.lastReadedDividerMessageId, !!prev, !!this.lastTopMessageRead, !this.isOpen);
             if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen) {
-                this.dataSource.addItem(createNewMessageDividerSourceItem(this.lastTopMessageRead), 0);
+                let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
+                scrollTo = divider.key;
+                this.dataSource.addItem(divider, 0);
                 this.lastReadedDividerMessageId = this.lastTopMessageRead;
             }
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
@@ -791,6 +799,9 @@ export class ConversationEngine implements MessageSendHandler {
             }
 
             this.dataSource.addItem(conv, 0);
+        }
+        if (scrollTo) {
+            this.dataSource.requestScrollToKey(scrollTo);
         }
     }
 

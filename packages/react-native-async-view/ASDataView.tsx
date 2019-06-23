@@ -66,9 +66,14 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 config: v.currentState
             })));
             console.log('DataSource inited in ' + (Date.now() - start) + ' ms');
-            NativeDataView.dataViewLoadedMore(this.key, config, completed, scrollToKey || null);
+            NativeDataView.dataViewLoadedMore(this.key, config, completed);
         });
     }
+
+    onDataSourceScrollToKeyRequested = (scrollToKey: string) => {
+        NativeDataView.dataViewScrollToKeyReqested(this.key, scrollToKey);
+    }
+
     onDataSourceItemAdded = (item: T, index: number) => {
         this.queue.push(async () => {
             let holder = new ItemRenderHolder(this, item, this.render);
@@ -124,7 +129,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 key: v.item.key,
                 config: v.currentState
             })));
-            NativeDataView.dataViewLoadedMore(this.key, config, completed, null);
+            NativeDataView.dataViewLoadedMore(this.key, config, completed);
         });
     }
 

@@ -21,7 +21,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { NON_PRODUCTION } from '../Init';
 
 const RoomsList = (props: { router: SRouter }) => {
-    let rooms = getClient().useAvailableRooms();
+    let rooms = getClient().useAvailableRooms({ fetchPolicy: 'network-only' });
 
     let availableChats = rooms.availableChats || [];
     let availableChannels = rooms.availableChannels || [];
