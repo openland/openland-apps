@@ -92,6 +92,7 @@ export const CommentsInput = ({
             inputValue={inputValue}
             enabled={true}
             closeEditor={closeEditor}
+            dropZoneHeight="200px"
         />
     );
 };
