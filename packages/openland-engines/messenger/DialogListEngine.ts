@@ -135,7 +135,7 @@ export class DialogListEngine {
             },
             onStarted: (state: string) => {
                 engine.global.handleDialogsStarted(state);
-               
+
             }
         }
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
@@ -190,6 +190,9 @@ export class DialogListEngine {
             },
             onDataSourceCompleted: () => {
                 // Nothing to do
+            },
+            onDataSourceScrollToKeyRequested: () => {
+                //
             }
         });
         // let a = new DataSourceLogger('dialogs', this.dataSource);

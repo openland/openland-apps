@@ -33,4 +33,7 @@ export class DataSourceLogger<T extends DataSourceItem> implements DataSourceWat
     onDataSourceCompleted = () => {
         console.log(this.tag, 'Data source completed');
     }
+    onDataSourceScrollToKeyRequested = (key: string) => {
+        console.log(this.tag, 'Data source scroll requsested to key ' + key);
+    }
 }

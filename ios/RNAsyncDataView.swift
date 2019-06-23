@@ -531,7 +531,6 @@ class RNAsyncDataViewManager: NSObject {
   }
   @objc(dataViewScrollToKeyReqested:scrollToKey:)
   func dataViewScrollToKeyReqested(dataSourceKey: String, scrollToKey: String) -> Void {
-    print("boom", "dataViewScrollToKeyReqested", scrollToKey)
     RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToRequest(key: scrollToKey)
   }
   

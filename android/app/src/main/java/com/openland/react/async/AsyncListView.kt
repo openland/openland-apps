@@ -89,7 +89,6 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             this.state = this.dataView!!.state
             this.dataViewSubscription = this.dataView!!.watch {
                 this.state = it
-                Log.d("boom new state", this.state.scrollToKey + "")
                 updateData()
             }
             updateData()
@@ -162,12 +161,9 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         if(scrollToIndex >= 0){
             // TODO: figure out how to make it scroll without animation and delay
             Handler().postDelayed( {
-                Log.d("boom", "scrolling to $scrollToIndex")
                 this.eventController.requestScrollToPosition(scrollToIndex + 1000 , true)
             }, 100)
             this.state.scrollToKey = null
-        } else{
-            Log.d("boom", "cant find "  + this.state.scrollToKey)
         }
     }
 

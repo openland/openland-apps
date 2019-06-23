@@ -8,8 +8,6 @@ export class EventEmitterHolder {
     constructor() {
         if (Platform.OS === 'ios') {
             NativeEmitter.addListener('onUrl', async (url: string) => {
-                console.warn('boom', url);
-
                 await (await resolveInternalLink(url, () => false))!();
             });
         }

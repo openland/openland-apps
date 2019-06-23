@@ -99,7 +99,6 @@ class AsyncDataView(val context: ReactContext, val key: String) {
     }
 
     fun handleScrollToKeyRequest(scrollToKey: String){
-        Log.d("boom req", scrollToKey)
         val s = AsyncDataViewState(this.state.items, this.state.competed, scrollToKey)
         this.state = s
         notifyWatchers(s)

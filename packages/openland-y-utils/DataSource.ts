@@ -23,7 +23,7 @@ export interface DataSourceItem {
 
 export interface DataSourceWatcher<T extends DataSourceItem> {
     onDataSourceInited(data: T[], completed: boolean): void;
-    onDataSourceScrollToKeyRequested?(scrollToKey: string): void;
+    onDataSourceScrollToKeyRequested(scrollToKey: string): void;
     onDataSourceItemAdded(item: T, index: number): void;
     onDataSourceItemUpdated(item: T, index: number): void;
     onDataSourceItemRemoved(item: T, index: number): void;
@@ -281,6 +281,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             onDataSourceCompleted() {
                 callback();
             },
+            onDataSourceScrollToKeyRequested(key: string) {
+                //
+            },
         });
     }
 
@@ -321,6 +324,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             },
             onDataSourceCompleted() {
                 res.complete();
+            },
+            onDataSourceScrollToKeyRequested(key: string) {
+                res.requestScrollToKey(key);
             },
         });
 
@@ -389,6 +395,11 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             onDataSourceCompleted() {
                 schedule(async () => {
                     res.complete();
+                });
+            },
+            onDataSourceScrollToKeyRequested(key: string) {
+                schedule(async () => {
+                    res.requestScrollToKey(key);
                 });
             },
         });
@@ -513,6 +524,13 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                     doDlush();
                 }
                 res.complete();
+            },
+            onDataSourceScrollToKeyRequested(key: string) {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.requestScrollToKey(key);
             },
         });
 

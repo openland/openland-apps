@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
 
-function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[], boolean] {
+function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[], boolean, { key: string | undefined }] {
     let [items, setItems] = React.useState<T[]>([]);
+    let [scrollTo, setScrollTo] = React.useState({ key: undefined as string | undefined });
     let [completed, setCompleted] = React.useState<boolean>(false);
     React.useEffect(
         () => {
@@ -47,17 +48,21 @@ function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[
                 onDataSourceCompleted: () => {
                     setCompleted(true);
                 },
+                onDataSourceScrollToKeyRequested: (target) => {
+                    setScrollTo({ key: target });
+                }
             });
             return w;
         },
         [dataSource],
     );
-    return [items, completed];
+    return [items, completed, scrollTo];
 }
 
+export type ScrollTo = { scrollTo: { key: string | undefined } | undefined };
 export interface XListViewProps<T extends DataSourceItem> {
     dataSource: DataSource<T>;
-    renderItem: React.ComponentClass<T> | React.StatelessComponent<T>;
+    renderItem: React.ComponentClass<T & ScrollTo> | React.StatelessComponent<T & ScrollTo>;
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     reverce?: boolean;
     wrapWith?: any;
@@ -96,18 +101,18 @@ const WrapWith = React.memo(
     },
 );
 
-export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
+export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
-    let [items, completed] = useDataSource(props.dataSource);
+    let [items, completed, scrollTo] = useDataSource(props.dataSource);
 
     let renderedItems: any = [];
     if (props.reverce) {
         for (let i = items.length - 1; i >= 0; i--) {
-            renderedItems.push(<props.renderItem {...items[i]} key={items[i].key} />);
+            renderedItems.push(<props.renderItem {...items[i]} key={items[i].key} dataKey={items[i].key} scrollTo={items[i].key === scrollTo.key ? scrollTo : undefined} />);
         }
     } else {
-        renderedItems = items.map((i, key) => <props.renderItem {...i} key={key} />);
+        renderedItems = items.map((i, key) => <props.renderItem {...i} key={key} dataKey={key} scrollTo={i.key === scrollTo.key ? scrollTo : undefined} />);
     }
 
     return (

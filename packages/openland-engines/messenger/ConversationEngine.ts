@@ -710,7 +710,6 @@ export class ConversationEngine implements MessageSendHandler {
         let scrollTo: string | undefined = undefined;
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            console.warn('boom', !this.lastReadedDividerMessageId, !!prev, !!this.lastTopMessageRead, !this.isOpen);
             if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen) {
                 let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                 scrollTo = divider.key;

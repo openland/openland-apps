@@ -587,6 +587,9 @@ const RoomGroupProfileProvider = ({
             onDataSourceCompleted() {
                 // Nothing to do
             },
+            onDataSourceScrollToKeyRequested() {
+                //
+            }
         });
     }, []);
 
