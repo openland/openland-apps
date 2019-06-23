@@ -138,11 +138,13 @@ export const Menu = React.memo(
         if (isCommentNotification) {
             contentElem = (
                 <>
-                    <FollowUnfollowMenuButton
-                        isSubscribedMessageComments={!!message.isSubscribedMessageComments}
-                        messageId={message.peerRootId!!}
-                        onSuccess={() => setShowMenu(false)}
-                    />
+                    {message.notificationType !== 'unsupported' && (
+                        <FollowUnfollowMenuButton
+                            isSubscribedMessageComments={!!message.isSubscribedMessageComments}
+                            messageId={message.peerRootId!!}
+                            onSuccess={() => setShowMenu(false)}
+                        />
+                    )}
 
                     <XMenuItem
                         style="danger"

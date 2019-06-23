@@ -102,7 +102,16 @@ export const NotificationCenterUpdateFragment = gql`
                                 message {
                                     ... on GeneralMessage {
                                         id
+                                        fallback
+                                        message
+                                        sender {
+                                            id
+                                            name
+                                        }
                                     }
+                                }
+                                chat {
+                                    ...RoomNano
                                 }
                             }
                         }
@@ -110,6 +119,9 @@ export const NotificationCenterUpdateFragment = gql`
                         subscription {
                             type
                         }
+                    }
+                    comment {
+                        ...CommentEntryFragment
                     }
                 }
             }

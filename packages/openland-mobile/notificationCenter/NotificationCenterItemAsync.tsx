@@ -106,19 +106,21 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                 )}
             </ASFlex>
 
-            <ASFlex marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.accentColor}>
-                <ASText
-                    marginLeft={10}
-                    fontSize={15}
-                    lineHeight={18}
-                    height={18}
-                    numberOfLines={1}
-                    color={theme.textLabelColor}
-                    maxWidth={maxWidth - 10}
-                >
-                    {item.replyQuoteText}
-                </ASText>
-            </ASFlex>
+            {!!item.replyQuoteText && (
+                <ASFlex marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.accentColor}>
+                    <ASText
+                        marginLeft={10}
+                        fontSize={15}
+                        lineHeight={18}
+                        height={18}
+                        numberOfLines={1}
+                        color={theme.textLabelColor}
+                        maxWidth={maxWidth - 10}
+                    >
+                        {item.replyQuoteText}
+                    </ASText>
+                </ASFlex>
+            )}
 
             <ASFlex
                 flexDirection="column"
@@ -129,28 +131,30 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
 
             {bottomContent}
 
-            <ASFlex marginTop={2}>
-                <ZRelativeDateAsync
-                    fontWeight={TextStyles.weight.medium}
-                    fontSize={13}
-                    lineHeight={20}
-                    color={theme.textLabelColor}
-                    date={item.date}
-                />
-
-                <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
-                    <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentColor} width={16} height={16} opacity={0.7} />
-                    <ASText
+            {item.notificationType !== 'unsupported' && (
+                <ASFlex marginTop={2}>
+                    <ZRelativeDateAsync
                         fontWeight={TextStyles.weight.medium}
-                        color={theme.accentColor}
                         fontSize={13}
                         lineHeight={20}
-                        marginLeft={6}
-                    >
-                        Reply
-                    </ASText>
+                        color={theme.textLabelColor}
+                        date={item.date}
+                    />
+
+                    <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
+                        <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentColor} width={16} height={16} opacity={0.7} />
+                        <ASText
+                            fontWeight={TextStyles.weight.medium}
+                            color={theme.accentColor}
+                            fontSize={13}
+                            lineHeight={20}
+                            marginLeft={6}
+                        >
+                            Reply
+                        </ASText>
+                    </ASFlex>
                 </ASFlex>
-            </ASFlex>
+            )}
         </ASFlex>
     );
 });

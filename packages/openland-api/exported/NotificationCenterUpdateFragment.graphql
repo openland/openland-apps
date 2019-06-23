@@ -44,16 +44,31 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
     content {
       __typename
       ... on UpdatedNotificationContentComment {
+        comment {
+          __typename
+          ...CommentEntryFragment
+        }
         peer {
           __typename
           id
           peerRoot {
             __typename
             ... on CommentPeerRootMessage {
+              chat {
+                __typename
+                ...RoomNano
+              }
               message {
                 __typename
                 ... on GeneralMessage {
+                  fallback
                   id
+                  message
+                  sender {
+                    __typename
+                    id
+                    name
+                  }
                 }
               }
             }

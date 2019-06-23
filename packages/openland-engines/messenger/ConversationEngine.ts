@@ -60,6 +60,7 @@ export interface DataSourceMessageItem {
     replyQuoteText?: string | null;
     peerRootId?: string;
     notificationId?: string;
+    notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;
 }
 

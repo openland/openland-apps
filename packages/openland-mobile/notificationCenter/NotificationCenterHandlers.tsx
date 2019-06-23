@@ -14,21 +14,23 @@ class NotificationCenterHandlersClass {
         const client = getClient();
         const builder = new ActionSheetBuilder();
 
-        builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
-            startLoader();
-
-            try {
-                if (item.isSubscribedMessageComments) {
-                    await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId!! });
-                } else {
-                    await client.mutateSubscribeMessageComments({ messageId: item.peerRootId!!, type: CommentSubscriptionType.ALL });
+        if (item.notificationType !== 'unsupported') {
+            builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
+                startLoader();
+    
+                try {
+                    if (item.isSubscribedMessageComments) {
+                        await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId!! });
+                    } else {
+                        await client.mutateSubscribeMessageComments({ messageId: item.peerRootId!!, type: CommentSubscriptionType.ALL });
+                    }
+                } catch (e) {
+                    console.warn(e);
+                } finally {
+                    stopLoader();
                 }
-            } catch (e) {
-                console.warn(e);
-            } finally {
-                stopLoader();
-            }
-        });
+            });
+        }
 
         builder.action('Clear', async () => {
             await this.deleteNotifications([id]);
@@ -42,7 +44,7 @@ class NotificationCenterHandlersClass {
 
         builder.action('Clear All', async () => {
             await this.deleteNotifications(items.map(item => item.key));
-        });
+        }, true);
 
         builder.show();
     }

@@ -131,7 +131,7 @@ export const PostMessageButtons = React.memo(
 
         const postMessageButtons = (
             <>
-                {(isComment || isCommentNotification) && (
+                {(isComment || isCommentNotification) && message.notificationType !== 'unsupported' && (
                     <>
                         <XView flexDirection="row" marginTop={4}>
                             <XView
