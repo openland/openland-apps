@@ -227,15 +227,19 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
     };
 
     const onFormSubmit = async (data: any) => {
+        const messageText = data.message.text.trim();
         if (isComment) {
             let res = fileId;
+            if (!file && !res && !messageText) {
+                return;
+            }
             if (file && !res) {
                 res = await uploadFile({ file: getUploadCareFile(file) });
             }
 
             await client.mutateEditComment({
                 id: message.id!!,
-                message: data.message.text,
+                message: messageText,
                 spans: findSpans(data.message.text || ''),
                 mentions: data.message.mentions
                     ? data.message.mentions.map(convertToMentionInputNoText)
@@ -253,9 +257,12 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 messageId: commentProps!!.messageId,
             });
         } else {
+            if (!messageText) {
+                return;
+            }
             await client.mutateEditMessage({
                 messageId: message!!.id!!,
-                message: data.message.text,
+                message: messageText,
                 fileAttachments: data.message.file ? [{ fileId: data.message.file }] : null,
                 replyMessages: data.message.replyMessages,
                 mentions: prepareMentionsToSend(data.message.mentions || []),
