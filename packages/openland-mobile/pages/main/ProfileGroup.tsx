@@ -112,7 +112,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const handleAddMember = React.useCallback(() => {
         Modals.showUserMuptiplePicker(props.router,
             {
-                title: 'Add', action: async (users) => {
+                title: 'Add',
+                action: async (users) => {
                     startLoader();
                     try {
                         await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
@@ -121,6 +122,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         Alert.alert(e.message);
                     }
                     stopLoader();
+                    props.router.back();
                 }
             },
             'Add members',
