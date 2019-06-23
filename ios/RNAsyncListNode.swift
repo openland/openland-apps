@@ -553,8 +553,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.queue.async {
       DispatchQueue.main.async {
         self.settingScroll = true
-        print("boom onScrollToRequested target", index)
-        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .bottom, animated: false)
+        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .centeredVertically, animated: false)
         self.settingScroll = false
       }
     }
