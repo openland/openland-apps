@@ -291,7 +291,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 {area => (
                     <>
                         {Platform.OS === 'ios' && (
-                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
+                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }}>
                                 {content}
                             </ScrollView>
                         )}

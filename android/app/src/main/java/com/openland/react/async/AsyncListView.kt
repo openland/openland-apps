@@ -1,13 +1,16 @@
 package com.openland.react.async
 
 import android.graphics.Color
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.FrameLayout
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
+import com.facebook.litho.sections.SectionLifecycle
 import com.facebook.litho.sections.widget.*
 import com.facebook.litho.widget.SolidColor
 import com.facebook.react.uimanager.PixelUtil
@@ -29,13 +32,14 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var inited = false
     private var dataView: AsyncDataView? = null
     private var dataViewKey: String? = null
-    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true)
+    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true, null)
     private var dataViewSubscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
     private var overflowColor: Int? = null
     private var loaderColor: Int? = null
     private var applyModes: Array<String> = arrayOf()
+    private var eventController = RecyclerCollectionEventsController()
     private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -120,6 +124,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private fun updateData() {
 
         val recycler = RecyclerCollectionComponent.create(asyncContext)
+                .eventsController(this.eventController)
                 .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else 0x00ffffff)
                 .clipToPadding(false)
                 .clipChildren(false)
@@ -150,6 +155,15 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             this.lithoView.componentTree = componentTree
         } else {
             componentTree!!.setRootAsync(recycler)
+        }
+
+        val scrollToIndex = this.state.items.indexOf(this.state.items.find { it.key == this.state.scrollToKey })
+        if(scrollToIndex >= 0){
+            // TODO: figure out how to make it scroll without animation and delay
+            Handler().postDelayed( {
+                this.eventController.requestScrollToPosition(scrollToIndex + 1000 , true)
+            }, 100)
+            this.state.scrollToKey = null
         }
     }
 

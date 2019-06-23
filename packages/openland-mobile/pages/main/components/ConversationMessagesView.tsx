@@ -19,6 +19,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
 
     let safeArea = React.useContext(ASSafeAreaContext);
     let theme = React.useContext(ThemeContext);
+
     return (
         <View marginTop={Platform.OS === 'ios' ? -1000 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
             <ASListView

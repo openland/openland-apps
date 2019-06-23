@@ -220,8 +220,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   var prevScroll: CGFloat = 0.0
+  var settingScroll = false
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if(settingScroll){
+      return
+    }
     
     // Fixing scrollbars
     let bottomInsetCalculated = max(self.keyboardHeight, CGFloat(self.bottomInset))
@@ -541,6 +545,16 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.state = state
           self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
         }, completion: nil)
+      }
+    }
+  }
+  
+  func onScrollToRequested(index: Int) {
+    self.queue.async {
+      DispatchQueue.main.async {
+        self.settingScroll = true
+        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .centeredVertically, animated: false)
+        self.settingScroll = false
       }
     }
   }

@@ -3,6 +3,10 @@ query ChatInit($before: ID, $chatId: ID!, $first: Int!) {
     __typename
     state
   }
+  lastReadedMessage(chatId: $chatId) {
+    __typename
+    id
+  }
   messages(before: $before, chatId: $chatId, first: $first) {
     __typename
     ...FullMessage

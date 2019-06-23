@@ -39,6 +39,9 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
                     this.source.set(i.key, i);
                 }
                 this.dataSource.loadedMore(items.map((v) => this.getItem(v.key)), completed);
+            },
+            onDataSourceScrollToKeyRequested: (key: string) => {
+                this.dataSource.requestScrollToKey(key);
             }
         })
     }

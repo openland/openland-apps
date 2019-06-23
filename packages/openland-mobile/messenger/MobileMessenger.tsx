@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
@@ -24,6 +24,7 @@ import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { trackEvent } from 'openland-mobile/analytics';
+import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -54,7 +55,7 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
-    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
+    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -78,8 +79,10 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
-                } else {
+                } else if (item.type === 'date') {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
+                } else {
+                    return <AsyncNewMessageDivider />
                 }
             }));
         }

@@ -33,6 +33,11 @@ interface XScrollViewReverse2RefProps {
     scrollToBottom: () => void;
 }
 
+let userScrolling = false;
+let userScrollingTimer: NodeJS.Timeout | null = null;
+let reachedTop = false;
+let reachedBottom = true;
+
 export const XScrollViewReverse2 = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
@@ -106,7 +111,8 @@ export const XScrollViewReverse2 = React.memo(
                         delta -= d;
                     }
                 }
-                if (delta !== 0) {
+
+                if (delta !== 0 && (reachedBottom || reachedTop)) {
                     scrollTop.current = outerDiv.scrollTop + delta;
                     outerDiv.scrollTop = scrollTop.current;
                     reportOnScroll();
@@ -122,8 +128,36 @@ export const XScrollViewReverse2 = React.memo(
                 outerDiv.scrollTop = scrollTop.current;
                 reportOnScroll();
 
+                const onUserScrollHandler = throttle(() => {
+                    userScrolling = true;
+
+                    if (userScrollingTimer) {
+                        clearTimeout(userScrollingTimer);
+                    }
+                    userScrollingTimer = setTimeout(() => {
+                        userScrolling = false;
+                    }, 100);
+                }, 150);
+
+                outerDiv.addEventListener('wheel', onUserScrollHandler, { passive: true });
+                outerDiv.addEventListener('touchmove', onUserScrollHandler, { passive: true });
+
                 // Watch for scroll
                 const onScrollHandler = throttle(() => {
+                    if (userScrolling) {
+                        const newreachedBottom =
+                            outerDiv.clientHeight + outerDiv.scrollTop > outerDiv.scrollHeight - 20;
+
+                        if (newreachedBottom !== reachedBottom) {
+                            reachedBottom = newreachedBottom;
+                        }
+
+                        const newReachedTop = outerDiv.scrollTop < 300;
+                        if (newReachedTop !== reachedTop) {
+                            reachedTop = newReachedTop;
+                        }
+                    }
+
                     scrollTop.current = outerDiv.scrollTop;
                     reportOnScroll();
                 }, 150);
@@ -155,18 +189,15 @@ export const XScrollViewReverse2 = React.memo(
                 };
             }, []);
 
-            React.useLayoutEffect(
-                () => {
-                    const outerDiv = outerRef.current!!;
-                    const innerDiv = innerRef.current!!;
-                    if (!outerDiv || !innerDiv) {
-                        return;
-                    }
-                    updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                    reportOnScroll();
-                },
-                [props.children],
-            );
+            React.useLayoutEffect(() => {
+                const outerDiv = outerRef.current!!;
+                const innerDiv = innerRef.current!!;
+                if (!outerDiv || !innerDiv) {
+                    return;
+                }
+                updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                reportOnScroll();
+            }, [props.children]);
 
             const { children, ...other } = props;
 

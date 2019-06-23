@@ -66,6 +66,7 @@ export type TextInputComponentT = {
     handleSend: () => any;
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
+    dropZoneHeight?: string | number;
     getMentionsSuggestions: () => Promise<UserForMention[]>;
     initialMentions?: UserWithOffset[];
     inputRef: any;
@@ -101,6 +102,7 @@ export const DumpSendMessage = React.memo(
         round,
         hideAttachments,
         placeholder,
+        dropZoneHeight,
     }: DumpSendMessageT) => {
         const { fileSrc, fileName, fileSize, handleDrop } = React.useContext(UploadContext);
 
@@ -110,16 +112,21 @@ export const DumpSendMessage = React.memo(
                 minimal={minimal}
                 topLevelComment={topLevelComment}
             >
-                <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
+                <DropZone
+                    height={dropZoneHeight ? dropZoneHeight : 'calc(100% - 115px)'}
+                    onFileDrop={handleDrop}
+                />
                 <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {closeEditor && quoteState && quoteState.quoteMessageReply && (
-                            <EditView
-                                message={quoteState.quoteMessageReply}
-                                title={quoteState.quoteMessageSender || 'Edit message'}
-                                onCancel={closeEditor}
-                            />
-                        )}
+                        {closeEditor &&
+                            quoteState &&
+                            quoteState.quoteMessageReply && (
+                                <EditView
+                                    message={quoteState.quoteMessageReply}
+                                    title={quoteState.quoteMessageSender || 'Edit message'}
+                                    onCancel={closeEditor}
+                                />
+                            )}
                         {(fileSrc || (fileName && fileSize)) && (
                             <XView marginLeft={14}>
                                 <FileUploader />
@@ -144,9 +151,8 @@ export const DumpSendMessage = React.memo(
                             justifyContent="space-between"
                             flexGrow={1}
                         >
-                            {!minimal && !hideAttachments && (
-                                <AttachmentButtons enabled={enabled} />
-                            )}
+                            {!minimal &&
+                                !hideAttachments && <AttachmentButtons enabled={enabled} />}
 
                             {!minimal && (
                                 <XButton

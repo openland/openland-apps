@@ -3,12 +3,13 @@ import { MessageComponent } from '../message/MessageComponent';
 import {
     ConversationEngine,
     DataSourceDateItem,
+    DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { DataSourceRender } from './DataSourceRender';
+import { DataSourceRender, ScrollTo } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
@@ -18,6 +19,8 @@ import {
 import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
+import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
+import { delay } from 'openland-y-utils/timer';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -77,6 +80,50 @@ const LoadingWrapper = glamorous.div({
     position: 'relative',
 });
 
+const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
+    const ref = React.useRef<any | null>(null);
+    let isChatActive = React.useContext(IsActivePoliteContext);
+
+    React.useEffect(() => {
+        return isChatActive.listen(async active => {
+            await delay(0);
+            if (ref.current && props.scrollTo && active) {
+                ref.current.scrollIntoView();
+                props.scrollTo.key = undefined;
+            }
+        })
+    }, [ref.current, props.scrollTo])
+    return (
+        <div
+            key={props.dividerKey}
+            ref={ref}
+        >
+            <XView
+                justifyContent="center"
+                alignItems="center"
+                zIndex={1}
+                marginTop={24}
+                marginBottom={0}
+            >
+                <XView
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="#ffffff"
+                    borderRadius={50}
+                    paddingLeft={10}
+                    paddingRight={10}
+                    paddingTop={2}
+                    paddingBottom={2}
+                >
+                    <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
+                        New messages
+                    </XView>
+                </XView>
+            </XView>
+        </div>
+    );
+}
+
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     scroller = React.createRef<any>();
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
@@ -105,7 +152,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     };
 
-    renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
+    renderMessage = React.memo((i: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) & ScrollTo) => {
         if (i.type === 'message') {
             return (
                 <MessageComponent
@@ -152,7 +199,10 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     </XView>
                 </XView>
             );
+        } else if (i.type === 'new_divider') {
+            return <NewMessageDivider dividerKey={(i as any).dataKey} scrollTo={i.scrollTo} />
         }
+
         return <div />;
     });
 

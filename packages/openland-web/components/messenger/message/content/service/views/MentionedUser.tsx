@@ -28,8 +28,11 @@ export const MentionComponentInnerText = Glamorous.span(
         if (isYou) {
             return {
                 ...paddings,
+                paddingLeft: 4,
+                paddingRight: 4,
                 cursor: 'pointer',
-                backgroundColor: '#fff6e5',
+                borderRadius: 5,
+                backgroundColor: '#E2F1FE',
                 color: '#1790ff',
             };
         }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView, XViewSelectedContext, XViewRouterContext } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
@@ -45,17 +45,21 @@ const DialogTitleClassName = css`
     text-overflow: ellipsis;
 `;
 
+const LetterSpacingClassName = css`
+    letter-spacing: 0.5px;
+`;
+
 export let channelSecretIconClass = css`
     margin: 0px 0px -2px 0px;
-    path {
+    & path:last-child {
         fill: #129f25;
     }
 `;
 
 export let channelIconActiveClass = css`
     margin: 0px 0px -2px 0px;
-    path {
-        fill: white;
+    & path:last-child {
+        fill: #fff;
     }
 `;
 
@@ -67,6 +71,12 @@ export let documentIcon = css`
 const GroupIconClass = css`
     width: 15px;
     height: 19px;
+`;
+
+const GroupActiveIconClass = css`
+    & path:last-child {
+        fill: #fff;
+    }
 `;
 
 const EmojiStyle = css`
@@ -179,7 +189,6 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             selected={props.selected}
             as="a"
             ref={props.handleRef}
-            // path={'/mail/' + dialog.key}
             onMouseDown={() => router!.navigate('/mail/' + dialog.key)}
             height={72}
             flexDirection="row"
@@ -209,39 +218,47 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 paddingRight={16}
                 minWidth={0}
             >
-                <XView
-                    flexDirection="row"
-                    flexGrow={1}
-                    flexShrink={0}
-                    minWidth={0}
-                    marginBottom={3}
-                >
-                    <XView
-                        flexDirection="row"
-                        flexGrow={1}
-                        flexShrink={1}
-                        minWidth={0}
-                        fontSize={14}
-                        fontWeight="600"
-                        lineHeight="18px"
-                        color={
-                            highlightSecretChat && dialog.kind === 'GROUP'
-                                ? '#129f25'
-                                : theme.dialogTitleTextColor
-                        }
-                        selectedColor={theme.dialogTitleTextColorSelected}
-                        overflow="hidden"
-                        whiteSpace="nowrap"
-                        textOverflow="ellipsis"
-                    >
-                        {highlightSecretChat && !dialog.isChannel && dialog.kind === 'GROUP' && (
-                            <XView>
-                                <LockIcon className={GroupIconClass} />
-                            </XView>
-                        )}
-                        {dialog.isChannel && (
-                            <XViewSelectedContext.Consumer>
-                                {active => (
+                <XViewSelectedContext.Consumer>
+                    {active => (
+                        <XView
+                            flexDirection="row"
+                            flexGrow={1}
+                            flexShrink={0}
+                            minWidth={0}
+                            marginBottom={3}
+                        >
+                            <XView
+                                flexDirection="row"
+                                flexGrow={1}
+                                flexShrink={1}
+                                minWidth={0}
+                                fontSize={14}
+                                fontWeight="600"
+                                lineHeight="18px"
+                                color={
+                                    active
+                                        ? '#fff'
+                                        : highlightSecretChat && dialog.kind === 'GROUP'
+                                            ? '#129f25'
+                                            : '#292929'
+                                }
+                                overflow="hidden"
+                                whiteSpace="nowrap"
+                                textOverflow="ellipsis"
+                            >
+                                {highlightSecretChat &&
+                                    !dialog.isChannel &&
+                                    dialog.kind === 'GROUP' && (
+                                        <XView>
+                                            <LockIcon
+                                                className={cx(
+                                                    GroupIconClass,
+                                                    active && GroupActiveIconClass,
+                                                )}
+                                            />
+                                        </XView>
+                                    )}
+                                {dialog.isChannel && (
                                     <XView
                                         alignSelf="stretch"
                                         justifyContent="center"
@@ -252,31 +269,36 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                    ? channelSecretIconClass
-                                                    : channelIconClass
+                                                        ? channelSecretIconClass
+                                                        : channelIconClass
                                             }
                                         />
                                     </XView>
                                 )}
-                            </XViewSelectedContext.Consumer>
-                        )}
-                        <span className={DialogTitleClassName}>{dialog.titleEmojify}</span>
-                    </XView>
-                    {dialog.date && (
-                        <XView
-                            height={18}
-                            color={theme.dialogDateTextColor}
-                            selectedColor={theme.dialogDateTextColorSelected}
-                            marginLeft={5}
-                            fontSize={12}
-                            fontWeight="600"
-                            lineHeight="19px"
-                            whiteSpace="nowrap"
-                        >
-                            <XDate value={dialog.date.toString()} format="datetime_short" />
+                                <span className={cx(DialogTitleClassName, LetterSpacingClassName)}>
+                                    {dialog.titleEmojify}
+                                </span>
+                            </XView>
+                            {dialog.date && (
+                                <XView
+                                    height={18}
+                                    marginLeft={5}
+                                    fontSize={12}
+                                    lineHeight="19px"
+                                    whiteSpace="nowrap"
+                                    color={active ? '#fff' : '#B8B8B8'}
+                                >
+                                    <span className={LetterSpacingClassName}>
+                                        <XDate
+                                            value={dialog.date.toString()}
+                                            format="datetime_short"
+                                        />
+                                    </span>
+                                </XView>
+                            )}
                         </XView>
                     )}
-                </XView>
+                </XViewSelectedContext.Consumer>
                 <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
                     <XView
                         height={34}

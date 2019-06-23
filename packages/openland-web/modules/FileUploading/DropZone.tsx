@@ -16,6 +16,8 @@ const DropArea = Glamorous.div<{ dragOn: boolean; height: string | number }>(pro
     padding: 24,
     visibility: props.dragOn ? 'visible' : 'hidden',
     backgroundColor: props.dragOn ? '#fff' : 'transparent',
+    borderRadius: 8,
+    overflow: 'hidden',
 }));
 
 const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
@@ -104,12 +106,12 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     };
 
     private handleDragLeave = (e: any) => {
-        let file = e.dataTransfer.files[0];
-        if (!file) {
-            this.setState({
-                dragOn: false,
-            });
-        }
+        // let file = e.dataTransfer.files[0];
+        // if (!file) {
+        //     this.setState({
+        //         dragOn: false,
+        //     });
+        // }
         this.setState({
             dragUnder: false,
         });
@@ -126,14 +128,16 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     }
 
     render() {
+        const { state } = this;
+        const { dragOn, dragUnder } = state;
         return (
-            <DropArea dragOn={this.state.dragOn} height={this.props.height}>
+            <DropArea dragOn={dragOn} height={dragOn ? this.props.height : 0}>
                 <DropAreaContent
                     onDrop={this.handleDrop}
                     onDragOver={this.handleDragOver}
                     onDragLeave={this.handleDragLeave}
                     onMouseOut={this.handleMouseOut}
-                    dragUnder={this.state.dragUnder}
+                    dragUnder={dragUnder}
                 >
                     <UloadIc />
                     <XView

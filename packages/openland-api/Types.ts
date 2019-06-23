@@ -28328,10 +28328,19 @@ export interface ChatInit_room_SharedRoom {
 
 export type ChatInit_room = ChatInit_room_PrivateRoom | ChatInit_room_SharedRoom;
 
+export interface ChatInit_lastReadedMessage {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
 export interface ChatInit {
   messages: ChatInit_messages[];
   state: ChatInit_state;
   room: ChatInit_room | null;
+  lastReadedMessage: ChatInit_lastReadedMessage | null;
 }
 
 export interface ChatInitVariables {

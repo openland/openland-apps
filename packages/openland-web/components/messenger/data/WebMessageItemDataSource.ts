@@ -1,6 +1,7 @@
 import {
     DataSourceMessageItem,
     DataSourceDateItem,
+    DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
@@ -43,7 +44,7 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
 }
 
 export function buildMessagesDataSource(
-    ds: DataSource<DataSourceMessageItem | DataSourceDateItem>,
+    ds: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>,
 ): DataSource<DataSourceWebMessageItem | DataSourceWebDateItem> {
     return ds.batched().throttledMap(convertDsMessage);
 }

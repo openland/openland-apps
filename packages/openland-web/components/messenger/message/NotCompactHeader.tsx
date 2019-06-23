@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import {
     UserShort,
-    RoomHeader_room_PrivateRoom,
     RoomHeader_room_SharedRoom,
     RoomHeader_room,
 } from 'openland-api/Types';
@@ -61,6 +61,10 @@ type NotCompactHeaderT = {
     room?: RoomHeader_room;
 };
 
+const sendDataClassName = css`
+    letter-spacing: 0.5px;
+`;
+
 export const NotCompactHeader = ({
     sender,
     date,
@@ -97,26 +101,25 @@ export const NotCompactHeader = ({
                         flexDirection="row"
                         fontSize={14}
                         fontWeight="600"
-                        color="rgba(0, 0, 0, 0.8)"
+                        color="#292929"
                         onMouseEnter={onAvatarOrUserNameMouseEnter}
                         onMouseLeave={onAvatarOrUserNameMouseLeave}
                     >
-                        {senderNameEmojify}
+                        <span className={sendDataClassName}>{senderNameEmojify}</span>
                     </XView>
                 )}
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView
                         as="a"
                         fontSize={12}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.4)"
+                        color="#7A7A7A"
                         paddingLeft={8}
                         alignSelf="flex-end"
                         marginBottom={-1}
                         path={selecting ? undefined : `/mail/o/${sender.primaryOrganization.id}`}
                         hoverTextDecoration="none"
                     >
-                        {sender.primaryOrganization.name}
+                        <span className={sendDataClassName}>{sender.primaryOrganization.name}</span>
                     </XView>
                 )}
 
@@ -150,12 +153,11 @@ export const NotCompactHeader = ({
                 <XView
                     paddingLeft={8}
                     fontSize={12}
-                    color="rgba(0, 0, 0, 0.4)"
-                    fontWeight="600"
+                    color="#7A7A7A"
                     alignSelf="flex-end"
                     marginBottom={-1}
                 >
-                    <XDate value={date.toString()} format="time" />
+                    <span className={sendDataClassName}><XDate value={date.toString()} format="time" /></span>
                 </XView>
             )}
         </XView>

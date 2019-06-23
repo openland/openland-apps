@@ -1,7 +1,7 @@
 import UploadCare from 'uploadcare-widget';
 import {
-    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
     FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
 } from 'openland-api/Types';
 
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -22,9 +22,8 @@ export const uploadFile = async ({
 }) => {
     const uploadingFile = new UploadCareUploading(file);
 
-    let res = await new Promise<string>((resolver, reject) => {
+    return await new Promise<string>((resolver, reject) => {
         uploadingFile.watch(state => {
-            console.log(state);
             if (state.status === UploadStatus.FAILED) {
                 reject();
             } else if (state.status === UploadStatus.UPLOADING) {
@@ -36,10 +35,6 @@ export const uploadFile = async ({
             }
         });
     });
-
-    console.log('Uploading finished');
-
-    return res;
 };
 
 export const useSendMethods = ({
