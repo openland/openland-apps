@@ -1,6 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
-import { backoff } from 'openland-y-utils/timer';
+import { backoff, delay } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
@@ -301,14 +301,16 @@ export class ConversationEngine implements MessageSendHandler {
 
     onClosed = () => {
         this.isOpen = false;
-        if (this.lastReadedDividerMessageId) {
-            let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
-            if (this.dataSource.hasItem(toDelete.key)) {
-                this.dataSource.removeItem(toDelete.key);
+        (async () => {
+            await delay(300);
+            if (this.lastReadedDividerMessageId) {
+                let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
+                if (this.dataSource.hasItem(toDelete.key)) {
+                    this.dataSource.removeItem(toDelete.key);
+                }
+                this.lastReadedDividerMessageId = undefined;
             }
-            this.lastReadedDividerMessageId = undefined;
-
-        }
+        })();
     }
 
     getState = () => {
@@ -711,7 +713,7 @@ export class ConversationEngine implements MessageSendHandler {
         let scrollTo: string | undefined = undefined;
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen) {
+            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && !src.sender.isYou) {
                 let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                 scrollTo = divider.key;
                 this.dataSource.addItem(divider, 0);
