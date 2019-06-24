@@ -13,6 +13,104 @@ const backgroundClassName = css`
     width: 100%;
 `;
 
+export type Tag = { id: string; title: string };
+export type TagGroup = { id: string; title?: string | null; subtitle?: string | null; tags: Tag[] };
+
+const TagButton = (props: { tag: Tag; selected: boolean; onPress: (tag: Tag) => void }) => {
+    let style: 'fill' | 'border' = 'fill' as any;
+
+    let callback = React.useCallback(() => {
+        props.onPress(props.tag);
+    }, [props.tag]);
+    return (
+        <XView
+            onClick={callback}
+            marginRight={10}
+            marginBottom={12}
+            paddingHorizontal={16}
+            paddingVertical={10}
+            borderRadius={12}
+            borderWidth={2}
+            // style={
+            //     {
+            //         // backgroundColor:
+            //         //     props.tag.id === 'button_more'
+            //         //         ? undefined
+            //         //         : props.selected
+            //         //         ? style === 'fill'
+            //         //             ? theme.accentColor
+            //         //             : theme.accentBackgroundColor
+            //         //         : theme.accentBackgroundColor,
+            //         // borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor,
+            //     }
+            // }
+        >
+            <span
+                style={{
+                    fontSize: 16,
+                    // fontWeight: TextStyles.weight.medium,
+                    // color: props.selected
+                    //     ? style === 'fill'
+                    //         ? theme.textInverseColor
+                    //         : theme.accentColor
+                    //     : theme.accentColor,
+                }}
+            >
+                {props.tag.title}
+            </span>
+        </XView>
+    );
+};
+
+const TagsCloud = (props: {
+    tagsGroup: TagGroup;
+    selected: Set<string>;
+    onSelectedChange: (selected: Set<string>) => void;
+}) => {
+    let [showAll, setShowAll] = React.useState(false);
+
+    let onShowAll = React.useCallback(() => {
+        setShowAll(!showAll);
+    }, [showAll]);
+
+    let onTagPress = (tag: Tag) => {
+        let selected = props.selected.has(tag.id);
+
+        if (selected) {
+            props.selected.delete(tag.id);
+        } else {
+            props.selected.add(tag.id);
+        }
+        props.onSelectedChange(props.selected);
+    };
+
+    return (
+        <XView flexDirection="column">
+            <XView height={15} />
+            {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroup.title}</Text>} */}
+            <XView marginBottom={18} flexDirection="row" flexWrap="wrap">
+                {props.tagsGroup.tags
+                    .filter((t, i) => showAll || i < 17)
+                    .map(tag => (
+                        <TagButton
+                            tag={tag}
+                            onPress={onTagPress}
+                            selected={props.selected.has(tag.id)}
+                        />
+                    ))}
+                {props.tagsGroup.tags.length > 17 && !showAll && (
+                    <TagButton
+                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
+                        onPress={onShowAll}
+                        selected={false}
+                    />
+                )}
+            </XView>
+            {/* {sub} */}
+        </XView>
+    );
+};
+
 export default withApp('Home', 'viewer', () => {
     return (
         <div className={backgroundClassName}>

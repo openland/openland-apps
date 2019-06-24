@@ -14,7 +14,7 @@ const Skip = () => {
     return <div className={skipClassName}>Skip</div>;
 };
 
-export const BackSkipLogo = () => {
+export const BackSkipLogo = ({ noLogo }: { noLogo?: boolean }) => {
     return (
         <XView
             flexDirection="row"
@@ -27,9 +27,11 @@ export const BackSkipLogo = () => {
                 <BackButton />
             </XView>
 
-            <XView>
-                <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-            </XView>
+            {!noLogo && (
+                <XView>
+                    <XImage src="/static/landing/logotype.svg" width={145} height={42} />
+                </XView>
+            )}
             <XView>
                 <Skip />
             </XView>
