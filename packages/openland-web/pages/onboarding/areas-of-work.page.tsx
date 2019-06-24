@@ -5,7 +5,6 @@ import { TopBar } from './components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { css } from 'linaria';
-import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from './components/BackSkipLogo';
 import { getPercentageOfOnboarding } from './utils';
 
@@ -17,25 +16,22 @@ const backgroundClassName = css`
 export default withApp('Home', 'viewer', () => {
     return (
         <div className={backgroundClassName}>
-            <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
+            <XDocumentHead title="Areas of work" />
+            <TopBar progressInPercents={getPercentageOfOnboarding(8)} />
             <XView marginBottom={150} marginTop={34}>
                 <BackSkipLogo />
             </XView>
 
             <XView flexDirection="row" justifyContent="center">
                 <XView flexDirection="column" alignSelf="center" alignItems="center">
-                    <XView marginBottom={21}>
-                        <ImgUnboardingStart />
-                    </XView>
                     <XView fontSize={24} marginBottom={12}>
-                        Discover Chat
+                        Areas of work
                     </XView>
                     <XView fontSize={16} marginBottom={40}>
-                        Find the right chats for you
+                        What areas have you worked on?
                     </XView>
 
-                    <XButton text="Start" style="primary" size="default" />
+                    <XButton text="Continue" style="primary" size="default" />
                 </XView>
             </XView>
         </div>

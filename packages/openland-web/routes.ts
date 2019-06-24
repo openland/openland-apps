@@ -83,7 +83,7 @@ routes.add('/discover/communities/', '/main/discover/communities');
 routes.add('/discover/recommended', '/main/discover/discover');
 routes.add('/discover/recommended/', '/main/discover/discover');
 routes.add('/discover/explore', '/main/discover/explore');
-routes.add('/discover/explore/', '/main/discover/explore');
+routes.add('/discover/expslore/', '/main/discover/explore');
 routes.add('/directory/r/:conversationId', '/main/discover/root');
 routes.add('/directory/r/:conversationId/', '/main/discover/root');
 routes.add('/directory/p/:conversationId', '/main/discover/root');
@@ -99,8 +99,14 @@ routes.add('/directory/c/:organizationId/', '/main/discover/communities');
 // Onboardinng
 //
 
-routes.add('/onboarding/', '/onboarding/start');
-routes.add('/onboarding/', '/onboarding/start/');
+routes.add('/onboarding/start', '/onboarding/start');
+routes.add('/onboarding/start/', '/onboarding/start/');
+routes.add('/onboarding/areas-of-work', '/onboarding/areas-of-work');
+routes.add('/onboarding/areas-of-work/', '/onboarding/areas-of-work/');
+routes.add('/onboarding/choose-role', '/onboarding/choose-role');
+routes.add('/onboarding/choose-role/', '/onboarding/choose-role/');
+routes.add('/onboarding/priorities', '/onboarding/priorities');
+routes.add('/onboarding/priorities/', '/onboarding/priorities/');
 
 //
 // Profiles

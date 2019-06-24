@@ -23,10 +23,10 @@ const topBarActiveClassName = css`
     mix-blend-mode: normal;
 `;
 
-export const TopBar = ({ progress }: { progress: number }) => {
+export const TopBar = ({ progressInPercents }: { progressInPercents: number }) => {
     return (
         <div className={topBarClassName}>
-            <div className={topBarActiveClassName} style={{ width: `${progress * 100}%` }} />
+            <div className={topBarActiveClassName} style={{ width: `${progressInPercents}%` }} />
         </div>
     );
 };
