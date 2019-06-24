@@ -235,7 +235,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (!first) {
                 break;
             }
-            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 40 }));
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 20 }));
             let batch = [...loaded.messages];
             batch.reverse();
             messages.unshift(...batch);
