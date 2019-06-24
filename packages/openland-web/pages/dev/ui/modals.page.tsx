@@ -7,6 +7,8 @@ import { XButton } from 'openland-x/XButton';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
+import { XScrollView3 } from '../../../../openland-x/XScrollView3';
+import { NativeAppsModal } from '../../../components/NativeAppsModal';
 
 const ResizableContent = React.memo(() => {
     let [height, setHeight] = React.useState(100);
@@ -26,6 +28,16 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                 <XVertical2>
                     <XTitle>for rooms</XTitle>
                     <XTitle>Modals</XTitle>
+                    <XButton
+                        text="Apps Modal"
+                        onClick={() =>
+                            showModalBox({ fullScreen: true }, () => (
+                                <XScrollView3 flexGrow={1} flexShrink={1}>
+                                    <NativeAppsModal />
+                                </XScrollView3>
+                            ))
+                        }
+                    />
                     <XButton
                         text="Show Modal"
                         onClick={() =>
