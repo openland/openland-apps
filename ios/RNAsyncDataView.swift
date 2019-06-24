@@ -221,7 +221,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   private var latestState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   var source: RNAsyncDataView
   var windowSize: Int = 0
-  var windowSizeBatchSize: Int = 20
   var unwatch: (() -> Void)!
   var completed = false
   var scrollTo: Int?
@@ -231,12 +230,12 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     
     self.unwatch = self.source.watch(delegate: self)
     if source.state.inited {
-      if source.state.items.count <= self.windowSizeBatchSize {
+      if source.state.items.count <= 20 {
         self.completed = true
         self.latestState = source.state
         self.state = source.state
       } else {
-        self.windowSize = min(source.state.items.count, self.windowSizeBatchSize)
+        self.windowSize = min(source.state.items.count, 20)
         let s = RNAsyncDataViewState(items: Array(source.state.items[0...max(self.windowSize-1, 0)]), completed: source.state.completed &&  self.windowSize == source.state.items.count, inited: true)
         self.latestState = source.state
         self.state = s
@@ -248,14 +247,14 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     queue.async {
       self.latestState = state
       
-      if self.latestState.items.count <= self.windowSizeBatchSize {
+      if self.latestState.items.count <= 20 {
         self.completed = true
         self.state = self.latestState
         for i in self.watchers.all() {
           i.value.onInited(state: state)
         }
       } else {
-        self.windowSize = min(state.items.count, self.windowSizeBatchSize)
+        self.windowSize = min(state.items.count, 20)
         let s = RNAsyncDataViewState(items: Array(state.items[0..<self.windowSize]), completed: false, inited: true)
         self.latestState = self.source.state
         self.state = s
@@ -394,7 +393,11 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     }
   }
   
-  func loadMore() {
+  func loadMore(){
+    self.loadMore(batchSize: 20);
+  }
+  
+  func loadMore(batchSize: Int) {
     queue.async {
       if !self.latestState.inited {
         return
@@ -407,8 +410,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
             self.source.loadMore()
             return
           }
-          if self.windowSize + self.windowSizeBatchSize <= self.latestState.items.count {
-            let loaded = min(self.latestState.items.count - self.windowSize, self.windowSizeBatchSize)
+          if self.windowSize + batchSize <= self.latestState.items.count {
+            let loaded = min(self.latestState.items.count - self.windowSize, batchSize)
             var itms = self.state.items.map {$0}
             for i in self.windowSize..<(self.windowSize+loaded) {
               itms.append(self.latestState.items[i])
@@ -435,7 +438,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
               }
             }
           }
-          self.windowSizeBatchSize = 20
         }
       }
     }
@@ -443,8 +445,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   
   func onScrollToRequested(index: Int) {
     if(index > self.windowSize){
-      self.windowSizeBatchSize = self.latestState.items.count - self.windowSize
-      self.loadMore()
+      self.loadMore(batchSize: self.latestState.items.count - self.windowSize)
     }
     queue.asyncAfter(deadline: .now() + .milliseconds(51)) {
       if(self.watchers.all().count == 0){
