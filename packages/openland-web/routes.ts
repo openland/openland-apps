@@ -96,6 +96,13 @@ routes.add('/directory/c/:organizationId', '/main/discover/communities');
 routes.add('/directory/c/:organizationId/', '/main/discover/communities');
 
 //
+// Onboardinng
+//
+
+routes.add('/onboarding/', '/onboarding/start');
+routes.add('/onboarding/', '/onboarding/start/');
+
+//
 // Profiles
 //
 
