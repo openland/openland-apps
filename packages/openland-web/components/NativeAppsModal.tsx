@@ -135,6 +135,25 @@ const MobileAppButton = (props: { href: string; image: string }) => (
 
 export const NativeAppsModal = () => {
     const isMobile = useIsMobile() || undefined;
+    let userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+
+    if (macPlatforms.indexOf(platform) !== -1) {
+        os = 'Mac';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+        os = 'Linux';
+    }
+
     return (
         <XView
             flexDirection="row"
@@ -213,21 +232,21 @@ export const NativeAppsModal = () => {
                         buttons={
                             <XView flexDirection="row" alignItems="center" marginTop={12}>
                                 <DesktopAppButton
-                                    active={true}
+                                    active={os === 'Mac'}
                                     title="Mac"
                                     icon={<MacIcon />}
                                     marginRight={12}
                                     href="https://oplnd.com/mac"
                                 />
                                 <DesktopAppButton
-                                    active={false}
+                                    active={os === 'Windows'}
                                     title="Windows"
                                     icon={<WinIcon />}
                                     marginRight={12}
                                     href="https://oplnd.com/windows"
                                 />
                                 <DesktopAppButton
-                                    active={false}
+                                    active={os === 'Linux'}
                                     title="Linux"
                                     icon={<LinuxIcon />}
                                     href="https://oplnd.com/linux"
