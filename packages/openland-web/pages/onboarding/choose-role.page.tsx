@@ -9,76 +9,13 @@ import { BackSkipLogo } from './components/BackSkipLogo';
 import { getPercentageOfOnboarding } from './utils';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
+import { TagsCloud } from './components/TagsCloud';
+import { TagGroup } from './components/TagButton';
 
 const backgroundClassName = css`
     background: white;
     width: 100%;
 `;
-
-export type Tag = { id: string; title: string };
-export type TagGroup = { id: string; title?: string | null; subtitle?: string | null; tags: Tag[] };
-
-const TagButton = (props: { tag: Tag; selected: boolean; onPress: (tag: Tag) => void }) => {
-    let callback = React.useCallback(() => {
-        props.onPress(props.tag);
-    }, [props.tag]);
-
-    return (
-        <XView marginRight={12} marginBottom={12}>
-            <XButton
-                onClick={callback}
-                text={props.tag.title}
-                style={props.selected ? 'primary' : 'light'}
-            />
-        </XView>
-    );
-};
-
-const TagsCloud = (props: {
-    tagsGroup: TagGroup;
-    selected: Set<string>;
-    onSelectedChange: (selected: Set<string>) => void;
-}) => {
-    let [showAll, setShowAll] = React.useState(false);
-
-    let onShowAll = React.useCallback(() => {
-        setShowAll(!showAll);
-    }, [showAll]);
-
-    let onTagPress = (tag: Tag) => {
-        let selected = props.selected.has(tag.id);
-
-        if (selected) {
-            props.selected.delete(tag.id);
-        } else {
-            props.selected.add(tag.id);
-        }
-        props.onSelectedChange(props.selected);
-    };
-
-    return (
-        <XView flexDirection="column">
-            <XView marginBottom={18} flexDirection="row" flexWrap="wrap" width={350}>
-                {props.tagsGroup.tags
-                    .filter((t, i) => showAll || i < 17)
-                    .map(tag => (
-                        <TagButton
-                            tag={tag}
-                            onPress={onTagPress}
-                            selected={props.selected.has(tag.id)}
-                        />
-                    ))}
-                {props.tagsGroup.tags.length > 17 && !showAll && (
-                    <TagButton
-                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                        onPress={onShowAll}
-                        selected={false}
-                    />
-                )}
-            </XView>
-        </XView>
-    );
-};
 
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
@@ -90,25 +27,11 @@ const TagsGroupPage = (props: {
         setCurretnSelected(new Set(s));
     }, []);
 
-    // let disabled = !selected.size && props.exclude.size <= 1;
-    // let next = React.useCallback(() => {
-    //     if (disabled) {
-    //         return;
-    //     }
-    //     (async () => {
-    //         let nextPath = 'Discover';
-
-    //         let params: any = { selected, exclude: new Set(props.exclude) };
-
-    //         // props.router.push(nextPath, params);
-    //     })();
-    // }, [selected, disabled]);
-
     if (!props.group) {
         return null;
     }
 
-    let { title, subtitle } = props.group;
+    // let { title, subtitle } = props.group;
 
     return (
         <>
@@ -122,36 +45,6 @@ const TagsGroupPage = (props: {
                 </XView>
                 <XView height={120} />
             </XScrollView3>
-
-            {/* <LinearGradient
-                colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]}
-                height={160}
-                position="absolute"
-                bottom={0}
-                width="100%"
-                justifyContent="center"
-                alignItems="center"
-                pointerEvents="none"
-            /> */}
-
-            {/* <ASSafeAreaContext.Consumer>
-                {sa => (
-                    <View
-                        alignContent="center"
-                        justifyContent="center"
-                        alignSelf="center"
-                        bottom={sa.bottom + 48}
-                    >
-                        <ZRoundedButton
-                            size="large"
-                            title="  Next  "
-                            style="default"
-                            enabled={!disabled}
-                            onPress={next}
-                        />
-                    </View>
-                )}
-            </ASSafeAreaContext.Consumer> */}
         </>
     );
 };
