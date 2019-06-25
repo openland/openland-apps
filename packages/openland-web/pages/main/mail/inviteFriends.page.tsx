@@ -241,11 +241,22 @@ const SocialButtonClassName = css`
     }
 `;
 
-const SocialButton = (props: { icon: any }) => (
-    <div className={SocialButtonClassName}>{props.icon}</div>
+interface SocialButtonProps {
+    icon: any;
+    href: string;
+}
+
+const SocialButton = (props: SocialButtonProps) => (
+    <a href={props.href} target="_blank" className={SocialButtonClassName}>
+        {props.icon}
+    </a>
 );
 
-const WritePostBlock = () => {
+const WritePostBlock = (props: { inviteKey: string }) => {
+    const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
+    const sharingText =
+        'In the heart of the French Alps, in the north east of the Rhone Alps region lies the village of Les Houches. Nestled at one end of the Chamonix valley\n';
+    const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
     const copyText = () => {
@@ -266,6 +277,9 @@ const WritePostBlock = () => {
             setCopied(false);
         }, 1500);
     };
+    const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${sharingUrl}`;
+    const linkedinHref = `https://www.linkedin.com/shareArticle?mini=false&url=${sharingUrl}`;
+    const twitterHref = `https://twitter.com/intent/tweet?text=${encodeURI(sharingTextFull)}`;
     return (
         <XView
             flexDirection="column"
@@ -280,6 +294,8 @@ const WritePostBlock = () => {
             </XView>
             <XView flexGrow={1} alignSelf="stretch">
                 <XTextArea
+                    value={sharingTextFull}
+                    onChange={() => null}
                     flexGrow={1}
                     height={140}
                     resize={false}
@@ -287,6 +303,21 @@ const WritePostBlock = () => {
                     padding={16}
                     ref={textAreaRef}
                 />
+                <XView
+                    position="absolute"
+                    width="100%"
+                    height="100%"
+                    top={0}
+                    left={0}
+                    padding={16}
+                    borderRadius={8}
+                    backgroundColor="#f2f3f4"
+                    fontSize={14}
+                    lineHeight={1.14}
+                    color="rgba(0, 0, 0, 0.9)"
+                >
+                    <span style={{ whiteSpace: 'pre-wrap' }}>{sharingTextFull}</span>
+                </XView>
             </XView>
             <XView marginTop={28} flexDirection="row" alignItems="flex-start">
                 <XView flexDirection="column" alignItems="center" marginRight={24}>
@@ -306,9 +337,9 @@ const WritePostBlock = () => {
                         paddingTop={3}
                         justifyContent="space-between"
                     >
-                        <SocialButton icon={<FacebookIcon />} />
-                        <SocialButton icon={<LinkedinIcon />} />
-                        <SocialButton icon={<TwitterIcon />} />
+                        <SocialButton icon={<FacebookIcon />} href={facebookHref} />
+                        <SocialButton icon={<LinkedinIcon />} href={linkedinHref} />
+                        <SocialButton icon={<TwitterIcon />} href={twitterHref} />
                     </XView>
                 </XView>
             </XView>
@@ -430,7 +461,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                     </span>
                 </XView>
                 {invitesAccepted && <InviteAcceptedBlock accepted={5} />}
-                <WritePostBlock />
+                <WritePostBlock inviteKey={openlandInvite} />
                 {!inviteLink && (
                     <XView marginBottom={20} flexGrow={1} alignSelf="stretch">
                         <ShowInviteInputButton
