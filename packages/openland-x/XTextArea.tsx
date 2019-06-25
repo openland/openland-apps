@@ -8,7 +8,6 @@ export interface XTextAreaProps extends XTextAreaBasicProps {
 }
 
 class XTextAreaStored extends React.PureComponent<XTextAreaProps & { store: XStoreState }> {
-
     onChangeHandler = (value: string) => {
         if (this.props.onChange) {
             this.props.onChange(value);
@@ -16,7 +15,7 @@ class XTextAreaStored extends React.PureComponent<XTextAreaProps & { store: XSto
         if (this.props.valueStoreKey) {
             this.props.store.writeValue(this.props.valueStoreKey, value);
         }
-    }
+    };
 
     render() {
         let { valueStoreKey, store, ...other } = this.props;
@@ -30,11 +29,23 @@ class XTextAreaStored extends React.PureComponent<XTextAreaProps & { store: XSto
                 value = existing.toString();
             }
         }
-        return (<XTextAreaBasic value={value} onChange={this.onChangeHandler} {...other} />);
+        return <XTextAreaBasic value={value} onChange={this.onChangeHandler} {...other} />;
     }
 }
 
 export class XTextArea extends React.PureComponent<XTextAreaProps> {
+    textAreaRef: any = null;
+
+    handler = (src: any) => {
+        if (src) {
+            this.textAreaRef = src;
+        }
+    };
+
+    focus() {
+        this.textAreaRef.focus();
+    }
+
     render() {
         let { valueStoreKey, ...other } = this.props;
         if (valueStoreKey) {
@@ -56,6 +67,6 @@ export class XTextArea extends React.PureComponent<XTextAreaProps> {
                 </XStoreContext.Consumer>
             );
         }
-        return (<XTextAreaBasic {...other} />);
+        return <XTextAreaBasic {...other} ref={this.handler} />;
     }
 }

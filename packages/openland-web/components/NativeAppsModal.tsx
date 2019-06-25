@@ -164,7 +164,7 @@ export const NativeAppsModal = () => {
             paddingRight={isMobile ? 40 : 0}
             paddingBottom={80}
         >
-            <XView position="absolute" top={19} left={32}>
+            <XView position="fixed" top={19} left={32}>
                 <XImage src="/static/landing/logotype.svg" width={145} height={42} />
             </XView>
             <XView
