@@ -303,6 +303,7 @@ const WritePostBlock = () => {
                         flexDirection="row"
                         alignItems="center"
                         width={132}
+                        paddingTop={3}
                         justifyContent="space-between"
                     >
                         <SocialButton icon={<FacebookIcon />} />
