@@ -13,6 +13,7 @@ import { BackSkipLogo } from './components/BackSkipLogo';
 import { getPercentageOfOnboarding } from './utils';
 import { TagsCloud } from './components/TagsCloud';
 import { TagGroup } from './components/TagButton';
+import { ChatsForYou } from './chats-for-you.page';
 
 const backgroundClassName = css`
     background: white;
@@ -148,8 +149,8 @@ export default withApp('Home', 'viewer', () => {
         { fetchPolicy: 'network-only' },
     );
 
-    if (discoverDone.betaIsDiscoverDone) {
-        return <div>Hello!</div>;
+    if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
+        return <ChatsForYou />;
     }
 
     const nextLocalState = {

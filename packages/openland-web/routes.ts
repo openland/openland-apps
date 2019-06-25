@@ -101,8 +101,8 @@ routes.add('/directory/c/:organizationId/', '/main/discover/communities');
 
 routes.add('/onboarding/start', '/onboarding/start');
 routes.add('/onboarding/start/', '/onboarding/start/');
-routes.add('/onboarding/choose-role', '/onboarding/choose-role');
-routes.add('/onboarding/choose-role/', '/onboarding/choose-role/');
+routes.add('/onboarding/chats-for-you', '/onboarding/chats-for-you');
+routes.add('/onboarding/chats-for-you/', '/onboarding/chats-for-you/');
 routes.add('/onboarding/discover', '/onboarding/discover');
 routes.add('/onboarding/discover/', '/onboarding/discover/');
 

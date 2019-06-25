@@ -15,7 +15,7 @@ const backgroundClassName = css`
     width: 100%;
 `;
 
-export default withApp('Home', 'viewer', () => {
+export const ChatsForYou = () => {
     const client = useClient();
     const data = client.useSuggestedRooms();
 
@@ -70,4 +70,8 @@ export default withApp('Home', 'viewer', () => {
             </XView>
         </div>
     );
+};
+
+export default withApp('Home', 'viewer', () => {
+    return <ChatsForYou />;
 });
