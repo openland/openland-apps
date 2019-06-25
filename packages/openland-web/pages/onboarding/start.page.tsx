@@ -7,6 +7,7 @@ import { XButton } from 'openland-x/XButton';
 import { css } from 'linaria';
 import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from './components/BackSkipLogo';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getPercentageOfOnboarding } from './utils';
 
 const backgroundClassName = css`
@@ -15,12 +16,14 @@ const backgroundClassName = css`
 `;
 
 export default withApp('Home', 'viewer', () => {
+    const router = React.useContext(XRouterContext)!;
+
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo />
+                <BackSkipLogo noSkip />
             </XView>
 
             <XView flexDirection="row" justifyContent="center">
@@ -35,7 +38,16 @@ export default withApp('Home', 'viewer', () => {
                         Find the right chats for you
                     </XView>
 
-                    <XButton text="Start" style="primary" size="default" />
+                    <XButton
+                        text="Start"
+                        style="primary"
+                        size="default"
+                        onClick={() => {
+                            if (router) {
+                                router.push('/onboarding/discover');
+                            }
+                        }}
+                    />
                 </XView>
             </XView>
         </div>

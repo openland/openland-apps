@@ -21,8 +21,11 @@ export const TagsCloud = (props: {
         } else {
             props.selected.add(tag.id);
         }
+
         props.onSelectedChange(props.selected);
     };
+
+    // console.log(selected);
 
     return (
         <XView flexDirection="column">

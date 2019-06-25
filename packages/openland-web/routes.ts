@@ -107,8 +107,8 @@ routes.add('/onboarding/choose-role', '/onboarding/choose-role');
 routes.add('/onboarding/choose-role/', '/onboarding/choose-role/');
 routes.add('/onboarding/priorities', '/onboarding/priorities');
 routes.add('/onboarding/priorities/', '/onboarding/priorities/');
-routes.add('/onboarding/chats-for-you', '/onboarding/chats-for-you');
-routes.add('/onboarding/chats-for-you/', '/onboarding/chats-for-you/');
+routes.add('/onboarding/discover', '/onboarding/discover');
+routes.add('/onboarding/discover/', '/onboarding/discover/');
 
 //
 // Profiles
