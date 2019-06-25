@@ -138,6 +138,8 @@ export default withApp('Home', 'viewer', () => {
         });
     };
 
+    let discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+
     let currentPage = client.useDiscoverNextPage(
         {
             selectedTagsIds: [...rootState.selected.values()],
@@ -145,6 +147,10 @@ export default withApp('Home', 'viewer', () => {
         },
         { fetchPolicy: 'network-only' },
     );
+
+    if (discoverDone.betaIsDiscoverDone) {
+        return <div>Hello!</div>;
+    }
 
     const nextLocalState = {
         selected: rootState.selected,
