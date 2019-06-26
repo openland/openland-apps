@@ -12,6 +12,7 @@ import { UserPopper } from 'openland-web/components/UserPopper';
 import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink2 } from 'openland-x/XLink2';
+import { XBadge } from 'openland-x/XBadge';
 
 const DeletedCommentHeader = () => {
     return (
@@ -100,23 +101,21 @@ export const NotCompactHeader = ({
                 {deleted ? (
                     <DeletedCommentHeader />
                 ) : (
-                    <>
-                        <XView
-                            flexDirection="row"
-                            fontSize={14}
-                            fontWeight="600"
-                            color="#292929"
-                            onMouseEnter={onAvatarOrUserNameMouseEnter}
-                            onMouseLeave={onAvatarOrUserNameMouseLeave}
-                        >
-                            <span className={sendDataClassName}>{senderNameEmojify}</span>
-                        </XView>
-                        {senderBadge && (
-                            <XView>
-                                {senderBadge.name}
-                            </XView>
-                        )}
-                    </>
+                    <XView
+                        flexDirection="row"
+                        fontSize={14}
+                        fontWeight="600"
+                        color="#292929"
+                        onMouseEnter={onAvatarOrUserNameMouseEnter}
+                        onMouseLeave={onAvatarOrUserNameMouseLeave}
+                    >
+                        <span className={sendDataClassName}>{senderNameEmojify}</span>
+                    </XView>
+                )}
+                {senderBadge && (
+                    <XView marginLeft={8} alignSelf="center">
+                        <XBadge {...senderBadge} />
+                    </XView>
                 )}
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView
