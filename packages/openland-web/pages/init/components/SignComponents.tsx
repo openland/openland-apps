@@ -5,7 +5,6 @@ import { XView } from 'react-mental';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { InitTexts } from '../_text';
 import { XForm } from 'openland-x-forms/XForm2';
@@ -13,12 +12,10 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormField2 } from 'openland-x-forms/XFormField2';
-import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XText } from 'openland-x/XText';
 import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
@@ -33,6 +30,14 @@ import {
 } from 'openland-web/pages/auth/ask-email.page';
 export const RoomCreateWithEmail = RoomCreateWithEmailReimport;
 export const WebSignUpCreateWithEmail = WebSignUpCreateWithEmailReimport;
+import {
+    WebSignUpActivationCode as WebSignUpActivationCodeReimport,
+    RoomActivationCode as RoomActivationCodeReimport,
+} from 'openland-web/pages/auth/ask-activation-code.page';
+export const RoomActivationCode = RoomActivationCodeReimport;
+export const WebSignUpActivationCode = WebSignUpActivationCodeReimport;
+import { CreateProfileFormInner as CreateProfileFormInnerReimport } from 'openland-web/pages/auth/introduce-yourself.page';
+export const CreateProfileFormInner = CreateProfileFormInnerReimport;
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -766,359 +771,6 @@ export const ContentWrapper = Glamorous.div<{ noPadding?: boolean }>(props => ({
 }));
 
 // AuthMechanism end
-// ActivationCode start
-
-const SmallerText = Glamorous.div({
-    opacity: 0.6,
-    fontSize: 13,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    letterSpacing: 'normal',
-    color: '#000000',
-});
-
-const ResendCodeRow = Glamorous(XVertical)({
-    marginTop: 12,
-});
-
-const ResendButton = Glamorous(XButton)({
-    '& .button-content': {
-        paddingLeft: 4,
-        paddingRight: 0,
-        fontWeight: 'normal',
-        fontSize: 13,
-    },
-});
-
-type ActivationCodeProps = {
-    signin: boolean;
-    emailWasResend: boolean;
-    emailSending: boolean;
-    backButtonClick: (event?: React.MouseEvent<any>) => void;
-    resendCodeClick: (event?: React.MouseEvent<any>) => void;
-    codeError: string;
-    emailSendedTo: string;
-    codeChanged: (value: string, cb: () => void) => void;
-    codeSending: boolean;
-    codeValue: string;
-    loginCodeStart: (event?: React.MouseEvent<any>) => void;
-};
-
-const InputWrapperDesctopClassName = css`
-    width: 300px;
-`;
-
-export const WebSignUpActivationCode = ({
-    signin,
-    backButtonClick,
-    resendCodeClick,
-    emailSendedTo,
-    emailSending,
-    emailWasResend,
-    codeSending,
-    loginCodeStart,
-    codeChanged,
-    codeValue,
-    codeError,
-}: ActivationCodeProps) => {
-    const isMobile = useIsMobile();
-    return (
-        <XForm
-            defaultData={{
-                input: {
-                    code: codeValue,
-                },
-            }}
-            defaultAction={({ input: { code } }) => {
-                codeChanged(code, () => {
-                    loginCodeStart();
-                });
-            }}
-            defaultLayout={false}
-        >
-            <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
-            {emailSendedTo && (
-                <SubTitle>
-                    We just sent it to <strong>{emailSendedTo}</strong>
-                </SubTitle>
-            )}
-            <ButtonsWrapper marginTop={40} width={isMobile ? 300 : '100%'}>
-                <XFormField2
-                    field="input.code"
-                    className={isMobile ? undefined : InputWrapperDesctopClassName}
-                >
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                width={isMobile ? undefined : 300}
-                                invalid={codeError !== ''}
-                                field="input.code"
-                                pattern="[0-9]*"
-                                type="number"
-                                autofocus={true}
-                                size="large"
-                                placeholder={InitTexts.auth.codePlaceholder}
-                                flexGrow={1}
-                                flexShrink={0}
-                                onChange={value => codeChanged(value, () => null)}
-                            />
-                            {codeError && <ErrorText>{codeError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ResendCodeRow alignItems="center">
-                <XHorizontal alignItems="center" separator="none">
-                    {emailSending ? (
-                        <>
-                            <SmallerText>Sending code...</SmallerText>
-                        </>
-                    ) : (
-                        <>
-                            <SmallerText>
-                                {emailWasResend
-                                    ? 'Code successfully sent.'
-                                    : InitTexts.auth.haveNotReceiveCode}
-                            </SmallerText>
-                            <ResendButton
-                                onClick={resendCodeClick}
-                                style="link"
-                                text={InitTexts.auth.resend}
-                            />
-                        </>
-                    )}
-                </XHorizontal>
-            </ResendCodeRow>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XHorizontal alignItems="center">
-                        <XButton
-                            onClick={backButtonClick}
-                            size="large"
-                            style="ghost"
-                            text={InitTexts.auth.back}
-                        />
-                        <XFormSubmit
-                            dataTestId="continue-button"
-                            style="primary"
-                            loading={codeSending}
-                            size="large"
-                            alignSelf="center"
-                            text={InitTexts.auth.continue}
-                        />
-                    </XHorizontal>
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
-    );
-};
-
-export const RoomActivationCode = ({
-    signin,
-    emailWasResend,
-    emailSending,
-    backButtonClick,
-    resendCodeClick,
-    emailSendedTo,
-    codeSending,
-    loginCodeStart,
-    codeError,
-    codeChanged,
-    codeValue,
-}: ActivationCodeProps) => {
-    return (
-        <XForm
-            defaultData={{
-                input: {
-                    code: codeValue,
-                },
-            }}
-            defaultAction={({ input: { code } }) => {
-                codeChanged(code, () => {
-                    loginCodeStart();
-                });
-            }}
-            defaultLayout={false}
-        >
-            <Title roomView={true}>{InitTexts.auth.enterActivationCode}</Title>
-            {emailSendedTo && (
-                <SubTitle>
-                    We just sent it to <strong>{emailSendedTo}</strong>
-                </SubTitle>
-            )}
-            <ButtonsWrapper marginTop={40} width={280}>
-                <XFormField2 field="input.code">
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                invalid={codeError !== ''}
-                                field="input.code"
-                                pattern="[0-9]*"
-                                type="number"
-                                autofocus={true}
-                                size="large"
-                                placeholder={InitTexts.auth.codePlaceholder}
-                                onChange={value => codeChanged(value, () => null)}
-                            />
-                            {codeError && <ErrorText>{codeError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ResendCodeRow alignItems="center">
-                <XHorizontal alignItems="center" separator="none">
-                    {emailSending ? (
-                        <>
-                            <SmallerText>Sending code...</SmallerText>
-                        </>
-                    ) : (
-                        <>
-                            <SmallerText>
-                                {emailWasResend
-                                    ? 'Code successfully sent.'
-                                    : InitTexts.auth.haveNotReceiveCode}
-                            </SmallerText>
-                            <ResendButton
-                                onClick={resendCodeClick}
-                                style="link"
-                                text={InitTexts.auth.resend}
-                            />
-                        </>
-                    )}
-                </XHorizontal>
-            </ResendCodeRow>
-
-            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XVertical alignItems="center">
-                    <XHorizontal alignItems="center">
-                        <XButton
-                            onClick={backButtonClick}
-                            size="large"
-                            style="ghost"
-                            text={InitTexts.auth.back}
-                        />
-                        <XFormSubmit
-                            dataTestId="continue-button"
-                            style="primary"
-                            loading={codeSending}
-                            size="large"
-                            alignSelf="center"
-                            text={InitTexts.auth.continue}
-                        />
-                    </XHorizontal>
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
-    );
-};
-
-// ActivationCode end
-// CreateProfile start
-
-const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
-    marginBottom: 26,
-});
-
-const XFormSubmitWrapper = Glamorous(XFormSubmit)({
-    marginTop: 50,
-    '@media(max-width: 500px)': {
-        marginTop: 25,
-    },
-});
-
-export const CreateProfileFormInner = (props: {
-    roomView: boolean;
-    prefill: any;
-    defaultAction: (data: any) => any;
-}) => {
-    const { roomView, prefill, defaultAction } = props;
-
-    return (
-        <XTrack event="signup_profile_view">
-            <ContentWrapper noPadding={true}>
-                <Title roomView={roomView}>{InitTexts.create_profile.title}</Title>
-                <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-                <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
-                    <XForm
-                        defaultData={{
-                            input: {
-                                firstName: (prefill && prefill.firstName) || '',
-                                lastName: (prefill && prefill.lastName) || '',
-                            },
-                        }}
-                        validate={{
-                            input: {
-                                firstName: [
-                                    {
-                                        rule: (value: string) => value !== '',
-                                        errorMessage: InitTexts.auth.firstNameIsEmptyError,
-                                    },
-                                ],
-                            },
-                        }}
-                        defaultAction={defaultAction}
-                        defaultLayout={false}
-                    >
-                        <XFormError onlyGeneralErrors={true} width={472} />
-                        <XFormLoadingContent>
-                            <XVertical alignItems="center">
-                                <XAvatarUploadWrapper
-                                    field="input.photoRef"
-                                    dataTestId="photo"
-                                    size="default"
-                                    initialUrl={prefill ? prefill.picture : undefined}
-                                />
-
-                                <XView>
-                                    <XFormField2 field="input.firstName">
-                                        {({ showError }: { showError: boolean }) => (
-                                            <>
-                                                <XInput
-                                                    invalid={showError}
-                                                    field="input.firstName"
-                                                    size="large"
-                                                    title="First name"
-                                                    dataTestId="first-name"
-                                                    flexGrow={1}
-                                                />
-
-                                                {showError && (
-                                                    <XFormError field="input.firstName" />
-                                                )}
-                                            </>
-                                        )}
-                                    </XFormField2>
-                                </XView>
-
-                                <XView>
-                                    <XInput
-                                        field="input.lastName"
-                                        size="large"
-                                        title="Last name"
-                                        dataTestId="last-name"
-                                        flexGrow={1}
-                                    />
-                                </XView>
-
-                                <ButtonsWrapper marginBottom={84}>
-                                    <XFormSubmitWrapper
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={InitTexts.create_profile.continue}
-                                        size="large"
-                                    />
-                                </ButtonsWrapper>
-                            </XVertical>
-                        </XFormLoadingContent>
-                    </XForm>
-                </ButtonsWrapper>
-            </ContentWrapper>
-        </XTrack>
-    );
-};
-
-// CreateProfile end
 // CreateOrganization start
 
 const InfoText = Glamorous.span({
