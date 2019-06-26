@@ -122,23 +122,6 @@ export default withApp('Home', 'viewer', () => {
         exclude: new Set<string>(arrowify(exclude)),
     });
 
-    let onContinueClick = async (data: any) => {
-        router.push(
-            `/onboarding/discover?${qs.stringify({
-                selected: [...rootState.selected.values(), ...data.selected.values()],
-                exclude: [...rootState.exclude.values(), ...data.exclude.values()],
-            })}`,
-        );
-
-        setRootState({
-            ...nextLocalState,
-            selected: new Set<string>([
-                ...nextLocalState.selected.values(),
-                ...data.selected.values(),
-            ]),
-        });
-    };
-
     let discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
     let currentPage = client.useDiscoverNextPage(
@@ -159,6 +142,23 @@ export default withApp('Home', 'viewer', () => {
             ...rootState.exclude.values(),
             currentPage.betaNextDiscoverPage!!.tagGroup!!.id,
         ]),
+    };
+
+    let onContinueClick = async (data: any) => {
+        router.push(
+            `/onboarding/discover?${qs.stringify({
+                selected: [...rootState.selected.values(), ...data.selected.values()],
+                exclude: [...rootState.exclude.values(), ...data.exclude.values()],
+            })}`,
+        );
+
+        setRootState({
+            ...nextLocalState,
+            selected: new Set<string>([
+                ...nextLocalState.selected.values(),
+                ...data.selected.values(),
+            ]),
+        });
     };
 
     return (

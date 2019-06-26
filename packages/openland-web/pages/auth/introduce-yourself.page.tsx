@@ -21,7 +21,7 @@ export default withApp('Home', 'viewer', () => {
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
+            <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
             <XView marginBottom={150} marginTop={34}>
                 <BackSkipLogo noSkip />
             </XView>
