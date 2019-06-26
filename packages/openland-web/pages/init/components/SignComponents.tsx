@@ -27,6 +27,12 @@ import {
 } from 'openland-web/pages/auth/create-new-account.page';
 export const RoomAuthMechanism = RoomAuthMechanismReimport;
 export const WebSignUpAuthMechanism = WebSignUpAuthMechanismReimport;
+import {
+    WebSignUpCreateWithEmail as WebSignUpCreateWithEmailReimport,
+    RoomCreateWithEmail as RoomCreateWithEmailReimport,
+} from 'openland-web/pages/auth/ask-email.page';
+export const RoomCreateWithEmail = RoomCreateWithEmailReimport;
+export const WebSignUpCreateWithEmail = WebSignUpCreateWithEmailReimport;
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -47,7 +53,7 @@ interface ButtonProps extends XLinkProps {
     dataTestId?: string;
 }
 
-const ErrorText = Glamorous.div({
+export const ErrorText = Glamorous.div({
     fontSize: 12,
     color: '#d75454',
     paddingLeft: 17,
@@ -1008,149 +1014,6 @@ export const RoomActivationCode = ({
 };
 
 // ActivationCode end
-// CreateWithEmail start
-
-type CreateWithEmailProps = {
-    signin: boolean;
-    emailError: string;
-    emailChanged: (value: string, cb: () => void) => void;
-    emailValue: string;
-    loginEmailStart: () => void;
-    emailSending: boolean;
-};
-
-export const RoomCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
-    const isMobile = useIsMobile();
-    const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
-    return (
-        <XForm
-            defaultData={{
-                input: {
-                    email: emailValue,
-                },
-            }}
-            defaultAction={({ input: { email } }) => {
-                emailChanged(email, () => {
-                    loginEmailStart();
-                });
-            }}
-            defaultLayout={false}
-        >
-            <Title roomView={true}>
-                {signin
-                    ? InitTexts.auth.signinRoomSignUpEmail
-                    : InitTexts.auth.signupRoomSignUpEmail}
-            </Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={280}>
-                <XFormField2 field="input.email">
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                autofocus
-                                width={isMobile ? undefined : 300}
-                                invalid={emailError !== ''}
-                                dataTestId="email"
-                                field="input.email"
-                                type="email"
-                                size="large"
-                                placeholder={InitTexts.auth.emailPlaceholder}
-                                onChange={value => emailChanged(value, () => null)}
-                            />
-                            {emailError && <ErrorText>{emailError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XVertical alignItems="center">
-                    <XFormSubmit
-                        dataTestId="continue-button"
-                        style="primary"
-                        loading={emailSending}
-                        size="large"
-                        alignSelf="center"
-                        text={InitTexts.auth.continue}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
-    );
-};
-
-export const WebSignUpCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
-    const isMobile = useIsMobile();
-    const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
-    return (
-        <XForm
-            defaultData={{
-                input: {
-                    email: emailValue,
-                },
-            }}
-            defaultAction={({ input: { email } }) => {
-                emailChanged(email, () => {
-                    loginEmailStart();
-                });
-            }}
-            defaultLayout={false}
-            width="100%"
-        >
-            <Title roomView={false}>
-                {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
-            </Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={330}>
-                <XFormField2 field="input.email">
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                autofocus
-                                width={isMobile ? undefined : 300}
-                                invalid={emailError !== ''}
-                                dataTestId="email"
-                                field="input.email"
-                                type="email"
-                                size="large"
-                                placeholder={InitTexts.auth.emailPlaceholder}
-                                onChange={value => emailChanged(value, () => null)}
-                            />
-                            {emailError && <ErrorText>{emailError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XFormSubmit
-                        dataTestId="continue-button"
-                        style="primary"
-                        loading={emailSending}
-                        size="large"
-                        alignSelf="center"
-                        text={InitTexts.auth.continue}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
-    );
-};
-
-// CreateWithEmail end
 // CreateProfile start
 
 const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
