@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
-import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
+import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
@@ -14,7 +14,6 @@ import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const log = createLogger('Engine-Messages');
 
@@ -37,6 +36,7 @@ export interface DataSourceMessageItem {
     senderId: string;
     senderName: string;
     senderPhoto?: string;
+    senderBadge?: UserBadge;
     text?: string;
     title?: string;
     isEdited?: boolean;
@@ -95,6 +95,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         senderId: src.sender.id,
         senderName: src.sender.name,
         senderPhoto: src.sender.photo || undefined,
+        senderBadge: src.senderBadge ? src.senderBadge : (src.sender.primaryBadge ? src.sender.primaryBadge : undefined),
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
@@ -122,6 +123,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.Message_me
         message: src.text || null,
         fallback: src.fallback || 'unknown message type',
         sender: src.sender,
+        senderBadge: src.senderBadge || null,
         spans: src.spans || [],
         commentsCount: src.commentsCount || 0,
         attachments: src.attachments || [],

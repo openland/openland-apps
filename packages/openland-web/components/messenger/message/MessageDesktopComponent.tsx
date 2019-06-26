@@ -527,6 +527,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     compact={message.attachTop}
                     selecting={hideMenu}
                     sender={message.sender}
+                    senderBadge={message.senderBadge}
                     senderNameEmojify={message.senderNameEmojify}
                     selected={!!selected}
                     selectMessage={this.selectMessage}

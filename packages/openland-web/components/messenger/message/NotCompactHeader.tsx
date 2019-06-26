@@ -5,6 +5,7 @@ import {
     UserShort,
     RoomHeader_room_SharedRoom,
     RoomHeader_room,
+    UserBadge,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
@@ -53,6 +54,7 @@ type NotCompactHeaderT = {
     isComment: boolean;
     userPopperRef: React.RefObject<UserPopper>;
     senderNameEmojify?: any;
+    senderBadge?: UserBadge;
     selecting: boolean;
     isEditView: boolean;
     isEdited: boolean;
@@ -73,6 +75,7 @@ export const NotCompactHeader = ({
     userPopperRef,
     room,
     senderNameEmojify,
+    senderBadge,
     selecting,
     isEditView,
     isEdited,
@@ -97,16 +100,23 @@ export const NotCompactHeader = ({
                 {deleted ? (
                     <DeletedCommentHeader />
                 ) : (
-                    <XView
-                        flexDirection="row"
-                        fontSize={14}
-                        fontWeight="600"
-                        color="#292929"
-                        onMouseEnter={onAvatarOrUserNameMouseEnter}
-                        onMouseLeave={onAvatarOrUserNameMouseLeave}
-                    >
-                        <span className={sendDataClassName}>{senderNameEmojify}</span>
-                    </XView>
+                    <>
+                        <XView
+                            flexDirection="row"
+                            fontSize={14}
+                            fontWeight="600"
+                            color="#292929"
+                            onMouseEnter={onAvatarOrUserNameMouseEnter}
+                            onMouseLeave={onAvatarOrUserNameMouseLeave}
+                        >
+                            <span className={sendDataClassName}>{senderNameEmojify}</span>
+                        </XView>
+                        {senderBadge && (
+                            <XView>
+                                {senderBadge.name}
+                            </XView>
+                        )}
+                    </>
                 )}
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView
