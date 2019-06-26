@@ -75,7 +75,7 @@ const LocalDiscoverComponent = ({
         <div className={backgroundClassName}>
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={progressInPercents} />
-            <XView marginBottom={150} marginTop={34}>
+            <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
                         // TODO back

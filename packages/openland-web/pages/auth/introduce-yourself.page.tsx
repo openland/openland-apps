@@ -190,7 +190,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
             <XDocumentHead title="Discover" />
 
             <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-            <XView marginBottom={150} marginTop={34}>
+            <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
                         router.replace('/auth2/ask-activation-code');

@@ -172,7 +172,7 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
-            <XView marginBottom={150} marginTop={34}>
+            <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
                         router.replace('/auth2/create-new-account');

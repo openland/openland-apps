@@ -13,8 +13,9 @@ import {
     ButtonsWrapper,
     GoogleButton,
     EmailButton,
-    SubTitle,
 } from 'openland-web/pages/init/components/SignComponents';
+
+import { XButton } from 'openland-x/XButton';
 
 const SeparatorStyle = Glamorous.div<{
     marginTop?: number;
@@ -99,6 +100,31 @@ type AuthMechanism = {
     loginWithEmail: Function;
 };
 
+const noHightLightClassName = css`
+    color: #000000;
+    opacity: 0.5;
+    text-decoration: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 0 !important;
+`;
+
+const Footer = () => {
+    return (
+        <RoomTerms>
+            By creating an account you are accepting our{' '}
+            <XLink className={noHightLightClassName} href="https://openland.com/terms">
+                Terms of Service
+            </XLink>{' '}
+            and{' '}
+            <XLink className={noHightLightClassName} href="https://openland.com/privacy">
+                Privacy Policy
+            </XLink>
+            .
+        </RoomTerms>
+    );
+};
+
 export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
@@ -116,13 +142,7 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
                 <EmailButton onClick={loginWithEmail} text={emailText} rounded={true} />
             </ButtonsWrapper>
 
-            {!signin && (
-                <RoomTerms>
-                    By creating an account you are accepting our{' '}
-                    <XLink href="https://openland.com/terms">Terms of Service</XLink> and{' '}
-                    <XLink href="https://openland.com/privacy">Privacy Policy</XLink>.
-                </RoomTerms>
-            )}
+            {!signin && <Footer />}
         </ContentWrapper>
     );
 };
@@ -133,34 +153,61 @@ export const WebSignUpAuthMechanism = ({
     loginWithEmail,
 }: AuthMechanism) => {
     const auth = InitTexts.auth;
-    const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
-    const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
+    const title = 'Create new account';
+
     const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
-        <div>
-            <Title roomView={false}>{title}</Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
-                <Separator />
-                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
-            </ButtonsWrapper>
-        </div>
+        <>
+            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+                <XView fontSize={24} fontWeight="600">
+                    {title}
+                </XView>
+
+                <XView marginTop={34} width={220}>
+                    <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                    <XView marginTop={15}>
+                        <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+                    </XView>
+                </XView>
+
+                <XView marginTop={36} alignItems="center">
+                    <XView flexDirection="row" alignItems="center">
+                        <XView>Already have an account?</XView>{' '}
+                        <XView marginLeft={-10} marginRight={-16}>
+                            <XButton
+                                text="Log in"
+                                style="link"
+                                onClick={() => {
+                                    //
+                                }}
+                            />
+                        </XView>
+                    </XView>
+                </XView>
+            </XView>
+
+            <XView position="absolute" bottom={0} width="100%">
+                <XView alignItems="center">
+                    <Footer />
+                </XView>
+            </XView>
+        </>
     );
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Create New Account" />
-            <XView marginBottom={150} marginTop={34}>
+
+            <XView marginTop={34}>
                 <BackSkipLogo onBack={null} onSkip={null} />
             </XView>
 
             <WebSignUpAuthMechanism {...props} />
-        </div>
+        </XView>
     );
 };
 

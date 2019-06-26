@@ -217,7 +217,7 @@ export const EnterYourOrganizationPage = () => {
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
-            <XView marginBottom={150} marginTop={34}>
+            <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
                         router.replace('/auth2/introduce-yourself');

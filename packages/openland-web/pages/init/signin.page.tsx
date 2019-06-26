@@ -14,17 +14,15 @@ import {
     RoomCreateWithEmail,
     WebSignUpCreateWithEmail,
     WebSignUpActivationCode,
-    InviteInfoInner,
+    AcceptInvitePage,
 } from './components/SignComponents';
 import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
-import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { trackEvent } from 'openland-x-analytics';
 
 function validateEmail(email: string) {
@@ -360,7 +358,7 @@ class SignInComponent extends React.Component<
                     headerStyle={headerStyle}
                 >
                     {pageMode === 'SignInInvite' && (
-                        <InviteInfo
+                        <AcceptInvitePage
                             variables={{
                                 inviteKey: this.props.router.query.redirect.split('/')[2],
                             }}

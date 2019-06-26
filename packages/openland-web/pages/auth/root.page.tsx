@@ -24,8 +24,7 @@ const checkIfIsSignInInvite = (router: any) => {
         router.query &&
         router.query.redirect &&
         (router.query.redirect.split('/')[1] === 'invite' ||
-            router.query.redirect.split('/')[1] === 'joinChannel' ||
-            router.query.redirect.split('/')[1] === 'join')
+            router.query.redirect.split('/')[1] === 'joinChannel')
     );
 };
 
@@ -70,7 +69,7 @@ export default () => {
         isInvitePageSignin = true;
     }
 
-    if (router.path.includes('accept-invite') || isInvitePageSignin) {
+    if (router.path.includes('accept-invite') || isInvitePage) {
         page = pages.acceptInvite;
     } else if (router.path.includes('ask-activation-code')) {
         page = pages.askActivationCode;
@@ -268,10 +267,9 @@ export default () => {
                     variables={{
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
-                    signin={signin}
-                    loginWithGoogle={loginWithGoogle}
-                    loginWithEmail={loginWithEmail}
-                    isInvitePageSignin={isInvitePageSignin}
+                    onAcceptInvite={() => {
+                        router.push('/auth2/create-new-account');
+                    }}
                 />
             )}
             {page === pages.askActivationCode && (

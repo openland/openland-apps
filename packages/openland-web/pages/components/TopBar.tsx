@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 const topBarClassName = css`
     width: 100%;
@@ -13,7 +13,7 @@ const topBarClassName = css`
 
 const topBarActiveClassName = css`
     position: absolute;
-    width: 790px;
+    width: 100%;
     height: 5px;
     left: 0px;
     top: 0px;
@@ -23,10 +23,15 @@ const topBarActiveClassName = css`
     mix-blend-mode: normal;
 `;
 
-export const TopBar = ({ progressInPercents }: { progressInPercents: number }) => {
+export const TopBar = ({ progressInPercents }: { progressInPercents?: number }) => {
     return (
-        <div className={topBarClassName}>
-            <div className={topBarActiveClassName} style={{ width: `${progressInPercents}%` }} />
+        <div className={cx(topBarClassName)}>
+            {progressInPercents && (
+                <div
+                    className={topBarActiveClassName}
+                    style={{ width: `${progressInPercents}%` }}
+                />
+            )}
         </div>
     );
 };

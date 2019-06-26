@@ -280,7 +280,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
-            <XView marginBottom={150} marginTop={34}>
+            <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
                         router.replace('/auth2/ask-email');

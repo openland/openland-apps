@@ -24,6 +24,8 @@ import { CreateProfileFormInner as CreateProfileFormInnerReimport } from 'openla
 export const CreateProfileFormInner = CreateProfileFormInnerReimport;
 import { CreateOrganizationFormInner as CreateOrganizationFormInnerReimport } from 'openland-web/pages/auth/enter-your-organization.page';
 export const CreateOrganizationFormInner = CreateOrganizationFormInnerReimport;
+import { AcceptInvitePage as AcceptInvitePageReimport } from 'openland-web/pages/auth/accept-invite.page';
+export const AcceptInvitePage = AcceptInvitePageReimport;
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -181,7 +183,7 @@ export const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
 
 // WebSignUpContainer start
 
-const RootContainer = Glamorous.div({
+export const RootContainer = Glamorous.div({
     display: 'flex',
     width: '100%',
 });
@@ -209,7 +211,7 @@ const RootContainerContentStyles = Glamorous.div({
     },
 });
 
-const RootContainerContent = (props: { children: any }) => (
+export const RootContainerContent = (props: { children: any }) => (
     <RootContainerContentStyles>{props.children}</RootContainerContentStyles>
 );
 
@@ -333,7 +335,7 @@ interface SignContainerProps extends HeaderProps {
     children?: any;
 }
 
-const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
+export const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
     return {
         width: 522,
         display: 'flex',
@@ -356,6 +358,16 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
     };
 });
 
+export const WebSignUpFooter = () => {
+    return (
+        <FooterText>
+            By creating an account you are accepting our{' '}
+            <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink> and{' '}
+            <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
+        </FooterText>
+    );
+};
+
 export const WebSignUpContainer = (props: SignContainerProps) => (
     <RootContainer>
         <RootContainerContent>
@@ -370,12 +382,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => (
             </MainContent>
             <Footer>
                 {props.showTerms ? (
-                    <FooterText>
-                        By creating an account you are accepting our{' '}
-                        <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink>{' '}
-                        and{' '}
-                        <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
-                    </FooterText>
+                    <WebSignUpFooter />
                 ) : (
                     <FooterText>© {new Date().getFullYear()} Openland</FooterText>
                 )}
