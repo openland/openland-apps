@@ -816,7 +816,7 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
     );
 };
 
-export const WebSignUpAuthMechanism = ({
+export const OldWebSignUpAuthMechanism = ({
     signin,
     loginWithGoogle,
     loginWithEmail,
@@ -835,6 +835,27 @@ export const WebSignUpAuthMechanism = ({
                 <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
                 <Separator />
                 <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const WebSignUpAuthMechanism = ({
+    signin,
+    loginWithGoogle,
+    loginWithEmail,
+}: AuthMechanism) => {
+    const auth = InitTexts.auth;
+    const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
+    const emailText = signin ? auth.signinEmail : auth.signupEmail;
+
+    return (
+        <div>
+            <Title roomView={false}>Create new account</Title>
+            <ButtonsWrapper marginTop={52} width={280}>
+                <GoogleButton rounded onClick={loginWithGoogle} text={'Sign up with Google'} />
+                <XView height={15} />
+                <EmailButton rounded onClick={loginWithEmail} text={'Sign up with Email'} />
             </ButtonsWrapper>
         </div>
     );

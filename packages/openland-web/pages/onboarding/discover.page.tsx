@@ -8,11 +8,11 @@ import { XButton } from 'openland-x/XButton';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { TopBar } from './components/TopBar';
-import { BackSkipLogo } from './components/BackSkipLogo';
-import { getPercentageOfOnboarding } from './utils';
-import { TagsCloud } from './components/TagsCloud';
-import { TagGroup } from './components/TagButton';
+import { TopBar } from '../components/TopBar';
+import { BackSkipLogo } from '../components/BackSkipLogo';
+import { getPercentageOfOnboarding } from '../components/utils';
+import { TagsCloud } from '../components/TagsCloud';
+import { TagGroup } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 
 const backgroundClassName = css`

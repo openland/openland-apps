@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from './components/TopBar';
+import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { css } from 'linaria';
-import { BackSkipLogo } from './components/BackSkipLogo';
-import { getPercentageOfOnboarding } from './utils';
+import { BackSkipLogo } from '../components/BackSkipLogo';
+import { getPercentageOfOnboarding } from '../components/utils';
 import { useClient } from 'openland-web/utils/useClient';
 import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';

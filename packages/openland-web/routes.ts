@@ -311,6 +311,20 @@ routes.add('auth/logout');
 routes.add('auth/complete');
 
 //
+routes.add('/auth/accept-invite', '/auth/accept-invite');
+routes.add('/auth/accept-invite/', '/auth/accept-invite/');
+routes.add('/auth/ask-activation-code', '/auth/ask-activation-code');
+routes.add('/auth/ask-activation-code/', '/auth/ask-activation-code/');
+routes.add('/auth/ask-email', '/auth/ask-email');
+routes.add('/auth/ask-email/', '/auth/ask-email/');
+routes.add('/auth/create-new-account', '/auth/create-new-account');
+routes.add('/auth/create-new-account/', '/auth/create-new-account/');
+routes.add('/auth/enter-your-organization', '/auth/enter-your-organization');
+routes.add('/auth/enter-your-organization/', '/auth/enter-your-organization/');
+routes.add('/auth/introduce-yourself', '/auth/introduce-yourself');
+routes.add('/auth/introduce-yourself/', '/auth/introduce-yourself/');
+
+//
 // Shortnames
 //
 
