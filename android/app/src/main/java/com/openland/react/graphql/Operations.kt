@@ -1718,6 +1718,7 @@ private val ProfileSelector = obj(
                     field("primaryOrganization","primaryOrganization", obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("id","id", notNull(scalar("ID"))),
+                            field("membersCount","membersCount", notNull(scalar("Int"))),
                             field("name","name", notNull(scalar("String")))
                         )),
                     field("website","website", scalar("String"))
@@ -3240,7 +3241,7 @@ object Operations {
     val Profile = object: OperationDefinition {
         override val name = "Profile"
         override val kind = OperationKind.QUERY
-        override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}"
+        override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id membersCount name}website}}"
         override val selector = ProfileSelector
     }
     val ProfilePrefill = object: OperationDefinition {

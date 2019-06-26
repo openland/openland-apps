@@ -30,6 +30,7 @@ export const ProfileQuery = gql`
             primaryOrganization {
                 id
                 name
+                membersCount
             }
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy {

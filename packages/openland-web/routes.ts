@@ -125,6 +125,8 @@ routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 routes.add('/invitePeople', '/main/mail/invitePeople');
 routes.add('/invitePeople/', '/main/mail/invitePeople');
+routes.add('/inviteFriends', '/main/mail/inviteFriends');
+routes.add('/inviteFriends/', '/main/mail/inviteFriends');
 
 //
 // Mail

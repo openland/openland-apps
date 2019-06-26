@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="201" height="157" fill="none" viewBox="0 0 201 157">
+    <g filter="url(#a)">
+        <path fill="#fff" d="M16 24.611A8.612 8.612 0 0 1 24.611 16H176.39A8.611 8.611 0 0 1 185 24.611v104.414a8.612 8.612 0 0 1-8.611 8.612H24.611A8.612 8.612 0 0 1 16 129.025V24.612z"/>
+        <path stroke="#E7F0F8" stroke-width="4" d="M24.611 14C18.752 14 14 18.75 14 24.611v104.414c0 5.861 4.75 10.612 10.611 10.612H176.39c5.86 0 10.611-4.751 10.611-10.612V24.612C187 18.75 182.249 14 176.389 14H24.611z"/>
+    </g>
+    <path fill="#fff" d="M23.535 27.84a4.306 4.306 0 0 1 4.306-4.305h145.318a4.306 4.306 0 0 1 4.306 4.306v97.955a4.306 4.306 0 0 1-4.306 4.306H27.841a4.306 4.306 0 0 1-4.306-4.306V27.841z"/>
+    <mask id="b" width="155" height="108" x="23" y="23" maskUnits="userSpaceOnUse">
+        <path fill="#fff" d="M23.535 27.84a4.306 4.306 0 0 1 4.306-4.305h145.318a4.306 4.306 0 0 1 4.306 4.306v97.955a4.306 4.306 0 0 1-4.306 4.306H27.841a4.306 4.306 0 0 1-4.306-4.306V27.841z"/>
+    </mask>
+    <g mask="url(#b)">
+        <circle cx="35.914" cy="58.519" r="8.073" fill="#FFCB44"/>
+        <rect width="35.522" height="4.306" x="47.217" y="52.599" fill="#1790FF" opacity=".5" rx="2.153"/>
+        <rect width="79.656" height="4.306" x="47.217" y="61.21" fill="#1790FF" opacity=".2" rx="2.153"/>
+        <circle cx="35.914" cy="81.124" r="8.073" fill="#7EDEF3"/>
+        <rect width="53.822" height="4.306" x="47.217" y="75.204" fill="#1790FF" opacity=".5" rx="2.153"/>
+        <rect width="101.185" height="4.306" x="47.217" y="83.815" fill="#1790FF" opacity=".2" rx="2.153"/>
+        <circle cx="35.914" cy="103.729" r="8.073" fill="#AAE163"/>
+        <rect width="35.522" height="4.306" x="47.217" y="97.809" fill="#1790FF" opacity=".5" rx="2.153"/>
+        <rect width="68.892" height="4.306" x="47.217" y="106.42" fill="#1790FF" opacity=".2" rx="2.153"/>
+        <circle cx="35.914" cy="126.334" r="8.073" fill="#F39696"/>
+        <rect width="53.822" height="4.306" x="47.217" y="120.414" fill="#1790FF" opacity=".5" rx="2.153"/>
+        <rect width="101.185" height="4.306" x="47.217" y="129.025" fill="#1790FF" opacity=".2" rx="2.153"/>
+        <path fill="#ABD7FF" d="M23.535 26.764a3.23 3.23 0 0 1 3.23-3.23h147.471a3.23 3.23 0 0 1 3.229 3.23v16.147H23.535V26.764z"/>
+        <rect width="33.369" height="4.306" x="47.217" y="31.07" fill="#fff" rx="2.153"/>
+        <rect width="8.611" height="8.611" x="31.07" y="28.917" fill="#fff" rx="1.076"/>
+    </g>
+    <path fill="url(#c)" d="M83.815 141.637h33.369v15.07H83.815z"/>
+    <defs>
+        <filter id="a" width="201" height="153.637" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="6"/>
+            <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+        </filter>
+        <linearGradient id="c" x1="100.5" x2="100.5" y1="141.637" y2="156.707" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E7F0F8"/>
+            <stop offset="1" stop-color="#E7F0F8" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+</svg>

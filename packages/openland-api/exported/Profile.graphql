@@ -35,6 +35,7 @@ query Profile {
     primaryOrganization {
       __typename
       id
+      membersCount
       name
     }
     website

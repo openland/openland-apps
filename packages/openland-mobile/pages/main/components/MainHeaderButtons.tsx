@@ -23,7 +23,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress:
                         style={{
                             position: 'absolute',
                             top: Platform.OS === 'ios' ? 10 : 10,
-                            right: Platform.OS === 'ios' ? 11 : 2,
+                            right: Platform.OS === 'ios' ? 7 : 2,
                             width: 10,
                             height: 10,
                             borderRadius: 5,

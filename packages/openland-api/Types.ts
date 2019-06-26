@@ -64799,6 +64799,7 @@ export interface Profile_profile_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
+  membersCount: number;
 }
 
 export interface Profile_profile_invitedBy {

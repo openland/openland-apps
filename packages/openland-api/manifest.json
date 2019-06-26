@@ -1213,10 +1213,10 @@
       }
     },
     {
-      "signature": "a388a282621369646de9778f6e16e9e5b09db2f04d88fa47de98ab6d195dfe53",
-      "document": "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}",
+      "signature": "84fdaa6164bf5ce47b3d7c76aca08ce355a7659ff24b0cf1b71c61ce202c1ee7",
+      "document": "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id membersCount name}website}}",
       "metadata": {
-        "engineSignature": "query Profile{me{__typename id shortname}myProfile{__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaLinkedin alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}"
+        "engineSignature": "query Profile{me{__typename id shortname}myProfile{__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaLinkedin alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id membersCount name}website}}"
       }
     },
     {

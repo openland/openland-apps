@@ -169,7 +169,7 @@ interface XTextAreaBasicState {
 }
 
 export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTextAreaBasicState> {
-    TextAreaRef: any | null = null;
+    textAreaRef: any | null = null;
 
     constructor(props: XTextAreaBasicProps) {
         super(props);
@@ -192,7 +192,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
             e.focus();
         }
         if (e) {
-            this.TextAreaRef = e;
+            this.textAreaRef = e;
         }
     };
 
@@ -212,7 +212,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
     };
 
     focus() {
-        this.TextAreaRef.focus();
+        this.textAreaRef.focus();
     }
 
     render() {
@@ -253,6 +253,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
                     minHeight={this.props.minHeight}
                     rounded={this.props.rounded}
                     padding={this.props.padding}
+                    innerRef={this.handleRef}
                 />
             </div>
         );
