@@ -9,6 +9,7 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
+import { UserBadge } from 'openland-api/fragments/UserBadge';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -843,9 +844,13 @@ export const RoomMembersPaginatedQuery = gql`
             role
             membership
             canKick
+            badge {
+                ...UserBadge
+            }
         }
     }
     ${UserShort}
+    ${UserBadge}
 `;
 
 export const RoomSettingsUpdateMutation = gql`

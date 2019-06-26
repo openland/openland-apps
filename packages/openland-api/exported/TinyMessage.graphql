@@ -8,6 +8,10 @@ fragment TinyMessage on ModernMessage {
     __typename
     ...UserTiny
   }
+  senderBadge {
+    __typename
+    ...UserBadge
+  }
   ... on GeneralMessage {
     attachments {
       __typename

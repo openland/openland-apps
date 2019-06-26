@@ -69,6 +69,10 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                     id
                     name
                   }
+                  senderBadge {
+                    __typename
+                    ...UserBadge
+                  }
                 }
               }
             }

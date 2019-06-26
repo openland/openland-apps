@@ -1,0 +1,6 @@
+fragment UserBadge on UserBadge {
+  __typename
+  id
+  name
+  verified
+}

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { UserBadge } from './UserBadge';
 
 export const UserForMention = gql`
     fragment UserForMention on User {
@@ -6,9 +7,13 @@ export const UserForMention = gql`
         id
         name
         photo
+        primaryBadge {
+            ...UserBadge
+        }
         primaryOrganization {
             id
             name
         }
     }
+    ${UserBadge}
 `;

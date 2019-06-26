@@ -6,6 +6,10 @@ fragment UserTiny on User {
   lastName
   name
   photo
+  primaryBadge {
+    __typename
+    ...UserBadge
+  }
   primaryOrganization {
     __typename
     ...OrganizationShort

@@ -36,6 +36,7 @@ import * as RoomNano from './fragments/RoomNano';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
+import * as UserBadge from './fragments/UserBadge';
 import * as UserForMention from './fragments/UserForMention';
 import * as UserFull from './fragments/UserFull';
 import * as UserShort from './fragments/UserShort';
@@ -249,6 +250,7 @@ export const RoomNanoFragment = typedFragment<Types.RoomNano>(RoomNano.RoomNano)
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
+export const UserBadgeFragment = typedFragment<Types.UserBadge>(UserBadge.UserBadge);
 export const UserForMentionFragment = typedFragment<Types.UserForMention>(UserForMention.UserForMention);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);

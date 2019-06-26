@@ -8,6 +8,10 @@ fragment FullMessage on ModernMessage {
     __typename
     ...UserShort
   }
+  senderBadge {
+    __typename
+    ...UserBadge
+  }
   spans {
     __typename
     length
@@ -128,6 +132,10 @@ fragment FullMessage on ModernMessage {
       sender {
         __typename
         ...UserShort
+      }
+      senderBadge {
+        __typename
+        ...UserBadge
       }
       spans {
         __typename
