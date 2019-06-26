@@ -19,6 +19,7 @@ import {
     ErrorText,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 type CreateWithEmailProps = {
     signin: boolean;
@@ -165,13 +166,19 @@ export const WebSignUpCreateWithEmail = ({
     );
 };
 
-export default withApp('Home', 'viewer', () => {
+export const AskEmailPage = () => {
+    let router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/auth2/create-new-account');
+                    }}
+                    onSkip={null}
+                />
             </XView>
 
             <WebSignUpCreateWithEmail
@@ -188,4 +195,6 @@ export default withApp('Home', 'viewer', () => {
             />
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', AskEmailPage);

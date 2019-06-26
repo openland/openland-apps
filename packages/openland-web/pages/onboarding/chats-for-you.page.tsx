@@ -11,6 +11,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const backgroundClassName = css`
     background: white;
@@ -130,6 +131,7 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
 
 export const ChatsForYou = () => {
     const client = useClient();
+    let router = React.useContext(XRouterContext)!;
     const data = client.useSuggestedRooms();
 
     const rooms: SuggestedRooms_suggestedRooms_SharedRoom[] = [];
@@ -146,7 +148,14 @@ export const ChatsForYou = () => {
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
             <XView marginBottom={12} marginTop={34}>
-                <BackSkipLogo noLogo />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/onboarding/discover');
+                    }}
+                    onSkip={() => {
+                        router.push('/');
+                    }}
+                />
             </XView>
 
             <XView flexDirection="row" justifyContent="center" paddingBottom={76}>

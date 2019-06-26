@@ -59,6 +59,7 @@ const LocalDiscoverComponent = ({
     graphState: { selected: any; exclude: any };
     progressInPercents: number;
 }) => {
+    const router = React.useContext(XRouterContext)!;
     const [localState, setLocalState] = React.useState(graphState);
 
     if (!group) {
@@ -75,7 +76,15 @@ const LocalDiscoverComponent = ({
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={progressInPercents} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo />
+                <BackSkipLogo
+                    onBack={() => {
+                        // TODO back
+                        // remove external node
+                    }}
+                    onSkip={() => {
+                        router.push('/');
+                    }}
+                />
             </XView>
 
             <XView flexDirection="row" justifyContent="center">

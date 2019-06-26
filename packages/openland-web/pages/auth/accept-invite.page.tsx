@@ -15,7 +15,7 @@ const backgroundClassName = css`
     width: 100%;
 `;
 
-export default withApp('Home', 'viewer', () => {
+export const AcceptInvitePage = () => {
     const router = React.useContext(XRouterContext)!;
 
     return (
@@ -23,7 +23,7 @@ export default withApp('Home', 'viewer', () => {
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo onBack={null} onSkip={null} />
             </XView>
 
             <XView flexDirection="row" justifyContent="center">
@@ -52,4 +52,6 @@ export default withApp('Home', 'viewer', () => {
             </XView>
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', AcceptInvitePage);

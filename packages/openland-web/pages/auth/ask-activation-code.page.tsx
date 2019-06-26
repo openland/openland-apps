@@ -22,6 +22,7 @@ import {
     ErrorText,
 } from 'openland-web/pages/init/components/SignComponents';
 import { InitTexts } from 'openland-web/pages/init/_text';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const backgroundClassName = css`
     background: white;
@@ -273,13 +274,19 @@ export const RoomActivationCode = ({
     );
 };
 
-export default withApp('Home', 'viewer', () => {
+export const AskActivationPage = () => {
+    let router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/auth2/ask-email');
+                    }}
+                    onSkip={null}
+                />
             </XView>
 
             <WebSignUpActivationCode
@@ -305,4 +312,6 @@ export default withApp('Home', 'viewer', () => {
             />
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', AskActivationPage);

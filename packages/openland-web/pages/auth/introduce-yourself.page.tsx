@@ -5,7 +5,6 @@ import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getPercentageOfOnboarding } from '../components/utils';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -24,6 +23,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const backgroundClassName = css`
     background: white;
@@ -132,15 +132,19 @@ export const CreateProfileFormInner = (props: {
     );
 };
 
-export default withApp('Home', 'viewer', () => {
+export const IntroduceYourselfPage = () => {
     const router = React.useContext(XRouterContext)!;
-
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/auth2/ask-activation-code');
+                    }}
+                    onSkip={null}
+                />
             </XView>
 
             <CreateProfileFormInner
@@ -152,4 +156,6 @@ export default withApp('Home', 'viewer', () => {
             />
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', IntroduceYourselfPage);

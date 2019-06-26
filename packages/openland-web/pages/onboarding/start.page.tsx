@@ -23,7 +23,14 @@ export default withApp('Home', 'viewer', () => {
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/auth2/enter-your-organization');
+                    }}
+                    onSkip={() => {
+                        router.push('/');
+                    }}
+                />
             </XView>
 
             <XView flexDirection="row" justifyContent="center">

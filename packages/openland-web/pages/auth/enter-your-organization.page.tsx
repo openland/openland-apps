@@ -26,6 +26,7 @@ import {
 } from 'openland-web/pages/init/components/SignComponents';
 import { trackEvent } from 'openland-x-analytics';
 import Glamorous from 'glamorous';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const XIconWrapper = Glamorous.span({
     fontSize: 20,
@@ -203,13 +204,21 @@ export class CreateOrganizationFormInner extends React.Component<
     }
 }
 
-export default withApp('Home', 'viewer', () => {
+export const EnterYourOrganizationPage = () => {
+    let router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo />
+                <BackSkipLogo
+                    onBack={() => {
+                        router.replace('/auth2/introduce-yourself');
+                    }}
+                    onSkip={() => {
+                        router.push('/onboarding/discover');
+                    }}
+                />
             </XView>
 
             <CreateOrganizationFormInner
@@ -224,4 +233,6 @@ export default withApp('Home', 'viewer', () => {
             />
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', EnterYourOrganizationPage);

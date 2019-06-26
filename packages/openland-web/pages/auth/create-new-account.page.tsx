@@ -12,10 +12,54 @@ import {
     Title,
     ButtonsWrapper,
     GoogleButton,
-    Separator,
     EmailButton,
     SubTitle,
 } from 'openland-web/pages/init/components/SignComponents';
+import { TopBar } from '../components/TopBar';
+import { getPercentageOfOnboarding } from '../components/utils';
+
+const SeparatorStyle = Glamorous.div<{
+    marginTop?: number;
+    marginBottom?: number;
+}>(props => ({
+    width: '100%',
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.7,
+    fontSize: 16,
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    color: '#1f3449',
+    zIndex: 0,
+    marginTop: props.marginTop ? props.marginTop : 15,
+    marginBottom: props.marginBottom ? props.marginBottom : 15,
+    '&:before': {
+        content: `''`,
+        position: 'absolute',
+        left: 0,
+        top: '50%',
+        display: 'block',
+        height: 1,
+        width: '100%',
+        backgroundColor: '#dcdee4',
+        zIndex: 0,
+    },
+    '& > div': {
+        display: 'block',
+        width: 35,
+        backgroundColor: '#fff',
+        textAlign: 'center',
+        zIndex: 1,
+    },
+}));
+
+const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
+    <SeparatorStyle {...props}>
+        <div>or</div>
+    </SeparatorStyle>
+);
 
 const backgroundClassName = css`
     background: white;
@@ -109,13 +153,12 @@ export const WebSignUpAuthMechanism = ({
     );
 };
 
-export default withApp('Home', 'viewer', () => {
+export const CreateNewAccountPage = () => {
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Create New Account" />
-            {/* <TopBar progressInPercents={getPercentageOfOnboarding(6)} /> */}
             <XView marginBottom={150} marginTop={34}>
-                <BackSkipLogo noSkip />
+                <BackSkipLogo onBack={null} onSkip={null} />
             </XView>
 
             <WebSignUpAuthMechanism
@@ -129,4 +172,6 @@ export default withApp('Home', 'viewer', () => {
             />
         </div>
     );
-});
+};
+
+export default withApp('Home', 'viewer', CreateNewAccountPage);
