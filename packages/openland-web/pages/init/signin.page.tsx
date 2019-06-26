@@ -32,60 +32,6 @@ function validateEmail(email: string) {
     return re.test(String(email).toLowerCase());
 }
 
-const InviteInfo = (props: {
-    variables: { inviteKey: string };
-    signin: boolean;
-    loginWithGoogle: Function;
-    loginWithEmail: Function;
-    isInvitePageSignin: boolean;
-}) => {
-    const client = useClient();
-
-    const resolvedInvite = client.useWithoutLoaderResolvedInvite({
-        key: props.variables.inviteKey,
-    });
-
-    if (!resolvedInvite || !resolvedInvite.invite) {
-        return <XLoader loading={true} />;
-    }
-
-    let inviter;
-
-    if (resolvedInvite && resolvedInvite.invite) {
-        if (resolvedInvite.invite.__typename === 'AppInvite') {
-            inviter = resolvedInvite.invite.inviter;
-        } else if (resolvedInvite.invite.__typename === 'RoomInvite') {
-            inviter = resolvedInvite.invite.invitedByUser;
-        } else if (resolvedInvite.invite.__typename === 'InviteInfo') {
-            inviter = resolvedInvite.invite.creator;
-        }
-    }
-
-    if (resolvedInvite.invite.__typename === 'RoomInvite') {
-        return <XPageRedirect path={`/joinChannel/${props.variables.inviteKey}`} />;
-    }
-
-    if (resolvedInvite.invite.__typename === 'InviteInfo') {
-        return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
-    }
-
-    let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-
-    if (!inviter) {
-        return <XLoader loading={true} />;
-    }
-    return (
-        <InviteInfoInner
-            signin={props.signin}
-            inviter={inviter}
-            signPath={signPath}
-            loginWithGoogle={props.loginWithGoogle}
-            loginWithEmail={props.loginWithEmail}
-            isInvitePageSignin={props.isInvitePageSignin}
-        />
-    );
-};
-
 const checkIfIsSignInInvite = (router: any) => {
     return (
         router.query &&

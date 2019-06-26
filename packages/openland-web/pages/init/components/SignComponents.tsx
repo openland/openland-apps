@@ -1,11 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { InitTexts } from '../_text';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XText } from 'openland-x/XText';
+
 import {
     WebSignUpAuthMechanism as WebSignUpAuthMechanismReimport,
     RoomAuthMechanism as RoomAuthMechanismReimport,
@@ -162,18 +158,6 @@ const ImgButton = (props: ButtonProps) => {
         </StyledButton>
     );
 };
-
-const SignInInviteTitle = Glamorous.div({
-    textAlign: 'center',
-    opacity: 0.9,
-    fontSize: 32,
-    fontWeight: 600,
-    lineHeight: '31px',
-    letterSpacing: 0.8,
-    color: '#121e2b',
-    paddingTop: 24,
-    paddingBottom: 26,
-});
 
 export const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
     return {
@@ -677,63 +661,6 @@ export const EmailButton = (props: {
     );
 };
 
-// InviteInfoInner start
-export const InviteInfoInner = ({
-    inviter,
-    signPath,
-    loginWithGoogle,
-    loginWithEmail,
-    signin,
-    isInvitePageSignin,
-}: {
-    loginWithGoogle: Function;
-    loginWithEmail: Function;
-    signPath: string;
-    signin: boolean;
-    isInvitePageSignin: boolean;
-    inviter: { photo: string | null; name: string; id: string };
-}) => {
-    const googleButtonText = isInvitePageSignin
-        ? InitTexts.auth.signinGoogle
-        : InitTexts.auth.signupGoogle;
-    const emailText = isInvitePageSignin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail;
-
-    return (
-        <div>
-            <XVertical alignItems="center">
-                <XHorizontal alignItems="center">
-                    <XAvatar
-                        size={'small'}
-                        cloudImageUuid={inviter.photo || undefined}
-                        objectName={inviter.name}
-                        objectId={inviter.id}
-                    />
-                    <XText fontSize={16} color="#000000">
-                        {inviter.name + ' invites you to join'}
-                    </XText>
-                </XHorizontal>
-            </XVertical>
-            <SignInInviteTitle>Welcome to Openland</SignInInviteTitle>
-            <SubTitle
-                style={{
-                    maxWidth: 535,
-                }}
-            >
-                <p>
-                    Openland is a professional messenger designed <br /> to support all
-                    communication needs of a modern business. <br /> Currently it&apos;s in
-                    invite-only mode.
-                </p>
-            </SubTitle>
-            <ButtonsWrapper marginTop={37} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
-                <Separator />
-                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
-            </ButtonsWrapper>
-        </div>
-    );
-};
-// InviteInfoInner end
 // AuthMechanism start
 
 export const ContentWrapper = Glamorous.div<{ noPadding?: boolean }>(props => ({

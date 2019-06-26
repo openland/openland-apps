@@ -24,7 +24,8 @@ const checkIfIsSignInInvite = (router: any) => {
         router.query &&
         router.query.redirect &&
         (router.query.redirect.split('/')[1] === 'invite' ||
-            router.query.redirect.split('/')[1] === 'joinChannel')
+            router.query.redirect.split('/')[1] === 'joinChannel' ||
+            router.query.redirect.split('/')[1] === 'join')
     );
 };
 
@@ -60,7 +61,16 @@ export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
-    if (router.path.includes('accept-invite')) {
+    const isSignInInvite = checkIfIsSignInInvite(router);
+
+    let isInvitePage = isSignInInvite;
+    let isInvitePageSignin = false;
+
+    if (isInvitePage && router.path.endsWith('/signup')) {
+        isInvitePageSignin = true;
+    }
+
+    if (router.path.includes('accept-invite') || isInvitePageSignin) {
         page = pages.acceptInvite;
     } else if (router.path.includes('ask-activation-code')) {
         page = pages.askActivationCode;
@@ -68,9 +78,15 @@ export default () => {
         page = pages.askEmail;
     } else if (router.path.includes('create-new-account')) {
         page = pages.createNewAccount;
-    } else if (router.path.includes('enter-your-organization')) {
+    } else if (
+        router.path.includes('enter-your-organization') ||
+        router.path.includes('/createOrganization')
+    ) {
         page = pages.enterYourOrganization;
-    } else if (router.path.includes('introduce-yourself')) {
+    } else if (
+        router.path.includes('introduce-yourself') ||
+        router.path.includes('/createProfile')
+    ) {
         page = pages.introduceYourself;
     }
 
@@ -91,7 +107,6 @@ export default () => {
     if (isMobile) {
         fromRoom = false;
     }
-    const isSignInInvite = checkIfIsSignInInvite(router);
 
     let title;
     if (isSignInInvite) {
@@ -111,8 +126,10 @@ export default () => {
     const [emailSent, setEmailSent] = React.useState(false);
     const [signInInvite, setSignInInvite] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
+    const [fromOutside, setFromOutside] = React.useState(false);
 
     const fireEmail = async (cb?: Function) => {
+        console.log('fireEmail');
         Cookie.set('auth-type', 'email', { path: '/' });
         if (redirect) {
             Cookie.set('sign-redirect', redirect, { path: '/' });
@@ -138,6 +155,7 @@ export default () => {
     };
 
     const loginCodeStart = async () => {
+        console.log('loginCodeStart');
         if (codeValue === '') {
             trackError('no_code');
 
@@ -175,6 +193,7 @@ export default () => {
     };
 
     const fireGoogle = async () => {
+        console.log('fireGoogle');
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
             connection: 'google-oauth2',
@@ -224,24 +243,37 @@ export default () => {
             setEmailSent(false);
             setSignInInvite(false);
             fireEmail();
+            setTimeout(() => {
+                router.push('/auth2/ask-activation-code');
+            }, 0);
         }
     };
 
     const codeValueChanged = (val: string, cb: () => void) => {
         setCodeValue(val);
         setCodeError('');
-        setTimeout(cb, 0);
+        setTimeout(cb, 100);
     };
 
     const emailValueChanged = (val: string, cb: () => void) => {
         setEmailValue(val);
         setEmailError('');
-        setTimeout(cb, 0);
+        setTimeout(cb, 100);
     };
 
     return (
         <>
-            {page === pages.acceptInvite && <AcceptInvitePage />}
+            {page === pages.acceptInvite && (
+                <AcceptInvitePage
+                    variables={{
+                        inviteKey: router.query.redirect.split('/')[2],
+                    }}
+                    signin={signin}
+                    loginWithGoogle={loginWithGoogle}
+                    loginWithEmail={loginWithEmail}
+                    isInvitePageSignin={isInvitePageSignin}
+                />
+            )}
             {page === pages.askActivationCode && (
                 <XTrack event="code_view">
                     <AskActivationPage
@@ -257,14 +289,7 @@ export default () => {
                         }}
                         emailSendedTo={emailValue}
                         backButtonClick={() => {
-                            // this.setState(
-                            //     {
-                            //         fromOutside: false,
-                            //     },
-                            //     () => {
-                            //         this.loginWithEmail();
-                            //     },
-                            // );
+                            setFromOutside(false);
                         }}
                         codeError={codeError}
                         codeChanged={codeValueChanged}
@@ -300,7 +325,7 @@ export default () => {
                 </XTrack>
             )}
             {page === pages.enterYourOrganization && <EnterYourOrganizationPage />}
-            {page === pages.introduceYourself && <IntroduceYourselfPage />}
+            {page === pages.introduceYourself && <IntroduceYourselfPage roomView={false} />}
         </>
     );
 };

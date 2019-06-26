@@ -17,6 +17,8 @@ import {
     ButtonsWrapper,
     SubTitle,
     ContentWrapper,
+    RoomSignupContainer,
+    WebSignUpContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XTrack } from 'openland-x-analytics/XTrack';
@@ -24,6 +26,11 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { useClient } from 'openland-web/utils/useClient';
+import * as Cookie from 'js-cookie';
+import { delayForewer } from 'openland-y-utils/timer';
+import { CreateProfileInput } from 'openland-api/Types';
 
 const backgroundClassName = css`
     background: white;
@@ -132,11 +139,56 @@ export const CreateProfileFormInner = (props: {
     );
 };
 
-export const IntroduceYourselfPage = () => {
+const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    if (canUseDOM) {
+        localStorage.setItem('isnewuser', 'newuser');
+    }
+
+    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+
+    const data = client.useWithoutLoaderProfilePrefill();
+
+    const createProfile = async ({
+        variables,
+    }: {
+        variables: {
+            input: CreateProfileInput;
+        };
+    }) => {
+        await client.mutateProfileCreate(variables);
+        await client.refetchAccount();
+    };
+
+    const prefill = usePhotoPrefill && data ? data.prefill : null;
+
+    return (
+        <CreateProfileFormInner
+            {...{
+                roomView,
+                prefill,
+
+                defaultAction: async (submitData: { input: CreateProfileInput }) => {
+                    await createProfile({ variables: submitData });
+                    let redirect = router.query.redirect;
+                    window.location.href = redirect ? redirect : '/';
+
+                    router.push('/auth2/enter-your-organization');
+                    await delayForewer();
+                },
+            }}
+        />
+    );
+};
+
+export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
     const router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
+
             <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
             <XView marginBottom={150} marginTop={34}>
                 <BackSkipLogo
@@ -147,15 +199,9 @@ export const IntroduceYourselfPage = () => {
                 />
             </XView>
 
-            <CreateProfileFormInner
-                roomView={false}
-                prefill
-                defaultAction={() => {
-                    //
-                }}
-            />
+            <CreateProfileFormRoot roomView={roomView} />
         </div>
     );
 };
 
-export default withApp('Home', 'viewer', IntroduceYourselfPage);
+export default withApp('Home', 'viewer', () => <IntroduceYourselfPage roomView={false} />);

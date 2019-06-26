@@ -18,12 +18,12 @@ routes.add('/privacy/', '/landing/privacy');
 //
 
 routes.add('/', '/init/root');
-routes.add('/signup', '/init/signin');
-routes.add('/signup/', '/init/signin');
-routes.add('/signin', '/init/signin');
-routes.add('/signin/', '/init/signin');
-routes.add('/signin/invite', '/init/signin');
-routes.add('/signin/invite/', '/init/signin');
+routes.add('/signup', '/auth/root');
+routes.add('/signup/', '/auth/root');
+routes.add('/signin', '/auth/root');
+routes.add('/signin/', '/auth/root');
+routes.add('/signin/invite', '/auth/root');
+routes.add('/signin/invite/', '/auth/root');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
@@ -32,10 +32,10 @@ routes.add('/waitlist', '/init/waitlist');
 routes.add('/waitlist/', '/init/waitlist');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
-routes.add('/createProfile', '/init/createProfile');
-routes.add('/createProfile/', '/init/createProfile');
-routes.add('/createOrganization', '/init/createOrganization');
-routes.add('/createOrganization/', '/init/createOrganization');
+routes.add('/createProfile', '/auth/root');
+routes.add('/createProfile/', '/auth/root');
+routes.add('/createOrganization', '/auth/root');
+routes.add('/createOrganization/', '/auth/root');
 routes.add('/404', '/404');
 
 //

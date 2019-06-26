@@ -284,12 +284,19 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                 <BackSkipLogo
                     onBack={() => {
                         router.replace('/auth2/ask-email');
+                        props.backButtonClick();
                     }}
                     onSkip={null}
                 />
             </XView>
 
-            <WebSignUpActivationCode {...props} />
+            <WebSignUpActivationCode
+                {...props}
+                backButtonClick={() => {
+                    router.replace('/auth2/ask-email');
+                    props.backButtonClick();
+                }}
+            />
         </div>
     );
 };

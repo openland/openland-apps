@@ -18,6 +18,7 @@ import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
+import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import {
     ContentWrapper,
     Title,
@@ -27,6 +28,7 @@ import {
 import { trackEvent } from 'openland-x-analytics';
 import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { useClient } from 'openland-web/utils/useClient';
 
 const XIconWrapper = Glamorous.span({
     fontSize: 20,
@@ -205,7 +207,12 @@ export class CreateOrganizationFormInner extends React.Component<
 }
 
 export const EnterYourOrganizationPage = () => {
+    const client = useClient();
     let router = React.useContext(XRouterContext)!;
+
+    const createOrganization = async ({ variables }: { variables: any }) => {
+        return await client.mutateCreateOrganization(variables);
+    };
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
@@ -226,8 +233,19 @@ export const EnterYourOrganizationPage = () => {
                     //
                 }}
                 roomView={false}
-                defaultAction={() => {
-                    //
+                defaultAction={async (data: any) => {
+                    let result = await createOrganization({
+                        variables: {
+                            input: {
+                                personal: false,
+                                name: data.name,
+                                id: data.id,
+                            },
+                        },
+                    });
+                    trackEvent('registration_complete');
+                    switchOrganization(result.organization.id, router.query.redirect);
+                    router.push('/onboarding/discover');
                 }}
                 organizations={null}
             />
