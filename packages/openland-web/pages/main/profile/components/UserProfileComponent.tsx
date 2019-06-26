@@ -33,6 +33,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XBadge } from 'openland-x/XBadge';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -253,6 +254,34 @@ const About = (props: { user: User_user }) => {
     );
 };
 
+const Badges = (props: { user: User_user }) => {
+    const { user } = props;
+
+    return (
+        <>
+            {(user.isYou || user.badges.length > 0) && (
+                <Section separator={0}>
+                    <XSubHeader title="Badges" counter={user.badges.length} paddingBottom={0} />
+                    <SectionContent>
+                        <XView alignItems="flex-start" flexDirection="row">
+                            {user.primaryBadge && (
+                                <XView marginRight={12}>
+                                    <XBadge {...user.primaryBadge} primary={true} size="big" />
+                                </XView>
+                            )}
+                            {user.badges.filter(b => user.primaryBadge ? (b.id !== user.primaryBadge.id) : true).map(badge => (
+                                <XView marginRight={12}>
+                                    <XBadge {...badge} size="big" />
+                                </XView>
+                            ))}
+                        </XView>
+                    </SectionContent>
+                </Section>
+            )}
+        </>
+    );
+};
+
 interface UserProfileInnerProps extends XWithRouter {
     user: User_user;
     onDirectory?: boolean;
@@ -305,6 +334,7 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
+                    <Badges user={user} />
                 </XScrollView3>
             </XView>
         </>
