@@ -274,7 +274,7 @@ export const RoomActivationCode = ({
     );
 };
 
-export const AskActivationPage = () => {
+export const AskActivationPage = (props: ActivationCodeProps) => {
     let router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
@@ -289,29 +289,31 @@ export const AskActivationPage = () => {
                 />
             </XView>
 
-            <WebSignUpActivationCode
-                signin={true}
-                backButtonClick={() => {
-                    //
-                }}
-                resendCodeClick={() => {
-                    //
-                }}
-                emailSendedTo=""
-                emailSending={false}
-                emailWasResend={false}
-                codeSending={false}
-                loginCodeStart={() => {
-                    //
-                }}
-                codeChanged={() => {
-                    //
-                }}
-                codeValue=""
-                codeError=""
-            />
+            <WebSignUpActivationCode {...props} />
         </div>
     );
 };
 
-export default withApp('Home', 'viewer', AskActivationPage);
+export default withApp('Home', 'viewer', () => (
+    <AskActivationPage
+        signin={true}
+        backButtonClick={() => {
+            //
+        }}
+        resendCodeClick={() => {
+            //
+        }}
+        emailSendedTo=""
+        emailSending={false}
+        emailWasResend={false}
+        codeSending={false}
+        loginCodeStart={() => {
+            //
+        }}
+        codeChanged={() => {
+            //
+        }}
+        codeValue=""
+        codeError=""
+    />
+));

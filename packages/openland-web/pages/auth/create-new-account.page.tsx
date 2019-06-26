@@ -15,8 +15,6 @@ import {
     EmailButton,
     SubTitle,
 } from 'openland-web/pages/init/components/SignComponents';
-import { TopBar } from '../components/TopBar';
-import { getPercentageOfOnboarding } from '../components/utils';
 
 const SeparatorStyle = Glamorous.div<{
     marginTop?: number;
@@ -153,7 +151,7 @@ export const WebSignUpAuthMechanism = ({
     );
 };
 
-export const CreateNewAccountPage = () => {
+export const CreateNewAccountPage = (props: AuthMechanism) => {
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Create New Account" />
@@ -161,17 +159,19 @@ export const CreateNewAccountPage = () => {
                 <BackSkipLogo onBack={null} onSkip={null} />
             </XView>
 
-            <WebSignUpAuthMechanism
-                signin={true}
-                loginWithGoogle={() => {
-                    //
-                }}
-                loginWithEmail={() => {
-                    //
-                }}
-            />
+            <WebSignUpAuthMechanism {...props} />
         </div>
     );
 };
 
-export default withApp('Home', 'viewer', CreateNewAccountPage);
+export default withApp('Home', 'viewer', () => (
+    <CreateNewAccountPage
+        signin={true}
+        loginWithGoogle={() => {
+            //
+        }}
+        loginWithEmail={() => {
+            //
+        }}
+    />
+));

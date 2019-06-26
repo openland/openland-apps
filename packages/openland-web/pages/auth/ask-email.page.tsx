@@ -166,7 +166,7 @@ export const WebSignUpCreateWithEmail = ({
     );
 };
 
-export const AskEmailPage = () => {
+export const AskEmailPage = (props: CreateWithEmailProps) => {
     let router = React.useContext(XRouterContext)!;
     return (
         <div className={backgroundClassName}>
@@ -181,20 +181,22 @@ export const AskEmailPage = () => {
                 />
             </XView>
 
-            <WebSignUpCreateWithEmail
-                signin={true}
-                emailError={''}
-                emailChanged={() => {
-                    //
-                }}
-                emailValue={''}
-                loginEmailStart={() => {
-                    //
-                }}
-                emailSending={true}
-            />
+            <WebSignUpCreateWithEmail {...props} />
         </div>
     );
 };
 
-export default withApp('Home', 'viewer', AskEmailPage);
+export default withApp('Home', 'viewer', () => (
+    <AskEmailPage
+        signin={true}
+        emailError={''}
+        emailChanged={() => {
+            //
+        }}
+        emailValue={''}
+        loginEmailStart={() => {
+            //
+        }}
+        emailSending={true}
+    />
+));
