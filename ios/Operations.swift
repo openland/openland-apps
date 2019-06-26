@@ -2293,6 +2293,85 @@ private let AddMessageCommentSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
+private let BadgeCreateSelector = obj(
+            field("badgeCreate","badgeCreate", arguments(fieldValue("name", refValue("name"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let BadgeCreateToRoomSelector = obj(
+            field("badgeCreateToRoom","badgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )))
+        )
+private let BadgeDeleteSelector = obj(
+            field("badgeDelete","badgeDelete", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let BadgeSetPrimarySelector = obj(
+            field("badgeSetPrimary","badgeSetPrimary", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let BadgeSetToRoomSelector = obj(
+            field("badgeSetToRoom","badgeSetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )))
+        )
+private let BadgeUnsetPrimarySelector = obj(
+            field("badgeUnsetPrimary","badgeUnsetPrimary", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let BadgeUnsetToRoomSelector = obj(
+            field("badgeUnsetToRoom","badgeUnsetToRoom", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("Boolean")))
+        )
 private let CancelTypingSelector = obj(
             field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
         )
@@ -2861,6 +2940,85 @@ private let SuperAdminAddSelector = obj(
         )
 private let SuperAdminRemoveSelector = obj(
             field("superAdminRemove","superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+        )
+private let SuperBadgeCreateSelector = obj(
+            field("superBadgeCreate","superBadgeCreate", arguments(fieldValue("name", refValue("name")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let SuperBadgeCreateToRoomSelector = obj(
+            field("superBadgeCreateToRoom","superBadgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )))
+        )
+private let SuperBadgeDeleteSelector = obj(
+            field("superBadgeDelete","superBadgeDelete", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let SuperBadgeSetToRoomSelector = obj(
+            field("superBadgeSetToRoom","superBadgeSetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )))
+        )
+private let SuperBadgeUnsetToRoomSelector = obj(
+            field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
+        )
+private let SuperBadgeUnverifySelector = obj(
+            field("superBadgeUnverify","superBadgeUnverify", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
+        )
+private let SuperBadgeVerifySelector = obj(
+            field("superBadgeVerify","superBadgeVerify", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("badges","badges", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))))),
+                        field("id","id", notNull(scalar("ID"))),
+                        field("primaryBadge","primaryBadge", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("UserBadge", UserBadgeSelector)
+                            ))
+                    ))
+                )))
         )
 private let SwitchReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
@@ -3524,6 +3682,48 @@ class Operations {
         "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyComment:ID,$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyComment:$replyComment,spans:$spans){__typename id}}",
         AddMessageCommentSelector
     )
+    let BadgeCreate = OperationDefinition(
+        "BadgeCreate",
+        .mutation, 
+        "mutation BadgeCreate($name:String!){badgeCreate(name:$name){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeCreateSelector
+    )
+    let BadgeCreateToRoom = OperationDefinition(
+        "BadgeCreateToRoom",
+        .mutation, 
+        "mutation BadgeCreateToRoom($name:String!,$roomId:ID!){badgeCreateToRoom(name:$name,roomId:$roomId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeCreateToRoomSelector
+    )
+    let BadgeDelete = OperationDefinition(
+        "BadgeDelete",
+        .mutation, 
+        "mutation BadgeDelete($badgeId:ID!){badgeDelete(badgeId:$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeDeleteSelector
+    )
+    let BadgeSetPrimary = OperationDefinition(
+        "BadgeSetPrimary",
+        .mutation, 
+        "mutation BadgeSetPrimary($badgeId:ID!){badgeSetPrimary(badgeId:$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeSetPrimarySelector
+    )
+    let BadgeSetToRoom = OperationDefinition(
+        "BadgeSetToRoom",
+        .mutation, 
+        "mutation BadgeSetToRoom($badgeId:ID!,$roomId:ID!){badgeSetToRoom(badgeId:$badgeId,roomId:$roomId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeSetToRoomSelector
+    )
+    let BadgeUnsetPrimary = OperationDefinition(
+        "BadgeUnsetPrimary",
+        .mutation, 
+        "mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        BadgeUnsetPrimarySelector
+    )
+    let BadgeUnsetToRoom = OperationDefinition(
+        "BadgeUnsetToRoom",
+        .mutation, 
+        "mutation BadgeUnsetToRoom($roomId:ID!){badgeUnsetToRoom(roomId:$roomId)}",
+        BadgeUnsetToRoomSelector
+    )
     let CancelTyping = OperationDefinition(
         "CancelTyping",
         .mutation, 
@@ -4076,6 +4276,48 @@ class Operations {
         "mutation SuperAdminRemove($userId:ID!){superAdminRemove(userId:$userId)}",
         SuperAdminRemoveSelector
     )
+    let SuperBadgeCreate = OperationDefinition(
+        "SuperBadgeCreate",
+        .mutation, 
+        "mutation SuperBadgeCreate($name:String!,$userId:ID!){superBadgeCreate(name:$name,userId:$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeCreateSelector
+    )
+    let SuperBadgeCreateToRoom = OperationDefinition(
+        "SuperBadgeCreateToRoom",
+        .mutation, 
+        "mutation SuperBadgeCreateToRoom($name:String!,$roomId:ID!,$userId:ID!){superBadgeCreateToRoom(name:$name,roomId:$roomId,userId:$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeCreateToRoomSelector
+    )
+    let SuperBadgeDelete = OperationDefinition(
+        "SuperBadgeDelete",
+        .mutation, 
+        "mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeDeleteSelector
+    )
+    let SuperBadgeSetToRoom = OperationDefinition(
+        "SuperBadgeSetToRoom",
+        .mutation, 
+        "mutation SuperBadgeSetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeSetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeSetToRoomSelector
+    )
+    let SuperBadgeUnsetToRoom = OperationDefinition(
+        "SuperBadgeUnsetToRoom",
+        .mutation, 
+        "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
+        SuperBadgeUnsetToRoomSelector
+    )
+    let SuperBadgeUnverify = OperationDefinition(
+        "SuperBadgeUnverify",
+        .mutation, 
+        "mutation SuperBadgeUnverify($badgeId:ID!,$userId:ID!){superBadgeUnverify(badgeId:$badgeId,userId:$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeUnverifySelector
+    )
+    let SuperBadgeVerify = OperationDefinition(
+        "SuperBadgeVerify",
+        .mutation, 
+        "mutation SuperBadgeVerify($badgeId:ID!,$userId:ID!){superBadgeVerify(badgeId:$badgeId,userId:$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        SuperBadgeVerifySelector
+    )
     let SwitchReaction = OperationDefinition(
         "SwitchReaction",
         .mutation, 
@@ -4263,6 +4505,13 @@ class Operations {
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddMessageComment" { return AddMessageComment }
+        if name == "BadgeCreate" { return BadgeCreate }
+        if name == "BadgeCreateToRoom" { return BadgeCreateToRoom }
+        if name == "BadgeDelete" { return BadgeDelete }
+        if name == "BadgeSetPrimary" { return BadgeSetPrimary }
+        if name == "BadgeSetToRoom" { return BadgeSetToRoom }
+        if name == "BadgeUnsetPrimary" { return BadgeUnsetPrimary }
+        if name == "BadgeUnsetToRoom" { return BadgeUnsetToRoom }
         if name == "CancelTyping" { return CancelTyping }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
@@ -4355,6 +4604,13 @@ class Operations {
         if name == "SuperAccountSuspend" { return SuperAccountSuspend }
         if name == "SuperAdminAdd" { return SuperAdminAdd }
         if name == "SuperAdminRemove" { return SuperAdminRemove }
+        if name == "SuperBadgeCreate" { return SuperBadgeCreate }
+        if name == "SuperBadgeCreateToRoom" { return SuperBadgeCreateToRoom }
+        if name == "SuperBadgeDelete" { return SuperBadgeDelete }
+        if name == "SuperBadgeSetToRoom" { return SuperBadgeSetToRoom }
+        if name == "SuperBadgeUnsetToRoom" { return SuperBadgeUnsetToRoom }
+        if name == "SuperBadgeUnverify" { return SuperBadgeUnverify }
+        if name == "SuperBadgeVerify" { return SuperBadgeVerify }
         if name == "SwitchReaction" { return SwitchReaction }
         if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
         if name == "UnpinMessage" { return UnpinMessage }

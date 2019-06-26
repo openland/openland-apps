@@ -177,6 +177,104 @@
       }
     },
     {
+      "signature": "ffaddeb4e6dd58216bd0daf25821ac27285de4ce9285ce97ded4571e8b0d8a59",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeCreate($name:String!){badgeCreate(name:$name){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeCreate($name:String!){badgeCreate(name:$name){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "3dd75cb2d65887fb148c751c51e12ad7fdbb67cb0d10342ab8dbe43ade257ec9",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeCreateToRoom($name:String!,$roomId:ID!){badgeCreateToRoom(name:$name,roomId:$roomId){__typename...UserBadge}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeCreateToRoom($name:String!,$roomId:ID!){badgeCreateToRoom(name:$name,roomId:$roomId){__typename...UserBadge}}"
+      }
+    },
+    {
+      "signature": "668ba802eaccdd1d6a2b7429e8fb878b06a8fc0323e6e852829a902cdd6230a3",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeSetToRoom($badgeId:ID!,$roomId:ID!){badgeSetToRoom(badgeId:$badgeId,roomId:$roomId){__typename...UserBadge}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeSetToRoom($badgeId:ID!,$roomId:ID!){badgeSetToRoom(badgeId:$badgeId,roomId:$roomId){__typename...UserBadge}}"
+      }
+    },
+    {
+      "signature": "889748e205266a6475fa0c4c1cdc04c576ea7a9051f7ab5eb60ed1e045f1286c",
+      "document": "mutation BadgeUnsetToRoom($roomId:ID!){badgeUnsetToRoom(roomId:$roomId)}",
+      "metadata": {
+        "engineSignature": "mutation BadgeUnsetToRoom($roomId:ID!){badgeUnsetToRoom(roomId:$roomId)}"
+      }
+    },
+    {
+      "signature": "46aad8c42640199f8c70cc9cdb213f47669c6633f781ff2b2f32c3951f9132cf",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeDelete($badgeId:ID!){badgeDelete(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeDelete($badgeId:ID!){badgeDelete(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "c463c85893322539d626b61a755eaafa89ed38840d89175d8cc431d9d45fd915",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeSetPrimary($badgeId:ID!){badgeSetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeSetPrimary($badgeId:ID!){badgeSetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "d8012040e489bb6e0f6f16884aca7383191166dbf51b7f83bc5ca3c8af560690",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "7a6d0221f61663613e1a77f2f010df9f166706e80858c268ed23ce6d99ab8687",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeCreate($name:String!,$userId:ID!){superBadgeCreate(name:$name,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeCreate($name:String!,$userId:ID!){superBadgeCreate(name:$name,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "ae463738ee7c0712c11d759440d45a89765918115fbc967782282108eed1b113",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeCreateToRoom($name:String!,$roomId:ID!,$userId:ID!){superBadgeCreateToRoom(name:$name,roomId:$roomId,userId:$userId){__typename...UserBadge}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeCreateToRoom($name:String!,$roomId:ID!,$userId:ID!){superBadgeCreateToRoom(name:$name,roomId:$roomId,userId:$userId){__typename...UserBadge}}"
+      }
+    },
+    {
+      "signature": "99bf84ec48b0c479d978659ee1a71c9c3e5cece253695dcba4f9fc6f68316159",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeSetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeSetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId){__typename...UserBadge}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeSetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeSetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId){__typename...UserBadge}}"
+      }
+    },
+    {
+      "signature": "3b884c7a190311c1a7e0dbc1129b19983a48bf6c66d147d942400e6b849075a9",
+      "document": "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
+      "metadata": {
+        "engineSignature": "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}"
+      }
+    },
+    {
+      "signature": "54a799110358e71a461e6eb70d03939d2d6c031979004685d66654c041733c8b",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "fd61f00bb2548a668b60797ce6f6091562fec38e55d6c943221483a87c9afec7",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeVerify($badgeId:ID!,$userId:ID!){superBadgeVerify(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeVerify($badgeId:ID!,$userId:ID!){superBadgeVerify(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
+      "signature": "2fb991dab6f9860d43f7f388d4d48993df4ccb5bb0295db05bc68bab6790448d",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeUnverify($badgeId:ID!,$userId:ID!){superBadgeUnverify(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeUnverify($badgeId:ID!,$userId:ID!){superBadgeUnverify(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+      }
+    },
+    {
       "signature": "8920005890d5b5d75a568cfcaca34bc1ab601fd34467a7383efe2e5197dfd9e4",
       "document": "fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}senderBadge{__typename...UserBadge}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}",
       "metadata": {

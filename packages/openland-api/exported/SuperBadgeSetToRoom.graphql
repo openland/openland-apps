@@ -1,0 +1,6 @@
+mutation SuperBadgeSetToRoom($badgeId: ID!, $roomId: ID!, $userId: ID!) {
+  superBadgeSetToRoom(badgeId: $badgeId, roomId: $roomId, userId: $userId) {
+    __typename
+    ...UserBadge
+  }
+}

@@ -1609,6 +1609,1181 @@
 			"operationId": "6151ff3ad440a27aab076bde3d14d4a346e77cb2eaa66ceed11502d4fe3cf096"
 		},
 		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeCreate",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "name",
+					"type": "String!"
+				}
+			],
+			"source": "mutation BadgeCreate($name: String!) {\n  badgeCreate(name: $name) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeCreate",
+					"fieldName": "badgeCreate",
+					"type": "User!",
+					"args": [
+						{
+							"name": "name",
+							"value": {
+								"kind": "Variable",
+								"variableName": "name"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeCreate($name: String!) {\n  badgeCreate(name: $name) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "a45027be3bcf77fe1cf113ca1415f1d1b11f6a8792d4bf6b3376cee46af5d9c7"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeCreateToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "name",
+					"type": "String!"
+				}
+			],
+			"source": "mutation BadgeCreateToRoom($roomId: ID!, $name: String!) {\n  badgeCreateToRoom(roomId: $roomId, name: $name) {\n    __typename\n    ...UserBadge\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeCreateToRoom",
+					"fieldName": "badgeCreateToRoom",
+					"type": "UserBadge!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "name",
+							"value": {
+								"kind": "Variable",
+								"variableName": "name"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"UserBadge"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeCreateToRoom($roomId: ID!, $name: String!) {\n  badgeCreateToRoom(roomId: $roomId, name: $name) {\n    __typename\n    ...UserBadge\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "4fc87807cc221260a56f33238780f236720e33cd67cb2f29409756ac524aad86"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeSetToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation BadgeSetToRoom($roomId: ID!, $badgeId: ID!) {\n  badgeSetToRoom(roomId: $roomId, badgeId: $badgeId) {\n    __typename\n    ...UserBadge\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeSetToRoom",
+					"fieldName": "badgeSetToRoom",
+					"type": "UserBadge!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"UserBadge"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeSetToRoom($roomId: ID!, $badgeId: ID!) {\n  badgeSetToRoom(roomId: $roomId, badgeId: $badgeId) {\n    __typename\n    ...UserBadge\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "b3b14d89a528a26cbd2c41a553e0f5aebbf8aeb4adf55e4b2df20cfeb9093d89"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeUnsetToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation BadgeUnsetToRoom($roomId: ID!) {\n  badgeUnsetToRoom(roomId: $roomId)\n}",
+			"fields": [
+				{
+					"responseName": "badgeUnsetToRoom",
+					"fieldName": "badgeUnsetToRoom",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation BadgeUnsetToRoom($roomId: ID!) {\n  badgeUnsetToRoom(roomId: $roomId)\n}",
+			"operationId": "d70cd0d388d6a2dae9e81d1c7d55044be8c1662b4b68e9f15de3695b642ecd98"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeDelete",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation BadgeDelete($badgeId: ID!) {\n  badgeDelete(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeDelete",
+					"fieldName": "badgeDelete",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeDelete($badgeId: ID!) {\n  badgeDelete(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "59f3638f5f0399f771486bf70baae59defd2d328bc6245b89d9604a79a6c1a9f"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeSetPrimary",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation BadgeSetPrimary($badgeId: ID!) {\n  badgeSetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeSetPrimary",
+					"fieldName": "badgeSetPrimary",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeSetPrimary($badgeId: ID!) {\n  badgeSetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "d8c97688f21675e75c4a2ca0a79b80c4c05cbb96f42b7fcc50393d4460f2293e"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "BadgeUnsetPrimary",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation BadgeUnsetPrimary($badgeId: ID!) {\n  badgeUnsetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "badgeUnsetPrimary",
+					"fieldName": "badgeUnsetPrimary",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation BadgeUnsetPrimary($badgeId: ID!) {\n  badgeUnsetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "b1e8e71ae15d0e183a50857c3384ce377e4d66598284c21084eca05249ac1973"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeCreate",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "userId",
+					"type": "ID!"
+				},
+				{
+					"name": "name",
+					"type": "String!"
+				}
+			],
+			"source": "mutation SuperBadgeCreate($userId: ID!, $name: String!) {\n  superBadgeCreate(userId: $userId, name: $name) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeCreate",
+					"fieldName": "superBadgeCreate",
+					"type": "User!",
+					"args": [
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "name",
+							"value": {
+								"kind": "Variable",
+								"variableName": "name"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"description": "super-admin methods",
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeCreate($userId: ID!, $name: String!) {\n  superBadgeCreate(userId: $userId, name: $name) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "01ae6947d559029c3a4e7d104f28239840079eaa0e50614e4deffdc10cb7ef03"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeCreateToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				},
+				{
+					"name": "name",
+					"type": "String!"
+				}
+			],
+			"source": "mutation SuperBadgeCreateToRoom($roomId: ID!, $userId: ID!, $name: String!) {\n  superBadgeCreateToRoom(roomId: $roomId, userId: $userId, name: $name) {\n    __typename\n    ...UserBadge\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeCreateToRoom",
+					"fieldName": "superBadgeCreateToRoom",
+					"type": "UserBadge!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "name",
+							"value": {
+								"kind": "Variable",
+								"variableName": "name"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"UserBadge"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeCreateToRoom($roomId: ID!, $userId: ID!, $name: String!) {\n  superBadgeCreateToRoom(roomId: $roomId, userId: $userId, name: $name) {\n    __typename\n    ...UserBadge\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "ff85fe4d68deab3033a53cd9c06d871036b28e43169d4f23029cff7168230d0d"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeSetToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation SuperBadgeSetToRoom($roomId: ID!, $badgeId: ID!, $userId: ID!) {\n  superBadgeSetToRoom(roomId: $roomId, badgeId: $badgeId, userId: $userId) {\n    __typename\n    ...UserBadge\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeSetToRoom",
+					"fieldName": "superBadgeSetToRoom",
+					"type": "UserBadge!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"UserBadge"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeSetToRoom($roomId: ID!, $badgeId: ID!, $userId: ID!) {\n  superBadgeSetToRoom(roomId: $roomId, badgeId: $badgeId, userId: $userId) {\n    __typename\n    ...UserBadge\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "ed426ccb2246875a39097d669fcfa3f8346056eb384206f8c810f7779bcd8fea"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeUnsetToRoom",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation SuperBadgeUnsetToRoom($roomId: ID!, $badgeId: ID!, $userId: ID!) {\n  superBadgeUnsetToRoom(roomId: $roomId, badgeId: $badgeId, userId: $userId)\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeUnsetToRoom",
+					"fieldName": "superBadgeUnsetToRoom",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation SuperBadgeUnsetToRoom($roomId: ID!, $badgeId: ID!, $userId: ID!) {\n  superBadgeUnsetToRoom(roomId: $roomId, badgeId: $badgeId, userId: $userId)\n}",
+			"operationId": "96b567eab225ccae279bc0ed1f6318892a430e9570535e2e99556953652fff5c"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeDelete",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation SuperBadgeDelete($badgeId: ID!, $userId: ID!) {\n  superBadgeDelete(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeDelete",
+					"fieldName": "superBadgeDelete",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeDelete($badgeId: ID!, $userId: ID!) {\n  superBadgeDelete(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "13b4f8e94cd77d7694ad641b1caf00f895004e054515f1db8a23d2080f18117e"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeVerify",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation SuperBadgeVerify($badgeId: ID!, $userId: ID!) {\n  superBadgeVerify(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeVerify",
+					"fieldName": "superBadgeVerify",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeVerify($badgeId: ID!, $userId: ID!) {\n  superBadgeVerify(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "352d756ed1cc360e9decfa0f8d8110b5a4c91c61b04b1e1956cba16ac833ffbd"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",
+			"operationName": "SuperBadgeUnverify",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "badgeId",
+					"type": "ID!"
+				},
+				{
+					"name": "userId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation SuperBadgeUnverify($badgeId: ID!, $userId: ID!) {\n  superBadgeUnverify(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "superBadgeUnverify",
+					"fieldName": "superBadgeUnverify",
+					"type": "User!",
+					"args": [
+						{
+							"name": "badgeId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "badgeId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "userId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "userId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "badges",
+							"fieldName": "badges",
+							"type": "[UserBadge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "primaryBadge",
+							"fieldName": "primaryBadge",
+							"type": "UserBadge",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserBadge"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserBadge"
+			],
+			"sourceWithFragments": "mutation SuperBadgeUnverify($badgeId: ID!, $userId: ID!) {\n  superBadgeUnverify(badgeId: $badgeId, userId: $userId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "15764236d71d4292676bf224e1d835796879cf56231a43193fc087625724c651"
+		},
+		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "Dialogs",
 			"operationType": "query",

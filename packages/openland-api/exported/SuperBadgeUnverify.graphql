@@ -1,0 +1,16 @@
+mutation SuperBadgeUnverify($badgeId: ID!, $userId: ID!) {
+  superBadgeUnverify(badgeId: $badgeId, userId: $userId) {
+    __typename
+    ... on User {
+      badges {
+        __typename
+        ...UserBadge
+      }
+      id
+      primaryBadge {
+        __typename
+        ...UserBadge
+      }
+    }
+  }
+}
