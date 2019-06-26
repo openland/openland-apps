@@ -26,6 +26,8 @@ export const RoomActivationCode = RoomActivationCodeReimport;
 export const WebSignUpActivationCode = WebSignUpActivationCodeReimport;
 import { CreateProfileFormInner as CreateProfileFormInnerReimport } from 'openland-web/pages/auth/introduce-yourself.page';
 export const CreateProfileFormInner = CreateProfileFormInnerReimport;
+import { CreateOrganizationFormInner as CreateOrganizationFormInnerReimport } from 'openland-web/pages/auth/enter-your-organization.page';
+export const CreateOrganizationFormInner = CreateOrganizationFormInnerReimport;
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',

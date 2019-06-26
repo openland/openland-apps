@@ -3,11 +3,8 @@ import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
 import { css, cx } from 'linaria';
-import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -207,8 +204,6 @@ export class CreateOrganizationFormInner extends React.Component<
 }
 
 export default withApp('Home', 'viewer', () => {
-    const router = React.useContext(XRouterContext)!;
-
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
