@@ -1,5 +1,5 @@
-mutation BadgeUnsetPrimary($badgeId: ID!) {
-  badgeUnsetPrimary(badgeId: $badgeId) {
+mutation BadgeUnsetPrimary {
+  badgeUnsetPrimary {
     __typename
     ... on User {
       badges {

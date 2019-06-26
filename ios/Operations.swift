@@ -2354,7 +2354,7 @@ private let BadgeSetToRoomSelector = obj(
                 )))
         )
 private let BadgeUnsetPrimarySelector = obj(
-            field("badgeUnsetPrimary","badgeUnsetPrimary", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
+            field("badgeUnsetPrimary","badgeUnsetPrimary", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("User", obj(
                         field("badges","badges", notNull(list(notNull(obj(
@@ -3715,7 +3715,7 @@ class Operations {
     let BadgeUnsetPrimary = OperationDefinition(
         "BadgeUnsetPrimary",
         .mutation, 
-        "mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        "mutation BadgeUnsetPrimary{badgeUnsetPrimary{__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
         BadgeUnsetPrimarySelector
     )
     let BadgeUnsetToRoom = OperationDefinition(

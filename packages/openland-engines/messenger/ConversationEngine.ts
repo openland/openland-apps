@@ -95,7 +95,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         senderId: src.sender.id,
         senderName: src.sender.name,
         senderPhoto: src.sender.photo || undefined,
-        senderBadge: src.senderBadge ? src.senderBadge : (src.sender.primaryBadge ? src.sender.primaryBadge : undefined),
+        senderBadge: src.senderBadge || undefined,
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,

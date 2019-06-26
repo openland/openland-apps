@@ -219,10 +219,10 @@
       }
     },
     {
-      "signature": "d8012040e489bb6e0f6f16884aca7383191166dbf51b7f83bc5ca3c8af560690",
-      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "signature": "85b13b6088368e55f756573d9051ac5a107d1f60833664a6ce08afbb17f12f7d",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary{badgeUnsetPrimary{__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
       "metadata": {
-        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary($badgeId:ID!){badgeUnsetPrimary(badgeId:$badgeId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation BadgeUnsetPrimary{badgeUnsetPrimary{__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
       }
     },
     {

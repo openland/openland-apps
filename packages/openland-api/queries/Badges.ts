@@ -77,8 +77,8 @@ export const BadgeSetPrimaryMutation = gql`
 `;
 
 export const BadgeUnsetPrimaryMutation = gql`
-    mutation BadgeUnsetPrimary($badgeId: ID!) {
-        badgeUnsetPrimary(badgeId: $badgeId) {
+    mutation BadgeUnsetPrimary {
+        badgeUnsetPrimary {
             ... on User {
                 id
                 badges {

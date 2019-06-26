@@ -2058,28 +2058,13 @@
 			"operationName": "BadgeUnsetPrimary",
 			"operationType": "mutation",
 			"rootType": "Mutation",
-			"variables": [
-				{
-					"name": "badgeId",
-					"type": "ID!"
-				}
-			],
-			"source": "mutation BadgeUnsetPrimary($badgeId: ID!) {\n  badgeUnsetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
+			"variables": [],
+			"source": "mutation BadgeUnsetPrimary {\n  badgeUnsetPrimary {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "badgeUnsetPrimary",
 					"fieldName": "badgeUnsetPrimary",
 					"type": "User!",
-					"args": [
-						{
-							"name": "badgeId",
-							"value": {
-								"kind": "Variable",
-								"variableName": "badgeId"
-							},
-							"type": "ID!"
-						}
-					],
 					"isConditional": false,
 					"isDeprecated": false,
 					"fields": [
@@ -2144,8 +2129,8 @@
 			"fragmentsReferenced": [
 				"UserBadge"
 			],
-			"sourceWithFragments": "mutation BadgeUnsetPrimary($badgeId: ID!) {\n  badgeUnsetPrimary(badgeId: $badgeId) {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
-			"operationId": "b1e8e71ae15d0e183a50857c3384ce377e4d66598284c21084eca05249ac1973"
+			"sourceWithFragments": "mutation BadgeUnsetPrimary {\n  badgeUnsetPrimary {\n    __typename\n    ... on User {\n      id\n      badges {\n        __typename\n        ...UserBadge\n      }\n      primaryBadge {\n        __typename\n        ...UserBadge\n      }\n    }\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "9980ed34d8e55d048d2b3107ddf5444e8a6f78aa35311219b2a474e17f50703f"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Badges.ts",

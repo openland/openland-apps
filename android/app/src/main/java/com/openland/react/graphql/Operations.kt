@@ -2360,7 +2360,7 @@ private val BadgeSetToRoomSelector = obj(
                 )))
         )
 private val BadgeUnsetPrimarySelector = obj(
-            field("badgeUnsetPrimary","badgeUnsetPrimary", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
+            field("badgeUnsetPrimary","badgeUnsetPrimary", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("User", obj(
                         field("badges","badges", notNull(list(notNull(obj(
@@ -3718,7 +3718,7 @@ object Operations {
     val BadgeUnsetPrimary = object: OperationDefinition {
         override val name = "BadgeUnsetPrimary"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeUnsetPrimary(\$badgeId:ID!){badgeUnsetPrimary(badgeId:\$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
+        override val body = "mutation BadgeUnsetPrimary{badgeUnsetPrimary{__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
         override val selector = BadgeUnsetPrimarySelector
     }
     val BadgeUnsetToRoom = object: OperationDefinition {

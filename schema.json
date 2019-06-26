@@ -21101,22 +21101,7 @@
           {
             "name": "badgeUnsetPrimary",
             "description": null,
-            "args": [
-              {
-                "name": "badgeId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
+            "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
