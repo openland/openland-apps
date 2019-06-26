@@ -208,8 +208,8 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                                 src={imageUrl}
                             />
                         ) : (
-                            <img width={40} height={40} src="/static/img/img-thn@3x.png" />
-                        )}
+                                <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                            )}
                     </XView>
                     <XView flexDirection="column" justifyContent="space-between" height={40}>
                         <XView
@@ -390,7 +390,8 @@ export const MessageUrlAugmentationComponent = React.memo(
 
         return (
             <XView width="100%" flexDirection="column" maxWidth={696}>
-                <div className={LinkContentWrapperClassName}>
+                {(title || titleLinkHostname || subTitle || parts.length || image) && <div className={LinkContentWrapperClassName}>
+
                     <XView flexDirection="row">
                         {image && dimensions && !openlandLink && (
                             <XView
@@ -404,13 +405,13 @@ export const MessageUrlAugmentationComponent = React.memo(
                                         {isMobile ? (
                                             linkImage
                                         ) : (
-                                            <ImagePreviewModal
-                                                file={image.url}
-                                                width={image.metadata!.imageWidth!}
-                                                height={image.metadata!.imageWidth!}
-                                                target={linkImage}
-                                            />
-                                        )}
+                                                <ImagePreviewModal
+                                                    file={image.url}
+                                                    width={image.metadata!.imageWidth!}
+                                                    height={image.metadata!.imageWidth!}
+                                                    target={linkImage}
+                                                />
+                                            )}
                                     </>
                                 )}
                             </XView>
@@ -420,8 +421,8 @@ export const MessageUrlAugmentationComponent = React.memo(
                                 {image.url ? (
                                     <XAvatar2 id={objectId} title={title || ''} src={image.url} />
                                 ) : (
-                                    <img width={40} height={40} src="/static/img/img-thn@3x.png" />
-                                )}
+                                        <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                                    )}
                             </XView>
                         )}
                         {!image && openlandLink && (
@@ -539,7 +540,7 @@ export const MessageUrlAugmentationComponent = React.memo(
                             <DeleteIcon />
                         </DeleteButton>
                     )}
-                </div>
+                </div>}
                 {keyboard && <Keyboard keyboard={keyboard} />}
             </XView>
         );
