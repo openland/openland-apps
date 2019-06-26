@@ -79,6 +79,9 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     };
 
     private handleWindowDragover = (e: any) => {
+        if (e.dataTransfer.types[0] !== 'Files') {
+            return;
+        }
         e.preventDefault();
         this.setState({
             dragOn: true,
@@ -106,12 +109,6 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     };
 
     private handleDragLeave = (e: any) => {
-        // let file = e.dataTransfer.files[0];
-        // if (!file) {
-        //     this.setState({
-        //         dragOn: false,
-        //     });
-        // }
         this.setState({
             dragUnder: false,
         });
@@ -131,7 +128,11 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
         const { state } = this;
         const { dragOn, dragUnder } = state;
         return (
-            <DropArea dragOn={dragOn} height={dragOn ? this.props.height : 0}>
+            <DropArea
+                dragOn={dragOn}
+                height={dragOn ? this.props.height : 0}
+                onMouseOut={this.handleMouseOut}
+            >
                 <DropAreaContent
                     onDrop={this.handleDrop}
                     onDragOver={this.handleDragOver}
