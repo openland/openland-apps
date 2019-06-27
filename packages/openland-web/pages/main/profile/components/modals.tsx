@@ -19,6 +19,7 @@ import { InputField } from 'openland-web/components/InputField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -320,11 +321,12 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
 export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string, badgeId: string }) => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const form = useForm();
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper) {
+            if (props.isSuper && (props.userId !== messenger.user.id)) {
                 await client.mutateSuperBadgeDelete({ badgeId: props.badgeId, userId: props.userId });
             } else {
                 await client.mutateBadgeDelete({ badgeId: props.badgeId });
