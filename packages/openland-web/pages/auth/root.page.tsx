@@ -16,10 +16,10 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 
 const getAppInvite = (router: any) => {
-    if(router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite'){
-        return router.query.redirect.split('/')[2]
+    if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
+        return router.query.redirect.split('/')[2];
     }
-    return null
+    return null;
 };
 
 const checkIfIsSignInInvite = (router: any) => {

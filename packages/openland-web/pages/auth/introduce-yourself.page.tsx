@@ -41,29 +41,29 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
     let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
     let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                await client.mutateProfileCreate({
-                    input: {
-                        firstName: firstName.value,
-                        lastName: lastName.value,
-                        photoRef: photoRef.value && photoRef.value.uuid ? {
-                            ...photoRef.value,
-                            isImage: undefined,
-                            width: undefined,
-                            height: undefined,
-                        }: undefined,
-                    },
-                });
-                await client.refetchAccount();
-
-                router.push('/auth2/enter-your-organization');
-                await delayForewer();
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            await client.mutateProfileCreate({
+                input: {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    photoRef:
+                        photoRef.value && photoRef.value.uuid
+                            ? {
+                                  ...photoRef.value,
+                                  isImage: undefined,
+                                  width: undefined,
+                                  height: undefined,
+                              }
+                            : undefined,
+                },
             });
-        },
-        [firstName.value, lastName.value, photoRef.value],
-    );
+            await client.refetchAccount();
+
+            router.push('/auth2/enter-your-organization');
+            await delayForewer();
+        });
+    }, [firstName.value, lastName.value, photoRef.value]);
 
     return (
         <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>

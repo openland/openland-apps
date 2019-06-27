@@ -55,44 +55,42 @@ const ShowOrgError = ({ message }: { message: string }) => {
     );
 };
 
-const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string }) => {
+const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
     let router = React.useContext(XRouterContext)!;
     const client = useClient();
     const form = useForm();
     const { roomView } = props;
-    
+
     let organizationField = useField('input.organization', '', form, [
         {
             checkIsValid: (value: string) => value !== '',
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                let result = await client.mutateCreateOrganization({
-                    input: {
-                        personal: false,
-                        name: organizationField.value,
-                        // id: data.id,
-                    },
-                });
-             
-                await client.refetchAccount();
-
-                if(Cookie.get('x-openland-app-invite')) {
-                    await client.mutateOrganizationActivateByInvite({
-                        inviteKey: Cookie.get('x-openland-app-invite')
-                    })
-                }
-
-                trackEvent('registration_complete');
-                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                router.push('/onboarding/start');
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            let result = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: organizationField.value,
+                    // id: data.id,
+                },
             });
-        },
-        [organizationField.value],
-    );
+
+            await client.refetchAccount();
+
+            const inviteKey = Cookie.get('x-openland-app-invite');
+            if (inviteKey) {
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+            }
+
+            trackEvent('registration_complete');
+            Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+            router.push('/onboarding/start');
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Find your organization or create a new one ';
 
@@ -139,7 +137,7 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
     );
 };
 
-export const EnterYourOrganizationPage = ({ inviteKey }: { inviteKey?: string }) => {
+export const EnterYourOrganizationPage = ({ inviteKey }: { inviteKey?: string | null }) => {
     let router = React.useContext(XRouterContext)!;
 
     return (
@@ -163,5 +161,5 @@ export const EnterYourOrganizationPage = ({ inviteKey }: { inviteKey?: string })
 };
 
 export default withApp('Home', 'viewer', () => {
-    <EnterYourOrganizationPage />;
+    return <EnterYourOrganizationPage />;
 });
