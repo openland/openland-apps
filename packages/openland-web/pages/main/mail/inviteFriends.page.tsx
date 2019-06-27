@@ -181,7 +181,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
         const { inviteToApp } = props;
         const invitePath = inviteToApp ? 'invite/' : 'join/';
         return (
-            <XView flexDirection="column" flexGrow={1} alignSelf="stretch" marginBottom={90}>
+            <XView flexDirection="column" flexGrow={0} alignSelf="stretch" marginBottom={90}>
                 <XView flexDirection="column" alignItems="center" flexGrow={1} overflow="hidden">
                     <XView flexDirection="column" alignSelf="stretch">
                         <XInput
@@ -285,7 +285,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
             flexDirection="column"
             alignItems="center"
             marginTop={115}
-            flexGrow={1}
+            flexGrow={0}
             alignSelf="stretch"
             marginBottom={92}
         >
@@ -328,7 +328,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                 </XView>
                 <XView flexDirection="column" alignItems="center" marginLeft={24}>
                     <XView fontSize={14} color="#000" marginBottom={14}>
-                        Share this post on
+                        And share on
                     </XView>
                     <XView
                         flexDirection="row"
@@ -358,6 +358,7 @@ const InviteAcceptedBlock = (props: { accepted: number }) => (
         alignItems="center"
         flexDirection="row"
         backgroundColor="#EAF4FE"
+        flexGrow={0}
         borderRadius={40}
         paddingTop={4}
         paddingBottom={3}
@@ -415,9 +416,10 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
             flexDirection="row"
             position="relative"
             flexGrow={1}
+            flexShrink={1}
             justifyContent="center"
-            paddingLeft={isMobile ? 40 : 0}
-            paddingRight={isMobile ? 40 : 0}
+            paddingLeft={isMobile ? 20 : 0}
+            paddingRight={isMobile ? 20 : 0}
             backgroundColor="#fff"
         >
             {!asModalContent && (
@@ -440,7 +442,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                     </XView>
                 </XView>
             )}
-            <XView position="absolute" top={19} left={32}>
+            <XView position={isMobile ? 'absolute' : 'fixed'} top={19} left={32}>
                 <XImage src="/static/landing/logotype.svg" width={145} height={42} />
             </XView>
             <XView
@@ -450,12 +452,12 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                 marginTop={83}
                 paddingBottom={40}
             >
-                <XView fontSize={24} fontWeight="600" color="#000">
+                <XView fontSize={24} fontWeight="600" color="#000" flexGrow={0}>
                     <span className={cx(textAlignCenterClassName, letterSpasingClassName)}>
                         Invite friends to Openland
                     </span>
                 </XView>
-                <XView fontSize={16} color="#000" marginTop={18}>
+                <XView fontSize={16} color="#000" marginTop={18} flexGrow={0}>
                     <span className={textAlignCenterClassName}>
                         Share access to Openland community
                     </span>
@@ -463,7 +465,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                 {invitesAccepted && <InviteAcceptedBlock accepted={5} />}
                 <WritePostBlock inviteKey={openlandInvite} />
                 {!inviteLink && (
-                    <XView marginBottom={20} flexGrow={1} alignSelf="stretch">
+                    <XView marginBottom={20} flexGrow={0} alignSelf="stretch">
                         <ShowInviteInputButton
                             onClick={() => showInviteLink(true)}
                             title="Invite link"
@@ -471,7 +473,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                     </XView>
                 )}
                 {inviteLink && (
-                    <XView flexGrow={1} alignSelf="stretch">
+                    <XView flexGrow={0} alignSelf="stretch">
                         <XView
                             flexDirection="row"
                             alignItems="center"
@@ -493,7 +495,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                     />
                 )}
                 {inviteTeam && (
-                    <XView flexGrow={1} alignSelf="stretch">
+                    <XView flexGrow={0} alignSelf="stretch">
                         <XView
                             flexDirection="row"
                             alignItems="center"

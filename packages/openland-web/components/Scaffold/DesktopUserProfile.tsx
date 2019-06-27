@@ -13,7 +13,7 @@ import { withUserInfo } from '../UserInfo';
 import { useClient } from 'openland-web/utils/useClient';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
-import { InviteFragment } from 'openland-web/pages/main/mail/invitePeople.page';
+import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 
 interface TitleContainerProps {
@@ -140,7 +140,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 onClick={() =>
                                     showModalBox({ fullScreen: true }, () => (
                                         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                                            <InviteFragment asModalContent />
+                                            <InviteFriendsFragment asModalContent />
                                         </XScrollView3>
                                     ))
                                 }
