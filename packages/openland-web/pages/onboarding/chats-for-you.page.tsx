@@ -149,6 +149,7 @@ export const ChatsForYou = () => {
             <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
             <XView marginBottom={12} marginTop={34}>
                 <BackSkipLogo
+                    noLogo
                     onBack={() => {
                         router.replace('/onboarding/discover');
                     }}
