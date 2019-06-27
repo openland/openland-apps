@@ -48,19 +48,7 @@ export default () => (
                             headerStyle={headerStyle}
                             pageMode="CreateOrganization"
                         >
-                            <CreateOrganizationFormInner
-                                organizations={{
-                                    data: organizationsData,
-                                    loading: false,
-                                }}
-                                onPrefixChanges={() => {
-                                    //
-                                }}
-                                roomView={true}
-                                defaultAction={() => {
-                                    //
-                                }}
-                            />
+                            <CreateOrganizationFormInner />
                         </RoomSignupContainer>
                     );
                 } else {
@@ -77,19 +65,7 @@ export default () => (
                                 linkText,
                             }}
                         >
-                            <CreateOrganizationFormInner
-                                organizations={{
-                                    data: [],
-                                    loading: false,
-                                }}
-                                onPrefixChanges={() => {
-                                    //
-                                }}
-                                roomView={false}
-                                defaultAction={() => {
-                                    //
-                                }}
-                            />
+                            <CreateOrganizationFormInner />
                         </WebSignUpContainer>
                     );
                 }
