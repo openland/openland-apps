@@ -275,10 +275,15 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
 export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
     const client = useClient();
     const form = useForm();
-    const nameField = useField('input.name', '', form, [{
-        checkIsValid: value => !!value,
-        text: 'Name can\'t be empty',
-    }]);
+    const nameField = useField('input.name', '', form, [
+        {
+            checkIsValid: value => value.trim().length > 0,
+            text: 'Badge can\'t be empty',
+        }, {
+            checkIsValid: value => value.trim().length <= 40,
+            text: 'Max length for badge: 40',
+        },
+    ]);
 
     const onAdd = () => {
         form.doAction(async () => {
@@ -299,10 +304,9 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
     return (
         <>
-            {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent>
-                    <InputField title="Badge text" field={nameField} />
+                    <InputField title="Badge text" field={nameField} setFocusOnError />
                 </XModalContent>
                 <XModalFooter>
                     <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
