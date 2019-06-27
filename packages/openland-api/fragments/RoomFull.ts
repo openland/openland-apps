@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { FullMessage } from './Message';
+import { UserBadge } from './UserBadge';
 
 export const RoomFull = gql`
     fragment RoomFull on Room {
@@ -37,6 +38,9 @@ export const RoomFull = gql`
                     ...UserShort
                 }
                 canKick
+                badge {
+                    ...UserBadge
+                }
             }
             requests {
                 user {
@@ -63,6 +67,7 @@ export const RoomFull = gql`
         }
     }
     ${FullMessage}
+    ${UserBadge}
 `;
 
 export const RoomFullWithoutMembers = gql`

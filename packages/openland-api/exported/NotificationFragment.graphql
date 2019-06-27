@@ -28,6 +28,10 @@ fragment NotificationFragment on Notification {
                   id
                   name
                 }
+                senderBadge {
+                  __typename
+                  ...UserBadge
+                }
               }
             }
           }

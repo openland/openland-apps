@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { UserTiny } from './UserTiny';
 import { UserShort } from './UserShort';
 import { UserForMention } from './UserForMention';
+import { UserBadge } from './UserBadge';
 
 export const DaialogListMessage = gql`
     fragment DaialogListMessage on ModernMessage {
@@ -11,6 +12,9 @@ export const DaialogListMessage = gql`
             id
             name
             firstName
+        }
+        senderBadge {
+            ...UserBadge
         }
         message
         fallback
@@ -33,6 +37,7 @@ export const DaialogListMessage = gql`
             }
         }
     }
+    ${UserBadge}
 `;
 
 export const TinyMessage = gql`
@@ -41,6 +46,9 @@ export const TinyMessage = gql`
         date
         sender {
             ...UserTiny
+        }
+        senderBadge {
+            ...UserBadge
         }
         message
         fallback
@@ -67,6 +75,7 @@ export const TinyMessage = gql`
         }
     }
     ${UserTiny}
+    ${UserBadge}
 `;
 
 export const FullMessage = gql`
@@ -75,6 +84,9 @@ export const FullMessage = gql`
         date
         sender {
             ...UserShort
+        }
+        senderBadge {
+            ...UserBadge
         }
         message
         fallback
@@ -148,6 +160,9 @@ export const FullMessage = gql`
                 message
                 sender {
                     ...UserShort
+                }
+                senderBadge {
+                    ...UserBadge
                 }
                 message
                 fallback
@@ -329,4 +344,5 @@ export const FullMessage = gql`
     ${UserTiny}
     ${UserShort}
     ${UserForMention}
+    ${UserBadge}
 `;

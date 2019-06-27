@@ -1,0 +1,16 @@
+mutation SuperBadgeDelete($badgeId: ID!, $userId: ID!) {
+  superBadgeDelete(badgeId: $badgeId, userId: $userId) {
+    __typename
+    ... on User {
+      badges {
+        __typename
+        ...UserBadge
+      }
+      id
+      primaryBadge {
+        __typename
+        ...UserBadge
+      }
+    }
+  }
+}

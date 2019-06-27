@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from './OrganizationShort';
+import { UserBadge } from './UserBadge';
 
 export const UserFull = gql`
     fragment UserFull on User {
@@ -20,9 +21,16 @@ export const UserFull = gql`
         linkedin
         twitter
         shortname
+        badges {
+            ...UserBadge
+        }
+        primaryBadge {
+            ...UserBadge
+        }
         primaryOrganization {
             ...OrganizationShort
         }
     }
     ${OrganizationShort}
+    ${UserBadge}
 `;

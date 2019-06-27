@@ -4,5 +4,9 @@ query Users($query: String!) {
     subtitle: email
     id
     title: name
+    primaryBadge {
+      __typename
+      ...UserBadge
+    }
   }
 }

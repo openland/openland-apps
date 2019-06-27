@@ -10,6 +10,10 @@ fragment UserShort on User {
   name
   online
   photo
+  primaryBadge {
+    __typename
+    ...UserBadge
+  }
   primaryOrganization {
     __typename
     ...OrganizationShort

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XRoleContext } from './XRoleContext';
+
 export const XWithRole = (props: { role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean, children?: any }) => {
     return (
         <XRoleContext.Consumer>
@@ -42,4 +43,25 @@ export const XWithRole = (props: { role: string | string[], or?: boolean, orgPer
             }}
         </XRoleContext.Consumer>
     );
+};
+
+export const useHasRole = (role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean) => {
+    const userRoles = React.useContext(XRoleContext);
+
+    if (!userRoles) {
+        return false;
+    }
+    
+    let targetRoles = (Array.isArray(role) ? role : [role]).map(r => orgPermission ? ('org-' + ((orgPermission === 'primary' ? userRoles.currentOrganizatonId : orgPermission) || '') + '-' + r) : r);
+    let _hasRole = false;
+
+    for (let r of targetRoles) {
+        if (userRoles.roles.indexOf(r) >= 0) {
+            _hasRole = true;
+            break;
+        }
+    }
+    _hasRole = _hasRole || (or !== undefined && or);
+
+    return (negate ? !_hasRole : _hasRole);
 };
