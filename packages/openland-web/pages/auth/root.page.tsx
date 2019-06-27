@@ -13,6 +13,7 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { XLoader } from 'openland-x/XLoader';
 
 function validateEmail(email: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -93,7 +94,6 @@ export default () => {
         title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
     }
 
-    const [codeValue, setCodeValue] = React.useState('');
     const [email, setEmail] = React.useState(false);
     const [emailValue, setEmailValue] = React.useState('');
     const [emailWasResend, setEmailWasResend] = React.useState(false);
@@ -152,7 +152,6 @@ export default () => {
         setEmailSending(false);
         setEmailError('');
         setEmailSent(false);
-        setCodeValue('');
 
         setTimeout(() => {
             router.push('/auth2/ask-email');
@@ -180,19 +179,19 @@ export default () => {
         }
     };
 
-    const codeValueChanged = (val: string, cb: () => void) => {
-        setCodeValue(val);
-        setTimeout(cb, 100);
-    };
-
     const emailValueChanged = (val: string, cb: () => void) => {
         setEmailValue(val);
         setEmailError('');
         setTimeout(cb, 100);
     };
 
+    if ((fromOutside && emailSending) || googleStarting) {
+        page = pages.loading;
+    }
+
     return (
         <>
+            {page === pages.loading && <XLoader />}
             {page === pages.acceptInvite && (
                 <AcceptInvitePage
                     variables={{
@@ -202,42 +201,6 @@ export default () => {
                         router.push('/auth2/create-new-account');
                     }}
                 />
-            )}
-            {page === pages.askActivationCode && (
-                <XTrack event="code_view">
-                    <AskActivationPage
-                        signin={signin}
-                        emailWasResend={emailWasResend}
-                        resendCodeClick={() => {
-                            trackEvent('code_resend_action');
-
-                            setEmailSending(true);
-                            fireEmail(() => {
-                                setEmailWasResend(true);
-                            });
-                        }}
-                        emailSendedTo={emailValue}
-                        backButtonClick={() => {
-                            setFromOutside(false);
-                        }}
-                        emailValue={emailValue}
-                        codeChanged={codeValueChanged}
-                        emailSending={emailSending}
-                        codeValue={codeValue}
-                    />
-                </XTrack>
-            )}
-            {page === pages.askEmail && (
-                <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
-                    <AskEmailPage
-                        signin={signin}
-                        emailError={emailError}
-                        emailChanged={emailValueChanged}
-                        emailValue={emailValue}
-                        loginEmailStart={loginEmailStart}
-                        emailSending={emailSending}
-                    />
-                </XTrack>
             )}
             {page === pages.createNewAccount && (
                 <XTrack
@@ -251,8 +214,42 @@ export default () => {
                     />
                 </XTrack>
             )}
-            {page === pages.enterYourOrganization && <EnterYourOrganizationPage />}
+            {page === pages.askEmail && (
+                <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
+                    <AskEmailPage
+                        signin={signin}
+                        loginEmailStart={loginEmailStart}
+                        emailError={emailError}
+                        emailChanged={emailValueChanged}
+                        emailValue={emailValue}
+                        emailSending={emailSending}
+                    />
+                </XTrack>
+            )}
+            {page === pages.askActivationCode && (
+                <XTrack event="code_view">
+                    <AskActivationPage
+                        signin={signin}
+                        resendCodeClick={() => {
+                            trackEvent('code_resend_action');
+
+                            setEmailSending(true);
+                            fireEmail(() => {
+                                setEmailWasResend(true);
+                            });
+                        }}
+                        backButtonClick={() => {
+                            setFromOutside(false);
+                        }}
+                        emailWasResend={emailWasResend}
+                        emailSendedTo={emailValue}
+                        emailValue={emailValue}
+                        emailSending={emailSending}
+                    />
+                </XTrack>
+            )}
             {page === pages.introduceYourself && <IntroduceYourselfPage roomView={false} />}
+            {page === pages.enterYourOrganization && <EnterYourOrganizationPage />}
         </>
     );
 };

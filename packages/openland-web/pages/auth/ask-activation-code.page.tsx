@@ -60,11 +60,7 @@ type ActivationCodeProps = {
     emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
-
     emailSendedTo: string;
-    codeChanged: (value: string, cb: () => void) => void;
-
-    codeValue: string;
 };
 
 const InputWrapperDesctopClassName = css`

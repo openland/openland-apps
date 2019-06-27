@@ -1,4 +1,5 @@
 export type pagesT =
+    | 'loading'
     | 'acceptInvite'
     | 'askActivationCode'
     | 'askEmail'
@@ -7,6 +8,7 @@ export type pagesT =
     | 'introduceYourself';
 
 export const pages: { [K in pagesT]: pagesT } = {
+    loading: 'loading',
     acceptInvite: 'acceptInvite',
     askActivationCode: 'askActivationCode',
     askEmail: 'askEmail',
