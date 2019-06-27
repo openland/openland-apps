@@ -15,11 +15,6 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 
-function validateEmail(email: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
 const checkIfIsSignInInvite = (router: any) => {
     return (
         router.query &&
@@ -104,6 +99,7 @@ export default () => {
     const [fromOutside, setFromOutside] = React.useState(false);
 
     const fireEmail = async (cb?: Function) => {
+        debugger;
         console.log('fireEmail');
         Cookie.set('auth-type', 'email', { path: '/' });
         if (redirect) {
@@ -158,33 +154,6 @@ export default () => {
         }, 0);
     };
 
-    const loginEmailStart = () => {
-        if (emailValue === '') {
-            setEmailError(InitTexts.auth.noEmail);
-
-            return;
-        } else if (!validateEmail(emailValue)) {
-            setEmailError(InitTexts.auth.emailInvalid);
-
-            return;
-        } else {
-            setEmailSending(true);
-            setEmailError('');
-            setEmailSent(false);
-
-            fireEmail();
-            setTimeout(() => {
-                router.push('/auth2/ask-activation-code');
-            }, 0);
-        }
-    };
-
-    const emailValueChanged = (val: string, cb: () => void) => {
-        setEmailValue(val);
-        setEmailError('');
-        setTimeout(cb, 100);
-    };
-
     if ((fromOutside && emailSending) || googleStarting) {
         page = pages.loading;
     }
@@ -217,12 +186,15 @@ export default () => {
             {page === pages.askEmail && (
                 <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                     <AskEmailPage
+                        fireEmail={fireEmail}
                         signin={signin}
-                        loginEmailStart={loginEmailStart}
                         emailError={emailError}
-                        emailChanged={emailValueChanged}
                         emailValue={emailValue}
                         emailSending={emailSending}
+                        setEmailSending={setEmailSending}
+                        setEmailError={setEmailError}
+                        setEmailSent={setEmailSent}
+                        setEmailValue={setEmailValue}
                     />
                 </XTrack>
             )}

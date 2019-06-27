@@ -60,11 +60,6 @@ const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
     </SeparatorStyle>
 );
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
-
 const RoomText = Glamorous.div({
     textAlign: 'center',
     opacity: 0.7,

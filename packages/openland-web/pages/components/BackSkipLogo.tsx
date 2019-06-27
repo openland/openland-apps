@@ -35,6 +35,7 @@ export const BackSkipLogo = ({
             paddingLeft={50}
             paddingRight={50}
             position="relative"
+            zIndex={1000}
         >
             {onBack ? (
                 <XView cursor="pointer">

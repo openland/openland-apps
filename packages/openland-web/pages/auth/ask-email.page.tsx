@@ -5,7 +5,6 @@ import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -22,27 +21,30 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 
 type CreateWithEmailProps = {
+    fireEmail: Function;
     signin: boolean;
     emailError: string;
-    emailChanged: (value: string, cb: () => void) => void;
     emailValue: string;
-    loginEmailStart: () => void;
     emailSending: boolean;
+    setEmailSending: Function;
+    setEmailError: Function;
+    setEmailSent: Function;
+    setEmailValue: Function;
 };
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
+type CreateWithEmailInnerProps = {
+    loginEmailStart: (a: string) => void;
+};
 
 export const RoomCreateWithEmail = ({
     signin,
     emailError,
-    emailChanged,
+    setEmailValue,
+    setEmailError,
     emailValue,
     loginEmailStart,
     emailSending,
-}: CreateWithEmailProps) => {
+}: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
     const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
@@ -50,11 +52,13 @@ export const RoomCreateWithEmail = ({
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            emailChanged(emailField.value, () => {
-                loginEmailStart();
-            });
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
         });
-    }, []);
+    }, [emailField.value]);
 
     return (
         <>
@@ -97,11 +101,12 @@ export const RoomCreateWithEmail = ({
 export const WebSignUpCreateWithEmail = ({
     signin,
     emailError,
-    emailChanged,
+    setEmailValue,
+    setEmailError,
     emailValue,
     loginEmailStart,
     emailSending,
-}: CreateWithEmailProps) => {
+}: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
     const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
@@ -110,17 +115,19 @@ export const WebSignUpCreateWithEmail = ({
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            emailChanged(emailField.value, () => {
-                loginEmailStart();
-            });
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
         });
-    }, []);
+    }, [emailField.value]);
+
+    const title = 'Create new account';
 
     return (
-        <>
-            <Title roomView={false}>
-                {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
-            </Title>
+        <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+            <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={330}>
                 <XInput
@@ -148,14 +155,42 @@ export const WebSignUpCreateWithEmail = ({
                     />
                 </XVertical>
             </ButtonsWrapper>
-        </>
+        </XView>
     );
 };
 
+function validateEmail(email: string) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 export const AskEmailPage = (props: CreateWithEmailProps) => {
+    const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
     let router = React.useContext(XRouterContext)!;
+
+    const loginEmailStart = (email: string) => {
+        if (email === '') {
+            setEmailError(InitTexts.auth.noEmail);
+
+            return;
+        } else if (!validateEmail(email)) {
+            setEmailError(InitTexts.auth.emailInvalid);
+
+            return;
+        } else {
+            setEmailSending(true);
+            setEmailError('');
+            setEmailSent(false);
+
+            fireEmail();
+            setTimeout(() => {
+                router.push('/auth2/ask-activation-code');
+            }, 0);
+        }
+    };
+
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
             <XView marginTop={34}>
@@ -167,8 +202,8 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
                 />
             </XView>
 
-            <WebSignUpCreateWithEmail {...props} />
-        </div>
+            <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
+        </XView>
     );
 };
 
@@ -176,11 +211,20 @@ export default withApp('Home', 'viewer', () => (
     <AskEmailPage
         signin={true}
         emailError={''}
-        emailChanged={() => {
+        emailValue={''}
+        fireEmail={() => {
             //
         }}
-        emailValue={''}
-        loginEmailStart={() => {
+        setEmailSending={() => {
+            //
+        }}
+        setEmailError={() => {
+            //
+        }}
+        setEmailSent={() => {
+            //
+        }}
+        setEmailValue={() => {
             //
         }}
         emailSending={true}
