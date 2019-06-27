@@ -20,7 +20,7 @@ import {
     extractHostname,
 } from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuVertical, XMenuTitle } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
@@ -38,6 +38,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useHasRole } from 'openland-x-permissions/XWithRole';
 import { showModalBox } from 'openland-x/showModalBox';
 import { CreateBadgeModal } from './modals';
+import { XPopper } from 'openland-x/XPopper';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -258,6 +259,114 @@ const About = (props: { user: User_user }) => {
     );
 };
 
+interface UserBadgeWrapperProps {
+    badge: UserBadge;
+    primary: boolean;
+    isSuper: boolean;
+    user: UserShort;
+}
+
+const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
+    const client = useClient();
+    const { badge, primary, isSuper, user } = props;
+    const [ show, setShow ] = React.useState(false);
+
+    const handleSetPrimary = React.useCallback(async () => {
+        await client.mutateBadgeSetPrimary({ badgeId: badge.id });
+        setShow(false);
+    }, [badge]);
+
+    const handleUnsetPrimary = React.useCallback(async () => {
+        await client.mutateBadgeUnsetPrimary();
+        setShow(false);
+    }, [badge]);
+
+    const handleVerify = React.useCallback(async () => {
+        await client.mutateSuperBadgeVerify({ badgeId: badge.id, userId: user.id });
+        setShow(false);
+    }, [badge, user]);
+
+    const handleUnverify = React.useCallback(async () => {
+        await client.mutateSuperBadgeUnverify({ badgeId: badge.id, userId: user.id });
+        setShow(false);
+    }, [badge, user]);
+
+    const handleDelete = React.useCallback(async () => {
+        if (isSuper) {
+            await client.mutateSuperBadgeDelete({ badgeId: badge.id, userId: user.id });
+        } else {
+            await client.mutateBadgeDelete({ badgeId: badge.id });
+        }
+        setShow(false);
+    }, [badge, user, isSuper]);
+
+    if (!user.isYou && !isSuper) {
+        if (!badge.verified) {
+            return (
+                <XView marginRight={12} marginBottom={12}>
+                    <XBadge {...badge} primary={primary} size="big" />
+                </XView>
+            );
+        } else {
+            return (
+                <XPopper
+                    style="dark"
+                    placement="bottom"
+                    marginTop={-3}
+                    content={(
+                        <span>
+                            Verified
+                        </span>
+                    )}
+                    showOnHoverContent={false}
+                    showOnHover={true}
+                >
+                    <div>
+                        <XView marginRight={12} marginBottom={12}>
+                            <XBadge {...badge} primary={primary} size="big" />
+                        </XView>
+                    </div>
+                </XPopper>
+            );
+        }
+    }
+
+    return (
+        <XPopper
+            contentContainer={<XMenuVertical />}
+            arrow={null}
+            placement="bottom-start"
+            marginTop={-3}
+            content={(
+                <div style={{ minWidth: 140 }}>
+                    {user.isYou && (
+                        <>
+                            {badge.verified && <XMenuTitle>Verified</XMenuTitle>}
+                            {!primary && <XMenuItem onClick={handleSetPrimary}>Make primary</XMenuItem>}
+                            {primary && <XMenuItem onClick={handleUnsetPrimary}>Revoke primary</XMenuItem>}
+                        </>
+                    )}
+                    {isSuper && (
+                        <>
+                            {!badge.verified && <XMenuItem onClick={handleVerify}>Verify</XMenuItem>}
+                            {badge.verified && <XMenuItem onClick={handleUnverify}>Revoke verified</XMenuItem>}
+                        </>
+                    )}
+                    <XMenuItem style="danger" onClick={handleDelete}>Delete</XMenuItem>
+                </div>
+            )}
+            onClickOutside={() => setShow(false)}
+            show={show}
+        >
+            <div onClick={() => setShow(true)}>
+                <XView marginRight={12} marginBottom={12} cursor="pointer">
+                    <XBadge {...badge} primary={primary} size="big" />
+                </XView>
+            </div>
+        </XPopper>
+    );
+});
+
 const Badges = XMemo<{ user: User_user }>((props) => {
     const isSuper = useHasRole('super-admin');
     const { user } = props;
@@ -275,13 +384,7 @@ const Badges = XMemo<{ user: User_user }>((props) => {
                     <SectionContent>
                         <XView alignItems="flex-start" flexDirection="row" flexWrap="wrap">
                             {badges.map(badge => (
-                                <XView marginRight={12} marginBottom={12}>
-                                    <XBadge
-                                        {...badge}
-                                        primary={isPrimary(badge)}
-                                        size="big"
-                                    />
-                                </XView>
+                                <UserBadgeWrapper key={'badge-' + badge.id} user={user} badge={badge} primary={isPrimary(badge)} isSuper={isSuper} />
                             ))}
                             {(user.isYou || isSuper) && (
                                 <XView marginRight={12} marginBottom={12}>
