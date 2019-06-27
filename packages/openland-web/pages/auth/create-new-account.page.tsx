@@ -90,6 +90,8 @@ const RoomTerms = Glamorous.div({
 });
 
 type AuthMechanism = {
+    onSignUpClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+    onLoginClick: (event: React.MouseEvent<any, MouseEvent>) => void;
     signin: boolean;
     loginWithGoogle: Function;
     loginWithEmail: Function;
@@ -144,6 +146,8 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
 
 export const WebSignUpAuthMechanism = ({
     signin,
+    onLoginClick,
+    onSignUpClick,
     loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
@@ -169,16 +173,18 @@ export const WebSignUpAuthMechanism = ({
 
                 <XView marginTop={36} alignItems="center">
                     <XView flexDirection="row" alignItems="center">
-                        <XView>Already have an account?</XView>{' '}
-                        <XView marginLeft={-10} marginRight={-16}>
-                            <XButton
-                                text="Log in"
-                                style="link"
-                                onClick={() => {
-                                    //
-                                }}
-                            />
-                        </XView>
+                        <>
+                            <XView>
+                                {!signin ? 'Already have an account?' : 'Create new account?'}
+                            </XView>
+                            <XView marginLeft={-10} marginRight={-16} height={20}>
+                                <XButton
+                                    text={signin ? 'Sign up' : 'Log in'}
+                                    style="link"
+                                    onClick={!signin ? onLoginClick : onSignUpClick}
+                                />
+                            </XView>
+                        </>
                     </XView>
                 </XView>
             </XView>
@@ -213,6 +219,12 @@ export default withApp('Home', 'viewer', () => (
             //
         }}
         loginWithEmail={() => {
+            //
+        }}
+        onLoginClick={() => {
+            //
+        }}
+        onSignUpClick={() => {
             //
         }}
     />

@@ -78,8 +78,9 @@ export default () => {
         page = pages.introduceYourself;
     }
 
+    const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
+
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
-    const signin = router.path.endsWith('signin');
 
     if (router.routeQuery.redirect) {
         if (router.routeQuery.redirect.indexOf('/acceptChannelInvite/') !== -1) {
@@ -190,6 +191,12 @@ export default () => {
                     key={signin ? 'signin-track' : 'signup-track'}
                 >
                     <CreateNewAccountPage
+                        onLoginClick={() => {
+                            setSignin(true);
+                        }}
+                        onSignUpClick={() => {
+                            setSignin(false);
+                        }}
                         signin={signin}
                         loginWithGoogle={loginWithGoogle}
                         loginWithEmail={loginWithEmail}

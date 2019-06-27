@@ -56,7 +56,6 @@ const ShowOrgError = ({ message }: { message: string }) => {
 };
 
 const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
-    let router = React.useContext(XRouterContext)!;
     const client = useClient();
     const form = useForm();
     const { roomView } = props;
