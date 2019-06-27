@@ -1,12 +1,12 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
+import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { useForm } from 'openland-form/useForm';
@@ -76,24 +76,22 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                             <XAvatarFormFieldComponent size="default" {...photoRef.input} />
 
                             <XView maxWidth={500}>
-                                <XInput
+                                <InputField
                                     invalid={!!form.error}
-                                    size="large"
                                     title="First name"
                                     dataTestId="first-name"
                                     flexGrow={1}
-                                    {...firstName.input}
+                                    field={firstName}
                                 />
                                 {form.error && <XErrorMessage message={form.error} />}
                             </XView>
 
                             <XView>
-                                <XInput
-                                    size="large"
+                                <InputField
                                     title="Last name"
                                     dataTestId="last-name"
                                     flexGrow={1}
-                                    {...lastName.input}
+                                    field={lastName}
                                 />
                             </XView>
 

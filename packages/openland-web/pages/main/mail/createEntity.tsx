@@ -14,7 +14,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdown';
 import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
-import { InputField } from './InputField';
+import { InputField } from 'openland-web/components/InputField';
 import { XTextArea } from 'openland-x/XTextArea';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 
