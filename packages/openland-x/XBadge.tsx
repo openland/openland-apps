@@ -21,6 +21,7 @@ const XBadgeWrapperDefault = XMemo<XViewProps>((props) => (
         lineHeight="14px"
         borderWidth={1}
         fontWeight="600"
+        overflow="hidden"
     >
         {props.children}
     </XView>
@@ -36,6 +37,7 @@ const XBadgeWrapperBig = XMemo<XViewProps>((props) => (
         lineHeight="25px"
         borderWidth={1}
         fontWeight="600"
+        overflow="hidden"
     >
         {props.children}
     </XView>
