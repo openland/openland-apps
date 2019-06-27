@@ -7,9 +7,10 @@ export const XErrorMessage = React.memo<{ message: string }>((props) => {
             backgroundColor="rgba(215, 84, 84,0.1)"
             color="rgb(215, 84, 84)"
             fontSize={16}
-            lineHeight="40px"
+            lineHeight="24px"
             borderRadius={6}
             paddingHorizontal={16}
+            paddingVertical={8}
             marginBottom={16}
             marginHorizontal={40}
         >

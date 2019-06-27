@@ -304,6 +304,7 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
     return (
         <>
+            {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent>
                     <InputField title="Badge text" field={nameField} setFocusOnError />
