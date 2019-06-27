@@ -337,7 +337,7 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
                 <div style={{ minWidth: 140 }}>
                     {user.isYou && (
                         <>
-                            {!isSuper && badge.verified && <XMenuTitle>Verified</XMenuTitle>}
+                            {badge.verified && <XMenuTitle>Verified</XMenuTitle>}
                             {!primary && <XMenuItem onClick={handleSetPrimary}>Make primary</XMenuItem>}
                             {primary && <XMenuItem onClick={handleUnsetPrimary}>Revoke primary</XMenuItem>}
                         </>

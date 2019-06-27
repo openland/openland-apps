@@ -47,7 +47,19 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
                             Settings
                         </XMenuItem>
                     </XWithRole>
-
+                    {!isChannel && (
+                        <XWithRole role="feature-non-production">
+                            <XMenuItem
+                                onClick={() =>
+                                    showModalBox({ title: 'Group badge' }, ctx => (
+                                        <div>Group badge</div>
+                                    ))
+                                }
+                            >
+                                My group badge
+                            </XMenuItem>
+                        </XWithRole>
+                    )}
                     <XMenuItem
                         style="danger"
                         onClick={() =>
