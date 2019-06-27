@@ -37,7 +37,7 @@ import { XBadge, XBadgeAdd } from 'openland-x/XBadge';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useHasRole } from 'openland-x-permissions/XWithRole';
 import { showModalBox } from 'openland-x/showModalBox';
-import { CreateBadgeModal } from './modals';
+import { CreateBadgeModal, DeleteBadgeModal } from './modals';
 import { XPopper } from 'openland-x/XPopper';
 
 const ModalCloser = Glamorous(XLink)({
@@ -292,11 +292,7 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
     }, [badge, user]);
 
     const handleDelete = React.useCallback(async () => {
-        if (isSuper) {
-            await client.mutateSuperBadgeDelete({ badgeId: badge.id, userId: user.id });
-        } else {
-            await client.mutateBadgeDelete({ badgeId: badge.id });
-        }
+        showModalBox({ title: 'Delete badge' }, ctx => <DeleteBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} badgeId={badge.id} />)
         setShow(false);
     }, [badge, user, isSuper]);
 

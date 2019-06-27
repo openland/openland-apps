@@ -15,8 +15,10 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { InputField } from '../../mail/InputField';
+import { InputField } from 'openland-web/components/InputField';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
+import { XModalContent } from 'openland-web/components/XModalContent';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -278,10 +280,6 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
         text: 'Name can\'t be empty',
     }]);
 
-    const onCancel = () => {
-        props.ctx.hide();
-    };
-
     const onAdd = () => {
         form.doAction(async () => {
             if (props.isSuper) {
@@ -301,15 +299,49 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
     return (
         <>
-            <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
-                <InputField title="Badge text" field={nameField} />
+            {form.error && <XErrorMessage message={form.error} />}
+            <XView flexDirection="column" borderRadius={8} overflow="hidden">
+                <XModalContent>
+                    <InputField title="Badge text" field={nameField} />
+                </XModalContent>
+                <XModalFooter>
+                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton text="Add" style="primary" onClick={onAdd} />
+                </XModalFooter>
             </XView>
-            <XModalFooter>
-                <XHorizontal>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={onCancel} />
-                    <XButton text="Add" style="primary" size="large" onClick={onAdd} />
-                </XHorizontal>
-            </XModalFooter>
+        </>
+    );
+};
+
+export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string, badgeId: string }) => {
+    const client = useClient();
+    const form = useForm();
+
+    const onAdd = () => {
+        form.doAction(async () => {
+            if (props.isSuper) {
+                await client.mutateSuperBadgeDelete({ badgeId: props.badgeId, userId: props.userId });
+            } else {
+                await client.mutateBadgeDelete({ badgeId: props.badgeId });
+            }
+
+            props.ctx.hide();
+        });
+    };
+
+    return (
+        <>
+            {form.error && <XErrorMessage message={form.error} />}
+            <XView flexDirection="column" borderRadius={8} overflow="hidden">
+                <XModalContent fontSize={18} lineHeight="28px">
+                    Are you sure you want to delete badge?<br />
+                    This cannot be undone.
+                </XModalContent>
+                <XModalFooter>
+                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton text="Delete" style="danger" onClick={onAdd} />
+                </XModalFooter>
+            </XView>
         </>
     );
 };
