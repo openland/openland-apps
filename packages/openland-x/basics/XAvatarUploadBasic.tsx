@@ -50,14 +50,14 @@ const DropAreaWrapper = Glamorous.div<{
 }>([
     {
         position: 'relative',
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f9f9f9',
         overflow: 'hidden',
-        borderRadius: 12,
-        border: '1px solid rgba(220, 222, 228, 0.45)',
+        borderRadius: 8,
+        // border: '1px solid rgba(220, 222, 228, 0.45)',
         cursor: 'pointer',
 
         '&:hover': {
-            border: '1px solid #45a6ff',
+            // border: '1px solid #45a6ff',
         },
 
         display: 'flex',
@@ -100,8 +100,8 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>(props => ({
     color: props.hasImage ? 'rgba(255, 255, 255, 0)' : 'rgba(51,69,98,0.5)',
     zIndex: 1,
     '&:hover': {
-        color: props.hasImage ? '#fff' : 'rgba(51,69,98,0.5)',
-        backgroundColor: props.hasImage ? 'rgba(0, 0, 0, 0.47)' : '#fff',
+        color: '#fff',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
 }));
 
