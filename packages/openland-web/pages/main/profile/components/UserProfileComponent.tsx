@@ -35,7 +35,7 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XBadge, XBadgeAdd } from 'openland-x/XBadge';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useHasRole } from 'openland-x-permissions/XWithRole';
+import { useHasRole, XWithRole } from 'openland-x-permissions/XWithRole';
 import { showModalBox } from 'openland-x/showModalBox';
 import { CreateBadgeModal, DeleteBadgeModal } from './modals';
 import { XPopper } from 'openland-x/XPopper';
@@ -450,7 +450,9 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
-                    <Badges user={user} />
+                    <XWithRole role="feature-non-production">
+                        <Badges user={user} />
+                    </XWithRole>
                 </XScrollView3>
             </XView>
         </>

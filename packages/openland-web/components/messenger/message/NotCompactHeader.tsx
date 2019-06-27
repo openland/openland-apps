@@ -13,6 +13,7 @@ import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink2 } from 'openland-x/XLink2';
 import { XBadge } from 'openland-x/XBadge';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const DeletedCommentHeader = () => {
     return (
@@ -113,9 +114,11 @@ export const NotCompactHeader = ({
                     </XView>
                 )}
                 {senderBadge && (
-                    <XView marginLeft={8} alignSelf="center">
-                        <XBadge {...senderBadge} />
-                    </XView>
+                    <XWithRole role="feature-non-production">
+                        <XView marginLeft={8} alignSelf="center">
+                            <XBadge {...senderBadge} />
+                        </XView>
+                    </XWithRole>
                 )}
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView
