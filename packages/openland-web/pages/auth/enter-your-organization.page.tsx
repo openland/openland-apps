@@ -67,33 +67,32 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                let result = await client.mutateCreateOrganization({
-                    input: {
-                        personal: false,
-                        name: organizationField.value,
-                        // id: data.id,
-                    },
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            let result = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: organizationField.value,
+                    // id: data.id,
+                },
+            });
+
+            const inviteKey = Cookie.get('x-openland-app-invite');
+            if (inviteKey) {
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
                 });
-
                 await client.refetchAccount();
-
-                const inviteKey = Cookie.get('x-openland-app-invite');
-                if (inviteKey) {
-                    await client.mutateOrganizationActivateByInvite({
-                        inviteKey,
-                    });
-                }
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
 
                 trackEvent('registration_complete');
-                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                router.push('/onboarding/start');
-            });
-        },
-        [organizationField.value],
-    );
+                window.location.href = '/onboarding/start';
+            } else {
+                window.location.href = '/';
+                trackEvent('registration_complete');
+            }
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Find your organization or create a new one ';
 
