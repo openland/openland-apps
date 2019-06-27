@@ -35,27 +35,6 @@ const checkIfIsSignIn = (router: any) => {
     return router.path.endsWith('signin');
 };
 
-const trackError = (error: string) => {
-    if (
-        [
-            'code_expired',
-            'invalid_user_password',
-            'wrong_code',
-            'wrong_code_length',
-            'no_code',
-        ].includes(error)
-    ) {
-        let e =
-            error === 'wrong_code_length' || error === 'invalid_user_password'
-                ? 'wrong_code'
-                : error;
-
-        trackEvent('code_error', { error_type: e });
-    } else {
-        trackEvent('signup_error', { error_type: error });
-    }
-};
-
 export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
@@ -115,15 +94,12 @@ export default () => {
     }
 
     const [codeValue, setCodeValue] = React.useState('');
-    const [codeError, setCodeError] = React.useState('');
-    const [codeSending, setCodeSending] = React.useState(false);
     const [email, setEmail] = React.useState(false);
     const [emailValue, setEmailValue] = React.useState('');
     const [emailWasResend, setEmailWasResend] = React.useState(false);
     const [emailSending, setEmailSending] = React.useState(false);
     const [emailError, setEmailError] = React.useState('');
     const [emailSent, setEmailSent] = React.useState(false);
-    const [signInInvite, setSignInInvite] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
 
@@ -153,44 +129,6 @@ export default () => {
         );
     };
 
-    const loginCodeStart = async () => {
-        console.log('loginCodeStart');
-        if (codeValue === '') {
-            trackError('no_code');
-
-            setCodeError(InitTexts.auth.noCode);
-
-            return;
-        } else if (codeValue.length !== 6) {
-            trackError('wrong_code_length');
-
-            setCodeError(InitTexts.auth.wrongCodeLength);
-            return;
-        } else {
-            setCodeError(InitTexts.auth.wrongCodeLength);
-            setCodeSending(true);
-
-            createAuth0Client().passwordlessVerify(
-                {
-                    connection: 'email',
-                    email: emailValue,
-                    verificationCode: codeValue,
-                },
-                (error: any, v) => {
-                    trackError(error.code);
-                    console.warn(error);
-                    if (error) {
-                        setSignInInvite(false);
-                        setCodeSending(false);
-                        setCodeError(InitTexts.auth.wrongCodeLength);
-                    } else {
-                        // Ignore. Should be redirect to completion page.
-                    }
-                },
-            );
-        }
-    };
-
     const fireGoogle = async () => {
         console.log('fireGoogle');
         Cookie.set('auth-type', 'google', { path: '/' });
@@ -202,10 +140,7 @@ export default () => {
 
     const loginWithGoogle = () => {
         trackEvent(checkIfIsSignIn(router) ? 'signin_google_action' : 'signup_google_action');
-
         setGoogleStarting(true);
-        setSignInInvite(false);
-
         setTimeout(() => {
             fireGoogle();
         }, 0);
@@ -218,9 +153,6 @@ export default () => {
         setEmailError('');
         setEmailSent(false);
         setCodeValue('');
-        setCodeSending(false);
-        setCodeError('');
-        setSignInInvite(false);
 
         setTimeout(() => {
             router.push('/auth2/ask-email');
@@ -240,7 +172,7 @@ export default () => {
             setEmailSending(true);
             setEmailError('');
             setEmailSent(false);
-            setSignInInvite(false);
+
             fireEmail();
             setTimeout(() => {
                 router.push('/auth2/ask-activation-code');
@@ -250,7 +182,6 @@ export default () => {
 
     const codeValueChanged = (val: string, cb: () => void) => {
         setCodeValue(val);
-        setCodeError('');
         setTimeout(cb, 100);
     };
 
@@ -289,12 +220,10 @@ export default () => {
                         backButtonClick={() => {
                             setFromOutside(false);
                         }}
-                        codeError={codeError}
+                        emailValue={emailValue}
                         codeChanged={codeValueChanged}
-                        codeSending={codeSending}
                         emailSending={emailSending}
                         codeValue={codeValue}
-                        loginCodeStart={loginCodeStart}
                     />
                 </XTrack>
             )}

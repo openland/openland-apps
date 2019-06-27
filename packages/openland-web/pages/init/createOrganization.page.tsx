@@ -72,32 +72,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     }
 
     render() {
-        const { organizations, roomView, onPrefixChanges, createOrganization, router } = this.props;
-
-        const fetchedOrPrevOrganizations = organizations.loading
-            ? this.state.lastLoadedOrganizations
-            : organizations;
-        return (
-            <CreateOrganizationFormInner
-                organizations={fetchedOrPrevOrganizations}
-                onPrefixChanges={onPrefixChanges}
-                roomView={roomView}
-                defaultAction={async (data: any) => {
-                    let result = await createOrganization({
-                        variables: {
-                            input: {
-                                personal: false,
-                                name: data.name,
-                                id: data.id,
-                            },
-                        },
-                    });
-                    trackEvent('registration_complete');
-                    switchOrganization(result.organization.id, router.query.redirect);
-                    await delayForewer();
-                }}
-            />
-        );
+        return <CreateOrganizationFormInner />;
     }
 }
 

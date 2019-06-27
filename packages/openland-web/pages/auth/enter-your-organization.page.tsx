@@ -8,12 +8,11 @@ import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XButton } from 'openland-x/XButton';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XInput } from 'openland-x/XInput';
-import { XForm } from 'openland-x-forms/XForm2';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormError } from 'openland-x-forms/XFormError';
-import { XFormField2 } from 'openland-x-forms/XFormField2';
 import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { XTrack } from 'openland-x-analytics/XTrack';
@@ -70,7 +69,7 @@ const organizationInputErrorClassName = css`
     align-self: flex-start;
 `;
 
-const ShowOrgError = () => {
+const ShowOrgError = ({ message }: { message: string }) => {
     const [onceRender, setOnceRender] = React.useState(false);
 
     if (!onceRender) {
@@ -81,138 +80,103 @@ const ShowOrgError = () => {
 
     return (
         <div className={cx(organizationInputClassName, organizationInputErrorClassName)}>
-            <XFormError field="input.organization" />
+            <XErrorMessage message={message} />
         </div>
     );
 };
 
-export class CreateOrganizationFormInner extends React.Component<
-    {
-        onPrefixChanges: (prefix: string) => void;
-        roomView: boolean;
-        defaultAction: (data: any) => any;
-        organizations: any;
-    },
-    {
-        inputValue: string;
-    }
-> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            inputValue: '',
-        };
-    }
+const CreateOrganizationFormInner = (props: { roomView: boolean }) => {
+    let router = React.useContext(XRouterContext)!;
+    const client = useClient();
+    const form = useForm();
+    const { roomView } = props;
 
-    render() {
-        const { roomView, defaultAction } = this.props;
+    let organizationField = useField('input.organization', '', form, [
+        {
+            checkIsValid: (value: string) => value !== '',
+            text: InitTexts.auth.organizationIsEmptyError,
+        },
+    ]);
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            let result = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: organizationField.value,
+                    // id: data.id,
+                },
+            });
+            trackEvent('registration_complete');
+            switchOrganization(result.organization.id, router.query.redirect);
+            router.push('/onboarding/discover');
+        });
+    }, []);
 
-        return (
-            <XTrack event="signup_org_view">
-                <ContentWrapper>
-                    <Title roomView={roomView} className="title">
-                        {InitTexts.create_organization.title}
-                    </Title>
-                    <SubTitle className="subtitle">
-                        {InitTexts.create_organization.subTitle}
-                    </SubTitle>
-                    <XForm
-                        defaultAction={(data: any) => {
-                            defaultAction({
-                                name: data.input.organization,
-                            });
-                        }}
-                        defaultData={{
-                            input: {
-                                organization: '',
-                            },
-                        }}
-                        validate={{
-                            input: {
-                                organization: [
-                                    {
-                                        rule: (value: string) => value !== '',
-                                        errorMessage: InitTexts.auth.organizationIsEmptyError,
-                                    },
-                                ],
-                            },
-                        }}
-                        defaultLayout={false}
-                    >
-                        <XVertical separator="large">
-                            <XFormError width={472} />
-                            <XFormLoadingContent>
-                                <ButtonsWrapper marginBottom={84} marginTop={34}>
-                                    <div>
-                                        <XVertical alignItems="center" separator="none">
-                                            <XFormField2 field="input.organization">
-                                                {({ showError }: { showError: boolean }) => (
-                                                    <XVertical separator="none" alignItems="center">
-                                                        <>
-                                                            <XHorizontal
-                                                                alignItems="center"
-                                                                separator="none"
-                                                            >
-                                                                <XInput
-                                                                    invalid={showError}
-                                                                    field="input.organization"
-                                                                    size="large"
-                                                                    title="Organization name"
-                                                                    dataTestId="organization"
-                                                                    flexGrow={1}
-                                                                    className={
-                                                                        organizationInputClassName
-                                                                    }
-                                                                />
-                                                                <XPopper
-                                                                    content={
-                                                                        <InfoText>
-                                                                            To register as an
-                                                                            individual, simply enter
-                                                                            your name
-                                                                        </InfoText>
-                                                                    }
-                                                                    showOnHover={true}
-                                                                    placement="top"
-                                                                    style="dark"
-                                                                >
-                                                                    <XIconWrapper>
-                                                                        <IcInfo />
-                                                                    </XIconWrapper>
-                                                                </XPopper>
-                                                            </XHorizontal>
-                                                            {showError && <ShowOrgError />}
-                                                        </>
-                                                    </XVertical>
-                                                )}
-                                            </XFormField2>
-                                            <XView marginTop={50}>
-                                                <XFormSubmit
-                                                    dataTestId="continue-button"
-                                                    style="primary"
-                                                    text={InitTexts.create_organization.continue}
-                                                    size="large"
-                                                />
-                                            </XView>
-                                        </XVertical>
-                                    </div>
-                                </ButtonsWrapper>
-                            </XFormLoadingContent>
-                        </XVertical>
-                    </XForm>
-                </ContentWrapper>
-            </XTrack>
-        );
-    }
-}
+    return (
+        <XTrack event="signup_org_view">
+            <ContentWrapper>
+                <Title roomView={roomView} className="title">
+                    {InitTexts.create_organization.title}
+                </Title>
+                <SubTitle className="subtitle">{InitTexts.create_organization.subTitle}</SubTitle>
+
+                <XVertical separator="large">
+                    <ButtonsWrapper marginBottom={84} marginTop={34}>
+                        <div>
+                            <XVertical alignItems="center" separator="none">
+                                <XVertical separator="none" alignItems="center">
+                                    <>
+                                        <XHorizontal alignItems="center" separator="none">
+                                            <XInput
+                                                invalid={!!form.error}
+                                                size="large"
+                                                title="Organization name"
+                                                dataTestId="organization"
+                                                flexGrow={1}
+                                                className={organizationInputClassName}
+                                                {...organizationField.input}
+                                            />
+                                            <XPopper
+                                                content={
+                                                    <InfoText>
+                                                        To register as an individual, simply enter
+                                                        your name
+                                                    </InfoText>
+                                                }
+                                                showOnHover={true}
+                                                placement="top"
+                                                style="dark"
+                                            >
+                                                <XIconWrapper>
+                                                    <IcInfo />
+                                                </XIconWrapper>
+                                            </XPopper>
+                                        </XHorizontal>
+                                        {form.error && <ShowOrgError message={form.error} />}
+                                    </>
+                                </XVertical>
+
+                                <XView marginTop={50}>
+                                    <XButton
+                                        dataTestId="continue-button"
+                                        style="primary"
+                                        text={InitTexts.create_organization.continue}
+                                        size="large"
+                                        onClick={doConfirm}
+                                    />
+                                </XView>
+                            </XVertical>
+                        </div>
+                    </ButtonsWrapper>
+                </XVertical>
+            </ContentWrapper>
+        </XTrack>
+    );
+};
 
 export const EnterYourOrganizationPage = () => {
-    const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const createOrganization = async ({ variables }: { variables: any }) => {
-        return await client.mutateCreateOrganization(variables);
-    };
     return (
         <div className={backgroundClassName}>
             <XDocumentHead title="Discover" />
@@ -228,27 +192,7 @@ export const EnterYourOrganizationPage = () => {
                 />
             </XView>
 
-            <CreateOrganizationFormInner
-                onPrefixChanges={() => {
-                    //
-                }}
-                roomView={false}
-                defaultAction={async (data: any) => {
-                    let result = await createOrganization({
-                        variables: {
-                            input: {
-                                personal: false,
-                                name: data.name,
-                                id: data.id,
-                            },
-                        },
-                    });
-                    trackEvent('registration_complete');
-                    switchOrganization(result.organization.id, router.query.redirect);
-                    router.push('/onboarding/discover');
-                }}
-                organizations={null}
-            />
+            <CreateOrganizationFormInner roomView={false} />
         </div>
     );
 };
