@@ -5,7 +5,7 @@ import InviteIcon from 'openland-icons/ic-invite-plus.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { showModalBox } from 'openland-x/showModalBox';
-import { InviteFragment } from 'openland-web/pages/main/mail/invitePeople.page';
+import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { trackEvent } from 'openland-x-analytics';
 
@@ -45,11 +45,11 @@ export const DialogsInviteButton = XMemo(() => {
         <InviteWrapper
             onClick={() => {
                 trackEvent('invite_view', { invite_type: 'general' });
-                showModalBox({ fullScreen: true }, ctx => (
+                showModalBox({ fullScreen: true }, () => (
                     <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                        <InviteFragment asModalContent modalContext={ctx} />
+                        <InviteFriendsFragment asModalContent />
                     </XScrollView3>
-                ))
+                ));
             }}
         >
             <InviteIcon />

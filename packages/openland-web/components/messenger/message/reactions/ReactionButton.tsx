@@ -164,7 +164,7 @@ export const MessageReactionButton = ({
     const handler = async (it: MessageReactionType) => {
         trackEvent('reaction_sent', {
             reaction_type: reactionEmojiMap[it].toLowerCase(),
-            double_tap: 'not'
+            double_tap: 'not',
         });
 
         await client.mutateMessageSetReaction({

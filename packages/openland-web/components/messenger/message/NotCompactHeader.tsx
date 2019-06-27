@@ -166,7 +166,9 @@ export const NotCompactHeader = ({
                     alignSelf="flex-end"
                     marginBottom={-1}
                 >
-                    <span className={sendDataClassName}><XDate value={date.toString()} format="time" /></span>
+                    <span className={sendDataClassName}>
+                        <XDate value={date.toString()} format="time" />
+                    </span>
                 </XView>
             )}
         </XView>

@@ -22,13 +22,7 @@ export default () => (
 
                     return (
                         <RoomSignupContainer headerStyle={headerStyle} pageMode="CreateProfile">
-                            <CreateProfileFormInner
-                                roomView={true}
-                                prefill={{}}
-                                defaultAction={() => {
-                                    //
-                                }}
-                            />
+                            <CreateProfileFormInner roomView={true} prefill={{}} />
                         </RoomSignupContainer>
                     );
                 } else {
@@ -45,13 +39,7 @@ export default () => (
                                 linkText,
                             }}
                         >
-                            <CreateProfileFormInner
-                                roomView={false}
-                                prefill={{}}
-                                defaultAction={() => {
-                                    //
-                                }}
-                            />
+                            <CreateProfileFormInner roomView={false} prefill={{}} />
                         </WebSignUpContainer>
                     );
                 }

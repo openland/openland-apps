@@ -22,16 +22,16 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
         ...src,
         replyQuoteTextEmojify: src.replyQuoteText
             ? emoji({
-                src: src.replyQuoteText,
-                size: 16,
-            })
+                  src: src.replyQuoteText,
+                  size: 16,
+              })
             : undefined,
         senderNameEmojify:
             src.type === 'message' && !src.attachTop
                 ? emoji({
-                    src: src.sender.name,
-                    size: 16,
-                })
+                      src: src.sender.name,
+                      size: 16,
+                  })
                 : undefined,
         replySenderNameEmojify: (src.reply || []).map(r =>
             emoji({

@@ -90,7 +90,7 @@ export function SelectWithDropdown<T>({
             <XView
                 height={52}
                 paddingHorizontal={16}
-                backgroundColor="#f2f3f4"
+                backgroundColor="#f9f9f9"
                 borderRadius={8}
                 flexDirection="row"
                 justifyContent="space-between"

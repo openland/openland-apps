@@ -109,10 +109,10 @@ const SingleReactionSetInner = (props: SingleReactionSetT) => {
             handler={it => {
                 trackEvent('reaction_sent', {
                     reaction_type: reactionEmojiMap[it].toLowerCase(),
-                    double_tap: 'not'
+                    double_tap: 'not',
                 });
 
-                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
+                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it });
             }}
             reaction={props.reaction}
             isMy={props.isMy}

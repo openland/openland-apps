@@ -84,20 +84,20 @@ const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
     const ref = React.useRef<any | null>(null);
     let isChatActive = React.useContext(IsActivePoliteContext);
 
-    React.useEffect(() => {
-        return isChatActive.listen(async active => {
-            await delay(0);
-            if (ref.current && props.scrollTo && active) {
-                ref.current.scrollIntoView();
-                props.scrollTo.key = undefined;
-            }
-        })
-    }, [ref.current, props.scrollTo])
+    React.useEffect(
+        () => {
+            return isChatActive.listen(async active => {
+                await delay(0);
+                if (ref.current && props.scrollTo && active) {
+                    ref.current.scrollIntoView();
+                    props.scrollTo.key = undefined;
+                }
+            });
+        },
+        [ref.current, props.scrollTo],
+    );
     return (
-        <div
-            key={props.dividerKey}
-            ref={ref}
-        >
+        <div key={props.dividerKey} ref={ref}>
             <XView
                 justifyContent="center"
                 alignItems="center"
@@ -122,7 +122,7 @@ const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
             </XView>
         </div>
     );
-}
+};
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     scroller = React.createRef<any>();
@@ -152,59 +152,64 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     };
 
-    renderMessage = React.memo((i: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) & ScrollTo) => {
-        if (i.type === 'message') {
-            return (
-                <MessageComponent
-                    key={i.id}
-                    message={i}
-                    isChannel={this.props.isChannel}
-                    conversationId={this.props.conversationId}
-                    me={this.props.me}
-                    room={this.props.room}
-                />
-            );
-        } else if (i.type === 'date') {
-            let now = new Date();
-            let date = 'Today';
-            if (now.getFullYear() === i.year) {
-                if (now.getMonth() !== i.month || now.getDate() !== i.date) {
-                    date = months[i.month] + ' ' + i.date;
+    renderMessage = React.memo(
+        (
+            i: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) &
+                ScrollTo,
+        ) => {
+            if (i.type === 'message') {
+                return (
+                    <MessageComponent
+                        key={i.id}
+                        message={i}
+                        isChannel={this.props.isChannel}
+                        conversationId={this.props.conversationId}
+                        me={this.props.me}
+                        room={this.props.room}
+                    />
+                );
+            } else if (i.type === 'date') {
+                let now = new Date();
+                let date = 'Today';
+                if (now.getFullYear() === i.year) {
+                    if (now.getMonth() !== i.month || now.getDate() !== i.date) {
+                        date = months[i.month] + ' ' + i.date;
+                    }
+                } else {
+                    date = i.year + ', ' + months[i.month] + ' ' + i.date;
                 }
-            } else {
-                date = i.year + ', ' + months[i.month] + ' ' + i.date;
-            }
-            return (
-                <XView
-                    key={'date-' + i.date}
-                    justifyContent="center"
-                    alignItems="center"
-                    zIndex={1}
-                    marginTop={24}
-                    marginBottom={0}
-                >
+                return (
                     <XView
+                        key={'date-' + i.date}
                         justifyContent="center"
                         alignItems="center"
-                        backgroundColor="#ffffff"
-                        borderRadius={50}
-                        paddingLeft={10}
-                        paddingRight={10}
-                        paddingTop={2}
-                        paddingBottom={2}
+                        zIndex={1}
+                        marginTop={24}
+                        marginBottom={0}
                     >
-                        <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
-                            {date}
+                        <XView
+                            justifyContent="center"
+                            alignItems="center"
+                            backgroundColor="#ffffff"
+                            borderRadius={50}
+                            paddingLeft={10}
+                            paddingRight={10}
+                            paddingTop={2}
+                            paddingBottom={2}
+                        >
+                            <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
+                                {date}
+                            </XView>
                         </XView>
                     </XView>
-                </XView>
-            );
-        } else if (i.type === 'new_divider') {
-            return <NewMessageDivider dividerKey={(i as any).dataKey} scrollTo={i.scrollTo} />
-        }
+                );
+            } else if (i.type === 'new_divider') {
+                return <NewMessageDivider dividerKey={(i as any).dataKey} scrollTo={i.scrollTo} />;
+            }
 
-        return <div />;
-    });
+            return <div />;
+        },
+    );
 
     renderLoading = React.memo(() => {
         return (

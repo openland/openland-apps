@@ -12,7 +12,7 @@ import { trackEvent } from 'openland-x-analytics';
 
 const InputClassName = css`
     border-radius: 8px !important;
-    background: #f2f3f4 !important;
+    background: #f9f9f9 !important;
     border: none !important;
     &:focus-within {
         border: none !important;

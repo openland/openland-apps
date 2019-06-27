@@ -6,8 +6,6 @@ import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 import { useClient } from 'openland-web/utils/useClient';
-import { showModalBox } from 'openland-x/showModalBox';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XModalFooter } from 'openland-web/components/XModalFooter';

@@ -16,7 +16,7 @@ export const TextGlobal = {
     sendInvites: 'Send invites',
     invitePeopleTo: 'Invite people to',
     joinYourOrganization: 'Invite people to your organization',
-    joinOpenland: 'Invite people',
+    joinOpenland: 'Invite friends',
     startChat: 'New chat',
 
     socials: {

@@ -18,12 +18,12 @@ routes.add('/privacy/', '/landing/privacy');
 //
 
 routes.add('/', '/init/root');
-routes.add('/signup', '/init/signin');
-routes.add('/signup/', '/init/signin');
-routes.add('/signin', '/init/signin');
-routes.add('/signin/', '/init/signin');
-routes.add('/signin/invite', '/init/signin');
-routes.add('/signin/invite/', '/init/signin');
+routes.add('/signup', '/auth/root');
+routes.add('/signup/', '/auth/root');
+routes.add('/signin', '/auth/root');
+routes.add('/signin/', '/auth/root');
+routes.add('/signin/invite', '/auth/root');
+routes.add('/signin/invite/', '/auth/root');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
@@ -32,10 +32,10 @@ routes.add('/waitlist', '/init/waitlist');
 routes.add('/waitlist/', '/init/waitlist');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
-routes.add('/createProfile', '/init/createProfile');
-routes.add('/createProfile/', '/init/createProfile');
-routes.add('/createOrganization', '/init/createOrganization');
-routes.add('/createOrganization/', '/init/createOrganization');
+routes.add('/createProfile', '/auth/root');
+routes.add('/createProfile/', '/auth/root');
+routes.add('/createOrganization', '/auth/root');
+routes.add('/createOrganization/', '/auth/root');
 routes.add('/404', '/404');
 
 //
@@ -83,7 +83,7 @@ routes.add('/discover/communities/', '/main/discover/communities');
 routes.add('/discover/recommended', '/main/discover/discover');
 routes.add('/discover/recommended/', '/main/discover/discover');
 routes.add('/discover/explore', '/main/discover/explore');
-routes.add('/discover/explore/', '/main/discover/explore');
+routes.add('/discover/expslore/', '/main/discover/explore');
 routes.add('/directory/r/:conversationId', '/main/discover/root');
 routes.add('/directory/r/:conversationId/', '/main/discover/root');
 routes.add('/directory/p/:conversationId', '/main/discover/root');
@@ -94,6 +94,17 @@ routes.add('/directory/o/:organizationId', '/main/discover/organizations');
 routes.add('/directory/o/:organizationId/', '/main/discover/organizations');
 routes.add('/directory/c/:organizationId', '/main/discover/communities');
 routes.add('/directory/c/:organizationId/', '/main/discover/communities');
+
+//
+// Onboardinng
+//
+
+routes.add('/onboarding/start', '/onboarding/start');
+routes.add('/onboarding/start/', '/onboarding/start/');
+routes.add('/onboarding/chats-for-you', '/onboarding/chats-for-you');
+routes.add('/onboarding/chats-for-you/', '/onboarding/chats-for-you/');
+routes.add('/onboarding/discover', '/onboarding/discover');
+routes.add('/onboarding/discover/', '/onboarding/discover/');
 
 //
 // Profiles
@@ -298,6 +309,23 @@ routes.add('/test', '/dev/test');
 routes.add('auth/login');
 routes.add('auth/logout');
 routes.add('auth/complete');
+
+//
+routes.add('/auth2', '/auth/root');
+routes.add('/auth2/:step', '/auth/root');
+
+// routes.add('/auth/accept-invite', '/auth/accept-invite');
+// routes.add('/auth/accept-invite/', '/auth/accept-invite/');
+// routes.add('/auth/ask-activation-code', '/auth/ask-activation-code');
+// routes.add('/auth/ask-activation-code/', '/auth/ask-activation-code/');
+// routes.add('/auth/ask-email', '/auth/ask-email');
+// routes.add('/auth/ask-email/', '/auth/ask-email/');
+// routes.add('/auth/create-new-account', '/auth/create-new-account');
+// routes.add('/auth/create-new-account/', '/auth/create-new-account/');
+// routes.add('/auth/enter-your-organization', '/auth/enter-your-organization');
+// routes.add('/auth/enter-your-organization/', '/auth/enter-your-organization/');
+// routes.add('/auth/introduce-yourself', '/auth/introduce-yourself');
+// routes.add('/auth/introduce-yourself/', '/auth/introduce-yourself/');
 
 //
 // Shortnames

@@ -75,7 +75,7 @@ class RenewInviteLinkButtonWrapper extends React.PureComponent {
 
 const InputClassName = css`
     border-radius: 8px !important;
-    background: #f2f3f4 !important;
+    background: #f9f9f9 !important;
     border: none !important;
     &:focus-within {
         border: none !important;
@@ -156,8 +156,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-                ? 'community'
-                : 'organization';
+            ? 'community'
+            : 'organization';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
@@ -485,8 +485,8 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-                ? 'community'
-                : 'organization';
+            ? 'community'
+            : 'organization';
         return (
             <XModalForm
                 autoClose={1500}

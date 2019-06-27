@@ -118,15 +118,13 @@ export const DumpSendMessage = React.memo(
                 />
                 <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {closeEditor &&
-                            quoteState &&
-                            quoteState.quoteMessageReply && (
-                                <EditView
-                                    message={quoteState.quoteMessageReply}
-                                    title={quoteState.quoteMessageSender || 'Edit message'}
-                                    onCancel={closeEditor}
-                                />
-                            )}
+                        {closeEditor && quoteState && quoteState.quoteMessageReply && (
+                            <EditView
+                                message={quoteState.quoteMessageReply}
+                                title={quoteState.quoteMessageSender || 'Edit message'}
+                                onCancel={closeEditor}
+                            />
+                        )}
                         {(fileSrc || (fileName && fileSize)) && (
                             <XView marginLeft={14}>
                                 <FileUploader />
@@ -151,8 +149,9 @@ export const DumpSendMessage = React.memo(
                             justifyContent="space-between"
                             flexGrow={1}
                         >
-                            {!minimal &&
-                                !hideAttachments && <AttachmentButtons enabled={enabled} />}
+                            {!minimal && !hideAttachments && (
+                                <AttachmentButtons enabled={enabled} />
+                            )}
 
                             {!minimal && (
                                 <XButton

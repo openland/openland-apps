@@ -11,7 +11,7 @@ import { isNumber } from 'util';
 
 const Container = Glamorous(XHorizontal)<XFlexStyles>([
     {
-        backgroundColor: '#f2f3f4',
+        backgroundColor: '#f9f9f9',
         minHeight: 52,
         display: 'flex',
         flexDirection: 'row',

@@ -139,14 +139,13 @@ export const MessagesNavigation = XMemo(
                         }
                         secondFragmentHeader={
                             <React.Suspense fallback={null}>
-                                {chatId &&
-                                    !isRoomProfile && (
-                                        <ChatHeaderViewLoader
-                                            variables={{
-                                                id: chatId,
-                                            }}
-                                        />
-                                    )}
+                                {chatId && !isRoomProfile && (
+                                    <ChatHeaderViewLoader
+                                        variables={{
+                                            id: chatId,
+                                        }}
+                                    />
+                                )}
                                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
                         }

@@ -64,7 +64,7 @@ export const Title = Glamorous.div<{ format?: XTextArea; invalid?: boolean }>([
         position: 'absolute',
         paddingRight: 3,
         color: '#1488f3',
-        backgroundColor: '#f2f3f4',
+        backgroundColor: '#f9f9f9',
         borderRadius: 10,
     },
     props => titleStyles(props.format),
@@ -129,7 +129,7 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
                 : {};
             return {
                 color: '#000',
-                backgroundColor: '#f2f3f4',
+                backgroundColor: '#f9f9f9',
                 border: 'none',
                 paddingTop: 24,
                 '&:focus': {
