@@ -227,9 +227,10 @@ export class ConversationEngine implements MessageSendHandler {
         messages.reverse();
 
         this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
-        let pagesToload = 1;
+        let overLoad = 1;
+        let pagesToload = 10;
 
-        while (messages.length > 0 && this.lastReadedDividerMessageId && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || pagesToload--)) {
+        while (messages.length > 0 && this.lastReadedDividerMessageId && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || overLoad--) && pagesToload--) {
             let serverMessages = messages.filter(m => isServerMessage(m));
             let first = serverMessages[0];
             if (!first) {
