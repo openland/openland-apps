@@ -109,12 +109,15 @@ const CommentView = ({
 
     const { onSendFile, onSend } = useSendMethods({
         setShowInputId,
-        depth: message.depth + 1
+        depth: message.depth + 1,
     });
 
-    const onCommentReplyClick = React.useCallback(() => {
-        setShowInputId(showInputId === message.key ? null : message.key);
-    }, [showInputId]);
+    const onCommentReplyClick = React.useCallback(
+        () => {
+            setShowInputId(showInputId === message.key ? null : message.key);
+        },
+        [showInputId],
+    );
 
     const onCommentEditClick = async (e: React.MouseEvent) => {
         if (!message.isSending) {
@@ -150,15 +153,18 @@ const CommentView = ({
             : null;
     const parentComment = commentsMap[parentCommentId];
 
-    const onCommentBackToUserMessageClick = React.useCallback(() => {
-        return parentComment
-            ? () => {
-                  scrollToComment({
-                      commentId: parentCommentId,
-                  });
-              }
-            : undefined;
-    }, [parentCommentId]);
+    const onCommentBackToUserMessageClick = React.useCallback(
+        () => {
+            return parentComment
+                ? () => {
+                      scrollToComment({
+                          commentId: parentCommentId,
+                      });
+                  }
+                : undefined;
+        },
+        [parentCommentId],
+    );
 
     const usernameOfRepliedUser =
         parentComment && message.depth >= DEPTH_LIMIT
@@ -456,7 +462,7 @@ export const CommentsModalInnerNoRouter = ({
 
     const { onSendFile, onSend } = useSendMethods({
         setShowInputId,
-        depth: 0
+        depth: 0,
     });
 
     React.useEffect(() => {
@@ -480,18 +486,21 @@ export const CommentsModalInnerNoRouter = ({
         };
     });
 
-    React.useEffect(() => {
-        if (currentCommentsInputRef.current && scrollRef.current) {
-            const targetElem = currentCommentsInputRef.current.getElement()!!
-                .parentNode as HTMLElement;
-            if (targetElem) {
-                scrollRef.current.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
+    React.useEffect(
+        () => {
+            if (currentCommentsInputRef.current && scrollRef.current) {
+                const targetElem = currentCommentsInputRef.current.getElement()!!
+                    .parentNode as HTMLElement;
+                if (targetElem) {
+                    scrollRef.current.scrollToBottomOfElement({
+                        targetElem,
+                        offset: 10,
+                    });
+                }
             }
-        }
-    }, [showInputId]);
+        },
+        [showInputId],
+    );
 
     return (
         <IsActivePoliteContext.Provider value={new IsActiveContextState(true)}>

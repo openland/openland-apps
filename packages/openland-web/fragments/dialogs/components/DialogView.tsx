@@ -239,8 +239,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     active
                                         ? '#fff'
                                         : highlightSecretChat && dialog.kind === 'GROUP'
-                                            ? '#129f25'
-                                            : '#292929'
+                                        ? '#129f25'
+                                        : '#292929'
                                 }
                                 overflow="hidden"
                                 whiteSpace="nowrap"
@@ -269,8 +269,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                        ? channelSecretIconClass
-                                                        : channelIconClass
+                                                    ? channelSecretIconClass
+                                                    : channelIconClass
                                             }
                                         />
                                     </XView>

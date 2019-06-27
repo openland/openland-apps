@@ -41,7 +41,7 @@ export const InviteFragment = ({
 
     const founderChatId = 'ZYx4d9K6kjIZ5jo6r69zc4AX3v';
 
-    const { link: founderChatsInvite } = client.useRoomInviteLink({ roomId: founderChatId });
+    // const { link: founderChatsInvite } = client.useRoomInviteLink({ roomId: founderChatId });
 
     const profile = client.useProfile().profile!;
 
@@ -115,7 +115,7 @@ export const InviteFragment = ({
                         </TextAlignCenter>
                     </XView>
                     <XView width={isMobile ? '100%' : 540} marginTop={48}>
-                        <XView
+                        {/* <XView
                             flexDirection="row"
                             color={'#000'}
                             fontWeight="600"
@@ -130,15 +130,15 @@ export const InviteFragment = ({
                             >
                                 Founder Chats
                             </XView>
-                        </XView>
-                        <OwnerLinkComponent
+                        </XView> */}
+                        {/* <OwnerLinkComponent
                             appInvite={founderChatsInvite}
                             id={founderChatId}
                             isRoom={true}
                             useRevoke={true}
                             withoutInput={isMobile}
                             modalContext={modalContext}
-                        />
+                        /> */}
                         <XView marginTop={36}>
                             <XView
                                 flexDirection="row"

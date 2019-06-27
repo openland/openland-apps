@@ -25,6 +25,7 @@ import {
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
+import * as Cookie from 'js-cookie';
 
 const organizationInputClassName = css`
     width: 300px;
@@ -54,32 +55,44 @@ const ShowOrgError = ({ message }: { message: string }) => {
     );
 };
 
-const CreateOrganizationFormInner = (props: { roomView: boolean }) => {
+const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string }) => {
     let router = React.useContext(XRouterContext)!;
     const client = useClient();
     const form = useForm();
     const { roomView } = props;
-
+    
     let organizationField = useField('input.organization', '', form, [
         {
             checkIsValid: (value: string) => value !== '',
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            let result = await client.mutateCreateOrganization({
-                input: {
-                    personal: false,
-                    name: organizationField.value,
-                    // id: data.id,
-                },
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                let result = await client.mutateCreateOrganization({
+                    input: {
+                        personal: false,
+                        name: organizationField.value,
+                        // id: data.id,
+                    },
+                });
+             
+                await client.refetchAccount();
+
+                if(Cookie.get('x-openland-app-invite')) {
+                    await client.mutateOrganizationActivateByInvite({
+                        inviteKey: Cookie.get('x-openland-app-invite')
+                    })
+                }
+
+                trackEvent('registration_complete');
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                router.push('/onboarding/start');
             });
-            trackEvent('registration_complete');
-            switchOrganization(result.organization.id, router.query.redirect);
-            router.push('/onboarding/discover');
-        });
-    }, [organizationField.value]);
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Find your organization or create a new one ';
 
@@ -126,7 +139,7 @@ const CreateOrganizationFormInner = (props: { roomView: boolean }) => {
     );
 };
 
-export const EnterYourOrganizationPage = () => {
+export const EnterYourOrganizationPage = ({ inviteKey }: { inviteKey?: string }) => {
     let router = React.useContext(XRouterContext)!;
 
     return (
@@ -139,14 +152,16 @@ export const EnterYourOrganizationPage = () => {
                         router.replace('/auth2/introduce-yourself');
                     }}
                     onSkip={() => {
-                        router.push('/onboarding/discover');
+                        router.push('/onboarding/start');
                     }}
                 />
             </XView>
 
-            <CreateOrganizationFormInner roomView={false} />
+            <CreateOrganizationFormInner roomView={false} inviteKey={inviteKey} />
         </XView>
     );
 };
 
-export default withApp('Home', 'viewer', EnterYourOrganizationPage);
+export default withApp('Home', 'viewer', () => {
+    <EnterYourOrganizationPage />;
+});

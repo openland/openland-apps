@@ -15,4 +15,4 @@ export const isMobile = () => {
     const width = window.innerWidth;
 
     return width ? width <= 750 : null;
-}
+};

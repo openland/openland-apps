@@ -131,96 +131,97 @@ export const PostMessageButtons = React.memo(
 
         const postMessageButtons = (
             <>
-                {(isComment || isCommentNotification) && message.notificationType !== 'unsupported' && (
-                    <>
-                        <XView flexDirection="row" marginTop={4}>
-                            <XView
-                                paddingRight={12}
-                                fontSize={12}
-                                opacity={0.4}
-                                color="#000"
-                                fontWeight="600"
-                            >
-                                <ZRelativeDate
-                                    style={
-                                        {
-                                            fontSize: '100%',
-                                            color: '#000',
-                                            fontWeight: '600',
-                                        } as any
-                                    }
-                                    date={message.date.toString()}
-                                />
-                            </XView>
-                            {isCommentNotification && (
+                {(isComment || isCommentNotification) &&
+                    message.notificationType !== 'unsupported' && (
+                        <>
+                            <XView flexDirection="row" marginTop={4}>
                                 <XView
-                                    color="#1790ff"
-                                    fontWeight="600"
+                                    paddingRight={12}
                                     fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentNotificationsReplyClick}
+                                    opacity={0.4}
+                                    color="#000"
+                                    fontWeight="600"
                                 >
-                                    Reply
+                                    <ZRelativeDate
+                                        style={
+                                            {
+                                                fontSize: '100%',
+                                                color: '#000',
+                                                fontWeight: '600',
+                                            } as any
+                                        }
+                                        date={message.date.toString()}
+                                    />
                                 </XView>
-                            )}
-                            {commentProps && (
-                                <>
+                                {isCommentNotification && (
                                     <XView
                                         color="#1790ff"
                                         fontWeight="600"
                                         fontSize={12}
                                         cursor="pointer"
-                                        onClick={commentProps.onCommentReplyClick}
+                                        onClick={onCommentNotificationsReplyClick}
                                     >
                                         Reply
                                     </XView>
-
-                                    {me && message.senderId === me.id && (
+                                )}
+                                {commentProps && (
+                                    <>
                                         <XView
-                                            marginLeft={12}
-                                            color="rgba(0, 0, 0, 0.4)"
+                                            color="#1790ff"
                                             fontWeight="600"
                                             fontSize={12}
                                             cursor="pointer"
-                                            onClick={commentProps.onCommentEditClick}
+                                            onClick={commentProps.onCommentReplyClick}
                                         >
-                                            Edit
+                                            Reply
                                         </XView>
-                                    )}
 
-                                    <XWithRole role="super-admin" or={canDelete}>
-                                        <XView
-                                            marginLeft={12}
-                                            color="rgba(0, 0, 0, 0.4)"
-                                            fontWeight="600"
-                                            fontSize={12}
-                                            cursor="pointer"
-                                            onClick={commentProps.onCommentDeleteClick}
-                                        >
-                                            Delete
-                                        </XView>
-                                    </XWithRole>
-                                </>
-                            )}
+                                        {me && message.senderId === me.id && (
+                                            <XView
+                                                marginLeft={12}
+                                                color="rgba(0, 0, 0, 0.4)"
+                                                fontWeight="600"
+                                                fontSize={12}
+                                                cursor="pointer"
+                                                onClick={commentProps.onCommentEditClick}
+                                            >
+                                                Edit
+                                            </XView>
+                                        )}
 
-                            {usernameOfRepliedUser && (
-                                <XView
-                                    alignItems="center"
-                                    flexDirection="row"
-                                    marginLeft={12}
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    fontWeight="600"
-                                    fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentBackToUserMessageClick}
-                                >
-                                    <RepliedIcon />
-                                    <XView marginLeft={4}>{usernameOfRepliedUser}</XView>
-                                </XView>
-                            )}
-                        </XView>
-                    </>
-                )}
+                                        <XWithRole role="super-admin" or={canDelete}>
+                                            <XView
+                                                marginLeft={12}
+                                                color="rgba(0, 0, 0, 0.4)"
+                                                fontWeight="600"
+                                                fontSize={12}
+                                                cursor="pointer"
+                                                onClick={commentProps.onCommentDeleteClick}
+                                            >
+                                                Delete
+                                            </XView>
+                                        </XWithRole>
+                                    </>
+                                )}
+
+                                {usernameOfRepliedUser && (
+                                    <XView
+                                        alignItems="center"
+                                        flexDirection="row"
+                                        marginLeft={12}
+                                        color="rgba(0, 0, 0, 0.4)"
+                                        fontWeight="600"
+                                        fontSize={12}
+                                        cursor="pointer"
+                                        onClick={onCommentBackToUserMessageClick}
+                                    >
+                                        <RepliedIcon />
+                                        <XView marginLeft={4}>{usernameOfRepliedUser}</XView>
+                                    </XView>
+                                )}
+                            </XView>
+                        </>
+                    )}
                 {!isComment && (showReactionsButton || showDiscussButton) && (
                     <XView flexDirection="row">
                         <XHorizontal alignItems="center" separator={5}>

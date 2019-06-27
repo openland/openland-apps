@@ -15,11 +15,6 @@ import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
-
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
     selected: Set<string>;
@@ -72,7 +67,7 @@ const LocalDiscoverComponent = ({
 
     const { title, subtitle } = group;
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={progressInPercents} />
             <XView marginTop={34}>
@@ -87,7 +82,7 @@ const LocalDiscoverComponent = ({
                 />
             </XView>
 
-            <XView flexDirection="row" justifyContent="center">
+            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
                 <XView flexDirection="column" alignSelf="center" alignItems="center">
                     <XView fontSize={24} marginBottom={12}>
                         {title}
@@ -116,7 +111,7 @@ const LocalDiscoverComponent = ({
                     />
                 </XView>
             </XView>
-        </div>
+        </XView>
     );
 };
 

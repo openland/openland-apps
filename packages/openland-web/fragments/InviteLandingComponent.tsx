@@ -371,17 +371,16 @@ export const InviteLandingComponentLayout = ({
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
                 alignItems="center"
             >
-                {isMobile &&
-                    !noLogin && (
-                        <XView
-                            fontSize={20}
-                            fontWeight="600"
-                            color="rgba(0, 0, 0, 0.9)"
-                            marginLeft={20}
-                        >
-                            {`${whereToInvite} invitation`}
-                        </XView>
-                    )}
+                {isMobile && !noLogin && (
+                    <XView
+                        fontSize={20}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.9)"
+                        marginLeft={20}
+                    >
+                        {`${whereToInvite} invitation`}
+                    </XView>
+                )}
                 {!noLogin && (
                     <XView
                         zIndex={100}
@@ -469,35 +468,32 @@ export const InviteLandingComponent = ({
                     room.membership === 'KICKED' ||
                     room.membership === 'LEFT') &&
                 !inviteLink && <JoinButton roomId={room.id!} text="Join group" />}
-            {room &&
-                inviteLink && (
-                    <JoinLinkButton
-                        invite={inviteLink}
-                        refetchVars={{ conversationId: room.id! }}
-                        text="Accept invite"
-                    />
-                )}
-            {room &&
-                room.membership === 'REQUESTED' && (
-                    <XButton
-                        style="ghost"
-                        size="large"
-                        text="Pending"
-                        alignSelf="center"
-                        flexShrink={0}
-                    />
-                )}
-            {room &&
-                room.membership === 'MEMBER' && (
-                    <XButton
-                        style="primary"
-                        size="large"
-                        text="Open room"
-                        alignSelf="center"
-                        flexShrink={0}
-                        path={'/mail/' + room.id}
-                    />
-                )}
+            {room && inviteLink && (
+                <JoinLinkButton
+                    invite={inviteLink}
+                    refetchVars={{ conversationId: room.id! }}
+                    text="Accept invite"
+                />
+            )}
+            {room && room.membership === 'REQUESTED' && (
+                <XButton
+                    style="ghost"
+                    size="large"
+                    text="Pending"
+                    alignSelf="center"
+                    flexShrink={0}
+                />
+            )}
+            {room && room.membership === 'MEMBER' && (
+                <XButton
+                    style="primary"
+                    size="large"
+                    text="Open room"
+                    alignSelf="center"
+                    flexShrink={0}
+                    path={'/mail/' + room.id}
+                />
+            )}
             {organization && (
                 <XButton
                     text={'Accept invite'}
@@ -521,8 +517,8 @@ export const InviteLandingComponent = ({
             ? 'Channel'
             : 'Group'
         : organization && organization.isCommunity
-            ? 'Community'
-            : 'Organization';
+        ? 'Community'
+        : 'Organization';
 
     return (
         <>

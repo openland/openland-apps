@@ -2,7 +2,10 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { DataSourceRender, ScrollTo } from 'openland-web/components/messenger/view/DataSourceRender';
+import {
+    DataSourceRender,
+    ScrollTo,
+} from 'openland-web/components/messenger/view/DataSourceRender';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import glamorous from 'glamorous';
@@ -54,7 +57,7 @@ interface CommentsNotificationsProps {
 class CommentsNotificationsInner extends React.PureComponent<
     CommentsNotificationsProps,
     { dataSourceGeneration: number }
-    > {
+> {
     private unmount?: () => void;
     private unmount1?: () => void;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;

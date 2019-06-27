@@ -156,8 +156,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-                ? 'community'
-                : 'organization';
+            ? 'community'
+            : 'organization';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
@@ -485,8 +485,8 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-                ? 'community'
-                : 'organization';
+            ? 'community'
+            : 'organization';
         return (
             <XModalForm
                 autoClose={1500}

@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import {
-    UserShort,
-    RoomHeader_room_SharedRoom,
-    RoomHeader_room,
-} from 'openland-api/Types';
+import { UserShort, RoomHeader_room_SharedRoom, RoomHeader_room } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
@@ -157,7 +153,9 @@ export const NotCompactHeader = ({
                     alignSelf="flex-end"
                     marginBottom={-1}
                 >
-                    <span className={sendDataClassName}><XDate value={date.toString()} format="time" /></span>
+                    <span className={sendDataClassName}>
+                        <XDate value={date.toString()} format="time" />
+                    </span>
                 </XView>
             )}
         </XView>

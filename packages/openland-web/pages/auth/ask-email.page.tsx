@@ -50,15 +50,18 @@ export const RoomCreateWithEmail = ({
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     return (
         <>
@@ -113,15 +116,18 @@ export const WebSignUpCreateWithEmail = ({
 
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     const title = 'Create new account';
 

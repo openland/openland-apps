@@ -589,7 +589,7 @@ const RoomGroupProfileProvider = ({
             },
             onDataSourceScrollToKeyRequested() {
                 //
-            }
+            },
         });
     }, []);
 

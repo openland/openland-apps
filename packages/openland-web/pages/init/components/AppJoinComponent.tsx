@@ -50,7 +50,8 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     titleSocial={InitTexts.socialPageTitle}
                 />
                 <MessagePage>
-                    {data.invite || (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
+                    {data.invite ||
+                        (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
                     {!(data.invite || data.appInvite) && (
                         <MessagePageContent title="Invite">
                             <div className={InfoText}>{InitTexts.invite.unableToFindInvite}</div>

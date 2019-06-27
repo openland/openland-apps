@@ -52,7 +52,7 @@ function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[
                 },
                 onDataSourceScrollToKeyRequested: () => {
                     //
-                }
+                },
             });
             return w;
         },
@@ -76,7 +76,7 @@ const DefaultWrapChildrenComponent = ({ children }: { children: any }) => {
     return <XView flexDirection="column">{children}</XView>;
 };
 
-export const XListView = React.memo(function <T extends DataSourceItem>(props: XListViewProps<T>) {
+export const XListView = React.memo(function<T extends DataSourceItem>(props: XListViewProps<T>) {
     let [items, completed] = useDataSource(props.dataSource);
 
     const needMore = React.useMemo(

@@ -19,7 +19,7 @@ export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
 
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
             <XView marginTop={34}>
@@ -33,7 +33,7 @@ export default withApp('Home', 'viewer', () => {
                 />
             </XView>
 
-            <XView flexDirection="row" justifyContent="center">
+            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
                 <XView flexDirection="column" alignSelf="center" alignItems="center">
                     <XView marginBottom={21}>
                         <ImgUnboardingStart />
@@ -57,6 +57,6 @@ export default withApp('Home', 'viewer', () => {
                     />
                 </XView>
             </XView>
-        </div>
+        </XView>
     );
 });

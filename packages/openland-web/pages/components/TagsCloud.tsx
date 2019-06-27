@@ -9,9 +9,12 @@ export const TagsCloud = (props: {
 }) => {
     let [showAll, setShowAll] = React.useState(false);
 
-    let onShowAll = React.useCallback(() => {
-        setShowAll(!showAll);
-    }, [showAll]);
+    let onShowAll = React.useCallback(
+        () => {
+            setShowAll(!showAll);
+        },
+        [showAll],
+    );
 
     let onTagPress = (tag: Tag) => {
         let selected = props.selected.has(tag.id);

@@ -15,6 +15,13 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 
+const getAppInvite = (router: any) => {
+    if(router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite'){
+        return router.query.redirect.split('/')[2]
+    }
+    return null
+};
+
 const checkIfIsSignInInvite = (router: any) => {
     return (
         router.query &&
@@ -35,7 +42,14 @@ export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
+    let appInviteKey = null;
+
     const isSignInInvite = checkIfIsSignInInvite(router);
+
+    if (getAppInvite(router)) {
+        console.log(getAppInvite(router));
+        Cookie.set('x-openland-app-invite', getAppInvite(router));
+    }
 
     let isInvitePage = isSignInInvite;
     let isInvitePageSignin = false;
@@ -218,7 +232,9 @@ export default () => {
                 </XTrack>
             )}
             {page === pages.introduceYourself && <IntroduceYourselfPage roomView={false} />}
-            {page === pages.enterYourOrganization && <EnterYourOrganizationPage />}
+            {page === pages.enterYourOrganization && (
+                <EnterYourOrganizationPage inviteKey={appInviteKey} />
+            )}
         </>
     );
 };

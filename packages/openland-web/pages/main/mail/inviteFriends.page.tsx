@@ -207,10 +207,9 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                         )}
                     </XView>
                     <XView flexDirection="row" alignItems="center" marginTop={20}>
-                        {props.useRevoke &&
-                            props.id && (
-                                <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
-                            )}
+                        {props.useRevoke && props.id && (
+                            <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
+                        )}
                         <CopyButton copied={copied} onClick={this.copy} />
                     </XView>
                 </XView>
