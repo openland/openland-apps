@@ -37,7 +37,7 @@ const profileIconClassName = css`
 
 const InputClassName = css`
     border-radius: 8px !important;
-    background: #f2f3f4 !important;
+    background: #f9f9f9 !important;
     border: none !important;
     &:focus-within {
         border: none !important;
@@ -310,7 +310,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     left={0}
                     padding={16}
                     borderRadius={8}
-                    backgroundColor="#f2f3f4"
+                    backgroundColor="#f9f9f9"
                     fontSize={14}
                     lineHeight={1.14}
                     color="rgba(0, 0, 0, 0.9)"
@@ -548,7 +548,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
 };
 
 export default withApp(
-    'Invite People',
+    'Invite Friends',
     'viewer',
     withUserInfo(() => {
         return (

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { XInput } from 'openland-x/XInput';
+import { XView } from 'react-mental';
+import { InputField } from 'openland-web/components/InputField';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -72,15 +72,14 @@ export const RoomCreateWithEmail = ({
             </Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280}>
-                <XInput
+                <InputField
                     autofocus
                     width={isMobile ? undefined : 300}
                     invalid={emailError !== ''}
                     dataTestId="email"
                     type="email"
-                    size="large"
-                    placeholder={InitTexts.auth.emailPlaceholder}
-                    {...emailField.input}
+                    title={InitTexts.auth.emailPlaceholder}
+                    field={emailField}
                 />
                 {emailError && <ErrorText>{emailError}</ErrorText>}
             </ButtonsWrapper>
@@ -136,15 +135,14 @@ export const WebSignUpCreateWithEmail = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={330}>
-                <XInput
+                <InputField
                     autofocus
                     width={isMobile ? undefined : 300}
                     invalid={emailError !== ''}
                     dataTestId="email"
                     type="email"
-                    size="large"
-                    placeholder={InitTexts.auth.emailPlaceholder}
-                    {...emailField.input}
+                    title={InitTexts.auth.emailPlaceholder}
+                    field={emailField}
                 />
                 {emailError && <ErrorText>{emailError}</ErrorText>}
             </ButtonsWrapper>

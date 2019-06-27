@@ -9,7 +9,7 @@ const CoverWrapperClassName = css`
     width: 120px;
     height: 120px;
     border-radius: 62px;
-    background-color: #f2f3f4;
+    background-color: #f9f9f9;
     color: #696c6e;
     cursor: pointer;
     overflow: hidden;

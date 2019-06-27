@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
+import { InputField } from 'openland-web/components/InputField';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XInput } from 'openland-x/XInput';
 import { useForm } from 'openland-form/useForm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -120,23 +120,23 @@ export const WebSignUpActivationCode = ({
         <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
             <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
             {emailSending && <SubTitle>{sendingCodeText}</SubTitle>}
-            {!emailSending && emailSendedTo && (
-                <SubTitle>
-                    We just sent it to <strong>{emailSendedTo}</strong>
-                </SubTitle>
-            )}
+            {!emailSending &&
+                emailSendedTo && (
+                    <SubTitle>
+                        We just sent it to <strong>{emailSendedTo}</strong>
+                    </SubTitle>
+                )}
             <ButtonsWrapper marginTop={40} width={isMobile ? 300 : '100%'}>
-                <XInput
+                <InputField
                     width={isMobile ? undefined : 300}
                     invalid={codeError !== ''}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
-                    size="large"
-                    placeholder={InitTexts.auth.codePlaceholder}
+                    title={InitTexts.auth.codePlaceholder}
                     flexGrow={1}
                     flexShrink={0}
-                    {...codeField.input}
+                    field={codeField}
                 />
                 {form.error && <ErrorText>{codeError}</ErrorText>}
             </ButtonsWrapper>
@@ -212,14 +212,13 @@ export const RoomActivationCode = ({
                 </SubTitle>
             )}
             <ButtonsWrapper marginTop={40} width={280}>
-                <XInput
+                <InputField
                     invalid={codeError !== ''}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
-                    size="large"
-                    placeholder={InitTexts.auth.codePlaceholder}
-                    {...codeField.input}
+                    title={InitTexts.auth.codePlaceholder}
+                    field={codeField}
                 />
                 {form.error && <ErrorText>{codeError}</ErrorText>}
             </ButtonsWrapper>

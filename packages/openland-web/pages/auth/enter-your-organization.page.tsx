@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
+import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
@@ -12,7 +13,6 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XButton } from 'openland-x/XButton';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
-import { XInput } from 'openland-x/XInput';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';
@@ -67,30 +67,33 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            let result = await client.mutateCreateOrganization({
-                input: {
-                    personal: false,
-                    name: organizationField.value,
-                    // id: data.id,
-                },
-            });
-
-            await client.refetchAccount();
-
-            const inviteKey = Cookie.get('x-openland-app-invite');
-            if (inviteKey) {
-                await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                let result = await client.mutateCreateOrganization({
+                    input: {
+                        personal: false,
+                        name: organizationField.value,
+                        // id: data.id,
+                    },
                 });
-            }
 
-            trackEvent('registration_complete');
-            Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-            router.push('/onboarding/start');
-        });
-    }, [organizationField.value]);
+                await client.refetchAccount();
+
+                const inviteKey = Cookie.get('x-openland-app-invite');
+                if (inviteKey) {
+                    await client.mutateOrganizationActivateByInvite({
+                        inviteKey,
+                    });
+                }
+
+                trackEvent('registration_complete');
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                router.push('/onboarding/start');
+            });
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Find your organization or create a new one ';
 
@@ -107,14 +110,13 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                         <XVertical alignItems="center" separator="none">
                             <XVertical separator="none" alignItems="center">
                                 <XHorizontal alignItems="center" separator="none">
-                                    <XInput
+                                    <InputField
                                         invalid={!!form.error}
-                                        size="large"
                                         title="Organization name"
                                         dataTestId="organization"
                                         flexGrow={1}
                                         className={organizationInputClassName}
-                                        {...organizationField.input}
+                                        field={organizationField}
                                     />
                                 </XHorizontal>
                                 {form.error && <ShowOrgError message={form.error} />}

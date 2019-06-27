@@ -44,7 +44,7 @@ const SocialImageWrapperClassName = css`
         height: 100px;
         border-color: transparent;
         border-radius: 10px;
-        background-color: #f2f3f4;
+        background-color: #f9f9f9;
     }
 
     & img {
@@ -132,7 +132,7 @@ const ModalBody = (props: ModalBodyProps) => {
                                 onClick={() => setIsOpenUsers(!isOpenUsers)}
                                 height={52}
                                 paddingHorizontal={16}
-                                backgroundColor="#f2f3f4"
+                                backgroundColor="#f9f9f9"
                                 borderRadius={8}
                                 flexDirection="row"
                                 justifyContent="space-between"

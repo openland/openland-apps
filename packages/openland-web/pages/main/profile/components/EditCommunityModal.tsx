@@ -13,7 +13,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
-import { InputField } from '../../mail/InputField';
+import { InputField } from 'openland-web/components/InputField';
 import { SelectWithDropdown } from '../../mail/SelectWithDropdown';
 import { CommunityType } from '../../mail/createEntity';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
@@ -111,7 +111,7 @@ const ShortNameButton = Glamorous(XButton)({
 
 const InputClassName = css`
     border-radius: 8px !important;
-    background: #f2f3f4 !important;
+    background: #f9f9f9 !important;
     border: none !important;
     &:focus-within {
         border: none !important;
@@ -287,7 +287,7 @@ const EditCommunityEntity = (props: {
                                     height={52}
                                     marginTop={16}
                                     paddingHorizontal={16}
-                                    backgroundColor="#f2f3f4"
+                                    backgroundColor="#f9f9f9"
                                     borderRadius={8}
                                     flexDirection="row"
                                     justifyContent="space-between"
