@@ -8,6 +8,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { trackEvent } from 'openland-x-analytics';
+import { useClient } from 'openland-web/utils/useClient';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
@@ -38,8 +39,19 @@ const InviteWrapper = Glamorous(XLink)({
     },
 });
 
+const OrgInviteLoader = (props: { orgId: string }) => {
+    useClient().useWithoutLoaderOrganizationPublicInvite({
+        organizationId: props.orgId,
+    });
+    return null
+}
+
 export const DialogsInviteButton = XMemo(() => {
     let router = React.useContext(XRouterContext)!;
+
+    // preload links
+    let profile = useClient().useWithoutLoaderProfile();
+    useClient().useWithoutLoaderAccountAppInvite();
 
     return (
         <InviteWrapper
@@ -54,6 +66,7 @@ export const DialogsInviteButton = XMemo(() => {
         >
             <InviteIcon />
             <span>Invite friends</span>
+            {profile && profile.profile && profile.profile.primaryOrganization && profile.profile.primaryOrganization.id && <OrgInviteLoader orgId={profile.profile.primaryOrganization.id} />}
         </InviteWrapper>
     );
 });
