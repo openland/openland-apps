@@ -77,8 +77,6 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
         doConfirm();
     };
 
-    console.log(form);
-
     return (
         <XShortcuts
             handlerMap={{
