@@ -57,6 +57,7 @@ type NotCompactHeaderT = {
     userPopperRef: React.RefObject<UserPopper>;
     senderNameEmojify?: any;
     senderBadge?: UserBadge;
+    senderBadgeNameEmojify?: string | JSX.Element;
     selecting: boolean;
     isEditView: boolean;
     isEdited: boolean;
@@ -78,6 +79,7 @@ export const NotCompactHeader = ({
     room,
     senderNameEmojify,
     senderBadge,
+    senderBadgeNameEmojify,
     selecting,
     isEditView,
     isEdited,
@@ -116,7 +118,7 @@ export const NotCompactHeader = ({
                 {senderBadge && (
                     <XWithRole role="feature-non-production">
                         <XView marginLeft={8} alignSelf="center">
-                            <XBadge {...senderBadge} />
+                            <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
                         </XView>
                     </XWithRole>
                 )}

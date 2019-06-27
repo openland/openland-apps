@@ -11,6 +11,7 @@ export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderNameEmojify?: any;
     replySenderNameEmojify: (string | JSX.Element)[];
     replyQuoteTextEmojify?: string | JSX.Element;
+    senderBadgeNameEmojify?: string | JSX.Element;
 }
 
 export interface DataSourceWebDateItem extends DataSourceDateItem {
@@ -40,6 +41,10 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
             }),
         ),
         textSpans: processSpans(src.text || '', src.spans),
+        senderBadgeNameEmojify: src.senderBadge ? emoji({
+            src: src.senderBadge.name,
+            size: 12,
+        }) : undefined,
     };
 }
 

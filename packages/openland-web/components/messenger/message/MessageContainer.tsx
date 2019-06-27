@@ -24,6 +24,7 @@ export interface DesktopMessageContainerProps {
     noSelector?: boolean;
     sender: UserShort;
     senderBadge?: UserBadge;
+    senderBadgeNameEmojify?: string | JSX.Element;
     date: number;
 
     // Selection
@@ -197,6 +198,7 @@ export const DesktopMessageContainer = ({
     message,
     senderNameEmojify,
     senderBadge,
+    senderBadgeNameEmojify,
     selectMessage,
     room,
     isComment,
@@ -254,6 +256,7 @@ export const DesktopMessageContainer = ({
                                 userPopperRef={userPopperRef}
                                 senderNameEmojify={senderNameEmojify}
                                 senderBadge={senderBadge}
+                                senderBadgeNameEmojify={senderBadgeNameEmojify}
                                 selecting={selecting}
                                 isEditView={isEditView}
                                 isEdited={isEdited}

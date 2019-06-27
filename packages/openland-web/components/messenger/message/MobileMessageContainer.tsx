@@ -11,6 +11,7 @@ export interface MobileMessageContainerProps {
     sender: UserShort;
     senderNameEmojify: any;
     senderBadge?: UserBadge;
+    senderBadgeNameEmojify?: string | JSX.Element;
     date: number;
 }
 
@@ -53,7 +54,7 @@ const NotCompactPreambulaContainer = ({ children }: PreambulaContainerProps) => 
 };
 
 export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
-    const { sender, senderBadge, date } = props;
+    const { sender, senderBadge, senderBadgeNameEmojify, date } = props;
 
     const preambula = (
         <NotCompactPreambulaContainer>
@@ -84,7 +85,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                     {senderBadge && (
                         <XWithRole role="feature-non-production">
                             <XView marginLeft={8} alignSelf="center">
-                                <XBadge {...senderBadge} />
+                                <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
                             </XView>
                         </XWithRole>
                     )}

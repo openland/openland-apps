@@ -298,6 +298,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 senderNameEmojify={senderName}
                 sender={message.sender}
                 senderBadge={message.senderBadge}
+                senderBadgeNameEmojify={message.senderBadgeNameEmojify}
                 date={props.message.date}
             >
                 {content}

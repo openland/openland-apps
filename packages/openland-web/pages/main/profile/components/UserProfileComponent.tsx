@@ -296,11 +296,18 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
         setShow(false);
     }, [badge, user, isSuper]);
 
+    let nameEmojify = emoji({
+        src: badge.name,
+        size: 16,
+    });
+
+    const badgeView = <XBadge name={nameEmojify} verified={badge.verified} primary={primary} size="big" />;
+
     if (!user.isYou && !isSuper) {
         if (!badge.verified) {
             return (
                 <XView marginRight={12} marginBottom={12}>
-                    <XBadge {...badge} primary={primary} size="big" />
+                    {badgeView}
                 </XView>
             );
         } else {
@@ -319,7 +326,7 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
                 >
                     <div>
                         <XView marginRight={12} marginBottom={12}>
-                            <XBadge {...badge} primary={primary} size="big" />
+                            {badgeView}
                         </XView>
                     </div>
                 </XPopper>
@@ -356,7 +363,7 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
         >
             <div onClick={() => setShow(true)}>
                 <XView marginRight={12} marginBottom={12} cursor="pointer">
-                    <XBadge {...badge} primary={primary} size="big" />
+                    {badgeView}
                 </XView>
             </div>
         </XPopper>

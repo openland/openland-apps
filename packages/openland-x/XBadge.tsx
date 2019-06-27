@@ -3,7 +3,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { XView, XViewProps } from 'react-mental';
 
 export interface XBadgeProps {
-    name: string;
+    name: string | JSX.Element;
     verified: boolean;
 
     primary?: boolean;
