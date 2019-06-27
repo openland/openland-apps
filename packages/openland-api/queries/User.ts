@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { UserShort } from '../fragments/UserShort';
 import { UserFull } from '../fragments/UserFull';
+import { UserBadge } from 'openland-api/fragments/UserBadge';
 
 export const UsersQuery = gql`
     query Users($query: String!) {
@@ -9,8 +10,12 @@ export const UsersQuery = gql`
             id
             title: name
             subtitle: email
+            primaryBadge {
+                ...UserBadge
+            }
         }
     }
+    ${UserBadge}
 `;
 
 export const UserQuery = gql`

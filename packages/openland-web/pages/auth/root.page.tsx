@@ -14,6 +14,7 @@ import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -167,6 +168,53 @@ export default () => {
             router.push('/auth2/ask-email');
         }, 0);
     };
+
+    if (router.query.email) {
+        let noValue = router.query.email === 'true';
+        if (email !== true) {
+            setEmail(true);
+        }
+
+        const newEmailValue = noValue ? '' : router.query.email;
+        if (emailValue !== newEmailValue) {
+            setEmailValue(newEmailValue);
+        }
+
+        const newEmailSending = noValue ? false : true;
+
+        if (emailSending !== newEmailSending) {
+            setEmailSending(newEmailSending);
+        }
+        if (emailError !== '') {
+            setEmailError('');
+        }
+        if (emailSent) {
+            setEmailSent(false);
+        }
+        if (!fromOutside) {
+            setFromOutside(true);
+        }
+
+        if (canUseDOM) {
+            if (!noValue) {
+                fireEmail(router.query.email);
+                router.push('/auth2/ask-email');
+            } else {
+                router.push('/auth2/ask-email');
+            }
+        }
+    } else if (router.query.google) {
+        if (!googleStarting) {
+            setGoogleStarting(true);
+        }
+        if (!fromOutside) {
+            setFromOutside(true);
+        }
+
+        if (canUseDOM) {
+            fireGoogle();
+        }
+    }
 
     if ((fromOutside && emailSending) || googleStarting) {
         page = pages.loading;

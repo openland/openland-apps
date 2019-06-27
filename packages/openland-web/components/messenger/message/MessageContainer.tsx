@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { MessageSelector } from './MessageSelector';
-import { RoomChat_room, UserShort } from 'openland-api/Types';
+import { RoomChat_room, UserShort, UserBadge } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { Menu } from './Menu/Menu';
@@ -23,6 +23,8 @@ export interface DesktopMessageContainerProps {
     isComment?: boolean;
     noSelector?: boolean;
     sender: UserShort;
+    senderBadge?: UserBadge;
+    senderBadgeNameEmojify?: string | JSX.Element;
     date: number;
 
     // Selection
@@ -195,6 +197,8 @@ export const DesktopMessageContainer = ({
     conversationId,
     message,
     senderNameEmojify,
+    senderBadge,
+    senderBadgeNameEmojify,
     selectMessage,
     room,
     isComment,
@@ -251,6 +255,8 @@ export const DesktopMessageContainer = ({
                                 isCommentNotification={!!isCommentNotification}
                                 userPopperRef={userPopperRef}
                                 senderNameEmojify={senderNameEmojify}
+                                senderBadge={senderBadge}
+                                senderBadgeNameEmojify={senderBadgeNameEmojify}
                                 selecting={selecting}
                                 isEditView={isEditView}
                                 isEdited={isEdited}

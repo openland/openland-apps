@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { FullMessage } from 'openland-api/fragments/Message';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
+import { UserBadge } from 'openland-api/fragments/UserBadge';
 
 export const NotificationFragment = gql`
     fragment NotificationFragment on Notification {
@@ -24,6 +25,9 @@ export const NotificationFragment = gql`
                                     sender {
                                         id
                                         name
+                                    }
+                                    senderBadge {
+                                        ...UserBadge
                                     }
                                 }
                             }
@@ -55,6 +59,7 @@ export const MyNotificationsQuery = gql`
         ${CommentEntryFragment}
         ${NotificationFragment}
         ${RoomNano}
+        ${UserBadge}
     }
 `;
 
@@ -108,6 +113,9 @@ export const NotificationCenterUpdateFragment = gql`
                                             id
                                             name
                                         }
+                                        senderBadge {
+                                            ...UserBadge
+                                        }
                                     }
                                 }
                                 chat {
@@ -155,6 +163,7 @@ export const MyNotificationsCenterSubscription = gql`
     ${CommentEntryFragment}
     ${NotificationFragment}
     ${NotificationCenterUpdateFragment}
+    ${UserBadge}
 `;
 
 export const MyNotificationCenterQuery = gql`

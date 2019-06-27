@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { UserShort, RoomHeader_room_SharedRoom, RoomHeader_room } from 'openland-api/Types';
+import {
+    UserShort,
+    RoomHeader_room_SharedRoom,
+    RoomHeader_room,
+    UserBadge,
+} from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink2 } from 'openland-x/XLink2';
+import { XBadge } from 'openland-x/XBadge';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const DeletedCommentHeader = () => {
     return (
@@ -49,6 +56,8 @@ type NotCompactHeaderT = {
     isComment: boolean;
     userPopperRef: React.RefObject<UserPopper>;
     senderNameEmojify?: any;
+    senderBadge?: UserBadge;
+    senderBadgeNameEmojify?: string | JSX.Element;
     selecting: boolean;
     isEditView: boolean;
     isEdited: boolean;
@@ -69,6 +78,8 @@ export const NotCompactHeader = ({
     userPopperRef,
     room,
     senderNameEmojify,
+    senderBadge,
+    senderBadgeNameEmojify,
     selecting,
     isEditView,
     isEdited,
@@ -103,6 +114,13 @@ export const NotCompactHeader = ({
                     >
                         <span className={sendDataClassName}>{senderNameEmojify}</span>
                     </XView>
+                )}
+                {senderBadge && (
+                    <XWithRole role="feature-non-production">
+                        <XView marginLeft={8} alignSelf="center">
+                            <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
+                        </XView>
+                    </XWithRole>
                 )}
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView

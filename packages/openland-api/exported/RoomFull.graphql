@@ -25,6 +25,10 @@ fragment RoomFull on Room {
     kind
     members {
       __typename
+      badge {
+        __typename
+        ...UserBadge
+      }
       canKick
       membership
       role

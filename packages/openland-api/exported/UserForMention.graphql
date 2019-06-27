@@ -4,6 +4,10 @@ fragment UserForMention on User {
   isYou
   name
   photo
+  primaryBadge {
+    __typename
+    ...UserBadge
+  }
   primaryOrganization {
     __typename
     id

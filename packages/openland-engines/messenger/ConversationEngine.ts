@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
-import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
+import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
@@ -14,7 +14,6 @@ import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const log = createLogger('Engine-Messages');
 
@@ -25,6 +24,7 @@ export interface ConversationStateHandler {
 }
 
 const timeGroup = 1000 * 60 * 60;
+const loadToUnread = false;
 
 export interface DataSourceMessageItem {
     chatId: string;
@@ -37,6 +37,7 @@ export interface DataSourceMessageItem {
     senderId: string;
     senderName: string;
     senderPhoto?: string;
+    senderBadge?: UserBadge;
     text?: string;
     title?: string;
     isEdited?: boolean;
@@ -95,6 +96,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         senderId: src.sender.id,
         senderName: src.sender.name,
         senderPhoto: src.sender.photo || undefined,
+        senderBadge: src.senderBadge || undefined,
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
@@ -122,6 +124,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.Message_me
         message: src.text || null,
         fallback: src.fallback || 'unknown message type',
         sender: src.sender,
+        senderBadge: src.senderBadge || null,
         spans: src.spans || [],
         commentsCount: src.commentsCount || 0,
         attachments: src.attachments || [],
@@ -230,16 +233,18 @@ export class ConversationEngine implements MessageSendHandler {
         let overLoad = 1;
         let pagesToload = 10;
 
-        while (messages.length > 0 && this.lastReadedDividerMessageId && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || overLoad--) && pagesToload--) {
-            let serverMessages = messages.filter(m => isServerMessage(m));
-            let first = serverMessages[0];
-            if (!first) {
-                break;
+        if (loadToUnread) {
+            while (messages.length > 0 && this.lastReadedDividerMessageId && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || overLoad--) && pagesToload--) {
+                let serverMessages = messages.filter(m => isServerMessage(m));
+                let first = serverMessages[0];
+                if (!first) {
+                    break;
+                }
+                let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 20 }));
+                let batch = [...loaded.messages];
+                batch.reverse();
+                messages.unshift(...batch);
             }
-            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 20 }));
-            let batch = [...loaded.messages];
-            batch.reverse();
-            messages.unshift(...batch);
         }
 
         this.messages = messages;
@@ -267,11 +272,13 @@ export class ConversationEngine implements MessageSendHandler {
         let newMessagesDivider: DataSourceNewDividerItem | undefined;
         for (let i = sourceFragments.length - 1; i >= 0; i--) {
 
-            // append unread mark
-            if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
-                // Alert.alert(sourceFragments[i].id);
-                newMessagesDivider = createNewMessageDividerSourceItem(sourceFragments[i].id);
-                dsItems.push(newMessagesDivider);
+            if (loadToUnread) {
+                // append unread mark
+                if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
+                    // Alert.alert(sourceFragments[i].id);
+                    newMessagesDivider = createNewMessageDividerSourceItem(sourceFragments[i].id);
+                    dsItems.push(newMessagesDivider);
+                }
             }
 
             // Append new date if needed
@@ -290,9 +297,12 @@ export class ConversationEngine implements MessageSendHandler {
         }
 
         this.dataSource.initialize(dsItems, this.historyFullyLoaded);
-        if (newMessagesDivider) {
-            this.dataSource.requestScrollToKey(newMessagesDivider.key);
+        if (loadToUnread) {
+            if (newMessagesDivider) {
+                this.dataSource.requestScrollToKey(newMessagesDivider.key);
+            }
         }
+
     }
 
     onOpen = () => {
@@ -302,16 +312,18 @@ export class ConversationEngine implements MessageSendHandler {
 
     onClosed = () => {
         this.isOpen = false;
-        (async () => {
-            await delay(300);
-            if (this.lastReadedDividerMessageId) {
-                let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
-                if (this.dataSource.hasItem(toDelete.key)) {
-                    this.dataSource.removeItem(toDelete.key);
+        if (loadToUnread) {
+            (async () => {
+                await delay(300);
+                if (this.lastReadedDividerMessageId) {
+                    let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
+                    if (this.dataSource.hasItem(toDelete.key)) {
+                        this.dataSource.removeItem(toDelete.key);
+                    }
+                    this.lastReadedDividerMessageId = undefined;
                 }
-                this.lastReadedDividerMessageId = undefined;
-            }
-        })();
+            })();
+        }
     }
 
     getState = () => {
@@ -355,10 +367,12 @@ export class ConversationEngine implements MessageSendHandler {
             }
             let sourceFragments = [...loaded.messages];
             for (let i = 0; i < sourceFragments.length; i++) {
-                // append unread mark
-                if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
-                    // Alert.alert(sourceFragments[i].id);
-                    dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
+                if (loadToUnread) {
+                    // append unread mark
+                    if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
+                        // Alert.alert(sourceFragments[i].id);
+                        dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
+                    }
                 }
 
                 if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
@@ -714,7 +728,7 @@ export class ConversationEngine implements MessageSendHandler {
         let scrollTo: string | undefined = undefined;
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && !src.sender.isYou) {
+            if (loadToUnread && !this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && !src.sender.isYou) {
                 let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                 scrollTo = divider.key;
                 this.dataSource.addItem(divider, 0);
@@ -803,7 +817,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             this.dataSource.addItem(conv, 0);
         }
-        if (scrollTo) {
+        if (loadToUnread && scrollTo) {
             this.dataSource.requestScrollToKey(scrollTo);
         }
     }

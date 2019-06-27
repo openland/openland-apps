@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from './OrganizationShort';
+import { UserBadge } from './UserBadge';
 
 export const UserShort = gql`
     fragment UserShort on User {
@@ -14,9 +15,13 @@ export const UserShort = gql`
         isYou
         isBot
         shortname
+        primaryBadge {
+            ...UserBadge
+        }
         primaryOrganization {
             ...OrganizationShort
         }
     }
     ${OrganizationShort}
+    ${UserBadge}
 `;

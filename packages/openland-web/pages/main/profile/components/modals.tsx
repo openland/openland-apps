@@ -10,6 +10,15 @@ import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XModalController } from 'openland-x/showModal';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XView } from 'react-mental';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { InputField } from 'openland-web/components/InputField';
+import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
+import { XModalContent } from 'openland-web/components/XModalContent';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -260,5 +269,79 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
+    );
+};
+
+export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
+    const client = useClient();
+    const form = useForm();
+    const nameField = useField('input.name', '', form, [{
+        checkIsValid: value => !!value,
+        text: 'Name can\'t be empty',
+    }]);
+
+    const onAdd = () => {
+        form.doAction(async () => {
+            if (props.isSuper) {
+                await client.mutateSuperBadgeCreate({
+                    name: nameField.value,
+                    userId: props.userId
+                });
+            } else {
+                await client.mutateBadgeCreate({
+                    name: nameField.value
+                });
+            }
+
+            props.ctx.hide();
+        });
+    };
+
+    return (
+        <>
+            {form.error && <XErrorMessage message={form.error} />}
+            <XView flexDirection="column" borderRadius={8} overflow="hidden">
+                <XModalContent>
+                    <InputField title="Badge text" field={nameField} />
+                </XModalContent>
+                <XModalFooter>
+                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton text="Add" style="primary" onClick={onAdd} />
+                </XModalFooter>
+            </XView>
+        </>
+    );
+};
+
+export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string, badgeId: string }) => {
+    const client = useClient();
+    const form = useForm();
+
+    const onAdd = () => {
+        form.doAction(async () => {
+            if (props.isSuper) {
+                await client.mutateSuperBadgeDelete({ badgeId: props.badgeId, userId: props.userId });
+            } else {
+                await client.mutateBadgeDelete({ badgeId: props.badgeId });
+            }
+
+            props.ctx.hide();
+        });
+    };
+
+    return (
+        <>
+            {form.error && <XErrorMessage message={form.error} />}
+            <XView flexDirection="column" borderRadius={8} overflow="hidden">
+                <XModalContent fontSize={18} lineHeight="28px">
+                    Are you sure you want to delete badge?<br />
+                    This cannot be undone.
+                </XModalContent>
+                <XModalFooter>
+                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton text="Delete" style="danger" onClick={onAdd} />
+                </XModalFooter>
+            </XView>
+        </>
     );
 };

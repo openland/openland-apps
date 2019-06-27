@@ -14,7 +14,6 @@ import {
     GoogleButton,
     EmailButton,
 } from 'openland-web/pages/init/components/SignComponents';
-
 import { XButton } from 'openland-x/XButton';
 
 const SeparatorStyle = Glamorous.div<{
