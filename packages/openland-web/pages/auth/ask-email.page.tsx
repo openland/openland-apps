@@ -19,6 +19,7 @@ import {
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
+import { XShortcuts } from 'openland-x/XShortcuts';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -60,8 +61,22 @@ export const RoomCreateWithEmail = ({
         });
     }, [emailField.value]);
 
+    const onEnter = () => {
+        doConfirm();
+    };
+
     return (
-        <>
+        <XShortcuts
+            handlerMap={{
+                ENTER: onEnter,
+            }}
+            keymap={{
+                ENTER: {
+                    osx: ['enter'],
+                    windows: ['enter'],
+                },
+            }}
+        >
             <Title roomView={true}>
                 {signin
                     ? InitTexts.auth.signinRoomSignUpEmail
@@ -93,7 +108,7 @@ export const RoomCreateWithEmail = ({
                     />
                 </XVertical>
             </ButtonsWrapper>
-        </>
+        </XShortcuts>
     );
 };
 
@@ -122,38 +137,53 @@ export const WebSignUpCreateWithEmail = ({
         });
     }, [emailField.value]);
 
+    const onEnter = () => {
+        doConfirm();
+    };
     const title = 'Create new account';
 
     return (
-        <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-            <Title roomView={false}>{title}</Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={330}>
-                <InputField
-                    autofocus
-                    width={isMobile ? undefined : 300}
-                    invalid={emailError !== ''}
-                    dataTestId="email"
-                    type="email"
-                    title={InitTexts.auth.emailPlaceholder}
-                    field={emailField}
-                />
-                {emailError && <ErrorText>{emailError}</ErrorText>}
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XButton
-                        dataTestId="continue-button"
-                        style="primary"
-                        loading={emailSending}
-                        size="large"
-                        alignSelf="center"
-                        text={InitTexts.auth.continue}
-                        onClick={doConfirm}
+        <XShortcuts
+            handlerMap={{
+                ENTER: onEnter,
+            }}
+            keymap={{
+                ENTER: {
+                    osx: ['enter'],
+                    windows: ['enter'],
+                },
+            }}
+        >
+            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+                <Title roomView={false}>{title}</Title>
+                <SubTitle>{subTitle}</SubTitle>
+                <ButtonsWrapper marginTop={40} width={330}>
+                    <InputField
+                        autofocus
+                        width={isMobile ? undefined : 300}
+                        invalid={emailError !== ''}
+                        dataTestId="email"
+                        type="email"
+                        title={InitTexts.auth.emailPlaceholder}
+                        field={emailField}
                     />
-                </XVertical>
-            </ButtonsWrapper>
-        </XView>
+                    {emailError && <ErrorText>{emailError}</ErrorText>}
+                </ButtonsWrapper>
+                <ButtonsWrapper marginTop={20}>
+                    <XVertical alignItems="center">
+                        <XButton
+                            dataTestId="continue-button"
+                            style="primary"
+                            loading={emailSending}
+                            size="large"
+                            alignSelf="center"
+                            text={InitTexts.auth.continue}
+                            onClick={doConfirm}
+                        />
+                    </XVertical>
+                </ButtonsWrapper>
+            </XView>
+        </XShortcuts>
     );
 };
 
