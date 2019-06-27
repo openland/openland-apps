@@ -275,6 +275,7 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
 
 export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const form = useForm();
     const nameField = useField('input.name', '', form, [
         {
@@ -288,7 +289,7 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper) {
+            if (props.isSuper && (props.userId !== messenger.user.id)) {
                 await client.mutateSuperBadgeCreate({
                     name: nameField.value,
                     userId: props.userId
