@@ -11,37 +11,35 @@ export interface XBadgeProps {
     onClick?: () => void;
 }
 
-const XBadgeWrapperDefault = XMemo<XViewProps>((props) => {
-    return (
-        <XView
-            {...props}
-            paddingHorizontal={4}
-            height={16}
-            borderRadius={4}
-            fontSize={11}
-            lineHeight="14px"
-            borderWidth={1}
-        >
-            {props.children}
-        </XView>
-    );
-});
+const XBadgeWrapperDefault = XMemo<XViewProps>((props) => (
+    <XView
+        {...props}
+        paddingHorizontal={4}
+        height={16}
+        borderRadius={4}
+        fontSize={11}
+        lineHeight="14px"
+        borderWidth={1}
+        fontWeight="600"
+    >
+        {props.children}
+    </XView>
+));
 
-const XBadgeWrapperBig = XMemo<XViewProps>((props) => {
-    return (
-        <XView
-            {...props}
-            paddingHorizontal={11}
-            height={27}
-            borderRadius={4}
-            fontSize={15}
-            lineHeight="25px"
-            borderWidth={1}
-        >
-            {props.children}
-        </XView>
-    );
-});
+const XBadgeWrapperBig = XMemo<XViewProps>((props) => (
+    <XView
+        {...props}
+        paddingHorizontal={11}
+        height={27}
+        borderRadius={4}
+        fontSize={15}
+        lineHeight="25px"
+        borderWidth={1}
+        fontWeight="600"
+    >
+        {props.children}
+    </XView>
+));
 
 export const XBadge = XMemo<XBadgeProps>((props) => {
     const color = props.verified ? '#5CCC6E' : 'rgba(0, 0, 0, 0.5)';
@@ -62,3 +60,22 @@ export const XBadge = XMemo<XBadgeProps>((props) => {
         </XBadgeWrapperDefault>
     )
 });
+
+export interface XBadgeAddProps {
+    caption: string;
+
+    onClick?: () => void;
+}
+
+export const XBadgeAdd = XMemo<XBadgeAddProps>((props) => (
+    <XBadgeWrapperBig
+        color="rgba(0, 0, 0, 0.5)"
+        borderColor="#F0F0F0"
+        onClick={props.onClick}
+        cursor="pointer"
+        hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+        hoverBorderColor="transparent"
+    >
+        {props.caption}
+    </XBadgeWrapperBig>
+));

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
-import { User_user } from 'openland-api/Types';
+import { User_user, UserBadge, UserShort } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XWithRouter } from 'openland-x-routing/withRouter';
@@ -33,7 +33,11 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { XBadge } from 'openland-x/XBadge';
+import { XBadge, XBadgeAdd } from 'openland-x/XBadge';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { useHasRole } from 'openland-x-permissions/XWithRole';
+import { showModalBox } from 'openland-x/showModalBox';
+import { CreateBadgeModal } from './modals';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -254,33 +258,46 @@ const About = (props: { user: User_user }) => {
     );
 };
 
-const Badges = (props: { user: User_user }) => {
+const Badges = XMemo<{ user: User_user }>((props) => {
+    const isSuper = useHasRole('super-admin');
     const { user } = props;
+    const isPrimary = (badge: UserBadge) => {
+        return (user.primaryBadge && user.primaryBadge.id === badge.id) ? true : false;
+    }
+
+    const badges = user.badges.sort((a, b) => isPrimary(a) ? -2 : (a.verified && !b.verified ? -1 : 1));
 
     return (
         <>
-            {(user.isYou || user.badges.length > 0) && (
+            {(user.isYou || badges.length > 0 || isSuper) && (
                 <Section separator={0}>
                     <XSubHeader title="Badges" counter={user.badges.length} paddingBottom={0} />
                     <SectionContent>
-                        <XView alignItems="flex-start" flexDirection="row">
-                            {user.primaryBadge && (
-                                <XView marginRight={12}>
-                                    <XBadge {...user.primaryBadge} primary={true} size="big" />
-                                </XView>
-                            )}
-                            {user.badges.filter(b => user.primaryBadge ? (b.id !== user.primaryBadge.id) : true).map(badge => (
-                                <XView marginRight={12}>
-                                    <XBadge {...badge} size="big" />
+                        <XView alignItems="flex-start" flexDirection="row" flexWrap="wrap">
+                            {badges.map(badge => (
+                                <XView marginRight={12} marginBottom={12}>
+                                    <XBadge
+                                        {...badge}
+                                        primary={isPrimary(badge)}
+                                        size="big"
+                                    />
                                 </XView>
                             ))}
+                            {(user.isYou || isSuper) && (
+                                <XView marginRight={12} marginBottom={12}>
+                                    <XBadgeAdd
+                                        caption="Add badge"
+                                        onClick={() => showModalBox({ title: 'Add badge' }, ctx => <CreateBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} />)}
+                                    />
+                                </XView>
+                            )}
                         </XView>
                     </SectionContent>
                 </Section>
             )}
         </>
     );
-};
+});
 
 interface UserProfileInnerProps extends XWithRouter {
     user: User_user;

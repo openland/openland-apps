@@ -10,6 +10,13 @@ import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XModalController } from 'openland-x/showModal';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XView } from 'react-mental';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { InputField } from '../../mail/InputField';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -260,5 +267,49 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
+    );
+};
+
+export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
+    const client = useClient();
+    const form = useForm();
+    const nameField = useField('input.name', '', form, [{
+        checkIsValid: value => !!value,
+        text: 'Name can\'t be empty',
+    }]);
+
+    const onCancel = () => {
+        props.ctx.hide();
+    };
+
+    const onAdd = () => {
+        form.doAction(async () => {
+            if (props.isSuper) {
+                await client.mutateSuperBadgeCreate({
+                    name: nameField.value,
+                    userId: props.userId
+                });
+            } else {
+                await client.mutateBadgeCreate({
+                    name: nameField.value
+                });
+            }
+
+            props.ctx.hide();
+        });
+    };
+
+    return (
+        <>
+            <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
+                <InputField title="Badge text" field={nameField} />
+            </XView>
+            <XModalFooter>
+                <XHorizontal>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={onCancel} />
+                    <XButton text="Add" style="primary" size="large" onClick={onAdd} />
+                </XHorizontal>
+            </XModalFooter>
+        </>
     );
 };
