@@ -192,7 +192,7 @@ function validateEmail(email: string) {
     return re.test(String(email).toLowerCase());
 }
 
-export const AskEmailPage = (props: CreateWithEmailProps) => {
+export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }) => {
     const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
     let router = React.useContext(XRouterContext)!;
 
@@ -220,23 +220,29 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
-            <XView marginTop={34}>
-                <BackSkipLogo
-                    onBack={() => {
-                        router.replace('/auth2/create-new-account');
-                    }}
-                    onSkip={null}
-                />
-            </XView>
+            {!props.roomView && (
+                <>
+                    <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
+                    <XView marginTop={34}>
+                        <BackSkipLogo
+                            onBack={() => {
+                                router.replace('/auth2/create-new-account');
+                            }}
+                            onSkip={null}
+                        />
+                    </XView>
 
-            <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
+                    <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
+                </>
+            )}
+            {props.roomView && <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />}
         </XView>
     );
 };
 
 export default withApp('Home', 'viewer', () => (
     <AskEmailPage
+        roomView={false}
         signin={true}
         emailError={''}
         emailValue={''}

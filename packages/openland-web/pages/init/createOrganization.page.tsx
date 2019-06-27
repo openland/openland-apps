@@ -2,9 +2,7 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
-import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
-import { delayForewer } from 'openland-y-utils/timer';
 import {
     WebSignUpContainer,
     RoomSignupContainer,
@@ -16,7 +14,6 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { trackEvent } from 'openland-x-analytics';
 
 const OrganizationsSelectorOptionsFetcher = (props: {
     children: any;
@@ -72,7 +69,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     }
 
     render() {
-        return <CreateOrganizationFormInner />;
+        return <CreateOrganizationFormInner roomView={false} />;
     }
 }
 

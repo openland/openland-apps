@@ -137,29 +137,36 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
     );
 };
 
-export const EnterYourOrganizationPage = ({ inviteKey }: { inviteKey?: string | null }) => {
+export const EnterYourOrganizationPage = ({
+    inviteKey,
+    roomView,
+}: { inviteKey?: string | null } & { roomView: boolean }) => {
     let router = React.useContext(XRouterContext)!;
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
-            <XView marginTop={34}>
-                <BackSkipLogo
-                    onBack={() => {
-                        router.replace('/auth2/introduce-yourself');
-                    }}
-                    onSkip={() => {
-                        router.push('/onboarding/start');
-                    }}
-                />
-            </XView>
+            {!roomView && (
+                <>
+                    <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
+                    <XView marginTop={34}>
+                        <BackSkipLogo
+                            onBack={() => {
+                                router.replace('/auth2/introduce-yourself');
+                            }}
+                            onSkip={() => {
+                                router.push('/onboarding/start');
+                            }}
+                        />
+                    </XView>
+                </>
+            )}
 
-            <CreateOrganizationFormInner roomView={false} inviteKey={inviteKey} />
+            <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
         </XView>
     );
 };
 
 export default withApp('Home', 'viewer', () => {
-    return <EnterYourOrganizationPage />;
+    return <EnterYourOrganizationPage roomView={false} />;
 });

@@ -13,6 +13,7 @@ import {
     ButtonsWrapper,
     GoogleButton,
     EmailButton,
+    RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XButton } from 'openland-x/XButton';
 
@@ -197,22 +198,32 @@ export const WebSignUpAuthMechanism = ({
     );
 };
 
-export const CreateNewAccountPage = (props: AuthMechanism) => {
+export const CreateNewAccountPage = (props: AuthMechanism & { roomView: boolean }) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Create New Account" />
 
-            <XView marginTop={34}>
-                <BackSkipLogo onBack={null} onSkip={null} />
-            </XView>
+            {!props.roomView && (
+                <>
+                    <XView marginTop={34}>
+                        <BackSkipLogo onBack={null} onSkip={null} />
+                    </XView>
+                    <WebSignUpAuthMechanism {...props} />
+                </>
+            )}
 
-            <WebSignUpAuthMechanism {...props} />
+            {props.roomView && (
+                <RoomSignupContainer pageMode="AuthMechanism">
+                    <RoomAuthMechanism {...props} />
+                </RoomSignupContainer>
+            )}
         </XView>
     );
 };
 
 export default withApp('Home', 'viewer', () => (
     <CreateNewAccountPage
+        roomView={false}
         signin={true}
         loginWithGoogle={() => {
             //

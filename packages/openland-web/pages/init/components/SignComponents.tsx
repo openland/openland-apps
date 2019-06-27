@@ -413,6 +413,7 @@ export const ButtonsWrapper = Glamorous.div<{
 }));
 
 const RoomSignupWrapper = Glamorous.div({
+    flexGrow: 1,
     position: 'relative',
     background:
         'rgba(255, 255, 255, 0.8) url(/static/X/signup/background-blur-light.jpg) no-repeat',

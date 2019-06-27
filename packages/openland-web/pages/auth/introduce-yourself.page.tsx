@@ -140,16 +140,19 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
-
-            <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-            <XView marginTop={34}>
-                <BackSkipLogo
-                    onBack={() => {
-                        router.replace('/auth2/ask-activation-code');
-                    }}
-                    onSkip={null}
-                />
-            </XView>
+            {!roomView && (
+                <>
+                    <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
+                    <XView marginTop={34}>
+                        <BackSkipLogo
+                            onBack={() => {
+                                router.replace('/auth2/ask-activation-code');
+                            }}
+                            onSkip={null}
+                        />
+                    </XView>
+                </>
+            )}
 
             <CreateProfileFormRoot roomView={roomView} />
         </XView>

@@ -105,14 +105,11 @@ export const WebSignUpActivationCode = ({
 
     let codeField = useField('input.code', '', form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                loginCodeStart({ emailValue, codeValue: codeField.value });
-            });
-        },
-        [codeField.value, emailValue],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            loginCodeStart({ emailValue, codeValue: codeField.value });
+        });
+    }, [codeField.value, emailValue]);
 
     const sendingCodeText = 'Sending code...';
 
@@ -120,12 +117,11 @@ export const WebSignUpActivationCode = ({
         <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
             <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
             {emailSending && <SubTitle>{sendingCodeText}</SubTitle>}
-            {!emailSending &&
-                emailSendedTo && (
-                    <SubTitle>
-                        We just sent it to <strong>{emailSendedTo}</strong>
-                    </SubTitle>
-                )}
+            {!emailSending && emailSendedTo && (
+                <SubTitle>
+                    We just sent it to <strong>{emailSendedTo}</strong>
+                </SubTitle>
+            )}
             <ButtonsWrapper marginTop={40} width={isMobile ? 300 : '100%'}>
                 <InputField
                     width={isMobile ? undefined : 300}
@@ -194,14 +190,11 @@ export const RoomActivationCode = ({
     const form = useForm();
 
     let codeField = useField('input.code', '', form);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                loginCodeStart({ emailValue, codeValue: codeField.value });
-            });
-        },
-        [codeField.value, emailValue],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            loginCodeStart({ emailValue, codeValue: codeField.value });
+        });
+    }, [codeField.value, emailValue]);
 
     return (
         <>
@@ -264,7 +257,7 @@ export const RoomActivationCode = ({
     );
 };
 
-export const AskActivationPage = (props: ActivationCodeProps) => {
+export const AskActivationPage = (props: ActivationCodeProps & { roomView: boolean }) => {
     let router = React.useContext(XRouterContext)!;
     const [codeError, setCodeError] = React.useState('');
     const [codeSending, setCodeSending] = React.useState(false);
@@ -315,33 +308,50 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
-            <XView marginTop={34}>
-                <BackSkipLogo
-                    onBack={() => {
+            {!props.roomView && (
+                <>
+                    <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
+                    <XView marginTop={34}>
+                        <BackSkipLogo
+                            onBack={() => {
+                                router.replace('/auth2/ask-email');
+                                props.backButtonClick();
+                            }}
+                            onSkip={null}
+                        />
+                    </XView>
+
+                    <WebSignUpActivationCode
+                        {...props}
+                        codeError={codeError}
+                        codeSending={codeSending}
+                        loginCodeStart={loginCodeStart}
+                        backButtonClick={() => {
+                            router.replace('/auth2/ask-email');
+                            props.backButtonClick();
+                        }}
+                    />
+                </>
+            )}
+            {props.roomView && (
+                <RoomActivationCode
+                    {...props}
+                    codeError={codeError}
+                    codeSending={codeSending}
+                    loginCodeStart={loginCodeStart}
+                    backButtonClick={() => {
                         router.replace('/auth2/ask-email');
                         props.backButtonClick();
                     }}
-                    onSkip={null}
                 />
-            </XView>
-
-            <WebSignUpActivationCode
-                {...props}
-                codeError={codeError}
-                codeSending={codeSending}
-                loginCodeStart={loginCodeStart}
-                backButtonClick={() => {
-                    router.replace('/auth2/ask-email');
-                    props.backButtonClick();
-                }}
-            />
+            )}
         </XView>
     );
 };
 
 export default withApp('Home', 'viewer', () => (
     <AskActivationPage
+        roomView={false}
         signin={true}
         backButtonClick={() => {
             //
