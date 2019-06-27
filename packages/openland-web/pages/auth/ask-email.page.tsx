@@ -50,18 +50,15 @@ export const RoomCreateWithEmail = ({
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                setEmailValue(emailField.value);
-                setEmailError('');
-                setTimeout(() => {
-                    loginEmailStart(emailField.value);
-                }, 100);
-            });
-        },
-        [emailField.value],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
+        });
+    }, [emailField.value]);
 
     return (
         <>
@@ -115,18 +112,15 @@ export const WebSignUpCreateWithEmail = ({
 
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                setEmailValue(emailField.value);
-                setEmailError('');
-                setTimeout(() => {
-                    loginEmailStart(emailField.value);
-                }, 100);
-            });
-        },
-        [emailField.value],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
+        });
+    }, [emailField.value]);
 
     const title = 'Create new account';
 
@@ -172,7 +166,7 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
     const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
     let router = React.useContext(XRouterContext)!;
 
-    const loginEmailStart = (email: string) => {
+    const loginEmailStart = async (email: string) => {
         if (email === '') {
             setEmailError(InitTexts.auth.noEmail);
 
@@ -186,7 +180,7 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
             setEmailError('');
             setEmailSent(false);
 
-            fireEmail();
+            await fireEmail(email);
             setTimeout(() => {
                 router.push('/auth2/ask-activation-code');
             }, 0);
