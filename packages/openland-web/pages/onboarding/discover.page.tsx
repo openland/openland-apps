@@ -15,6 +15,16 @@ import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 
+const shadowClassName = css`
+    width: 350px;
+    height: 200px;
+    position: absolute;
+    bottom: -70px;
+    margin: auto;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+`;
+
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
     selected: Set<string>;
@@ -26,15 +36,14 @@ const TagsGroupPage = (props: {
     }
 
     return (
-        <XScrollView3>
-            <XView paddingHorizontal={18}>
+        <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1}>
+            <XView paddingHorizontal={18} paddingBottom={100}>
                 <TagsCloud
                     tagsGroup={props.group}
                     selected={props.selected}
                     onSelectedChange={props.setSelectedTagsIds}
                 />
             </XView>
-            <XView height={120} />
         </XScrollView3>
     );
 };
@@ -61,13 +70,16 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localState);
-    }, [localState]);
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localState);
+        },
+        [localState],
+    );
 
     const { title, subtitle } = group;
     return (
-        <XView backgroundColor="white" flexGrow={1}>
+        <XView backgroundColor="white" flexGrow={1} flexShrink={1} maxHeight="100vh">
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={progressInPercents} />
             <XView marginTop={34}>
@@ -82,12 +94,25 @@ const LocalDiscoverComponent = ({
                 />
             </XView>
 
-            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                <XView flexDirection="column" alignSelf="center" alignItems="center">
-                    <XView fontSize={24} marginBottom={12}>
+            <XView
+                alignItems="center"
+                flexGrow={1}
+                flexShrink={1}
+                justifyContent="center"
+                marginTop={100}
+                marginBottom={70}
+            >
+                <XView
+                    flexDirection="column"
+                    alignSelf="center"
+                    alignItems="center"
+                    flexGrow={1}
+                    flexShrink={1}
+                >
+                    <XView fontSize={24} marginBottom={15} fontWeight="600">
                         {title}
                     </XView>
-                    <XView fontSize={16} marginBottom={40}>
+                    <XView fontSize={16} marginBottom={30}>
                         {subtitle}
                     </XView>
 
@@ -102,11 +127,13 @@ const LocalDiscoverComponent = ({
                             });
                         }}
                     />
-
+                    <div className={shadowClassName} />
                     <XButton
+                        flexShrink={0}
+                        zIndex={2}
                         text="Continue"
                         style="primary"
-                        size="default"
+                        size="large"
                         onClick={onMyContinueClick}
                     />
                 </XView>

@@ -12,10 +12,16 @@ import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
+const shadowClassName = css`
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    bottom: -70px;
+    left: -30px;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
 `;
 
 const CheckIconClassName = css`
@@ -75,7 +81,12 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
 
     return (
         <>
-            <XView flexDirection="row" justifyContent="space-between" marginBottom={18}>
+            <XView
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                marginBottom={18}
+            >
                 <XView fontWeight={'600'} fontSize={17} color={'rgba(0, 0, 0, 0.5)'}>{`${
                     rooms.length
                 } chats`}</XView>
@@ -100,28 +111,34 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                 )}
             </XView>
 
-            {rooms.map((room, key) => {
-                return (
-                    <ChatsItem
-                        key={key}
-                        room={room}
-                        isSelected={selectedIds.indexOf(room.id) !== -1}
-                        onSelect={id => {
-                            if (selectedIds.indexOf(id) === -1) {
-                                setSelectedIds([...selectedIds, id]);
-                            } else {
-                                setSelectedIds(selectedIds.filter(item => item !== id));
-                            }
-                        }}
-                    />
-                );
-            })}
-
-            <XView marginTop={40} flexShrink={1} alignSelf="center">
+            <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1} marginHorizontal={-20}>
+                <XView paddingBottom={150}>
+                    {rooms.map((room, key) => {
+                        return (
+                            <ChatsItem
+                                key={key}
+                                room={room}
+                                isSelected={selectedIds.indexOf(room.id) !== -1}
+                                onSelect={id => {
+                                    if (selectedIds.indexOf(id) === -1) {
+                                        setSelectedIds([...selectedIds, id]);
+                                    } else {
+                                        setSelectedIds(selectedIds.filter(item => item !== id));
+                                    }
+                                }}
+                            />
+                        );
+                    })}
+                </XView>
+            </XScrollView3>
+            <div className={shadowClassName} />
+            <XView flexShrink={0} alignSelf="center" zIndex={2}>
                 <XButton
+                    zIndex={2}
+                    flexShrink={0}
                     text={selectedIds.length ? `Join ${selectedIds.length} chats` : `Join`}
                     style="primary"
-                    size="default"
+                    size="large"
                     enabled={!!selectedIds.length}
                 />
             </XView>
@@ -144,7 +161,7 @@ export const ChatsForYou = () => {
     }
 
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1} flexShrink={1} maxHeight="100vh">
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
             <XView marginBottom={12} marginTop={34}>
@@ -159,8 +176,15 @@ export const ChatsForYou = () => {
                 />
             </XView>
 
-            <XView flexDirection="row" justifyContent="center" paddingBottom={76}>
-                <XView flexDirection="column" alignSelf="center">
+            <XView
+                alignItems="center"
+                flexGrow={1}
+                flexShrink={1}
+                justifyContent="center"
+                marginTop={20}
+                marginBottom={70}
+            >
+                <XView flexDirection="column" alignSelf="center" flexGrow={1} flexShrink={1}>
                     <XView alignItems="center">
                         <XView fontSize={24} marginBottom={12}>
                             Chats for you
@@ -173,7 +197,7 @@ export const ChatsForYou = () => {
                     <ChatsItemList rooms={rooms} />
                 </XView>
             </XView>
-        </div>
+        </XView>
     );
 };
 

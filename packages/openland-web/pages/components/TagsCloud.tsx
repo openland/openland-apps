@@ -32,23 +32,29 @@ export const TagsCloud = (props: {
 
     return (
         <XView flexDirection="column">
-            <XView marginBottom={18} flexDirection="row" flexWrap="wrap" width={350}>
-                {props.tagsGroup.tags
-                    .filter((t, i) => showAll || i < 17)
-                    .map(tag => (
-                        <TagButton
-                            tag={tag}
-                            onPress={onTagPress}
-                            selected={props.selected.has(tag.id)}
-                        />
-                    ))}
-                {props.tagsGroup.tags.length > 17 && !showAll && (
+            <XView
+                marginBottom={36}
+                flexDirection="row"
+                flexWrap="wrap"
+                justifyContent="center"
+                width={350}
+            >
+                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton
-                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                        onPress={onShowAll}
-                        selected={false}
+                        tag={tag}
+                        onPress={onTagPress}
+                        selected={props.selected.has(tag.id)}
                     />
-                )}
+                ))}
+                {props.tagsGroup.tags.length > 17 &&
+                    !showAll && (
+                        <TagButton
+                            tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
+                            onPress={onShowAll}
+                            selected={false}
+                            isMore
+                        />
+                    )}
             </XView>
         </XView>
     );
