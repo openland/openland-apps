@@ -19,6 +19,7 @@ import { InputField } from 'openland-web/components/InputField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -274,15 +275,21 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
 
 export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const form = useForm();
-    const nameField = useField('input.name', '', form, [{
-        checkIsValid: value => !!value,
-        text: 'Name can\'t be empty',
-    }]);
+    const nameField = useField('input.name', '', form, [
+        {
+            checkIsValid: value => value.trim().length > 0,
+            text: 'Badge can\'t be empty',
+        }, {
+            checkIsValid: value => value.trim().length <= 40,
+            text: 'Max length for badge: 40',
+        },
+    ]);
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper) {
+            if (props.isSuper && (props.userId !== messenger.user.id)) {
                 await client.mutateSuperBadgeCreate({
                     name: nameField.value,
                     userId: props.userId
@@ -302,7 +309,7 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
             {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent>
-                    <InputField title="Badge text" field={nameField} />
+                    <InputField title="Badge text" field={nameField} setFocusOnError />
                 </XModalContent>
                 <XModalFooter>
                     <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
@@ -315,11 +322,12 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
 export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string, badgeId: string }) => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const form = useForm();
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper) {
+            if (props.isSuper && (props.userId !== messenger.user.id)) {
                 await client.mutateSuperBadgeDelete({ badgeId: props.badgeId, userId: props.userId });
             } else {
                 await client.mutateBadgeDelete({ badgeId: props.badgeId });

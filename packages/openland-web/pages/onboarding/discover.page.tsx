@@ -142,7 +142,7 @@ const LocalDiscoverComponent = ({
     );
 };
 
-export default withApp('Home', 'viewer', () => {
+export const Discover = () => {
     const router = React.useContext(XRouterContext)!;
     const client = useClient();
 
@@ -200,4 +200,5 @@ export default withApp('Home', 'viewer', () => {
             progressInPercents={getPercentageOfOnboarding(7 + rootState.exclude.size)}
         />
     );
-});
+}
+export default withApp('Home', 'viewer', () => <Discover />);

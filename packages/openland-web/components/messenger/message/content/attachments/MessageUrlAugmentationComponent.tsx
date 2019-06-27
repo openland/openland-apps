@@ -22,6 +22,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
+import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
 
 const LinkContentWrapperClassName = css`
     width: 100%;
@@ -99,20 +100,24 @@ interface KeyboardItemProps {
     path: string | undefined;
     href: string | undefined;
     key?: string;
+    onClick?: () => void;
 }
 
-const KeyboardItem = ({ title, path, href }: KeyboardItemProps) => {
+const KeyboardItem = ({ title, path, href, onClick }: KeyboardItemProps) => {
     const modal = React.useContext(XModalContext);
     const modalBox = React.useContext(XModalBoxContext);
 
-    const onCloseModal = () => {
+    const onCloseModal = React.useCallback(() => {
         if (modal) {
             modal.close();
         }
         if (modalBox) {
             modalBox.close();
         }
-    };
+        if (onClick) {
+            onClick();
+        }
+    }, []);
     React.useEffect(() => undefined, [modal, modalBox]);
 
     return (
@@ -162,8 +167,15 @@ const Keyboard = React.memo(
                                         href = undefined;
                                     }
 
+                                    let action = resolveLinkAction(href || '');
+                                    if (action) {
+                                        href = undefined;
+                                        path = undefined;
+                                    }
+
                                     return (
                                         <KeyboardItem
+                                            onClick={action}
                                             key={'button-' + i + '-' + j}
                                             href={href}
                                             path={path}

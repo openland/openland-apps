@@ -93,6 +93,7 @@ export default () => {
     }
 
     let fromRoom: any = Cookie.get('x-openland-invite');
+    const roomView = !!fromRoom;
     const isMobile = useIsMobile();
     if (isMobile) {
         fromRoom = false;
@@ -239,6 +240,7 @@ export default () => {
                     key={signin ? 'signin-track' : 'signup-track'}
                 >
                     <CreateNewAccountPage
+                        roomView={roomView}
                         onLoginClick={() => {
                             setSignin(true);
                         }}
@@ -254,6 +256,7 @@ export default () => {
             {page === pages.askEmail && (
                 <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                     <AskEmailPage
+                        roomView={roomView}
                         fireEmail={fireEmail}
                         signin={signin}
                         emailError={emailError}
@@ -269,6 +272,7 @@ export default () => {
             {page === pages.askActivationCode && (
                 <XTrack event="code_view">
                     <AskActivationPage
+                        roomView={roomView}
                         signin={signin}
                         resendCodeClick={async () => {
                             trackEvent('code_resend_action');
@@ -286,9 +290,9 @@ export default () => {
                     />
                 </XTrack>
             )}
-            {page === pages.introduceYourself && <IntroduceYourselfPage roomView={false} />}
+            {page === pages.introduceYourself && <IntroduceYourselfPage roomView={roomView} />}
             {page === pages.enterYourOrganization && (
-                <EnterYourOrganizationPage inviteKey={appInviteKey} />
+                <EnterYourOrganizationPage roomView={roomView} inviteKey={appInviteKey} />
             )}
         </>
     );
