@@ -58,6 +58,7 @@ export const prepareLegacyMentions = (
                         isYou: mention.isYou,
                         photo: mention.photo,
                         primaryOrganization: mention.primaryOrganization,
+                        primaryBadge: mention.primaryBadge
                     },
                 });
             } else if (mention.__typename === 'AllMention') {
