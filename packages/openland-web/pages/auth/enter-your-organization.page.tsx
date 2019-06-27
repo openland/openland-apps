@@ -15,7 +15,6 @@ import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XInput } from 'openland-x/XInput';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
-import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import {
     ContentWrapper,
     Title,
@@ -77,18 +76,18 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                 },
             });
 
-            await client.refetchAccount();
-
             const inviteKey = Cookie.get('x-openland-app-invite');
             if (inviteKey) {
                 await client.mutateOrganizationActivateByInvite({
                     inviteKey,
                 });
             }
+            await client.refetchAccount();
 
             trackEvent('registration_complete');
             Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-            router.push('/onboarding/start');
+
+            window.location.href = '/onboarding/start';
         });
     }, [organizationField.value]);
 
