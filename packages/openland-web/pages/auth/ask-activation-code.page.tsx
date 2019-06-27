@@ -25,11 +25,6 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
-
 const SmallerText = Glamorous.div({
     opacity: 0.6,
     fontSize: 13,
@@ -97,34 +92,32 @@ type ActivationCodeInnerProps = {
 export const WebSignUpActivationCode = ({
     signin,
     emailValue,
-    backButtonClick,
     resendCodeClick,
     emailSendedTo,
     emailSending,
     emailWasResend,
     codeSending,
-    codeChanged,
-    codeValue,
     codeError,
     loginCodeStart,
 }: ActivationCodeProps & ActivationCodeInnerProps) => {
     const isMobile = useIsMobile();
     const form = useForm();
 
-    let codeField = useField('input.code', codeValue, form);
+    let codeField = useField('input.code', '', form);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            codeChanged(codeField.value, () => {
-                loginCodeStart({ emailValue, codeValue });
-            });
+            loginCodeStart({ emailValue, codeValue: codeField.value });
         });
-    }, []);
+    }, [codeField.value, emailValue]);
+
+    const sendingCodeText = 'Sending code...';
 
     return (
-        <>
+        <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
             <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
-            {emailSendedTo && (
+            {emailSending && <SubTitle>{sendingCodeText}</SubTitle>}
+            {!emailSending && emailSendedTo && (
                 <SubTitle>
                     We just sent it to <strong>{emailSendedTo}</strong>
                 </SubTitle>
@@ -144,38 +137,10 @@ export const WebSignUpActivationCode = ({
                 />
                 {form.error && <ErrorText>{codeError}</ErrorText>}
             </ButtonsWrapper>
-            <ResendCodeRow alignItems="center">
-                <XHorizontal alignItems="center" separator="none">
-                    {emailSending ? (
-                        <>
-                            <SmallerText>Sending code...</SmallerText>
-                        </>
-                    ) : (
-                        <>
-                            <SmallerText>
-                                {emailWasResend
-                                    ? 'Code successfully sent.'
-                                    : InitTexts.auth.haveNotReceiveCode}
-                            </SmallerText>
-                            <ResendButton
-                                onClick={resendCodeClick}
-                                style="link"
-                                text={InitTexts.auth.resend}
-                            />
-                        </>
-                    )}
-                </XHorizontal>
-            </ResendCodeRow>
+
             <ButtonsWrapper marginTop={20}>
                 <XVertical alignItems="center">
                     <XHorizontal alignItems="center">
-                        <XButton
-                            onClick={backButtonClick}
-                            size="large"
-                            style="ghost"
-                            text={InitTexts.auth.back}
-                        />
-
                         <XButton
                             onClick={doConfirm}
                             size="large"
@@ -186,7 +151,29 @@ export const WebSignUpActivationCode = ({
                     </XHorizontal>
                 </XVertical>
             </ButtonsWrapper>
-        </>
+            <XView position="absolute" bottom={20} width="100%">
+                <ResendCodeRow alignItems="center">
+                    <XHorizontal alignItems="center" separator="none">
+                        {emailSending ? (
+                            <SmallerText />
+                        ) : (
+                            <>
+                                <SmallerText>
+                                    {emailWasResend
+                                        ? 'Code successfully sent.'
+                                        : InitTexts.auth.haveNotReceiveCode}
+                                </SmallerText>
+                                <ResendButton
+                                    onClick={resendCodeClick}
+                                    style="link"
+                                    text={InitTexts.auth.resend}
+                                />
+                            </>
+                        )}
+                    </XHorizontal>
+                </ResendCodeRow>
+            </XView>
+        </XView>
     );
 };
 
@@ -195,25 +182,21 @@ export const RoomActivationCode = ({
     codeError,
     emailWasResend,
     emailSending,
-    backButtonClick,
     resendCodeClick,
     emailSendedTo,
     codeSending,
-    codeChanged,
-    codeValue,
     emailValue,
     loginCodeStart,
 }: ActivationCodeProps & ActivationCodeInnerProps) => {
     const form = useForm();
 
-    let codeField = useField('input.code', codeValue, form);
+    let codeField = useField('input.code', '', form);
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            codeChanged(codeField.value, () => {
-                loginCodeStart({ emailValue, codeValue });
-            });
+            loginCodeStart({ emailValue, codeValue: codeField.value });
         });
-    }, []);
+    }, [codeField.value, emailValue]);
+
     return (
         <>
             <Title roomView={true}>{InitTexts.auth.enterActivationCode}</Title>
@@ -234,39 +217,10 @@ export const RoomActivationCode = ({
                 />
                 {form.error && <ErrorText>{codeError}</ErrorText>}
             </ButtonsWrapper>
-            <ResendCodeRow alignItems="center">
-                <XHorizontal alignItems="center" separator="none">
-                    {emailSending ? (
-                        <>
-                            <SmallerText>Sending code...</SmallerText>
-                        </>
-                    ) : (
-                        <>
-                            <SmallerText>
-                                {emailWasResend
-                                    ? 'Code successfully sent.'
-                                    : InitTexts.auth.haveNotReceiveCode}
-                            </SmallerText>
-                            <ResendButton
-                                onClick={resendCodeClick}
-                                style="link"
-                                text={InitTexts.auth.resend}
-                            />
-                        </>
-                    )}
-                </XHorizontal>
-            </ResendCodeRow>
 
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XHorizontal alignItems="center">
-                        <XButton
-                            onClick={backButtonClick}
-                            size="large"
-                            style="ghost"
-                            text={InitTexts.auth.back}
-                        />
-
                         <XButton
                             onClick={doConfirm}
                             size="large"
@@ -277,6 +231,30 @@ export const RoomActivationCode = ({
                     </XHorizontal>
                 </XVertical>
             </ButtonsWrapper>
+            <XView position="absolute" bottom={0} width="100%">
+                <ResendCodeRow alignItems="center">
+                    <XHorizontal alignItems="center" separator="none">
+                        {emailSending ? (
+                            <>
+                                <SmallerText>Sending code...</SmallerText>
+                            </>
+                        ) : (
+                            <>
+                                <SmallerText>
+                                    {emailWasResend
+                                        ? 'Code successfully sent.'
+                                        : InitTexts.auth.haveNotReceiveCode}
+                                </SmallerText>
+                                <ResendButton
+                                    onClick={resendCodeClick}
+                                    style="link"
+                                    text={InitTexts.auth.resend}
+                                />
+                            </>
+                        )}
+                    </XHorizontal>
+                </ResendCodeRow>
+            </XView>
         </>
     );
 };
@@ -330,7 +308,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
     };
 
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
             <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
             <XView marginTop={34}>
@@ -353,7 +331,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                     props.backButtonClick();
                 }}
             />
-        </div>
+        </XView>
     );
 };
 
@@ -370,9 +348,5 @@ export default withApp('Home', 'viewer', () => (
         emailSendedTo=""
         emailSending={false}
         emailWasResend={false}
-        codeChanged={() => {
-            //
-        }}
-        codeValue=""
     />
 ));

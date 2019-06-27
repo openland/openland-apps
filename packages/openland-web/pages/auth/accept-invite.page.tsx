@@ -35,9 +35,11 @@ const InviterComponent = ({
 };
 
 const AcceptInvite = ({
+    signPath,
     inviter,
     onAcceptInvite,
 }: {
+    signPath: string;
     inviter: { photo: string | null; name: string; id: string };
     onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
 }) => {
@@ -114,7 +116,9 @@ export const AcceptInvitePage = (props: {
     if (!inviter) {
         return <XLoader loading={true} />;
     }
-    return <AcceptInvite inviter={inviter} onAcceptInvite={props.onAcceptInvite} />;
+    return (
+        <AcceptInvite signPath={signPath} inviter={inviter} onAcceptInvite={props.onAcceptInvite} />
+    );
 };
 
 export default withApp('Home', 'viewer', () => {

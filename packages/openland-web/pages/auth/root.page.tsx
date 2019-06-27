@@ -99,8 +99,6 @@ export default () => {
     const [fromOutside, setFromOutside] = React.useState(false);
 
     const fireEmail = async (cb?: Function) => {
-        debugger;
-        console.log('fireEmail');
         Cookie.set('auth-type', 'email', { path: '/' });
         if (redirect) {
             Cookie.set('sign-redirect', redirect, { path: '/' });
@@ -126,7 +124,6 @@ export default () => {
     };
 
     const fireGoogle = async () => {
-        console.log('fireGoogle');
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
             connection: 'google-oauth2',

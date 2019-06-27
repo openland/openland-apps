@@ -3,7 +3,6 @@ import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -27,11 +26,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { delayForewer } from 'openland-y-utils/timer';
 
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
-
 export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -53,63 +47,67 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                 input: {
                     firstName: firstName.value,
                     lastName: lastName.value,
-                    photoRef: photoRef.value,
+                    photoRef: {
+                        ...photoRef.value,
+                        isImage: undefined,
+                        width: undefined,
+                        height: undefined,
+                    },
                 },
             });
             await client.refetchAccount();
 
-            let redirect = router.query.redirect;
-            window.location.href = redirect ? redirect : '/';
-
             router.push('/auth2/enter-your-organization');
             await delayForewer();
         });
-    }, [firstName.value, lastName.value]);
+    }, [firstName.value, lastName.value, photoRef.value]);
 
     return (
-        <XTrack event="signup_profile_view">
-            <ContentWrapper noPadding={true}>
-                <Title roomView={roomView}>{InitTexts.create_profile.title}</Title>
-                <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-                <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
-                    <XVertical alignItems="center">
-                        <XAvatarFormFieldComponent size="default" {...photoRef.input} />
+        <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+            <XTrack event="signup_profile_view">
+                <ContentWrapper noPadding={true}>
+                    <Title roomView={roomView}>{InitTexts.create_profile.title}</Title>
+                    <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+                    <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
+                        <XVertical alignItems="center">
+                            <XAvatarFormFieldComponent size="default" {...photoRef.input} />
 
-                        <XView>
-                            <XInput
-                                invalid={!!form.error}
-                                size="large"
-                                title="First name"
-                                dataTestId="first-name"
-                                flexGrow={1}
-                                {...firstName.input}
-                            />
-                            {form.error && <XErrorMessage message={form.error} />}
-                        </XView>
+                            <XView maxWidth={500}>
+                                <XInput
+                                    invalid={!!form.error}
+                                    size="large"
+                                    title="First name"
+                                    dataTestId="first-name"
+                                    flexGrow={1}
+                                    {...firstName.input}
+                                />
+                                {form.error && <XErrorMessage message={form.error} />}
+                            </XView>
 
-                        <XView>
-                            <XInput
-                                size="large"
-                                title="Last name"
-                                dataTestId="last-name"
-                                flexGrow={1}
-                                {...lastName.input}
-                            />
-                        </XView>
+                            <XView>
+                                <XInput
+                                    size="large"
+                                    title="Last name"
+                                    dataTestId="last-name"
+                                    flexGrow={1}
+                                    {...lastName.input}
+                                />
+                            </XView>
 
-                        <ButtonsWrapper marginBottom={84}>
-                            <XButton
-                                dataTestId="continue-button"
-                                style="primary"
-                                text={InitTexts.create_profile.continue}
-                                size="large"
-                                onClick={doConfirm}
-                            />
-                        </ButtonsWrapper>
-                    </XVertical>
-                </ButtonsWrapper>
-            </ContentWrapper>
-        </XTrack>
+                            <ButtonsWrapper marginBottom={84}>
+                                <XButton
+                                    dataTestId="continue-button"
+                                    style="primary"
+                                    text={InitTexts.create_profile.continue}
+                                    size="large"
+                                    onClick={doConfirm}
+                                />
+                            </ButtonsWrapper>
+                        </XVertical>
+                    </ButtonsWrapper>
+                </ContentWrapper>
+            </XTrack>
+        </XView>
     );
 };
 
@@ -139,7 +137,7 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
 export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
     const router = React.useContext(XRouterContext)!;
     return (
-        <div className={backgroundClassName}>
+        <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Discover" />
 
             <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
@@ -153,7 +151,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
             </XView>
 
             <CreateProfileFormRoot roomView={roomView} />
-        </div>
+        </XView>
     );
 };
 
