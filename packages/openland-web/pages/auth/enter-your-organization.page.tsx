@@ -7,7 +7,6 @@ import { TopBar } from '../components/TopBar';
 import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -15,7 +14,6 @@ import { XButton } from 'openland-x/XButton';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
-import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import {
     ContentWrapper,
     Title,
@@ -25,6 +23,7 @@ import {
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
+import { XShortcuts } from 'openland-x/XShortcuts';
 import * as Cookie from 'js-cookie';
 
 const organizationInputClassName = css`
@@ -56,6 +55,7 @@ const ShowOrgError = ({ message }: { message: string }) => {
 };
 
 const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
+    const [sending, setSending] = React.useState(false);
     const client = useClient();
     const form = useForm();
     const { roomView } = props;
@@ -66,74 +66,96 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            let result = await client.mutateCreateOrganization({
-                input: {
-                    personal: false,
-                    name: organizationField.value,
-                    // id: data.id,
-                },
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                if (organizationField.value) {
+                    setSending(true);
+                    let result = await client.mutateCreateOrganization({
+                        input: {
+                            personal: false,
+                            name: organizationField.value,
+                            // id: data.id,
+                        },
+                    });
+
+                    const inviteKey = Cookie.get('x-openland-app-invite');
+                    if (inviteKey) {
+                        await client.mutateOrganizationActivateByInvite({
+                            inviteKey,
+                        });
+                        await client.refetchAccount();
+                        Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+
+                        trackEvent('registration_complete');
+                        window.location.href = '/onboarding/start';
+                    } else {
+                        window.location.href = '/';
+                        trackEvent('registration_complete');
+                    }
+                }
             });
-
-            const inviteKey = Cookie.get('x-openland-app-invite');
-            if (inviteKey) {
-                await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
-                });
-                await client.refetchAccount();
-                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-
-                trackEvent('registration_complete');
-                window.location.href = '/onboarding/start';
-            } else {
-                window.location.href = '/';
-                trackEvent('registration_complete');
-            }
-        });
-    }, [organizationField.value]);
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Find your organization or create a new one ';
 
+    const onEnter = () => {
+        doConfirm();
+    };
+
     return (
-        <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-            <XTrack event="signup_org_view">
-                <ContentWrapper>
-                    <Title roomView={roomView} className="title">
-                        {InitTexts.create_organization.title}
-                    </Title>
-                    <SubTitle className="subtitle">{subtitle}</SubTitle>
+        <XShortcuts
+            handlerMap={{
+                ENTER: onEnter,
+            }}
+            keymap={{
+                ENTER: {
+                    osx: ['enter'],
+                    windows: ['enter'],
+                },
+            }}
+        >
+            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+                <XTrack event="signup_org_view">
+                    <ContentWrapper>
+                        <Title roomView={roomView} className="title">
+                            {InitTexts.create_organization.title}
+                        </Title>
+                        <SubTitle className="subtitle">{subtitle}</SubTitle>
 
-                    <ButtonsWrapper marginBottom={84} marginTop={34}>
-                        <XVertical alignItems="center" separator="none">
-                            <XVertical separator="none" alignItems="center">
-                                <XHorizontal alignItems="center" separator="none">
-                                    <InputField
-                                        invalid={!!form.error}
-                                        title="Organization name"
-                                        dataTestId="organization"
-                                        flexGrow={1}
-                                        className={organizationInputClassName}
-                                        field={organizationField}
+                        <ButtonsWrapper marginBottom={84} marginTop={34}>
+                            <XVertical alignItems="center" separator="none">
+                                <XVertical separator="none" alignItems="center">
+                                    <XVertical alignItems="center" separator="none">
+                                        <InputField
+                                            title="Organization name"
+                                            dataTestId="organization"
+                                            flexGrow={1}
+                                            className={organizationInputClassName}
+                                            field={organizationField}
+                                        />
+                                    </XVertical>
+                                    {/*{form.error && <ShowOrgError message={form.error} />}*/}
+                                </XVertical>
+
+                                <XView marginTop={50}>
+                                    <XButton
+                                        loading={sending}
+                                        dataTestId="continue-button"
+                                        style="primary"
+                                        text={InitTexts.create_organization.continue}
+                                        size="large"
+                                        onClick={doConfirm}
                                     />
-                                </XHorizontal>
-                                {form.error && <ShowOrgError message={form.error} />}
+                                </XView>
                             </XVertical>
-
-                            <XView marginTop={50}>
-                                <XButton
-                                    dataTestId="continue-button"
-                                    style="primary"
-                                    text={InitTexts.create_organization.continue}
-                                    size="large"
-                                    onClick={doConfirm}
-                                />
-                            </XView>
-                        </XVertical>
-                    </ButtonsWrapper>
-                </ContentWrapper>
-            </XTrack>
-        </XView>
+                        </ButtonsWrapper>
+                    </ContentWrapper>
+                </XTrack>
+            </XView>
+        </XShortcuts>
     );
 };
 

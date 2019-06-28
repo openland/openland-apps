@@ -51,17 +51,25 @@ export const RoomCreateWithEmail = ({
     const form = useForm();
     const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
-    let emailField = useField('input.email', emailValue, form);
+    let emailField = useField('input.email', emailValue, form, [
+        {
+            checkIsValid: value => value !== '',
+            text: "Please enter your email address",
+        },
+    ]);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     const onEnter = () => {
         doConfirm();
@@ -89,14 +97,13 @@ export const RoomCreateWithEmail = ({
                 <XInput
                     autofocus
                     width={isMobile ? undefined : 300}
-                    invalid={emailError !== ''}
                     dataTestId="email"
                     type="email"
                     size="large"
                     placeholder={InitTexts.auth.emailPlaceholder}
                     {...emailField.input}
                 />
-                {emailError && <ErrorText>{emailError}</ErrorText>}
+                {emailError && !form.error && <ErrorText>{emailError}</ErrorText>}
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={70} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
@@ -130,15 +137,18 @@ export const WebSignUpCreateWithEmail = ({
 
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     const onEnter = () => {
         doConfirm();

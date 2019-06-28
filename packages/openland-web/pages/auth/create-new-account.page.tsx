@@ -152,7 +152,7 @@ export const WebSignUpAuthMechanism = ({
     loginWithEmail,
 }: AuthMechanism) => {
     const auth = InitTexts.auth;
-    const title = 'Create new account';
+    const title = signin ? 'Sign in to Openland' : 'Create new account';
 
     const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
