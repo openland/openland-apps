@@ -38,7 +38,7 @@ export const BackSkipLogo = ({
             zIndex={1000}
         >
             {onBack ? (
-                <XView cursor="pointer">
+                <XView cursor="pointer" zIndex={1001}>
                     <BackButton onClick={onBack} />
                 </XView>
             ) : (
@@ -66,7 +66,7 @@ export const BackSkipLogo = ({
                 </>
             )}
             {onSkip ? (
-                <XView>
+                <XView zIndex={1001}>
                     <Skip onClick={onSkip} />
                 </XView>
             ) : (

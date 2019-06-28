@@ -198,6 +198,7 @@ export const WebSignUpActivationCode = ({
 
 export const RoomActivationCode = ({
     signin,
+    backButtonClick,
     codeError,
     emailWasResend,
     emailSending,
@@ -282,6 +283,13 @@ export const RoomActivationCode = ({
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XHorizontal alignItems="center">
+                        <XButton
+                            onClick={backButtonClick}
+                            size="large"
+                            style="ghost"
+                            alignSelf="center"
+                            text={'Back'}
+                        />
                         <XButton
                             loading={codeSending}
                             onClick={doConfirm}

@@ -54,22 +54,19 @@ export const RoomCreateWithEmail = ({
     let emailField = useField('input.email', emailValue, form, [
         {
             checkIsValid: value => value !== '',
-            text: "Please enter your email address",
+            text: 'Please enter your email address',
         },
     ]);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                setEmailValue(emailField.value);
-                setEmailError('');
-                setTimeout(() => {
-                    loginEmailStart(emailField.value);
-                }, 100);
-            });
-        },
-        [emailField.value],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
+        });
+    }, [emailField.value]);
 
     const onEnter = () => {
         doConfirm();
@@ -105,7 +102,7 @@ export const RoomCreateWithEmail = ({
                 />
                 {emailError && !form.error && <ErrorText>{emailError}</ErrorText>}
             </ButtonsWrapper>
-            <ButtonsWrapper marginTop={70} marginBottom={84} width={280}>
+            <ButtonsWrapper marginTop={52} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XButton
                         dataTestId="continue-button"
@@ -137,18 +134,15 @@ export const WebSignUpCreateWithEmail = ({
 
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                setEmailValue(emailField.value);
-                setEmailError('');
-                setTimeout(() => {
-                    loginEmailStart(emailField.value);
-                }, 100);
-            });
-        },
-        [emailField.value],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
+        });
+    }, [emailField.value]);
 
     const onEnter = () => {
         doConfirm();
