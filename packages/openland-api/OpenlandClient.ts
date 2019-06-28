@@ -883,6 +883,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName | null {
         return this.useQuery(Source.ResolveShortNameQuery, variables, opts);
     }
+    async queryMySuccessfulInvitesCount(opts?: OperationParameters): Promise<Types.MySuccessfulInvitesCount> {
+        return this.client.query(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+    }
+    async refetchMySuccessfulInvitesCount(): Promise<Types.MySuccessfulInvitesCount> {
+        return this.refetch(Source.MySuccessfulInvitesCountQuery);
+    }
+    useMySuccessfulInvitesCount(opts?: QueryWatchParameters): Types.MySuccessfulInvitesCount {
+        return this.useQuerySuspense(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+    }
+    useWithoutLoaderMySuccessfulInvitesCount(opts?: QueryWatchParameters): Types.MySuccessfulInvitesCount | null {
+        return this.useQuery(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+    }
     async mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
         return this.client.mutate(Source.CreateOrganizationMutation, variables);
     }

@@ -245,6 +245,7 @@ export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Type
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);
 export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
+export const MySuccessfulInvitesCountQuery = typedQuery<Types.MySuccessfulInvitesCount, {}>(User.MySuccessfulInvitesCountQuery);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
 export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFragment>(Comment.CommentEntryFragment);

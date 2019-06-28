@@ -1414,6 +1414,13 @@
       "metadata": {
         "engineSignature": "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}"
       }
+    },
+    {
+      "signature": "0eba3aae2604981b6e56b8349f588b675265b5f4a4264da15cd69833f3d23440",
+      "document": "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}",
+      "metadata": {
+        "engineSignature": "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}"
+      }
     }
   ]
 }

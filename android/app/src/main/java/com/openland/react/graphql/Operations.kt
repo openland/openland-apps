@@ -1745,6 +1745,9 @@ private val MyOrganizationsSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
+private val MySuccessfulInvitesCountSelector = obj(
+            field("mySuccessfulInvitesCount","mySuccessfulInvitesCount", notNull(scalar("Int")))
+        )
 private val OnlineSelector = obj(
             field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3497,6 +3500,12 @@ object Operations {
         override val body = "query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary ...OrganizationShort}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = MyOrganizationsSelector
     }
+    val MySuccessfulInvitesCount = object: OperationDefinition {
+        override val name = "MySuccessfulInvitesCount"
+        override val kind = OperationKind.QUERY
+        override val body = "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}"
+        override val selector = MySuccessfulInvitesCountSelector
+    }
     val Online = object: OperationDefinition {
         override val name = "Online"
         override val kind = OperationKind.QUERY
@@ -4550,6 +4559,7 @@ object Operations {
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
+        if (name == "MySuccessfulInvitesCount") return MySuccessfulInvitesCount
         if (name == "Online") return Online
         if (name == "Organization") return Organization
         if (name == "OrganizationByPrefix") return OrganizationByPrefix

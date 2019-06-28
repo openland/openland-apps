@@ -102,3 +102,9 @@ export const DeleteUserMutation = gql`
         superDeleteUser(id: $id)
     }
 `;
+
+export const MySuccessfulInvitesCountQuery = gql`
+    query MySuccessfulInvitesCount {
+        mySuccessfulInvitesCount
+    }
+`;

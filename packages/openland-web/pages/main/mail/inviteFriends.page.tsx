@@ -368,7 +368,7 @@ const InviteAcceptedBlock = (props: { accepted: number }) => (
         fontSize={14}
         marginTop={20}
     >
-        {props.accepted} invites accepted
+        {props.accepted} {`${props.accepted === 1 ? 'invite' : 'invites'} accepted`}
     </XView>
 );
 
@@ -399,6 +399,7 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
     const client = useClient();
 
     const user = client.useProfile();
+    const inviteCount = client.useMySuccessfulInvitesCount();
     const profile = user.profile!;
 
     const data = client.useOrganizationPublicInvite({
@@ -416,7 +417,6 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
     const router = React.useContext(XRouterContext)!;
 
     const isMobile = useIsMobile() || undefined;
-    const invitesAccepted = true;
     const closeModal = React.useCallback(() => {
         router.replace(`/directory/o/${primaryOrganizationId}`);
         if (props.modalContext) {
@@ -474,7 +474,7 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
                         Share access to Openland community
                     </span>
                 </XView>
-                {invitesAccepted && <InviteAcceptedBlock accepted={5} />}
+                {inviteCount.mySuccessfulInvitesCount > 0 && <InviteAcceptedBlock accepted={5} />}
                 <WritePostBlock inviteKey={openlandInvite} />
                 {!inviteLink && (
                     <XView marginBottom={20} flexGrow={0} alignSelf="stretch">

@@ -1739,6 +1739,9 @@ private let MyOrganizationsSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
+private let MySuccessfulInvitesCountSelector = obj(
+            field("mySuccessfulInvitesCount","mySuccessfulInvitesCount", notNull(scalar("Int")))
+        )
 private let OnlineSelector = obj(
             field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3494,6 +3497,12 @@ class Operations {
         "query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary ...OrganizationShort}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}",
         MyOrganizationsSelector
     )
+    let MySuccessfulInvitesCount = OperationDefinition(
+        "MySuccessfulInvitesCount",
+        .query, 
+        "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}",
+        MySuccessfulInvitesCountSelector
+    )
     let Online = OperationDefinition(
         "Online",
         .query, 
@@ -4548,6 +4557,7 @@ class Operations {
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }
+        if name == "MySuccessfulInvitesCount" { return MySuccessfulInvitesCount }
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
         if name == "OrganizationByPrefix" { return OrganizationByPrefix }
