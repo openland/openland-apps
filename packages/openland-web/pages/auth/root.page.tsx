@@ -126,32 +126,35 @@ export default () => {
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
 
-    const fireEmail = React.useCallback(async (emailToFire: string) => {
-        return new Promise(cb => {
-            Cookie.set('auth-type', 'email', { path: '/' });
-            if (redirect) {
-                Cookie.set('sign-redirect', redirect, { path: '/' });
-            }
-            createAuth0Client().passwordlessStart(
-                { connection: 'email', send: 'link', email: emailToFire },
-                (error: any, v) => {
-                    if (error) {
-                        setEmailSending(false);
-                        setEmailError(error.description);
-                    } else {
-                        setTimeout(() => {
+    const fireEmail = React.useCallback(
+        async (emailToFire: string) => {
+            return new Promise(cb => {
+                Cookie.set('auth-type', 'email', { path: '/' });
+                if (redirect) {
+                    Cookie.set('sign-redirect', redirect, { path: '/' });
+                }
+                createAuth0Client().passwordlessStart(
+                    { connection: 'email', send: 'link', email: emailToFire },
+                    (error: any, v) => {
+                        if (error) {
                             setEmailSending(false);
-                            setEmailSent(true);
+                            setEmailError(error.description);
+                        } else {
+                            setTimeout(() => {
+                                setEmailSending(false);
+                                setEmailSent(true);
 
-                            if (cb) {
-                                cb();
-                            }
-                        }, 500);
-                    }
-                },
-            );
-        });
-    }, []);
+                                if (cb) {
+                                    cb();
+                                }
+                            }, 500);
+                        }
+                    },
+                );
+            });
+        },
+        [redirect],
+    );
 
     const fireGoogle = React.useCallback(async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
