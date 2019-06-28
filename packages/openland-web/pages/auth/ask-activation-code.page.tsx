@@ -155,7 +155,7 @@ export const WebSignUpActivationCode = ({
                     {form.error && <ErrorText>{codeError}</ErrorText>}
                 </ButtonsWrapper>
 
-                <ButtonsWrapper marginTop={20}>
+                <ButtonsWrapper marginTop={40}>
                     <XVertical alignItems="center">
                         <XHorizontal alignItems="center">
                             <XButton
@@ -355,7 +355,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Activation code" />
+            <XDocumentHead title="Discover" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />

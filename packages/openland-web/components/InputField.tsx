@@ -74,10 +74,11 @@ interface InputProps extends XInputBasicProps {
     ref?: any;
     setFocusOnError?: boolean;
     hideErrorText?: boolean;
+    disableError?: boolean;
 }
 
 export const InputField = (props: InputProps) => {
-    const { field, title, hideErrorText, ...other } = props;
+    const { field, disableError, title, hideErrorText, ...other } = props;
     const ref: any = React.useRef(null);
     if (props.setFocusOnError && props.field.input.invalid) {
         if (ref && ref.current) {
@@ -97,12 +98,11 @@ export const InputField = (props: InputProps) => {
                     field.input.invalid && InputInvalidStyledClassName,
                 )}
             />
-            {field.input.invalid &&
-                !hideErrorText && (
-                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                        {field.input.errorText}
-                    </XView>
-                )}
+            {!disableError && field.input.invalid && !hideErrorText && (
+                <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                    {field.input.errorText}
+                </XView>
+            )}
         </>
     );
 };
