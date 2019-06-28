@@ -265,7 +265,7 @@ export const EnterYourOrganizationPage = ({
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Enter organization" />
             {!roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />

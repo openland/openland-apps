@@ -226,7 +226,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Ask email" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />

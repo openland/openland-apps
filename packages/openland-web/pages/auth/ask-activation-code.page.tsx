@@ -355,7 +355,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Activation" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
