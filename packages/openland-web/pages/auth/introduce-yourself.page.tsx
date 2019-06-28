@@ -77,7 +77,7 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                     Cookie.remove('x-openland-org-invite');
                     window.location.href = `/join/${orgInvite}`;
                 } else {
-                    router.push('/auth2/enter-your-organization');
+                    router.push('/auth/enter-your-organization');
                 }
             }
         });
@@ -248,7 +248,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/ask-activation-code');
+                                router.replace('/auth/ask-activation-code');
                             }}
                             onSkip={null}
                         />

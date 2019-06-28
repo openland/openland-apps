@@ -25,7 +25,7 @@ export default withApp('Home', 'viewer', () => {
             <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
-                        router.replace('/auth2/enter-your-organization');
+                        router.replace('/auth/enter-your-organization');
                     }}
                     onSkip={() => {
                         router.push('/');
