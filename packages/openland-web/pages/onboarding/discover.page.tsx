@@ -15,6 +15,7 @@ import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const shadowClassName = css`
     width: 350px;
@@ -71,12 +72,9 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const onMyContinueClick = React.useCallback(
-        () => {
-            onContinueClick(localState);
-        },
-        [localState],
-    );
+    const onMyContinueClick = React.useCallback(() => {
+        onContinueClick(localState);
+    }, [localState]);
 
     const { title, subtitle } = group;
     return (
@@ -86,8 +84,9 @@ const LocalDiscoverComponent = ({
             <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
-                        // TODO back
-                        // remove external node
+                        if (canUseDOM) {
+                            window.history.back();
+                        }
                     }}
                     onSkip={() => {
                         router.push('/');
@@ -204,5 +203,5 @@ export const Discover = () => {
             progressInPercents={getPercentageOfOnboarding(7 + rootState.exclude.size)}
         />
     );
-}
+};
 export default withApp('Home', 'viewer', () => <Discover />);
