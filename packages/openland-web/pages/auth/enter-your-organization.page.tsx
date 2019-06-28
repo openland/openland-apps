@@ -19,12 +19,41 @@ import {
     Title,
     ButtonsWrapper,
     SubTitle,
+    RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import * as Cookie from 'js-cookie';
+import { XInput } from 'openland-x/XInput';
+import IcInfo from 'openland-icons/ic-info.svg';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XPopper } from 'openland-x/XPopper';
+import Glamorous from 'glamorous';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+
+const InfoText = Glamorous.span({
+    fontSize: 14,
+});
+const XIconWrapper = Glamorous.span({
+    fontSize: 20,
+    marginLeft: 11,
+
+    '& svg': {
+        marginBottom: -3,
+    },
+
+    '&:hover': {
+        cursor: 'pointer',
+        '& svg': {
+            '& > g > path:last-child': {
+                fill: '#1790ff',
+                opacity: 1,
+            },
+        },
+    },
+});
 
 const organizationInputClassName = css`
     width: 300px;
@@ -102,6 +131,87 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
         doConfirm();
     };
 
+    const content = (
+        <XTrack event="signup_org_view">
+            <ContentWrapper>
+                <Title roomView={roomView} className="title">
+                    {InitTexts.create_organization.title}
+                </Title>
+                <SubTitle className="subtitle">{subtitle}</SubTitle>
+
+                <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
+                    <XVertical alignItems="center" separator="none">
+                        <XVertical separator="none" alignItems="center">
+                            <XVertical alignItems="center" separator="none">
+                                {!roomView && (
+                                    <XView>
+                                        <InputField
+                                            title="Organization name"
+                                            dataTestId="organization"
+                                            flexGrow={1}
+                                            className={organizationInputClassName}
+                                            field={organizationField}
+                                        />
+                                        {organizationField.input.invalid &&
+                                            organizationField.input.errorText && (
+                                                <XErrorMessage2
+                                                    message={organizationField.input.errorText}
+                                                />
+                                            )}
+                                    </XView>
+                                )}
+                            </XVertical>
+                        </XVertical>
+                        {roomView && (
+                            <XView width={330}>
+                                <XHorizontal alignItems="center" separator="none">
+                                    <XInput
+                                        invalid={!!form.error}
+                                        size="large"
+                                        title="Organization name"
+                                        dataTestId="organization"
+                                        flexGrow={1}
+                                        {...organizationField.input}
+                                    />
+                                    <XPopper
+                                        content={
+                                            <InfoText>
+                                                To register as an individual, simply enter your name
+                                            </InfoText>
+                                        }
+                                        showOnHover={true}
+                                        placement="top"
+                                        style="dark"
+                                    >
+                                        <XIconWrapper>
+                                            <IcInfo />
+                                        </XIconWrapper>
+                                    </XPopper>
+                                </XHorizontal>
+                                {organizationField.input.invalid &&
+                                    organizationField.input.errorText && (
+                                        <XErrorMessage2
+                                            message={organizationField.input.errorText}
+                                        />
+                                    )}
+                            </XView>
+                        )}
+
+                        <XView marginTop={50}>
+                            <XButton
+                                loading={sending}
+                                dataTestId="continue-button"
+                                style="primary"
+                                text={InitTexts.create_organization.continue}
+                                size="large"
+                                onClick={doConfirm}
+                            />
+                        </XView>
+                    </XVertical>
+                </ButtonsWrapper>
+            </ContentWrapper>
+        </XTrack>
+    );
     return (
         <XShortcuts
             handlerMap={{
@@ -114,46 +224,16 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                 },
             }}
         >
-            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                <XTrack event="signup_org_view">
-                    <ContentWrapper>
-                        <Title roomView={roomView} className="title">
-                            {InitTexts.create_organization.title}
-                        </Title>
-                        <SubTitle className="subtitle">{subtitle}</SubTitle>
-
-                        <ButtonsWrapper marginBottom={84} marginTop={34}>
-                            <XVertical alignItems="center" separator="none">
-                                <XVertical separator="none" alignItems="center">
-                                    <XVertical alignItems="center" separator="none">
-                                        <InputField
-                                            title="Organization name"
-                                            dataTestId="organization"
-                                            flexGrow={1}
-                                            className={organizationInputClassName}
-                                            field={organizationField}
-                                        />
-                                    </XVertical>
-                                    {organizationField.input.errorText && (
-                                        <ShowOrgError message={organizationField.input.errorText} />
-                                    )}
-                                </XVertical>
-
-                                <XView marginTop={50}>
-                                    <XButton
-                                        loading={sending}
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={InitTexts.create_organization.continue}
-                                        size="large"
-                                        onClick={doConfirm}
-                                    />
-                                </XView>
-                            </XVertical>
-                        </ButtonsWrapper>
-                    </ContentWrapper>
-                </XTrack>
-            </XView>
+            {roomView && (
+                <XView alignItems="center" flexGrow={1} justifyContent="center">
+                    {content}
+                </XView>
+            )}
+            {!roomView && (
+                <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+                    {content}
+                </XView>
+            )}
         </XShortcuts>
     );
 };
@@ -183,7 +263,11 @@ export const EnterYourOrganizationPage = ({
                 </>
             )}
 
-            <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+            {roomView && (
+                <RoomSignupContainer pageMode="CreateOrganization">
+                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+                </RoomSignupContainer>
+            )}
         </XView>
     );
 };
