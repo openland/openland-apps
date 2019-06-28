@@ -176,7 +176,7 @@ export default () => {
         setEmailSent(false);
 
         setTimeout(() => {
-            router.push('/auth2/ask-email');
+            router.push('/authorization/ask-email');
         }, 0);
     }, []);
 
@@ -209,9 +209,9 @@ export default () => {
         if (canUseDOM) {
             if (!noValue) {
                 fireEmail(router.query.email);
-                router.push('/auth2/ask-email');
+                router.push('/authorization/ask-email');
             } else {
-                router.push('/auth2/ask-email');
+                router.push('/authorization/ask-email');
             }
         }
     } else if (router.query.google) {
@@ -240,7 +240,7 @@ export default () => {
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
                     onAcceptInvite={() => {
-                        router.push('/auth2/create-new-account');
+                        router.push('/authorization/create-new-account');
                     }}
                 />
             )}

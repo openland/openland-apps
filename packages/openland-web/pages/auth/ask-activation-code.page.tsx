@@ -370,7 +370,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/ask-email');
+                                router.replace('/authorization/ask-email');
                                 props.backButtonClick();
                             }}
                             onSkip={null}
@@ -383,7 +383,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                         codeSending={codeSending}
                         loginCodeStart={loginCodeStart}
                         backButtonClick={() => {
-                            router.replace('/auth2/ask-email');
+                            router.replace('/authorization/ask-email');
                             props.backButtonClick();
                         }}
                     />
@@ -397,7 +397,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                         codeSending={codeSending}
                         loginCodeStart={loginCodeStart}
                         backButtonClick={() => {
-                            router.replace('/auth2/ask-email');
+                            router.replace('/authorization/ask-email');
                             props.backButtonClick();
                         }}
                     />

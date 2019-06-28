@@ -272,7 +272,7 @@ export const EnterYourOrganizationPage = ({
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/introduce-yourself');
+                                router.replace('/authorization/introduce-yourself');
                             }}
                             onSkip={async () => {
                                 if (me.me) {
