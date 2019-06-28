@@ -26,6 +26,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XInput } from 'openland-x/XInput';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 
 const SmallerText = Glamorous.div({
     opacity: 0.6,
@@ -121,6 +122,8 @@ export const WebSignUpActivationCode = ({
         doConfirm();
     };
 
+    const showError = (codeField.input.invalid && codeField.input.errorText) || codeError;
+
     return (
         <XShortcuts
             handlerMap={{
@@ -150,12 +153,18 @@ export const WebSignUpActivationCode = ({
                         title={InitTexts.auth.codePlaceholder}
                         flexGrow={1}
                         flexShrink={0}
+                        hideErrorText
+                        invalid={codeError ? !!codeError : undefined}
                         field={codeField}
                     />
-                    {form.error && <ErrorText>{codeError}</ErrorText>}
+                    <XView maxWidth={300}>
+                        {showError && (
+                            <XErrorMessage2 message={codeError || codeField.input.errorText} />
+                        )}
+                    </XView>
                 </ButtonsWrapper>
 
-                <ButtonsWrapper marginTop={40}>
+                <ButtonsWrapper marginTop={showError ? 40 - 26 : 40}>
                     <XVertical alignItems="center">
                         <XHorizontal alignItems="center">
                             <XButton
@@ -355,7 +364,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Activation code" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />

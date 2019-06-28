@@ -178,7 +178,7 @@ export const WebSignUpCreateWithEmail = ({
                         type="email"
                         title={InitTexts.auth.emailPlaceholder}
                         field={emailField}
-                        disableError
+                        hideErrorText
                     />
                     {emailField.input.invalid && emailField.input.errorText && (
                         <XErrorMessage2 message={emailField.input.errorText} />
@@ -238,7 +238,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Ask email" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
