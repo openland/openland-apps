@@ -43,6 +43,7 @@ export let channelIconClass = css`
 const DialogTitleClassName = css`
     overflow: hidden;
     text-overflow: ellipsis;
+    letter-spacing: 0.2px;
 `;
 
 const LetterSpacingClassName = css`
@@ -239,8 +240,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     active
                                         ? '#fff'
                                         : highlightSecretChat && dialog.kind === 'GROUP'
-                                        ? '#129f25'
-                                        : '#292929'
+                                            ? '#129f25'
+                                            : '#292929'
                                 }
                                 overflow="hidden"
                                 whiteSpace="nowrap"
@@ -269,15 +270,13 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                    ? channelSecretIconClass
-                                                    : channelIconClass
+                                                        ? channelSecretIconClass
+                                                        : channelIconClass
                                             }
                                         />
                                     </XView>
                                 )}
-                                <span className={cx(DialogTitleClassName, LetterSpacingClassName)}>
-                                    {dialog.titleEmojify}
-                                </span>
+                                <span className={DialogTitleClassName}>{dialog.titleEmojify}</span>
                             </XView>
                             {dialog.date && (
                                 <XView

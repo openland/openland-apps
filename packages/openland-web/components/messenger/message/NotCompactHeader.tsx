@@ -100,7 +100,7 @@ export const NotCompactHeader = ({
 
     return (
         <XView flexDirection="row" marginBottom={4}>
-            <XView flexDirection="row">
+            <XView flexDirection="row" flexShrink={1}>
                 {deleted ? (
                     <DeletedCommentHeader />
                 ) : (
@@ -117,7 +117,7 @@ export const NotCompactHeader = ({
                 )}
                 {senderBadge && (
                     <XWithRole role="feature-non-production">
-                        <XView marginLeft={8} alignSelf="center">
+                        <XView marginLeft={8} alignSelf="center" flexShrink={1}>
                             <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
                         </XView>
                     </XWithRole>

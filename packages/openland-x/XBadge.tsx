@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XView, XViewProps } from 'react-mental';
 
@@ -11,7 +12,13 @@ export interface XBadgeProps {
     onClick?: () => void;
 }
 
-const XBadgeWrapperDefault = XMemo<XViewProps>((props) => (
+const spanClassName = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
+const XBadgeWrapperDefault = XMemo<XViewProps>(props => (
     <XView
         {...props}
         paddingHorizontal={4}
@@ -20,14 +27,15 @@ const XBadgeWrapperDefault = XMemo<XViewProps>((props) => (
         fontSize={11}
         lineHeight="14px"
         borderWidth={1}
+        flexGrow={1}
         fontWeight="600"
         overflow="hidden"
     >
-        {props.children}
+        <span className={spanClassName}>{props.children}</span>
     </XView>
 ));
 
-const XBadgeWrapperBig = XMemo<XViewProps>((props) => (
+const XBadgeWrapperBig = XMemo<XViewProps>(props => (
     <XView
         {...props}
         paddingHorizontal={11}
@@ -36,40 +44,54 @@ const XBadgeWrapperBig = XMemo<XViewProps>((props) => (
         fontSize={15}
         lineHeight="25px"
         borderWidth={1}
+        flexGrow={1}
         fontWeight="600"
         overflow="hidden"
     >
-        {props.children}
+        <span className={spanClassName}>{props.children}</span>
     </XView>
 ));
 
-export const XBadge = XMemo<XBadgeProps>((props) => {
+export const XBadge = XMemo<XBadgeProps>(props => {
     const color = props.verified ? '#5CCC6E' : 'rgba(0, 0, 0, 0.5)';
     const backgroundColor = props.verified ? 'rgba(92, 204, 110, 0.1)' : 'rgba(0, 0, 0, 0.06)';
-    const borderColor = props.primary ? (props.verified ? 'rgba(92, 204, 110, 0.4)' : 'rgba(0, 0, 0, 0.2)') : 'transparent';
+    const borderColor = props.primary
+        ? props.verified
+            ? 'rgba(92, 204, 110, 0.4)'
+            : 'rgba(0, 0, 0, 0.2)'
+        : 'transparent';
 
     if (props.size === 'big') {
         return (
-            <XBadgeWrapperBig color={color} backgroundColor={backgroundColor} borderColor={borderColor} onClick={props.onClick}>
+            <XBadgeWrapperBig
+                color={color}
+                backgroundColor={backgroundColor}
+                borderColor={borderColor}
+                onClick={props.onClick}
+            >
                 {props.name}
             </XBadgeWrapperBig>
-        )
+        );
     }
 
     return (
-        <XBadgeWrapperDefault color={color} backgroundColor={backgroundColor} borderColor={borderColor} onClick={props.onClick}>
+        <XBadgeWrapperDefault
+            color={color}
+            backgroundColor={backgroundColor}
+            borderColor={borderColor}
+            onClick={props.onClick}
+        >
             {props.name}
         </XBadgeWrapperDefault>
-    )
+    );
 });
 
 export interface XBadgeAddProps {
     caption: string;
-
     onClick?: () => void;
 }
 
-export const XBadgeAdd = XMemo<XBadgeAddProps>((props) => (
+export const XBadgeAdd = XMemo<XBadgeAddProps>(props => (
     <XBadgeWrapperBig
         color="rgba(0, 0, 0, 0.5)"
         borderColor="#F0F0F0"
