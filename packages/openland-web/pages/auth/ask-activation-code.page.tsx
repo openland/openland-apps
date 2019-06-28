@@ -106,7 +106,7 @@ export const WebSignUpActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
 
@@ -158,8 +158,8 @@ export const WebSignUpActivationCode = ({
                         field={codeField}
                     />
                     <XView maxWidth={300}>
-                        {showError && (
-                            <XErrorMessage2 message={codeError || codeField.input.errorText} />
+                        {((codeField.input.invalid && codeField.input.errorText) || codeError) && (
+                            <XErrorMessage2 message={codeField.input.errorText || codeError} />
                         )}
                     </XView>
                 </ButtonsWrapper>
@@ -222,7 +222,7 @@ export const RoomActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
     const doConfirm = React.useCallback(() => {

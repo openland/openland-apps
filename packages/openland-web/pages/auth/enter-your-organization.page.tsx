@@ -62,27 +62,6 @@ const organizationInputClassName = css`
     }
 `;
 
-const organizationInputErrorClassName = css`
-    display: flex;
-    align-self: flex-start;
-`;
-
-const ShowOrgError = ({ message }: { message: string }) => {
-    const [onceRender, setOnceRender] = React.useState(false);
-
-    if (!onceRender) {
-        trackEvent('signup_org_error');
-
-        setOnceRender(true);
-    }
-
-    return (
-        <div className={cx(organizationInputClassName, organizationInputErrorClassName)}>
-            <XErrorMessage message={message} />
-        </div>
-    );
-};
-
 const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
     const [sending, setSending] = React.useState(false);
     const client = useClient();
@@ -164,7 +143,7 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                         <XVertical separator="none" alignItems="center">
                             <XVertical alignItems="center" separator="none">
                                 {!roomView && (
-                                    <XView>
+                                    <XView width={360}>
                                         <InputField
                                             title="Organization name"
                                             dataTestId="organization"
