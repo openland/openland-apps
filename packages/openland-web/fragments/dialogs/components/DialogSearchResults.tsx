@@ -200,7 +200,8 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                             photo: photo || undefined,
                             attachments: message.__typename === 'GeneralMessage' ? message.attachments : undefined,
                             isService: false,
-                            isOut: message.sender.id === me.me!.id
+                            isOut: message.sender.id === me.me!.id,
+                            sender: message.sender.name
                         }}
                         key={i.node.message.id}
                     />
