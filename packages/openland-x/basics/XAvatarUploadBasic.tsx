@@ -16,6 +16,7 @@ export interface XAvatarUploadBasicProps {
     value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
     size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
+    darkMode?: boolean;
     initialUrl?: string | null;
     cropParams?: string;
     dataTestId?: string;
@@ -44,27 +45,30 @@ let DrowAreaSize = styleResolver({
     },
 });
 
-const DropAreaWrapper = Glamorous.div<{
+interface DropAreaWrapperProps {
     hasImage: boolean;
     avatarSize?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
-}>([
-    {
+    darkMode?: boolean;
+}
+
+const DropAreaWrapper = Glamorous.div<DropAreaWrapperProps>([
+    props => ({
         position: 'relative',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: props.darkMode ? '#f9f9f9' : '#fff',
         overflow: 'hidden',
-        borderRadius: 8,
-        // border: '1px solid rgba(220, 222, 228, 0.45)',
+        borderRadius: props.darkMode ? 8 : 12,
+        border: props.darkMode ? undefined : '1px solid rgba(220, 222, 228, 0.45)',
         cursor: 'pointer',
 
         '&:hover': {
-            // border: '1px solid #45a6ff',
+            border: props.darkMode ? undefined : '1px solid #45a6ff',
         },
 
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
-    },
+    }),
     props => DrowAreaSize(props.avatarSize || 'normal'),
 ]);
 
@@ -91,7 +95,12 @@ const PlaceholderImage = Glamorous(XIcon)<{ hasImage: boolean }>(props => ({
     marginBottom: 7,
 }));
 
-const Placeholder = Glamorous.div<{ hasImage: boolean }>(props => ({
+interface PlaceholderProps {
+    hasImage: boolean;
+    darkMode?: boolean;
+}
+
+const Placeholder = Glamorous.div<PlaceholderProps>(props => ({
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
@@ -100,8 +109,12 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>(props => ({
     color: props.hasImage ? 'rgba(255, 255, 255, 0)' : 'rgba(51,69,98,0.5)',
     zIndex: 1,
     '&:hover': {
-        color: '#fff',
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        color: props.darkMode ? '#fff' : props.hasImage ? '#fff' : 'rgba(51,69,98,0.5)',
+        backgroundColor: props.darkMode
+            ? 'rgba(0, 0, 0, 0.4)'
+            : props.hasImage
+                ? 'rgba(0, 0, 0, 0.4)'
+                : '#fff',
     },
 }));
 
@@ -121,6 +134,7 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
         add: any;
         change: any;
     };
+    darkMode?: boolean;
     size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     dataTestId?: string;
 }
@@ -178,6 +192,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                 onClick={this.props.doUpload}
                 avatarSize={this.props.size}
                 className={(this.props as any).className}
+                darkMode={this.props.darkMode}
             >
                 {hasImage && (
                     <AvatarImage
@@ -197,7 +212,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                     />
                 )}
 
-                <Placeholder hasImage={hasImage}>
+                <Placeholder hasImage={hasImage} darkMode={this.props.darkMode}>
                     <PlaceholderImage icon="photo_camera" hasImage={hasImage} />
                     <PlaceholderHoint hasImage={hasImage}>
                         {this.props.placeholder &&
@@ -232,6 +247,7 @@ export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicPr
                             dataTestId={this.props.dataTestId}
                             placeholder={this.props.placeholder}
                             size={this.props.size}
+                            darkMode={this.props.darkMode}
                             {...{ className: (this.props as any).className }}
                         />
                     );

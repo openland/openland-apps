@@ -50,32 +50,35 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
     ]);
     let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await client.mutateProfileCreate({
-                input: {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                    photoRef:
-                        photoRef.value && photoRef.value.uuid
-                            ? {
-                                  ...photoRef.value,
-                                  isImage: undefined,
-                                  width: undefined,
-                                  height: undefined,
-                              }
-                            : undefined,
-                },
-            });
-            await client.refetchAccount();
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await client.mutateProfileCreate({
+                    input: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        photoRef:
+                            photoRef.value && photoRef.value.uuid
+                                ? {
+                                      ...photoRef.value,
+                                      isImage: undefined,
+                                      width: undefined,
+                                      height: undefined,
+                                  }
+                                : undefined,
+                    },
+                });
+                await client.refetchAccount();
 
-            if (firstName.value) {
-                setSending(true);
-                router.push('/auth2/enter-your-organization');
-            }
-            await delayForewer();
-        });
-    }, [firstName.value, lastName.value, photoRef.value]);
+                if (firstName.value) {
+                    setSending(true);
+                    router.push('/auth2/enter-your-organization');
+                }
+                await delayForewer();
+            });
+        },
+        [firstName.value, lastName.value, photoRef.value],
+    );
 
     const onEnter = () => {
         doConfirm();
@@ -89,7 +92,11 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                 <ButtonsWrapper marginTop={40} width="100%">
                     <XVertical alignItems="center">
                         <XView marginBottom={10}>
-                            <XAvatarFormFieldComponent size="default" {...photoRef.input} />
+                            <XAvatarFormFieldComponent
+                                size="default"
+                                {...photoRef.input}
+                                darkMode={roomView ? true : undefined}
+                            />
                         </XView>
 
                         <XView maxWidth={500}>
@@ -116,9 +123,10 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                 </XView>
                             )}
 
-                            {firstName.input.invalid && firstName.input.errorText && (
-                                <XErrorMessage2 message={firstName.input.errorText} />
-                            )}
+                            {firstName.input.invalid &&
+                                firstName.input.errorText && (
+                                    <XErrorMessage2 message={firstName.input.errorText} />
+                                )}
                         </XView>
 
                         <XView>
@@ -145,9 +153,10 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                     />
                                 </XView>
                             )}
-                            {lastName.input.invalid && lastName.input.errorText && (
-                                <XErrorMessage2 message={lastName.input.errorText} />
-                            )}
+                            {lastName.input.invalid &&
+                                lastName.input.errorText && (
+                                    <XErrorMessage2 message={lastName.input.errorText} />
+                                )}
                         </XView>
 
                         {roomView && (
