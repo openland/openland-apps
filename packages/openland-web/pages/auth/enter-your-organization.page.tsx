@@ -66,38 +66,35 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                if (organizationField.value) {
-                    setSending(true);
-                    let result = await client.mutateCreateOrganization({
-                        input: {
-                            personal: false,
-                            name: organizationField.value,
-                            // id: data.id,
-                        },
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            if (organizationField.value) {
+                setSending(true);
+                let result = await client.mutateCreateOrganization({
+                    input: {
+                        personal: false,
+                        name: organizationField.value,
+                        // id: data.id,
+                    },
+                });
+
+                const inviteKey = Cookie.get('x-openland-app-invite');
+                if (inviteKey) {
+                    await client.mutateOrganizationActivateByInvite({
+                        inviteKey,
                     });
+                    await client.refetchAccount();
+                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
 
-                    const inviteKey = Cookie.get('x-openland-app-invite');
-                    if (inviteKey) {
-                        await client.mutateOrganizationActivateByInvite({
-                            inviteKey,
-                        });
-                        await client.refetchAccount();
-                        Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-
-                        trackEvent('registration_complete');
-                        window.location.href = '/onboarding/start';
-                    } else {
-                        window.location.href = '/';
-                        trackEvent('registration_complete');
-                    }
+                    trackEvent('registration_complete');
+                    window.location.href = '/onboarding/start';
+                } else {
+                    window.location.href = '/';
+                    trackEvent('registration_complete');
                 }
-            });
-        },
-        [organizationField.value],
-    );
+            }
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Find your organization or create a new one ';
 
@@ -137,7 +134,9 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                                             field={organizationField}
                                         />
                                     </XVertical>
-                                    {/*{form.error && <ShowOrgError message={form.error} />}*/}
+                                    {organizationField.input.errorText && (
+                                        <ShowOrgError message={organizationField.input.errorText} />
+                                    )}
                                 </XVertical>
 
                                 <XView marginTop={50}>

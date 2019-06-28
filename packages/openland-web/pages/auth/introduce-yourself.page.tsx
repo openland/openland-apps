@@ -27,7 +27,7 @@ import * as Cookie from 'js-cookie';
 import { delayForewer } from 'openland-y-utils/timer';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 
 export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any }) => {
     const [sending, setSending] = React.useState(false);
@@ -39,10 +39,15 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
     let firstName = useField('input.firstName', (prefill && prefill.firstName) || '', form, [
         {
             checkIsValid: (value: string) => value !== '',
-            text: InitTexts.auth.firstNameIsEmptyError,
+            text: `First name can't be empty`,
         },
     ]);
-    let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
+    let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form, [
+        {
+            checkIsValid: (value: string) => value !== '',
+            text: `Last name can't be empty`,
+        },
+    ]);
     let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
 
     const doConfirm = React.useCallback(() => {
@@ -111,32 +116,39 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                 </XView>
                             )}
 
-                            {form.error && <XErrorMessage message={form.error} />}
+                            {firstName.input.invalid && firstName.input.errorText && (
+                                <XErrorMessage2 message={firstName.input.errorText} />
+                            )}
                         </XView>
 
-                        {roomView && (
-                            <XView width={330}>
-                                <XInput
-                                    invalid={!!form.error}
-                                    size="large"
-                                    title="Last name"
-                                    dataTestId="last-name"
-                                    flexGrow={1}
-                                    {...lastName.input}
-                                />
-                            </XView>
-                        )}
+                        <XView>
+                            {roomView && (
+                                <XView width={330}>
+                                    <XInput
+                                        invalid={!!form.error}
+                                        size="large"
+                                        title="Last name"
+                                        dataTestId="last-name"
+                                        flexGrow={1}
+                                        {...lastName.input}
+                                    />
+                                </XView>
+                            )}
 
-                        {!roomView && (
-                            <XView>
-                                <InputField
-                                    title="Last name"
-                                    dataTestId="last-name"
-                                    flexGrow={1}
-                                    field={lastName}
-                                />
-                            </XView>
-                        )}
+                            {!roomView && (
+                                <XView>
+                                    <InputField
+                                        title="Last name"
+                                        dataTestId="last-name"
+                                        flexGrow={1}
+                                        field={lastName}
+                                    />
+                                </XView>
+                            )}
+                            {lastName.input.invalid && lastName.input.errorText && (
+                                <XErrorMessage2 message={lastName.input.errorText} />
+                            )}
+                        </XView>
 
                         {roomView && (
                             <XView marginTop={50} paddingBottom={84}>
