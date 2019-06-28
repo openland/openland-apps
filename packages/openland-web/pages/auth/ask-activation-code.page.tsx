@@ -106,7 +106,7 @@ export const WebSignUpActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
 
@@ -222,7 +222,7 @@ export const RoomActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
     const doConfirm = React.useCallback(() => {
