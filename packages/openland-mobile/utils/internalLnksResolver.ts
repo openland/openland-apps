@@ -232,8 +232,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             getMessenger().history.navigationManager.pushAndReset('InstallApps');
         }
 
-
-
         if (!resolved && fallback) {
             await fallback();
         }
