@@ -36,6 +36,7 @@ export const BackSkipLogo = ({
             paddingRight={50}
             position="relative"
             zIndex={1000}
+            height={42}
         >
             {onBack ? (
                 <XView cursor="pointer" zIndex={1001}>
@@ -46,24 +47,15 @@ export const BackSkipLogo = ({
             )}
 
             {!noLogo && (
-                <>
-                    <div
-                        style={{
-                            height: 42,
-                        }}
-                    />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            margin: 'auto',
-                            width: 'fit-content',
-                        }}
-                    >
-                        <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-                    </div>
-                </>
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: 'calc(50% - 73px)',
+                        margin: 'auto',
+                    }}
+                >
+                    <XImage src="/static/landing/logotype.svg" width={146} height={42} />
+                </div>
             )}
             {onSkip ? (
                 <XView zIndex={1001}>
