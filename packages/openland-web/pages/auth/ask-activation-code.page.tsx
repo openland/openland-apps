@@ -42,6 +42,7 @@ const ResendCodeRow = Glamorous(XVertical)({
 });
 
 const ResendButton = Glamorous(XButton)({
+    height: 20,
     '& .button-content': {
         paddingLeft: 4,
         paddingRight: 0,
