@@ -1,6 +1,7 @@
 fragment UserFull on User {
   __typename
   about
+  audienceSize
   badges {
     __typename
     ...UserBadge

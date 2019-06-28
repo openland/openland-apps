@@ -21,6 +21,7 @@ export const UserFull = gql`
         linkedin
         twitter
         shortname
+        audienceSize
         badges {
             ...UserBadge
         }
