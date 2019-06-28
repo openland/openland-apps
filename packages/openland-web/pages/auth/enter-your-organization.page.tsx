@@ -293,6 +293,7 @@ export const EnterYourOrganizationPage = ({
                             }}
                         />
                     </XView>
+                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
                 </>
             )}
 
