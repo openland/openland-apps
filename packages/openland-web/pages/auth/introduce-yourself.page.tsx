@@ -95,7 +95,7 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                             <XAvatarFormFieldComponent
                                 size="default"
                                 {...photoRef.input}
-                                darkMode={roomView ? true : undefined}
+                                darkMode={roomView ? undefined : true}
                             />
                         </XView>
 
