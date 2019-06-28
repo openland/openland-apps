@@ -42,12 +42,7 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
             text: `First name can't be empty`,
         },
     ]);
-    let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form, [
-        {
-            checkIsValid: (value: string) => value !== '',
-            text: `Last name can't be empty`,
-        },
-    ]);
+    let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
     let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
 
     const doConfirm = React.useCallback(() => {
