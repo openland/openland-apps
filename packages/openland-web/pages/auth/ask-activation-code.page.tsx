@@ -158,8 +158,8 @@ export const WebSignUpActivationCode = ({
                         field={codeField}
                     />
                     <XView maxWidth={300}>
-                        {showError && (
-                            <XErrorMessage2 message={codeError || codeField.input.errorText} />
+                        {((codeField.input.invalid && codeField.input.errorText) || codeError) && (
+                            <XErrorMessage2 message={codeField.input.errorText || codeError} />
                         )}
                     </XView>
                 </ButtonsWrapper>

@@ -102,9 +102,16 @@ export const RoomCreateWithEmail = ({
                     placeholder={InitTexts.auth.emailPlaceholder}
                     {...emailField.input}
                 />
-                {emailError && !form.error && <ErrorText>{emailError}</ErrorText>}
+
+                {((emailField.input.invalid && emailField.input.errorText) || emailError) && (
+                    <XErrorMessage2 message={emailField.input.errorText || emailError} />
+                )}
             </ButtonsWrapper>
-            <ButtonsWrapper marginTop={52} marginBottom={84} width={280}>
+            <ButtonsWrapper
+                marginTop={emailField.input.invalid && emailField.input.errorText ? 52 - 26 : 52}
+                marginBottom={84}
+                width={280}
+            >
                 <XVertical alignItems="center">
                     <XButton
                         dataTestId="continue-button"
@@ -181,9 +188,10 @@ export const WebSignUpCreateWithEmail = ({
                         field={emailField}
                         hideErrorText
                     />
-                    {emailField.input.invalid && emailField.input.errorText && (
-                        <XErrorMessage2 message={emailField.input.errorText} />
-                    )}
+                    {(emailField.input.invalid && emailField.input.errorText) ||
+                        (emailError && (
+                            <XErrorMessage2 message={emailField.input.errorText || emailError} />
+                        ))}
                 </ButtonsWrapper>
                 <ButtonsWrapper
                     marginTop={
