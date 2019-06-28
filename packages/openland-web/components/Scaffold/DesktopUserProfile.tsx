@@ -138,9 +138,9 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem
                                 onClick={() =>
-                                    showModalBox({ fullScreen: true }, () => (
+                                    showModalBox({ fullScreen: true }, ctx => (
                                         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                                            <InviteFriendsFragment asModalContent />
+                                            <InviteFriendsFragment asModalContent modalContext={ctx} />
                                         </XScrollView3>
                                     ))
                                 }

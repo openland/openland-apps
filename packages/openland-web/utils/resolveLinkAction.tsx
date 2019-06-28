@@ -11,7 +11,7 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         return () => {
             showModalBox({ fullScreen: true }, ctx => (
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                    <InviteFriendsFragment asModalContent />
+                    <InviteFriendsFragment asModalContent modalContext={ctx} />
                 </XScrollView3>
             ));
         }
