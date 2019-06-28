@@ -10,6 +10,7 @@ import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { InitTexts } from 'openland-web/pages/init/_text';
+import * as Cookie from 'js-cookie';
 import {
     Title,
     ButtonsWrapper,
@@ -245,7 +246,11 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/authorization/create-new-account');
+                                if (Cookie.get('x-openland-create-new-account')) {
+                                    router.replace('/authorization/create-new-account');
+                                } else {
+                                    router.replace('/');
+                                }
                             }}
                             onSkip={null}
                         />

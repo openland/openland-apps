@@ -76,6 +76,7 @@ export default () => {
     } else if (router.path.includes('ask-email')) {
         page = pages.askEmail;
     } else if (router.path.includes('create-new-account')) {
+        Cookie.set('x-openland-create-new-account', 'true');
         page = pages.createNewAccount;
     } else if (
         router.path.includes('enter-your-organization') ||
