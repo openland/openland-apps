@@ -154,6 +154,7 @@ export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}
 export const ChatOnlinesCountWatchSubscription = typedSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables>(Chats.ChatOnlinesCountWatchSubscription);
 export const UpdateWelcomeMessageMutation = typedMutation<Types.UpdateWelcomeMessage, Types.UpdateWelcomeMessageVariables>(Chats.UpdateWelcomeMessageMutation);
 export const MessageQuery = typedQuery<Types.Message, Types.MessageVariables>(Chats.MessageQuery);
+export const MessagesSearchQuery = typedQuery<Types.MessagesSearch, Types.MessagesSearchVariables>(Chats.MessagesSearchQuery);
 export const DeleteCommentMutation = typedMutation<Types.DeleteComment, Types.DeleteCommentVariables>(Comments.DeleteCommentMutation);
 export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Comments.MessageCommentsQuery);
 export const CommentSetReactionMutation = typedMutation<Types.CommentSetReaction, Types.CommentSetReactionVariables>(Comments.CommentSetReactionMutation);

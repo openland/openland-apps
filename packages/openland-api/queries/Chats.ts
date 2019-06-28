@@ -1151,3 +1151,77 @@ export const MessageQuery = gql`
     }
     ${FullMessage}
 `;
+
+export const MessagesSearchQuery = gql`
+    query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String) {
+        messagesSearch(query: $query, sort: $sort, first: $first, after: $after) {
+            edges {
+                node {
+                    chat {
+                        ... on PrivateRoom {
+                            id
+                            user {
+                                id
+                                name
+                            }
+                        }
+                        ... on SharedRoom {
+                            id
+                            kind
+                            title
+                            membership
+                            isChannel
+                            role
+                            canEdit
+                            photo
+                        } 
+                    },
+                    message {
+                        id
+                        date
+                        sender {
+                            id
+                            name
+                            firstName
+                            photo
+                        }
+                        senderBadge {
+                            ...UserBadge
+                        }
+                        message
+                        fallback
+                        ... on GeneralMessage {
+                            id
+                            attachments {
+                                id
+                                fallback
+                                ... on MessageAttachmentFile {
+                                    id
+                                    fileId
+                                    fileMetadata {
+                                        isImage
+                                        imageFormat
+                                    }
+                                }
+                            }
+                            quotedMessages {
+                                id
+                            }
+                        }
+                    }
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${DaialogListMessage}
+    ${UserBadge}
+`;

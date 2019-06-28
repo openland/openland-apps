@@ -1630,6 +1630,87 @@ private val MessageCommentsSelector = obj(
                         )))
                 )))
         )
+private val MessagesSearchSelector = obj(
+            field("messagesSearch","messagesSearch", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("edges","edges", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("cursor","cursor", notNull(scalar("String"))),
+                            field("node","node", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("chat","chat", notNull(obj(
+                                            field("__typename","__typename", notNull(scalar("String"))),
+                                            inline("PrivateRoom", obj(
+                                                field("id","id", notNull(scalar("ID"))),
+                                                field("user","user", notNull(obj(
+                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                        field("id","id", notNull(scalar("ID"))),
+                                                        field("name","name", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("SharedRoom", obj(
+                                                field("canEdit","canEdit", notNull(scalar("Boolean"))),
+                                                field("id","id", notNull(scalar("ID"))),
+                                                field("isChannel","isChannel", notNull(scalar("Boolean"))),
+                                                field("kind","kind", notNull(scalar("String"))),
+                                                field("membership","membership", notNull(scalar("String"))),
+                                                field("photo","photo", notNull(scalar("String"))),
+                                                field("role","role", notNull(scalar("String"))),
+                                                field("title","title", notNull(scalar("String")))
+                                            ))
+                                        ))),
+                                    field("message","message", notNull(obj(
+                                            field("__typename","__typename", notNull(scalar("String"))),
+                                            field("date","date", notNull(scalar("Date"))),
+                                            field("fallback","fallback", notNull(scalar("String"))),
+                                            field("id","id", notNull(scalar("ID"))),
+                                            field("message","message", scalar("String")),
+                                            field("sender","sender", notNull(obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    field("firstName","firstName", notNull(scalar("String"))),
+                                                    field("id","id", notNull(scalar("ID"))),
+                                                    field("name","name", notNull(scalar("String"))),
+                                                    field("photo","photo", scalar("String"))
+                                                ))),
+                                            field("senderBadge","senderBadge", obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    fragment("UserBadge", UserBadgeSelector)
+                                                )),
+                                            inline("GeneralMessage", obj(
+                                                field("attachments","attachments", notNull(list(notNull(obj(
+                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                        field("fallback","fallback", notNull(scalar("String"))),
+                                                        field("id","id", notNull(scalar("ID"))),
+                                                        inline("MessageAttachmentFile", obj(
+                                                            field("fileId","fileId", notNull(scalar("String"))),
+                                                            field("fileMetadata","fileMetadata", notNull(obj(
+                                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                                    field("imageFormat","imageFormat", scalar("String")),
+                                                                    field("isImage","isImage", notNull(scalar("Boolean")))
+                                                                ))),
+                                                            field("id","id", notNull(scalar("ID")))
+                                                        ))
+                                                    ))))),
+                                                field("id","id", notNull(scalar("ID"))),
+                                                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
+                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                        field("id","id", notNull(scalar("ID")))
+                                                    )))))
+                                            ))
+                                        )))
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("currentPage","currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
+                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                        )))
+                )))
+        )
 private val MyAppsSelector = obj(
             field("myApps","apps", notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3386,6 +3467,12 @@ object Operations {
         override val body = "query MessageComments(\$messageId:ID!){messageComments(messageId:\$messageId){__typename comments{__typename ...CommentEntryFragment}count id state{__typename state}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename comment{__typename id message}id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryBadge{__typename ...UserBadge}primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserBadge on UserBadge{__typename id name verified}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryBadge{__typename ...UserBadge}primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryBadge{__typename ...UserBadge}primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MessageCommentsSelector
     }
+    val MessagesSearch = object: OperationDefinition {
+        override val name = "MessagesSearch"
+        override val kind = OperationKind.QUERY
+        override val body = "query MessagesSearch(\$after:String,\$first:Int!,\$query:String!,\$sort:String){messagesSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}"
+        override val selector = MessagesSearchSelector
+    }
     val MyApps = object: OperationDefinition {
         override val name = "MyApps"
         override val kind = OperationKind.QUERY
@@ -4458,6 +4545,7 @@ object Operations {
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "Message") return Message
         if (name == "MessageComments") return MessageComments
+        if (name == "MessagesSearch") return MessagesSearch
         if (name == "MyApps") return MyApps
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications

@@ -779,6 +779,13 @@
       }
     },
     {
+      "signature": "e39b648785bf774217efc9c778c2e7f050f44625837ea0f40ff1b21c6ae9c0ec",
+      "document": "fragment UserBadge on UserBadge{__typename id name verified}query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename...UserBadge}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
+      "metadata": {
+        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename...UserBadge}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
+      }
+    },
+    {
       "signature": "de1847762d8228c93c7a61a54c867d55860609dd89a3cc93bd0aa03cdbb15195",
       "document": "mutation DeleteComment($id:ID!){deleteComment(id:$id)}",
       "metadata": {
