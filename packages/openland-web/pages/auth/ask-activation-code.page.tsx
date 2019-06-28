@@ -339,7 +339,6 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
             setCodeError(InitTexts.auth.wrongCodeLength);
             return;
         } else {
-            setCodeError(InitTexts.auth.wrongCodeLength);
             setCodeSending(true);
 
             createAuth0Client().passwordlessVerify(

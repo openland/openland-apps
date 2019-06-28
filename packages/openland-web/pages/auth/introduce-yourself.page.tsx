@@ -116,12 +116,14 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                 </XView>
                             )}
                             {!roomView && (
-                                <XView>
+                                <XView width={360}>
                                     <InputField
+                                        height={56}
                                         title="First name"
                                         dataTestId="first-name"
                                         flexGrow={1}
                                         field={firstName}
+                                        hideErrorText
                                     />
                                 </XView>
                             )}
@@ -146,12 +148,14 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                             )}
 
                             {!roomView && (
-                                <XView>
+                                <XView width={360}>
                                     <InputField
+                                        height={56}
                                         title="Last name"
                                         dataTestId="last-name"
                                         flexGrow={1}
                                         field={lastName}
+                                        hideErrorText
                                     />
                                 </XView>
                             )}
@@ -175,7 +179,7 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                             </XView>
                         )}
                         {!roomView && (
-                            <ButtonsWrapper marginBottom={84}>
+                            <ButtonsWrapper marginTop={40} marginBottom={84}>
                                 <XButton
                                     loading={sending}
                                     dataTestId="continue-button"
