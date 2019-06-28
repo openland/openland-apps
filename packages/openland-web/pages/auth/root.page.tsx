@@ -115,50 +115,53 @@ export default () => {
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
 
-    const fireEmail = async (emailToFire: string) => {
-        return new Promise(cb => {
-            Cookie.set('auth-type', 'email', { path: '/' });
-            if (redirect) {
-                Cookie.set('sign-redirect', redirect, { path: '/' });
-            }
-            createAuth0Client().passwordlessStart(
-                { connection: 'email', send: 'link', email: emailToFire },
-                (error: any, v) => {
-                    if (error) {
-                        setEmailSending(false);
-                        setEmailError(error.description);
-                    } else {
-                        setTimeout(() => {
+    const fireEmail = React.useCallback(
+        async (emailToFire: string) => {
+            return new Promise(cb => {
+                Cookie.set('auth-type', 'email', { path: '/' });
+                if (redirect) {
+                    Cookie.set('sign-redirect', redirect, { path: '/' });
+                }
+                createAuth0Client().passwordlessStart(
+                    { connection: 'email', send: 'link', email: emailToFire },
+                    (error: any, v) => {
+                        if (error) {
                             setEmailSending(false);
-                            setEmailSent(true);
+                            setEmailError(error.description);
+                        } else {
+                            setTimeout(() => {
+                                setEmailSending(false);
+                                setEmailSent(true);
 
-                            if (cb) {
-                                cb();
-                            }
-                        }, 500);
-                    }
-                },
-            );
-        });
-    };
+                                if (cb) {
+                                    cb();
+                                }
+                            }, 500);
+                        }
+                    },
+                );
+            });
+        },
+        [redirect],
+    );
 
-    const fireGoogle = async () => {
+    const fireGoogle = React.useCallback(async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: redirect ? redirect : 'none',
         });
-    };
+    }, []);
 
-    const loginWithGoogle = () => {
+    const loginWithGoogle = React.useCallback(() => {
         trackEvent(checkIfIsSignIn(router) ? 'signin_google_action' : 'signup_google_action');
         setGoogleStarting(true);
         setTimeout(() => {
             fireGoogle();
         }, 0);
-    };
+    }, []);
 
-    const loginWithEmail = () => {
+    const loginWithEmail = React.useCallback(() => {
         setEmail(true);
         setEmailValue('');
         setEmailSending(false);
@@ -168,7 +171,7 @@ export default () => {
         setTimeout(() => {
             router.push('/auth2/ask-email');
         }, 0);
-    };
+    }, []);
 
     if (router.query.email) {
         let noValue = router.query.email === 'true';
