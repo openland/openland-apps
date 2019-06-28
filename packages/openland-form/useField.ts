@@ -38,13 +38,18 @@ export function useField<T>(
             }
         }
 
+        form.updateClientValidation({
+            name,
+            valid: !clientValidationFailed,
+        });
+
         const invalid = (isInvalid || clientValidationFailed) && form.triedToSubmit;
 
         return {
             input: { value, onChange, invalid, errorText },
             value,
         };
-    }, [value, form]);
+    }, [value, form, form.loading]);
 
     return field;
 }

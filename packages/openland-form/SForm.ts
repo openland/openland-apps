@@ -5,4 +5,5 @@ export interface SForm {
     loading: boolean;
     enabled: boolean;
     triedToSubmit: boolean;
+    updateClientValidation: (a: { name: string; valid: boolean }) => void;
 }
