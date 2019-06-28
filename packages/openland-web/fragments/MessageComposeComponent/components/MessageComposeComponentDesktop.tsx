@@ -45,8 +45,8 @@ export interface MessageComposeComponentProps {
         text: string,
         mentions:
             | (
-                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
@@ -73,23 +73,12 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 
-    const hasReply = () => {
-        return !(
-            messagesContext.replyMessages.size &&
-            messagesContext.replyMessagesId.size &&
-            messagesContext.replyMessagesSender.size
-        );
-    };
-
     React.useEffect(() => {
         return isActive.listen(a => {
             if (a) {
-                const newInputValue = hasReply()
-                    ? draftState.getNextDraft()
-                    : { text: '', mentions: [] };
                 messagesContext.changeForwardConverstion();
-                setInputValue(newInputValue.text);
                 inputMethodsState.focusIfEnabled();
+                inputRef.current!.setInputValue(draftState.getNextDraft());
             }
         });
     }, []);

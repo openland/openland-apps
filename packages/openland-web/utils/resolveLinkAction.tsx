@@ -4,6 +4,7 @@ import { InviteFriendsFragment } from '../pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 import { Discover } from 'openland-web/pages/onboarding/discover.page';
+import { WriteFirstMessageModal } from 'openland-web/components/WriteFirstMessageModal';
 
 export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
     console.warn('boom', url);
@@ -28,6 +29,14 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         return () => {
             showModalBox({ fullScreen: true }, () => <Discover />)
         }
+    } else if (url === '/onboarding_send_first_message') {
+        return () => {
+            showModalBox({ fullScreen: true }, () =>
+                <XScrollView3 flexGrow={1} flexShrink={1}>
+                    <WriteFirstMessageModal />
+                </XScrollView3>)
+        }
     }
+
     return undefined;
 };
