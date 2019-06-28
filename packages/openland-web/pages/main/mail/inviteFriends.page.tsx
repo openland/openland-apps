@@ -256,7 +256,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        'In the heart of the French Alps, in the north east of the Rhone Alps region lies the village of Les Houches. Nestled at one end of the Chamonix valley\n';
+        'Check out Openland, an invitation-only community for top startup founders, investors, and engineers. There are expert chats on any topic, from fundraising in Silicon Valley to CTOs lessons learned. Finally, can share it here!\n';
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
