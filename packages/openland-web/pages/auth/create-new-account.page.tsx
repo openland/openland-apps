@@ -16,6 +16,20 @@ import {
     RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XButton } from 'openland-x/XButton';
+import { RoomContainerParams } from './root.page';
+
+type AuthMechanism = {
+    onSignUpClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+    onLoginClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+};
+
+type AuthMechanismOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
+};
 
 const SeparatorStyle = Glamorous.div<{
     marginTop?: number;
@@ -88,14 +102,6 @@ const RoomTerms = Glamorous.div({
         },
     },
 });
-
-type AuthMechanism = {
-    onSignUpClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    onLoginClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    signin: boolean;
-    loginWithGoogle: Function;
-    loginWithEmail: Function;
-};
 
 const noHightLightClassName = css`
     color: #000000;
@@ -198,7 +204,7 @@ export const WebSignUpAuthMechanism = ({
     );
 };
 
-export const CreateNewAccountPage = (props: AuthMechanism & { roomView: boolean }) => {
+export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterProps) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Create New Account" />
@@ -213,7 +219,7 @@ export const CreateNewAccountPage = (props: AuthMechanism & { roomView: boolean 
             )}
 
             {props.roomView && (
-                <RoomSignupContainer pageMode="AuthMechanism">
+                <RoomSignupContainer pageMode="AuthMechanism" {...props.roomContainerParams!!}>
                     <RoomAuthMechanism {...props} />
                 </RoomSignupContainer>
             )}
@@ -221,21 +227,25 @@ export const CreateNewAccountPage = (props: AuthMechanism & { roomView: boolean 
     );
 };
 
-export default withApp('Home', 'viewer', () => (
-    <CreateNewAccountPage
-        roomView={false}
-        signin={true}
-        loginWithGoogle={() => {
-            //
-        }}
-        loginWithEmail={() => {
-            //
-        }}
-        onLoginClick={() => {
-            //
-        }}
-        onSignUpClick={() => {
-            //
-        }}
-    />
-));
+export default withApp(
+    'Home',
+    'viewer',
+    () =>
+        null,
+        // <CreateNewAccountPage
+        //     roomView={false}
+        //     signin={true}
+        //     loginWithGoogle={() => {
+        //         //
+        //     }}
+        //     loginWithEmail={() => {
+        //         //
+        //     }}
+        //     onLoginClick={() => {
+        //         //
+        //     }}
+        //     onSignUpClick={() => {
+        //         //
+        //     }}
+        // />
+);

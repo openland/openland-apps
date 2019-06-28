@@ -24,12 +24,21 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
-import { delayForewer } from 'openland-y-utils/timer';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
 
-export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any }) => {
+type EnterYourOrganizationPageProps = { roomView: boolean };
+
+type IntroduceYourselfPageOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
+};
+
+export const CreateProfileFormInner = (
+    props: EnterYourOrganizationPageProps & { prefill: any },
+) => {
     const [sending, setSending] = React.useState(false);
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -213,7 +222,7 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
     );
 };
 
-const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
+const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => {
     const client = useClient();
 
     if (canUseDOM) {
@@ -236,7 +245,10 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
     );
 };
 
-export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
+export const IntroduceYourselfPage = ({
+    roomView,
+    roomContainerParams,
+}: IntroduceYourselfPageOuterProps) => {
     const router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1}>
@@ -257,7 +269,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
             )}
 
             {roomView && (
-                <RoomSignupContainer pageMode="CreateProfile">
+                <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
                     <CreateProfileFormRoot roomView={roomView} />
                 </RoomSignupContainer>
             )}
@@ -265,4 +277,9 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
     );
 };
 
-export default withApp('Home', 'viewer', () => <IntroduceYourselfPage roomView={false} />);
+export default withApp(
+    'Home',
+    'viewer',
+    () => null,
+    // <IntroduceYourselfPage roomView={false} />
+);

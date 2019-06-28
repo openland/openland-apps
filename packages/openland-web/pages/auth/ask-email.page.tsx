@@ -24,6 +24,7 @@ import { XButton } from 'openland-x/XButton';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -38,7 +39,13 @@ type CreateWithEmailProps = {
 };
 
 type CreateWithEmailInnerProps = {
+    roomContainerParams: RoomContainerParams;
     loginEmailStart: (a: string) => void;
+};
+
+type CreateWithEmailOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
 };
 
 export const RoomCreateWithEmail = ({
@@ -220,7 +227,7 @@ function validateEmail(email: string) {
     return re.test(String(email).toLowerCase());
 }
 
-export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }) => {
+export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterProps) => {
     const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
     let router = React.useContext(XRouterContext)!;
 
@@ -268,7 +275,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
                 </>
             )}
             {props.roomView && (
-                <RoomSignupContainer pageMode="CreateFromEmail">
+                <RoomSignupContainer pageMode="CreateFromEmail" {...props.roomContainerParams!!}>
                     <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
                 </RoomSignupContainer>
             )}
@@ -276,27 +283,31 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
     );
 };
 
-export default withApp('Home', 'viewer', () => (
-    <AskEmailPage
-        roomView={false}
-        signin={true}
-        emailError={''}
-        emailValue={''}
-        fireEmail={() => {
-            //
-        }}
-        setEmailSending={() => {
-            //
-        }}
-        setEmailError={() => {
-            //
-        }}
-        setEmailSent={() => {
-            //
-        }}
-        setEmailValue={() => {
-            //
-        }}
-        emailSending={true}
-    />
-));
+export default withApp(
+    'Home',
+    'viewer',
+    () =>
+        null,
+        // <AskEmailPage
+        //     roomView={false}
+        //     signin={true}
+        //     emailError={''}
+        //     emailValue={''}
+        //     fireEmail={() => {
+        //         //
+        //     }}
+        //     setEmailSending={() => {
+        //         //
+        //     }}
+        //     setEmailError={() => {
+        //         //
+        //     }}
+        //     setEmailSent={() => {
+        //         //
+        //     }}
+        //     setEmailValue={() => {
+        //         //
+        //     }}
+        //     emailSending={true}
+        // />
+);

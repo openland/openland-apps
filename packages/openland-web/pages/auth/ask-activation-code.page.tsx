@@ -27,6 +27,29 @@ import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XInput } from 'openland-x/XInput';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
+
+type ActivationCodeProps = {
+    emailValue: string;
+    signin: boolean;
+    emailWasResend: boolean;
+    emailSending: boolean;
+    backButtonClick: (event?: React.MouseEvent<any>) => void;
+    resendCodeClick: (event?: React.MouseEvent<any>) => void;
+    emailSendedTo: string;
+};
+
+type ActivationCodeInnerProps = {
+    roomView: boolean;
+    codeSending: boolean;
+    codeError: string;
+    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
+};
+
+type ActivationCodeOuterProps = {
+    roomView: boolean;
+    roomContainerParams?: RoomContainerParams;
+};
 
 const SmallerText = Glamorous.div({
     opacity: 0.6,
@@ -52,16 +75,6 @@ const ResendButton = Glamorous(XButton)({
     },
 });
 
-type ActivationCodeProps = {
-    emailValue: string;
-    signin: boolean;
-    emailWasResend: boolean;
-    emailSending: boolean;
-    backButtonClick: (event?: React.MouseEvent<any>) => void;
-    resendCodeClick: (event?: React.MouseEvent<any>) => void;
-    emailSendedTo: string;
-};
-
 const trackError = (error: string) => {
     if (
         [
@@ -81,12 +94,6 @@ const trackError = (error: string) => {
     } else {
         trackEvent('signup_error', { error_type: error });
     }
-};
-
-type ActivationCodeInnerProps = {
-    codeSending: boolean;
-    codeError: string;
-    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
 };
 
 export const WebSignUpActivationCode = ({
@@ -314,7 +321,7 @@ export const RoomActivationCode = ({
     );
 };
 
-export const AskActivationPage = (props: ActivationCodeProps & { roomView: boolean }) => {
+export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOuterProps) => {
     let router = React.useContext(XRouterContext)!;
     const [codeError, setCodeError] = React.useState('');
     const [codeSending, setCodeSending] = React.useState(false);
@@ -390,7 +397,7 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                 </>
             )}
             {props.roomView && (
-                <RoomSignupContainer pageMode="ActivationCode">
+                <RoomSignupContainer pageMode="ActivationCode" {...props.roomContainerParams!!}>
                     <RoomActivationCode
                         {...props}
                         codeError={codeError}
@@ -407,19 +414,22 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
     );
 };
 
-export default withApp('Home', 'viewer', () => (
-    <AskActivationPage
-        roomView={false}
-        signin={true}
-        backButtonClick={() => {
-            //
-        }}
-        resendCodeClick={() => {
-            //
-        }}
-        emailValue=""
-        emailSendedTo=""
-        emailSending={false}
-        emailWasResend={false}
-    />
-));
+export default withApp(
+    'Home',
+    'viewer',
+    () => null,
+    // <AskActivationPage
+    //     roomView={false}
+    //     signin={true}
+    //     backButtonClick={() => {
+    //         //
+    //     }}
+    //     resendCodeClick={() => {
+    //         //
+    //     }}
+    //     emailValue=""
+    //     emailSendedTo=""
+    //     emailSending={false}
+    //     emailWasResend={false}
+    // />
+);

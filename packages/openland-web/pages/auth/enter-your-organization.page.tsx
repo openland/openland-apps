@@ -11,7 +11,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XButton } from 'openland-x/XButton';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import {
@@ -32,6 +31,14 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from 'openland-x/XPopper';
 import Glamorous from 'glamorous';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
+
+type EnterYourOrganizationPageProps = { inviteKey?: string | null };
+
+type EnterYourOrganizationPageOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
+};
 
 const InfoText = Glamorous.span({
     fontSize: 14,
@@ -240,7 +247,8 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 export const EnterYourOrganizationPage = ({
     inviteKey,
     roomView,
-}: { inviteKey?: string | null } & { roomView: boolean }) => {
+    roomContainerParams,
+}: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const me = client.useAccount();
@@ -277,7 +285,7 @@ export const EnterYourOrganizationPage = ({
             )}
 
             {roomView && (
-                <RoomSignupContainer pageMode="CreateOrganization">
+                <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
                     <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
                 </RoomSignupContainer>
             )}
@@ -286,5 +294,6 @@ export const EnterYourOrganizationPage = ({
 };
 
 export default withApp('Home', 'viewer', () => {
-    return <EnterYourOrganizationPage roomView={false} />;
+    return null;
+    // return <EnterYourOrganizationPage roomView={false} />;
 });
