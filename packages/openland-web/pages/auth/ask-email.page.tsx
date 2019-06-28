@@ -15,11 +15,13 @@ import {
     ButtonsWrapper,
     SubTitle,
     ErrorText,
+    RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import { XInput } from 'openland-x/XInput';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -84,18 +86,19 @@ export const RoomCreateWithEmail = ({
             </Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280}>
-                <InputField
+                <XInput
                     autofocus
                     width={isMobile ? undefined : 300}
                     invalid={emailError !== ''}
                     dataTestId="email"
                     type="email"
-                    title={InitTexts.auth.emailPlaceholder}
-                    field={emailField}
+                    size="large"
+                    placeholder={InitTexts.auth.emailPlaceholder}
+                    {...emailField.input}
                 />
                 {emailError && <ErrorText>{emailError}</ErrorText>}
             </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
+            <ButtonsWrapper marginTop={70} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XButton
                         dataTestId="continue-button"
@@ -235,7 +238,11 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
                     <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
                 </>
             )}
-            {props.roomView && <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />}
+            {props.roomView && (
+                <RoomSignupContainer pageMode="CreateFromEmail">
+                    <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
+                </RoomSignupContainer>
+            )}
         </XView>
     );
 };

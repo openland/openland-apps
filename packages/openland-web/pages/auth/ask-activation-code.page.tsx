@@ -10,7 +10,6 @@ import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XButton } from 'openland-x/XButton';
-import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { useField } from 'openland-form/useField';
@@ -19,11 +18,13 @@ import {
     ButtonsWrapper,
     SubTitle,
     ErrorText,
+    RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { XInput } from 'openland-x/XInput';
 
 const SmallerText = Glamorous.div({
     opacity: 0.6,
@@ -57,10 +58,6 @@ type ActivationCodeProps = {
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     emailSendedTo: string;
 };
-
-const InputWrapperDesctopClassName = css`
-    width: 300px;
-`;
 
 const trackError = (error: string) => {
     if (
@@ -188,7 +185,7 @@ export const RoomActivationCode = ({
     loginCodeStart,
 }: ActivationCodeProps & ActivationCodeInnerProps) => {
     const form = useForm();
-
+    const isMobile = useIsMobile();
     let codeField = useField('input.code', '', form);
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
@@ -205,17 +202,42 @@ export const RoomActivationCode = ({
                 </SubTitle>
             )}
             <ButtonsWrapper marginTop={40} width={280}>
-                <InputField
+                <XInput
+                    width={isMobile ? undefined : 300}
                     invalid={codeError !== ''}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
-                    title={InitTexts.auth.codePlaceholder}
-                    field={codeField}
+                    size="large"
+                    placeholder={InitTexts.auth.codePlaceholder}
+                    flexGrow={1}
+                    flexShrink={0}
+                    {...codeField.input}
                 />
                 {form.error && <ErrorText>{codeError}</ErrorText>}
             </ButtonsWrapper>
-
+            <ResendCodeRow alignItems="center">
+                <XHorizontal alignItems="center" separator="none">
+                    {emailSending ? (
+                        <>
+                            <SmallerText>Sending code...</SmallerText>
+                        </>
+                    ) : (
+                        <>
+                            <SmallerText>
+                                {emailWasResend
+                                    ? 'Code successfully sent.'
+                                    : InitTexts.auth.haveNotReceiveCode}
+                            </SmallerText>
+                            <ResendButton
+                                onClick={resendCodeClick}
+                                style="link"
+                                text={InitTexts.auth.resend}
+                            />
+                        </>
+                    )}
+                </XHorizontal>
+            </ResendCodeRow>
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XHorizontal alignItems="center">
@@ -229,30 +251,6 @@ export const RoomActivationCode = ({
                     </XHorizontal>
                 </XVertical>
             </ButtonsWrapper>
-            <XView position="absolute" bottom={0} width="100%">
-                <ResendCodeRow alignItems="center">
-                    <XHorizontal alignItems="center" separator="none">
-                        {emailSending ? (
-                            <>
-                                <SmallerText>Sending code...</SmallerText>
-                            </>
-                        ) : (
-                            <>
-                                <SmallerText>
-                                    {emailWasResend
-                                        ? 'Code successfully sent.'
-                                        : InitTexts.auth.haveNotReceiveCode}
-                                </SmallerText>
-                                <ResendButton
-                                    onClick={resendCodeClick}
-                                    style="link"
-                                    text={InitTexts.auth.resend}
-                                />
-                            </>
-                        )}
-                    </XHorizontal>
-                </ResendCodeRow>
-            </XView>
         </>
     );
 };
@@ -334,16 +332,18 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                 </>
             )}
             {props.roomView && (
-                <RoomActivationCode
-                    {...props}
-                    codeError={codeError}
-                    codeSending={codeSending}
-                    loginCodeStart={loginCodeStart}
-                    backButtonClick={() => {
-                        router.replace('/auth2/ask-email');
-                        props.backButtonClick();
-                    }}
-                />
+                <RoomSignupContainer pageMode="ActivationCode">
+                    <RoomActivationCode
+                        {...props}
+                        codeError={codeError}
+                        codeSending={codeSending}
+                        loginCodeStart={loginCodeStart}
+                        backButtonClick={() => {
+                            router.replace('/auth2/ask-email');
+                            props.backButtonClick();
+                        }}
+                    />
+                </RoomSignupContainer>
             )}
         </XView>
     );
