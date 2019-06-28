@@ -259,7 +259,9 @@ export const EnterYourOrganizationPage = ({
     inviteKey,
     roomView,
 }: { inviteKey?: string | null } & { roomView: boolean }) => {
+    const client = useClient();
     let router = React.useContext(XRouterContext)!;
+    const me = client.useAccount();
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
@@ -272,8 +274,18 @@ export const EnterYourOrganizationPage = ({
                             onBack={() => {
                                 router.replace('/auth2/introduce-yourself');
                             }}
-                            onSkip={() => {
-                                router.push('/onboarding/start');
+                            onSkip={async () => {
+                                if (me.me) {
+                                    await client.mutateCreateOrganization({
+                                        input: {
+                                            personal: true,
+                                            name: me.me.name,
+                                        },
+                                    });
+                                }
+
+                                window.location.href = '/';
+                                trackEvent('registration_complete');
                             }}
                         />
                     </XView>
