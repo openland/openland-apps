@@ -217,9 +217,27 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
 
         }
 
+        if (link === '/onboarding_discover') {
+            resolved = true;
+            getMessenger().history.navigationManager.pushAndReset('Discover');
+        }
+
+        if (link === '/onboarding_discover') {
+            resolved = true;
+            getMessenger().history.navigationManager.pushAndReset('Discover');
+        }
+
+        if (link === '/onboarding_apps') {
+            resolved = true;
+            getMessenger().history.navigationManager.pushAndReset('InstallApps');
+        }
+
+
+
         if (!resolved && fallback) {
             await fallback();
         }
+
     }
 };
 

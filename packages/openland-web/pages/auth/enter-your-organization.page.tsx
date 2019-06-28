@@ -69,9 +69,14 @@ const organizationInputClassName = css`
     }
 `;
 
-const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
-    const [sending, setSending] = React.useState(false);
-    const client = useClient();
+type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
+
+const CreateOrganizationFormInner = (props: {
+    sending: boolean;
+    roomView: boolean;
+    inviteKey?: string | null;
+    processCreateOrganization: processCreateOrganizationT;
+}) => {
     const form = useForm();
     const { roomView } = props;
 
@@ -83,51 +88,9 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
     ]);
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            if (organizationField.value) {
-                setSending(true);
-                let result = await client.mutateCreateOrganization({
-                    input: {
-                        personal: false,
-                        name: organizationField.value,
-                        // id: data.id,
-                    },
-                });
-
-                if (Cookie.get('x-openland-app-invite')) {
-                    // app invite invite
-                    const inviteKey = Cookie.get('x-openland-app-invite')!!;
-                    await client.mutateOrganizationActivateByInvite({
-                        inviteKey,
-                    });
-                    await client.refetchAccount();
-
-                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                    trackEvent('registration_complete');
-                    Cookie.remove('x-openland-app-invite');
-                    Cookie.remove('x-openland-create-new-account');
-                    window.location.href = '/onboarding/start';
-                } else if (Cookie.get('x-openland-invite')) {
-                    // room invite
-                    const inviteKey = Cookie.get('x-openland-invite')!!;
-
-                    const room = await client.mutateRoomJoinInviteLink({
-                        invite: inviteKey,
-                    });
-
-                    await client.refetchAccount();
-
-                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                    trackEvent('registration_complete');
-
-                    Cookie.remove('x-openland-invite');
-                    Cookie.remove('x-openland-create-new-account');
-                    window.location.href = `/mail/${room.join.id}`;
-                } else {
-                    Cookie.remove('x-openland-create-new-account');
-                    window.location.href = '/';
-                    trackEvent('registration_complete');
-                }
-            }
+            await props.processCreateOrganization({
+                organizationFieldValue: organizationField.value,
+            });
         });
     }, [organizationField.value]);
 
@@ -205,7 +168,7 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 
                         <XView marginTop={50}>
                             <XButton
-                                loading={sending}
+                                loading={props.sending}
                                 dataTestId="continue-button"
                                 style="primary"
                                 text={InitTexts.create_organization.continue}
@@ -245,13 +208,71 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 };
 
 export const EnterYourOrganizationPage = ({
-    inviteKey,
     roomView,
     roomContainerParams,
 }: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const me = client.useAccount();
+    const [sending, setSending] = React.useState(false);
+
+    const processCreateOrganization = async ({
+        organizationFieldValue,
+    }: {
+        organizationFieldValue: string | null;
+    }) => {
+        if (organizationFieldValue) {
+            setSending(true);
+
+            if (!null) {
+                if (me.me) {
+                    organizationFieldValue = me.me.name;
+                }
+            }
+            let result = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: organizationFieldValue,
+                    // id: data.id,
+                },
+            });
+
+            if (Cookie.get('x-openland-app-invite')) {
+                // app invite invite
+                const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+                await client.refetchAccount();
+
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                trackEvent('registration_complete');
+                Cookie.remove('x-openland-app-invite');
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/onboarding/start';
+            } else if (Cookie.get('x-openland-invite')) {
+                // room invite
+                const inviteKey = Cookie.get('x-openland-invite')!!;
+
+                const room = await client.mutateRoomJoinInviteLink({
+                    invite: inviteKey,
+                });
+
+                await client.refetchAccount();
+
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                trackEvent('registration_complete');
+
+                Cookie.remove('x-openland-invite');
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = `/mail/${room.join.id}`;
+            } else {
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/';
+                trackEvent('registration_complete');
+            }
+        }
+    };
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
@@ -265,28 +286,27 @@ export const EnterYourOrganizationPage = ({
                                 router.replace('/authorization/introduce-yourself');
                             }}
                             onSkip={async () => {
-                                if (me.me) {
-                                    await client.mutateCreateOrganization({
-                                        input: {
-                                            personal: true,
-                                            name: me.me.name,
-                                        },
-                                    });
-                                }
-
-                                Cookie.remove('x-openland-create-new-account');
-                                window.location.href = '/';
-                                trackEvent('registration_complete');
+                                await processCreateOrganization({
+                                    organizationFieldValue: null,
+                                });
                             }}
                         />
                     </XView>
-                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+                    <CreateOrganizationFormInner
+                        sending={sending}
+                        roomView={roomView}
+                        processCreateOrganization={processCreateOrganization}
+                    />
                 </>
             )}
 
             {roomView && (
                 <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
-                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+                    <CreateOrganizationFormInner
+                        sending={sending}
+                        roomView={roomView}
+                        processCreateOrganization={processCreateOrganization}
+                    />
                 </RoomSignupContainer>
             )}
         </XView>
