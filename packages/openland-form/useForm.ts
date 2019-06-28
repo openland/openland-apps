@@ -16,14 +16,17 @@ export function useForm(): SForm {
         return !!Object.values(clientValidation).filter(value => !value).length;
     }, [clientValidation]);
 
-    const updateClientValidation = ({ name, valid }: { name: string; valid: boolean }) => {
-        if (clientValidation[name] !== valid) {
-            setClientValidation({
-                ...clientValidation,
-                [name]: valid,
-            });
-        }
-    };
+    const updateClientValidation = React.useCallback(
+        ({ name, valid }: { name: string; valid: boolean }) => {
+            if (clientValidation[name] !== valid) {
+                setClientValidation({
+                    ...clientValidation,
+                    [name]: valid,
+                });
+            }
+        },
+        [clientValidation],
+    );
 
     const doAction = React.useCallback(
         async (action: () => any) => {
