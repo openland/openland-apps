@@ -241,7 +241,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
     const router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Introduce yourself" />
             {!roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(3)} />

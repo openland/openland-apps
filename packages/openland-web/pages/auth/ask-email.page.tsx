@@ -22,6 +22,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -132,7 +133,12 @@ export const WebSignUpCreateWithEmail = ({
     const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
 
-    let emailField = useField('input.email', emailValue, form);
+    let emailField = useField('input.email', emailValue, form, [
+        {
+            checkIsValid: value => value !== '',
+            text: 'Please enter your email address',
+        },
+    ]);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
@@ -168,15 +174,21 @@ export const WebSignUpCreateWithEmail = ({
                     <InputField
                         autofocus
                         width={isMobile ? undefined : 300}
-                        invalid={emailError !== ''}
                         dataTestId="email"
                         type="email"
                         title={InitTexts.auth.emailPlaceholder}
                         field={emailField}
+                        hideErrorText
                     />
-                    {emailError && <ErrorText>{emailError}</ErrorText>}
+                    {emailField.input.invalid && emailField.input.errorText && (
+                        <XErrorMessage2 message={emailField.input.errorText} />
+                    )}
                 </ButtonsWrapper>
-                <ButtonsWrapper marginTop={20}>
+                <ButtonsWrapper
+                    marginTop={
+                        emailField.input.invalid && emailField.input.errorText ? 40 - 26 : 40
+                    }
+                >
                     <XVertical alignItems="center">
                         <XButton
                             dataTestId="continue-button"
@@ -226,7 +238,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Ask email" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
