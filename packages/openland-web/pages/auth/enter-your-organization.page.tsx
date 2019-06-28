@@ -117,6 +117,7 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 
                     Cookie.set('x-openland-org', result.organization.id, { path: '/' });
                     trackEvent('registration_complete');
+                    Cookie.remove('x-openland-app-invite');
                     window.location.href = '/onboarding/start';
                 } else if (Cookie.get('x-openland-invite')) {
                     // room invite
@@ -130,6 +131,8 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 
                     Cookie.set('x-openland-org', result.organization.id, { path: '/' });
                     trackEvent('registration_complete');
+
+                    Cookie.remove('x-openland-invite');
                     window.location.href = `/mail/${room.join.id}`;
                 } else {
                     window.location.href = '/';

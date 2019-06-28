@@ -50,35 +50,38 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
     ]);
     let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                await client.mutateProfileCreate({
-                    input: {
-                        firstName: firstName.value,
-                        lastName: lastName.value,
-                        photoRef:
-                            photoRef.value && photoRef.value.uuid
-                                ? {
-                                      ...photoRef.value,
-                                      isImage: undefined,
-                                      width: undefined,
-                                      height: undefined,
-                                  }
-                                : undefined,
-                    },
-                });
-                await client.refetchAccount();
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            await client.mutateProfileCreate({
+                input: {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    photoRef:
+                        photoRef.value && photoRef.value.uuid
+                            ? {
+                                  ...photoRef.value,
+                                  isImage: undefined,
+                                  width: undefined,
+                                  height: undefined,
+                              }
+                            : undefined,
+                },
+            });
+            await client.refetchAccount();
 
-                if (firstName.value) {
-                    setSending(true);
+            if (firstName.value) {
+                setSending(true);
+
+                if (Cookie.get('x-openland-org-invite')) {
+                    const orgInvite = Cookie.get('x-openland-org-invite');
+                    Cookie.remove('x-openland-org-invite');
+                    window.location.href = `/join/${orgInvite}`;
+                } else {
                     router.push('/auth2/enter-your-organization');
                 }
-                await delayForewer();
-            });
-        },
-        [firstName.value, lastName.value, photoRef.value],
-    );
+            }
+        });
+    }, [firstName.value, lastName.value, photoRef.value]);
 
     const onEnter = () => {
         doConfirm();
@@ -123,10 +126,9 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                 </XView>
                             )}
 
-                            {firstName.input.invalid &&
-                                firstName.input.errorText && (
-                                    <XErrorMessage2 message={firstName.input.errorText} />
-                                )}
+                            {firstName.input.invalid && firstName.input.errorText && (
+                                <XErrorMessage2 message={firstName.input.errorText} />
+                            )}
                         </XView>
 
                         <XView>
@@ -153,10 +155,9 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                     />
                                 </XView>
                             )}
-                            {lastName.input.invalid &&
-                                lastName.input.errorText && (
-                                    <XErrorMessage2 message={lastName.input.errorText} />
-                                )}
+                            {lastName.input.invalid && lastName.input.errorText && (
+                                <XErrorMessage2 message={lastName.input.errorText} />
+                            )}
                         </XView>
 
                         {roomView && (
@@ -252,6 +253,7 @@ export const IntroduceYourselfPage = ({ roomView }: { roomView: boolean }) => {
                             onSkip={null}
                         />
                     </XView>
+                    <CreateProfileFormRoot roomView={roomView} />
                 </>
             )}
 

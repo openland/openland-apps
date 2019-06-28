@@ -23,6 +23,13 @@ const getAppInvite = (router: any) => {
     return null;
 };
 
+const getOrgInvite = (router: any) => {
+    if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'join') {
+        return router.query.redirect.split('/')[2];
+    }
+    return null;
+};
+
 const checkIfIsSignInInvite = (router: any) => {
     return (
         router.query &&
@@ -49,6 +56,10 @@ export default () => {
 
     if (getAppInvite(router)) {
         Cookie.set('x-openland-app-invite', getAppInvite(router));
+    }
+
+    if (getOrgInvite(router)) {
+        Cookie.set('x-openland-org-invite', getOrgInvite(router));
     }
 
     let isInvitePage = isSignInInvite;
