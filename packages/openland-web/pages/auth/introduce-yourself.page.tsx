@@ -119,8 +119,8 @@ export const CreateProfileFormInner = (props: { roomView: boolean; prefill: any 
                                 <XInput
                                     invalid={!!form.error}
                                     size="large"
-                                    title="First name"
-                                    dataTestId="first-name"
+                                    title="Last name"
+                                    dataTestId="last-name"
                                     flexGrow={1}
                                     {...lastName.input}
                                 />
