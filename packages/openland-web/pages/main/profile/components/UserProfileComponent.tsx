@@ -146,32 +146,31 @@ export const AvatarModal = (props: { photo?: string; title: string; id: string }
 };
 
 const reachContentClassName = css`
-    font-size: 13px;
-    line-height: 19px;
+    font-size: 14px;
+    line-height: 34px;
     text-align: center;
-    height: 25px;
-    padding: 0 6px;
+    height: 32px;
+    padding: 0 18px;
     font-weight: 600;
-    color: #fff;
-    border: 3px solid #fff;
-    border-radius: 16px;
+    color: #1790FF;
+    border-radius: 40px;
     flex-shrink: 0;
-    margin-top: -15px;
-    z-index: 1;
-    align-self: center;
-    background-image: linear-gradient(118.9deg, #febd17 4.73%, #ff9b04 92.52%);
+    background-color: #E8F4FF;
 `;
 
 const UserReach = XMemo<{ reach: number }>(props => (
     <XPopper
         style="dark"
         placement="bottom"
-        content={<span>About reach</span>}
-        marginTop={5}
+        content={
+            <span>User's reach is the total number of people in community groups they are in</span>
+        }
+        marginTop={8}
+        width={280}
         showOnHoverContent={false}
         showOnHover={true}
     >
-        <div className={reachContentClassName}>{props.reach}</div>
+        <div className={reachContentClassName}>Reach {props.reach}</div>
     </XPopper>
 ));
 
@@ -188,7 +187,6 @@ const Header = (props: { user: User_user }) => {
                         {!user.photo && (
                             <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
                         )}
-                        {user.audienceSize && <UserReach reach={user.audienceSize} />}
                     </XView>
                     <XView paddingTop={1} justifyContent="center" flexGrow={1}>
                         <XHorizontal separator={4}>
@@ -217,6 +215,7 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
+                            {user.audienceSize && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
