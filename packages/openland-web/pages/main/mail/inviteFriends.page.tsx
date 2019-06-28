@@ -19,6 +19,7 @@ import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import LinkedinIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
 import FacebookIcon from 'openland-icons/ic-fb.svg';
+import { XModalController } from 'openland-x/showModal';
 
 const letterSpasingClassName = css`
     letter-spacing: 0.9px;
@@ -207,9 +208,10 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                         )}
                     </XView>
                     <XView flexDirection="row" alignItems="center" marginTop={20}>
-                        {props.useRevoke && props.id && (
-                            <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
-                        )}
+                        {props.useRevoke &&
+                            props.id && (
+                                <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
+                            )}
                         <CopyButton copied={copied} onClick={this.copy} />
                     </XView>
                 </XView>
@@ -254,7 +256,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        'In the heart of the French Alps, in the north east of the Rhone Alps region lies the village of Les Houches. Nestled at one end of the Chamonix valley\n';
+        'Check out Openland, an invitation-only community for top startup founders, investors, and engineers. There are expert chats on any topic, from fundraising in Silicon Valley to CTOs lessons learned. Finally, can share it here!\n';
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
@@ -388,7 +390,12 @@ const ShowInviteInputButton = (props: ShowInviteInputButton) => (
     </XView>
 );
 
-export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boolean }) => {
+interface InviteFriendsFragmentProps {
+    asModalContent?: boolean;
+    modalContext?: XModalController;
+}
+
+export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
     const client = useClient();
 
     const user = client.useProfile();
@@ -410,6 +417,12 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
 
     const isMobile = useIsMobile() || undefined;
     const invitesAccepted = true;
+    const closeModal = React.useCallback(() => {
+        router.replace(`/directory/o/${primaryOrganizationId}`);
+        if (props.modalContext) {
+            props.modalContext.hide();
+        }
+    }, []);
     return (
         <XView
             flexDirection="row"
@@ -421,7 +434,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
             paddingRight={isMobile ? 20 : 0}
             backgroundColor="#fff"
         >
-            {!asModalContent && (
+            {!props.asModalContent && (
                 <XView position="absolute" right={20} top={20} zIndex={100}>
                     <XView
                         onClick={() => {
@@ -516,7 +529,7 @@ export const InviteFriendsFragment = ({ asModalContent }: { asModalContent?: boo
                                 fontWeight="600"
                                 color="#248bf2"
                                 cursor="pointer"
-                                path={'/directory/o/' + primaryOrganizationId}
+                                onClick={() => closeModal()}
                                 marginRight={8}
                             >
                                 {primaryOrganizationName}

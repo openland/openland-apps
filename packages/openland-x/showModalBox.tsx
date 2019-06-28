@@ -154,17 +154,17 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = props.config.fullScreen
         ? {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              maxWidth: 'initial',
-              maxHeight: 'initial',
-              borderRadius: 0,
-              transition: 'none',
-          }
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            maxWidth: 'initial',
+            maxHeight: 'initial',
+            borderRadius: 0,
+            transition: 'none',
+        }
         : { top, left, width: props.config.width };
 
     return (
@@ -195,7 +195,7 @@ const ModalBoxComponent = React.memo<{
                     style={boxInlineStyle}
                 >
                     {props.config.fullScreen && (
-                        <XView position="absolute" right={23} top={23} zIndex={100}>
+                        <XView position="absolute" right={23} top={23} zIndex={1000}>
                             <XView
                                 onClick={tryHide}
                                 cursor="pointer"

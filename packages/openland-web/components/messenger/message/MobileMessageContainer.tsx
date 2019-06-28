@@ -73,7 +73,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
             alignItems="stretch"
         >
             <XView flexDirection="row" marginBottom={4}>
-                <XView flexDirection="row">
+                <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                     <XView
                         flexDirection="row"
                         fontSize={14}
@@ -84,8 +84,17 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                     </XView>
                     {senderBadge && (
                         <XWithRole role="feature-non-production">
-                            <XView marginLeft={8} alignSelf="center">
-                                <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
+                            <XView
+                                marginLeft={8}
+                                alignSelf="center"
+                                flexGrow={1}
+                                flexShrink={1}
+                                overflow="hidden"
+                            >
+                                <XBadge
+                                    name={senderBadgeNameEmojify || senderBadge.name}
+                                    verified={senderBadge.verified}
+                                />
                             </XView>
                         </XWithRole>
                     )}

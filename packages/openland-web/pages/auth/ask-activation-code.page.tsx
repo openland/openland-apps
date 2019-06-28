@@ -26,6 +26,30 @@ import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XInput } from 'openland-x/XInput';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
+
+type ActivationCodeProps = {
+    emailValue: string;
+    signin: boolean;
+    emailWasResend: boolean;
+    emailSending: boolean;
+    backButtonClick: (event?: React.MouseEvent<any>) => void;
+    resendCodeClick: (event?: React.MouseEvent<any>) => void;
+    emailSendedTo: string;
+};
+
+type ActivationCodeInnerProps = {
+    roomView: boolean;
+    codeSending: boolean;
+    codeError: string;
+    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
+};
+
+type ActivationCodeOuterProps = {
+    roomView: boolean;
+    roomContainerParams?: RoomContainerParams;
+};
 
 const SmallerText = Glamorous.div({
     opacity: 0.6,
@@ -51,16 +75,6 @@ const ResendButton = Glamorous(XButton)({
     },
 });
 
-type ActivationCodeProps = {
-    emailValue: string;
-    signin: boolean;
-    emailWasResend: boolean;
-    emailSending: boolean;
-    backButtonClick: (event?: React.MouseEvent<any>) => void;
-    resendCodeClick: (event?: React.MouseEvent<any>) => void;
-    emailSendedTo: string;
-};
-
 const trackError = (error: string) => {
     if (
         [
@@ -82,12 +96,6 @@ const trackError = (error: string) => {
     }
 };
 
-type ActivationCodeInnerProps = {
-    codeSending: boolean;
-    codeError: string;
-    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
-};
-
 export const WebSignUpActivationCode = ({
     signin,
     emailValue,
@@ -105,7 +113,7 @@ export const WebSignUpActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
 
@@ -120,6 +128,8 @@ export const WebSignUpActivationCode = ({
     const onEnter = () => {
         doConfirm();
     };
+
+    const showError = (codeField.input.invalid && codeField.input.errorText) || codeError;
 
     return (
         <XShortcuts
@@ -150,12 +160,18 @@ export const WebSignUpActivationCode = ({
                         title={InitTexts.auth.codePlaceholder}
                         flexGrow={1}
                         flexShrink={0}
+                        hideErrorText
+                        invalid={codeError ? !!codeError : undefined}
                         field={codeField}
                     />
-                    {form.error && <ErrorText>{codeError}</ErrorText>}
+                    <XView maxWidth={300}>
+                        {((codeField.input.invalid && codeField.input.errorText) || codeError) && (
+                            <XErrorMessage2 message={codeField.input.errorText || codeError} />
+                        )}
+                    </XView>
                 </ButtonsWrapper>
 
-                <ButtonsWrapper marginTop={20}>
+                <ButtonsWrapper marginTop={showError ? 40 - 26 : 40}>
                     <XVertical alignItems="center">
                         <XHorizontal alignItems="center">
                             <XButton
@@ -213,7 +229,7 @@ export const RoomActivationCode = ({
     let codeField = useField('input.code', '', form, [
         {
             checkIsValid: value => value !== '',
-            text: "Activation code cant't be empty",
+            text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
     const doConfirm = React.useCallback(() => {
@@ -305,7 +321,7 @@ export const RoomActivationCode = ({
     );
 };
 
-export const AskActivationPage = (props: ActivationCodeProps & { roomView: boolean }) => {
+export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOuterProps) => {
     let router = React.useContext(XRouterContext)!;
     const [codeError, setCodeError] = React.useState('');
     const [codeSending, setCodeSending] = React.useState(false);
@@ -330,7 +346,6 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
             setCodeError(InitTexts.auth.wrongCodeLength);
             return;
         } else {
-            setCodeError(InitTexts.auth.wrongCodeLength);
             setCodeSending(true);
 
             createAuth0Client().passwordlessVerify(
@@ -355,14 +370,14 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Activation code" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/ask-email');
+                                router.replace('/authorization/ask-email');
                                 props.backButtonClick();
                             }}
                             onSkip={null}
@@ -375,21 +390,21 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
                         codeSending={codeSending}
                         loginCodeStart={loginCodeStart}
                         backButtonClick={() => {
-                            router.replace('/auth2/ask-email');
+                            router.replace('/authorization/ask-email');
                             props.backButtonClick();
                         }}
                     />
                 </>
             )}
             {props.roomView && (
-                <RoomSignupContainer pageMode="ActivationCode">
+                <RoomSignupContainer pageMode="ActivationCode" {...props.roomContainerParams!!}>
                     <RoomActivationCode
                         {...props}
                         codeError={codeError}
                         codeSending={codeSending}
                         loginCodeStart={loginCodeStart}
                         backButtonClick={() => {
-                            router.replace('/auth2/ask-email');
+                            router.replace('/authorization/ask-email');
                             props.backButtonClick();
                         }}
                     />
@@ -399,19 +414,22 @@ export const AskActivationPage = (props: ActivationCodeProps & { roomView: boole
     );
 };
 
-export default withApp('Home', 'viewer', () => (
-    <AskActivationPage
-        roomView={false}
-        signin={true}
-        backButtonClick={() => {
-            //
-        }}
-        resendCodeClick={() => {
-            //
-        }}
-        emailValue=""
-        emailSendedTo=""
-        emailSending={false}
-        emailWasResend={false}
-    />
-));
+export default withApp(
+    'Home',
+    'viewer',
+    () => null,
+    // <AskActivationPage
+    //     roomView={false}
+    //     signin={true}
+    //     backButtonClick={() => {
+    //         //
+    //     }}
+    //     resendCodeClick={() => {
+    //         //
+    //     }}
+    //     emailValue=""
+    //     emailSendedTo=""
+    //     emailSending={false}
+    //     emailWasResend={false}
+    // />
+);

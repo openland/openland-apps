@@ -145,14 +145,42 @@ export const AvatarModal = (props: { photo?: string; title: string; id: string }
     );
 };
 
+const reachContentClassName = css`
+    font-size: 14px;
+    line-height: 34px;
+    text-align: center;
+    height: 32px;
+    padding: 0 18px;
+    font-weight: 600;
+    color: #1790FF;
+    border-radius: 40px;
+    flex-shrink: 0;
+    background-color: #E8F4FF;
+`;
+
+const UserReach = XMemo<{ reach: number }>(props => (
+    <XPopper
+        style="dark"
+        placement="bottom"
+        content={
+            <span>User's reach is the total number of people in community groups they are in</span>
+        }
+        marginTop={8}
+        width={280}
+        showOnHoverContent={false}
+        showOnHover={true}
+    >
+        <div className={reachContentClassName}>Reach {props.reach}</div>
+    </XPopper>
+));
+
 const Header = (props: { user: User_user }) => {
     let { user } = props;
-
     return (
         <React.Suspense fallback={<div />}>
             <HeaderWrapper>
                 <XContentWrapper withFlex={true}>
-                    <XView paddingRight={18}>
+                    <XView marginRight={18} flexDirection="column" width={58} height={58}>
                         {user.photo && (
                             <AvatarModal photo={user.photo} title={user.name} id={user.id} />
                         )}
@@ -187,6 +215,7 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
+                            {user.audienceSize && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
@@ -266,42 +295,61 @@ interface UserBadgeWrapperProps {
     user: UserShort;
 }
 
-const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
+const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>(props => {
     const client = useClient();
     const { badge, primary, isSuper, user } = props;
-    const [ show, setShow ] = React.useState(false);
+    const [show, setShow] = React.useState(false);
 
-    const handleSetPrimary = React.useCallback(async () => {
-        await client.mutateBadgeSetPrimary({ badgeId: badge.id });
-        setShow(false);
-    }, [badge]);
+    const handleSetPrimary = React.useCallback(
+        async () => {
+            await client.mutateBadgeSetPrimary({ badgeId: badge.id });
+            setShow(false);
+        },
+        [badge],
+    );
 
-    const handleUnsetPrimary = React.useCallback(async () => {
-        await client.mutateBadgeUnsetPrimary();
-        setShow(false);
-    }, [badge]);
+    const handleUnsetPrimary = React.useCallback(
+        async () => {
+            await client.mutateBadgeUnsetPrimary();
+            setShow(false);
+        },
+        [badge],
+    );
 
-    const handleVerify = React.useCallback(async () => {
-        await client.mutateSuperBadgeVerify({ badgeId: badge.id, userId: user.id });
-        setShow(false);
-    }, [badge, user]);
+    const handleVerify = React.useCallback(
+        async () => {
+            await client.mutateSuperBadgeVerify({ badgeId: badge.id, userId: user.id });
+            setShow(false);
+        },
+        [badge, user],
+    );
 
-    const handleUnverify = React.useCallback(async () => {
-        await client.mutateSuperBadgeUnverify({ badgeId: badge.id, userId: user.id });
-        setShow(false);
-    }, [badge, user]);
+    const handleUnverify = React.useCallback(
+        async () => {
+            await client.mutateSuperBadgeUnverify({ badgeId: badge.id, userId: user.id });
+            setShow(false);
+        },
+        [badge, user],
+    );
 
-    const handleDelete = React.useCallback(async () => {
-        showModalBox({ title: 'Delete badge' }, ctx => <DeleteBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} badgeId={badge.id} />)
-        setShow(false);
-    }, [badge, user, isSuper]);
+    const handleDelete = React.useCallback(
+        async () => {
+            showModalBox({ title: 'Delete badge' }, ctx => (
+                <DeleteBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} badgeId={badge.id} />
+            ));
+            setShow(false);
+        },
+        [badge, user, isSuper],
+    );
 
     let nameEmojify = emoji({
         src: badge.name,
         size: 16,
     });
 
-    const badgeView = <XBadge name={nameEmojify} verified={badge.verified} primary={primary} size="big" />;
+    const badgeView = (
+        <XBadge name={nameEmojify} verified={badge.verified} primary={primary} size="big" />
+    );
 
     if (!user.isYou && !isSuper) {
         if (!badge.verified) {
@@ -316,11 +364,7 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
                     style="dark"
                     placement="bottom"
                     marginTop={-3}
-                    content={(
-                        <span>
-                            Verified
-                        </span>
-                    )}
+                    content={<span>Verified</span>}
                     showOnHoverContent={false}
                     showOnHover={true}
                 >
@@ -340,24 +384,34 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
             arrow={null}
             placement="bottom-start"
             marginTop={-3}
-            content={(
+            content={
                 <div style={{ minWidth: 140 }}>
                     {user.isYou && (
                         <>
                             {badge.verified && <XMenuTitle>Verified</XMenuTitle>}
-                            {!primary && <XMenuItem onClick={handleSetPrimary}>Make primary</XMenuItem>}
-                            {primary && <XMenuItem onClick={handleUnsetPrimary}>Revoke primary</XMenuItem>}
+                            {!primary && (
+                                <XMenuItem onClick={handleSetPrimary}>Make primary</XMenuItem>
+                            )}
+                            {primary && (
+                                <XMenuItem onClick={handleUnsetPrimary}>Revoke primary</XMenuItem>
+                            )}
                         </>
                     )}
                     {isSuper && (
                         <>
-                            {!badge.verified && <XMenuItem onClick={handleVerify}>Verify</XMenuItem>}
-                            {badge.verified && <XMenuItem onClick={handleUnverify}>Revoke verified</XMenuItem>}
+                            {!badge.verified && (
+                                <XMenuItem onClick={handleVerify}>Verify</XMenuItem>
+                            )}
+                            {badge.verified && (
+                                <XMenuItem onClick={handleUnverify}>Revoke verified</XMenuItem>
+                            )}
                         </>
                     )}
-                    <XMenuItem style="danger" onClick={handleDelete}>Delete</XMenuItem>
+                    <XMenuItem style="danger" onClick={handleDelete}>
+                        Delete
+                    </XMenuItem>
                 </div>
-            )}
+            }
             onClickOutside={() => setShow(false)}
             show={show}
         >
@@ -370,14 +424,16 @@ const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>((props) => {
     );
 });
 
-const Badges = XMemo<{ user: User_user }>((props) => {
+const Badges = XMemo<{ user: User_user }>(props => {
     const isSuper = useHasRole('super-admin');
     const { user } = props;
     const isPrimary = (badge: UserBadge) => {
-        return (user.primaryBadge && user.primaryBadge.id === badge.id) ? true : false;
-    }
+        return !!(user.primaryBadge && user.primaryBadge.id === badge.id);
+    };
 
-    const badges = user.badges.sort((a, b) => isPrimary(a) ? -2 : (a.verified && !b.verified ? -1 : 1));
+    const badges = user.badges.sort(
+        (a, b) => (isPrimary(a) ? -2 : a.verified && !b.verified ? -1 : 1),
+    );
 
     return (
         <>
@@ -387,13 +443,27 @@ const Badges = XMemo<{ user: User_user }>((props) => {
                     <SectionContent>
                         <XView alignItems="flex-start" flexDirection="row" flexWrap="wrap">
                             {badges.map(badge => (
-                                <UserBadgeWrapper key={'badge-' + badge.id} user={user} badge={badge} primary={isPrimary(badge)} isSuper={isSuper} />
+                                <UserBadgeWrapper
+                                    key={'badge-' + badge.id}
+                                    user={user}
+                                    badge={badge}
+                                    primary={isPrimary(badge)}
+                                    isSuper={isSuper}
+                                />
                             ))}
                             {(user.isYou || isSuper) && (
                                 <XView marginRight={12} marginBottom={12}>
                                     <XBadgeAdd
                                         caption="Add badge"
-                                        onClick={() => showModalBox({ title: 'Add badge' }, ctx => <CreateBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} />)}
+                                        onClick={() =>
+                                            showModalBox({ title: 'Add badge' }, ctx => (
+                                                <CreateBadgeModal
+                                                    ctx={ctx}
+                                                    isSuper={isSuper}
+                                                    userId={user.id}
+                                                />
+                                            ))
+                                        }
                                     />
                                 </XView>
                             )}

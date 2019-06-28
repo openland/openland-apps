@@ -14,6 +14,7 @@ import { getPercentageOfOnboarding } from '../components/utils';
 import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const shadowClassName = css`
     width: 350px;
@@ -145,6 +146,7 @@ const LocalDiscoverComponent = ({
 export const Discover = () => {
     const router = React.useContext(XRouterContext)!;
     const client = useClient();
+    const modalBox = React.useContext(XModalBoxContext);
 
     const { exclude, selected } = router.query;
 
@@ -176,12 +178,14 @@ export const Discover = () => {
     };
 
     let onContinueClick = async (data: any) => {
-        router.push(
-            `/onboarding/discover?${qs.stringify({
-                selected: [...rootState.selected.values(), ...data.selected.values()],
-                exclude: [...rootState.exclude.values(), ...data.exclude.values()],
-            })}`,
-        );
+        if (!modalBox) {
+            router.push(
+                `/onboarding/discover?${qs.stringify({
+                    selected: [...rootState.selected.values(), ...data.selected.values()],
+                    exclude: [...rootState.exclude.values(), ...data.exclude.values()],
+                })}`,
+            );
+        }
 
         setRootState({
             ...nextLocalState,

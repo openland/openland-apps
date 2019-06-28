@@ -74,6 +74,7 @@ interface InputProps extends XInputBasicProps {
     ref?: any;
     setFocusOnError?: boolean;
     hideErrorText?: boolean;
+    valid?: boolean;
 }
 
 export const InputField = (props: InputProps) => {
@@ -94,15 +95,14 @@ export const InputField = (props: InputProps) => {
                 className={cx(
                     InputStyledClassName,
                     field.input.value !== '' && InputValueStyledClassName,
-                    field.input.invalid && InputInvalidStyledClassName,
+                    (props.invalid || field.input.invalid) && InputInvalidStyledClassName,
                 )}
             />
-            {field.input.invalid &&
-                !hideErrorText && (
-                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                        {field.input.errorText}
-                    </XView>
-                )}
+            {field.input.invalid && !hideErrorText && (
+                <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                    {field.input.errorText}
+                </XView>
+            )}
         </>
     );
 };

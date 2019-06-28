@@ -10,6 +10,7 @@ import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { InitTexts } from 'openland-web/pages/init/_text';
+import * as Cookie from 'js-cookie';
 import {
     Title,
     ButtonsWrapper,
@@ -22,6 +23,8 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -36,7 +39,13 @@ type CreateWithEmailProps = {
 };
 
 type CreateWithEmailInnerProps = {
+    roomContainerParams: RoomContainerParams;
     loginEmailStart: (a: string) => void;
+};
+
+type CreateWithEmailOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
 };
 
 export const RoomCreateWithEmail = ({
@@ -100,9 +109,16 @@ export const RoomCreateWithEmail = ({
                     placeholder={InitTexts.auth.emailPlaceholder}
                     {...emailField.input}
                 />
-                {emailError && !form.error && <ErrorText>{emailError}</ErrorText>}
+
+                {((emailField.input.invalid && emailField.input.errorText) || emailError) && (
+                    <XErrorMessage2 message={emailField.input.errorText || emailError} />
+                )}
             </ButtonsWrapper>
-            <ButtonsWrapper marginTop={52} marginBottom={84} width={280}>
+            <ButtonsWrapper
+                marginTop={emailField.input.invalid && emailField.input.errorText ? 52 - 26 : 52}
+                marginBottom={84}
+                width={280}
+            >
                 <XVertical alignItems="center">
                     <XButton
                         dataTestId="continue-button"
@@ -132,7 +148,12 @@ export const WebSignUpCreateWithEmail = ({
     const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
 
-    let emailField = useField('input.email', emailValue, form);
+    let emailField = useField('input.email', emailValue, form, [
+        {
+            checkIsValid: value => value !== '',
+            text: 'Please enter your email address',
+        },
+    ]);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
@@ -168,15 +189,22 @@ export const WebSignUpCreateWithEmail = ({
                     <InputField
                         autofocus
                         width={isMobile ? undefined : 300}
-                        invalid={emailError !== ''}
                         dataTestId="email"
                         type="email"
                         title={InitTexts.auth.emailPlaceholder}
                         field={emailField}
+                        hideErrorText
                     />
-                    {emailError && <ErrorText>{emailError}</ErrorText>}
+                    {(emailField.input.invalid && emailField.input.errorText) ||
+                        (emailError && (
+                            <XErrorMessage2 message={emailField.input.errorText || emailError} />
+                        ))}
                 </ButtonsWrapper>
-                <ButtonsWrapper marginTop={20}>
+                <ButtonsWrapper
+                    marginTop={
+                        emailField.input.invalid && emailField.input.errorText ? 40 - 26 : 40
+                    }
+                >
                     <XVertical alignItems="center">
                         <XButton
                             dataTestId="continue-button"
@@ -199,7 +227,7 @@ function validateEmail(email: string) {
     return re.test(String(email).toLowerCase());
 }
 
-export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }) => {
+export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterProps) => {
     const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
     let router = React.useContext(XRouterContext)!;
 
@@ -219,21 +247,25 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
 
             await fireEmail(email);
             setTimeout(() => {
-                router.push('/auth2/ask-activation-code');
+                router.push('/authorization/ask-activation-code');
             }, 0);
         }
     };
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Ask email" />
             {!props.roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/create-new-account');
+                                if (Cookie.get('x-openland-create-new-account')) {
+                                    router.replace('/authorization/create-new-account');
+                                } else {
+                                    router.replace('/');
+                                }
                             }}
                             onSkip={null}
                         />
@@ -243,7 +275,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
                 </>
             )}
             {props.roomView && (
-                <RoomSignupContainer pageMode="CreateFromEmail">
+                <RoomSignupContainer pageMode="CreateFromEmail" {...props.roomContainerParams!!}>
                     <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
                 </RoomSignupContainer>
             )}
@@ -251,27 +283,31 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
     );
 };
 
-export default withApp('Home', 'viewer', () => (
-    <AskEmailPage
-        roomView={false}
-        signin={true}
-        emailError={''}
-        emailValue={''}
-        fireEmail={() => {
-            //
-        }}
-        setEmailSending={() => {
-            //
-        }}
-        setEmailError={() => {
-            //
-        }}
-        setEmailSent={() => {
-            //
-        }}
-        setEmailValue={() => {
-            //
-        }}
-        emailSending={true}
-    />
-));
+export default withApp(
+    'Home',
+    'viewer',
+    () =>
+        null,
+        // <AskEmailPage
+        //     roomView={false}
+        //     signin={true}
+        //     emailError={''}
+        //     emailValue={''}
+        //     fireEmail={() => {
+        //         //
+        //     }}
+        //     setEmailSending={() => {
+        //         //
+        //     }}
+        //     setEmailError={() => {
+        //         //
+        //     }}
+        //     setEmailSent={() => {
+        //         //
+        //     }}
+        //     setEmailValue={() => {
+        //         //
+        //     }}
+        //     emailSending={true}
+        // />
+);

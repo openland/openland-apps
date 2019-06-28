@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 import BackButton from 'openland-icons/arrow-left.svg';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const skipClassName = css`
     letter-spacing: -0.078px;
@@ -27,6 +28,8 @@ export const BackSkipLogo = ({
     onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: ((event: React.MouseEvent) => void) | null;
 }) => {
+    const modalBox = React.useContext(XModalBoxContext);
+
     return (
         <XView
             flexDirection="row"
@@ -35,43 +38,35 @@ export const BackSkipLogo = ({
             paddingLeft={50}
             paddingRight={50}
             position="relative"
-            zIndex={1000}
+            height={42}
+            zIndex={900}
         >
-            {onBack ? (
+            {onBack && !modalBox ? (
                 <XView cursor="pointer" zIndex={1001}>
                     <BackButton onClick={onBack} />
                 </XView>
             ) : (
-                <div />
-            )}
+                    <div />
+                )}
 
             {!noLogo && (
-                <>
-                    <div
-                        style={{
-                            height: 42,
-                        }}
-                    />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            margin: 'auto',
-                            width: 'fit-content',
-                        }}
-                    >
-                        <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-                    </div>
-                </>
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: modalBox ? 32 : 'calc(50% - 73px)',
+                        margin: 'auto',
+                    }}
+                >
+                    <XImage src="/static/landing/logotype.svg" width={146} height={42} />
+                </div>
             )}
-            {onSkip ? (
+            {onSkip && !modalBox ? (
                 <XView zIndex={1001}>
                     <Skip onClick={onSkip} />
                 </XView>
             ) : (
-                <div />
-            )}
+                    <div />
+                )}
         </XView>
     );
 };

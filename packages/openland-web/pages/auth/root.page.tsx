@@ -23,6 +23,13 @@ const getAppInvite = (router: any) => {
     return null;
 };
 
+const getOrgInvite = (router: any) => {
+    if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'join') {
+        return router.query.redirect.split('/')[2];
+    }
+    return null;
+};
+
 const checkIfIsSignInInvite = (router: any) => {
     return (
         router.query &&
@@ -39,6 +46,15 @@ const checkIfIsSignIn = (router: any) => {
     return router.path.endsWith('signin');
 };
 
+export type RoomContainerParams = {
+    text: string;
+    signupText: string;
+    linkText: string;
+    containerPath: string;
+    headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
+    onClick: (event: React.MouseEvent<any, MouseEvent>) => void;
+};
+
 export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
@@ -48,8 +64,11 @@ export default () => {
     const isSignInInvite = checkIfIsSignInInvite(router);
 
     if (getAppInvite(router)) {
-        console.log(getAppInvite(router));
         Cookie.set('x-openland-app-invite', getAppInvite(router));
+    }
+
+    if (getOrgInvite(router)) {
+        Cookie.set('x-openland-org-invite', getOrgInvite(router));
     }
 
     let isInvitePage = isSignInInvite;
@@ -66,6 +85,7 @@ export default () => {
     } else if (router.path.includes('ask-email')) {
         page = pages.askEmail;
     } else if (router.path.includes('create-new-account')) {
+        Cookie.set('x-openland-create-new-account', 'true');
         page = pages.createNewAccount;
     } else if (
         router.path.includes('enter-your-organization') ||
@@ -80,6 +100,10 @@ export default () => {
     }
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
+
+    const toggleSignin = React.useCallback(() => {
+        setSignin(!signin);
+    }, [signin]);
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
@@ -115,50 +139,53 @@ export default () => {
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
 
-    const fireEmail = async (emailToFire: string) => {
-        return new Promise(cb => {
-            Cookie.set('auth-type', 'email', { path: '/' });
-            if (redirect) {
-                Cookie.set('sign-redirect', redirect, { path: '/' });
-            }
-            createAuth0Client().passwordlessStart(
-                { connection: 'email', send: 'link', email: emailToFire },
-                (error: any, v) => {
-                    if (error) {
-                        setEmailSending(false);
-                        setEmailError(error.description);
-                    } else {
-                        setTimeout(() => {
+    const fireEmail = React.useCallback(
+        async (emailToFire: string) => {
+            return new Promise(cb => {
+                Cookie.set('auth-type', 'email', { path: '/' });
+                if (redirect) {
+                    Cookie.set('sign-redirect', redirect, { path: '/' });
+                }
+                createAuth0Client().passwordlessStart(
+                    { connection: 'email', send: 'link', email: emailToFire },
+                    (error: any, v) => {
+                        if (error) {
                             setEmailSending(false);
-                            setEmailSent(true);
+                            setEmailError(error.description);
+                        } else {
+                            setTimeout(() => {
+                                setEmailSending(false);
+                                setEmailSent(true);
 
-                            if (cb) {
-                                cb();
-                            }
-                        }, 500);
-                    }
-                },
-            );
-        });
-    };
+                                if (cb) {
+                                    cb();
+                                }
+                            }, 500);
+                        }
+                    },
+                );
+            });
+        },
+        [redirect],
+    );
 
-    const fireGoogle = async () => {
+    const fireGoogle = React.useCallback(async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: redirect ? redirect : 'none',
         });
-    };
+    }, []);
 
-    const loginWithGoogle = () => {
+    const loginWithGoogle = React.useCallback(() => {
         trackEvent(checkIfIsSignIn(router) ? 'signin_google_action' : 'signup_google_action');
         setGoogleStarting(true);
         setTimeout(() => {
             fireGoogle();
         }, 0);
-    };
+    }, []);
 
-    const loginWithEmail = () => {
+    const loginWithEmail = React.useCallback(() => {
         setEmail(true);
         setEmailValue('');
         setEmailSending(false);
@@ -166,9 +193,9 @@ export default () => {
         setEmailSent(false);
 
         setTimeout(() => {
-            router.push('/auth2/ask-email');
+            router.push('/authorization/ask-email');
         }, 0);
-    };
+    }, []);
 
     if (router.query.email) {
         let noValue = router.query.email === 'true';
@@ -199,9 +226,9 @@ export default () => {
         if (canUseDOM) {
             if (!noValue) {
                 fireEmail(router.query.email);
-                router.push('/auth2/ask-email');
+                router.push('/authorization/ask-email');
             } else {
-                router.push('/auth2/ask-email');
+                router.push('/authorization/ask-email');
             }
         }
     } else if (router.query.google) {
@@ -221,6 +248,30 @@ export default () => {
         page = pages.loading;
     }
 
+    let signupText = signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
+    let linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
+
+    let containerPath = (signin ? '/signup' : '/signin') + redirect;
+    let headerStyle: 'signin' | 'signup' | 'profile' | 'organization' = signin
+        ? 'signin'
+        : 'signup';
+
+    if (isInvitePage) {
+        containerPath = (isInvitePageSignin ? '/signin' : '/signup') + redirect;
+        headerStyle = isInvitePageSignin ? 'signup' : 'signin';
+        signupText = isInvitePageSignin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
+        linkText = isInvitePageSignin ? InitTexts.auth.signup : InitTexts.auth.signin;
+    }
+
+    const roomContainerParams: RoomContainerParams = {
+        text: signupText,
+        signupText,
+        linkText,
+        containerPath,
+        headerStyle,
+        onClick: toggleSignin,
+    };
+
     return (
         <>
             {page === pages.loading && <XLoader />}
@@ -230,7 +281,7 @@ export default () => {
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
                     onAcceptInvite={() => {
-                        router.push('/auth2/create-new-account');
+                        router.push('/authorization/create-new-account');
                     }}
                 />
             )}
@@ -240,6 +291,7 @@ export default () => {
                     key={signin ? 'signin-track' : 'signup-track'}
                 >
                     <CreateNewAccountPage
+                        roomContainerParams={roomContainerParams}
                         roomView={roomView}
                         onLoginClick={() => {
                             setSignin(true);
@@ -256,6 +308,7 @@ export default () => {
             {page === pages.askEmail && (
                 <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                     <AskEmailPage
+                        roomContainerParams={roomContainerParams}
                         roomView={roomView}
                         fireEmail={fireEmail}
                         signin={signin}
@@ -272,6 +325,7 @@ export default () => {
             {page === pages.askActivationCode && (
                 <XTrack event="code_view">
                     <AskActivationPage
+                        roomContainerParams={roomContainerParams}
                         roomView={roomView}
                         signin={signin}
                         resendCodeClick={async () => {
@@ -290,9 +344,18 @@ export default () => {
                     />
                 </XTrack>
             )}
-            {page === pages.introduceYourself && <IntroduceYourselfPage roomView={roomView} />}
+            {page === pages.introduceYourself && (
+                <IntroduceYourselfPage
+                    roomView={roomView}
+                    roomContainerParams={roomContainerParams}
+                />
+            )}
             {page === pages.enterYourOrganization && (
-                <EnterYourOrganizationPage roomView={roomView} inviteKey={appInviteKey} />
+                <EnterYourOrganizationPage
+                    roomView={roomView}
+                    inviteKey={appInviteKey}
+                    roomContainerParams={roomContainerParams}
+                />
             )}
         </>
     );

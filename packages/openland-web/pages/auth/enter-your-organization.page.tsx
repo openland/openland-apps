@@ -11,7 +11,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XButton } from 'openland-x/XButton';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import {
@@ -19,12 +18,49 @@ import {
     Title,
     ButtonsWrapper,
     SubTitle,
+    RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import * as Cookie from 'js-cookie';
+import { XInput } from 'openland-x/XInput';
+import IcInfo from 'openland-icons/ic-info.svg';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XPopper } from 'openland-x/XPopper';
+import Glamorous from 'glamorous';
+import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
+import { RoomContainerParams } from './root.page';
+
+type EnterYourOrganizationPageProps = { inviteKey?: string | null };
+
+type EnterYourOrganizationPageOuterProps = {
+    roomView: boolean;
+    roomContainerParams: RoomContainerParams;
+};
+
+const InfoText = Glamorous.span({
+    fontSize: 14,
+});
+const XIconWrapper = Glamorous.span({
+    fontSize: 20,
+    marginLeft: 11,
+
+    '& svg': {
+        marginBottom: -3,
+    },
+
+    '&:hover': {
+        cursor: 'pointer',
+        '& svg': {
+            '& > g > path:last-child': {
+                fill: '#1790ff',
+                opacity: 1,
+            },
+        },
+    },
+});
 
 const organizationInputClassName = css`
     width: 300px;
@@ -32,27 +68,6 @@ const organizationInputClassName = css`
         width: 250px;
     }
 `;
-
-const organizationInputErrorClassName = css`
-    display: flex;
-    align-self: flex-start;
-`;
-
-const ShowOrgError = ({ message }: { message: string }) => {
-    const [onceRender, setOnceRender] = React.useState(false);
-
-    if (!onceRender) {
-        trackEvent('signup_org_error');
-
-        setOnceRender(true);
-    }
-
-    return (
-        <div className={cx(organizationInputClassName, organizationInputErrorClassName)}>
-            <XErrorMessage message={message} />
-        </div>
-    );
-};
 
 const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: string | null }) => {
     const [sending, setSending] = React.useState(false);
@@ -66,38 +81,55 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                if (organizationField.value) {
-                    setSending(true);
-                    let result = await client.mutateCreateOrganization({
-                        input: {
-                            personal: false,
-                            name: organizationField.value,
-                            // id: data.id,
-                        },
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            if (organizationField.value) {
+                setSending(true);
+                let result = await client.mutateCreateOrganization({
+                    input: {
+                        personal: false,
+                        name: organizationField.value,
+                        // id: data.id,
+                    },
+                });
+
+                if (Cookie.get('x-openland-app-invite')) {
+                    // app invite invite
+                    const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                    await client.mutateOrganizationActivateByInvite({
+                        inviteKey,
+                    });
+                    await client.refetchAccount();
+
+                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                    trackEvent('registration_complete');
+                    Cookie.remove('x-openland-app-invite');
+                    Cookie.remove('x-openland-create-new-account');
+                    window.location.href = '/onboarding/start';
+                } else if (Cookie.get('x-openland-invite')) {
+                    // room invite
+                    const inviteKey = Cookie.get('x-openland-invite')!!;
+
+                    const room = await client.mutateRoomJoinInviteLink({
+                        invite: inviteKey,
                     });
 
-                    const inviteKey = Cookie.get('x-openland-app-invite');
-                    if (inviteKey) {
-                        await client.mutateOrganizationActivateByInvite({
-                            inviteKey,
-                        });
-                        await client.refetchAccount();
-                        Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                    await client.refetchAccount();
 
-                        trackEvent('registration_complete');
-                        window.location.href = '/onboarding/start';
-                    } else {
-                        window.location.href = '/';
-                        trackEvent('registration_complete');
-                    }
+                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                    trackEvent('registration_complete');
+
+                    Cookie.remove('x-openland-invite');
+                    Cookie.remove('x-openland-create-new-account');
+                    window.location.href = `/mail/${room.join.id}`;
+                } else {
+                    Cookie.remove('x-openland-create-new-account');
+                    window.location.href = '/';
+                    trackEvent('registration_complete');
                 }
-            });
-        },
-        [organizationField.value],
-    );
+            }
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Find your organization or create a new one ';
 
@@ -105,6 +137,87 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
         doConfirm();
     };
 
+    const content = (
+        <XTrack event="signup_org_view">
+            <ContentWrapper>
+                <Title roomView={roomView} className="title">
+                    {InitTexts.create_organization.title}
+                </Title>
+                <SubTitle className="subtitle">{subtitle}</SubTitle>
+
+                <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
+                    <XVertical alignItems="center" separator="none">
+                        <XVertical separator="none" alignItems="center">
+                            <XVertical alignItems="center" separator="none">
+                                {!roomView && (
+                                    <XView width={360}>
+                                        <InputField
+                                            title="Organization name"
+                                            dataTestId="organization"
+                                            flexGrow={1}
+                                            className={organizationInputClassName}
+                                            field={organizationField}
+                                        />
+                                        {organizationField.input.invalid &&
+                                            organizationField.input.errorText && (
+                                                <XErrorMessage2
+                                                    message={organizationField.input.errorText}
+                                                />
+                                            )}
+                                    </XView>
+                                )}
+                            </XVertical>
+                        </XVertical>
+                        {roomView && (
+                            <XView width={330}>
+                                <XHorizontal alignItems="center" separator="none">
+                                    <XInput
+                                        invalid={!!form.error}
+                                        size="large"
+                                        title="Organization name"
+                                        dataTestId="organization"
+                                        flexGrow={1}
+                                        {...organizationField.input}
+                                    />
+                                    <XPopper
+                                        content={
+                                            <InfoText>
+                                                To register as an individual, simply enter your name
+                                            </InfoText>
+                                        }
+                                        showOnHover={true}
+                                        placement="top"
+                                        style="dark"
+                                    >
+                                        <XIconWrapper>
+                                            <IcInfo />
+                                        </XIconWrapper>
+                                    </XPopper>
+                                </XHorizontal>
+                                {organizationField.input.invalid &&
+                                    organizationField.input.errorText && (
+                                        <XErrorMessage2
+                                            message={organizationField.input.errorText}
+                                        />
+                                    )}
+                            </XView>
+                        )}
+
+                        <XView marginTop={50}>
+                            <XButton
+                                loading={sending}
+                                dataTestId="continue-button"
+                                style="primary"
+                                text={InitTexts.create_organization.continue}
+                                size="large"
+                                onClick={doConfirm}
+                            />
+                        </XView>
+                    </XVertical>
+                </ButtonsWrapper>
+            </ContentWrapper>
+        </XTrack>
+    );
     return (
         <XShortcuts
             handlerMap={{
@@ -117,44 +230,16 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
                 },
             }}
         >
-            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                <XTrack event="signup_org_view">
-                    <ContentWrapper>
-                        <Title roomView={roomView} className="title">
-                            {InitTexts.create_organization.title}
-                        </Title>
-                        <SubTitle className="subtitle">{subtitle}</SubTitle>
-
-                        <ButtonsWrapper marginBottom={84} marginTop={34}>
-                            <XVertical alignItems="center" separator="none">
-                                <XVertical separator="none" alignItems="center">
-                                    <XVertical alignItems="center" separator="none">
-                                        <InputField
-                                            title="Organization name"
-                                            dataTestId="organization"
-                                            flexGrow={1}
-                                            className={organizationInputClassName}
-                                            field={organizationField}
-                                        />
-                                    </XVertical>
-                                    {/*{form.error && <ShowOrgError message={form.error} />}*/}
-                                </XVertical>
-
-                                <XView marginTop={50}>
-                                    <XButton
-                                        loading={sending}
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={InitTexts.create_organization.continue}
-                                        size="large"
-                                        onClick={doConfirm}
-                                    />
-                                </XView>
-                            </XVertical>
-                        </ButtonsWrapper>
-                    </ContentWrapper>
-                </XTrack>
-            </XView>
+            {roomView && (
+                <XView alignItems="center" flexGrow={1} justifyContent="center">
+                    {content}
+                </XView>
+            )}
+            {!roomView && (
+                <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
+                    {content}
+                </XView>
+            )}
         </XShortcuts>
     );
 };
@@ -162,33 +247,53 @@ const CreateOrganizationFormInner = (props: { roomView: boolean; inviteKey?: str
 export const EnterYourOrganizationPage = ({
     inviteKey,
     roomView,
-}: { inviteKey?: string | null } & { roomView: boolean }) => {
+    roomContainerParams,
+}: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
+    const client = useClient();
     let router = React.useContext(XRouterContext)!;
+    const me = client.useAccount();
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <XDocumentHead title="Enter organization" />
             {!roomView && (
                 <>
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth2/introduce-yourself');
+                                router.replace('/authorization/introduce-yourself');
                             }}
-                            onSkip={() => {
-                                router.push('/onboarding/start');
+                            onSkip={async () => {
+                                if (me.me) {
+                                    await client.mutateCreateOrganization({
+                                        input: {
+                                            personal: true,
+                                            name: me.me.name,
+                                        },
+                                    });
+                                }
+
+                                Cookie.remove('x-openland-create-new-account');
+                                window.location.href = '/';
+                                trackEvent('registration_complete');
                             }}
                         />
                     </XView>
+                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
                 </>
             )}
 
-            <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+            {roomView && (
+                <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
+                    <CreateOrganizationFormInner roomView={roomView} inviteKey={inviteKey} />
+                </RoomSignupContainer>
+            )}
         </XView>
     );
 };
 
 export default withApp('Home', 'viewer', () => {
-    return <EnterYourOrganizationPage roomView={false} />;
+    return null;
+    // return <EnterYourOrganizationPage roomView={false} />;
 });

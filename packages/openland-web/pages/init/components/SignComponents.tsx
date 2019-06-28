@@ -544,7 +544,7 @@ interface RoomSignupContainerProps {
     pageMode: PageModeT;
     headerStyle?: 'signin' | 'signup' | 'profile' | 'organization';
     text?: string;
-    path?: string;
+    onClick: (event: React.MouseEvent<any, MouseEvent>) => void;
     linkText?: string;
     children?: any;
 }
@@ -554,7 +554,7 @@ export const RoomSignupContainer = (props: RoomSignupContainerProps) => (
         {props.text && (
             <RoomToggler>
                 <RoomTogglerText>{props.text}</RoomTogglerText>
-                <RoomTogglerLink path={props.path}>{props.linkText}</RoomTogglerLink>
+                <RoomTogglerLink onClick={props.onClick}>{props.linkText}</RoomTogglerLink>
             </RoomToggler>
         )}
         <RoomSignupBox>

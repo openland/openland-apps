@@ -57,12 +57,10 @@ export const PromoBanner = (props: { onClise: () => void }) => {
             justifyContent="center"
         >
             <XView fontSize={15} color="#fff" whiteSpace="nowrap" marginRight={42}>
-                <span className={titleClassName}>
-                    Want to use all Openland features? Install our free apps
-                </span>
+                <span className={titleClassName}>Install Openland apps</span>
             </XView>
             {os === 'Mac' && (
-                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={16}>
+                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
                     <ActiveButton
                         text="Mac"
                         style="primary"
@@ -73,7 +71,7 @@ export const PromoBanner = (props: { onClise: () => void }) => {
                 </XView>
             )}
             {os === 'Windows' && (
-                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={16}>
+                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
                     <ActiveButton
                         text="Windows"
                         style="primary"
@@ -84,7 +82,7 @@ export const PromoBanner = (props: { onClise: () => void }) => {
                 </XView>
             )}
             {os === 'Linux' && (
-                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={16}>
+                <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
                     <ActiveButton
                         text="Linux"
                         style="primary"
@@ -94,7 +92,7 @@ export const PromoBanner = (props: { onClise: () => void }) => {
                     />
                 </XView>
             )}
-            <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={16}>
+            <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
                 <ActiveButton
                     text="iOS"
                     style="primary"
