@@ -231,7 +231,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
 
             await fireEmail(email);
             setTimeout(() => {
-                router.push('/auth/ask-activation-code');
+                router.push('/auth2/ask-activation-code');
             }, 0);
         }
     };
@@ -245,7 +245,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & { roomView: boolean }
                     <XView marginTop={34}>
                         <BackSkipLogo
                             onBack={() => {
-                                router.replace('/auth/create-new-account');
+                                router.replace('/auth2/create-new-account');
                             }}
                             onSkip={null}
                         />

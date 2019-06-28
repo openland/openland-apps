@@ -155,7 +155,7 @@ export default () => {
     const fireGoogle = React.useCallback(async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
-            connection: 'google-oauth',
+            connection: 'google-oauth2',
             state: redirect ? redirect : 'none',
         });
     }, []);
@@ -176,7 +176,7 @@ export default () => {
         setEmailSent(false);
 
         setTimeout(() => {
-            router.push('/auth/ask-email');
+            router.push('/auth2/ask-email');
         }, 0);
     }, []);
 
@@ -209,9 +209,9 @@ export default () => {
         if (canUseDOM) {
             if (!noValue) {
                 fireEmail(router.query.email);
-                router.push('/auth/ask-email');
+                router.push('/auth2/ask-email');
             } else {
-                router.push('/auth/ask-email');
+                router.push('/auth2/ask-email');
             }
         }
     } else if (router.query.google) {
@@ -240,7 +240,7 @@ export default () => {
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
                     onAcceptInvite={() => {
-                        router.push('/auth/create-new-account');
+                        router.push('/auth2/create-new-account');
                     }}
                 />
             )}
