@@ -178,6 +178,8 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                 let title = chat.__typename === 'PrivateRoom' ? message.sender.name : chat.title;
                 let photo = chat.__typename === 'PrivateRoom' ? message.sender.photo : chat.photo;
 
+                const emojifyMessage = (msg: string) => emoji({ src: msg, size: 14 });
+
                 return (
                     <DialogView
                         item={{
@@ -190,6 +192,8 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                                 size: 20,
                                 cache: true,
                             }),
+                            senderEmojify: message.sender && emojifyMessage(message.sender.name),
+                            messageEmojify: message.message && emojifyMessage(message.message),
                             title,
                             key: chat.id,
                             flexibleId: chat.id,
