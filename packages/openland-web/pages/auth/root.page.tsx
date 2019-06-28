@@ -48,7 +48,6 @@ export default () => {
     const isSignInInvite = checkIfIsSignInInvite(router);
 
     if (getAppInvite(router)) {
-        console.log(getAppInvite(router));
         Cookie.set('x-openland-app-invite', getAppInvite(router));
     }
 
