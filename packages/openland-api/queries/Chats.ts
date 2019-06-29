@@ -513,6 +513,7 @@ export const ChatInitQuery = gql`
             id
         }
     }
+    ${UserBadge}
     ${FullMessage}
     ${UserTiny}
     ${UserShort}

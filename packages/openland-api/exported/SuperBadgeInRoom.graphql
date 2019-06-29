@@ -1,0 +1,6 @@
+query SuperBadgeInRoom($roomId: ID!, $userId: ID!) {
+  superBadgeInRoom(roomId: $roomId, userId: $userId) {
+    __typename
+    ...UserBadge
+  }
+}

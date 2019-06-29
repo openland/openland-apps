@@ -139,6 +139,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage | null {
         return this.useQuery(Source.UserStorageQuery, variables, opts);
     }
+    async queryBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: OperationParameters): Promise<Types.BadgeInRoom> {
+        return this.client.query(Source.BadgeInRoomQuery, variables, opts);
+    }
+    async refetchBadgeInRoom(variables: Types.BadgeInRoomVariables): Promise<Types.BadgeInRoom> {
+        return this.refetch(Source.BadgeInRoomQuery, variables);
+    }
+    useBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: QueryWatchParameters): Types.BadgeInRoom {
+        return this.useQuerySuspense(Source.BadgeInRoomQuery, variables, opts);
+    }
+    useWithoutLoaderBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: QueryWatchParameters): Types.BadgeInRoom | null {
+        return this.useQuery(Source.BadgeInRoomQuery, variables, opts);
+    }
+    async querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
+        return this.client.query(Source.SuperBadgeInRoomQuery, variables, opts);
+    }
+    async refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables): Promise<Types.SuperBadgeInRoom> {
+        return this.refetch(Source.SuperBadgeInRoomQuery, variables);
+    }
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: QueryWatchParameters): Types.SuperBadgeInRoom {
+        return this.useQuerySuspense(Source.SuperBadgeInRoomQuery, variables, opts);
+    }
+    useWithoutLoaderSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: QueryWatchParameters): Types.SuperBadgeInRoom | null {
+        return this.useQuery(Source.SuperBadgeInRoomQuery, variables, opts);
+    }
     async queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables, opts);
     }

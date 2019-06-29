@@ -16,6 +16,9 @@ export const RoomFull = gql`
             pinnedMessage {
                 ...FullMessage
             }
+            myBadge {
+                ...UserBadge
+            }
         }
         ... on SharedRoom {
             id
@@ -64,6 +67,9 @@ export const RoomFull = gql`
             pinnedMessage {
                 ...FullMessage
             }
+            myBadge {
+                ...UserBadge
+            }
         }
     }
     ${FullMessage}
@@ -80,6 +86,9 @@ export const RoomFullWithoutMembers = gql`
             settings {
                 id
                 mute
+            }
+            myBadge {
+                ...UserBadge
             }
         }
         ... on SharedRoom {
@@ -113,7 +122,11 @@ export const RoomFullWithoutMembers = gql`
             pinnedMessage {
                 ...FullMessage
             }
+            myBadge {
+                ...UserBadge
+            }
         }
     }
+    ${UserBadge}
     ${FullMessage}
 `;

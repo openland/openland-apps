@@ -2,6 +2,10 @@ fragment RoomShort on Room {
   __typename
   ... on PrivateRoom {
     id
+    myBadge {
+      __typename
+      ...UserBadge
+    }
     pinnedMessage {
       __typename
       ...FullMessage
@@ -24,6 +28,10 @@ fragment RoomShort on Room {
     kind
     membersCount
     membership
+    myBadge {
+      __typename
+      ...UserBadge
+    }
     organization {
       __typename
       ...OrganizationShort

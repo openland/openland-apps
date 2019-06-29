@@ -93,6 +93,15 @@ export const BadgeUnsetPrimaryMutation = gql`
     ${UserBadge}
 `;
 
+export const BadgeInRoomQuery = gql`
+    query BadgeInRoom($roomId: ID!) {
+        badgeInRoom(roomId: $roomId) {
+            ...UserBadge
+        }
+    }
+    ${UserBadge}
+`;
+
 //
 // Super-admin methods
 //
@@ -184,6 +193,15 @@ export const SuperBadgeUnverifyMutation = gql`
                     ...UserBadge
                 }
             }
+        }
+    }
+    ${UserBadge}
+`;
+
+export const SuperBadgeInRoomQuery = gql`
+    query SuperBadgeInRoom($roomId: ID!, $userId: ID!) {
+        superBadgeInRoom(roomId: $roomId, userId: $userId) {
+            ...UserBadge
         }
     }
     ${UserBadge}

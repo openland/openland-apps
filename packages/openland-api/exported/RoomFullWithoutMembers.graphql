@@ -2,6 +2,10 @@ fragment RoomFullWithoutMembers on Room {
   __typename
   ... on PrivateRoom {
     id
+    myBadge {
+      __typename
+      ...UserBadge
+    }
     settings {
       __typename
       id
@@ -21,6 +25,10 @@ fragment RoomFullWithoutMembers on Room {
     kind
     membersCount
     membership
+    myBadge {
+      __typename
+      ...UserBadge
+    }
     organization {
       __typename
       ...OrganizationMedium

@@ -192,7 +192,8 @@ export class ConversationEngine implements MessageSendHandler {
     canSendMessage?: boolean;
     isChannel?: boolean;
     isPrivate?: boolean;
-    user?: Types.ChatInit_room_PrivateRoom_user
+    user?: Types.ChatInit_room_PrivateRoom_user;
+    badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
@@ -250,6 +251,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = messages;
 
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
+        this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
         this.canPin = this.canEdit || (initialChat.room && initialChat.room.__typename === 'PrivateRoom') || false;
         this.canSendMessage = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL' ? initialChat.room.canSendMessage : true;
@@ -751,6 +753,7 @@ export class ConversationEngine implements MessageSendHandler {
                 senderName: this.engine.user.name,
                 sender: this.engine.user,
                 senderPhoto: this.engine.user.photo ? this.engine.user.photo : undefined,
+                senderBadge: this.badge,
                 isOut: true,
                 isSending: true,
                 text: src.message ? src.message : undefined,

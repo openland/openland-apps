@@ -1,4 +1,4 @@
-import { FullMessage, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_spans, UserBadge } from 'openland-api/Types';
 import { DataSourceMessageItem } from './ConversationEngine';
 
 export interface PendingMessage {
@@ -15,6 +15,7 @@ export interface PendingMessage {
     imageSize?: { width: number, height: number };
     failed?: boolean;
     quoted?: DataSourceMessageItem[];
+    senderBadge?: UserBadge;
 }
 
 export type ModelMessage = PendingMessage | FullMessage;

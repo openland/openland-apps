@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { FullMessage } from './Message';
+import { UserBadge } from './UserBadge';
 
 export const RoomShort = gql`
     fragment RoomShort on Room {
@@ -14,6 +15,9 @@ export const RoomShort = gql`
             }
             pinnedMessage {
                 ...FullMessage
+            }
+            myBadge {
+                ...UserBadge
             }
         } 
         ... on SharedRoom {
@@ -37,7 +41,11 @@ export const RoomShort = gql`
                 id
                 mute
             }
+            myBadge {
+                ...UserBadge
+            }
         }
     }
+    ${UserBadge}
     ${FullMessage}
 `;
