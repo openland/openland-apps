@@ -25,7 +25,7 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
                 </XScrollView3>
             ))
         }
-    } else if (url === '/onboarding_discover') {
+    } else if (url === '/onboarding_send_first_message') {
         return () => {
             showModalBox({ fullScreen: true }, () => <Discover />)
         }
