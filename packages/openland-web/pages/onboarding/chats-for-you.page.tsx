@@ -78,7 +78,16 @@ const ChatsItem = ({
 
 const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedRoom[] }) => {
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+    const [joinLoader, setJoinLoader] = React.useState(false);
+    let router = React.useContext(XRouterContext)!;
     const allRoomsIds = rooms.map(({ id }) => id);
+    const client = useClient();
+
+    const join = async () => {
+        setJoinLoader(true);
+        await client.mutateRoomsJoin({ roomsIds: selectedIds });
+        await router.push('/');
+    };
 
     const selectedLength = selectedIds.length;
 
@@ -149,6 +158,8 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                     text={joinButtonText}
                     style="primary"
                     size="large"
+                    loading={joinLoader}
+                    onClick={join}
                     enabled={!!selectedLength}
                 />
             </XView>
