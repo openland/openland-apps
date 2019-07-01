@@ -72,12 +72,9 @@ const LocalDiscoverComponent = ({
     const router = React.useContext(XRouterContext)!;
 
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
-    React.useLayoutEffect(
-        () => {
-            setLocalSelected(selected);
-        },
-        [selected],
-    );
+    React.useLayoutEffect(() => {
+        setLocalSelected(selected);
+    }, [selected]);
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -94,12 +91,9 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
-    const onMyContinueClick = React.useCallback(
-        () => {
-            onContinueClick(localSelected);
-        },
-        [localSelected],
-    );
+    const onMyContinueClick = React.useCallback(() => {
+        onContinueClick(localSelected);
+    }, [localSelected]);
 
     if (!group) {
         return null;
@@ -180,15 +174,12 @@ export const Discover = () => {
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    React.useEffect(
-        () => {
-            if (!discoverDone.betaIsDiscoverDone) {
-                setRootSelected(arrowify(selected));
-                setRootExclude(arrowify(exclude));
-            }
-        },
-        [router.query.selected, router.query.exclude],
-    );
+    React.useEffect(() => {
+        if (!discoverDone.betaIsDiscoverDone) {
+            setRootSelected(arrowify(selected));
+            setRootExclude(arrowify(exclude));
+        }
+    }, [router.query.selected, router.query.exclude]);
 
     const currentPage = client.useDiscoverNextPage(
         {
@@ -203,6 +194,20 @@ export const Discover = () => {
             client.refetchDiscoverIsDone();
         });
     }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
+
+    // Hack to reset discover on /onboarding/discover page
+    if (
+        rootExclude.length === 0 &&
+        discoverDone.betaIsDiscoverDone &&
+        currentPage.betaNextDiscoverPage!!.tagGroup!!
+    ) {
+        client.mutateBetaNextDiscoverReset().then(() => {
+            client.refetchSuggestedRooms().then(() => {
+                client.refetchDiscoverIsDone();
+            });
+        });
+        return null;
+    }
 
     if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
