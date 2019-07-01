@@ -412,7 +412,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                 }
                 if (richAttach && !message.isService) {
-                    if (richAttach.titleLink &&
+                    if (
+                        richAttach.titleLink &&
                         richAttach.titleLink.startsWith('https://app.openland.com/o') &&
                         richAttach.titleLink.includes('listings#')
                     ) {

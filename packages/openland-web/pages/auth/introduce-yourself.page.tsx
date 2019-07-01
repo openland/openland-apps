@@ -10,7 +10,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
+import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
 import {
     Title,
     ButtonsWrapper,
@@ -52,40 +52,42 @@ export const CreateProfileFormInner = (
         },
     ]);
     let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
-    let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
+    let photoRef = useField<StoredFileT | null>('input.photoRef', null, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await client.mutateProfileCreate({
-                input: {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                    photoRef:
-                        photoRef.value && photoRef.value.uuid
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await client.mutateProfileCreate({
+                    input: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        photoRef: photoRef.value
                             ? {
-                                  ...photoRef.value,
+                                  ...(photoRef.value as any),
                                   isImage: undefined,
                                   width: undefined,
                                   height: undefined,
                               }
                             : undefined,
-                },
-            });
-            await client.refetchAccount();
+                    },
+                });
+                await client.refetchAccount();
 
-            if (firstName.value) {
-                setSending(true);
+                if (firstName.value) {
+                    setSending(true);
 
-                if (Cookie.get('x-openland-org-invite')) {
-                    const orgInvite = Cookie.get('x-openland-org-invite');
-                    Cookie.remove('x-openland-org-invite');
-                    window.location.href = `/join/${orgInvite}`;
-                } else {
-                    router.push('/authorization/enter-your-organization');
+                    if (Cookie.get('x-openland-org-invite')) {
+                        const orgInvite = Cookie.get('x-openland-org-invite');
+                        Cookie.remove('x-openland-org-invite');
+                        window.location.href = `/join/${orgInvite}`;
+                    } else {
+                        router.push('/authorization/enter-your-organization');
+                    }
                 }
-            }
-        });
-    }, [firstName.value, lastName.value, photoRef.value]);
+            });
+        },
+        [firstName.value, lastName.value, photoRef.value],
+    );
 
     const onEnter = () => {
         doConfirm();
@@ -103,6 +105,7 @@ export const CreateProfileFormInner = (
                                 size="default"
                                 {...photoRef.input}
                                 darkMode={roomView ? undefined : true}
+                                initialUrl={prefill ? prefill.picture : undefined}
                             />
                         </XView>
 
@@ -231,16 +234,12 @@ const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => 
 
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
 
-    const data = client.useWithoutLoaderProfilePrefill();
-
-    const prefill = usePhotoPrefill && data ? data.prefill : null;
+    const data = client.useProfilePrefill();
 
     return (
         <CreateProfileFormInner
-            {...{
-                roomView,
-                prefill,
-            }}
+            roomView={roomView}
+            prefill={usePhotoPrefill && data ? data.prefill : null}
         />
     );
 };
@@ -252,27 +251,29 @@ export const IntroduceYourselfPage = ({
     const router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Introduce yourself" />
-            {!roomView && (
-                <>
-                    <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-                    <XView marginTop={34}>
-                        <BackSkipLogo
-                            onBack={() => {
-                                router.replace('/authorization/ask-activation-code');
-                            }}
-                            onSkip={null}
-                        />
-                    </XView>
-                    <CreateProfileFormRoot roomView={roomView} />
-                </>
-            )}
+            <React.Suspense fallback={null}>
+                <XDocumentHead title="Introduce yourself" />
+                {!roomView && (
+                    <>
+                        <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
+                        <XView marginTop={34}>
+                            <BackSkipLogo
+                                onBack={() => {
+                                    router.replace('/authorization/ask-activation-code');
+                                }}
+                                onSkip={null}
+                            />
+                        </XView>
+                        <CreateProfileFormRoot roomView={roomView} />
+                    </>
+                )}
 
-            {roomView && (
-                <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
-                    <CreateProfileFormRoot roomView={roomView} />
-                </RoomSignupContainer>
-            )}
+                {roomView && (
+                    <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
+                        <CreateProfileFormRoot roomView={roomView} />
+                    </RoomSignupContainer>
+                )}
+            </React.Suspense>
         </XView>
     );
 };

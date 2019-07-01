@@ -10,6 +10,7 @@ import { GlobalSearch_items } from 'openland-api/Types';
 import { DialogView } from './DialogView';
 import { emoji } from '../../../../openland-y-utils/emoji';
 import { extractPlaceholder } from '../../../../openland-y-utils/extractPlaceholder';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -18,7 +19,7 @@ const NoResultWrapper = Glamorous(XVertical)({
 const Image = Glamorous.div({
     width: 178,
     height: 155,
-    backgroundImage: 'url(\'/static/X/messenger/channels-search-empty.svg\')',
+    backgroundImage: "url('/static/X/messenger/channels-search-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
@@ -40,18 +41,23 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         fetchPolicy: 'cache-and-network',
     });
 
-    const messagesSearch = client.useMessagesSearch({
-        query: JSON.stringify({$and: [{text: props.variables.query}, {isService: false}]}),
-        sort: JSON.stringify([{createdAt: {order: 'desc'}}]),
-        first: 100
-    }, {
-        fetchPolicy: 'network-only'
-    });
+    const messagesSearch = client.useMessagesSearch(
+        {
+            query: JSON.stringify({
+                $and: [{ text: props.variables.query }, { isService: false }],
+            }),
+            sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
+            first: 100,
+        },
+        {
+            fetchPolicy: 'network-only',
+        },
+    );
     const messages = messagesSearch.messagesSearch.edges;
     const me = client.useAccount();
 
     if (!data || !data.items) {
-        return <XLoader loading={true}/>;
+        return <XLoader loading={true} />;
     }
 
     // Why?
@@ -98,7 +104,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     if (items.length === 0 && messages.length === 0) {
         return (
             <NoResultWrapper separator={10} alignItems="center">
-                <Image/>
+                <Image />
                 <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
             </NoResultWrapper>
         );
@@ -171,53 +177,60 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                     />
                 );
             })}
-            {messages.length > 0 && <XView height={1} alignSelf="stretch" backgroundColor="#ececec"/>}
-            {messages.map((i, index) => {
-                let message = i.node.message;
-                let chat = i.node.chat;
-                let title = chat.__typename === 'PrivateRoom' ? message.sender.name : chat.title;
-                let photo = chat.__typename === 'PrivateRoom' ? message.sender.photo : chat.photo;
+            <XWithRole role="feature-non-production">
+                {messages.length > 0 && (
+                    <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
+                )}
+                {messages.map(i => {
+                    const { message, chat } = i.node;
+                    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+                    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
 
-                const emojifyMessage = (msg: string) => emoji({ src: msg, size: 14 });
+                    const emojifyText = (msg: string) => emoji({ src: msg, size: 14 });
 
-                return (
-                    <DialogView
-                        item={{
-                            titleEmojify: emoji({
-                                src: title,
-                                size: 16,
-                            }),
-                            titlePlaceholderEmojify: emoji({
-                                src: extractPlaceholder(title),
-                                size: 20,
-                                cache: true,
-                            }),
-                            senderEmojify: message.sender && emojifyMessage(message.sender.name),
-                            messageEmojify: message.message && emojifyMessage(message.message),
-                            title,
-                            key: chat.id,
-                            flexibleId: chat.id,
-                            kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
-                            unread: 0,
-                            fallback: message.fallback,
-                            date: message.date,
-                            photo: photo || undefined,
-                            attachments: message.__typename === 'GeneralMessage' ? message.attachments : undefined,
-                            isService: false,
-                            isOut: message.sender.id === me.me!.id,
-                            sender: message.sender.name
-                        }}
-                        key={i.node.message.id}
-                    />
-                )
-            })}
+                    return (
+                        <DialogView
+                            item={{
+                                titleEmojify: emoji({
+                                    src: title,
+                                    size: 16,
+                                }),
+                                titlePlaceholderEmojify: emoji({
+                                    src: extractPlaceholder(title),
+                                    size: 20,
+                                    cache: true,
+                                }),
+                                senderEmojify: message.sender && emojifyText(message.sender.name),
+                                messageEmojify: message.message && emojifyText(message.message),
+                                message: message.message || undefined,
+                                title,
+                                key: chat.id,
+                                flexibleId: chat.id,
+                                kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
+                                unread: 0,
+                                fallback: message.fallback,
+                                date: message.date,
+                                photo: photo || undefined,
+                                attachments:
+                                    message.__typename === 'GeneralMessage'
+                                        ? message.attachments
+                                        : undefined,
+                                isService: false,
+                                isOut: me.me ? message.sender.id === me.me.id : false,
+                                sender: message.sender.name,
+                            }}
+                            key={message.id}
+                        />
+                    );
+                })}
+            </XWithRole>
         </XShortcuts>
     );
 };
 
 export const DialogSearchResults = (props: DialogSearchResultsT) => {
     return (
-        <React.Suspense fallback={<XLoader loading={true}/>}>
+        <React.Suspense fallback={<XLoader loading={true} />}>
             <DialogSearchResultsInner {...props} />
         </React.Suspense>
     );

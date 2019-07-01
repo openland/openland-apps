@@ -41,10 +41,12 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
             }),
         ),
         textSpans: processSpans(src.text || '', src.spans),
-        senderBadgeNameEmojify: src.senderBadge ? emoji({
-            src: src.senderBadge.name,
-            size: 12,
-        }) : undefined,
+        senderBadgeNameEmojify: src.senderBadge
+            ? emoji({
+                  src: src.senderBadge.name,
+                  size: 12,
+              })
+            : undefined,
     };
 }
 

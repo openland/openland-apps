@@ -45,8 +45,8 @@ export interface MessageComposeComponentProps {
         text: string,
         mentions:
             | (
-                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;

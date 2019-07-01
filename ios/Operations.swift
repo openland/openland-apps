@@ -1669,7 +1669,8 @@ private let MessagesSearchSelector = obj(
                                                 field("user","user", notNull(obj(
                                                         field("__typename","__typename", notNull(scalar("String"))),
                                                         field("id","id", notNull(scalar("ID"))),
-                                                        field("name","name", notNull(scalar("String")))
+                                                        field("name","name", notNull(scalar("String"))),
+                                                        field("photo","photo", scalar("String"))
                                                     )))
                                             )),
                                             inline("SharedRoom", obj(
@@ -3512,7 +3513,7 @@ class Operations {
     let MessagesSearch = OperationDefinition(
         "MessagesSearch",
         .query, 
-        "query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        "query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}",
         MessagesSearchSelector
     )
     let MyApps = OperationDefinition(

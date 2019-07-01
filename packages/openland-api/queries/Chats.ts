@@ -1164,6 +1164,7 @@ export const MessagesSearchQuery = gql`
                             user {
                                 id
                                 name
+                                photo
                             }
                         }
                         ... on SharedRoom {

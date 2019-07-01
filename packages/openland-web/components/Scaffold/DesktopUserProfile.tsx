@@ -140,7 +140,10 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 onClick={() =>
                                     showModalBox({ fullScreen: true }, ctx => (
                                         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                                            <InviteFriendsFragment asModalContent modalContext={ctx} />
+                                            <InviteFriendsFragment
+                                                asModalContent
+                                                modalContext={ctx}
+                                            />
                                         </XScrollView3>
                                     ))
                                 }

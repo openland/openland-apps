@@ -152,10 +152,10 @@ const reachContentClassName = css`
     height: 32px;
     padding: 0 18px;
     font-weight: 600;
-    color: #1790FF;
+    color: #1790ff;
     border-radius: 40px;
     flex-shrink: 0;
-    background-color: #E8F4FF;
+    background-color: #e8f4ff;
 `;
 
 const UserReach = XMemo<{ reach: number }>(props => (
@@ -431,8 +431,8 @@ const Badges = XMemo<{ user: User_user }>(props => {
         return !!(user.primaryBadge && user.primaryBadge.id === badge.id);
     };
 
-    const badges = user.badges.sort(
-        (a, b) => (isPrimary(a) ? -2 : a.verified && !b.verified ? -1 : 1),
+    const badges = user.badges.sort((a, b) =>
+        isPrimary(a) ? -2 : a.verified && !b.verified ? -1 : 1,
     );
 
     return (

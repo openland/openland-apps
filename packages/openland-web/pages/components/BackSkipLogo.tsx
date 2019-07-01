@@ -46,8 +46,8 @@ export const BackSkipLogo = ({
                     <BackButton onClick={onBack} />
                 </XView>
             ) : (
-                    <div />
-                )}
+                <div />
+            )}
 
             {!noLogo && (
                 <div
@@ -65,8 +65,8 @@ export const BackSkipLogo = ({
                     <Skip onClick={onSkip} />
                 </XView>
             ) : (
-                    <div />
-                )}
+                <div />
+            )}
         </XView>
     );
 };

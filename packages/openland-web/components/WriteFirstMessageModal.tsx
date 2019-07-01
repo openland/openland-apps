@@ -23,14 +23,14 @@ export const WriteFirstMessageModal = () => {
     const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
     const [selected, setSelected] = React.useState<DialogDataSourceItem>();
     let messenger = React.useContext(MessengerContext);
-    let dataSource = React.useMemo(() => messenger.dialogList.dataSource, [
-        messenger,
-    ]);
+    let dataSource = React.useMemo(() => messenger.dialogList.dataSource, [messenger]);
 
     React.useEffect(() => {
         dataSource.needMore();
         dataSource.dumbWatch(() => {
-            let itms = dataSource.getItems().filter(d => (d.kind === 'GROUP' || d.kind === 'PUBLIC') && !d.isChannel);
+            let itms = dataSource
+                .getItems()
+                .filter(d => (d.kind === 'GROUP' || d.kind === 'PUBLIC') && !d.isChannel);
             setItems(itms);
             if (itms.length) {
                 setSelected(itms[0]);
@@ -38,15 +38,18 @@ export const WriteFirstMessageModal = () => {
         });
     }, []);
 
-    let goToChat = React.useCallback(async () => {
-        if (selected) {
-            setDraftMessage(selected.key, 'blah blah', []);
-            router.push('/mail/' + selected.key);
-            if (modal) {
-                modal.close()
+    let goToChat = React.useCallback(
+        async () => {
+            if (selected) {
+                setDraftMessage(selected.key, 'blah blah', []);
+                router.push('/mail/' + selected.key);
+                if (modal) {
+                    modal.close();
+                }
             }
-        }
-    }, [selected]);
+        },
+        [selected],
+    );
 
     return (
         <XView
@@ -94,23 +97,24 @@ export const WriteFirstMessageModal = () => {
                     maxWidth={300}
                 >
                     <span className={textAlignClassName}>
-                        Share what you do and ask for help
-                        here will be more text
+                        Share what you do and ask for help here will be more text
                     </span>
                 </XView>
 
                 <XView minWidth={360} marginBottom={40}>
-                    {selected && <SelectWithDropdown
-                        title="Chats"
-                        value={selected}
-                        selectOptions={items.map(i => ({
-                            value: i,
-                            label: i.title,
-                            labelShort: i.title,
-                            subtitle: ''
-                        }))}
-                        onChange={setSelected}
-                    />}
+                    {selected && (
+                        <SelectWithDropdown
+                            title="Chats"
+                            value={selected}
+                            selectOptions={items.map(i => ({
+                                value: i,
+                                label: i.title,
+                                labelShort: i.title,
+                                subtitle: '',
+                            }))}
+                            onChange={setSelected}
+                        />
+                    )}
                 </XView>
 
                 <XButton text="Go to chat" style="primary" size="large" onClick={goToChat} />

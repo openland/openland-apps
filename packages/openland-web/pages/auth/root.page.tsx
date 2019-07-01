@@ -101,9 +101,12 @@ export default () => {
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
-    const toggleSignin = React.useCallback(() => {
-        setSignin(!signin);
-    }, [signin]);
+    const toggleSignin = React.useCallback(
+        () => {
+            setSignin(!signin);
+        },
+        [signin],
+    );
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
