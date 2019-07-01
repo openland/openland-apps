@@ -109,9 +109,10 @@ const LocalDiscoverComponent = ({
                     onBack={() => {
                         if (exclude.length === 0) {
                             router.replace('/onboarding/start');
-                        }
-                        if (canUseDOM) {
-                            window.history.back();
+                        } else {
+                            if (canUseDOM) {
+                                window.history.back();
+                            }
                         }
                     }}
                     onSkip={() => {
