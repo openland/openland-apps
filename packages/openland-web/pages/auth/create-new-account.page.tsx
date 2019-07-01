@@ -230,22 +230,21 @@ export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterPr
 export default withApp(
     'Home',
     'viewer',
-    () =>
-        null,
-        // <CreateNewAccountPage
-        //     roomView={false}
-        //     signin={true}
-        //     loginWithGoogle={() => {
-        //         //
-        //     }}
-        //     loginWithEmail={() => {
-        //         //
-        //     }}
-        //     onLoginClick={() => {
-        //         //
-        //     }}
-        //     onSignUpClick={() => {
-        //         //
-        //     }}
-        // />
+    () => null,
+    // <CreateNewAccountPage
+    //     roomView={false}
+    //     signin={true}
+    //     loginWithGoogle={() => {
+    //         //
+    //     }}
+    //     loginWithEmail={() => {
+    //         //
+    //     }}
+    //     onLoginClick={() => {
+    //         //
+    //     }}
+    //     onSignUpClick={() => {
+    //         //
+    //     }}
+    // />
 );

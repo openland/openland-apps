@@ -42,7 +42,7 @@ export default withApp('Home', 'viewer', () => {
                         Discover Chat
                     </XView>
                     <XView fontSize={16} marginBottom={40}>
-                        Find the right chats for you
+                        Your account is created! Now, let’s find chats based on your interests
                     </XView>
 
                     <XButton

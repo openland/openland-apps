@@ -94,7 +94,7 @@ const CreateOrganizationFormInner = (props: {
         });
     }, [organizationField.value]);
 
-    const subtitle = 'Find your organization or create a new one ';
+    const subtitle = 'Give others context about your work';
 
     const onEnter = () => {
         doConfirm();
