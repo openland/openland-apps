@@ -10,6 +10,7 @@ import { GlobalSearch_items } from 'openland-api/Types';
 import { DialogView } from './DialogView';
 import { emoji } from '../../../../openland-y-utils/emoji';
 import { extractPlaceholder } from '../../../../openland-y-utils/extractPlaceholder';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -171,46 +172,48 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                     />
                 );
             })}
-            {messages.length > 0 && <XView height={1} alignSelf="stretch" backgroundColor="#ececec"/>}
-            {messages.map((i, index) => {
-                let message = i.node.message;
-                let chat = i.node.chat;
-                let title = chat.__typename === 'PrivateRoom' ? message.sender.name : chat.title;
-                let photo = chat.__typename === 'PrivateRoom' ? message.sender.photo : chat.photo;
+            <XWithRole role="feature-non-production">
+                {messages.length > 0 && <XView height={1} alignSelf="stretch" backgroundColor="#ececec"/>}
+                {messages.map((i) => {
+                    const { message, chat } = i.node;
+                    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+                    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
 
-                const emojifyMessage = (msg: string) => emoji({ src: msg, size: 14 });
+                    const emojifyText = (msg: string) => emoji({ src: msg, size: 14 });
 
-                return (
-                    <DialogView
-                        item={{
-                            titleEmojify: emoji({
-                                src: title,
-                                size: 16,
-                            }),
-                            titlePlaceholderEmojify: emoji({
-                                src: extractPlaceholder(title),
-                                size: 20,
-                                cache: true,
-                            }),
-                            senderEmojify: message.sender && emojifyMessage(message.sender.name),
-                            messageEmojify: message.message && emojifyMessage(message.message),
-                            title,
-                            key: chat.id,
-                            flexibleId: chat.id,
-                            kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
-                            unread: 0,
-                            fallback: message.fallback,
-                            date: message.date,
-                            photo: photo || undefined,
-                            attachments: message.__typename === 'GeneralMessage' ? message.attachments : undefined,
-                            isService: false,
-                            isOut: message.sender.id === me.me!.id,
-                            sender: message.sender.name
-                        }}
-                        key={i.node.message.id}
-                    />
-                )
-            })}
+                    return (
+                        <DialogView
+                            item={{
+                                titleEmojify: emoji({
+                                    src: title,
+                                    size: 16,
+                                }),
+                                titlePlaceholderEmojify: emoji({
+                                    src: extractPlaceholder(title),
+                                    size: 20,
+                                    cache: true,
+                                }),
+                                senderEmojify: message.sender && emojifyText(message.sender.name),
+                                messageEmojify: message.message && emojifyText(message.message),
+                                message: message.message || undefined,
+                                title,
+                                key: chat.id,
+                                flexibleId: chat.id,
+                                kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
+                                unread: 0,
+                                fallback: message.fallback,
+                                date: message.date,
+                                photo: photo || undefined,
+                                attachments: message.__typename === 'GeneralMessage' ? message.attachments : undefined,
+                                isService: false,
+                                isOut: me.me ? message.sender.id === me.me.id : false,
+                                sender: message.sender.name,
+                            }}
+                            key={message.id}
+                        />
+                    )
+                })}
+            </XWithRole>
         </XShortcuts>
     );
 };

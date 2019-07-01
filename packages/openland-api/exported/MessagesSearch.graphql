@@ -14,6 +14,7 @@ query MessagesSearch($after: String, $first: Int!, $query: String!, $sort: Strin
               __typename
               id
               name
+              photo
             }
           }
           ... on SharedRoom {
