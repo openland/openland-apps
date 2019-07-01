@@ -527,9 +527,9 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
-                    <XWithRole role="feature-non-production">
+                    {/* <XWithRole role="feature-non-production">
                         <Badges user={user} />
-                    </XWithRole>
+                    </XWithRole> */}
                 </XScrollView3>
             </XView>
         </>
