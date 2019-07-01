@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, Text, View, Image, TextStyle } from 'react-native';
+import { Platform, Text, View, Image, TextStyle, Dimensions } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
@@ -150,21 +150,25 @@ const RoomsList = (props: { router: SRouter }) => {
 const ExplorePage = (props: PageProps) => {
     let discoverDone = getClient().useDiscoverIsDone({ fetchPolicy: 'network-only' });
     let theme = React.useContext(ThemeContext);
-    if (!discoverDone.betaIsDiscoverDone) {
+    let small = Dimensions.get('window').height < 1000;
+
+    if (!discoverDone.betaIsDiscoverDone || true) {
         return (
             <>
+
+                {small && Platform.OS === 'ios' && <SHeader title="Discover chats" />}
+                {small && Platform.OS === 'android' && <CenteredHeader title="Discover chats" />}
                 <HeaderConfigRegistrator config={{ hairline: 'hidden' }} />
                 <ASSafeAreaContext.Consumer>
                     {sa => (
                         <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom}>
-                            <Image marginTop={theme.blurType === 'light' ? -30 : 0} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
+                            <Image marginTop={(theme.blurType === 'light' ? -30 : 0) - (small ? 25 : 0)} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
                             <View alignItems="center" justifyContent="center">
-                                <Text style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>
-                                <Text style={{ fontSize: 18, color: theme.textColor }}>Find the right chats for you</Text>
+                                {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>}
+                                {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.textColor }}>Find the right chats for you</Text>}
                             </View>
 
-                            <ZRoundedButton size="large" title="Start" onPress={() => props.router.push("Discover")} />
-                            <View />
+                            <ZRoundedButton size={small ? 'big' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />                            <View />
                         </View>
                     )}
                 </ASSafeAreaContext.Consumer>
