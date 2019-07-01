@@ -11,7 +11,7 @@ export interface FastHeaderButtonDescription {
     render: () => React.ReactElement<{}>;
 }
 
-export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void, style?: SNavigationViewStyle }> {
+export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void, style?: SNavigationViewStyle, marginLeft?: number, }> {
 
     private buttonId = UUID();
 
@@ -29,7 +29,7 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
                 );
             } else if (Platform.OS === 'ios') {
                 return (
-                    <ActionButtonIOS title={this.props.title} icon={this.props.icon} tintColor={style.accentColor} onPress={this.handlePress} />
+                    <ActionButtonIOS title={this.props.title} marginLeft={this.props.marginLeft} icon={this.props.icon} tintColor={style.accentColor} onPress={this.handlePress} />
                 );
             }
             return (<Button color={style.accentColor} onPress={this.handlePress} title={this.props.title} />);
