@@ -146,7 +146,7 @@ export const WebSignUpCreateWithEmail = ({
 }: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
     const isMobile = useIsMobile();
-    const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
+    const subTitle = `It's free and easy`;
 
     let emailField = useField('input.email', emailValue, form, [
         {
@@ -286,28 +286,27 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
 export default withApp(
     'Home',
     'viewer',
-    () =>
-        null,
-        // <AskEmailPage
-        //     roomView={false}
-        //     signin={true}
-        //     emailError={''}
-        //     emailValue={''}
-        //     fireEmail={() => {
-        //         //
-        //     }}
-        //     setEmailSending={() => {
-        //         //
-        //     }}
-        //     setEmailError={() => {
-        //         //
-        //     }}
-        //     setEmailSent={() => {
-        //         //
-        //     }}
-        //     setEmailValue={() => {
-        //         //
-        //     }}
-        //     emailSending={true}
-        // />
+    () => null,
+    // <AskEmailPage
+    //     roomView={false}
+    //     signin={true}
+    //     emailError={''}
+    //     emailValue={''}
+    //     fireEmail={() => {
+    //         //
+    //     }}
+    //     setEmailSending={() => {
+    //         //
+    //     }}
+    //     setEmailError={() => {
+    //         //
+    //     }}
+    //     setEmailSent={() => {
+    //         //
+    //     }}
+    //     setEmailValue={() => {
+    //         //
+    //     }}
+    //     emailSending={true}
+    // />
 );
