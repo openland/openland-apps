@@ -167,7 +167,13 @@ const CreateOrganizationFormInner = (props: {
                             </XView>
                         )}
 
-                        <XView marginTop={50}>
+                        <XView
+                            marginTop={
+                                organizationField.input.invalid && organizationField.input.errorText
+                                    ? 50 - 26
+                                    : 50
+                            }
+                        >
                             <XButton
                                 loading={props.sending}
                                 dataTestId="continue-button"
