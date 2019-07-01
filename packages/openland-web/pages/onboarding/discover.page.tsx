@@ -68,9 +68,19 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localState);
-    }, [localState]);
+    React.useEffect(
+        () => {
+            setLocalState(graphState);
+        },
+        [graphState],
+    );
+
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localState);
+        },
+        [localState],
+    );
 
     const { title, subtitle } = group;
     return (
@@ -118,8 +128,8 @@ const LocalDiscoverComponent = ({
                         selected={localState.selected}
                         setSelectedTagsIds={value => {
                             setLocalState({
-                                ...localState,
                                 selected: new Set<string>(value.values()),
+                                exclude: new Set<string>([...graphState.exclude])
                             });
                         }}
                     />
@@ -158,8 +168,8 @@ export const Discover = () => {
 
     const currentPage = client.useDiscoverNextPage(
         {
-            selectedTagsIds: [...rootState.selected.values()],
-            excudedGroupsIds: [...rootState.exclude.values()],
+            selectedTagsIds: [...rootState.selected],
+            excudedGroupsIds: [...rootState.exclude],
         },
         { fetchPolicy: 'network-only' },
     );
@@ -168,30 +178,39 @@ export const Discover = () => {
         return <ChatsForYou />;
     }
 
-    const nextLocalState = {
+    let nextLocalState = {
         selected: rootState.selected,
         exclude: new Set<string>([
-            ...rootState.exclude.values(),
+            ...rootState.exclude,
             currentPage.betaNextDiscoverPage!!.tagGroup!!.id,
         ]),
     };
+
+    React.useEffect(
+        () => {
+            if (!discoverDone.betaIsDiscoverDone) {
+                setRootState({
+                    selected: new Set<string>(arrowify(router.query.selected)),
+                    exclude: new Set<string>(arrowify(router.query.exclude)),
+                });
+            }
+        },
+        [router],
+    );
 
     const onContinueClick = async (data: any) => {
         if (!modalBox) {
             router.push(
                 `/onboarding/discover?${qs.stringify({
-                    selected: [...rootState.selected.values(), ...data.selected.values()],
-                    exclude: [...rootState.exclude.values(), ...data.exclude.values()],
+                    selected: [...data.selected],
+                    exclude: [...nextLocalState.exclude],
                 })}`,
             );
         }
 
         setRootState({
-            ...nextLocalState,
-            selected: new Set<string>([
-                ...nextLocalState.selected.values(),
-                ...data.selected.values(),
-            ]),
+            selected: new Set<string>([...nextLocalState.selected, ...data.selected]),
+            exclude: new Set<string>([...nextLocalState.exclude, ...data.exclude]),
         });
     };
 

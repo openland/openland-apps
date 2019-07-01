@@ -9,9 +9,12 @@ export const TagsCloud = (props: {
 }) => {
     let [showAll, setShowAll] = React.useState(false);
 
-    let onShowAll = React.useCallback(() => {
-        setShowAll(!showAll);
-    }, [showAll]);
+    let onShowAll = React.useCallback(
+        () => {
+            setShowAll(!showAll);
+        },
+        [showAll],
+    );
 
     let onTagPress = (tag: Tag) => {
         let selected = props.selected.has(tag.id);
@@ -36,24 +39,23 @@ export const TagsCloud = (props: {
                 justifyContent="center"
                 width={350}
             >
-                {props.tagsGroup.tags
-                    .filter((t, i) => showAll || i < 17)
-                    .map(tag => (
-                        <TagButton
-                            key={tag.id}
-                            tag={tag}
-                            onPress={onTagPress}
-                            selected={props.selected.has(tag.id)}
-                        />
-                    ))}
-                {props.tagsGroup.tags.length > 17 && !showAll && (
+                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton
-                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                        onPress={onShowAll}
-                        selected={false}
-                        isMore
+                        key={tag.id}
+                        tag={tag}
+                        onPress={onTagPress}
+                        selected={props.selected.has(tag.id)}
                     />
-                )}
+                ))}
+                {props.tagsGroup.tags.length > 17 &&
+                    !showAll && (
+                        <TagButton
+                            tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
+                            onPress={onShowAll}
+                            selected={false}
+                            isMore
+                        />
+                    )}
             </XView>
         </XView>
     );
