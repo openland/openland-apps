@@ -231,6 +231,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             resolved = true;
             getMessenger().history.navigationManager.pushAndReset('InstallApps');
         }
+        if (link === '/onboarding_send_first_message') {
+            resolved = true;
+            getMessenger().history.navigationManager.pushAndReset('StartConversation');
+        }
 
         if (!resolved && fallback) {
             await fallback();

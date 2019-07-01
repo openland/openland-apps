@@ -48,7 +48,7 @@ export const WriteFirstMessageModal = () => {
                 }
             }
         },
-        [selected],
+        [selected]
     );
 
     return (
