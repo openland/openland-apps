@@ -195,10 +195,9 @@ export const WebSignUpCreateWithEmail = ({
                         field={emailField}
                         hideErrorText
                     />
-                    {(emailField.input.invalid && emailField.input.errorText) ||
-                        (emailError && (
-                            <XErrorMessage2 message={emailField.input.errorText || emailError} />
-                        ))}
+                    {((emailField.input.invalid && emailField.input.errorText) || emailError) && (
+                        <XErrorMessage2 message={emailField.input.errorText || emailError} />
+                    )}
                 </ButtonsWrapper>
                 <ButtonsWrapper
                     marginTop={
