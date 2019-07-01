@@ -50,10 +50,6 @@ const TagsGroupPage = (props: {
     );
 };
 
-const arrowify = (value: string | string[]) => {
-    return typeof value === 'string' ? [value] : value || [];
-};
-
 const LocalDiscoverComponent = ({
     group,
     onContinueClick,
@@ -149,14 +145,18 @@ export const Discover = () => {
 
     const { exclude, selected } = router.query;
 
+    const arrowify = (value: string | string[]) => {
+        return typeof value === 'string' ? [value] : value || [];
+    };
+
     const [rootState, setRootState] = React.useState({
         selected: new Set<string>(arrowify(selected)),
         exclude: new Set<string>(arrowify(exclude)),
     });
 
-    let discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    let currentPage = client.useDiscoverNextPage(
+    const currentPage = client.useDiscoverNextPage(
         {
             selectedTagsIds: [...rootState.selected.values()],
             excudedGroupsIds: [...rootState.exclude.values()],
@@ -176,7 +176,7 @@ export const Discover = () => {
         ]),
     };
 
-    let onContinueClick = async (data: any) => {
+    const onContinueClick = async (data: any) => {
         if (!modalBox) {
             router.push(
                 `/onboarding/discover?${qs.stringify({

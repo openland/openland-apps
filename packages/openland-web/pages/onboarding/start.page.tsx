@@ -4,16 +4,10 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { css } from 'linaria';
 import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getPercentageOfOnboarding } from '../components/utils';
-
-const backgroundClassName = css`
-    background: white;
-    width: 100%;
-`;
 
 export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
@@ -46,14 +40,10 @@ export default withApp('Home', 'viewer', () => {
                     </XView>
 
                     <XButton
-                        text="Start"
+                        text="Continue"
                         style="primary"
-                        size="default"
-                        onClick={() => {
-                            if (router) {
-                                router.push('/onboarding/discover');
-                            }
-                        }}
+                        size="large"
+                        path="/onboarding/discover"
                     />
                 </XView>
             </XView>

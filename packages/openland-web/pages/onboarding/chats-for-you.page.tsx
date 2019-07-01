@@ -79,6 +79,15 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
     const allRoomsIds = rooms.map(({ id }) => id);
 
+    const selectedLength = selectedIds.length;
+
+    let joinButtonText = 'Join';
+    if (selectedLength === 1) {
+        joinButtonText = 'Join 1 chat';
+    } else if (selectedLength > 1) {
+        joinButtonText = `Join ${selectedLength} chats`;
+    }
+
     return (
         <>
             <XView
@@ -136,10 +145,10 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                 <XButton
                     zIndex={2}
                     flexShrink={0}
-                    text={selectedIds.length ? `Join ${selectedIds.length} chats` : `Join`}
+                    text={joinButtonText}
                     style="primary"
                     size="large"
-                    enabled={!!selectedIds.length}
+                    enabled={!!selectedLength}
                 />
             </XView>
         </>

@@ -166,7 +166,7 @@ const UserReach = XMemo<{ reach: number }>(props => (
             <span>User's reach is the total number of people in community groups they are in</span>
         }
         marginTop={8}
-        width={280}
+        width={295}
         showOnHoverContent={false}
         showOnHover={true}
     >
