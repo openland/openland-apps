@@ -28,6 +28,7 @@ import { AcceptInvitePage as AcceptInvitePageReimport } from 'openland-web/pages
 export const AcceptInvitePage = AcceptInvitePageReimport;
 
 export const SubTitle = Glamorous.div({
+    opacity: 0.7,
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'normal',
