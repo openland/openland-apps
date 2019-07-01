@@ -152,7 +152,7 @@ const ExplorePage = (props: PageProps) => {
     let theme = React.useContext(ThemeContext);
     let small = Dimensions.get('window').height < 1000;
 
-    if (!discoverDone.betaIsDiscoverDone || true) {
+    if (!discoverDone.betaIsDiscoverDone) {
         return (
             <>
 
@@ -167,8 +167,7 @@ const ExplorePage = (props: PageProps) => {
                                 {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>}
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.textColor }}>Find the right chats for you</Text>}
                             </View>
-
-                            <ZRoundedButton size={small ? 'big' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />                            <View />
+                            <ZRoundedButton size={small ? 'big' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
                         </View>
                     )}
                 </ASSafeAreaContext.Consumer>
