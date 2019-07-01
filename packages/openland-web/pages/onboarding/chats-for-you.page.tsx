@@ -14,6 +14,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 const shadowClassName = css`
     width: 400px;
@@ -77,8 +78,12 @@ const ChatsItem = ({
 };
 
 const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedRoom[] }) => {
-    const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
     const allRoomsIds = rooms.map(({ id }) => id);
+    const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
+
+    React.useLayoutEffect(() => {
+        setSelectedIds(rooms.map(({ id }) => id));
+    }, [rooms]);
 
     const selectedLength = selectedIds.length;
 
@@ -159,7 +164,12 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
 export const ChatsForYou = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
-    const data = client.useSuggestedRooms();
+    const data = client.useSuggestedRooms({ fetchPolicy: 'network-only' });
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+
+    if (!discoverDone.betaIsDiscoverDone) {
+        return <XLoader />;
+    }
 
     const rooms: SuggestedRooms_suggestedRooms_SharedRoom[] = [];
 
@@ -179,8 +189,8 @@ export const ChatsForYou = () => {
                     noLogo
                     onBack={async () => {
                         await client.mutateBetaNextDiscoverReset();
-                        await client.refetchDiscoverIsDone();
                         await client.refetchSuggestedRooms();
+                        await client.refetchDiscoverIsDone();
 
                         if (canUseDOM) {
                             window.history.back();

@@ -16,6 +16,7 @@ import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 const shadowClassName = css`
     width: 350px;
@@ -53,11 +54,13 @@ const LocalDiscoverComponent = ({
     group,
     onContinueClick,
     selected,
+    exclude,
     progressInPercents,
 }: {
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
     selected: string[];
+    exclude: string[];
     progressInPercents: number;
 }) => {
     const router = React.useContext(XRouterContext)!;
@@ -98,6 +101,9 @@ const LocalDiscoverComponent = ({
             <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={() => {
+                        if (exclude.length === 0) {
+                            router.replace('/onboarding/start');
+                        }
                         if (canUseDOM) {
                             window.history.back();
                         }
@@ -177,7 +183,16 @@ export const Discover = () => {
         { fetchPolicy: 'network-only' },
     );
 
+    React.useLayoutEffect(() => {
+        client.refetchSuggestedRooms().then(() => {
+            client.refetchDiscoverIsDone();
+        });
+    }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
+
     if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
+        if (!discoverDone.betaIsDiscoverDone) {
+            return <XLoader />;
+        }
         return <ChatsForYou />;
     }
 
@@ -204,6 +219,7 @@ export const Discover = () => {
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={onContinueClick}
             selected={rootSelected}
+            exclude={rootExclude}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
         />
     );
