@@ -17,11 +17,13 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 
 const shadowClassName = css`
+    margin: auto;
     width: 400px;
     height: 200px;
     position: absolute;
     bottom: -70px;
-    left: -30px;
+    left: 0;
+    right: 0;
     pointer-events: none;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
 `;
@@ -84,6 +86,16 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     React.useLayoutEffect(() => {
         setSelectedIds(rooms.map(({ id }) => id));
     }, [rooms]);
+    const [joinLoader, setJoinLoader] = React.useState(false);
+    let router = React.useContext(XRouterContext)!;
+
+    const client = useClient();
+
+    const join = async () => {
+        setJoinLoader(true);
+        await client.mutateRoomsJoin({ roomsIds: selectedIds });
+        await router.push('/');
+    };
 
     const selectedLength = selectedIds.length;
 
@@ -101,10 +113,16 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                 justifyContent="space-between"
                 alignItems="center"
                 marginBottom={18}
+                alignSelf="center"
             >
-                <XView fontWeight={'600'} fontSize={17} color={'rgba(0, 0, 0, 0.5)'}>{`${
-                    rooms.length
-                } chats`}</XView>
+                <XView
+                    fontWeight={'600'}
+                    fontSize={17}
+                    color={'rgba(0, 0, 0, 0.5)'}
+                    marginRight={144}
+                >
+                    {`${rooms.length} chats`}
+                </XView>
                 {allRoomsIds.length === selectedIds.length ? (
                     <XButton
                         text={`Clear`}
@@ -126,8 +144,8 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                 )}
             </XView>
 
-            <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1} marginHorizontal={-20}>
-                <XView paddingBottom={150}>
+            <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1} alignItems="center">
+                <XView paddingBottom={150} alignItems="stretch" alignSelf="center" width={350}>
                     {rooms.map((room, key) => {
                         return (
                             <ChatsItem
@@ -154,6 +172,8 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                     text={joinButtonText}
                     style="primary"
                     size="large"
+                    loading={joinLoader}
+                    onClick={join}
                     enabled={!!selectedLength}
                 />
             </XView>
@@ -210,7 +230,7 @@ export const ChatsForYou = () => {
                 marginTop={20}
                 marginBottom={70}
             >
-                <XView flexDirection="column" alignSelf="center" flexGrow={1} flexShrink={1}>
+                <XView flexDirection="column" alignSelf="stretch" flexGrow={1} flexShrink={1}>
                     <XView alignItems="center">
                         <XView fontSize={24} marginBottom={12}>
                             Chats for you
