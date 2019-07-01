@@ -37,8 +37,14 @@ const TagsGroupPage = (props: {
     }
 
     return (
-        <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1}>
-            <XView paddingHorizontal={18} paddingBottom={100}>
+        <XScrollView3
+            marginBottom={-110}
+            flexGrow={0}
+            flexShrink={1}
+            alignSelf="stretch"
+            alignItems="center"
+        >
+            <XView paddingHorizontal={18} paddingBottom={100} alignItems="center">
                 <TagsCloud
                     tagsGroup={props.group}
                     selected={props.selected}
@@ -63,9 +69,12 @@ const LocalDiscoverComponent = ({
     const router = React.useContext(XRouterContext)!;
 
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
-    React.useLayoutEffect(() => {
-        setLocalSelected(selected);
-    }, [selected]);
+    React.useLayoutEffect(
+        () => {
+            setLocalSelected(selected);
+        },
+        [selected],
+    );
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -82,9 +91,12 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localSelected);
-    }, [localSelected]);
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localSelected);
+        },
+        [localSelected],
+    );
 
     if (!group) {
         return null;
@@ -118,7 +130,7 @@ const LocalDiscoverComponent = ({
             >
                 <XView
                     flexDirection="column"
-                    alignSelf="center"
+                    alignSelf="stretch"
                     alignItems="center"
                     flexGrow={1}
                     flexShrink={1}
@@ -162,12 +174,15 @@ export const Discover = () => {
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    React.useEffect(() => {
-        if (!discoverDone.betaIsDiscoverDone) {
-            setRootSelected(arrowify(selected));
-            setRootExclude(arrowify(exclude));
-        }
-    }, [router.query.selected, router.query.exclude]);
+    React.useEffect(
+        () => {
+            if (!discoverDone.betaIsDiscoverDone) {
+                setRootSelected(arrowify(selected));
+                setRootExclude(arrowify(exclude));
+            }
+        },
+        [router.query.selected, router.query.exclude],
+    );
 
     const currentPage = client.useDiscoverNextPage(
         {
