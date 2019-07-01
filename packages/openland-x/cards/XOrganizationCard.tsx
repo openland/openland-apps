@@ -36,6 +36,9 @@ const OrganizationContent = Glamorous(XHorizontal)({
 });
 
 const OrganizationInfo = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     flexGrow: 1,
 });
 
@@ -146,6 +149,7 @@ interface XOrganizationCardProps {
         photo: string | null;
         about: string | null;
         isMine: boolean;
+        membersCount: number;
         members: {
             user: {
                 id: string;
@@ -265,16 +269,18 @@ export const XOrganizationCard = (props: XOrganizationCardProps) => {
                                 <span>
                                     {firstMember.user.name +
                                         TextProfiles.Organization.membersMore(
-                                            organization.members.length,
+                                            organization.membersCount,
                                         )}
                                 </span>
                             </OrganizationMembers>
                         )}
                     </OrganizationInfo>
-                    <XHorizontal separator={5} flexShrink={0}>
-                        {isHovered && !isMobile && button}
-                        {isMobile && button}
-                        {menu}
+                    <XHorizontal flexShrink={0} alignItems="flex-start">
+                        <XHorizontal separator={5} flexShrink={0} alignItems="center" height={32}>
+                            {isHovered && !isMobile && button}
+                            {isMobile && button}
+                            {menu}
+                        </XHorizontal>
                     </XHorizontal>
                 </OrganizationContent>
             </XHorizontal>
