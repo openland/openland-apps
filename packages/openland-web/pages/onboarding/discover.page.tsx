@@ -160,6 +160,8 @@ export const Discover = () => {
     const [rootSelected, setRootSelected] = React.useState<string[]>(() => arrowify(selected));
     const [rootExclude, setRootExclude] = React.useState<string[]>(() => arrowify(selected));
 
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+
     React.useEffect(() => {
         if (!discoverDone.betaIsDiscoverDone) {
             setRootSelected(arrowify(selected));
@@ -167,12 +169,6 @@ export const Discover = () => {
         }
     }, [router.query.selected, router.query.exclude]);
 
-    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
-
-    console.log({
-        selectedTagsIds: rootSelected,
-        excudedGroupsIds: rootExclude,
-    });
     const currentPage = client.useDiscoverNextPage(
         {
             selectedTagsIds: rootSelected,
