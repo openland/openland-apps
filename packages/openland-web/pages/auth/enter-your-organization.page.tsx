@@ -119,6 +119,7 @@ const CreateOrganizationFormInner = (props: {
                                             dataTestId="organization"
                                             flexGrow={1}
                                             className={organizationInputClassName}
+                                            hideErrorText
                                             field={organizationField}
                                         />
                                         {organizationField.input.invalid &&
