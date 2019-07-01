@@ -1,6 +1,27 @@
 {
     "icons": [
         {
+            "name": "install_app_mac",
+            "src": "install_app_mac.svg",
+            "sizes": [
+                22
+            ]
+        },
+        {
+            "name": "install_app_windows",
+            "src": "install_app_windows.svg",
+            "sizes": [
+                20
+            ]
+        },
+        {
+            "name": "install_app_linux",
+            "src": "install_app_linux.svg",
+            "sizes": [
+                19
+            ]
+        },
+        {
             "name": "ic-status-read",
             "src": "ic-status-read.svg",
             "sizes": [

@@ -51,6 +51,7 @@ import { Discover } from './pages/main/Discover';
 import { CommunityList } from './pages/main/CommunityList';
 import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
 import { NotificationCenter } from './pages/main/NotificationCenter';
+import { InstallApps } from './pages/main/InstallApps';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -111,6 +112,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('HomeDialogs', HomeDialogs)
 
   .addRoute('Discover', Discover)
+  .addRoute('InstallApps', InstallApps)
+
   .addRoute('CommunityList', CommunityList)
 
   .addRoute('Apps/Tasks', Tasks)
