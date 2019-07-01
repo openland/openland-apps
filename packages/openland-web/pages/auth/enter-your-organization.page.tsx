@@ -101,7 +101,7 @@ const CreateOrganizationFormInner = (props: {
     };
 
     const errorText = organizationField.input.errorText;
-    const isInvalid = !!errorText;
+    const isInvalid = !!errorText && organizationField.input.invalid;
 
     const content = (
         <XTrack event="signup_org_view">

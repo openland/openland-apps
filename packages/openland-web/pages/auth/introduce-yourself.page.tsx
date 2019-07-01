@@ -10,7 +10,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
+import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
 import {
     Title,
     ButtonsWrapper,
@@ -52,7 +52,7 @@ export const CreateProfileFormInner = (
         },
     ]);
     let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
-    let photoRef = useField('input.photoRef', prefill ? prefill.picture : undefined, form);
+    let photoRef = useField<StoredFileT | null>('input.photoRef', null, form);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
@@ -60,15 +60,14 @@ export const CreateProfileFormInner = (
                 input: {
                     firstName: firstName.value,
                     lastName: lastName.value,
-                    photoRef:
-                        photoRef.value && photoRef.value.uuid
-                            ? {
-                                  ...photoRef.value,
-                                  isImage: undefined,
-                                  width: undefined,
-                                  height: undefined,
-                              }
-                            : undefined,
+                    photoRef: photoRef.value
+                        ? {
+                              ...(photoRef.value as any),
+                              isImage: undefined,
+                              width: undefined,
+                              height: undefined,
+                          }
+                        : undefined,
                 },
             });
             await client.refetchAccount();
@@ -103,6 +102,7 @@ export const CreateProfileFormInner = (
                                 size="default"
                                 {...photoRef.input}
                                 darkMode={roomView ? undefined : true}
+                                initialUrl={prefill ? prefill.picture : undefined}
                             />
                         </XView>
 
@@ -233,14 +233,10 @@ const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => 
 
     const data = client.useProfilePrefill();
 
-    const prefill = usePhotoPrefill && data ? data.prefill : null;
-
     return (
         <CreateProfileFormInner
-            {...{
-                roomView,
-                prefill,
-            }}
+            roomView={roomView}
+            prefill={usePhotoPrefill && data ? data.prefill : null}
         />
     );
 };
