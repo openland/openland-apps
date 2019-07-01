@@ -12,7 +12,7 @@ import { TopBar } from '../components/TopBar';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { TagsCloud } from '../components/TagsCloud';
-import { TagGroup } from '../components/TagButton';
+import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -29,9 +29,8 @@ const shadowClassName = css`
 
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
-    selected: Set<string>;
-    exclude: Set<string>;
-    setSelectedTagsIds: (a: Set<string>) => void;
+    selected: string[];
+    onPress: (tag: Tag) => void;
 }) => {
     if (!props.group) {
         return null;
@@ -43,7 +42,7 @@ const TagsGroupPage = (props: {
                 <TagsCloud
                     tagsGroup={props.group}
                     selected={props.selected}
-                    onSelectedChange={props.setSelectedTagsIds}
+                    onPress={props.onPress}
                 />
             </XView>
         </XScrollView3>
@@ -53,34 +52,43 @@ const TagsGroupPage = (props: {
 const LocalDiscoverComponent = ({
     group,
     onContinueClick,
-    graphState,
+    selected,
     progressInPercents,
 }: {
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
-    graphState: { selected: any; exclude: any };
+    selected: string[];
     progressInPercents: number;
 }) => {
     const router = React.useContext(XRouterContext)!;
-    const [localState, setLocalState] = React.useState(graphState);
+
+    const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
+    React.useLayoutEffect(() => {
+        setLocalSelected(selected);
+    }, [selected]);
+
+    const onTagPress = React.useCallback(
+        (tag: Tag) => {
+            const clonedSelected = new Set<string>(localSelected);
+
+            if (clonedSelected.has(tag.id)) {
+                clonedSelected.delete(tag.id);
+            } else {
+                clonedSelected.add(tag.id);
+            }
+
+            setLocalSelected([...clonedSelected.values()]);
+        },
+        [localSelected],
+    );
+
+    const onMyContinueClick = React.useCallback(() => {
+        onContinueClick(localSelected);
+    }, [localSelected]);
 
     if (!group) {
         return null;
     }
-
-    React.useEffect(
-        () => {
-            setLocalState(graphState);
-        },
-        [graphState],
-    );
-
-    const onMyContinueClick = React.useCallback(
-        () => {
-            onContinueClick(localState);
-        },
-        [localState],
-    );
 
     const { title, subtitle } = group;
     return (
@@ -122,17 +130,7 @@ const LocalDiscoverComponent = ({
                         {subtitle}
                     </XView>
 
-                    <TagsGroupPage
-                        group={group}
-                        exclude={localState.exclude}
-                        selected={localState.selected}
-                        setSelectedTagsIds={value => {
-                            setLocalState({
-                                selected: new Set<string>(value.values()),
-                                exclude: new Set<string>([...graphState.exclude])
-                            });
-                        }}
-                    />
+                    <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
                     <div className={shadowClassName} />
                     <XButton
                         flexShrink={0}
@@ -159,17 +157,26 @@ export const Discover = () => {
         return typeof value === 'string' ? [value] : value || [];
     };
 
-    const [rootState, setRootState] = React.useState({
-        selected: new Set<string>(arrowify(selected)),
-        exclude: new Set<string>(arrowify(exclude)),
-    });
+    const [rootSelected, setRootSelected] = React.useState<string[]>(() => arrowify(selected));
+    const [rootExclude, setRootExclude] = React.useState<string[]>(() => arrowify(selected));
+
+    React.useEffect(() => {
+        if (!discoverDone.betaIsDiscoverDone) {
+            setRootSelected(arrowify(selected));
+            setRootExclude(arrowify(exclude));
+        }
+    }, [router.query.selected, router.query.exclude]);
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
+    console.log({
+        selectedTagsIds: rootSelected,
+        excudedGroupsIds: rootExclude,
+    });
     const currentPage = client.useDiscoverNextPage(
         {
-            selectedTagsIds: [...rootState.selected],
-            excudedGroupsIds: [...rootState.exclude],
+            selectedTagsIds: rootSelected,
+            excudedGroupsIds: rootExclude,
         },
         { fetchPolicy: 'network-only' },
     );
@@ -178,48 +185,30 @@ export const Discover = () => {
         return <ChatsForYou />;
     }
 
-    let nextLocalState = {
-        selected: rootState.selected,
-        exclude: new Set<string>([
-            ...rootState.exclude,
+    const newExclude = [
+        ...new Set<string>([
+            ...rootExclude,
             currentPage.betaNextDiscoverPage!!.tagGroup!!.id,
-        ]),
-    };
+        ]).values(),
+    ];
 
-    React.useEffect(
-        () => {
-            if (!discoverDone.betaIsDiscoverDone) {
-                setRootState({
-                    selected: new Set<string>(arrowify(router.query.selected)),
-                    exclude: new Set<string>(arrowify(router.query.exclude)),
-                });
-            }
-        },
-        [router],
-    );
-
-    const onContinueClick = async (data: any) => {
+    const onContinueClick = async (newSelected: any) => {
         if (!modalBox) {
             router.push(
                 `/onboarding/discover?${qs.stringify({
-                    selected: [...data.selected],
-                    exclude: [...nextLocalState.exclude],
+                    selected: newSelected,
+                    exclude: newExclude,
                 })}`,
             );
         }
-
-        setRootState({
-            selected: new Set<string>([...nextLocalState.selected, ...data.selected]),
-            exclude: new Set<string>([...nextLocalState.exclude, ...data.exclude]),
-        });
     };
 
     return (
         <LocalDiscoverComponent
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={onContinueClick}
-            graphState={nextLocalState}
-            progressInPercents={getPercentageOfOnboarding(7 + rootState.exclude.size)}
+            selected={rootSelected}
+            progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
         />
     );
 };

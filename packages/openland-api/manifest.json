@@ -1430,6 +1430,13 @@
       }
     },
     {
+      "signature": "c8d537cffefaf50720656df0811cf003d06ce5ed6243b82c384eb9f68ee2ef2e",
+      "document": "mutation BetaNextDiscoverReset{betaNextDiscoverReset}",
+      "metadata": {
+        "engineSignature": "mutation BetaNextDiscoverReset{betaNextDiscoverReset}"
+      }
+    },
+    {
       "signature": "0eba3aae2604981b6e56b8349f588b675265b5f4a4264da15cd69833f3d23440",
       "document": "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}",
       "metadata": {

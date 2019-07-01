@@ -40,7 +40,7 @@ export default withApp('Home', 'viewer', () => {
                     </XView>
 
                     <XButton
-                        text="Continue"
+                        text="Start"
                         style="primary"
                         size="large"
                         path="/onboarding/discover"

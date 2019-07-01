@@ -2500,6 +2500,9 @@ private val BadgeUnsetPrimarySelector = obj(
 private val BadgeUnsetToRoomSelector = obj(
             field("badgeUnsetToRoom","badgeUnsetToRoom", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("Boolean")))
         )
+private val BetaNextDiscoverResetSelector = obj(
+            field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
+        )
 private val CancelTypingSelector = obj(
             field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
         )
@@ -3873,6 +3876,12 @@ object Operations {
         override val body = "mutation BadgeUnsetToRoom(\$roomId:ID!){badgeUnsetToRoom(roomId:\$roomId)}"
         override val selector = BadgeUnsetToRoomSelector
     }
+    val BetaNextDiscoverReset = object: OperationDefinition {
+        override val name = "BetaNextDiscoverReset"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation BetaNextDiscoverReset{betaNextDiscoverReset}"
+        override val selector = BetaNextDiscoverResetSelector
+    }
     val CancelTyping = object: OperationDefinition {
         override val name = "CancelTyping"
         override val kind = OperationKind.MUTATION
@@ -4664,6 +4673,7 @@ object Operations {
         if (name == "BadgeSetToRoom") return BadgeSetToRoom
         if (name == "BadgeUnsetPrimary") return BadgeUnsetPrimary
         if (name == "BadgeUnsetToRoom") return BadgeUnsetToRoom
+        if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction

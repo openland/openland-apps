@@ -10,12 +10,9 @@ export const TagButton = (props: {
     onPress: (tag: Tag) => void;
     isMore?: boolean;
 }) => {
-    let callback = React.useCallback(
-        () => {
-            props.onPress(props.tag);
-        },
-        [props.tag],
-    );
+    let onClick = () => {
+        props.onPress(props.tag);
+    };
 
     return (
         <XView marginVertical={6} marginHorizontal={6}>
@@ -26,7 +23,7 @@ export const TagButton = (props: {
                 }
                 color={props.selected ? '#fff' : '#0084fe'}
                 transition="all .2s ease"
-                onClick={callback}
+                onClick={onClick}
                 borderRadius={12}
                 height={43}
                 fontWeight="600"

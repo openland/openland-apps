@@ -49,7 +49,7 @@ export const OnlineQuery = gql`
 export const OnlineWatchSubscription = gql`
     subscription OnlineWatch($users: [ID!]!) {
         alphaSubscribeOnline(users: $users) {
-            user{
+            user {
                 id
                 online
                 lastSeen
@@ -100,6 +100,12 @@ export const ResolveShortNameQuery = gql`
 export const DeleteUserMutation = gql`
     mutation DeleteUser($id: ID!) {
         superDeleteUser(id: $id)
+    }
+`;
+
+export const BetaNextDiscoverResetMutation = gql`
+    mutation BetaNextDiscoverReset {
+        betaNextDiscoverReset
     }
 `;
 

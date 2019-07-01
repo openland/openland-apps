@@ -2494,6 +2494,9 @@ private let BadgeUnsetPrimarySelector = obj(
 private let BadgeUnsetToRoomSelector = obj(
             field("badgeUnsetToRoom","badgeUnsetToRoom", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("Boolean")))
         )
+private let BetaNextDiscoverResetSelector = obj(
+            field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
+        )
 private let CancelTypingSelector = obj(
             field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
         )
@@ -3870,6 +3873,12 @@ class Operations {
         "mutation BadgeUnsetToRoom($roomId:ID!){badgeUnsetToRoom(roomId:$roomId)}",
         BadgeUnsetToRoomSelector
     )
+    let BetaNextDiscoverReset = OperationDefinition(
+        "BetaNextDiscoverReset",
+        .mutation, 
+        "mutation BetaNextDiscoverReset{betaNextDiscoverReset}",
+        BetaNextDiscoverResetSelector
+    )
     let CancelTyping = OperationDefinition(
         "CancelTyping",
         .mutation, 
@@ -4662,6 +4671,7 @@ class Operations {
         if name == "BadgeSetToRoom" { return BadgeSetToRoom }
         if name == "BadgeUnsetPrimary" { return BadgeUnsetPrimary }
         if name == "BadgeUnsetToRoom" { return BadgeUnsetToRoom }
+        if name == "BetaNextDiscoverReset" { return BetaNextDiscoverReset }
         if name == "CancelTyping" { return CancelTyping }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }

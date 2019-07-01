@@ -13,6 +13,7 @@ import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const shadowClassName = css`
     width: 400px;
@@ -176,8 +177,14 @@ export const ChatsForYou = () => {
             <XView marginBottom={12} marginTop={34}>
                 <BackSkipLogo
                     noLogo
-                    onBack={() => {
-                        router.replace('/onboarding/discover');
+                    onBack={async () => {
+                        await client.mutateBetaNextDiscoverReset();
+                        await client.refetchDiscoverIsDone();
+                        await client.refetchSuggestedRooms();
+
+                        if (canUseDOM) {
+                            window.history.back();
+                        }
                     }}
                     onSkip={() => {
                         router.push('/');

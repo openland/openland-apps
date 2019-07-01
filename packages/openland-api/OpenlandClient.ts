@@ -1273,6 +1273,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
         return this.client.mutate(Source.DeleteUserMutation, variables);
     }
+    async mutateBetaNextDiscoverReset(): Promise<Types.BetaNextDiscoverReset> {
+        return this.client.mutate(Source.BetaNextDiscoverResetMutation);
+    }
     subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
         return this.client.subscribe(Source.SettingsWatchSubscription);
     }

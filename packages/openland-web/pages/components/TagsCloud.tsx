@@ -2,33 +2,20 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { TagGroup, TagButton, Tag } from './TagButton';
 
-export const TagsCloud = (props: {
+export const TagsCloud = ({
+    tagsGroup,
+    selected,
+    onPress,
+}: {
     tagsGroup: TagGroup;
-    selected: Set<string>;
-    onSelectedChange: (selected: Set<string>) => void;
+    selected: string[];
+    onPress: (pressedTag: Tag) => void;
 }) => {
     let [showAll, setShowAll] = React.useState(false);
 
-    let onShowAll = React.useCallback(
-        () => {
-            setShowAll(!showAll);
-        },
-        [showAll],
-    );
-
-    let onTagPress = (tag: Tag) => {
-        let selected = props.selected.has(tag.id);
-
-        if (selected) {
-            props.selected.delete(tag.id);
-        } else {
-            props.selected.add(tag.id);
-        }
-
-        props.onSelectedChange(props.selected);
-    };
-
-    // console.log(selected);
+    let onShowAll = React.useCallback(() => {
+        setShowAll(!showAll);
+    }, [showAll]);
 
     return (
         <XView flexDirection="column">
@@ -39,23 +26,24 @@ export const TagsCloud = (props: {
                 justifyContent="center"
                 width={350}
             >
-                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
-                    <TagButton
-                        key={tag.id}
-                        tag={tag}
-                        onPress={onTagPress}
-                        selected={props.selected.has(tag.id)}
-                    />
-                ))}
-                {props.tagsGroup.tags.length > 17 &&
-                    !showAll && (
+                {tagsGroup.tags
+                    .filter((t, i) => showAll || i < 17)
+                    .map(tag => (
                         <TagButton
-                            tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                            onPress={onShowAll}
-                            selected={false}
-                            isMore
+                            key={tag.id}
+                            tag={tag}
+                            onPress={onPress}
+                            selected={selected.indexOf(tag.id) !== -1}
                         />
-                    )}
+                    ))}
+                {tagsGroup.tags.length > 17 && !showAll && (
+                    <TagButton
+                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
+                        onPress={onShowAll}
+                        selected={false}
+                        isMore
+                    />
+                )}
             </XView>
         </XView>
     );
