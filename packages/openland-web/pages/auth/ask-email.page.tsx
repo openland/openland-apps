@@ -81,6 +81,9 @@ export const RoomCreateWithEmail = ({
         doConfirm();
     };
 
+    const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
+    const isInvalid = !!errorText;
+
     return (
         <XShortcuts
             handlerMap={{
@@ -108,11 +111,10 @@ export const RoomCreateWithEmail = ({
                     size="large"
                     placeholder={InitTexts.auth.emailPlaceholder}
                     {...emailField.input}
+                    invalid={isInvalid}
                 />
 
-                {((emailField.input.invalid && emailField.input.errorText) || emailError) && (
-                    <XErrorMessage2 message={emailField.input.errorText || emailError} />
-                )}
+                {isInvalid && <XErrorMessage2 message={errorText} />}
             </ButtonsWrapper>
             <ButtonsWrapper
                 marginTop={emailField.input.invalid && emailField.input.errorText ? 52 - 26 : 52}
@@ -170,6 +172,9 @@ export const WebSignUpCreateWithEmail = ({
     };
     const title = 'Create new account';
 
+    const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
+    const isInvalid = !!errorText;
+
     return (
         <XShortcuts
             handlerMap={{
@@ -194,10 +199,9 @@ export const WebSignUpCreateWithEmail = ({
                         title={InitTexts.auth.emailPlaceholder}
                         field={emailField}
                         hideErrorText
+                        invalid={isInvalid}
                     />
-                    {((emailField.input.invalid && emailField.input.errorText) || emailError) && (
-                        <XErrorMessage2 message={emailField.input.errorText || emailError} />
-                    )}
+                    {isInvalid && <XErrorMessage2 message={errorText} />}
                 </ButtonsWrapper>
                 <ButtonsWrapper
                     marginTop={

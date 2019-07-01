@@ -100,6 +100,9 @@ const CreateOrganizationFormInner = (props: {
         doConfirm();
     };
 
+    const errorText = organizationField.input.errorText;
+    const isInvalid = !!errorText;
+
     const content = (
         <XTrack event="signup_org_view">
             <ContentWrapper>
@@ -122,12 +125,7 @@ const CreateOrganizationFormInner = (props: {
                                             hideErrorText
                                             field={organizationField}
                                         />
-                                        {organizationField.input.invalid &&
-                                            organizationField.input.errorText && (
-                                                <XErrorMessage2
-                                                    message={organizationField.input.errorText}
-                                                />
-                                            )}
+                                        {isInvalid && <XErrorMessage2 message={errorText} />}
                                     </XView>
                                 )}
                             </XVertical>
@@ -158,12 +156,7 @@ const CreateOrganizationFormInner = (props: {
                                         </XIconWrapper>
                                     </XPopper>
                                 </XHorizontal>
-                                {organizationField.input.invalid &&
-                                    organizationField.input.errorText && (
-                                        <XErrorMessage2
-                                            message={organizationField.input.errorText}
-                                        />
-                                    )}
+                                {isInvalid && <XErrorMessage2 message={errorText} />}
                             </XView>
                         )}
 

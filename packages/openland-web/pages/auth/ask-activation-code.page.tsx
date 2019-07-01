@@ -129,7 +129,8 @@ export const WebSignUpActivationCode = ({
         doConfirm();
     };
 
-    const showError = (codeField.input.invalid && codeField.input.errorText) || codeError;
+    const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
+    const isInvalid = !!errorText;
 
     return (
         <XShortcuts
@@ -161,17 +162,15 @@ export const WebSignUpActivationCode = ({
                         flexGrow={1}
                         flexShrink={0}
                         hideErrorText
-                        invalid={codeError ? !!codeError : undefined}
                         field={codeField}
+                        invalid={isInvalid}
                     />
                     <XView maxWidth={300}>
-                        {((codeField.input.invalid && codeField.input.errorText) || codeError) && (
-                            <XErrorMessage2 message={codeField.input.errorText || codeError} />
-                        )}
+                        {isInvalid && <XErrorMessage2 message={errorText} />}
                     </XView>
                 </ButtonsWrapper>
 
-                <ButtonsWrapper marginTop={showError ? 40 - 26 : 40}>
+                <ButtonsWrapper marginTop={isInvalid ? 40 - 26 : 40}>
                     <XVertical alignItems="center">
                         <XHorizontal alignItems="center">
                             <XButton
@@ -242,6 +241,9 @@ export const RoomActivationCode = ({
         doConfirm();
     };
 
+    const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
+    const isInvalid = !!errorText;
+
     return (
         <XShortcuts
             handlerMap={{
@@ -262,7 +264,6 @@ export const RoomActivationCode = ({
             )}
             <ButtonsWrapper marginTop={40} width={280}>
                 <XInput
-                    invalid={codeError !== ''}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
@@ -271,8 +272,9 @@ export const RoomActivationCode = ({
                     flexGrow={1}
                     flexShrink={0}
                     {...codeField.input}
+                    invalid={isInvalid}
                 />
-                {form.error && <ErrorText>{codeError}</ErrorText>}
+                {isInvalid && <ErrorText>{errorText}</ErrorText>}
             </ButtonsWrapper>
             <ResendCodeRow alignItems="center">
                 <XHorizontal alignItems="center" separator="none">
