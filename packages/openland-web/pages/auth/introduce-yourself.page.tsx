@@ -231,7 +231,7 @@ const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => 
 
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
 
-    const data = client.useWithoutLoaderProfilePrefill();
+    const data = client.useProfilePrefill();
 
     const prefill = usePhotoPrefill && data ? data.prefill : null;
 
@@ -252,27 +252,29 @@ export const IntroduceYourselfPage = ({
     const router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Introduce yourself" />
-            {!roomView && (
-                <>
-                    <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-                    <XView marginTop={34}>
-                        <BackSkipLogo
-                            onBack={() => {
-                                router.replace('/authorization/ask-activation-code');
-                            }}
-                            onSkip={null}
-                        />
-                    </XView>
-                    <CreateProfileFormRoot roomView={roomView} />
-                </>
-            )}
+            <React.Suspense fallback={null}>
+                <XDocumentHead title="Introduce yourself" />
+                {!roomView && (
+                    <>
+                        <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
+                        <XView marginTop={34}>
+                            <BackSkipLogo
+                                onBack={() => {
+                                    router.replace('/authorization/ask-activation-code');
+                                }}
+                                onSkip={null}
+                            />
+                        </XView>
+                        <CreateProfileFormRoot roomView={roomView} />
+                    </>
+                )}
 
-            {roomView && (
-                <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
-                    <CreateProfileFormRoot roomView={roomView} />
-                </RoomSignupContainer>
-            )}
+                {roomView && (
+                    <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
+                        <CreateProfileFormRoot roomView={roomView} />
+                    </RoomSignupContainer>
+                )}
+            </React.Suspense>
         </XView>
     );
 };
