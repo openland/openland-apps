@@ -118,7 +118,10 @@ export const NotCompactHeader = ({
                 {senderBadge && (
                     <XWithRole role="feature-non-production">
                         <XView marginLeft={8} alignSelf="center" flexShrink={1}>
-                            <XBadge name={senderBadgeNameEmojify || senderBadge.name} verified={senderBadge.verified} />
+                            <XBadge
+                                name={senderBadgeNameEmojify || senderBadge.name}
+                                verified={senderBadge.verified}
+                            />
                         </XView>
                     </XWithRole>
                 )}

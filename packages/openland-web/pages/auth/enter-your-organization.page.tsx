@@ -86,13 +86,16 @@ const CreateOrganizationFormInner = (props: {
             text: InitTexts.auth.organizationIsEmptyError,
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await props.processCreateOrganization({
-                organizationFieldValue: organizationField.value,
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await props.processCreateOrganization({
+                    organizationFieldValue: organizationField.value,
+                });
             });
-        });
-    }, [organizationField.value]);
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Give others context about your work';
 

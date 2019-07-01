@@ -19,7 +19,7 @@ const NoResultWrapper = Glamorous(XVertical)({
 const Image = Glamorous.div({
     width: 178,
     height: 155,
-    backgroundImage: 'url(\'/static/X/messenger/channels-search-empty.svg\')',
+    backgroundImage: "url('/static/X/messenger/channels-search-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
@@ -41,18 +41,23 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         fetchPolicy: 'cache-and-network',
     });
 
-    const messagesSearch = client.useMessagesSearch({
-        query: JSON.stringify({$and: [{text: props.variables.query}, {isService: false}]}),
-        sort: JSON.stringify([{createdAt: {order: 'desc'}}]),
-        first: 100
-    }, {
-        fetchPolicy: 'network-only'
-    });
+    const messagesSearch = client.useMessagesSearch(
+        {
+            query: JSON.stringify({
+                $and: [{ text: props.variables.query }, { isService: false }],
+            }),
+            sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
+            first: 100,
+        },
+        {
+            fetchPolicy: 'network-only',
+        },
+    );
     const messages = messagesSearch.messagesSearch.edges;
     const me = client.useAccount();
 
     if (!data || !data.items) {
-        return <XLoader loading={true}/>;
+        return <XLoader loading={true} />;
     }
 
     // Why?
@@ -99,7 +104,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     if (items.length === 0 && messages.length === 0) {
         return (
             <NoResultWrapper separator={10} alignItems="center">
-                <Image/>
+                <Image />
                 <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
             </NoResultWrapper>
         );
@@ -173,8 +178,10 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                 );
             })}
             <XWithRole role="feature-non-production">
-                {messages.length > 0 && <XView height={1} alignSelf="stretch" backgroundColor="#ececec"/>}
-                {messages.map((i) => {
+                {messages.length > 0 && (
+                    <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
+                )}
+                {messages.map(i => {
                     const { message, chat } = i.node;
                     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
                     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
@@ -204,14 +211,17 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                                 fallback: message.fallback,
                                 date: message.date,
                                 photo: photo || undefined,
-                                attachments: message.__typename === 'GeneralMessage' ? message.attachments : undefined,
+                                attachments:
+                                    message.__typename === 'GeneralMessage'
+                                        ? message.attachments
+                                        : undefined,
                                 isService: false,
                                 isOut: me.me ? message.sender.id === me.me.id : false,
                                 sender: message.sender.name,
                             }}
                             key={message.id}
                         />
-                    )
+                    );
                 })}
             </XWithRole>
         </XShortcuts>
@@ -220,7 +230,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
 
 export const DialogSearchResults = (props: DialogSearchResultsT) => {
     return (
-        <React.Suspense fallback={<XLoader loading={true}/>}>
+        <React.Suspense fallback={<XLoader loading={true} />}>
             <DialogSearchResultsInner {...props} />
         </React.Suspense>
     );

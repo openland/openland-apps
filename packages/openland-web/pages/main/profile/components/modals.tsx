@@ -273,15 +273,20 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string }) => {
+export const CreateBadgeModal = (props: {
+    ctx: XModalController;
+    isSuper: boolean;
+    userId: string;
+}) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const form = useForm();
     const nameField = useField('input.name', '', form, [
         {
             checkIsValid: value => value.trim().length > 0,
-            text: 'Badge can\'t be empty',
-        }, {
+            text: "Badge can't be empty",
+        },
+        {
             checkIsValid: value => value.trim().length <= 40,
             text: 'Max length for badge: 40',
         },
@@ -289,14 +294,14 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper && (props.userId !== messenger.user.id)) {
+            if (props.isSuper && props.userId !== messenger.user.id) {
                 await client.mutateSuperBadgeCreate({
                     name: nameField.value,
-                    userId: props.userId
+                    userId: props.userId,
                 });
             } else {
                 await client.mutateBadgeCreate({
-                    name: nameField.value
+                    name: nameField.value,
                 });
             }
 
@@ -312,7 +317,11 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
                     <InputField title="Badge text" field={nameField} setFocusOnError />
                 </XModalContent>
                 <XModalFooter>
-                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton
+                        text="Cancel"
+                        style="ghost"
+                        onClick={() => props.ctx.hide()}
+                    />
                     <XModalFooterButton text="Add" style="primary" onClick={onAdd} />
                 </XModalFooter>
             </XView>
@@ -320,15 +329,23 @@ export const CreateBadgeModal = (props: { ctx: XModalController, isSuper: boolea
     );
 };
 
-export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolean, userId: string, badgeId: string }) => {
+export const DeleteBadgeModal = (props: {
+    ctx: XModalController;
+    isSuper: boolean;
+    userId: string;
+    badgeId: string;
+}) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const form = useForm();
 
     const onAdd = () => {
         form.doAction(async () => {
-            if (props.isSuper && (props.userId !== messenger.user.id)) {
-                await client.mutateSuperBadgeDelete({ badgeId: props.badgeId, userId: props.userId });
+            if (props.isSuper && props.userId !== messenger.user.id) {
+                await client.mutateSuperBadgeDelete({
+                    badgeId: props.badgeId,
+                    userId: props.userId,
+                });
             } else {
                 await client.mutateBadgeDelete({ badgeId: props.badgeId });
             }
@@ -342,11 +359,16 @@ export const DeleteBadgeModal = (props: { ctx: XModalController, isSuper: boolea
             {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent fontSize={18} lineHeight="28px">
-                    Are you sure you want to delete badge?<br />
+                    Are you sure you want to delete badge?
+                    <br />
                     This cannot be undone.
                 </XModalContent>
                 <XModalFooter>
-                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                    <XModalFooterButton
+                        text="Cancel"
+                        style="ghost"
+                        onClick={() => props.ctx.hide()}
+                    />
                     <XModalFooterButton text="Delete" style="danger" onClick={onAdd} />
                 </XModalFooter>
             </XView>

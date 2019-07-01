@@ -54,37 +54,40 @@ export const CreateProfileFormInner = (
     let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
     let photoRef = useField<StoredFileT | null>('input.photoRef', null, form);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await client.mutateProfileCreate({
-                input: {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                    photoRef: photoRef.value
-                        ? {
-                              ...(photoRef.value as any),
-                              isImage: undefined,
-                              width: undefined,
-                              height: undefined,
-                          }
-                        : undefined,
-                },
-            });
-            await client.refetchAccount();
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await client.mutateProfileCreate({
+                    input: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        photoRef: photoRef.value
+                            ? {
+                                  ...(photoRef.value as any),
+                                  isImage: undefined,
+                                  width: undefined,
+                                  height: undefined,
+                              }
+                            : undefined,
+                    },
+                });
+                await client.refetchAccount();
 
-            if (firstName.value) {
-                setSending(true);
+                if (firstName.value) {
+                    setSending(true);
 
-                if (Cookie.get('x-openland-org-invite')) {
-                    const orgInvite = Cookie.get('x-openland-org-invite');
-                    Cookie.remove('x-openland-org-invite');
-                    window.location.href = `/join/${orgInvite}`;
-                } else {
-                    router.push('/authorization/enter-your-organization');
+                    if (Cookie.get('x-openland-org-invite')) {
+                        const orgInvite = Cookie.get('x-openland-org-invite');
+                        Cookie.remove('x-openland-org-invite');
+                        window.location.href = `/join/${orgInvite}`;
+                    } else {
+                        router.push('/authorization/enter-your-organization');
+                    }
                 }
-            }
-        });
-    }, [firstName.value, lastName.value, photoRef.value]);
+            });
+        },
+        [firstName.value, lastName.value, photoRef.value],
+    );
 
     const onEnter = () => {
         doConfirm();

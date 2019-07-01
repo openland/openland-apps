@@ -220,8 +220,8 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                                 src={imageUrl}
                             />
                         ) : (
-                                <img width={40} height={40} src="/static/img/img-thn@3x.png" />
-                            )}
+                            <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                        )}
                     </XView>
                     <XView flexDirection="column" justifyContent="space-between" height={40}>
                         <XView
@@ -402,21 +402,21 @@ export const MessageUrlAugmentationComponent = React.memo(
 
         return (
             <XView width="100%" flexDirection="column" maxWidth={696}>
-                {(title || titleLinkHostname || subTitle || parts.length || image) && <div className={LinkContentWrapperClassName}>
-
-                    <XView flexDirection="row">
-                        {image && dimensions && !openlandLink && (
-                            <XView
-                                marginRight={20}
-                                flexDirection="row"
-                                alignItems="flex-start"
-                                maxWidth="60%"
-                            >
-                                {linkImage && (
-                                    <>
-                                        {isMobile ? (
-                                            linkImage
-                                        ) : (
+                {(title || titleLinkHostname || subTitle || parts.length || image) && (
+                    <div className={LinkContentWrapperClassName}>
+                        <XView flexDirection="row">
+                            {image && dimensions && !openlandLink && (
+                                <XView
+                                    marginRight={20}
+                                    flexDirection="row"
+                                    alignItems="flex-start"
+                                    maxWidth="60%"
+                                >
+                                    {linkImage && (
+                                        <>
+                                            {isMobile ? (
+                                                linkImage
+                                            ) : (
                                                 <ImagePreviewModal
                                                     file={image.url}
                                                     width={image.metadata!.imageWidth!}
@@ -424,135 +424,150 @@ export const MessageUrlAugmentationComponent = React.memo(
                                                     target={linkImage}
                                                 />
                                             )}
-                                    </>
-                                )}
-                            </XView>
-                        )}
-                        {image && openlandLink && (
-                            <XView marginRight={12} flexShrink={0}>
-                                {image.url ? (
-                                    <XAvatar2 id={objectId} title={title || ''} src={image.url} />
-                                ) : (
-                                        <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                                        </>
                                     )}
-                            </XView>
-                        )}
-                        {!image && openlandLink && (
-                            <XView marginRight={12} flexShrink={0}>
-                                <XAvatar2 id={objectId} title={title || ''} />
-                            </XView>
-                        )}
-                        {(title || titleLinkHostname || subTitle || parts) && (
-                            <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                                {titleLinkHostname && !keyboard && (
-                                    <XView
-                                        fontSize={13}
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        flexDirection="row"
-                                        alignItems="center"
-                                        marginBottom={4}
-                                    >
-                                        {icon && <img src={icon.url} className={Favicon} />}
-                                        {!icon && (
-                                            <XView
-                                                flexShrink={0}
-                                                marginTop={-1}
-                                                marginRight={5}
-                                                marginBottom={-1}
+                                </XView>
+                            )}
+                            {image && openlandLink && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    {image.url ? (
+                                        <XAvatar2
+                                            id={objectId}
+                                            title={title || ''}
+                                            src={image.url}
+                                        />
+                                    ) : (
+                                        <img
+                                            width={40}
+                                            height={40}
+                                            src="/static/img/img-thn@3x.png"
+                                        />
+                                    )}
+                                </XView>
+                            )}
+                            {!image && openlandLink && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    <XAvatar2 id={objectId} title={title || ''} />
+                                </XView>
+                            )}
+                            {(title || titleLinkHostname || subTitle || parts) && (
+                                <XView flexDirection="column" flexGrow={1} flexShrink={1}>
+                                    {titleLinkHostname && !keyboard && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                            marginBottom={4}
+                                        >
+                                            {icon && <img src={icon.url} className={Favicon} />}
+                                            {!icon && (
+                                                <XView
+                                                    flexShrink={0}
+                                                    marginTop={-1}
+                                                    marginRight={5}
+                                                    marginBottom={-1}
+                                                >
+                                                    <SiteIcon />
+                                                </XView>
+                                            )}
+                                            <span className={DomainNameClassName}>
+                                                {titleLinkHostname}
+                                            </span>
+                                        </XView>
+                                    )}
+                                    {title && keyboard && (
+                                        <XView fontSize={16} fontWeight="600">
+                                            <span
+                                                className={cx(
+                                                    SplitTextClassName,
+                                                    SplitTitleClassName,
+                                                )}
                                             >
-                                                <SiteIcon />
-                                            </XView>
-                                        )}
-                                        <span className={DomainNameClassName}>
-                                            {titleLinkHostname}
-                                        </span>
-                                    </XView>
-                                )}
-                                {title && keyboard && (
-                                    <XView fontSize={16} fontWeight="600">
-                                        <span
-                                            className={cx(SplitTextClassName, SplitTitleClassName)}
+                                                {emoji({
+                                                    src: title,
+                                                    size: 18,
+                                                })}
+                                            </span>
+                                        </XView>
+                                    )}
+                                    {title && !keyboard && (
+                                        <XView
+                                            as="a"
+                                            href={href}
+                                            path={path}
+                                            target={openlandLink ? undefined : '_blank'}
+                                            fontSize={16}
+                                            fontWeight="600"
+                                            color="#000"
+                                            hoverColor={'#1790ff'}
+                                            hoverTextDecoration="none"
+                                            onClick={onCloseModal}
                                         >
-                                            {emoji({
-                                                src: title,
-                                                size: 18,
-                                            })}
-                                        </span>
-                                    </XView>
-                                )}
-                                {title && !keyboard && (
-                                    <XView
-                                        as="a"
-                                        href={href}
-                                        path={path}
-                                        target={openlandLink ? undefined : '_blank'}
-                                        fontSize={16}
-                                        fontWeight="600"
-                                        color="#000"
-                                        hoverColor={'#1790ff'}
-                                        hoverTextDecoration="none"
-                                        onClick={onCloseModal}
-                                    >
-                                        <span
-                                            className={cx(SplitTextClassName, SplitTitleClassName)}
+                                            <span
+                                                className={cx(
+                                                    SplitTextClassName,
+                                                    SplitTitleClassName,
+                                                )}
+                                            >
+                                                {emoji({
+                                                    src: title,
+                                                    size: 18,
+                                                })}
+                                            </span>
+                                        </XView>
+                                    )}
+                                    {subTitle && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                            marginTop={4}
                                         >
-                                            {emoji({
-                                                src: title,
-                                                size: 18,
-                                            })}
-                                        </span>
-                                    </XView>
-                                )}
-                                {subTitle && (
-                                    <XView
-                                        fontSize={13}
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        flexDirection="row"
-                                        alignItems="center"
-                                        marginTop={4}
-                                    >
-                                        <span>{subTitle}</span>
-                                    </XView>
-                                )}
-                                {parts.length > 0 && !openlandLink && (
-                                    <XView
-                                        flexShrink={1}
-                                        fontSize={14}
-                                        color="#121e2b"
-                                        opacity={0.9}
-                                        marginTop={4}
-                                    >
-                                        <span className={SplitTextClassName}>{parts}</span>
-                                    </XView>
-                                )}
+                                            <span>{subTitle}</span>
+                                        </XView>
+                                    )}
+                                    {parts.length > 0 && !openlandLink && (
+                                        <XView
+                                            flexShrink={1}
+                                            fontSize={14}
+                                            color="#121e2b"
+                                            opacity={0.9}
+                                            marginTop={4}
+                                        >
+                                            <span className={SplitTextClassName}>{parts}</span>
+                                        </XView>
+                                    )}
+                                </XView>
+                            )}
+                        </XView>
+                        {parts.length > 0 && openlandLink && (
+                            <XView
+                                flexShrink={1}
+                                fontSize={14}
+                                color="#121e2b"
+                                opacity={0.9}
+                                marginTop={8}
+                            >
+                                {parts}
                             </XView>
                         )}
-                    </XView>
-                    {parts.length > 0 && openlandLink && (
-                        <XView
-                            flexShrink={1}
-                            fontSize={14}
-                            color="#121e2b"
-                            opacity={0.9}
-                            marginTop={8}
-                        >
-                            {parts}
-                        </XView>
-                    )}
-                    {isMe && !openlandLink && (
-                        <DeleteButton
-                            query={{
-                                field: 'deleteUrlAugmentation',
-                                value: messageId,
-                            }}
-                            className="delete-button"
-                        >
-                            <DeleteIcon />
-                        </DeleteButton>
-                    )}
-                </div>}
+                        {isMe && !openlandLink && (
+                            <DeleteButton
+                                query={{
+                                    field: 'deleteUrlAugmentation',
+                                    value: messageId,
+                                }}
+                                className="delete-button"
+                            >
+                                <DeleteIcon />
+                            </DeleteButton>
+                        )}
+                    </div>
+                )}
                 {keyboard && <Keyboard keyboard={keyboard} />}
             </XView>
         );

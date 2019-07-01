@@ -117,11 +117,14 @@ export const WebSignUpActivationCode = ({
         },
     ]);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            loginCodeStart({ emailValue, codeValue: codeField.value });
-        });
-    }, [codeField.value, emailValue]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                loginCodeStart({ emailValue, codeValue: codeField.value });
+            });
+        },
+        [codeField.value, emailValue],
+    );
 
     const sendingCodeText = 'Sending code...';
 
@@ -231,11 +234,14 @@ export const RoomActivationCode = ({
             text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            loginCodeStart({ emailValue, codeValue: codeField.value });
-        });
-    }, [codeField.value, emailValue]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                loginCodeStart({ emailValue, codeValue: codeField.value });
+            });
+        },
+        [codeField.value, emailValue],
+    );
 
     const onEnter = () => {
         doConfirm();

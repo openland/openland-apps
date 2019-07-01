@@ -68,9 +68,12 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localState);
-    }, [localState]);
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localState);
+        },
+        [localState],
+    );
 
     const { title, subtitle } = group;
     return (

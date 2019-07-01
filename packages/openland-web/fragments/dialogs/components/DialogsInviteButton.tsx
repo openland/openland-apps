@@ -43,8 +43,8 @@ const OrgInviteLoader = (props: { orgId: string }) => {
     useClient().useWithoutLoaderOrganizationPublicInvite({
         organizationId: props.orgId,
     });
-    return null
-}
+    return null;
+};
 
 export const DialogsInviteButton = XMemo(() => {
     let router = React.useContext(XRouterContext)!;
@@ -66,7 +66,12 @@ export const DialogsInviteButton = XMemo(() => {
         >
             <InviteIcon />
             <span>Invite friends</span>
-            {profile && profile.profile && profile.profile.primaryOrganization && profile.profile.primaryOrganization.id && <OrgInviteLoader orgId={profile.profile.primaryOrganization.id} />}
+            {profile &&
+                profile.profile &&
+                profile.profile.primaryOrganization &&
+                profile.profile.primaryOrganization.id && (
+                    <OrgInviteLoader orgId={profile.profile.primaryOrganization.id} />
+                )}
         </InviteWrapper>
     );
 });

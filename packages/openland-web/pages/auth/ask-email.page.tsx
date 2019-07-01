@@ -67,15 +67,18 @@ export const RoomCreateWithEmail = ({
         },
     ]);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     const onEnter = () => {
         doConfirm();
@@ -157,15 +160,18 @@ export const WebSignUpCreateWithEmail = ({
         },
     ]);
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            setEmailValue(emailField.value);
-            setEmailError('');
-            setTimeout(() => {
-                loginEmailStart(emailField.value);
-            }, 100);
-        });
-    }, [emailField.value]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                setEmailValue(emailField.value);
+                setEmailError('');
+                setTimeout(() => {
+                    loginEmailStart(emailField.value);
+                }, 100);
+            });
+        },
+        [emailField.value],
+    );
 
     const onEnter = () => {
         doConfirm();
