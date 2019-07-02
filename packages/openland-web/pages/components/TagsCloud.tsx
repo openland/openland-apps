@@ -24,7 +24,7 @@ export const TagsCloud = ({
                 flexDirection="row"
                 flexWrap="wrap"
                 justifyContent="center"
-                width={350}
+                maxWidth={350}
             >
                 {tagsGroup.tags
                     .filter((t, i) => showAll || i < 17)

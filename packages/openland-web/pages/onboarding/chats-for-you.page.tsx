@@ -4,7 +4,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { useClient } from 'openland-web/utils/useClient';
@@ -15,6 +15,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const shadowClassName = css`
     margin: auto;
@@ -26,6 +27,10 @@ const shadowClassName = css`
     right: 0;
     pointer-events: none;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+`;
+
+const mobileShadowClassName = css`
+    bottom: -30px;
 `;
 
 const CheckIconClassName = css`
@@ -79,13 +84,22 @@ const ChatsItem = ({
     );
 };
 
-const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedRoom[] }) => {
+const ChatsItemList = ({
+    rooms,
+    isMobile,
+}: {
+    rooms: SuggestedRooms_suggestedRooms_SharedRoom[];
+    isMobile: boolean;
+}) => {
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(() => {
-        setSelectedIds(rooms.map(({ id }) => id));
-    }, [rooms]);
+    React.useLayoutEffect(
+        () => {
+            setSelectedIds(rooms.map(({ id }) => id));
+        },
+        [rooms],
+    );
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -107,14 +121,15 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     }
 
     return (
-        <>
+        <XView flexGrow={1} flexShrink={1}>
             <XView
                 flexDirection="row"
                 justifyContent="space-between"
                 alignItems="center"
                 marginBottom={18}
                 alignSelf="center"
-                maxWidth={308}
+                maxWidth={isMobile ? '100%' : 326}
+                paddingHorizontal={18}
                 width="100%"
             >
                 <XView fontWeight={'600'} fontSize={17} color={'rgba(0, 0, 0, 0.5)'}>
@@ -142,7 +157,13 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
             </XView>
 
             <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1} alignItems="center">
-                <XView paddingBottom={150} alignItems="stretch" alignSelf="center" width={350}>
+                <XView
+                    paddingBottom={150}
+                    alignItems="stretch"
+                    alignSelf="center"
+                    maxWidth={isMobile ? '100%' : 350}
+                    width={isMobile ? '100%' : 350}
+                >
                     {rooms.map((room, key) => {
                         return (
                             <ChatsItem
@@ -161,7 +182,7 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                     })}
                 </XView>
             </XScrollView3>
-            <div className={shadowClassName} />
+            <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
             <XView flexShrink={0} alignSelf="center" zIndex={2}>
                 <XButton
                     zIndex={2}
@@ -174,9 +195,13 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                     enabled={!!selectedLength}
                 />
             </XView>
-        </>
+        </XView>
     );
 };
+
+const wrapperClassName = css`
+    width: 100%;
+`;
 
 export const ChatsForYou = ({
     onBack,
@@ -186,6 +211,7 @@ export const ChatsForYou = ({
     onBack: (event: React.MouseEvent) => void;
 }) => {
     const client = useClient();
+    const isMobile = useIsMobile();
     let router = React.useContext(XRouterContext)!;
     const data = client.useSuggestedRooms({ fetchPolicy: 'network-only' });
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
@@ -204,34 +230,50 @@ export const ChatsForYou = ({
     }
 
     return (
-        <XView backgroundColor="white" flexGrow={1} flexShrink={1} maxHeight="100vh">
-            <XDocumentHead title="Choose role" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
-            <XView marginBottom={12} marginTop={34}>
-                <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
-            </XView>
-
+        <div className={wrapperClassName}>
             <XView
-                alignItems="center"
+                backgroundColor="white"
                 flexGrow={1}
-                flexShrink={1}
-                justifyContent="center"
-                marginTop={20}
-                marginBottom={70}
+                flexShrink={0}
+                flexBasis={0}
+                width="100%"
+                height="100%"
             >
-                <XView flexDirection="column" alignSelf="stretch" flexGrow={1} flexShrink={1}>
-                    <XView alignItems="center">
-                        <XView fontSize={24} marginBottom={12}>
-                            Chats for you
-                        </XView>
-                        <XView fontSize={16} marginBottom={40}>
-                            Recommendations based on your answers
-                        </XView>
+                <XView flexShrink={1} flexGrow={1} flexBasis={0}>
+                    <XDocumentHead title="Choose role" />
+                    <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
+                    <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
+                        <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
                     </XView>
 
-                    <ChatsItemList rooms={rooms} />
+                    <XView
+                        alignItems="center"
+                        flexGrow={1}
+                        flexShrink={1}
+                        justifyContent="center"
+                        marginTop={isMobile ? 15 : 20}
+                        marginBottom={isMobile ? 30 : 70}
+                    >
+                        <XView
+                            flexDirection="column"
+                            alignSelf="stretch"
+                            flexGrow={1}
+                            flexShrink={1}
+                        >
+                            <XView alignItems="center">
+                                <XView fontSize={24} marginBottom={12}>
+                                    Chats for you
+                                </XView>
+                                <XView fontSize={16} marginBottom={40}>
+                                    Recommendations based on your answers
+                                </XView>
+                            </XView>
+
+                            <ChatsItemList rooms={rooms} isMobile={!!isMobile} />
+                        </XView>
+                    </XView>
                 </XView>
             </XView>
-        </XView>
+        </div>
     );
 };

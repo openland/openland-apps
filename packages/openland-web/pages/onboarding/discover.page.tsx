@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import * as qs from 'query-string';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -17,6 +17,7 @@ import { ChatsForYou } from './chats-for-you.page';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const shadowClassName = css`
     width: 350px;
@@ -26,6 +27,10 @@ const shadowClassName = css`
     margin: auto;
     pointer-events: none;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+`;
+
+const mobileShadowClassName = css`
+    bottom: -30px;
 `;
 
 const TagsGroupPage = (props: {
@@ -56,6 +61,10 @@ const TagsGroupPage = (props: {
     );
 };
 
+const wrapperClassName = css`
+    width: 100%;
+`;
+
 const LocalDiscoverComponent = ({
     group,
     onContinueClick,
@@ -74,11 +83,14 @@ const LocalDiscoverComponent = ({
     onBack: (event: React.MouseEvent) => void;
 }) => {
     const router = React.useContext(XRouterContext)!;
-
+    const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
-    React.useLayoutEffect(() => {
-        setLocalSelected(selected);
-    }, [selected]);
+    React.useLayoutEffect(
+        () => {
+            setLocalSelected(selected);
+        },
+        [selected],
+    );
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -95,9 +107,12 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localSelected);
-    }, [localSelected]);
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localSelected);
+        },
+        [localSelected],
+    );
 
     if (!group) {
         return null;
@@ -105,48 +120,65 @@ const LocalDiscoverComponent = ({
 
     const { title, subtitle } = group;
     return (
-        <XView backgroundColor="white" flexGrow={1} flexShrink={1} maxHeight="100vh">
-            <XDocumentHead title="Choose role" />
-            <TopBar progressInPercents={progressInPercents} />
-            <XView marginTop={34}>
-                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
-            </XView>
-
+        <div className={wrapperClassName}>
             <XView
-                alignItems="center"
+                backgroundColor="white"
                 flexGrow={1}
-                flexShrink={1}
-                justifyContent="center"
-                marginTop={100}
-                marginBottom={70}
+                flexShrink={0}
+                flexBasis={0}
+                width="100%"
+                height="100%"
             >
-                <XView
-                    flexDirection="column"
-                    alignSelf="stretch"
-                    alignItems="center"
-                    flexGrow={1}
-                    flexShrink={1}
-                >
-                    <XView fontSize={24} marginBottom={15} fontWeight="600">
-                        {title}
-                    </XView>
-                    <XView fontSize={16} marginBottom={30}>
-                        {subtitle}
+                <XView flexShrink={1} flexGrow={1} flexBasis={0}>
+                    <XDocumentHead title="Choose role" />
+                    <TopBar progressInPercents={progressInPercents} />
+                    <XView marginTop={isMobile ? 15 : 34}>
+                        <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={!!isMobile} />
                     </XView>
 
-                    <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
-                    <div className={shadowClassName} />
-                    <XButton
-                        flexShrink={0}
-                        zIndex={2}
-                        text="Continue"
-                        style="primary"
-                        size="large"
-                        onClick={onMyContinueClick}
-                    />
+                    <XView
+                        alignItems="center"
+                        flexGrow={1}
+                        flexShrink={1}
+                        justifyContent="center"
+                        marginTop={isMobile ? 15 : 100}
+                        marginBottom={isMobile ? 30 : 70}
+                    >
+                        <XView
+                            flexDirection="column"
+                            alignSelf="stretch"
+                            alignItems="center"
+                            flexGrow={1}
+                            flexShrink={1}
+                        >
+                            <XView fontSize={24} marginBottom={15} fontWeight="600">
+                                {title}
+                            </XView>
+                            <XView fontSize={16} marginBottom={30}>
+                                {subtitle}
+                            </XView>
+
+                            <TagsGroupPage
+                                group={group}
+                                selected={localSelected}
+                                onPress={onTagPress}
+                            />
+                            <div
+                                className={cx(shadowClassName, isMobile && mobileShadowClassName)}
+                            />
+                            <XButton
+                                flexShrink={0}
+                                zIndex={2}
+                                text="Continue"
+                                style="primary"
+                                size="large"
+                                onClick={onMyContinueClick}
+                            />
+                        </XView>
+                    </XView>
                 </XView>
             </XView>
-        </XView>
+        </div>
     );
 };
 
@@ -185,11 +217,14 @@ export const Discover = ({
         { fetchPolicy: 'network-only' },
     );
 
-    React.useLayoutEffect(() => {
-        client.refetchSuggestedRooms().then(() => {
-            client.refetchDiscoverIsDone();
-        });
-    }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
+    React.useLayoutEffect(
+        () => {
+            client.refetchSuggestedRooms().then(() => {
+                client.refetchDiscoverIsDone();
+            });
+        },
+        [currentPage.betaNextDiscoverPage!!.tagGroup],
+    );
 
     // Hack to reset discover on /onboarding/discover page
     if (
@@ -333,12 +368,15 @@ const DiscoverOnRouter = () => {
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    React.useEffect(() => {
-        if (!discoverDone.betaIsDiscoverDone) {
-            setRootSelected(arrowify(selected));
-            setRootExclude(arrowify(exclude));
-        }
-    }, [router.query.selected, router.query.exclude]);
+    React.useEffect(
+        () => {
+            if (!discoverDone.betaIsDiscoverDone) {
+                setRootSelected(arrowify(selected));
+                setRootExclude(arrowify(exclude));
+            }
+        },
+        [router.query.selected, router.query.exclude],
+    );
 
     const onContinueClick = async (props: {
         selected: string[];

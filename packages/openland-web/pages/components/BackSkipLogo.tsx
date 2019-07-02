@@ -3,6 +3,7 @@ import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 import BackButton from 'openland-icons/arrow-left.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const skipClassName = css`
     letter-spacing: -0.078px;
@@ -29,14 +30,13 @@ export const BackSkipLogo = ({
     onBack: ((event: React.MouseEvent) => void) | null;
 }) => {
     const modalBox = React.useContext(XModalBoxContext);
-
+    const isMobile = useIsMobile();
     return (
         <XView
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
-            paddingLeft={50}
-            paddingRight={50}
+            paddingHorizontal={isMobile ? 25 : 50}
             position="relative"
             height={42}
             zIndex={900}
