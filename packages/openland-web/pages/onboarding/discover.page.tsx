@@ -45,7 +45,7 @@ const TagsGroupPage = (props: {
     return (
         <XScrollView3
             marginBottom={-110}
-            flexGrow={0}
+            flexGrow={1}
             flexShrink={1}
             alignSelf="stretch"
             alignItems="center"
