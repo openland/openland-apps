@@ -238,7 +238,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <ASFlex key={i + ''} flexDirection="row" marginTop={4} alignSelf="stretch" width={Platform.OS === 'ios' ? maxWidth : undefined} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <ASFlex key={i + ''} flexDirection="row" maxWidth={maxWidth - 24} marginTop={4} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
@@ -260,6 +260,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                     color={theme.linkColor}
                                     fontSize={14}
                                     fontWeight={TextStyles.weight.medium}
+                                    maxWidth={maxWidth - 24 - 16}
                                 >
                                     {button.title}
                                 </ASText>
