@@ -83,9 +83,12 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(() => {
-        setSelectedIds(rooms.map(({ id }) => id));
-    }, [rooms]);
+    React.useLayoutEffect(
+        () => {
+            setSelectedIds(rooms.map(({ id }) => id));
+        },
+        [rooms],
+    );
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -114,13 +117,10 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
                 alignItems="center"
                 marginBottom={18}
                 alignSelf="center"
+                maxWidth={308}
+                width="100%"
             >
-                <XView
-                    fontWeight={'600'}
-                    fontSize={17}
-                    color={'rgba(0, 0, 0, 0.5)'}
-                    marginRight={144}
-                >
+                <XView fontWeight={'600'} fontSize={17} color={'rgba(0, 0, 0, 0.5)'}>
                     {`${rooms.length} chats`}
                 </XView>
                 {allRoomsIds.length === selectedIds.length ? (
