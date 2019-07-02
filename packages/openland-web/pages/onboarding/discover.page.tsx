@@ -62,12 +62,16 @@ const LocalDiscoverComponent = ({
     selected,
     exclude,
     progressInPercents,
+    onSkip,
+    onBack,
 }: {
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
     selected: string[];
     exclude: string[];
     progressInPercents: number;
+    onSkip: (event: React.MouseEvent) => void;
+    onBack: (event: React.MouseEvent) => void;
 }) => {
     const router = React.useContext(XRouterContext)!;
 
@@ -105,20 +109,7 @@ const LocalDiscoverComponent = ({
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={progressInPercents} />
             <XView marginTop={34}>
-                <BackSkipLogo
-                    onBack={() => {
-                        if (exclude.length === 0) {
-                            router.replace('/onboarding/start');
-                        } else {
-                            if (canUseDOM) {
-                                window.history.back();
-                            }
-                        }
-                    }}
-                    onSkip={() => {
-                        router.push('/');
-                    }}
-                />
+                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             </XView>
 
             <XView
@@ -168,11 +159,15 @@ export const Discover = ({
     rootSelected,
     rootExclude,
     onContinueClick,
+    onSkip,
+    onBack,
 }: {
     previousChoisesMap: any;
     rootSelected: string[];
     rootExclude: string[];
     onContinueClick: (newSelected: any) => void;
+    onSkip: (event: React.MouseEvent) => void;
+    onBack: (event: React.MouseEvent) => void;
 }) => {
     const client = useClient();
 
@@ -235,6 +230,8 @@ export const Discover = ({
 
     return (
         <LocalDiscoverComponent
+            onSkip={onSkip}
+            onBack={onBack}
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
@@ -245,11 +242,11 @@ export const Discover = ({
 };
 
 export const DiscoverOnLocalState = () => {
-    // const modalBox = React.useContext(XModalBoxContext);
-
     const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
-    const [rootSelected, setRootSelected] = React.useState<string[]>([]);
-    const [rootExclude, setRootExclude] = React.useState<string[]>([]);
+
+    const [rootState, setRootState] = React.useState<{ selected: string[]; exclude: string[] }[]>(
+        [],
+    );
 
     const onContinueClick = async (props: {
         selected: string[];
@@ -261,15 +258,45 @@ export const DiscoverOnLocalState = () => {
             [props.currentPageId]: props.selected,
         });
 
-        setRootSelected(props.selected);
-        setRootExclude(props.exclude);
+        const newRootState = [
+            ...rootState,
+            {
+                selected: props.selected,
+                exclude: props.exclude,
+            },
+        ];
+
+        setRootState(newRootState);
     };
+
+    const onSkip = () => {
+        //
+    };
+
+    const onBack = () => {
+        if (rootState.length !== 0) {
+            const cloneRootState = [...rootState];
+            cloneRootState.pop();
+            setRootState(cloneRootState);
+        }
+    };
+
+    const getLastStateOrEmpty = () => {
+        if (rootState.length === 0) {
+            return { selected: [], exclude: [] };
+        }
+        return rootState[rootState.length - 1];
+    };
+
+    const lastStateOrEmpty = getLastStateOrEmpty();
 
     return (
         <Discover
+            onSkip={onSkip}
+            onBack={onBack}
             previousChoisesMap={previousChoisesMap}
-            rootSelected={rootSelected}
-            rootExclude={rootExclude}
+            rootSelected={lastStateOrEmpty.selected}
+            rootExclude={lastStateOrEmpty.exclude}
             onContinueClick={onContinueClick}
         />
     );
@@ -278,7 +305,6 @@ export const DiscoverOnLocalState = () => {
 const DiscoverOnRouter = () => {
     const client = useClient();
     const router = React.useContext(XRouterContext)!;
-    const modalBox = React.useContext(XModalBoxContext);
 
     const { exclude, selected } = router.query;
 
@@ -300,23 +326,37 @@ const DiscoverOnRouter = () => {
         exclude: string[];
         currentPageId: string;
     }) => {
-        if (!modalBox) {
-            setPreviousChoisesMap({
-                ...previousChoisesMap,
-                [props.currentPageId]: props.selected,
-            });
+        setPreviousChoisesMap({
+            ...previousChoisesMap,
+            [props.currentPageId]: props.selected,
+        });
 
-            router.push(
-                `/onboarding/discover?${qs.stringify({
-                    selected: props.selected,
-                    exclude: props.exclude,
-                })}`,
-            );
+        router.push(
+            `/onboarding/discover?${qs.stringify({
+                selected: props.selected,
+                exclude: props.exclude,
+            })}`,
+        );
+    };
+
+    const onSkip = () => {
+        router.push('/');
+    };
+
+    const onBack = () => {
+        if (exclude.length === 0) {
+            router.replace('/onboarding/start');
+        } else {
+            if (canUseDOM) {
+                window.history.back();
+            }
         }
     };
 
     return (
         <Discover
+            onSkip={onSkip}
+            onBack={onBack}
             previousChoisesMap={previousChoisesMap}
             rootSelected={rootSelected}
             rootExclude={rootExclude}
@@ -325,4 +365,4 @@ const DiscoverOnRouter = () => {
     );
 };
 
-export default withApp('Home', 'viewer', () => <DiscoverOnRouter />);
+export default withApp('Home', 'viewer', () => <DiscoverOnLocalState />);
