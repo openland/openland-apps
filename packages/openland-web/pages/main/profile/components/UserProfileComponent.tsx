@@ -211,7 +211,7 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
-                            {user.audienceSize && <UserReach reach={user.audienceSize} />}
+                            {user.audienceSize > 0 && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
