@@ -48,7 +48,7 @@ export const CreateProfileFormInner = (
     let firstName = useField('input.firstName', (prefill && prefill.firstName) || '', form, [
         {
             checkIsValid: (value: string) => value !== '',
-            text: `First name can't be empty`,
+            text: `Please enter your name`,
         },
     ]);
     let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
@@ -255,9 +255,12 @@ export const IntroduceYourselfPage = ({
                         <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
                         <XView marginTop={34}>
                             <BackSkipLogo
-                                onBack={() => {
-                                    router.replace('/authorization/ask-activation-code');
-                                }}
+                                onBack={
+                                    null
+                                    // () => {
+                                    //     router.replace('/authorization/ask-activation-code');
+                                    // }
+                                }
                                 onSkip={null}
                             />
                         </XView>
