@@ -4,7 +4,7 @@ import { withApp } from 'openland-web/components/withApp';
 import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -71,14 +71,21 @@ const organizationInputClassName = css`
 
 type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
 
-const CreateOrganizationFormInner = (props: {
+const CreateOrganizationFormInner = ({
+    roomView,
+    processCreateOrganization,
+    onSkip,
+    sending,
+    skiping,
+}: {
+    skiping: boolean;
     sending: boolean;
     roomView: boolean;
     inviteKey?: string | null;
     processCreateOrganization: processCreateOrganizationT;
+    onSkip?: (event: React.MouseEvent<any, MouseEvent>) => void;
 }) => {
     const form = useForm();
-    const { roomView } = props;
 
     let organizationField = useField('input.organization', '', form, [
         {
@@ -88,7 +95,7 @@ const CreateOrganizationFormInner = (props: {
     ]);
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            await props.processCreateOrganization({
+            await processCreateOrganization({
                 organizationFieldValue: organizationField.value,
             });
         });
@@ -134,11 +141,11 @@ const CreateOrganizationFormInner = (props: {
                             <XView width={330}>
                                 <XHorizontal alignItems="center" separator="none">
                                     <XInput
-                                        invalid={!!form.error}
-                                        size="large"
                                         title="Organization name"
                                         dataTestId="organization"
                                         flexGrow={1}
+                                        invalid={!!form.error}
+                                        size="large"
                                         {...organizationField.input}
                                     />
                                     <XPopper
@@ -161,14 +168,27 @@ const CreateOrganizationFormInner = (props: {
                         )}
 
                         <XView
+                            flexDirection="row"
                             marginTop={
                                 organizationField.input.invalid && organizationField.input.errorText
                                     ? 50 - 26
                                     : 50
                             }
                         >
+                            {roomView && onSkip && (
+                                <XView marginRight={16}>
+                                    <XButton
+                                        loading={skiping}
+                                        onClick={onSkip}
+                                        size="large"
+                                        style="ghost"
+                                        alignSelf="center"
+                                        text={'Skip'}
+                                    />
+                                </XView>
+                            )}
                             <XButton
-                                loading={props.sending}
+                                loading={sending}
                                 dataTestId="continue-button"
                                 style="primary"
                                 text={InitTexts.create_organization.continue}
@@ -215,18 +235,20 @@ export const EnterYourOrganizationPage = ({
     let router = React.useContext(XRouterContext)!;
     const me = client.useAccount();
     const [sending, setSending] = React.useState(false);
+    const [skiping, setSkiping] = React.useState(false);
 
     const processCreateOrganization = async ({
         organizationFieldValue,
     }: {
         organizationFieldValue: string | null;
     }) => {
-        setSending(true);
-
         if (!organizationFieldValue) {
             if (me.me) {
                 organizationFieldValue = me.me.name;
+                setSkiping(true);
             }
+        } else {
+            setSending(true);
         }
         if (!organizationFieldValue) {
             return;
@@ -275,6 +297,12 @@ export const EnterYourOrganizationPage = ({
         }
     };
 
+    const onSkip = React.useCallback(async () => {
+        await processCreateOrganization({
+            organizationFieldValue: null,
+        });
+    }, []);
+
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Enter organization" />
@@ -286,14 +314,11 @@ export const EnterYourOrganizationPage = ({
                             onBack={() => {
                                 router.replace('/authorization/introduce-yourself');
                             }}
-                            onSkip={async () => {
-                                await processCreateOrganization({
-                                    organizationFieldValue: null,
-                                });
-                            }}
+                            onSkip={onSkip}
                         />
                     </XView>
                     <CreateOrganizationFormInner
+                        skiping={skiping}
                         sending={sending}
                         roomView={roomView}
                         processCreateOrganization={processCreateOrganization}
@@ -304,9 +329,11 @@ export const EnterYourOrganizationPage = ({
             {roomView && (
                 <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
                     <CreateOrganizationFormInner
+                        skiping={skiping}
                         sending={sending}
                         roomView={roomView}
                         processCreateOrganization={processCreateOrganization}
+                        onSkip={onSkip}
                     />
                 </RoomSignupContainer>
             )}

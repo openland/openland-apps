@@ -79,7 +79,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
                 {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
                 ))}
-                {props.tagsGroup.tags.length > 17 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more', score: 0 }} onPress={onShowAll} selected={false} />}
+                {props.tagsGroup.tags.length > 17 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }} onPress={onShowAll} selected={false} />}
             </View>
             {/* {sub} */}
         </View>
@@ -90,7 +90,7 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
     let [selected, setCurretnSelected] = React.useState(props.selected);
     let onSelectedChange = React.useCallback((s: Set<string>) => {
         setCurretnSelected(new Set(s));
-    }, []);
+    }, [selected]);
 
     let theme = React.useContext(ThemeContext);
 

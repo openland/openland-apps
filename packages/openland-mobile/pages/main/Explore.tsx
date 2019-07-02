@@ -150,7 +150,7 @@ const RoomsList = (props: { router: SRouter }) => {
 const ExplorePage = (props: PageProps) => {
     let discoverDone = getClient().useDiscoverIsDone({ fetchPolicy: 'network-only' });
     let theme = React.useContext(ThemeContext);
-    let small = Dimensions.get('window').height < 1000;
+    let small = Dimensions.get('window').height < 800;
 
     if (!discoverDone.betaIsDiscoverDone) {
         return (
@@ -161,7 +161,7 @@ const ExplorePage = (props: PageProps) => {
                 <HeaderConfigRegistrator config={{ hairline: 'hidden' }} />
                 <ASSafeAreaContext.Consumer>
                     {sa => (
-                        <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom}>
+                        <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom + (small ? 0 : 50)}>
                             <Image marginTop={(theme.blurType === 'light' ? -30 : 0) - (small ? 25 : 0)} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
                             <View alignItems="center" justifyContent="center">
                                 {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>}

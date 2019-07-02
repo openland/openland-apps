@@ -159,6 +159,8 @@ const LocalDiscoverComponent = ({
     );
 };
 
+const previousChoisesMap = {};
+
 export const Discover = () => {
     const router = React.useContext(XRouterContext)!;
     const client = useClient();
@@ -217,15 +219,14 @@ export const Discover = () => {
         return <ChatsForYou />;
     }
 
-    const newExclude = [
-        ...new Set<string>([
-            ...rootExclude,
-            currentPage.betaNextDiscoverPage!!.tagGroup!!.id,
-        ]).values(),
-    ];
+    const currentPageId = currentPage.betaNextDiscoverPage!!.tagGroup!!.id;
+
+    const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
     const onContinueClick = async (newSelected: any) => {
         if (!modalBox) {
+            previousChoisesMap[currentPageId] = newSelected;
+
             router.push(
                 `/onboarding/discover?${qs.stringify({
                     selected: newSelected,
@@ -235,11 +236,19 @@ export const Discover = () => {
         }
     };
 
+    let finalSelected = rootSelected;
+
+    if (previousChoisesMap[currentPageId]) {
+        finalSelected = [
+            ...new Set<string>([...rootSelected, ...previousChoisesMap[currentPageId]]).values(),
+        ];
+    }
+
     return (
         <LocalDiscoverComponent
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={onContinueClick}
-            selected={rootSelected}
+            selected={finalSelected}
             exclude={rootExclude}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
         />
