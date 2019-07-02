@@ -1,6 +1,0 @@
-query BadgeInRoom($roomId: ID!) {
-  badgeInRoom(roomId: $roomId) {
-    __typename
-    ...UserBadge
-  }
-}

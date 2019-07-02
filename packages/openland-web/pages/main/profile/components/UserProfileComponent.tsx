@@ -20,7 +20,7 @@ import {
     extractHostname,
 } from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XMenuItem, XMenuVertical, XMenuTitle } from 'openland-x/XMenuItem';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
@@ -33,11 +33,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { XBadge, XBadgeAdd } from 'openland-x/XBadge';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useHasRole, XWithRole } from 'openland-x-permissions/XWithRole';
-import { showModalBox } from 'openland-x/showModalBox';
-import { CreateBadgeModal, DeleteBadgeModal } from './modals';
 import { XPopper } from 'openland-x/XPopper';
 
 const ModalCloser = Glamorous(XLink)({
@@ -288,193 +284,6 @@ const About = (props: { user: User_user }) => {
     );
 };
 
-interface UserBadgeWrapperProps {
-    badge: UserBadge;
-    primary: boolean;
-    isSuper: boolean;
-    user: UserShort;
-}
-
-const UserBadgeWrapper = XMemo<UserBadgeWrapperProps>(props => {
-    const client = useClient();
-    const { badge, primary, isSuper, user } = props;
-    const [show, setShow] = React.useState(false);
-
-    const handleSetPrimary = React.useCallback(
-        async () => {
-            await client.mutateBadgeSetPrimary({ badgeId: badge.id });
-            setShow(false);
-        },
-        [badge],
-    );
-
-    const handleUnsetPrimary = React.useCallback(
-        async () => {
-            await client.mutateBadgeUnsetPrimary();
-            setShow(false);
-        },
-        [badge],
-    );
-
-    const handleVerify = React.useCallback(
-        async () => {
-            await client.mutateSuperBadgeVerify({ badgeId: badge.id, userId: user.id });
-            setShow(false);
-        },
-        [badge, user],
-    );
-
-    const handleUnverify = React.useCallback(
-        async () => {
-            await client.mutateSuperBadgeUnverify({ badgeId: badge.id, userId: user.id });
-            setShow(false);
-        },
-        [badge, user],
-    );
-
-    const handleDelete = React.useCallback(
-        async () => {
-            showModalBox({ title: 'Delete badge' }, ctx => (
-                <DeleteBadgeModal ctx={ctx} isSuper={isSuper} userId={user.id} badgeId={badge.id} />
-            ));
-            setShow(false);
-        },
-        [badge, user, isSuper],
-    );
-
-    let nameEmojify = emoji({
-        src: badge.name,
-        size: 16,
-    });
-
-    const badgeView = (
-        <XBadge name={nameEmojify} verified={badge.verified} primary={primary} size="big" />
-    );
-
-    if (!user.isYou && !isSuper) {
-        if (!badge.verified) {
-            return (
-                <XView marginRight={12} marginBottom={12}>
-                    {badgeView}
-                </XView>
-            );
-        } else {
-            return (
-                <XPopper
-                    style="dark"
-                    placement="bottom"
-                    marginTop={-3}
-                    content={<span>Verified</span>}
-                    showOnHoverContent={false}
-                    showOnHover={true}
-                >
-                    <div>
-                        <XView marginRight={12} marginBottom={12}>
-                            {badgeView}
-                        </XView>
-                    </div>
-                </XPopper>
-            );
-        }
-    }
-
-    return (
-        <XPopper
-            contentContainer={<XMenuVertical />}
-            arrow={null}
-            placement="bottom-start"
-            marginTop={-3}
-            content={
-                <div style={{ minWidth: 140 }}>
-                    {user.isYou && (
-                        <>
-                            {badge.verified && <XMenuTitle>Verified</XMenuTitle>}
-                            {!primary && (
-                                <XMenuItem onClick={handleSetPrimary}>Make primary</XMenuItem>
-                            )}
-                            {primary && (
-                                <XMenuItem onClick={handleUnsetPrimary}>Revoke primary</XMenuItem>
-                            )}
-                        </>
-                    )}
-                    {isSuper && (
-                        <>
-                            {!badge.verified && (
-                                <XMenuItem onClick={handleVerify}>Verify</XMenuItem>
-                            )}
-                            {badge.verified && (
-                                <XMenuItem onClick={handleUnverify}>Revoke verified</XMenuItem>
-                            )}
-                        </>
-                    )}
-                    <XMenuItem style="danger" onClick={handleDelete}>
-                        Delete
-                    </XMenuItem>
-                </div>
-            }
-            onClickOutside={() => setShow(false)}
-            show={show}
-        >
-            <div onClick={() => setShow(true)}>
-                <XView marginRight={12} marginBottom={12} cursor="pointer">
-                    {badgeView}
-                </XView>
-            </div>
-        </XPopper>
-    );
-});
-
-const Badges = XMemo<{ user: User_user }>(props => {
-    const isSuper = useHasRole('super-admin');
-    const { user } = props;
-    const isPrimary = (badge: UserBadge) => {
-        return !!(user.primaryBadge && user.primaryBadge.id === badge.id);
-    };
-
-    const badges = user.badges.sort((a, b) =>
-        isPrimary(a) ? -2 : a.verified && !b.verified ? -1 : 1,
-    );
-
-    return (
-        <>
-            {(user.isYou || badges.length > 0 || isSuper) && (
-                <Section separator={0}>
-                    <XSubHeader title="Badges" counter={user.badges.length} paddingBottom={0} />
-                    <SectionContent>
-                        <XView alignItems="flex-start" flexDirection="row" flexWrap="wrap">
-                            {badges.map(badge => (
-                                <UserBadgeWrapper
-                                    key={'badge-' + badge.id}
-                                    user={user}
-                                    badge={badge}
-                                    primary={isPrimary(badge)}
-                                    isSuper={isSuper}
-                                />
-                            ))}
-                            {(user.isYou || isSuper) && (
-                                <XView marginRight={12} marginBottom={12}>
-                                    <XBadgeAdd
-                                        caption="Add badge"
-                                        onClick={() =>
-                                            showModalBox({ title: 'Add badge' }, ctx => (
-                                                <CreateBadgeModal
-                                                    ctx={ctx}
-                                                    isSuper={isSuper}
-                                                    userId={user.id}
-                                                />
-                                            ))
-                                        }
-                                    />
-                                </XView>
-                            )}
-                        </XView>
-                    </SectionContent>
-                </Section>
-            )}
-        </>
-    );
-});
-
 interface UserProfileInnerProps extends XWithRouter {
     user: User_user;
     onDirectory?: boolean;
@@ -527,9 +336,6 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
-                    {/* <XWithRole role="feature-non-production">
-                        <Badges user={user} />
-                    </XWithRole> */}
                 </XScrollView3>
             </XView>
         </>

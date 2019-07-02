@@ -1390,12 +1390,6 @@ private val AvailableRoomsSelector = obj(
                     ))
                 )))))
         )
-private val BadgeInRoomSelector = obj(
-            field("badgeInRoom","badgeInRoom", arguments(fieldValue("roomId", refValue("roomId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                ))
-        )
 private val ChatHistorySelector = obj(
             field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2421,85 +2415,6 @@ private val AddMessageCommentSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
-private val BadgeCreateSelector = obj(
-            field("badgeCreate","badgeCreate", arguments(fieldValue("name", refValue("name"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val BadgeCreateToRoomSelector = obj(
-            field("badgeCreateToRoom","badgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )))
-        )
-private val BadgeDeleteSelector = obj(
-            field("badgeDelete","badgeDelete", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val BadgeSetPrimarySelector = obj(
-            field("badgeSetPrimary","badgeSetPrimary", arguments(fieldValue("badgeId", refValue("badgeId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val BadgeSetToRoomSelector = obj(
-            field("badgeSetToRoom","badgeSetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )))
-        )
-private val BadgeUnsetPrimarySelector = obj(
-            field("badgeUnsetPrimary","badgeUnsetPrimary", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val BadgeUnsetToRoomSelector = obj(
-            field("badgeUnsetToRoom","badgeUnsetToRoom", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("Boolean")))
-        )
 private val BetaNextDiscoverResetSelector = obj(
             field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
         )
@@ -3072,22 +2987,6 @@ private val SuperAdminAddSelector = obj(
 private val SuperAdminRemoveSelector = obj(
             field("superAdminRemove","superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
         )
-private val SuperBadgeCreateSelector = obj(
-            field("superBadgeCreate","superBadgeCreate", arguments(fieldValue("name", refValue("name")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
 private val SuperBadgeCreateToRoomSelector = obj(
             field("superBadgeCreateToRoom","superBadgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3096,47 +2995,6 @@ private val SuperBadgeCreateToRoomSelector = obj(
         )
 private val SuperBadgeDeleteSelector = obj(
             field("superBadgeDelete","superBadgeDelete", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val SuperBadgeSetToRoomSelector = obj(
-            field("superBadgeSetToRoom","superBadgeSetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )))
-        )
-private val SuperBadgeUnsetToRoomSelector = obj(
-            field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
-        )
-private val SuperBadgeUnverifySelector = obj(
-            field("superBadgeUnverify","superBadgeUnverify", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
-        )
-private val SuperBadgeVerifySelector = obj(
-            field("superBadgeVerify","superBadgeVerify", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     inline("User", obj(
                         field("badges","badges", notNull(list(notNull(obj(
@@ -3395,12 +3253,6 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}"
         override val selector = AvailableRoomsSelector
-    }
-    val BadgeInRoom = object: OperationDefinition {
-        override val name = "BadgeInRoom"
-        override val kind = OperationKind.QUERY
-        override val body = "query BadgeInRoom(\$roomId:ID!){badgeInRoom(roomId:\$roomId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeInRoomSelector
     }
     val ChatHistory = object: OperationDefinition {
         override val name = "ChatHistory"
@@ -3833,48 +3685,6 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
-    }
-    val BadgeCreate = object: OperationDefinition {
-        override val name = "BadgeCreate"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeCreate(\$name:String!){badgeCreate(name:\$name){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeCreateSelector
-    }
-    val BadgeCreateToRoom = object: OperationDefinition {
-        override val name = "BadgeCreateToRoom"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeCreateToRoom(\$name:String!,\$roomId:ID!){badgeCreateToRoom(name:\$name,roomId:\$roomId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeCreateToRoomSelector
-    }
-    val BadgeDelete = object: OperationDefinition {
-        override val name = "BadgeDelete"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeDelete(\$badgeId:ID!){badgeDelete(badgeId:\$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeDeleteSelector
-    }
-    val BadgeSetPrimary = object: OperationDefinition {
-        override val name = "BadgeSetPrimary"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeSetPrimary(\$badgeId:ID!){badgeSetPrimary(badgeId:\$badgeId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeSetPrimarySelector
-    }
-    val BadgeSetToRoom = object: OperationDefinition {
-        override val name = "BadgeSetToRoom"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeSetToRoom(\$badgeId:ID!,\$roomId:ID!){badgeSetToRoom(badgeId:\$badgeId,roomId:\$roomId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeSetToRoomSelector
-    }
-    val BadgeUnsetPrimary = object: OperationDefinition {
-        override val name = "BadgeUnsetPrimary"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeUnsetPrimary{badgeUnsetPrimary{__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = BadgeUnsetPrimarySelector
-    }
-    val BadgeUnsetToRoom = object: OperationDefinition {
-        override val name = "BadgeUnsetToRoom"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation BadgeUnsetToRoom(\$roomId:ID!){badgeUnsetToRoom(roomId:\$roomId)}"
-        override val selector = BadgeUnsetToRoomSelector
     }
     val BetaNextDiscoverReset = object: OperationDefinition {
         override val name = "BetaNextDiscoverReset"
@@ -4434,12 +4244,6 @@ object Operations {
         override val body = "mutation SuperAdminRemove(\$userId:ID!){superAdminRemove(userId:\$userId)}"
         override val selector = SuperAdminRemoveSelector
     }
-    val SuperBadgeCreate = object: OperationDefinition {
-        override val name = "SuperBadgeCreate"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation SuperBadgeCreate(\$name:String!,\$userId:ID!){superBadgeCreate(name:\$name,userId:\$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = SuperBadgeCreateSelector
-    }
     val SuperBadgeCreateToRoom = object: OperationDefinition {
         override val name = "SuperBadgeCreateToRoom"
         override val kind = OperationKind.MUTATION
@@ -4451,30 +4255,6 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperBadgeDelete(\$badgeId:ID!,\$userId:ID!){superBadgeDelete(badgeId:\$badgeId,userId:\$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
         override val selector = SuperBadgeDeleteSelector
-    }
-    val SuperBadgeSetToRoom = object: OperationDefinition {
-        override val name = "SuperBadgeSetToRoom"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation SuperBadgeSetToRoom(\$badgeId:ID!,\$roomId:ID!,\$userId:ID!){superBadgeSetToRoom(badgeId:\$badgeId,roomId:\$roomId,userId:\$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = SuperBadgeSetToRoomSelector
-    }
-    val SuperBadgeUnsetToRoom = object: OperationDefinition {
-        override val name = "SuperBadgeUnsetToRoom"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation SuperBadgeUnsetToRoom(\$badgeId:ID!,\$roomId:ID!,\$userId:ID!){superBadgeUnsetToRoom(badgeId:\$badgeId,roomId:\$roomId,userId:\$userId)}"
-        override val selector = SuperBadgeUnsetToRoomSelector
-    }
-    val SuperBadgeUnverify = object: OperationDefinition {
-        override val name = "SuperBadgeUnverify"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation SuperBadgeUnverify(\$badgeId:ID!,\$userId:ID!){superBadgeUnverify(badgeId:\$badgeId,userId:\$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = SuperBadgeUnverifySelector
-    }
-    val SuperBadgeVerify = object: OperationDefinition {
-        override val name = "SuperBadgeVerify"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation SuperBadgeVerify(\$badgeId:ID!,\$userId:ID!){superBadgeVerify(badgeId:\$badgeId,userId:\$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}"
-        override val selector = SuperBadgeVerifySelector
     }
     val SwitchReaction = object: OperationDefinition {
         override val name = "SwitchReaction"
@@ -4593,7 +4373,6 @@ object Operations {
         if (name == "AccountInvitesHistory") return AccountInvitesHistory
         if (name == "AccountSettings") return AccountSettings
         if (name == "AvailableRooms") return AvailableRooms
-        if (name == "BadgeInRoom") return BadgeInRoom
         if (name == "ChatHistory") return ChatHistory
         if (name == "ChatInit") return ChatInit
         if (name == "ChatSearchGroup") return ChatSearchGroup
@@ -4666,13 +4445,6 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddMessageComment") return AddMessageComment
-        if (name == "BadgeCreate") return BadgeCreate
-        if (name == "BadgeCreateToRoom") return BadgeCreateToRoom
-        if (name == "BadgeDelete") return BadgeDelete
-        if (name == "BadgeSetPrimary") return BadgeSetPrimary
-        if (name == "BadgeSetToRoom") return BadgeSetToRoom
-        if (name == "BadgeUnsetPrimary") return BadgeUnsetPrimary
-        if (name == "BadgeUnsetToRoom") return BadgeUnsetToRoom
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
@@ -4766,13 +4538,8 @@ object Operations {
         if (name == "SuperAccountSuspend") return SuperAccountSuspend
         if (name == "SuperAdminAdd") return SuperAdminAdd
         if (name == "SuperAdminRemove") return SuperAdminRemove
-        if (name == "SuperBadgeCreate") return SuperBadgeCreate
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
         if (name == "SuperBadgeDelete") return SuperBadgeDelete
-        if (name == "SuperBadgeSetToRoom") return SuperBadgeSetToRoom
-        if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
-        if (name == "SuperBadgeUnverify") return SuperBadgeUnverify
-        if (name == "SuperBadgeVerify") return SuperBadgeVerify
         if (name == "SwitchReaction") return SwitchReaction
         if (name == "UnSubscribeMessageComments") return UnSubscribeMessageComments
         if (name == "UnpinMessage") return UnpinMessage

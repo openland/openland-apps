@@ -323,6 +323,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                         attach={qfileAttach}
                                         spans={message.replyTextSpans[index]}
                                         sender={item.sender}
+                                        senderBadge={item.senderBadge}
+                                        senderBadgeNameEmojify={message.replySenderBadgeNameEmojify[index]}
                                         date={item.date}
                                         message={item.message}
                                         id={item.id}

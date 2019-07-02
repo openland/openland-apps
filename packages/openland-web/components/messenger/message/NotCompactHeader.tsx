@@ -12,7 +12,7 @@ import { UserPopper } from 'openland-web/components/UserPopper';
 import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink2 } from 'openland-x/XLink2';
-import { XBadge } from 'openland-x/XBadge';
+import { XFeaturedTooltip } from 'openland-x/XFeatured';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const DeletedCommentHeader = () => {
@@ -117,11 +117,8 @@ export const NotCompactHeader = ({
                 )}
                 {senderBadge && (
                     <XWithRole role="feature-non-production">
-                        <XView marginLeft={8} alignSelf="center" flexShrink={1}>
-                            <XBadge
-                                name={senderBadgeNameEmojify || senderBadge.name}
-                                verified={senderBadge.verified}
-                            />
+                        <XView marginLeft={5} alignSelf="center">
+                            <XFeaturedTooltip text={senderBadgeNameEmojify || senderBadge.name} />
                         </XView>
                     </XWithRole>
                 )}
