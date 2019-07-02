@@ -208,9 +208,10 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                         )}
                     </XView>
                     <XView flexDirection="row" alignItems="center" marginTop={20}>
-                        {props.useRevoke && props.id && (
-                            <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
-                        )}
+                        {props.useRevoke &&
+                            props.id && (
+                                <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
+                            )}
                         <CopyButton copied={copied} onClick={this.copy} />
                     </XView>
                 </XView>
@@ -477,7 +478,9 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
                         Share access to Openland community
                     </span>
                 </XView>
-                {inviteCount.mySuccessfulInvitesCount > 0 && <InviteAcceptedBlock accepted={5} />}
+                {inviteCount.mySuccessfulInvitesCount > 0 && (
+                    <InviteAcceptedBlock accepted={inviteCount.mySuccessfulInvitesCount} />
+                )}
                 <WritePostBlock inviteKey={openlandInvite} />
                 {!inviteLink && (
                     <XView marginBottom={20} flexGrow={0} alignSelf="stretch">
