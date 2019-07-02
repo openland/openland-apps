@@ -240,7 +240,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             await client.mutateEditComment({
                 id: message.id!!,
                 message: messageText,
-                spans: findSpans(data.message.text || ''),
+                spans: findSpans(messageText || ''),
                 mentions: data.message.mentions
                     ? data.message.mentions.map(convertToMentionInputNoText)
                     : null,
@@ -266,7 +266,7 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 fileAttachments: data.message.file ? [{ fileId: data.message.file }] : null,
                 replyMessages: data.message.replyMessages,
                 mentions: prepareMentionsToSend(data.message.mentions || []),
-                spans: findSpans(data.message.text || ''),
+                spans: findSpans(messageText || ''),
             });
         }
 
