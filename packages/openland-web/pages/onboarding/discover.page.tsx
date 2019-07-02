@@ -159,30 +159,24 @@ const LocalDiscoverComponent = ({
     );
 };
 
-const previousChoisesMap = {};
+const arrowify = (value: string | string[]) => {
+    return typeof value === 'string' ? [value] : value || [];
+};
 
-export const Discover = () => {
-    const router = React.useContext(XRouterContext)!;
+export const Discover = ({
+    previousChoisesMap,
+    rootSelected,
+    rootExclude,
+    onContinueClick,
+}: {
+    previousChoisesMap: any;
+    rootSelected: string[];
+    rootExclude: string[];
+    onContinueClick: (newSelected: any) => void;
+}) => {
     const client = useClient();
-    const modalBox = React.useContext(XModalBoxContext);
-
-    const { exclude, selected } = router.query;
-
-    const arrowify = (value: string | string[]) => {
-        return typeof value === 'string' ? [value] : value || [];
-    };
-
-    const [rootSelected, setRootSelected] = React.useState<string[]>(() => arrowify(selected));
-    const [rootExclude, setRootExclude] = React.useState<string[]>(() => arrowify(selected));
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
-
-    React.useEffect(() => {
-        if (!discoverDone.betaIsDiscoverDone) {
-            setRootSelected(arrowify(selected));
-            setRootExclude(arrowify(exclude));
-        }
-    }, [router.query.selected, router.query.exclude]);
 
     const currentPage = client.useDiscoverNextPage(
         {
@@ -223,19 +217,6 @@ export const Discover = () => {
 
     const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
-    const onContinueClick = async (newSelected: any) => {
-        if (!modalBox) {
-            previousChoisesMap[currentPageId] = newSelected;
-
-            router.push(
-                `/onboarding/discover?${qs.stringify({
-                    selected: newSelected,
-                    exclude: newExclude,
-                })}`,
-            );
-        }
-    };
-
     let finalSelected = rootSelected;
 
     if (previousChoisesMap[currentPageId]) {
@@ -244,14 +225,104 @@ export const Discover = () => {
         ];
     }
 
+    const localOnContinueClick = async (newSelected: string[]) => {
+        await onContinueClick({
+            selected: newSelected,
+            exclude: newExclude,
+            currentPageId,
+        });
+    };
+
     return (
         <LocalDiscoverComponent
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
-            onContinueClick={onContinueClick}
+            onContinueClick={localOnContinueClick}
             selected={finalSelected}
             exclude={rootExclude}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
         />
     );
 };
-export default withApp('Home', 'viewer', () => <Discover />);
+
+export const DiscoverOnLocalState = () => {
+    // const modalBox = React.useContext(XModalBoxContext);
+
+    const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
+    const [rootSelected, setRootSelected] = React.useState<string[]>([]);
+    const [rootExclude, setRootExclude] = React.useState<string[]>([]);
+
+    const onContinueClick = async (props: {
+        selected: string[];
+        exclude: string[];
+        currentPageId: string;
+    }) => {
+        setPreviousChoisesMap({
+            ...previousChoisesMap,
+            [props.currentPageId]: props.selected,
+        });
+
+        setRootSelected(props.selected);
+        setRootExclude(props.exclude);
+    };
+
+    return (
+        <Discover
+            previousChoisesMap={previousChoisesMap}
+            rootSelected={rootSelected}
+            rootExclude={rootExclude}
+            onContinueClick={onContinueClick}
+        />
+    );
+};
+
+const DiscoverOnRouter = () => {
+    const client = useClient();
+    const router = React.useContext(XRouterContext)!;
+    const modalBox = React.useContext(XModalBoxContext);
+
+    const { exclude, selected } = router.query;
+
+    const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
+    const [rootSelected, setRootSelected] = React.useState<string[]>(() => arrowify(selected));
+    const [rootExclude, setRootExclude] = React.useState<string[]>(() => arrowify(selected));
+
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+
+    React.useEffect(() => {
+        if (!discoverDone.betaIsDiscoverDone) {
+            setRootSelected(arrowify(selected));
+            setRootExclude(arrowify(exclude));
+        }
+    }, [router.query.selected, router.query.exclude]);
+
+    const onContinueClick = async (props: {
+        selected: string[];
+        exclude: string[];
+        currentPageId: string;
+    }) => {
+        if (!modalBox) {
+            setPreviousChoisesMap({
+                ...previousChoisesMap,
+                [props.currentPageId]: props.selected,
+            });
+
+            router.push(
+                `/onboarding/discover?${qs.stringify({
+                    selected: props.selected,
+                    exclude: props.exclude,
+                })}`,
+            );
+        }
+    };
+
+    return (
+        <Discover
+            previousChoisesMap={previousChoisesMap}
+            rootSelected={rootSelected}
+            rootExclude={rootExclude}
+            onContinueClick={onContinueClick}
+        />
+    );
+};
+
+export default withApp('Home', 'viewer', () => <DiscoverOnRouter />);

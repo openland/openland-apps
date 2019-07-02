@@ -3,7 +3,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { InviteFriendsFragment } from '../pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
-import { Discover } from 'openland-web/pages/onboarding/discover.page';
+import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
 import { WriteFirstMessageModal } from 'openland-web/components/WriteFirstMessageModal';
 
 export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
@@ -27,7 +27,7 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         };
     } else if (url === '/onboarding_discover') {
         return () => {
-            showModalBox({ fullScreen: true }, () => <Discover />);
+            showModalBox({ fullScreen: true }, () => <DiscoverOnLocalState />);
         };
     } else if (url === '/onboarding_send_first_message') {
         return () => {
