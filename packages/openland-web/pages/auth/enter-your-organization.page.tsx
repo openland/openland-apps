@@ -82,7 +82,7 @@ const CreateOrganizationFormInner = (props: {
 
     let organizationField = useField('input.organization', '', form, [
         {
-            checkIsValid: (value: string) => value !== '',
+            checkIsValid: (value: string) => !!value.trim(),
             text: 'Please enter your organization name',
         },
     ]);

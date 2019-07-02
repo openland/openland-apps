@@ -34,30 +34,36 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
         { uuid: props.photo } as any,
         form,
     );
-    const titleField = useField('input.title', props.title || '', form);
+    const titleField = useField('input.title', props.title || '', form, [
+        {
+            checkIsValid: value => !!value.trim(),
+            text: 'Please enter chat name',
+        },
+    ]);
     const longDescriptionField = useField('input.longDescription', '', form);
     const descriptionField = useField('input.description', props.description || '', form);
+    const onSubmit = React.useCallback(
+        async () => {
+            await form.doAction(async () => {
+                let newPhoto = avatarField.value;
 
-    const onSubmit = () => {
-        form.doAction(async () => {
-            let newPhoto = avatarField.value;
+                const dataToSend = {
+                    roomId: props.roomId,
+                    input: {
+                        ...{ title: titleField.value },
+                        ...{ description: descriptionField.value },
+                        ...(newPhoto && newPhoto.uuid !== editPhotoRef
+                            ? { photoRef: sanitizeImageRef(newPhoto) }
+                            : {}),
+                    },
+                };
 
-            const dataToSend = {
-                roomId: props.roomId,
-                input: {
-                    ...{ title: titleField.value },
-                    ...{ description: descriptionField.value },
-                    ...(newPhoto && newPhoto.uuid !== editPhotoRef
-                        ? { photoRef: sanitizeImageRef(newPhoto) }
-                        : {}),
-                },
-            };
-
-            await client.mutateRoomUpdate(dataToSend);
-            props.onClose();
-        });
-    };
-
+                await client.mutateRoomUpdate(dataToSend);
+                props.onClose();
+            });
+        },
+        [titleField.value],
+    );
     return (
         <>
             <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
@@ -72,7 +78,12 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
                             }}
                         />
                         <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                            <XInput title={inputTitle} {...titleField.input} size="large" />
+                            <XInput
+                                title={inputTitle}
+                                {...titleField.input}
+                                size="large"
+                                invalid={!!form.error}
+                            />
                             <XWithRole role="feature-chat-embedded-attach">
                                 <XInput
                                     {...longDescriptionField.input}
@@ -91,7 +102,13 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
                 </XVertical>
             </XView>
             <XModalFooter>
-                <XButton text="Save" style="primary" size="large" onClick={onSubmit} />
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={onSubmit}
+                    loading={form.loading}
+                />
             </XModalFooter>
         </>
     );

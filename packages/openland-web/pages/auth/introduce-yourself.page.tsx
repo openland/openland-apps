@@ -47,7 +47,7 @@ export const CreateProfileFormInner = (
 
     let firstName = useField('input.firstName', (prefill && prefill.firstName) || '', form, [
         {
-            checkIsValid: (value: string) => value !== '',
+            checkIsValid: (value: string) => !!value.trim(),
             text: `Please enter your name`,
         },
     ]);

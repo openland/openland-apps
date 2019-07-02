@@ -154,17 +154,17 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = props.config.fullScreen
         ? {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            maxWidth: 'initial',
-            maxHeight: 'initial',
-            borderRadius: 0,
-            transition: 'none',
-        }
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'initial',
+              maxHeight: 'initial',
+              borderRadius: 0,
+              transition: 'none',
+          }
         : { top, left, width: props.config.width };
 
     return (

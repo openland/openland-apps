@@ -212,7 +212,7 @@ export const CreateEntity = ({
     let form = useForm();
     let titleField = useField('input.title', '', form, [
         {
-            checkIsValid: value => !!value,
+            checkIsValid: value => !!value.trim(),
             text: `Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`,
         },
     ]);
@@ -411,14 +411,15 @@ export const CreateEntity = ({
                                 <InputField field={titleField} title={`${chatTypeStr} name`} />
                             </XView>
 
-                            {selectOptions && entityKind !== EntityKind.ORGANIZATION && (
-                                <SelectWithDropdown
-                                    title={`${chatTypeStr} type`}
-                                    value={typeField.value}
-                                    onChange={handleChatTypeChange}
-                                    selectOptions={selectOptions}
-                                />
-                            )}
+                            {selectOptions &&
+                                entityKind !== EntityKind.ORGANIZATION && (
+                                    <SelectWithDropdown
+                                        title={`${chatTypeStr} type`}
+                                        value={typeField.value}
+                                        onChange={handleChatTypeChange}
+                                        selectOptions={selectOptions}
+                                    />
+                                )}
                             {entityKind === EntityKind.ORGANIZATION && (
                                 <XView flexGrow={1} flexDirection="row">
                                     <XTextArea
