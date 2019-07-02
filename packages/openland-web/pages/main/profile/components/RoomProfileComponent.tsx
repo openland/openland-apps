@@ -38,7 +38,7 @@ import {
 } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XMutation } from 'openland-x/XMutation';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole, useHasRole } from 'openland-x-permissions/XWithRole';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import {
@@ -64,6 +64,7 @@ import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { MakeFeaturedModal } from './modals';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -276,22 +277,34 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const MemberCard = ({ member }: { member: RoomFull_SharedRoom_members }) => {
+const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, roomId: string }) => {
     return (
         <XUserCard
             user={member.user}
             customMenu={
-                member.canKick || member.user.isYou ? (
+                useHasRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
-                            <XMenuItem
-                                style="danger"
-                                query={{ field: 'remove', value: member.user.id }}
-                            >
-                                {member.user.isYou ? 'Leave group' : 'Remove from group'}
-                            </XMenuItem>
+                            <>
+                                <XWithRole role="super-admin">
+                                    <XMenuItem
+                                        onClick={(e) => showModalBox(
+                                            { title: 'Member featuring' },
+                                            ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={roomId} />
+                                        )}
+                                    >
+                                        {member.badge ? 'Edit featured status' : 'Make featured'}
+                                    </XMenuItem>
+                                </XWithRole>
+                                <XMenuItem
+                                    style="danger"
+                                    query={{ field: 'remove', value: member.user.id }}
+                                >
+                                    {member.user.isYou ? 'Leave group' : 'Remove from group'}
+                                </XMenuItem>
+                            </>
                         }
                     />
                 ) : null
@@ -597,7 +610,7 @@ const RoomGroupProfileProvider = ({
         return (member: any) => {
             return (
                 <div className={itemsWrapperClassName}>
-                    <MemberCard key={member.id} member={member} />
+                    <MemberCard key={member.id} roomId={conversationId} member={member} />
                 </div>
             );
         };
