@@ -281,6 +281,7 @@ const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, r
     return (
         <XUserCard
             user={member.user}
+            badge={member.badge}
             customMenu={
                 useHasRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
@@ -290,10 +291,15 @@ const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, r
                             <>
                                 <XWithRole role="super-admin">
                                     <XMenuItem
-                                        onClick={(e) => showModalBox(
-                                            { title: 'Member featuring' },
-                                            ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={roomId} />
-                                        )}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+
+                                            showModalBox(
+                                                { title: 'Member featuring' },
+                                                ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={roomId} />
+                                            );
+                                        }}
                                     >
                                         {member.badge ? 'Edit featured status' : 'Make featured'}
                                     </XMenuItem>

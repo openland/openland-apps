@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
-import { User_user } from 'openland-api/Types';
+import { User_user, UserBadge } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from 'openland-icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
@@ -11,7 +11,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { css } from 'linaria';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
-import { useClient } from 'openland-web/utils/useClient';
+import { XFeatured } from 'openland-x/XFeatured';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -85,6 +85,7 @@ interface XUserCardProps {
     isOwner?: boolean;
     hideOrganization?: boolean;
     disable?: boolean;
+    badge?: UserBadge | null;
 }
 
 const userNameClassname = css`
@@ -106,6 +107,7 @@ export const XUserCard = ({
     isOwner,
     onClick,
     disable,
+    badge
 }: XUserCardProps) => {
     const [isHovered, setIsHovered] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
@@ -218,6 +220,11 @@ export const XUserCard = ({
                                 </div>
                             </XView>
                             {!isMobile && organizationElem}
+                            {!isMobile && badge && (
+                                <XView marginLeft={12}>
+                                    <XFeatured text={emoji({ src: badge.name, size: 16 })} />
+                                </XView>
+                            )}
                         </XView>
                         {!isMobile && user.id && (
                             <UserStatus user={user} />
