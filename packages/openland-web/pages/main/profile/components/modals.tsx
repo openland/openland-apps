@@ -282,9 +282,9 @@ export const MakeFeaturedModal = (props: {
     const { ctx, roomId, userId } = props;
     const client = useClient();
     const form = useForm();
-    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }).superBadgeInRoom;
+    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }, { fetchPolicy: 'network-only' }).superBadgeInRoom;
     const [ featured, setFeatured ] = React.useState<boolean>(!!userBadge);
-    const descriptionField = useField('input.description', '', form, [
+    const descriptionField = useField('input.description', userBadge ? userBadge.name : '', form, [
         {
             checkIsValid: value => value.trim().length > 0,
             text: "Description can't be empty",
@@ -327,7 +327,11 @@ export const MakeFeaturedModal = (props: {
                         onChange={() => setFeatured(!featured)}
                         switcher={true}
                     />
-                    <InputField title="Description" field={descriptionField} setFocusOnError />
+                    {featured && (
+                        <XView marginTop={20}>
+                            <InputField title="Description" field={descriptionField} setFocusOnError />
+                        </XView>
+                    )}
                 </XModalContent>
                 <XModalFooter>
                     <XModalFooterButton
