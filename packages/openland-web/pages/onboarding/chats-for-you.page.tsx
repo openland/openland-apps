@@ -83,12 +83,9 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(
-        () => {
-            setSelectedIds(rooms.map(({ id }) => id));
-        },
-        [rooms],
-    );
+    React.useLayoutEffect(() => {
+        setSelectedIds(rooms.map(({ id }) => id));
+    }, [rooms]);
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -181,7 +178,13 @@ const ChatsItemList = ({ rooms }: { rooms: SuggestedRooms_suggestedRooms_SharedR
     );
 };
 
-export const ChatsForYou = () => {
+export const ChatsForYou = ({
+    onBack,
+    onSkip,
+}: {
+    onSkip: (event: React.MouseEvent) => void;
+    onBack: (event: React.MouseEvent) => void;
+}) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const data = client.useSuggestedRooms({ fetchPolicy: 'network-only' });
@@ -205,21 +208,7 @@ export const ChatsForYou = () => {
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
             <XView marginBottom={12} marginTop={34}>
-                <BackSkipLogo
-                    noLogo
-                    onBack={async () => {
-                        await client.mutateBetaNextDiscoverReset();
-                        await client.refetchSuggestedRooms();
-                        await client.refetchDiscoverIsDone();
-
-                        if (canUseDOM) {
-                            window.history.back();
-                        }
-                    }}
-                    onSkip={() => {
-                        router.push('/');
-                    }}
-                />
+                <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
             </XView>
 
             <XView
@@ -246,7 +235,3 @@ export const ChatsForYou = () => {
         </XView>
     );
 };
-
-export default withApp('Home', 'viewer', () => {
-    return <ChatsForYou />;
-});

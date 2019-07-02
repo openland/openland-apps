@@ -161,6 +161,8 @@ export const Discover = ({
     onContinueClick,
     onSkip,
     onBack,
+    onChatsForYouSkip,
+    onChatsForYouBack,
 }: {
     previousChoisesMap: any;
     rootSelected: string[];
@@ -168,6 +170,8 @@ export const Discover = ({
     onContinueClick: (newSelected: any) => void;
     onSkip: (event: React.MouseEvent) => void;
     onBack: (event: React.MouseEvent) => void;
+    onChatsForYouSkip: (event: React.MouseEvent) => void;
+    onChatsForYouBack: (event: React.MouseEvent) => void;
 }) => {
     const client = useClient();
 
@@ -205,7 +209,7 @@ export const Discover = ({
         if (!discoverDone.betaIsDiscoverDone) {
             return <XLoader />;
         }
-        return <ChatsForYou />;
+        return <ChatsForYou onSkip={onChatsForYouSkip} onBack={onChatsForYouBack} />;
     }
 
     const currentPageId = currentPage.betaNextDiscoverPage!!.tagGroup!!.id;
@@ -242,6 +246,7 @@ export const Discover = ({
 };
 
 export const DiscoverOnLocalState = () => {
+    const client = useClient();
     const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
 
     const [rootState, setRootState] = React.useState<{ selected: string[]; exclude: string[] }[]>(
@@ -281,6 +286,18 @@ export const DiscoverOnLocalState = () => {
         }
     };
 
+    const onChatsForYouSkip = () => {
+        //
+    };
+
+    const onChatsForYouBack = async () => {
+        await client.mutateBetaNextDiscoverReset();
+        await client.refetchSuggestedRooms();
+        await client.refetchDiscoverIsDone();
+
+        onBack();
+    };
+
     const getLastStateOrEmpty = () => {
         if (rootState.length === 0) {
             return { selected: [], exclude: [] };
@@ -292,6 +309,8 @@ export const DiscoverOnLocalState = () => {
 
     return (
         <Discover
+            onChatsForYouSkip={onChatsForYouSkip}
+            onChatsForYouBack={onChatsForYouBack}
             onSkip={onSkip}
             onBack={onBack}
             previousChoisesMap={previousChoisesMap}
@@ -353,8 +372,23 @@ const DiscoverOnRouter = () => {
         }
     };
 
+    const onChatsForYouSkip = () => {
+        router.push('/');
+    };
+    const onChatsForYouBack = async () => {
+        await client.mutateBetaNextDiscoverReset();
+        await client.refetchSuggestedRooms();
+        await client.refetchDiscoverIsDone();
+
+        if (canUseDOM) {
+            window.history.back();
+        }
+    };
+
     return (
         <Discover
+            onChatsForYouSkip={onChatsForYouSkip}
+            onChatsForYouBack={onChatsForYouBack}
             onSkip={onSkip}
             onBack={onBack}
             previousChoisesMap={previousChoisesMap}
