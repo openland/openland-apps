@@ -83,19 +83,16 @@ const CreateOrganizationFormInner = (props: {
     let organizationField = useField('input.organization', '', form, [
         {
             checkIsValid: (value: string) => value !== '',
-            text: InitTexts.auth.organizationIsEmptyError,
+            text: 'Please enter your organization name',
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                await props.processCreateOrganization({
-                    organizationFieldValue: organizationField.value,
-                });
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            await props.processCreateOrganization({
+                organizationFieldValue: organizationField.value,
             });
-        },
-        [organizationField.value],
-    );
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Give others context about your work';
 

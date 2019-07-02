@@ -139,18 +139,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage | null {
         return this.useQuery(Source.UserStorageQuery, variables, opts);
     }
-    async queryBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: OperationParameters): Promise<Types.BadgeInRoom> {
-        return this.client.query(Source.BadgeInRoomQuery, variables, opts);
-    }
-    async refetchBadgeInRoom(variables: Types.BadgeInRoomVariables): Promise<Types.BadgeInRoom> {
-        return this.refetch(Source.BadgeInRoomQuery, variables);
-    }
-    useBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: QueryWatchParameters): Types.BadgeInRoom {
-        return this.useQuerySuspense(Source.BadgeInRoomQuery, variables, opts);
-    }
-    useWithoutLoaderBadgeInRoom(variables: Types.BadgeInRoomVariables, opts?: QueryWatchParameters): Types.BadgeInRoom | null {
-        return this.useQuery(Source.BadgeInRoomQuery, variables, opts);
-    }
     async querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
         return this.client.query(Source.SuperBadgeInRoomQuery, variables, opts);
     }
@@ -958,47 +946,11 @@ export class OpenlandClient extends BaseApiClient {
     async mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
         return this.client.mutate(Source.UserStorageSetMutation, variables);
     }
-    async mutateBadgeCreate(variables: Types.BadgeCreateVariables): Promise<Types.BadgeCreate> {
-        return this.client.mutate(Source.BadgeCreateMutation, variables);
-    }
-    async mutateBadgeCreateToRoom(variables: Types.BadgeCreateToRoomVariables): Promise<Types.BadgeCreateToRoom> {
-        return this.client.mutate(Source.BadgeCreateToRoomMutation, variables);
-    }
-    async mutateBadgeSetToRoom(variables: Types.BadgeSetToRoomVariables): Promise<Types.BadgeSetToRoom> {
-        return this.client.mutate(Source.BadgeSetToRoomMutation, variables);
-    }
-    async mutateBadgeUnsetToRoom(variables: Types.BadgeUnsetToRoomVariables): Promise<Types.BadgeUnsetToRoom> {
-        return this.client.mutate(Source.BadgeUnsetToRoomMutation, variables);
-    }
-    async mutateBadgeDelete(variables: Types.BadgeDeleteVariables): Promise<Types.BadgeDelete> {
-        return this.client.mutate(Source.BadgeDeleteMutation, variables);
-    }
-    async mutateBadgeSetPrimary(variables: Types.BadgeSetPrimaryVariables): Promise<Types.BadgeSetPrimary> {
-        return this.client.mutate(Source.BadgeSetPrimaryMutation, variables);
-    }
-    async mutateBadgeUnsetPrimary(): Promise<Types.BadgeUnsetPrimary> {
-        return this.client.mutate(Source.BadgeUnsetPrimaryMutation);
-    }
-    async mutateSuperBadgeCreate(variables: Types.SuperBadgeCreateVariables): Promise<Types.SuperBadgeCreate> {
-        return this.client.mutate(Source.SuperBadgeCreateMutation, variables);
-    }
     async mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables): Promise<Types.SuperBadgeCreateToRoom> {
         return this.client.mutate(Source.SuperBadgeCreateToRoomMutation, variables);
     }
-    async mutateSuperBadgeSetToRoom(variables: Types.SuperBadgeSetToRoomVariables): Promise<Types.SuperBadgeSetToRoom> {
-        return this.client.mutate(Source.SuperBadgeSetToRoomMutation, variables);
-    }
-    async mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables): Promise<Types.SuperBadgeUnsetToRoom> {
-        return this.client.mutate(Source.SuperBadgeUnsetToRoomMutation, variables);
-    }
     async mutateSuperBadgeDelete(variables: Types.SuperBadgeDeleteVariables): Promise<Types.SuperBadgeDelete> {
         return this.client.mutate(Source.SuperBadgeDeleteMutation, variables);
-    }
-    async mutateSuperBadgeVerify(variables: Types.SuperBadgeVerifyVariables): Promise<Types.SuperBadgeVerify> {
-        return this.client.mutate(Source.SuperBadgeVerifyMutation, variables);
-    }
-    async mutateSuperBadgeUnverify(variables: Types.SuperBadgeUnverifyVariables): Promise<Types.SuperBadgeUnverify> {
-        return this.client.mutate(Source.SuperBadgeUnverifyMutation, variables);
     }
     async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
         return this.client.mutate(Source.PinMessageMutation, variables);

@@ -1,6 +1,0 @@
-mutation BadgeSetToRoom($badgeId: ID!, $roomId: ID!) {
-  badgeSetToRoom(badgeId: $badgeId, roomId: $roomId) {
-    __typename
-    ...UserBadge
-  }
-}

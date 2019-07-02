@@ -18,9 +18,12 @@ export default withApp('Home', 'viewer', () => {
             <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
             <XView marginTop={34}>
                 <BackSkipLogo
-                    onBack={() => {
-                        router.replace('/authorization/enter-your-organization');
-                    }}
+                    onBack={
+                        null
+                        // () => {
+                        //     router.replace('/authorization/enter-your-organization');
+                        // }
+                    }
                     onSkip={() => {
                         router.push('/');
                     }}

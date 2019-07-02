@@ -4,6 +4,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import {
     FullMessage_GeneralMessage_sender,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    UserBadge,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
@@ -14,6 +15,8 @@ import { emoji } from 'openland-y-utils/emoji';
 import { MessageVideoComponent } from './MessageVideoComponent';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { Span } from 'openland-y-utils/spans/Span';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XFeaturedTooltip } from 'openland-x/XFeatured';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
@@ -27,6 +30,8 @@ interface ReplyMessageProps {
     startSelected: boolean;
     compact?: boolean;
     isChannel: boolean;
+    senderBadge?: UserBadge | null;
+    senderBadgeNameEmojify?: string | JSX.Element;
 }
 
 export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
@@ -174,6 +179,13 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                                         size: 16,
                                     })}
                             </XView>
+                            {props.senderBadge && (
+                                <XWithRole role="feature-non-production">
+                                    <XView marginLeft={5} alignSelf="center">
+                                        <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} />
+                                    </XView>
+                                </XWithRole>
+                            )}
                             {props.sender!!.primaryOrganization && (
                                 <XView
                                     as="a"

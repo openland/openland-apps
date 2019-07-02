@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserShort, UserBadge } from 'openland-api/Types';
-import { XBadge } from 'openland-x/XBadge';
+import { XFeaturedIcon } from 'openland-x/XFeatured';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export interface MobileMessageContainerProps {
@@ -84,17 +84,8 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                     </XView>
                     {senderBadge && (
                         <XWithRole role="feature-non-production">
-                            <XView
-                                marginLeft={8}
-                                alignSelf="center"
-                                flexGrow={1}
-                                flexShrink={1}
-                                overflow="hidden"
-                            >
-                                <XBadge
-                                    name={senderBadgeNameEmojify || senderBadge.name}
-                                    verified={senderBadge.verified}
-                                />
+                            <XView marginLeft={5} alignSelf="center">
+                                <XFeaturedIcon />
                             </XView>
                         </XWithRole>
                     )}

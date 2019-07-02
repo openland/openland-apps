@@ -20,6 +20,7 @@ import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { XCheckbox } from 'openland-x/XCheckbox';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -273,39 +274,45 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const CreateBadgeModal = (props: {
+export const MakeFeaturedModal = (props: {
     ctx: XModalController;
-    isSuper: boolean;
+    roomId: string;
     userId: string;
 }) => {
+    const { ctx, roomId, userId } = props;
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const form = useForm();
-    const nameField = useField('input.name', '', form, [
+    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }).superBadgeInRoom;
+    const [ featured, setFeatured ] = React.useState<boolean>(!!userBadge);
+    const descriptionField = useField('input.description', '', form, [
         {
             checkIsValid: value => value.trim().length > 0,
-            text: "Badge can't be empty",
+            text: "Description can't be empty",
         },
         {
             checkIsValid: value => value.trim().length <= 40,
-            text: 'Max length for badge: 40',
+            text: 'Max length: 40 characters',
         },
     ]);
 
-    const onAdd = () => {
+    const onSave = () => {
         form.doAction(async () => {
-            if (props.isSuper && props.userId !== messenger.user.id) {
-                await client.mutateSuperBadgeCreate({
-                    name: nameField.value,
-                    userId: props.userId,
+            if (featured) {
+                await client.mutateSuperBadgeCreateToRoom({
+                    name: descriptionField.value,
+                    userId,
+                    roomId,
                 });
             } else {
-                await client.mutateBadgeCreate({
-                    name: nameField.value,
-                });
+                if (userBadge) {
+                    await client.mutateSuperBadgeDelete({
+                        userId,
+                        badgeId: userBadge.id,
+                    });
+                }
             }
 
-            props.ctx.hide();
+            ctx.hide();
         });
     };
 
@@ -314,62 +321,21 @@ export const CreateBadgeModal = (props: {
             {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent>
-                    <InputField title="Badge text" field={nameField} setFocusOnError />
+                    <XCheckbox
+                        label={featured ? 'Featured' : 'Not featured'}
+                        checked={featured}
+                        onChange={() => setFeatured(!featured)}
+                        switcher={true}
+                    />
+                    <InputField title="Description" field={descriptionField} setFocusOnError />
                 </XModalContent>
                 <XModalFooter>
                     <XModalFooterButton
                         text="Cancel"
                         style="ghost"
-                        onClick={() => props.ctx.hide()}
+                        onClick={() => ctx.hide()}
                     />
-                    <XModalFooterButton text="Add" style="primary" onClick={onAdd} />
-                </XModalFooter>
-            </XView>
-        </>
-    );
-};
-
-export const DeleteBadgeModal = (props: {
-    ctx: XModalController;
-    isSuper: boolean;
-    userId: string;
-    badgeId: string;
-}) => {
-    const client = useClient();
-    const messenger = React.useContext(MessengerContext);
-    const form = useForm();
-
-    const onAdd = () => {
-        form.doAction(async () => {
-            if (props.isSuper && props.userId !== messenger.user.id) {
-                await client.mutateSuperBadgeDelete({
-                    badgeId: props.badgeId,
-                    userId: props.userId,
-                });
-            } else {
-                await client.mutateBadgeDelete({ badgeId: props.badgeId });
-            }
-
-            props.ctx.hide();
-        });
-    };
-
-    return (
-        <>
-            {form.error && <XErrorMessage message={form.error} />}
-            <XView flexDirection="column" borderRadius={8} overflow="hidden">
-                <XModalContent fontSize={18} lineHeight="28px">
-                    Are you sure you want to delete badge?
-                    <br />
-                    This cannot be undone.
-                </XModalContent>
-                <XModalFooter>
-                    <XModalFooterButton
-                        text="Cancel"
-                        style="ghost"
-                        onClick={() => props.ctx.hide()}
-                    />
-                    <XModalFooterButton text="Delete" style="danger" onClick={onAdd} />
+                    <XModalFooterButton text="Save" style="primary" onClick={onSave} />
                 </XModalFooter>
             </XView>
         </>

@@ -12,6 +12,7 @@ export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     replySenderNameEmojify: (string | JSX.Element)[];
     replyQuoteTextEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
+    replySenderBadgeNameEmojify: (string | JSX.Element)[];
 }
 
 export interface DataSourceWebDateItem extends DataSourceDateItem {
@@ -47,6 +48,12 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
                   size: 12,
               })
             : undefined,
+        replySenderBadgeNameEmojify: (src.reply || []).map(r =>
+                r.senderBadge ? emoji({
+                    src: r.senderBadge.name,
+                    size: 16,
+                }) : '',
+            ),
     };
 }
 
