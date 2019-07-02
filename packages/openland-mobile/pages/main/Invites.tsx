@@ -4,7 +4,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { View, Share, Text, Clipboard } from 'react-native';
+import { View, Share, Text, Clipboard, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -19,6 +19,8 @@ const InvitesComponent = XMemo<PageProps>((props) => {
 
     const invite = getClient().useAccountAppInvite();
     let link = 'https://openland.com/invite/' + invite.invite;
+
+    let invitesCount = getClient().useWithoutLoaderMySuccessfulInvitesCount();
 
     let text = "In the heart of the French Alps, in the north east of the Rhone Alps region lies the village of Les Houches. Nestled at one end of the Chamonix valley.\n" + link;
     let shareCallback = React.useCallback(() => {
@@ -47,7 +49,13 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                     <ZRoundedButton onPress={shareCallback} style="flat" title="Share" uppercase={false} />
                     <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
 
+                    <View flexGrow={1} />
+                    {invitesCount && <View marginBottom={40} flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} borderRadius={10} height={50} backgroundColor={theme.bubbleColorIn}>
+                        <Image source={require('assets/ic-user-24.png')} />
+                        <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
+                    </View>}
                 </View>
+
             </SScrollView>
 
         </>

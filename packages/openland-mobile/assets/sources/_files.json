@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-user",
+            "src": "ic-user.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "install_app_mac",
             "src": "install_app_mac.svg",
             "sizes": [
