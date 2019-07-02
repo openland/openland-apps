@@ -229,6 +229,10 @@ const SocialButtonClassName = css`
     justify-content: center;
     transition: all 0.2s ease;
     cursor: pointer;
+    & svg {
+        height: 18px;
+        width: 18px;
+    }
     & svg path {
         transition: all 0.2s ease;
         fill: #1790ff;

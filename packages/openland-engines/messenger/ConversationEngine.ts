@@ -738,12 +738,17 @@ export class ConversationEngine implements MessageSendHandler {
             }
             conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
+            conv.attachTop = false;
+            if (prev && prev.type === 'message') {
+                conv.attachTop = prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage');
+                if (prev.isService && !prev.serviceMetaData && src.__typename === 'GeneralMessage' && prev.senderId === src.sender.id) {
+                    conv.attachTop = false
+                }
+            }
         } else {
             let p = src as PendingMessage;
             let reply = p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined;
             let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
-
             conv = {
                 type: 'message',
                 chatId: this.conversationId,
