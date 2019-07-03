@@ -74,7 +74,7 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
 
     let goToChat = React.useCallback(
         async (key) => {
-            await AsyncStorage.setItem('compose_draft_' + key, 'blah blah');
+            await AsyncStorage.setItem('compose_draft_' + key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?');
             props.router.pushAndReset('Conversation', { id: key });
         }, []
     );
