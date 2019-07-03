@@ -81,6 +81,7 @@ export const RoomPicoQuery = typedQuery<Types.RoomPico, Types.RoomPicoVariables>
 export const RoomChatQuery = typedQuery<Types.RoomChat, Types.RoomChatVariables>(Chats.RoomChatQuery);
 export const RoomHeaderQuery = typedQuery<Types.RoomHeader, Types.RoomHeaderVariables>(Chats.RoomHeaderQuery);
 export const RoomWithoutMembersQuery = typedQuery<Types.RoomWithoutMembers, Types.RoomWithoutMembersVariables>(Chats.RoomWithoutMembersQuery);
+export const RoomFeaturedMembersQuery = typedQuery<Types.RoomFeaturedMembers, Types.RoomFeaturedMembersVariables>(Chats.RoomFeaturedMembersQuery);
 export const RoomTinyQuery = typedQuery<Types.RoomTiny, Types.RoomTinyVariables>(Chats.RoomTinyQuery);
 export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariables>(Chats.RoomSuperQuery);
 export const PinMessageMutation = typedMutation<Types.PinMessage, Types.PinMessageVariables>(Chats.PinMessageMutation);

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { css } from 'linaria';
-import { MutationFunc } from 'react-apollo';
 import { XView } from 'react-mental';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -9,17 +7,14 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { RoomMembersPaginated } from 'openland-api/Types';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from 'openland-web/fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
-import { XListView } from 'openland-web/components/XListView';
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -32,13 +27,10 @@ import {
 } from './OrganizationProfileComponent';
 import {
     Room_room_SharedRoom,
-    RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
-    RoomMembersPaginated_members,
 } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { XMutation } from 'openland-x/XMutation';
-import { XWithRole, useHasRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import {
@@ -56,15 +48,13 @@ import { AvatarModal } from './UserProfileComponent';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { MakeFeaturedModal } from './modals';
+import { RoomMembersList, RoomFeaturedMembersList, RoomRequestsMembersList } from './MembersList';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -277,90 +267,10 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, roomId: string }) => {
-    return (
-        <XUserCard
-            user={member.user}
-            badge={member.badge}
-            customMenu={
-                useHasRole('super-admin') || member.canKick || member.user.isYou ? (
-                    <XOverflow
-                        placement="bottom-end"
-                        flat={true}
-                        content={
-                            <>
-                                <XWithRole role="super-admin">
-                                    <XMenuItem
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-
-                                            showModalBox(
-                                                { title: 'Member featuring' },
-                                                ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={roomId} />
-                                            );
-                                        }}
-                                    >
-                                        {member.badge ? 'Edit featured status' : 'Make featured'}
-                                    </XMenuItem>
-                                </XWithRole>
-                                <XMenuItem
-                                    style="danger"
-                                    query={{ field: 'remove', value: member.user.id }}
-                                >
-                                    {member.user.isYou ? 'Leave group' : 'Remove from group'}
-                                </XMenuItem>
-                            </>
-                        }
-                    />
-                ) : null
-            }
-        />
-    );
-};
-
-const RequestCard = ({
-    member,
-    roomId,
-}: {
-    member: RoomFull_SharedRoom_requests;
-    roomId: string;
-}) => {
-    const client = useClient();
-
-    const accept = async () => {
-        await client.mutateRoomAddMember({
-            roomId,
-            userId: member.user.id,
-        });
-    };
-    const decline = async () => {
-        await client.mutateRoomDeclineJoinReuest({
-            roomId,
-            userId: member.user.id,
-        });
-    };
-
-    return (
-        <XUserCard
-            user={member.user}
-            customButton={
-                <>
-                    <XMutation mutation={accept as MutationFunc<{}>}>
-                        <XButton style="primary" text="Accept" />
-                    </XMutation>
-                    <XMutation mutation={decline as MutationFunc<{}>}>
-                        <XButton text="Decline" />
-                    </XMutation>
-                </>
-            }
-        />
-    );
-};
-
 interface MembersProviderProps {
     roomTitle: string;
-    membersCount: number | null;
+    membersCount: number;
+    featuredMembersCount: number;
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     isOwner: boolean;
@@ -375,54 +285,42 @@ const MembersProvider = ({
     isOwner,
     chatId,
     isChannel,
+    featuredMembersCount,
 }: MembersProviderProps & XWithRouter) => {
-    if (membersCount && membersCount > 0) {
-        let tab: tabsT =
-            router.query.requests === '1' && (requests || []).length > 0
-                ? tabs.requests
-                : tabs.members;
+    if (membersCount <= 0) {
+        return null;
+    }
 
-        let sectionElems;
-        if (tab === tabs.members) {
-            sectionElems = (
-                <XView flexGrow={1} flexShrink={1}>
-                    <AddMembersModal
-                        id={chatId}
-                        isRoom={true}
-                        isChannel={isChannel}
-                        isOrganization={false}
-                    />
-                    <XCreateCard
-                        text="Add members"
-                        query={{ field: 'inviteMembers', value: 'true' }}
-                    />
-                </XView>
-            );
-        } else {
-            sectionElems =
-                isOwner &&
-                requests &&
-                requests.map((req, i) => <RequestCard key={i} member={req} roomId={chatId} />);
-        }
+    const requestMembers = requests || [];
+    const isRequests = router.query.tab === 'requests' && requestMembers.length > 0 && isOwner;
+    const isFeatured = router.query.tab === 'featured' && featuredMembersCount > 0;
+    const tab: tabsT = isRequests ? tabs.requests : (isFeatured ? tabs.featured : tabs.members);
 
-        return (
-            <Section separator={0} flexGrow={1}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
-                            Members
+    const showTabs = featuredMembersCount > 0 || (requestMembers.length > 0 && isOwner);
+
+    return (
+        <Section separator={0} flexGrow={1}>
+            {showTabs && (
+                <XSwitcher style="button">
+                    <XSwitcher.Item query={{ field: 'tab' }} counter={membersCount}>
+                        Members
+                    </XSwitcher.Item>
+                    {featuredMembersCount > 0 && (
+                        <XSwitcher.Item query={{ field: 'tab', value: 'featured' }} counter={featuredMembersCount}>
+                            Featured
                         </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
+                    )}
+                    {(requestMembers.length > 0 && isOwner) && (
+                        <XSwitcher.Item query={{ field: 'tab', value: 'requests' }} counter={requestMembers.length}>
                             Requests
                         </XSwitcher.Item>
-                    </XSwitcher>
-                )}
-                {((requests || []).length === 0 || !isOwner) && (
-                    <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
-                )}
+                    )}
+                </XSwitcher>
+            )}
+            {!showTabs && (
+                <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />
+            )}
+            {tab === tabs.members && (
                 <SectionContent
                     noPaddingBottom
                     withFlex
@@ -430,15 +328,24 @@ const MembersProvider = ({
                     flexGrow={1}
                     flexShrink={1}
                 >
-                    {sectionElems}
+                    <XView flexGrow={1} flexShrink={1}>
+                        <AddMembersModal
+                            id={chatId}
+                            isRoom={true}
+                            isChannel={isChannel}
+                            isOrganization={false}
+                        />
+                        <XCreateCard
+                            text="Add members"
+                            query={{ field: 'inviteMembers', value: 'true' }}
+                        />
+                    </XView>
                 </SectionContent>
+            )}
 
-                <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
-            </Section>
-        );
-    } else {
-        return null;
-    }
+            <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
+        </Section>
+    );
 };
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
@@ -502,7 +409,8 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
                 </XView>
             )}
             <MembersProvider
-                membersCount={chat.membersCount}
+                membersCount={chat.membersCount || 0}
+                featuredMembersCount={chat.featuredMembersCount}
                 roomTitle={chat.title}
                 router={router}
                 requests={chat.requests}
@@ -514,34 +422,11 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
     );
 };
 
-const itemsWrapperClassName = css`
-    max-width: 832px;
-    margin: 0 auto;
-    width: 100%;
-    padding-left: 16px;
-    padding-right: 16px;
-`;
-
-const convertToDataSource = (data: RoomMembersPaginated) => {
-    return data.members.map(member => ({
-        ...member,
-        key: member.user.id,
-        canKick: member.canKick,
-    }));
-};
-
-const RoomGroupProfileProvider = ({
-    variables,
-    conversationId,
-}: {
-    variables: { id: string };
-    conversationId: string;
-}) => {
-    let router = React.useContext(XRouterContext)!;
+const RoomGroupProfileProvider = (props: { chatId: string }) => {
+    const { chatId } = props;
+    const router = React.useContext(XRouterContext)!;
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
-
-    const data = client.useRoomWithoutMembers(variables);
+    const data = client.useRoomWithoutMembers({ id: chatId });
 
     let chat = data.room as Room_room_SharedRoom;
 
@@ -549,78 +434,13 @@ const RoomGroupProfileProvider = ({
         return <XLoader loading={true} />;
     }
 
-    const chatId = chat.id;
+    const isOwner = chat.role === 'OWNER';
+    const requestMembers = chat.requests || [];
+    const isRequests = router.query.tab === 'requests' && requestMembers.length > 0 && isOwner;
+    const isFeatured = router.query.tab === 'featured' && chat.featuredMembersCount > 0;
+    const tab: tabsT = isRequests ? tabs.requests : (isFeatured ? tabs.featured : tabs.members);
 
-    const pageSize = 20;
-
-    const { dataSource, renderLoading } = useInfiniteScroll<
-        RoomMembersPaginated,
-        RoomMembersPaginated_members & { key: string; canKick: boolean }
-    >({
-        convertToDataSource,
-        initialLoadFunction: () => {
-            return client.useRoomMembersPaginated(
-                {
-                    roomId: chatId,
-                    first: pageSize,
-                },
-                {
-                    fetchPolicy: 'network-only',
-                },
-            );
-        },
-        queryOnNeedMore: async ({ getLastItem }: { getLastItem: () => any }) => {
-            const lastItem = getLastItem();
-            return await client.queryRoomMembersPaginated({
-                roomId: chatId,
-                first: pageSize,
-                after: lastItem.user.id,
-            });
-        },
-    });
-
-    React.useEffect(() => {
-        return dataSource.watch({
-            onDataSourceInited(members: RoomMembersPaginated_members[], completed: boolean) {
-                members.map(u => u.user.id).map(messenger.getOnlines().onUserAppears);
-            },
-            onDataSourceItemAdded(item: RoomMembersPaginated_members, index: number) {
-                messenger.getOnlines().onUserAppears(item.user.id);
-            },
-            onDataSourceLoadedMore(members: RoomMembersPaginated_members[], completed: boolean) {
-                members.map(u => u.user.id).map(messenger.getOnlines().onUserAppears);
-            },
-            onDataSourceItemUpdated(item: RoomMembersPaginated_members, index: number) {
-                // Nothing to do
-            },
-            onDataSourceItemRemoved(item: RoomMembersPaginated_members, index: number) {
-                // Nothing to do
-            },
-            onDataSourceItemMoved(
-                item: RoomMembersPaginated_members,
-                fromIndex: number,
-                toIndex: number,
-            ) {
-                // Nothing to do
-            },
-            onDataSourceCompleted() {
-                // Nothing to do
-            },
-            onDataSourceScrollToKeyRequested() {
-                //
-            },
-        });
-    }, []);
-
-    const renderItem = React.useMemo(() => {
-        return (member: any) => {
-            return (
-                <div className={itemsWrapperClassName}>
-                    <MemberCard key={member.id} roomId={conversationId} member={member} />
-                </div>
-            );
-        };
-    }, []);
+    const beforeItems = <RoomGroupProfileInner chat={chat} router={router} conversationId={chatId} />
 
     return (
         <>
@@ -629,20 +449,17 @@ const RoomGroupProfileProvider = ({
                 <BackButton />
                 <Header chat={chat} />
 
-                <XListView
-                    dataSource={dataSource}
-                    itemHeight={72}
-                    loadingHeight={200}
-                    renderItem={renderItem}
-                    renderLoading={renderLoading}
-                    beforeChildren={
-                        <RoomGroupProfileInner
-                            chat={chat}
-                            router={router}
-                            conversationId={conversationId}
-                        />
-                    }
-                />
+                {tab === tabs.members && (
+                    <RoomMembersList chatId={chat.id} beforeChildren={beforeItems} />
+                )}
+
+                {tab === tabs.featured && (
+                    <RoomFeaturedMembersList chatId={chatId} beforeChildren={beforeItems} />
+                )}
+
+                {tab === tabs.requests && (
+                    <RoomRequestsMembersList chatId={chatId} requests={requestMembers} beforeChildren={beforeItems} />
+                )}
             </XView>
         </>
     );
@@ -650,9 +467,6 @@ const RoomGroupProfileProvider = ({
 
 export const RoomProfile = (props: { conversationId: string }) => (
     <React.Suspense fallback={<XLoader loading={true} />}>
-        <RoomGroupProfileProvider
-            variables={{ id: props.conversationId }}
-            conversationId={props.conversationId}
-        />
+        <RoomGroupProfileProvider chatId={props.conversationId} />
     </React.Suspense>
 );

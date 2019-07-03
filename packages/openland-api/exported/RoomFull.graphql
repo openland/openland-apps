@@ -24,6 +24,7 @@ fragment RoomFull on Room {
     canEdit
     canSendMessage
     description
+    featuredMembersCount
     id
     isChannel
     kind
