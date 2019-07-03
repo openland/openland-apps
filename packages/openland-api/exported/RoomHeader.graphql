@@ -11,6 +11,7 @@ query RoomHeader($id: ID!) {
       user {
         __typename
         id
+        isBot
         name
         photo
         primaryOrganization {

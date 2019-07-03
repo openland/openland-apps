@@ -266,13 +266,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-        <HeaderTitle
-            key={privateRoom!!.user.id}
-            value={privateRoom!!.user.name}
-            path={'/mail/u/' + privateRoom!!.user.id}
-            organization={privateRoom!!.user.primaryOrganization}
-        />
-    );
+            <HeaderTitle
+                key={privateRoom!!.user.id}
+                value={privateRoom!!.user.name}
+                path={'/mail/u/' + privateRoom!!.user.id}
+                organization={privateRoom!!.user.primaryOrganization}
+            />
+        );
 
     return (
         <ChatHeaderViewAbstract
@@ -283,7 +283,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             modals={modals}
             rightButtons={
                 <RowWithSeparators separatorWidth={25}>
-                    {!isMobile && (
+                    {!isMobile && (privateRoom ? !privateRoom.user.isBot : true) && (
                         <XView>
                             <CallButton room={room} />
                         </XView>

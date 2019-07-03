@@ -254,10 +254,10 @@
       }
     },
     {
-      "signature": "ad9ae2d89ec50107edee770ebc13756b5b7314c57824b912f5bf8bc6f683c0b5",
-      "document": "query RoomHeader($id:ID!){room(id:$id){__typename...on PrivateRoom{id settings{__typename id mute}user{__typename id name photo primaryOrganization{__typename id name}}}...on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}",
+      "signature": "baa8dfc7d55ab6934910773fa5aa4a93f7c7ae9ebd197d08e7bce7cb3d7175de",
+      "document": "query RoomHeader($id:ID!){room(id:$id){__typename...on PrivateRoom{id settings{__typename id mute}user{__typename id isBot name photo primaryOrganization{__typename id name}}}...on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}",
       "metadata": {
-        "engineSignature": "query RoomHeader($id:ID!){room(id:$id){__typename...on PrivateRoom{id settings{__typename id mute}user{__typename id name photo primaryOrganization{__typename id name}}}...on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename betaIsAdmin betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}"
+        "engineSignature": "query RoomHeader($id:ID!){room(id:$id){__typename...on PrivateRoom{id settings{__typename id mute}user{__typename id isBot name photo primaryOrganization{__typename id name}}}...on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename betaIsAdmin betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}"
       }
     },
     {

@@ -305,6 +305,7 @@ export const RoomHeaderQuery = gql`
                         id
                         name
                     }
+                    isBot
                 }
                 settings {
                     id

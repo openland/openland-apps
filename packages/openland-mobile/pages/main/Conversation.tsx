@@ -294,6 +294,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
+        let privateRoom = this.props.chat.__typename === 'PrivateRoom' ? this.props.chat : undefined;
         let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
@@ -306,11 +307,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                <SHeaderButton
+                {(privateRoom ? !privateRoom.user.isBot : true) && <SHeaderButton
                     title="Call"
                     icon={require('assets/ic-call-26.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
-                />
+                />}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>

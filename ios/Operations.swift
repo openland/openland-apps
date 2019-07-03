@@ -1998,6 +1998,7 @@ private let RoomHeaderSelector = obj(
                         field("user","user", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
+                                field("isBot","isBot", notNull(scalar("Boolean"))),
                                 field("name","name", notNull(scalar("String"))),
                                 field("photo","photo", scalar("String")),
                                 field("primaryOrganization","primaryOrganization", obj(
@@ -3494,7 +3495,7 @@ class Operations {
     let RoomHeader = OperationDefinition(
         "RoomHeader",
         .query, 
-        "query RoomHeader($id:ID!){room(id:$id){__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo primaryOrganization{__typename id name}}}... on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}",
+        "query RoomHeader($id:ID!){room(id:$id){__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id isBot name photo primaryOrganization{__typename id name}}}... on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}",
         RoomHeaderSelector
     )
     let RoomInviteInfo = OperationDefinition(

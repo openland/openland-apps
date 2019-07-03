@@ -101,8 +101,8 @@ const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) =>
                 {user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                    <XDate value={user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={user.lastSeen} format="humanize_cute" />
+                    )}
             </div>
         );
     } else if (user && user.online) {
@@ -211,7 +211,7 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
-                            {user.audienceSize > 0 && <UserReach reach={user.audienceSize} />}
+                            {user.audienceSize > 0 && !user.isBot && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
