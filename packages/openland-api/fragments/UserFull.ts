@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from './OrganizationShort';
 import { UserBadge } from './UserBadge';
+import { RoomShort } from './RoomShort';
 
 export const UserFull = gql`
     fragment UserFull on User {
@@ -22,6 +23,14 @@ export const UserFull = gql`
         twitter
         shortname
         audienceSize
+        chatsWithBadge {
+            chat {
+                ...RoomShort
+            }
+            badge {
+                ...UserBadge
+            }
+        }
         badges {
             ...UserBadge
         }
@@ -34,4 +43,5 @@ export const UserFull = gql`
     }
     ${OrganizationShort}
     ${UserBadge}
+    ${RoomShort}
 `;

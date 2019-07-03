@@ -6,6 +6,17 @@ fragment UserFull on User {
     __typename
     ...UserBadge
   }
+  chatsWithBadge {
+    __typename
+    badge {
+      __typename
+      ...UserBadge
+    }
+    chat {
+      __typename
+      ...RoomShort
+    }
+  }
   email
   firstName
   id

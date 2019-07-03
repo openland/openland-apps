@@ -4,12 +4,13 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { UserBadge, RoomShort_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import ReplyCommentsIcon from 'openland-icons/ic-reply-comments.svg';
 
 const RoomTitleInner = css`
     height: 22px;
@@ -29,18 +30,19 @@ const ButtonHoverWrapper = css`
 `;
 
 interface XRoomCardProps {
-    room: Room_room_SharedRoom;
+    room: RoomShort_SharedRoom;
     path?: string;
     customButton?: any;
     CustomButtonComponent?: any;
     customMenu?: any;
     extraMenu?: any;
     isMember?: boolean;
+    badge?: UserBadge;
 }
 
 export const XRoomCard = XMemo<XRoomCardProps>(props => {
     const { customButton, customMenu, CustomButtonComponent, ...noCustomizationProps } = props;
-    const { room, path, extraMenu, isMember } = noCustomizationProps;
+    const { room, path, extraMenu, isMember, badge } = noCustomizationProps;
     const isMobile = React.useContext(IsMobileContext);
     let [isHovered, onHover] = React.useState(false);
 
@@ -158,8 +160,19 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                         marginBottom={2}
                         minWidth={0}
                         flexShrink={1}
+                        flexDirection="row"
                     >
                         <div className={RoomTitleInner}>{room.title}</div>
+                        {badge && (
+                            <XWithRole role="feature-non-production">
+                                <XView marginLeft={10} flexDirection="row">
+                                    <XView marginRight={9} justifyContent="center">
+                                        <ReplyCommentsIcon />
+                                    </XView>
+                                    <XView fontWeight="400">{badge.name}</XView>
+                                </XView>
+                            </XWithRole>
+                        )}
                     </XView>
                     <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
                         {TextProfiles.Room.membersLabel(room.membersCount || 0)}
