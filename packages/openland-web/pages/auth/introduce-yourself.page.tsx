@@ -30,22 +30,20 @@ import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 
 export type ProfileFormData = {
-    firstName: string;
-    lastName: string;
+    firstName: string | null;
+    lastName: string | null;
     photoRef: StoredFileT | null;
 };
 
 type EnterYourOrganizationPageProps = {
-    initialFormData?: ProfileFormData | null;
-    setSavedFormData: (a: ProfileFormData | null) => void;
+    initialProfileFormData?: ProfileFormData | null;
     roomView: boolean;
 };
 
 type IntroduceYourselfPageOuterProps = {
     roomView: boolean;
     roomContainerParams: RoomContainerParams;
-    initialFormData?: ProfileFormData | null;
-    setSavedFormData: (a: ProfileFormData | null) => void;
+    initialProfileFormData?: ProfileFormData | null;
 };
 
 export const CreateProfileFormInner = (
@@ -60,7 +58,7 @@ export const CreateProfileFormInner = (
     let firstName = useField<string>(
         'input.firstName',
         (prefill && prefill.firstName) ||
-            (props.initialFormData && props.initialFormData.firstName) ||
+            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
             '',
         form,
         [
@@ -73,13 +71,13 @@ export const CreateProfileFormInner = (
     let lastName = useField<string>(
         'input.lastName',
         (prefill && prefill.lastName) ||
-            (props.initialFormData && props.initialFormData.lastName) ||
+            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
             '',
         form,
     );
     let photoRef = useField<StoredFileT | null>(
         'input.photoRef',
-        (props.initialFormData && props.initialFormData.photoRef) || null,
+        (props.initialProfileFormData && props.initialProfileFormData.photoRef) || null,
         form,
     );
 
@@ -94,13 +92,23 @@ export const CreateProfileFormInner = (
                           isImage: undefined,
                           width: undefined,
                           height: undefined,
+                          crop: undefined,
+                          __typename: undefined,
                       }
                     : undefined,
             };
-            await client.mutateProfileCreate({
-                input: formData,
-            });
-            props.setSavedFormData(formData);
+
+            if (props.initialProfileFormData) {
+                await client.mutateProfileUpdate({
+                    input: formData,
+                });
+            } else {
+                await client.mutateProfileCreate({
+                    input: formData,
+                });
+            }
+
+            await client.refetchProfilePrefill();
             await client.refetchAccount();
 
             if (firstName.value) {
@@ -256,8 +264,6 @@ export const CreateProfileFormInner = (
 export const IntroduceYourselfPageInner = ({
     roomView,
     roomContainerParams,
-    initialFormData,
-    setSavedFormData,
 }: IntroduceYourselfPageOuterProps) => {
     const client = useClient();
 
@@ -265,9 +271,19 @@ export const IntroduceYourselfPageInner = ({
         localStorage.setItem('isnewuser', 'newuser');
     }
 
-    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
-
+    const profile = client.useProfile();
     const data = client.useProfilePrefill();
+
+    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+    const prefill = usePhotoPrefill && data ? data.prefill : null;
+
+    const initialProfileFormData = profile.profile
+        ? {
+              firstName: profile.profile!!.firstName,
+              lastName: profile.profile!!.lastName,
+              photoRef: profile.profile!!.photoRef,
+          }
+        : null;
 
     return (
         <XView backgroundColor="white" flexGrow={1}>
@@ -287,10 +303,9 @@ export const IntroduceYourselfPageInner = ({
                         />
                     </XView>
                     <CreateProfileFormInner
-                        prefill={usePhotoPrefill && data ? data.prefill : null}
+                        prefill={prefill}
                         roomView={roomView}
-                        initialFormData={initialFormData}
-                        setSavedFormData={setSavedFormData}
+                        initialProfileFormData={initialProfileFormData}
                     />
                 </>
             )}
@@ -300,8 +315,7 @@ export const IntroduceYourselfPageInner = ({
                     <CreateProfileFormInner
                         prefill={usePhotoPrefill && data ? data.prefill : null}
                         roomView={roomView}
-                        initialFormData={initialFormData}
-                        setSavedFormData={setSavedFormData}
+                        initialProfileFormData={initialProfileFormData}
                     />
                 </RoomSignupContainer>
             )}

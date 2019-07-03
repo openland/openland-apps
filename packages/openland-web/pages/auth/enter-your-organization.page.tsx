@@ -233,6 +233,7 @@ export const EnterYourOrganizationPage = ({
 }: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
+
     const me = client.useAccount();
     const [sending, setSending] = React.useState(false);
     const [skiping, setSkiping] = React.useState(false);
@@ -253,6 +254,9 @@ export const EnterYourOrganizationPage = ({
         if (!organizationFieldValue) {
             return;
         }
+
+        // TODO if profile has primary organization - run updateOrganizationProfile
+
         let result = await client.mutateCreateOrganization({
             input: {
                 personal: false,
@@ -311,12 +315,9 @@ export const EnterYourOrganizationPage = ({
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
                     <XView marginTop={34}>
                         <BackSkipLogo
-                            onBack={
-                                null
-                                // () => {
-                                //     router.replace('/authorization/introduce-yourself');
-                                // }
-                            }
+                            onBack={() => {
+                                router.replace('/authorization/introduce-yourself');
+                            }}
                             onSkip={onSkip}
                         />
                     </XView>

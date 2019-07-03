@@ -138,9 +138,6 @@ export default () => {
     const [emailSent, setEmailSent] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
-    const [introduceYourselfSavedForm, setIntroduceYourselfSavedForm] = React.useState<
-        ProfileFormData|null
-    >(null);
 
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
@@ -351,8 +348,7 @@ export default () => {
                 <IntroduceYourselfPage
                     roomView={roomView}
                     roomContainerParams={roomContainerParams}
-                    initialFormData={introduceYourselfSavedForm}
-                    setSavedFormData={setIntroduceYourselfSavedForm}
+                    
                 />
             )}
             {page === pages.enterYourOrganization && (

@@ -9,9 +9,9 @@ export type StoredFileT = {
     uuid: string;
     name?: string | null;
     size?: string | null;
-    isImage: boolean;
-    width: number | null;
-    height: number | null;
+    isImage?: boolean;
+    width?: number | null;
+    height?: number | null;
     crop: XImageCropT | null;
 };
 
