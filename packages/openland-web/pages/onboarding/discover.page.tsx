@@ -65,7 +65,7 @@ const LocalDiscoverComponent = ({
     group,
     onContinueClick,
     selected,
-    exclude,
+
     progressInPercents,
     onSkip,
     onBack,
@@ -73,20 +73,16 @@ const LocalDiscoverComponent = ({
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
     selected: string[];
-    exclude: string[];
+
     progressInPercents: number;
     onSkip: (event: React.MouseEvent) => void;
     onBack: (event: React.MouseEvent) => void;
 }) => {
-    const router = React.useContext(XRouterContext)!;
     const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
-    React.useLayoutEffect(
-        () => {
-            setLocalSelected(selected);
-        },
-        [selected],
-    );
+    React.useLayoutEffect(() => {
+        setLocalSelected(selected);
+    }, [selected]);
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -103,12 +99,9 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
-    const onMyContinueClick = React.useCallback(
-        () => {
-            onContinueClick(localSelected);
-        },
-        [localSelected],
-    );
+    const onMyContinueClick = React.useCallback(() => {
+        onContinueClick(localSelected);
+    }, [localSelected]);
 
     if (!group) {
         return null;
@@ -187,6 +180,8 @@ export const Discover = ({
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
+    console.log(discoverDone);
+
     const currentPage = client.useDiscoverNextPage(
         {
             selectedTagsIds: rootSelected,
@@ -194,21 +189,19 @@ export const Discover = ({
         },
         { fetchPolicy: 'network-only' },
     );
+    console.log(currentPage);
 
-    React.useLayoutEffect(
-        () => {
-            client.refetchSuggestedRooms().then(() => {
-                client.refetchDiscoverIsDone();
-            });
-        },
-        [currentPage.betaNextDiscoverPage!!.tagGroup],
-    );
+    React.useLayoutEffect(() => {
+        client.refetchSuggestedRooms().then(() => {
+            client.refetchDiscoverIsDone();
+        });
+    }, [currentPage.gammaNextDiscoverPage!!.tagGroup]);
 
     // Hack to reset discover on /onboarding/discover page
     if (
         rootExclude.length === 0 &&
         discoverDone.betaIsDiscoverDone &&
-        currentPage.betaNextDiscoverPage!!.tagGroup!!
+        currentPage.gammaNextDiscoverPage!!.tagGroup!!
     ) {
         client.mutateBetaNextDiscoverReset().then(() => {
             client.refetchSuggestedRooms().then(() => {
@@ -218,14 +211,14 @@ export const Discover = ({
         return null;
     }
 
-    if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
+    if (!currentPage.gammaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
             return <XLoader />;
         }
         return <ChatsForYou onSkip={onChatsForYouSkip} onBack={onChatsForYouBack} />;
     }
 
-    const currentPageId = currentPage.betaNextDiscoverPage!!.tagGroup!!.id;
+    const currentPageId = currentPage.gammaNextDiscoverPage!!.tagGroup!!.id;
 
     const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
@@ -249,10 +242,9 @@ export const Discover = ({
         <LocalDiscoverComponent
             onSkip={onSkip}
             onBack={onBack}
-            group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
+            group={currentPage.gammaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
-            exclude={rootExclude}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
         />
     );
@@ -285,10 +277,37 @@ export const DiscoverOnLocalState = () => {
         ];
 
         setRootState(newRootState);
+        await client.mutateBetaSaveSelectedTags({
+            selectedTagsIds: props.selected,
+            excudedGroupsIds: props.exclude,
+        });
     };
 
-    const onSkip = () => {
-        //
+    const onSkip = async () => {
+        const allSelectedArrays = rootState.map(({ selected }) => {
+            return selected;
+        });
+
+        const allSelected: string[] = [];
+        for (let selected of allSelectedArrays) {
+            for (let selectedItem of selected) {
+                if (!allSelected.includes(selectedItem)) {
+                    allSelected.push(selectedItem);
+                }
+            }
+        }
+
+        console.log(allSelected);
+
+        await client.mutateBetaSaveSelectedTags({
+            selectedTagsIds: allSelected,
+            excudedGroupsIds: [],
+        });
+        await client.mutateBetaDiscoverSkip({
+            selectedTagsIds: allSelected,
+        });
+        await client.refetchSuggestedRooms();
+        await client.refetchDiscoverIsDone();
     };
 
     const onBack = () => {
@@ -346,15 +365,12 @@ const DiscoverOnRouter = () => {
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    React.useEffect(
-        () => {
-            if (!discoverDone.betaIsDiscoverDone) {
-                setRootSelected(arrowify(selected));
-                setRootExclude(arrowify(exclude));
-            }
-        },
-        [router.query.selected, router.query.exclude],
-    );
+    React.useEffect(() => {
+        if (!discoverDone.betaIsDiscoverDone) {
+            setRootSelected(arrowify(selected));
+            setRootExclude(arrowify(exclude));
+        }
+    }, [router.query.selected, router.query.exclude]);
 
     const onContinueClick = async (props: {
         selected: string[];

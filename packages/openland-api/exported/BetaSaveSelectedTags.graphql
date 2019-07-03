@@ -1,0 +1,9 @@
+mutation BetaSaveSelectedTags($excudedGroupsIds: [String!]!, $selectedTagsIds: [String!]!) {
+  betaSaveSelectedTags(excudedGroupsIds: $excudedGroupsIds, selectedTagsIds: $selectedTagsIds) {
+    __typename
+    tagGroup {
+      __typename
+      id
+    }
+  }
+}
