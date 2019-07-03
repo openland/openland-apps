@@ -107,7 +107,7 @@ export const CreateProfileFormInner = (
                     input: formData,
                 });
             }
-
+            await client.refetchProfile();
             await client.refetchProfilePrefill();
             await client.refetchAccount();
 
@@ -279,9 +279,9 @@ export const IntroduceYourselfPageInner = ({
 
     const initialProfileFormData = profile.profile
         ? {
-              firstName: profile.profile!!.firstName,
-              lastName: profile.profile!!.lastName,
-              photoRef: profile.profile!!.photoRef,
+              firstName: profile.profile.firstName,
+              lastName: profile.profile.lastName,
+              photoRef: profile.profile.photoRef,
           }
         : null;
 
