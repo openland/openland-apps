@@ -19,10 +19,10 @@ export default withApp('Home', 'viewer', () => {
             <XView marginTop={34}>
                 <BackSkipLogo
                     onBack={
-                        null
-                        // () => {
-                        //     router.replace('/authorization/enter-your-organization');
-                        // }
+                        // null
+                        () => {
+                            router.replace('/authorization/enter-your-organization');
+                        }
                     }
                     onSkip={() => {
                         router.push('/');

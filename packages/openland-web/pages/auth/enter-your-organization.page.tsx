@@ -74,6 +74,7 @@ type processCreateOrganizationT = (a: { organizationFieldValue: string | null })
 const CreateOrganizationFormInner = ({
     roomView,
     processCreateOrganization,
+    initialOrganizationName,
     onSkip,
     sending,
     skiping,
@@ -81,13 +82,14 @@ const CreateOrganizationFormInner = ({
     skiping: boolean;
     sending: boolean;
     roomView: boolean;
+    initialOrganizationName?: string;
     inviteKey?: string | null;
     processCreateOrganization: processCreateOrganizationT;
     onSkip?: (event: React.MouseEvent<any, MouseEvent>) => void;
 }) => {
     const form = useForm();
 
-    let organizationField = useField('input.organization', '', form, [
+    let organizationField = useField('input.organization', initialOrganizationName || '', form, [
         {
             checkIsValid: (value: string) => !!value.trim(),
             text: 'Please enter your organization name',
@@ -227,12 +229,21 @@ const CreateOrganizationFormInner = ({
     );
 };
 
-export const EnterYourOrganizationPage = ({
+export const EnterYourOrganizationPageInner = ({
     roomView,
     roomContainerParams,
 }: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
+
+    const profile = client.useProfile();
+
+    const initialOrganizationName =
+        profile.profile &&
+        profile.profile.primaryOrganization &&
+        profile.profile.primaryOrganization.name
+            ? profile.profile.primaryOrganization.name
+            : undefined;
 
     const me = client.useAccount();
     const [sending, setSending] = React.useState(false);
@@ -255,49 +266,85 @@ export const EnterYourOrganizationPage = ({
             return;
         }
 
-        // TODO if profile has primary organization - run updateOrganizationProfile
-
-        let result = await client.mutateCreateOrganization({
-            input: {
-                personal: false,
-                name: organizationFieldValue,
-                // id: data.id,
-            },
-        });
-
-        if (Cookie.get('x-openland-app-invite')) {
-            // app invite invite
-            const inviteKey = Cookie.get('x-openland-app-invite')!!;
-            await client.mutateOrganizationActivateByInvite({
-                inviteKey,
-            });
-            await client.refetchAccount();
-
-            Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-            trackEvent('registration_complete');
-            Cookie.remove('x-openland-app-invite');
-            Cookie.remove('x-openland-create-new-account');
-            window.location.href = '/onboarding/start';
-        } else if (Cookie.get('x-openland-invite')) {
-            // room invite
-            const inviteKey = Cookie.get('x-openland-invite')!!;
-
-            const room = await client.mutateRoomJoinInviteLink({
-                invite: inviteKey,
+        let result;
+        if (profile.profile && profile.profile.primaryOrganization) {
+            const { updateOrganizationProfile } = await client.mutateUpdateOrganization({
+                input: {
+                    name: organizationFieldValue,
+                },
             });
 
-            await client.refetchAccount();
+            result = {
+                organization: updateOrganizationProfile,
+            };
+            if (Cookie.get('x-openland-app-invite')) {
+                // app invite invite
+                const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+                await client.refetchAccount();
 
-            Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-            trackEvent('registration_complete');
+                window.location.href = '/onboarding/start';
+            } else if (Cookie.get('x-openland-invite')) {
+                // room invite
+                const inviteKey = Cookie.get('x-openland-invite')!!;
 
-            Cookie.remove('x-openland-invite');
-            Cookie.remove('x-openland-create-new-account');
-            window.location.href = `/mail/${room.join.id}`;
+                const room = await client.mutateRoomJoinInviteLink({
+                    invite: inviteKey,
+                });
+
+                await client.refetchAccount();
+
+                window.location.href = `/mail/${room.join.id}`;
+            } else {
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/';
+            }
         } else {
-            Cookie.remove('x-openland-create-new-account');
-            window.location.href = '/';
-            trackEvent('registration_complete');
+            result = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: organizationFieldValue,
+                },
+            });
+            if (Cookie.get('x-openland-app-invite')) {
+                // app invite invite
+                const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+                await client.refetchAccount();
+
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                trackEvent('registration_complete');
+
+                // can not remove cookie or update will break
+                // Cookie.remove('x-openland-app-invite');
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/onboarding/start';
+            } else if (Cookie.get('x-openland-invite')) {
+                // room invite
+                const inviteKey = Cookie.get('x-openland-invite')!!;
+
+                const room = await client.mutateRoomJoinInviteLink({
+                    invite: inviteKey,
+                });
+
+                await client.refetchAccount();
+
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                trackEvent('registration_complete');
+
+                // can not remove cookie or update will break
+                // Cookie.remove('x-openland-invite');
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = `/mail/${room.join.id}`;
+            } else {
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/';
+                trackEvent('registration_complete');
+            }
         }
     };
 
@@ -323,6 +370,7 @@ export const EnterYourOrganizationPage = ({
                     </XView>
                     <CreateOrganizationFormInner
                         skiping={skiping}
+                        initialOrganizationName={initialOrganizationName}
                         sending={sending}
                         roomView={roomView}
                         processCreateOrganization={processCreateOrganization}
@@ -335,6 +383,7 @@ export const EnterYourOrganizationPage = ({
                     <CreateOrganizationFormInner
                         skiping={skiping}
                         sending={sending}
+                        initialOrganizationName={initialOrganizationName}
                         roomView={roomView}
                         processCreateOrganization={processCreateOrganization}
                         onSkip={onSkip}
@@ -342,6 +391,16 @@ export const EnterYourOrganizationPage = ({
                 </RoomSignupContainer>
             )}
         </XView>
+    );
+};
+
+export const EnterYourOrganizationPage = (
+    props: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps,
+) => {
+    return (
+        <React.Suspense fallback={null}>
+            <EnterYourOrganizationPageInner {...props} />
+        </React.Suspense>
     );
 };
 
