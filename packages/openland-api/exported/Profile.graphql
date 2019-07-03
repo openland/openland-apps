@@ -32,10 +32,6 @@ query Profile {
       }
       uuid
     }
-    primaryBadge {
-      __typename
-      ...UserBadge
-    }
     primaryOrganization {
       __typename
       id

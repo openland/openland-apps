@@ -2,10 +2,6 @@ fragment UserFull on User {
   __typename
   about
   audienceSize
-  badges {
-    __typename
-    ...UserBadge
-  }
   chatsWithBadge {
     __typename
     badge {
@@ -30,10 +26,6 @@ fragment UserFull on User {
   online
   phone
   photo
-  primaryBadge {
-    __typename
-    ...UserBadge
-  }
   primaryOrganization {
     __typename
     ...OrganizationShort

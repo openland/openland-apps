@@ -76,7 +76,6 @@ export const notificationUnsupported = (id: string): NotificationsDataSourceItem
                 lastSeen: null,
                 shortname: null,
                 primaryOrganization: null,
-                primaryBadge: null
             },
             senderBadge: null,
             message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',

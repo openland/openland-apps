@@ -31,12 +31,6 @@ export const UserFull = gql`
                 ...UserBadge
             }
         }
-        badges {
-            ...UserBadge
-        }
-        primaryBadge {
-            ...UserBadge
-        }
         primaryOrganization {
             ...OrganizationShort
         }
