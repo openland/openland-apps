@@ -566,6 +566,13 @@
             "sizes": [
                 12
             ]
+        },
+        {
+            "name": "ic-crown",
+            "src": "ic-crown.svg",
+            "sizes": [
+                16
+            ]
         }
     ]
 }

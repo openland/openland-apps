@@ -224,6 +224,16 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         navigationIcon={false}
                     />
                 )}
+
+                {room.featuredMembersCount > 0 && (
+                    <ZListItem
+                        leftIcon={require('assets/ic-star-24.png')}
+                        text="Featured members"
+                        onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
+                        description={room.featuredMembersCount + ''}
+                        navigationIcon={true}
+                    />
+                )}
             </ZListItemGroup>
         </>
     );
@@ -237,7 +247,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 data={members}
                 renderItem={({ item }) => (
                     <UserView
-                        isAdmin={item.role === 'OWNER' ? 'owner' : item.role === 'ADMIN' ? 'admin' : undefined}
+                        role={item.role}
+                        badge={item.badge}
                         user={item.user}
                         onLongPress={() => handleMemberLongPress(item, item.canKick, room.canEdit)}
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
