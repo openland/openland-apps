@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, UserBadge } from 'openland-api/Types';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { css } from 'linaria';
 import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
+import { XButton } from 'openland-x/XButton';
+import { showModalBox } from 'openland-x/showModalBox';
+import { MakeFeaturedModal } from 'openland-web/pages/main/profile/components/modals';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 interface PreambulaContainerProps {
     children: any;
@@ -126,6 +130,8 @@ const NotCompactCommentsNotificationPreambulaContainer = ({
 export const Preambula = ({
     compact,
     sender,
+    senderBadge,
+    chatId,
     date,
     deleted,
     isComment,
@@ -136,6 +142,8 @@ export const Preambula = ({
 }: {
     compact: boolean;
     sender: UserShort;
+    senderBadge?: UserBadge;
+    chatId: string;
     date: number;
     deleted?: boolean;
     isComment: boolean;
@@ -157,6 +165,26 @@ export const Preambula = ({
         }
     }
 
+    let customButton = !isCommentNotification ? ((hidePopper: Function) => (
+        <XWithRole role="super-admin">
+            <XButton
+                style="electric"
+                text={senderBadge ? 'Edit featured' : 'Make featured'}
+                size="small"
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    hidePopper();
+                    showModalBox(
+                        { title: 'Member featuring' },
+                        ctx => <MakeFeaturedModal ctx={ctx} userId={sender.id} roomId={chatId} />
+                    );
+                }}
+            />
+        </XWithRole>
+    )) : undefined;
+
     return (
         <PreambulaContainer>
             {!compact ? (
@@ -168,6 +196,7 @@ export const Preambula = ({
                         startSelected={false}
                         user={sender}
                         ref={userPopperRef}
+                        customButton={customButton}
                     >
                         <XAvatar2
                             id={sender.id}

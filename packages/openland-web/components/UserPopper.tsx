@@ -83,6 +83,7 @@ export class UserPopper extends React.PureComponent<
         startSelected: boolean;
         noCardOnMe?: boolean;
         children?: any;
+        customButton?: (hidePopper: Function) => void;
     },
     {
         showPopper: boolean;
@@ -113,7 +114,7 @@ export class UserPopper extends React.PureComponent<
     };
 
     render() {
-        let { user, isMe, noCardOnMe, children, startSelected } = this.props;
+        let { user, isMe, noCardOnMe, children, startSelected, customButton } = this.props;
 
         return (
             <XPopper
@@ -129,6 +130,7 @@ export class UserPopper extends React.PureComponent<
                             isMe={isMe}
                             user={user}
                             startSelected={startSelected}
+                            customButton={customButton}
                         />
                     </div>
                 }

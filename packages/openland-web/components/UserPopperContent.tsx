@@ -74,12 +74,14 @@ const UserPopperContent = XMemo(
         user,
         startSelected,
         hidePopper,
+        customButton,
     }: {
         user: UserForMention;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;
+        customButton?: (hidePopper: Function) => void;
     }) => {
         let usrPath: string | undefined = undefined;
         if (!startSelected) {
@@ -136,9 +138,9 @@ const UserPopperContent = XMemo(
                         })}
                     </XView>
                     <OrgTitle>{organizationName}</OrgTitle>
-                    <Buttons separator={6}>
-                        {!isMe && (
-                            <>
+                    {(!isMe || !!customButton) && (
+                        <Buttons separator={6}>
+                            {!isMe && (
                                 <XButton
                                     path={'/mail/' + user.id}
                                     style="primary"
@@ -150,20 +152,10 @@ const UserPopperContent = XMemo(
                                         hidePopper();
                                     }}
                                 />
-                            </>
-                        )}
-                        <XButton
-                            path={'/mail/u/' + user.id}
-                            style="electric"
-                            text={isMe ? 'My profile' : 'View profile'}
-                            size="small"
-                            autoClose={true}
-                            onClick={(e: any) => {
-                                e.stopPropagation();
-                                hidePopper();
-                            }}
-                        />
-                    </Buttons>
+                            )}
+                            {!!customButton && customButton(hidePopper)}
+                        </Buttons>
+                    )}
                 </Wrapper>
             );
         }

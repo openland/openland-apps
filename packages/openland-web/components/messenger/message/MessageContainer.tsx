@@ -375,6 +375,8 @@ export const DesktopMessageContainer = ({
                 date={date}
                 deleted={deleted}
                 hover={hover}
+                senderBadge={senderBadge}
+                chatId={message.chatId}
             />
             {content}
             {isEditView ? null : actions}
