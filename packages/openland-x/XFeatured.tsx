@@ -20,15 +20,15 @@ export const XFeatured = XMemo<{ text: string | JSX.Element }>(props => (
 ));
 
 export const XFeaturedTooltip = XMemo<{ text: string | JSX.Element }>(props => (
-    <XPopper
-        style="dark"
-        placement="top"
-        content={<span>{props.text}</span>}
-        showOnHoverContent={false}
-        showOnHover={true}
-    >
-        <div>
+    // <XPopper
+    //     style="dark"
+    //     placement="top"
+    //     content={<span>{props.text}</span>}
+    //     showOnHoverContent={false}
+    //     showOnHover={true}
+    // >
+    //     <div>
             <XFeaturedIcon />
-        </div>
-    </XPopper>
+    //     </div>
+    // </XPopper>
 ));
