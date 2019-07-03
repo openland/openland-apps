@@ -311,9 +311,12 @@ export const EnterYourOrganizationPage = ({
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
                     <XView marginTop={34}>
                         <BackSkipLogo
-                            onBack={() => {
-                                router.replace('/authorization/introduce-yourself');
-                            }}
+                            onBack={
+                                null
+                                // () => {
+                                //     router.replace('/authorization/introduce-yourself');
+                                // }
+                            }
                             onSkip={onSkip}
                         />
                     </XView>
