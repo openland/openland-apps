@@ -29,11 +29,23 @@ import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 
-type EnterYourOrganizationPageProps = { roomView: boolean };
+export type ProfileFormData = {
+    firstName: string;
+    lastName: string;
+    photoRef: StoredFileT | null;
+};
+
+type EnterYourOrganizationPageProps = {
+    initialFormData?: ProfileFormData | null;
+    setSavedFormData: (a: ProfileFormData | null) => void;
+    roomView: boolean;
+};
 
 type IntroduceYourselfPageOuterProps = {
     roomView: boolean;
     roomContainerParams: RoomContainerParams;
+    initialFormData?: ProfileFormData | null;
+    setSavedFormData: (a: ProfileFormData | null) => void;
 };
 
 export const CreateProfileFormInner = (
@@ -45,31 +57,50 @@ export const CreateProfileFormInner = (
     const form = useForm();
     const { roomView, prefill } = props;
 
-    let firstName = useField('input.firstName', (prefill && prefill.firstName) || '', form, [
-        {
-            checkIsValid: (value: string) => !!value.trim(),
-            text: `Please enter your name`,
-        },
-    ]);
-    let lastName = useField('input.lastName', (prefill && prefill.lastName) || '', form);
-    let photoRef = useField<StoredFileT | null>('input.photoRef', null, form);
+    let firstName = useField<string>(
+        'input.firstName',
+        (prefill && prefill.firstName) ||
+            (props.initialFormData && props.initialFormData.firstName) ||
+            '',
+        form,
+        [
+            {
+                checkIsValid: (value: string) => !!value.trim(),
+                text: `Please enter your name`,
+            },
+        ],
+    );
+    let lastName = useField<string>(
+        'input.lastName',
+        (prefill && prefill.lastName) ||
+            (props.initialFormData && props.initialFormData.lastName) ||
+            '',
+        form,
+    );
+    let photoRef = useField<StoredFileT | null>(
+        'input.photoRef',
+        (props.initialFormData && props.initialFormData.photoRef) || null,
+        form,
+    );
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
+            const formData = {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                photoRef: photoRef.value
+                    ? {
+                          ...(photoRef.value as any),
+                          isImage: undefined,
+                          width: undefined,
+                          height: undefined,
+                      }
+                    : undefined,
+            };
             await client.mutateProfileCreate({
-                input: {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                    photoRef: photoRef.value
-                        ? {
-                              ...(photoRef.value as any),
-                              isImage: undefined,
-                              width: undefined,
-                              height: undefined,
-                          }
-                        : undefined,
-                },
+                input: formData,
             });
+            props.setSavedFormData(formData);
             await client.refetchAccount();
 
             if (firstName.value) {
@@ -222,7 +253,12 @@ export const CreateProfileFormInner = (
     );
 };
 
-const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => {
+export const IntroduceYourselfPageInner = ({
+    roomView,
+    roomContainerParams,
+    initialFormData,
+    setSavedFormData,
+}: IntroduceYourselfPageOuterProps) => {
     const client = useClient();
 
     if (canUseDOM) {
@@ -234,47 +270,50 @@ const CreateProfileFormRoot = ({ roomView }: EnterYourOrganizationPageProps) => 
     const data = client.useProfilePrefill();
 
     return (
-        <CreateProfileFormInner
-            roomView={roomView}
-            prefill={usePhotoPrefill && data ? data.prefill : null}
-        />
+        <XView backgroundColor="white" flexGrow={1}>
+            <XDocumentHead title="Introduce yourself" />
+            {!roomView && (
+                <>
+                    <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
+                    <XView marginTop={34}>
+                        <BackSkipLogo
+                            onBack={
+                                null
+                                // () => {
+                                //     router.replace('/authorization/ask-activation-code');
+                                // }
+                            }
+                            onSkip={null}
+                        />
+                    </XView>
+                    <CreateProfileFormInner
+                        prefill={usePhotoPrefill && data ? data.prefill : null}
+                        roomView={roomView}
+                        initialFormData={initialFormData}
+                        setSavedFormData={setSavedFormData}
+                    />
+                </>
+            )}
+
+            {roomView && (
+                <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
+                    <CreateProfileFormInner
+                        prefill={usePhotoPrefill && data ? data.prefill : null}
+                        roomView={roomView}
+                        initialFormData={initialFormData}
+                        setSavedFormData={setSavedFormData}
+                    />
+                </RoomSignupContainer>
+            )}
+        </XView>
     );
 };
 
-export const IntroduceYourselfPage = ({
-    roomView,
-    roomContainerParams,
-}: IntroduceYourselfPageOuterProps) => {
-    const router = React.useContext(XRouterContext)!;
+export const IntroduceYourselfPage = (props: IntroduceYourselfPageOuterProps) => {
     return (
-        <XView backgroundColor="white" flexGrow={1}>
-            <React.Suspense fallback={null}>
-                <XDocumentHead title="Introduce yourself" />
-                {!roomView && (
-                    <>
-                        <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-                        <XView marginTop={34}>
-                            <BackSkipLogo
-                                onBack={
-                                    null
-                                    // () => {
-                                    //     router.replace('/authorization/ask-activation-code');
-                                    // }
-                                }
-                                onSkip={null}
-                            />
-                        </XView>
-                        <CreateProfileFormRoot roomView={roomView} />
-                    </>
-                )}
-
-                {roomView && (
-                    <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
-                        <CreateProfileFormRoot roomView={roomView} />
-                    </RoomSignupContainer>
-                )}
-            </React.Suspense>
-        </XView>
+        <React.Suspense fallback={null}>
+            <IntroduceYourselfPageInner {...props} />
+        </React.Suspense>
     );
 };
 

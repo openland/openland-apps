@@ -6,7 +6,7 @@ import { AskActivationPage } from './ask-activation-code.page';
 import { AskEmailPage } from './ask-email.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { EnterYourOrganizationPage } from './enter-your-organization.page';
-import { IntroduceYourselfPage } from './introduce-yourself.page';
+import { IntroduceYourselfPage, ProfileFormData } from './introduce-yourself.page';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
 import { InitTexts } from 'openland-web/pages/init/_text';
@@ -101,12 +101,9 @@ export default () => {
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
-    const toggleSignin = React.useCallback(
-        () => {
-            setSignin(!signin);
-        },
-        [signin],
-    );
+    const toggleSignin = React.useCallback(() => {
+        setSignin(!signin);
+    }, [signin]);
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
@@ -141,6 +138,9 @@ export default () => {
     const [emailSent, setEmailSent] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
+    const [introduceYourselfSavedForm, setIntroduceYourselfSavedForm] = React.useState<
+        ProfileFormData|null
+    >(null);
 
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
@@ -351,6 +351,8 @@ export default () => {
                 <IntroduceYourselfPage
                     roomView={roomView}
                     roomContainerParams={roomContainerParams}
+                    initialFormData={introduceYourselfSavedForm}
+                    setSavedFormData={setIntroduceYourselfSavedForm}
                 />
             )}
             {page === pages.enterYourOrganization && (
