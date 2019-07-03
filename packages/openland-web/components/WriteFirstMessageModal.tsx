@@ -41,7 +41,7 @@ export const WriteFirstMessageModal = () => {
     let goToChat = React.useCallback(
         async () => {
             if (selected) {
-                setDraftMessage(selected.key, 'blah blah', []);
+                setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', []);
                 router.push('/mail/' + selected.key);
                 if (modal) {
                     modal.close();
