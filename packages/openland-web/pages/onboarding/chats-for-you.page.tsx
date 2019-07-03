@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
@@ -13,9 +12,9 @@ import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { Wrapper } from './components/wrapper';
 
 const shadowClassName = css`
     margin: auto;
@@ -199,10 +198,6 @@ const ChatsItemList = ({
     );
 };
 
-const wrapperClassName = css`
-    width: 100%;
-`;
-
 export const ChatsForYou = ({
     onBack,
     onSkip,
@@ -230,50 +225,34 @@ export const ChatsForYou = ({
     }
 
     return (
-        <div className={wrapperClassName}>
+        <Wrapper>
+            <XDocumentHead title="Choose role" />
+            <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
+            <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
+                <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
+            </XView>
+
             <XView
-                backgroundColor="white"
+                alignItems="center"
                 flexGrow={1}
-                flexShrink={0}
-                flexBasis={0}
-                width="100%"
-                height="100%"
+                flexShrink={1}
+                justifyContent="center"
+                marginTop={isMobile ? 15 : 20}
+                marginBottom={isMobile ? 30 : 70}
             >
-                <XView flexShrink={1} flexGrow={1} flexBasis={0}>
-                    <XDocumentHead title="Choose role" />
-                    <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
-                    <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
-                        <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
-                    </XView>
-
-                    <XView
-                        alignItems="center"
-                        flexGrow={1}
-                        flexShrink={1}
-                        justifyContent="center"
-                        marginTop={isMobile ? 15 : 20}
-                        marginBottom={isMobile ? 30 : 70}
-                    >
-                        <XView
-                            flexDirection="column"
-                            alignSelf="stretch"
-                            flexGrow={1}
-                            flexShrink={1}
-                        >
-                            <XView alignItems="center">
-                                <XView fontSize={24} marginBottom={12}>
-                                    Chats for you
-                                </XView>
-                                <XView fontSize={16} marginBottom={40}>
-                                    Recommendations based on your answers
-                                </XView>
-                            </XView>
-
-                            <ChatsItemList rooms={rooms} isMobile={!!isMobile} />
+                <XView flexDirection="column" alignSelf="stretch" flexGrow={1} flexShrink={1}>
+                    <XView alignItems="center">
+                        <XView fontSize={24} marginBottom={12}>
+                            Chats for you
+                        </XView>
+                        <XView fontSize={16} marginBottom={40}>
+                            Recommendations based on your answers
                         </XView>
                     </XView>
+
+                    <ChatsItemList rooms={rooms} isMobile={!!isMobile} />
                 </XView>
             </XView>
-        </div>
+        </Wrapper>
     );
 };

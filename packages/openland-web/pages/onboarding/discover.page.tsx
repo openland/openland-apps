@@ -14,10 +14,10 @@ import { getPercentageOfOnboarding } from '../components/utils';
 import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
-import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { Wrapper } from './components/wrapper';
 
 const shadowClassName = css`
     width: 350px;
@@ -60,10 +60,6 @@ const TagsGroupPage = (props: {
         </XScrollView3>
     );
 };
-
-const wrapperClassName = css`
-    width: 100%;
-`;
 
 const LocalDiscoverComponent = ({
     group,
@@ -120,65 +116,47 @@ const LocalDiscoverComponent = ({
 
     const { title, subtitle } = group;
     return (
-        <div className={wrapperClassName}>
+        <Wrapper>
+            <XDocumentHead title="Choose role" />
+            <TopBar progressInPercents={progressInPercents} />
+            <XView marginTop={isMobile ? 15 : 34}>
+                <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={!!isMobile} />
+            </XView>
             <XView
-                backgroundColor="white"
+                alignItems="center"
                 flexGrow={1}
-                flexShrink={0}
-                flexBasis={0}
-                width="100%"
-                height="100%"
+                flexShrink={1}
+                justifyContent="center"
+                marginTop={isMobile ? 15 : 100}
+                marginBottom={isMobile ? 30 : 70}
             >
-                <XView flexShrink={1} flexGrow={1} flexBasis={0}>
-                    <XDocumentHead title="Choose role" />
-                    <TopBar progressInPercents={progressInPercents} />
-                    <XView marginTop={isMobile ? 15 : 34}>
-                        <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={!!isMobile} />
+                <XView
+                    flexDirection="column"
+                    alignSelf="stretch"
+                    alignItems="center"
+                    flexGrow={1}
+                    flexShrink={1}
+                >
+                    <XView fontSize={24} marginBottom={15} fontWeight="600">
+                        {title}
+                    </XView>
+                    <XView fontSize={16} marginBottom={30}>
+                        {subtitle}
                     </XView>
 
-                    <XView
-                        alignItems="center"
-                        flexGrow={1}
-                        flexShrink={1}
-                        justifyContent="center"
-                        marginTop={isMobile ? 15 : 100}
-                        marginBottom={isMobile ? 30 : 70}
-                    >
-                        <XView
-                            flexDirection="column"
-                            alignSelf="stretch"
-                            alignItems="center"
-                            flexGrow={1}
-                            flexShrink={1}
-                        >
-                            <XView fontSize={24} marginBottom={15} fontWeight="600">
-                                {title}
-                            </XView>
-                            <XView fontSize={16} marginBottom={30}>
-                                {subtitle}
-                            </XView>
-
-                            <TagsGroupPage
-                                group={group}
-                                selected={localSelected}
-                                onPress={onTagPress}
-                            />
-                            <div
-                                className={cx(shadowClassName, isMobile && mobileShadowClassName)}
-                            />
-                            <XButton
-                                flexShrink={0}
-                                zIndex={2}
-                                text="Continue"
-                                style="primary"
-                                size="large"
-                                onClick={onMyContinueClick}
-                            />
-                        </XView>
-                    </XView>
+                    <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
+                    <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
+                    <XButton
+                        flexShrink={0}
+                        zIndex={2}
+                        text="Continue"
+                        style="primary"
+                        size="large"
+                        onClick={onMyContinueClick}
+                    />
                 </XView>
             </XView>
-        </div>
+        </Wrapper>
     );
 };
 
