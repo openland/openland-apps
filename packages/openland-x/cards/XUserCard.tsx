@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { User_user, UserBadge, RoomMemberRole, OrganizationMemberRole } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
-import AdminIcon from 'openland-icons/ic-star-admin.svg';
+import CrownIcon from 'openland-icons/ic-crown-4.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XDate } from 'openland-x/XDate';
@@ -78,8 +78,8 @@ const Tooltip = ({ role, customOwnerText }: { role: RoomMemberRole | Organizatio
             }
             marginBottom={6}
         >
-            <div style={{ display: 'flex', marginRight: 5, alignItems: 'center', justifyContent: 'center' }}>
-                <AdminIcon className={role === 'OWNER' ? OwnerIconClass : AdminIconClass} />
+            <div style={{ display: 'flex', marginRight: 5, alignSelf: 'center', width: 14, height: 14, }}>
+                <CrownIcon className={role === 'OWNER' ? OwnerIconClass : AdminIconClass} />
             </div>
         </XPopper>
     );
