@@ -282,7 +282,7 @@ export const MakeFeaturedModal = (props: {
     const { ctx, roomId, userId } = props;
     const client = useClient();
     const form = useForm();
-    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }, { fetchPolicy: 'network-only' }).superBadgeInRoom;
+    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }, { fetchPolicy: 'cache-and-network' }).superBadgeInRoom;
     const [ featured, setFeatured ] = React.useState<boolean>(!!userBadge);
     const descriptionField = useField('input.description', userBadge ? userBadge.name : '', form, [
         {
