@@ -54,7 +54,7 @@ import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { RoomMembersList, RoomFeaturedMembersList, RoomRequestsMembersList } from './MembersList';
+import { RoomMembersList, RoomFeaturedMembersList, RoomRequestsMembersList } from './RoomMembersLists';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -449,9 +449,9 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
                 <BackButton />
                 <Header chat={chat} />
 
-                <div style={{ display: tab === tabs.members ? 'block' : 'none' }}>
+                {tab === tabs.members && (
                     <RoomMembersList chatId={chat.id} beforeChildren={beforeItems} />
-                </div>
+                )}
 
                 {tab === tabs.featured && (
                     <RoomFeaturedMembersList chatId={chatId} beforeChildren={beforeItems} />

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
-import { User_user, UserBadge } from 'openland-api/Types';
+import { User_user, UserBadge, RoomMemberRole, OrganizationMemberRole } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from 'openland-icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
@@ -50,28 +50,40 @@ const UserStatus = (props: { user: Partial<User_user> }) => {
     }
 };
 
-const AdminIconClass = css`
+const OwnerIconClass = css`
     & * {
-        fill: #ffab00;
+        fill: #F2AA00;
     }
 `;
 
-const Tooltip = ({ isOwner }: { isOwner?: boolean }) => (
-    <XPopper
-        placement="top"
-        showOnHoverContent={false}
-        showOnHover={true}
-        style="dark"
-        content={
-            isOwner ? TextProfiles.Organization.roles.OWNER : TextProfiles.Organization.roles.ADMIN
-        }
-        marginBottom={6}
-    >
-        <XView marginRight={5} alignItems="center" justifyContent="center">
-            <AdminIcon className={AdminIconClass} />
-        </XView>
-    </XPopper>
-);
+const AdminIconClass = css`
+    & * {
+        fill: #B4B4B4;
+    }
+`;
+
+const Tooltip = ({ role, customOwnerText }: { role: RoomMemberRole | OrganizationMemberRole, customOwnerText?: string }) => {
+    if (role !== 'ADMIN' && role !== 'OWNER') {
+        return null;
+    }
+
+    return (
+        <XPopper
+            placement="top"
+            showOnHoverContent={false}
+            showOnHover={true}
+            style="dark"
+            content={
+                role === 'OWNER' ? customOwnerText || TextProfiles.Organization.roles.OWNER : TextProfiles.Organization.roles.ADMIN
+            }
+            marginBottom={6}
+        >
+            <div style={{ display: 'flex', marginRight: 5, alignItems: 'center', justifyContent: 'center' }}>
+                <AdminIcon className={role === 'OWNER' ? OwnerIconClass : AdminIconClass} />
+            </div>
+        </XPopper>
+    );
+};
 
 interface XUserCardProps {
     onClick?: () => void;
@@ -81,8 +93,8 @@ interface XUserCardProps {
     customButton?: any;
     customMenu?: any;
     extraMenu?: any;
-    isAdmin?: boolean;
-    isOwner?: boolean;
+    role?: RoomMemberRole | OrganizationMemberRole;
+    customOwnerText?: string;
     hideOrganization?: boolean;
     disable?: boolean;
     badge?: UserBadge | null;
@@ -102,9 +114,9 @@ export const XUserCard = ({
     customButton,
     customMenu,
     extraMenu,
-    isAdmin,
+    role,
+    customOwnerText,
     hideOrganization,
-    isOwner,
     onClick,
     disable,
     badge
@@ -210,7 +222,7 @@ export const XUserCard = ({
                             marginTop={-2}
                             marginBottom={2}
                         >
-                            {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
+                            {role && <Tooltip role={role} customOwnerText={customOwnerText} />}
                             <XView minWidth={0} flexShrink={1}>
                                 <div className={userNameClassname}>
                                     {emoji({

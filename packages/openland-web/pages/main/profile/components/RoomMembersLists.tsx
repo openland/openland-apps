@@ -27,6 +27,8 @@ const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, r
         <XUserCard
             user={member.user}
             badge={member.badge}
+            role={member.role}
+            customOwnerText="Group creator"
             customMenu={
                 useHasRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
