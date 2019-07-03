@@ -559,6 +559,13 @@
             "sizes": [
                 18
             ]
+        },
+        {
+            "name": "ic-featured",
+            "src": "ic-featured.svg",
+            "sizes": [
+                12
+            ]
         }
     ]
 }

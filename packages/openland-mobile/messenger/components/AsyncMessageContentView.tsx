@@ -21,6 +21,7 @@ import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
@@ -133,7 +134,24 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     }
 
     if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument && compensateBubble) {
-        topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + props.theme.linkColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.theme.linkColor}>{props.message.senderName}</ASText>);
+        topContent.unshift(
+            <ASFlex
+                marginBottom={2}
+                onPress={() => props.onUserPress(props.message.senderId)}
+                key={'name-' + props.theme.linkColor}
+            >
+                {!!props.message.senderBadge && NON_PRODUCTION && (
+                    <ASImage marginRight={3} marginTop={Platform.OS === 'ios' ? 1 : undefined} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.linkColor} />
+                )}
+                <ASText
+                    fontSize={12}
+                    fontWeight={TextStyles.weight.medium}
+                    color={props.theme.linkColor}
+                >
+                    {props.message.senderName}
+                </ASText>
+            </ASFlex>
+        );
     }
 
     return {

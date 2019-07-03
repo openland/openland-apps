@@ -13,7 +13,7 @@ import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { SUPER_ADMIN } from '../Init';
+import { SUPER_ADMIN, NON_PRODUCTION } from '../Init';
 import { Modals } from './modals/Modals';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
@@ -93,21 +93,6 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
                 </ZListItemGroup>
 
-                {!!user.primaryOrganization && (
-                    <ZListItemGroup header="Organization" footer={null} divider={false}>
-                        <ZListItem
-                            leftAvatar={{
-                                photo: user.primaryOrganization.photo,
-                                key: user.primaryOrganization.id,
-                                title: user.primaryOrganization.name,
-                            }}
-                            text={user.primaryOrganization.name}
-                            path="ProfileOrganization"
-                            pathParams={{ id: user.primaryOrganization.id }}
-                        />
-                    </ZListItemGroup>
-                )}
-
                 {(myID !== user.id) && (
                     <ZListItemGroup header="Settings" footer={null} divider={false}>
                         <NotificationSettings
@@ -122,6 +107,39 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                                 navigationIcon={true}
                             />
                         )}
+                    </ZListItemGroup>
+                )}
+
+                {NON_PRODUCTION && (
+                    <ZListItemGroup header="Featured in" counter={user.chatsWithBadge.length} footer={null} divider={false}>
+                        {user.chatsWithBadge.map((item, index) => (
+                            <ZListItem
+                                leftAvatar={{
+                                    photo: item.chat.__typename === 'PrivateRoom' ? item.chat.user.photo : item.chat.photo,
+                                    key: item.chat.id,
+                                    title: item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title,
+                                }}
+                                text={item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title}
+                                subTitle={item.badge.name}
+                                path="Conversation"
+                                pathParams={{ id: item.chat.id }}
+                            />
+                        ))}
+                    </ZListItemGroup>
+                )}
+
+                {!!user.primaryOrganization && (
+                    <ZListItemGroup header="Organization" footer={null} divider={false}>
+                        <ZListItem
+                            leftAvatar={{
+                                photo: user.primaryOrganization.photo,
+                                key: user.primaryOrganization.id,
+                                title: user.primaryOrganization.name,
+                            }}
+                            text={user.primaryOrganization.name}
+                            path="ProfileOrganization"
+                            pathParams={{ id: user.primaryOrganization.id }}
+                        />
                     </ZListItemGroup>
                 )}
             </SScrollView>
