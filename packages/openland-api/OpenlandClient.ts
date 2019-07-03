@@ -1132,6 +1132,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateBetaSaveSelectedTags(variables: Types.BetaSaveSelectedTagsVariables): Promise<Types.BetaSaveSelectedTags> {
         return this.client.mutate(Source.BetaSaveSelectedTagsMutation, variables);
     }
+    async mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables): Promise<Types.BetaSubmitNextDiscover> {
+        return this.client.mutate(Source.BetaSubmitNextDiscoverMutation, variables);
+    }
     async mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables): Promise<Types.BetaDiscoverSkip> {
         return this.client.mutate(Source.BetaDiscoverSkipMutation, variables);
     }

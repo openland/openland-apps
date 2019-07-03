@@ -12293,17 +12293,88 @@
 				{
 					"name": "selectedTagsIds",
 					"type": "[String!]!"
+				}
+			],
+			"source": "mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!) {\n  betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "betaSaveSelectedTags",
+					"fieldName": "betaSaveSelectedTags",
+					"type": "DiscoverPage",
+					"args": [
+						{
+							"name": "selectedTagsIds",
+							"value": {
+								"kind": "Variable",
+								"variableName": "selectedTagsIds"
+							},
+							"type": "[String!]!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "tagGroup",
+							"fieldName": "tagGroup",
+							"type": "TagGroup",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!) {\n  betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
+			"operationId": "36cbebd3b0b2a4843dcf420aab65a4a5aa67032036ae5589d339926cb469ab68"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
+			"operationName": "BetaSubmitNextDiscover",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "selectedTagsIds",
+					"type": "[String!]!"
 				},
 				{
 					"name": "excudedGroupsIds",
 					"type": "[String!]!"
 				}
 			],
-			"source": "mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {\n  betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
+			"source": "mutation BetaSubmitNextDiscover($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {\n  betaSubmitNextDiscover(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
 				{
-					"responseName": "betaSaveSelectedTags",
-					"fieldName": "betaSaveSelectedTags",
+					"responseName": "betaSubmitNextDiscover",
+					"fieldName": "betaSubmitNextDiscover",
 					"type": "DiscoverPage",
 					"args": [
 						{
@@ -12364,8 +12435,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {\n  betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
-			"operationId": "fb259fd868e5d5021dbf4e8786aa85dc5deae8e0949054d8aad7a56f6282ba85"
+			"sourceWithFragments": "mutation BetaSubmitNextDiscover($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {\n  betaSubmitNextDiscover(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
+			"operationId": "0553d4ad2c022360134504be915f36197b429777276d4150b8808e86a9e1e3b8"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",
@@ -12378,7 +12449,7 @@
 					"type": "[String!]!"
 				}
 			],
-			"source": "mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {\n  betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    chats {\n      __typename\n      ...RoomShort\n    }\n  }\n}",
+			"source": "mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {\n  betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "betaDiscoverSkip",
@@ -12404,9 +12475,9 @@
 							"isConditional": false
 						},
 						{
-							"responseName": "chats",
-							"fieldName": "chats",
-							"type": "[Room!]",
+							"responseName": "tagGroup",
+							"fieldName": "tagGroup",
+							"type": "TagGroup",
 							"isConditional": false,
 							"isDeprecated": false,
 							"fields": [
@@ -12415,11 +12486,16 @@
 									"fieldName": "__typename",
 									"type": "String!",
 									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
 								}
 							],
-							"fragmentSpreads": [
-								"RoomShort"
-							],
+							"fragmentSpreads": [],
 							"inlineFragments": []
 						}
 					],
@@ -12429,17 +12505,9 @@
 			],
 			"fragmentSpreads": [],
 			"inlineFragments": [],
-			"fragmentsReferenced": [
-				"RoomShort",
-				"UserShort",
-				"UserBadge",
-				"OrganizationShort",
-				"FullMessage",
-				"UserForMention",
-				"UserTiny"
-			],
-			"sourceWithFragments": "mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {\n  betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    chats {\n      __typename\n      ...RoomShort\n    }\n  }\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    myBadge {\n      __typename\n      ...UserBadge\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    myBadge {\n      __typename\n      ...UserBadge\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryBadge {\n    __typename\n    ...UserBadge\n  }\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  primaryBadge {\n    __typename\n    ...UserBadge\n  }\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryBadge {\n    __typename\n    ...UserBadge\n  }\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "e4705c1be29121b428fd647546b5f4b546e257e679ef956da8c673fc8a43649e"
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {\n  betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {\n    __typename\n    tagGroup {\n      __typename\n      id\n    }\n  }\n}",
+			"operationId": "259e480a2e4518ca3ead11f40d770b99f91b1cebb83ef0cbeb303322ee35ab4f"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Explore.ts",

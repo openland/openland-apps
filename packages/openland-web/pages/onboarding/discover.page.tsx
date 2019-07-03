@@ -171,7 +171,7 @@ export const Discover = ({
     rootSelected: string[];
     rootExclude: string[];
     onContinueClick: (newSelected: any) => void;
-    onSkip: (event: React.MouseEvent) => void;
+    onSkip: (a: { currentPageId: string }) => void;
     onBack: (event: React.MouseEvent) => void;
     onChatsForYouSkip: (event: React.MouseEvent) => void;
     onChatsForYouBack: (event: React.MouseEvent) => void;
@@ -180,8 +180,6 @@ export const Discover = ({
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
-    console.log(discoverDone);
-
     const currentPage = client.useDiscoverNextPage(
         {
             selectedTagsIds: rootSelected,
@@ -189,7 +187,6 @@ export const Discover = ({
         },
         { fetchPolicy: 'network-only' },
     );
-    console.log(currentPage);
 
     React.useLayoutEffect(() => {
         client.refetchSuggestedRooms().then(() => {
@@ -220,6 +217,12 @@ export const Discover = ({
 
     const currentPageId = currentPage.gammaNextDiscoverPage!!.tagGroup!!.id;
 
+    const onLocalSkip = async () => {
+        await onSkip({
+            currentPageId,
+        });
+    };
+
     const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
     let finalSelected = rootSelected;
@@ -240,7 +243,7 @@ export const Discover = ({
 
     return (
         <LocalDiscoverComponent
-            onSkip={onSkip}
+            onSkip={onLocalSkip}
             onBack={onBack}
             group={currentPage.gammaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
@@ -258,84 +261,93 @@ export const DiscoverOnLocalState = () => {
         [],
     );
 
-    const onContinueClick = async (props: {
-        selected: string[];
-        exclude: string[];
-        currentPageId: string;
-    }) => {
-        setPreviousChoisesMap({
-            ...previousChoisesMap,
-            [props.currentPageId]: props.selected,
-        });
+    const onContinueClick = React.useCallback(
+        async (props: { selected: string[]; exclude: string[]; currentPageId: string }) => {
+            setPreviousChoisesMap({
+                ...previousChoisesMap,
+                [props.currentPageId]: props.selected,
+            });
 
-        const newRootState = [
-            ...rootState,
-            {
-                selected: props.selected,
-                exclude: props.exclude,
-            },
-        ];
+            const newRootState = [
+                ...rootState,
+                {
+                    selected: props.selected,
+                    exclude: props.exclude,
+                },
+            ];
+            await client.mutateBetaSubmitNextDiscover({
+                selectedTagsIds: props.selected,
+                excudedGroupsIds: props.exclude,
+            });
 
-        setRootState(newRootState);
-        await client.mutateBetaSaveSelectedTags({
-            selectedTagsIds: props.selected,
-            excudedGroupsIds: props.exclude,
-        });
-    };
+            setRootState(newRootState);
+        },
+        [previousChoisesMap, rootState],
+    );
 
-    const onSkip = async () => {
-        const allSelectedArrays = rootState.map(({ selected }) => {
-            return selected;
-        });
+    const onSkip = React.useCallback(
+        async (props: { currentPageId: string }) => {
+            const allSelectedArrays = rootState.map(({ selected }) => {
+                return selected;
+            });
 
-        const allSelected: string[] = [];
-        for (let selected of allSelectedArrays) {
-            for (let selectedItem of selected) {
-                if (!allSelected.includes(selectedItem)) {
-                    allSelected.push(selectedItem);
+            const allSelected: string[] = [];
+            for (let selected of allSelectedArrays) {
+                for (let selectedItem of selected) {
+                    if (!allSelected.includes(selectedItem)) {
+                        allSelected.push(selectedItem);
+                    }
                 }
             }
-        }
 
-        console.log(allSelected);
+            await client.mutateBetaDiscoverSkip({
+                selectedTagsIds: allSelected,
+            });
+            await client.refetchSuggestedRooms();
+            await client.refetchDiscoverIsDone();
+            setPreviousChoisesMap({
+                ...previousChoisesMap,
+                [props.currentPageId]: [],
+            });
+        },
+        [previousChoisesMap, rootState],
+    );
 
-        await client.mutateBetaSaveSelectedTags({
-            selectedTagsIds: allSelected,
-            excudedGroupsIds: [],
-        });
-        await client.mutateBetaDiscoverSkip({
-            selectedTagsIds: allSelected,
-        });
-        await client.refetchSuggestedRooms();
-        await client.refetchDiscoverIsDone();
-    };
-
-    const onBack = () => {
+    const onBack = React.useCallback(async () => {
         if (rootState.length !== 0) {
             const cloneRootState = [...rootState];
+
             cloneRootState.pop();
+
             setRootState(cloneRootState);
         }
-    };
+    }, [rootState]);
 
-    const onChatsForYouSkip = () => {
+    const onChatsForYouSkip = React.useCallback(() => {
         //
-    };
+    }, []);
 
-    const onChatsForYouBack = async () => {
+    const onChatsForYouBack = React.useCallback(async () => {
         await client.mutateBetaNextDiscoverReset();
         await client.refetchSuggestedRooms();
         await client.refetchDiscoverIsDone();
 
-        onBack();
-    };
+        const result = await client.queryDiscoverNextPage({
+            selectedTagsIds: getLastStateOrEmpty().selected,
+            excudedGroupsIds: getLastStateOrEmpty().exclude,
+        });
 
-    const getLastStateOrEmpty = () => {
+        if (result.gammaNextDiscoverPage!!.tagGroup === null) {
+            await onBack();
+        }
+    }, [rootState]);
+
+    const getLastStateOrEmpty = React.useCallback(() => {
         if (rootState.length === 0) {
             return { selected: [], exclude: [] };
         }
         return rootState[rootState.length - 1];
-    };
+    }, [rootState]);
 
     const lastStateOrEmpty = getLastStateOrEmpty();
 

@@ -1,9 +1,9 @@
 mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {
   betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {
     __typename
-    chats {
+    tagGroup {
       __typename
-      ...RoomShort
+      id
     }
   }
 }

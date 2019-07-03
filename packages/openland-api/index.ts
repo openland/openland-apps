@@ -174,6 +174,7 @@ export const UserAvailableRoomsQuery = typedQuery<Types.UserAvailableRooms, Type
 export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);
 export const DiscoverNextPageQuery = typedQuery<Types.DiscoverNextPage, Types.DiscoverNextPageVariables>(Explore.DiscoverNextPageQuery);
 export const BetaSaveSelectedTagsMutation = typedMutation<Types.BetaSaveSelectedTags, Types.BetaSaveSelectedTagsVariables>(Explore.BetaSaveSelectedTagsMutation);
+export const BetaSubmitNextDiscoverMutation = typedMutation<Types.BetaSubmitNextDiscover, Types.BetaSubmitNextDiscoverVariables>(Explore.BetaSubmitNextDiscoverMutation);
 export const BetaDiscoverSkipMutation = typedMutation<Types.BetaDiscoverSkip, Types.BetaDiscoverSkipVariables>(Explore.BetaDiscoverSkipMutation);
 export const DiscoverIsDoneQuery = typedQuery<Types.DiscoverIsDone, {}>(Explore.DiscoverIsDoneQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);

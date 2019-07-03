@@ -178,8 +178,18 @@ export const DiscoverNextPageQuery = gql`
 `;
 
 export const BetaSaveSelectedTagsMutation = gql`
-    mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
-        betaSaveSelectedTags(
+    mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!) {
+        betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds) {
+            tagGroup {
+                id
+            }
+        }
+    }
+`;
+
+export const BetaSubmitNextDiscoverMutation = gql`
+    mutation BetaSubmitNextDiscover($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
+        betaSubmitNextDiscover(
             selectedTagsIds: $selectedTagsIds
             excudedGroupsIds: $excudedGroupsIds
         ) {
@@ -193,13 +203,11 @@ export const BetaSaveSelectedTagsMutation = gql`
 export const BetaDiscoverSkipMutation = gql`
     mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {
         betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {
-            chats {
-                ...RoomShort
+            tagGroup {
+                id
             }
         }
     }
-    ${RoomShort}
-    ${UserShort}
 `;
 
 export const DiscoverIsDoneQuery = gql`
