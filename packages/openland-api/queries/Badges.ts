@@ -10,21 +10,10 @@ export const SuperBadgeCreateToRoomMutation = gql`
     ${UserBadge}
 `;
 
-export const SuperBadgeDeleteMutation = gql`
-    mutation SuperBadgeDelete($badgeId: ID!, $userId: ID!) {
-        superBadgeDelete(badgeId: $badgeId, userId: $userId) {
-            ... on User {
-                id
-                badges {
-                    ...UserBadge
-                }
-                primaryBadge {
-                    ...UserBadge
-                }
-            }
-        }
+export const SuperBadgeUnsetToRoomMutation = gql`
+    mutation SuperBadgeUnsetToRoom($roomId: ID!, $userId: ID!, $badgeId: ID!) {
+        superBadgeUnsetToRoom(roomId: $roomId, userId: $userId, badgeId: $badgeId)
     }
-    ${UserBadge}
 `;
 
 export const SuperBadgeInRoomQuery = gql`

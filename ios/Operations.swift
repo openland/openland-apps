@@ -2988,21 +2988,8 @@ private let SuperBadgeCreateToRoomSelector = obj(
                     fragment("UserBadge", UserBadgeSelector)
                 )))
         )
-private let SuperBadgeDeleteSelector = obj(
-            field("superBadgeDelete","superBadgeDelete", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("badges","badges", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("primaryBadge","primaryBadge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                fragment("UserBadge", UserBadgeSelector)
-                            ))
-                    ))
-                )))
+private let SuperBadgeUnsetToRoomSelector = obj(
+            field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private let SwitchReactionSelector = obj(
             field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
@@ -4248,11 +4235,11 @@ class Operations {
         "mutation SuperBadgeCreateToRoom($name:String!,$roomId:ID!,$userId:ID!){superBadgeCreateToRoom(name:$name,roomId:$roomId,userId:$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
         SuperBadgeCreateToRoomSelector
     )
-    let SuperBadgeDelete = OperationDefinition(
-        "SuperBadgeDelete",
+    let SuperBadgeUnsetToRoom = OperationDefinition(
+        "SuperBadgeUnsetToRoom",
         .mutation, 
-        "mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename ... on User{badges{__typename ...UserBadge}id primaryBadge{__typename ...UserBadge}}}}fragment UserBadge on UserBadge{__typename id name verified}",
-        SuperBadgeDeleteSelector
+        "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
+        SuperBadgeUnsetToRoomSelector
     )
     let SwitchReaction = OperationDefinition(
         "SwitchReaction",
@@ -4538,7 +4525,7 @@ class Operations {
         if name == "SuperAdminAdd" { return SuperAdminAdd }
         if name == "SuperAdminRemove" { return SuperAdminRemove }
         if name == "SuperBadgeCreateToRoom" { return SuperBadgeCreateToRoom }
-        if name == "SuperBadgeDelete" { return SuperBadgeDelete }
+        if name == "SuperBadgeUnsetToRoom" { return SuperBadgeUnsetToRoom }
         if name == "SwitchReaction" { return SwitchReaction }
         if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
         if name == "UnpinMessage" { return UnpinMessage }

@@ -949,8 +949,8 @@ export class OpenlandClient extends BaseApiClient {
     async mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables): Promise<Types.SuperBadgeCreateToRoom> {
         return this.client.mutate(Source.SuperBadgeCreateToRoomMutation, variables);
     }
-    async mutateSuperBadgeDelete(variables: Types.SuperBadgeDeleteVariables): Promise<Types.SuperBadgeDelete> {
-        return this.client.mutate(Source.SuperBadgeDeleteMutation, variables);
+    async mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables): Promise<Types.SuperBadgeUnsetToRoom> {
+        return this.client.mutate(Source.SuperBadgeUnsetToRoomMutation, variables);
     }
     async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
         return this.client.mutate(Source.PinMessageMutation, variables);

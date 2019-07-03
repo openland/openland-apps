@@ -1,0 +1,3 @@
+mutation SuperBadgeUnsetToRoom($badgeId: ID!, $roomId: ID!, $userId: ID!) {
+  superBadgeUnsetToRoom(badgeId: $badgeId, roomId: $roomId, userId: $userId)
+}

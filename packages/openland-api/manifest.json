@@ -184,10 +184,10 @@
       }
     },
     {
-      "signature": "54a799110358e71a461e6eb70d03939d2d6c031979004685d66654c041733c8b",
-      "document": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}",
+      "signature": "3b884c7a190311c1a7e0dbc1129b19983a48bf6c66d147d942400e6b849075a9",
+      "document": "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
       "metadata": {
-        "engineSignature": "fragment UserBadge on UserBadge{__typename id name verified}mutation SuperBadgeDelete($badgeId:ID!,$userId:ID!){superBadgeDelete(badgeId:$badgeId,userId:$userId){__typename...on User{badges{__typename...UserBadge}id primaryBadge{__typename...UserBadge}}}}"
+        "engineSignature": "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}"
       }
     },
     {

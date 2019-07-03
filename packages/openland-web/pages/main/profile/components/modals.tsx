@@ -305,9 +305,10 @@ export const MakeFeaturedModal = (props: {
                 });
             } else {
                 if (userBadge) {
-                    await client.mutateSuperBadgeDelete({
+                    await client.mutateSuperBadgeUnsetToRoom({
                         userId,
-                        badgeId: userBadge.id,
+                        roomId,
+                        badgeId: userBadge.id
                     });
                 }
             }
