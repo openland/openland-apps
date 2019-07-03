@@ -449,9 +449,9 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
                 <BackButton />
                 <Header chat={chat} />
 
-                {tab === tabs.members && (
+                <div style={{ display: tab === tabs.members ? 'block' : 'none' }}>
                     <RoomMembersList chatId={chat.id} beforeChildren={beforeItems} />
-                )}
+                </div>
 
                 {tab === tabs.featured && (
                     <RoomFeaturedMembersList chatId={chatId} beforeChildren={beforeItems} />
