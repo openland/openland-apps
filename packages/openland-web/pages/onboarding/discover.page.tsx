@@ -62,6 +62,9 @@ const TagsGroupPage = (props: {
 };
 
 const LocalDiscoverComponent = ({
+    noLogo,
+    noTopBar,
+    noBackSkipLogo,
     group,
     onContinueClick,
     selected,
@@ -70,13 +73,16 @@ const LocalDiscoverComponent = ({
     onSkip,
     onBack,
 }: {
+    noLogo?: boolean;
+    noTopBar?: boolean;
+    noBackSkipLogo?: boolean;
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
     selected: string[];
     fullHeight?: boolean;
     progressInPercents: number;
-    onSkip: (event: React.MouseEvent) => void;
-    onBack: (event: React.MouseEvent) => void;
+    onSkip: ((event: React.MouseEvent) => void) | null;
+    onBack: ((event: React.MouseEvent) => void) | null;
 }) => {
     const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
@@ -118,10 +124,12 @@ const LocalDiscoverComponent = ({
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
-            <TopBar progressInPercents={progressInPercents} />
-            <XView marginTop={isMobile ? 15 : 34}>
-                <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={!!isMobile} />
-            </XView>
+            {!noTopBar && <TopBar progressInPercents={progressInPercents} />}
+            {!noBackSkipLogo && (
+                <XView marginTop={isMobile ? 15 : 34}>
+                    <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={noLogo || !!isMobile} />
+                </XView>
+            )}
             <XView
                 alignItems="center"
                 flexGrow={1}
@@ -166,6 +174,9 @@ const arrowify = (value: string | string[]) => {
 };
 
 export const Discover = ({
+    noLogo,
+    noTopBar,
+    noBackSkipLogo,
     previousChoisesMap,
     rootSelected,
     rootExclude,
@@ -176,13 +187,16 @@ export const Discover = ({
     onChatsForYouBack,
     fullHeight,
 }: {
+    noLogo?: boolean;
+    noTopBar?: boolean;
+    noBackSkipLogo?: boolean;
     previousChoisesMap: any;
     rootSelected: string[];
     rootExclude: string[];
     onContinueClick: (newSelected: any) => void;
-    onSkip: (a: { currentPageId: string; exclude: string[] }) => void;
-    onBack: (event: React.MouseEvent) => void;
-    onChatsForYouSkip: (event: React.MouseEvent) => void;
+    onSkip: ((a: { currentPageId: string; exclude: string[] }) => void) | null;
+    onBack: ((event: React.MouseEvent) => void) | null;
+    onChatsForYouSkip: ((event: React.MouseEvent) => void) | null;
     onChatsForYouBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
 }) => {
@@ -227,6 +241,7 @@ export const Discover = ({
         }
         return (
             <ChatsForYou
+                noTopBar={noTopBar}
                 onSkip={onChatsForYouSkip}
                 onBack={onChatsForYouBack}
                 fullHeight={fullHeight}
@@ -239,10 +254,12 @@ export const Discover = ({
     const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
     const onLocalSkip = async () => {
-        await onSkip({
-            currentPageId,
-            exclude: newExclude,
-        });
+        if (onSkip) {
+            await onSkip({
+                currentPageId,
+                exclude: newExclude,
+            });
+        }
     };
 
     let finalSelected = [];
@@ -261,8 +278,11 @@ export const Discover = ({
 
     return (
         <LocalDiscoverComponent
-            onSkip={onLocalSkip}
-            onBack={onBack}
+            noLogo={noLogo}
+            noTopBar={noTopBar}
+            noBackSkipLogo={noBackSkipLogo}
+            onSkip={onSkip ? onLocalSkip : null}
+            onBack={onBack ? onBack : null}
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
@@ -271,8 +291,24 @@ export const Discover = ({
         />
     );
 };
+export const DiscoverOnLocalState = ({
+    noSkipOnChatsForYou,
+    noBackOnFirstScreen,
+    noSkipOnFirstScreen,
+    noLogo,
+    noTopBar,
+    noBackSkipLogo,
+    fullHeight,
+}: {
+    noSkipOnChatsForYou?: boolean;
+    noBackOnFirstScreen?: boolean;
+    noSkipOnFirstScreen?: boolean;
+    noLogo?: boolean;
+    noTopBar?: boolean;
+    noBackSkipLogo?: boolean;
+    fullHeight?: boolean
+}) => {
 
-export const DiscoverOnLocalState = (props: { fullHeight?: boolean }) => {
     const client = useClient();
     const router = React.useContext(XRouterContext)!;
     const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
@@ -423,15 +459,18 @@ export const DiscoverOnLocalState = (props: { fullHeight?: boolean }) => {
 
     return (
         <Discover
-            onChatsForYouSkip={onChatsForYouSkip}
+            noLogo={noLogo}
+            noTopBar={noTopBar}
+            noBackSkipLogo={noBackSkipLogo}
+            onChatsForYouSkip={noSkipOnChatsForYou ? null : onChatsForYouSkip}
             onChatsForYouBack={onChatsForYouBack}
-            onSkip={onSkip}
-            onBack={onBack}
+            onSkip={noSkipOnFirstScreen && rootState.length === 0 ? null : onSkip}
+            onBack={noBackOnFirstScreen && rootState.length === 0 ? null : onBack}
             previousChoisesMap={previousChoisesMap}
             rootSelected={lastStateOrEmpty.selected}
             rootExclude={lastStateOrEmpty.exclude}
             onContinueClick={onContinueClick}
-            fullHeight={props.fullHeight}
+            fullHeight={fullHeight}
         />
     );
 };

@@ -16,25 +16,28 @@ const textAlignClassName = css`
     text-align: center;
 `;
 
-export default withApp('Home', 'viewer', () => {
-    const router = React.useContext(XRouterContext)!;
+export const DiscoverStart = ({
+    onSkip,
+    onStartClick,
+    noTopBar,
+    noBackSkipLogo,
+}: {
+    onSkip: ((event: React.MouseEvent<Element, MouseEvent>) => void) | null;
+    onStartClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
+    noTopBar?: boolean;
+    noBackSkipLogo?: boolean;
+}) => {
     const isMobile = useIsMobile();
-    const button = (
-        <XButton text="Start" style="primary" size="large" path="/onboarding/discover" />
-    );
+    const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
         <Wrapper>
             <XDocumentHead title="Discover" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(6)} />
-            <XView marginTop={isMobile ? 15 : 34}>
-                <BackSkipLogo
-                    onBack={null}
-                    onSkip={() => {
-                        router.push('/');
-                    }}
-                    noLogo={!!isMobile}
-                />
-            </XView>
+            {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(6)} />}
+            {!noBackSkipLogo && (
+                <XView marginTop={isMobile ? 15 : 34}>
+                    <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
+                </XView>
+            )}
             <XView
                 alignItems="center"
                 flexGrow={1}
@@ -64,4 +67,17 @@ export default withApp('Home', 'viewer', () => {
             </XView>
         </Wrapper>
     );
+};
+
+export default withApp('Home', 'viewer', () => {
+    const router = React.useContext(XRouterContext)!;
+    const onSkip = () => {
+        router.push('/');
+    };
+
+    const onStartClick = () => {
+        router.push('/onboarding/discover');
+    };
+
+    return <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} />;
 });

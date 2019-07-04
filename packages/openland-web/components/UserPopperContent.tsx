@@ -29,7 +29,6 @@ const OrgTitle = Glamorous.div({
 
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
-    minWidth: 200,
 });
 
 const Status = (({ variables }) => {
@@ -60,6 +59,7 @@ const Status = (({ variables }) => {
 
 const Wrapper = Glamorous.div({
     maxWidth: 400,
+    minWidth: 200,
     paddingTop: 20,
     paddingBottom: 24,
     paddingLeft: 24,
@@ -110,16 +110,23 @@ const UserPopperContent = XMemo(
             return (
                 <Wrapper>
                     <XHorizontal>
-                        <XAvatar
-                            online={false}
-                            size="l-medium"
-                            style="user"
-                            objectName={user.name}
-                            objectId={user.id}
-                            cloudImageUuid={user.photo || undefined}
+                        <XView
                             path={usrPath}
-                        />
-
+                            cursor={!!usrPath ? 'pointer' : undefined}
+                            onClick={!!usrPath ? (e: any) => {
+                                e.stopPropagation();
+                                hidePopper();
+                            } : undefined}
+                        >
+                            <XAvatar
+                                online={false}
+                                size="l-medium"
+                                style="user"
+                                objectName={user.name}
+                                objectId={user.id}
+                                cloudImageUuid={user.photo || undefined}
+                            />
+                        </XView>
                         <React.Suspense fallback={<div />}>
                             <Status variables={{ userId: user.id }} />
                         </React.Suspense>
@@ -130,8 +137,13 @@ const UserPopperContent = XMemo(
                         fontWeight="600"
                         flexDirection="row"
                         color="rgba(0, 0, 0, 0.9)"
+                        hoverColor={!!usrPath ? '#1790ff' : undefined}
                         path={usrPath}
                         cursor={!!usrPath ? 'pointer' : undefined}
+                        onClick={!!usrPath ? (e: any) => {
+                            e.stopPropagation();
+                            hidePopper();
+                        } : undefined}
                     >
                         {emoji({
                             src: user.name,
