@@ -15,6 +15,7 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
+import { showReachInfo } from 'openland-mobile/components/ZReach';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -27,21 +28,22 @@ let useOnlineState = () => {
 }
 
 let SettingsContent = ((props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
+    const resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
 
-    let theme = React.useContext(ThemeContext);
-
-    let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
     if (resp.me === null) {
         return null
     }
-    let primary = resp.me.primaryOrganization;
-    let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
+
+    const me = resp.me;
+    const primary = resp.me.primaryOrganization;
+    const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
     secondary.sort((a, b) => a.name.localeCompare(b.name));
-    let secondaryFiltered = [];
+    const secondaryFiltered = [];
     for (let i = 0; i < secondary.length && i < 2; i++) {
         secondaryFiltered.push(secondary[i]);
     }
-    let status = useOnlineState();
+    const status = useOnlineState();
 
     const handleGlobalInvitePress = React.useCallback(async () => {
         startLoader();
@@ -63,17 +65,23 @@ let SettingsContent = ((props: PageProps) => {
         }
     }, []);
 
+    const handleScorePress = React.useCallback(() => {
+        showReachInfo(me.audienceSize, theme);
+    }, [me.audienceSize, theme]);
+
     return (
         <SScrollView>
             <ZListItemHeader
-                photo={resp.me!!.photo}
-                id={resp!!.me!!.id}
+                photo={resp.me.photo}
+                id={resp.me.id}
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
                 subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
                 subtitleColor={status.status === 'connected' ? theme.accentColor : undefined}
                 path="SettingsProfile"
                 action="Edit profile"
+                score={(NON_PRODUCTION && me.audienceSize > 0) ? me.audienceSize : undefined}
+                scorePress={handleScorePress}
             />
             <ZListItemGroup header="Settings" divider={false}>
                 <ZListItem

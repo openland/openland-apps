@@ -1,5 +1,6 @@
 fragment UserShort on User {
   __typename
+  audienceSize
   email
   firstName
   id

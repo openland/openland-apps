@@ -6,7 +6,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
@@ -18,9 +18,7 @@ import { Modals } from './modals/Modals';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { ZReach } from 'openland-mobile/components/ZReach';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { showReachInfo } from 'openland-mobile/components/ZReach';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
@@ -49,25 +47,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     }, [user.id]);
 
     const handleScorePress = React.useCallback(() => {
-        const builder = new ActionSheetBuilder();
-
-        builder.flat();
-        builder.view(ctx => (
-            <View marginHorizontal={20} marginTop={20}>
-                <View flexDirection="row" alignItems="center" marginBottom={5}>
-                    <Text style={{ color: theme.textColor, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }}>
-                        Reach
-                    </Text>
-                    <ZReach value={user.audienceSize} />
-                </View>
-                <Text style={{ color: theme.textColor, fontSize: 16, lineHeight: 24 }}>
-                    User's reach is the total number of people in community groups they are in
-                </Text>
-            </View>
-        ));
-
-        builder.show();
-    }, [theme, user.audienceSize]);
+        showReachInfo(user.audienceSize, theme);
+    }, [user.audienceSize, theme]);
 
     const myID = getMessenger().engine.user.id;
 
