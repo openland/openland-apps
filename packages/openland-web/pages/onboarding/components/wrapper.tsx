@@ -3,6 +3,8 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 
 const wrapperClassName = css`
+    display: flex;
+    flex-grow: 1;
     width: 100%;
 `;
 

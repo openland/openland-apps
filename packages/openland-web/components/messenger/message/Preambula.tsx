@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { UserShort, UserBadge } from 'openland-api/Types';
+import { UserShort, UserBadge, RoomChat_room, SharedRoomKind } from 'openland-api/Types';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
@@ -139,6 +139,7 @@ export const Preambula = ({
     commentDepth,
     userPopperRef,
     hover,
+    room,
 }: {
     compact: boolean;
     sender: UserShort;
@@ -151,6 +152,7 @@ export const Preambula = ({
     commentDepth?: number;
     hover: boolean;
     userPopperRef: React.RefObject<UserPopper>;
+    room?: RoomChat_room;
 }) => {
     let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
 
@@ -165,7 +167,7 @@ export const Preambula = ({
         }
     }
 
-    let customButton = !isCommentNotification && !sender.isBot ? ((hidePopper: Function) => (
+    let customButton = !isCommentNotification && !sender.isBot && (room && room.__typename === 'SharedRoom' && room.kind === SharedRoomKind.PUBLIC) ? ((hidePopper: Function) => (
         <XWithRole role="super-admin">
             <XButton
                 style="electric"

@@ -450,15 +450,15 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
                 <Header chat={chat} />
 
                 {tab === tabs.members && (
-                    <RoomMembersList chatId={chat.id} beforeChildren={beforeItems} />
+                    <RoomMembersList chat={chat} beforeChildren={beforeItems} />
                 )}
 
                 {tab === tabs.featured && (
-                    <RoomFeaturedMembersList chatId={chatId} beforeChildren={beforeItems} />
+                    <RoomFeaturedMembersList chat={chat} beforeChildren={beforeItems} />
                 )}
 
                 {tab === tabs.requests && (
-                    <RoomRequestsMembersList chatId={chatId} requests={requestMembers} beforeChildren={beforeItems} />
+                    <RoomRequestsMembersList chat={chat} requests={requestMembers} beforeChildren={beforeItems} />
                 )}
             </XView>
         </>
