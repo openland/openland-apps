@@ -1,6 +1,7 @@
 query AccountSettings {
   me: me {
     __typename
+    audienceSize
     ...UserShort
   }
   organizations: myOrganizations {

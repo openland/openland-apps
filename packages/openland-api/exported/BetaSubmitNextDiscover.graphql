@@ -1,0 +1,9 @@
+mutation BetaSubmitNextDiscover($excudedGroupsIds: [String!]!, $selectedTagsIds: [String!]!) {
+  betaSubmitNextDiscover(excudedGroupsIds: $excudedGroupsIds, selectedTagsIds: $selectedTagsIds) {
+    __typename
+    tagGroup {
+      __typename
+      id
+    }
+  }
+}

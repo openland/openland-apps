@@ -183,14 +183,14 @@ export const ShortcutsBody = () => {
                     <div>
                         <SpanPreview
                             spanType={SpanType.code_inline}
-                            text={`'one line code block'`}
+                            text="`one line code block`"
                         />
                     </div>
                 </XView>
                 <XView marginTop={12}>
                     <SpanPreview
                         spanType={SpanType.code_block}
-                        text={`'''multiline code blocks'''`}
+                        text="```multiline code blocks```"
                     />
                 </XView>
             </KeyboardShortcuts>

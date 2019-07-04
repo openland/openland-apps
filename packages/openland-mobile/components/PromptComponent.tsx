@@ -19,7 +19,7 @@ export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalCont
             paddingVertical={20}
         >
             {builder._title && <Text style={{ marginBottom: 12, color: theme.textColor, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{builder._title}</Text>}
-            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.textInputColor }} />
+            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.textInputColor }} keyboardAppearance={theme.keyboardAppearance} />
             <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                 {builder._actions.map((a, i) => (
                     <>

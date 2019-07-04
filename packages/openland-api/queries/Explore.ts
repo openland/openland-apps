@@ -155,7 +155,7 @@ export const GlobalSearchQuery = gql`
 
 export const DiscoverNextPageQuery = gql`
     query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
-        betaNextDiscoverPage(
+        betaNextDiscoverPage: gammaNextDiscoverPage(
             selectedTagsIds: $selectedTagsIds
             excudedGroupsIds: $excudedGroupsIds
         ) {
@@ -175,6 +175,39 @@ export const DiscoverNextPageQuery = gql`
     }
     ${RoomShort}
     ${UserShort}
+`;
+
+export const BetaSaveSelectedTagsMutation = gql`
+    mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!) {
+        betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds) {
+            tagGroup {
+                id
+            }
+        }
+    }
+`;
+
+export const BetaSubmitNextDiscoverMutation = gql`
+    mutation BetaSubmitNextDiscover($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
+        betaSubmitNextDiscover(
+            selectedTagsIds: $selectedTagsIds
+            excudedGroupsIds: $excudedGroupsIds
+        ) {
+            tagGroup {
+                id
+            }
+        }
+    }
+`;
+
+export const BetaDiscoverSkipMutation = gql`
+    mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {
+        betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {
+            tagGroup {
+                id
+            }
+        }
+    }
 `;
 
 export const DiscoverIsDoneQuery = gql`

@@ -12,7 +12,6 @@ import { css } from 'linaria';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
 import { XFeatured } from 'openland-x/XFeatured';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -234,11 +233,9 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                             {!isMobile && badge && (
-                                <XWithRole role="feature-non-production">
-                                    <XView marginLeft={12}>
-                                        <XFeatured text={emoji({ src: badge.name, size: 16 })} />
-                                    </XView>
-                                </XWithRole>
+                                <XView marginLeft={12}>
+                                    <XFeatured text={emoji({ src: badge.name, size: 16 })} />
+                                </XView>
                             )}
                         </XView>
                         {!isMobile && user.id && (

@@ -165,7 +165,7 @@ export const Preambula = ({
         }
     }
 
-    let customButton = !isCommentNotification ? ((hidePopper: Function) => (
+    let customButton = !isCommentNotification && !sender.isBot ? ((hidePopper: Function) => (
         <XWithRole role="super-admin">
             <XButton
                 style="electric"

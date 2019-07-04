@@ -8,6 +8,7 @@ import { Menu } from './Menu/Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { Preambula } from './Preambula';
 import { NotCompactHeader } from './NotCompactHeader';
+import { css } from 'linaria';
 
 export interface DesktopMessageContainerProps {
     replyQuoteText?: string | null;
@@ -161,6 +162,13 @@ const NotCompactShortMessageContainerWrapper = ({
     );
 };
 
+const textEllipsisClassname = css`
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex-shrink: 0;
+`;
+
 const ReplyQuote = ({ text }: { text?: string | null }) => {
     if (!text) {
         return null;
@@ -174,10 +182,9 @@ const ReplyQuote = ({ text }: { text?: string | null }) => {
                 fontSize={14}
                 color={'#000'}
                 flexShrink={1}
-                overflow="hidden"
                 flexWrap="nowrap"
             >
-                {text}
+                <span className={textEllipsisClassname}>{text}</span>
             </XView>
         </XView>
     );

@@ -1312,6 +1312,7 @@ private val AccountInvitesHistorySelector = obj(
 private val AccountSettingsSelector = obj(
             field("me","me", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
+                    field("audienceSize","audienceSize", notNull(scalar("Int"))),
                     fragment("User", UserShortSelector)
                 )),
             field("myOrganizations","organizations", notNull(list(notNull(obj(
@@ -1479,7 +1480,7 @@ private val DiscoverIsDoneSelector = obj(
             field("betaIsDiscoverDone","betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
 private val DiscoverNextPageSelector = obj(
-            field("betaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+            field("gammaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("chats","chats", list(notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
@@ -2417,8 +2418,35 @@ private val AddMessageCommentSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
+private val BetaDiscoverSkipSelector = obj(
+            field("betaDiscoverSkip","betaDiscoverSkip", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("tagGroup","tagGroup", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("String")))
+                        ))
+                ))
+        )
 private val BetaNextDiscoverResetSelector = obj(
             field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
+        )
+private val BetaSaveSelectedTagsSelector = obj(
+            field("betaSaveSelectedTags","betaSaveSelectedTags", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("tagGroup","tagGroup", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("String")))
+                        ))
+                ))
+        )
+private val BetaSubmitNextDiscoverSelector = obj(
+            field("betaSubmitNextDiscover","betaSubmitNextDiscover", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("tagGroup","tagGroup", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("String")))
+                        ))
+                ))
         )
 private val CancelTypingSelector = obj(
             field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
@@ -3234,7 +3262,7 @@ object Operations {
     val AccountSettings = object: OperationDefinition {
         override val name = "AccountSettings"
         override val kind = OperationKind.QUERY
-        override val body = "query AccountSettings{me:me{__typename ...UserShort}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query AccountSettings{me:me{__typename audienceSize ...UserShort}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountSettingsSelector
     }
     val AvailableRooms = object: OperationDefinition {
@@ -3288,7 +3316,7 @@ object Operations {
     val DiscoverNextPage = object: OperationDefinition {
         override val name = "DiscoverNextPage"
         override val kind = OperationKind.QUERY
-        override val body = "query DiscoverNextPage(\$excudedGroupsIds:[String!]!,\$selectedTagsIds:[String!]!){betaNextDiscoverPage(excudedGroupsIds:\$excudedGroupsIds,selectedTagsIds:\$selectedTagsIds){__typename chats{__typename ...RoomShort}tagGroup{__typename id subtitle tags{__typename id title}title}}}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query DiscoverNextPage(\$excudedGroupsIds:[String!]!,\$selectedTagsIds:[String!]!){betaNextDiscoverPage:gammaNextDiscoverPage(excudedGroupsIds:\$excudedGroupsIds,selectedTagsIds:\$selectedTagsIds){__typename chats{__typename ...RoomShort}tagGroup{__typename id subtitle tags{__typename id title}title}}}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = DiscoverNextPageSelector
     }
     val ExploreCommunity = object: OperationDefinition {
@@ -3681,11 +3709,29 @@ object Operations {
         override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
     }
+    val BetaDiscoverSkip = object: OperationDefinition {
+        override val name = "BetaDiscoverSkip"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation BetaDiscoverSkip(\$selectedTagsIds:[String!]!){betaDiscoverSkip(selectedTagsIds:\$selectedTagsIds){__typename tagGroup{__typename id}}}"
+        override val selector = BetaDiscoverSkipSelector
+    }
     val BetaNextDiscoverReset = object: OperationDefinition {
         override val name = "BetaNextDiscoverReset"
         override val kind = OperationKind.MUTATION
         override val body = "mutation BetaNextDiscoverReset{betaNextDiscoverReset}"
         override val selector = BetaNextDiscoverResetSelector
+    }
+    val BetaSaveSelectedTags = object: OperationDefinition {
+        override val name = "BetaSaveSelectedTags"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation BetaSaveSelectedTags(\$selectedTagsIds:[String!]!){betaSaveSelectedTags(selectedTagsIds:\$selectedTagsIds){__typename tagGroup{__typename id}}}"
+        override val selector = BetaSaveSelectedTagsSelector
+    }
+    val BetaSubmitNextDiscover = object: OperationDefinition {
+        override val name = "BetaSubmitNextDiscover"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation BetaSubmitNextDiscover(\$excudedGroupsIds:[String!]!,\$selectedTagsIds:[String!]!){betaSubmitNextDiscover(excudedGroupsIds:\$excudedGroupsIds,selectedTagsIds:\$selectedTagsIds){__typename tagGroup{__typename id}}}"
+        override val selector = BetaSubmitNextDiscoverSelector
     }
     val CancelTyping = object: OperationDefinition {
         override val name = "CancelTyping"
@@ -4441,7 +4487,10 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddMessageComment") return AddMessageComment
+        if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
+        if (name == "BetaSaveSelectedTags") return BetaSaveSelectedTags
+        if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
         if (name == "CancelTyping") return CancelTyping
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction

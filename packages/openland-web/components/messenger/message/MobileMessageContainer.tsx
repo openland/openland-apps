@@ -4,7 +4,6 @@ import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserShort, UserBadge } from 'openland-api/Types';
 import { XFeaturedIcon } from 'openland-x/XFeatured';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export interface MobileMessageContainerProps {
     children: any;
@@ -83,11 +82,9 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                         {props.senderNameEmojify}
                     </XView>
                     {senderBadge && (
-                        <XWithRole role="feature-non-production">
-                            <XView marginLeft={5} alignSelf="center">
-                                <XFeaturedIcon />
-                            </XView>
-                        </XWithRole>
+                        <XView marginLeft={5} alignSelf="center">
+                            <XFeaturedIcon />
+                        </XView>
                     )}
                     {props.sender.primaryOrganization && (
                         <XView
