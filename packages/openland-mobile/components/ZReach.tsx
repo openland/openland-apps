@@ -13,7 +13,7 @@ export interface ZReachProps {
 
 const ZReachInner = XMemo<ZReachProps>(props => (
     <LinearGradient colors={['#FEBD17', '#FF9B04']} style={{ height: 20, paddingHorizontal: 6, borderRadius: 16 }}>
-        <Text style={{ fontSize: 13, lineHeight: 20, color: '#ffffff', fontWeight: TextStyles.weight.medium }}>{props.value}</Text>
+        <Text style={{ fontSize: 13, lineHeight: 20, color: '#ffffff', fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>{props.value}</Text>
     </LinearGradient>
 ));
 
@@ -38,12 +38,12 @@ export const showReachInfo = ((value: number, theme: AppTheme) => {
     builder.view(ctx => (
         <View marginHorizontal={20} marginTop={20}>
             <View flexDirection="row" alignItems="center" marginBottom={5}>
-                <Text style={{ color: theme.textColor, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }}>
+                <Text style={{ color: theme.textColor, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }} allowFontScaling={false}>
                     Reach
                 </Text>
                 <ZReach value={value} />
             </View>
-            <Text style={{ color: theme.textColor, fontSize: 16, lineHeight: 24 }}>
+            <Text style={{ color: theme.textColor, fontSize: 16, lineHeight: 24 }} allowFontScaling={false}>
                 User's reach is the total number of people in community groups they are in
             </Text>
         </View>

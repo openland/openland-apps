@@ -29,7 +29,7 @@ const OrgTitle = Glamorous.div({
 
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
-    width: 224,
+    minWidth: 200,
 });
 
 const Status = (({ variables }) => {
@@ -130,6 +130,8 @@ const UserPopperContent = XMemo(
                         fontWeight="600"
                         flexDirection="row"
                         color="rgba(0, 0, 0, 0.9)"
+                        path={usrPath}
+                        cursor={!!usrPath ? 'pointer' : undefined}
                     >
                         {emoji({
                             src: user.name,

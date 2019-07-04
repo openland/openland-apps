@@ -180,7 +180,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                             </XView>
                             {props.senderBadge && (
                                 <XView marginLeft={5} alignSelf="center">
-                                    <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} />
+                                    <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} position="bottom" />
                                 </XView>
                             )}
                             {props.sender!!.primaryOrganization && (
