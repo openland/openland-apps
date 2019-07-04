@@ -47,7 +47,7 @@ export class ActionSheetBuilder {
         return this;
     }
 
-    view(view: any): ActionSheetBuilder {
+    view(view: (ctx: ZModalController) => void): ActionSheetBuilder {
         let item: ActionSheetBuilderViewItem = { __typename: "ViewItem", view };
 
         this._items.push(item);
