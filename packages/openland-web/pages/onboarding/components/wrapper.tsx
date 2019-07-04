@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 const wrapperClassName = css`
     width: 100%;
 `;
 
-export const Wrapper = (props: { children: any }) => (
-    <div className={wrapperClassName}>
+const heightClassName = css`
+    height: 100%;
+`;
+
+export const Wrapper = (props: { children: any; fullHeight?: boolean }) => (
+    <div className={cx(wrapperClassName, props.fullHeight && heightClassName)}>
         <XView
             backgroundColor="white"
             flexGrow={1}

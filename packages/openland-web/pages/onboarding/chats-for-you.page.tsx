@@ -201,9 +201,11 @@ const ChatsItemList = ({
 export const ChatsForYou = ({
     onBack,
     onSkip,
+    fullHeight
 }: {
     onSkip: (event: React.MouseEvent) => void;
     onBack: (event: React.MouseEvent) => void;
+    fullHeight?: boolean;
 }) => {
     const client = useClient();
     const isMobile = useIsMobile();
@@ -225,7 +227,7 @@ export const ChatsForYou = ({
     }
 
     return (
-        <Wrapper>
+        <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
             <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
             <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
