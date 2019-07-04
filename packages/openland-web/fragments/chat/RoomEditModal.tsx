@@ -82,7 +82,7 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
                                 title={inputTitle}
                                 {...titleField.input}
                                 size="large"
-                                invalid={!!form.error}
+                                invalid={!!titleField.input.invalid}
                             />
                             <XWithRole role="feature-chat-embedded-attach">
                                 <XInput
