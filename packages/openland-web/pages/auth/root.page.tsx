@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { pages, pagesT } from './pages';
+import { pages, pagesT } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AcceptInvitePage } from './accept-invite.page';
 import { AskActivationPage } from './ask-activation-code.page';
@@ -352,19 +352,23 @@ export default () => {
                 </XTrack>
             )}
             {page === pages.introduceYourself && (
-                <IntroduceYourselfPage
-                    roomView={roomView}
-                    roomContainerParams={roomContainerParams}
-                    isMobile={!!isMobile}
-                />
+                <XTrack event="signup_profile_view">
+                    <IntroduceYourselfPage
+                        roomView={roomView}
+                        roomContainerParams={roomContainerParams}
+                        isMobile={!!isMobile}
+                    />
+                </XTrack>
             )}
             {page === pages.enterYourOrganization && (
-                <EnterYourOrganizationPage
-                    roomView={roomView}
-                    inviteKey={appInviteKey}
-                    roomContainerParams={roomContainerParams}
-                    isMobile={!!isMobile}
-                />
+                <XTrack event="signup_org_view">
+                    <EnterYourOrganizationPage
+                        roomView={roomView}
+                        inviteKey={appInviteKey}
+                        roomContainerParams={roomContainerParams}
+                        isMobile={!!isMobile}
+                    />
+                </XTrack>
             )}
         </>
     );
