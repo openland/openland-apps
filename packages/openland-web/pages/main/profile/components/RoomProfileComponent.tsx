@@ -320,14 +320,15 @@ const MembersProvider = ({
             {!showTabs && (
                 <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />
             )}
-            {tab === tabs.members && (
-                <SectionContent
-                    noPaddingBottom
-                    withFlex
-                    flexDirection="column"
-                    flexGrow={1}
-                    flexShrink={1}
-                >
+
+            <SectionContent
+                noPaddingBottom
+                withFlex
+                flexDirection="column"
+                flexGrow={1}
+                flexShrink={1}
+            >
+                {tab === tabs.members && (
                     <XView flexGrow={1} flexShrink={1}>
                         <AddMembersModal
                             id={chatId}
@@ -340,8 +341,8 @@ const MembersProvider = ({
                             query={{ field: 'inviteMembers', value: 'true' }}
                         />
                     </XView>
-                </SectionContent>
-            )}
+                )}
+            </SectionContent>
 
             <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
         </Section>
