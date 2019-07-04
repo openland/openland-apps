@@ -4,6 +4,7 @@ import android.graphics.PointF
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.util.Log
 import android.view.animation.LinearInterpolator
+import com.facebook.litho.utils.IncrementalMountUtils
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
@@ -187,6 +188,18 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
             } else {
                 runOnUIThread {
                     runOnUIThreadDelayed((maxDuration * 1000).toInt()) {
+                        for (s in spec.valueSets) {
+                            val view = views[s.viewKey]
+                            if(view != null){
+                                IncrementalMountUtils.incrementallyMountLithoViews(view)
+                            }
+                        }
+                        for (a in spec.animations) {
+                            val view = views[a.viewKey]
+                            if(view != null){
+                                IncrementalMountUtils.incrementallyMountLithoViews(view)
+                            }
+                        }
                         onCompleted(spec.transactionKey!!)
                     }
                 }
