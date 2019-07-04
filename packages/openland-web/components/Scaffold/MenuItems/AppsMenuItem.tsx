@@ -1,44 +1,28 @@
 import * as React from 'react';
-import { MenuItemWithPopper } from '../MenuItemWithPopper';
 import IconApps from 'openland-icons/ic-apps2.svg';
-import IphoneIcon from 'openland-icons/ic-app-iphone.svg';
-import AndroidIcon from 'openland-icons/ic-app-android.svg';
-import MacIcon from 'openland-icons/ic-app-mac.svg';
-import WinIcon from 'openland-icons/ic-app-win.svg';
-import LinuxIcon from 'openland-icons/ic-app-linux.svg';
-import { XMenuItem } from 'openland-x/XMenuItem';
 import { XView } from 'react-mental';
-import { XMenuTitle } from 'openland-x/XMenuItem';
-
-const Item = ({ title, href, icon }: { title: string; href: string; icon: any }) => {
-    return (
-        <XMenuItem
-            href={href}
-            icon={
-                <XView marginRight={14} marginTop={-3}>
-                    {icon}
-                </XView>
-            }
-        >
-            {title}
-        </XMenuItem>
-    );
-};
+import { showModalBox } from 'openland-x/showModalBox';
+import { XScrollView3 } from 'openland-x/XScrollView3';
+import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 
 export const AppsMenuItem = () => (
-    <MenuItemWithPopper
-        targetElement={<IconApps style={{ width: 20, height: 20 }} />}
-        menuItems={
-            <>
-                <XMenuTitle>
-                    <XView paddingRight={32}>Get Openland apps</XView>
-                </XMenuTitle>
-                <Item title={'iPhone'} href={'https://oplnd.com/ios'} icon={<IphoneIcon />} />
-                <Item title={'Android'} href={'https://oplnd.com/android'} icon={<AndroidIcon />} />
-                <Item title={'Mac'} href={'https://oplnd.com/mac'} icon={<MacIcon />} />
-                <Item title={'Windows'} href={'https://oplnd.com/windows'} icon={<WinIcon />} />
-                <Item title={'Linux'} href={'https://oplnd.com/linux'} icon={<LinuxIcon />} />
-            </>
+    <XView
+        position="relative"
+        height={55}
+        flexShrink={0}
+        cursor="pointer"
+        hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        onClick={() =>
+            showModalBox({ fullScreen: true }, () => (
+                <XScrollView3 flexGrow={1} flexShrink={1}>
+                    <NativeAppsModal />
+                </XScrollView3>
+            ))
         }
-    />
+    >
+        <IconApps style={{ width: 20, height: 20 }} />
+    </XView>
 );

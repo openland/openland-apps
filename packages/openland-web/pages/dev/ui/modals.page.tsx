@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
@@ -7,8 +7,8 @@ import { XButton } from 'openland-x/XButton';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XScrollView3 } from '../../../../openland-x/XScrollView3';
-import { NativeAppsModal } from '../../../components/NativeAppsModal';
+import { XScrollView3 } from 'openland-x/XScrollView3';
+import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 
 const ResizableContent = React.memo(() => {
     let [height, setHeight] = React.useState(100);
