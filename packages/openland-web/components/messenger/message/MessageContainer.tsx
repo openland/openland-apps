@@ -384,6 +384,7 @@ export const DesktopMessageContainer = ({
                 hover={hover}
                 senderBadge={senderBadge}
                 chatId={message.chatId}
+                room={room}
             />
             {content}
             {isEditView ? null : actions}
