@@ -17,7 +17,7 @@ const iosClassName = css`
 `;
 
 const androidClassName = css`
-    height: 100vh;
+    height: 80vh;
 `;
 
 export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {

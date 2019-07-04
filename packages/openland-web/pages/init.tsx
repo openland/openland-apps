@@ -49,9 +49,9 @@ css.global('body, body *', {
     textDecoration: 'none',
     boxSizing: 'border-box',
 });
-css.global('body', {
-    backgroundColor: XThemeDefault.backyardColor,
-});
+// css.global('body', {
+//     backgroundColor: XThemeDefault.backyardColor,
+// });
 css.global('input, textarea, button', {
     fontFamily,
 });
