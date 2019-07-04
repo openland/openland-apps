@@ -151,10 +151,15 @@ export const WebSignUpActivationCode = ({
                             fontSize={16}
                             color="#000"
                             marginBottom={34}
-                            flexDirection="row"
+                            flexDirection={emailSendedTo.length > 20 ? 'column' : 'row'}
                             alignItems="center"
                         >
-                            <XView marginRight={6}>We just sent it to</XView>
+                            <XView
+                                marginRight={emailSendedTo.length > 20 ? undefined : 6}
+                                marginBottom={emailSendedTo.length > 20 ? 6 : undefined}
+                            >
+                                We just sent it to
+                            </XView>
                             <strong>{emailSendedTo}</strong>
                         </XView>
                     )}
