@@ -200,7 +200,7 @@ export const NativeAppsModal = () => {
                     justifyContent="center"
                     marginTop={120}
                 >
-                    <span className={textAlignClassName}>Get Openland apps</span>
+                    <span className={textAlignClassName}>Install Openland apps</span>
                 </XView>
                 <XView
                     fontSize={15}
@@ -215,8 +215,8 @@ export const NativeAppsModal = () => {
                     maxWidth={300}
                 >
                     <span className={textAlignClassName}>
-                        Openland is better experience as a mobile and desktop app. Install your app
-                        now.
+                        Get our fastest experience
+                        <br /> and never miss a message
                     </span>
                 </XView>
                 <XView flexDirection="row" alignItems="center" marginLeft={50}>
