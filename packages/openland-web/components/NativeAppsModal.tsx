@@ -69,7 +69,6 @@ const DesktopAppButtonClass = css`
     flex-direction: row;
     align-items: center;
     transition: all 0.2s ease;
-    border: 1px solid transparent;
     color: #1790ff;
     height: 40px;
     padding: 5px 16px 5px 12px;
@@ -83,8 +82,11 @@ const DesktopAppButtonClass = css`
     }
     &:hover {
         color: #1790ff;
-        background-color: #fff;
-        border: 1px solid #1790ff;
+        background-color: rgba(23, 144, 255, 0.12);
+    }
+    &:active {
+        color: #1790ff;
+        background-color: rgba(23, 144, 255, 0.16);
     }
     &:hover svg path:last-child {
         fill: #1790ff;
@@ -97,6 +99,20 @@ const DesktopAppButtonClass = css`
 const DesktopAppButtonActiveClass = css`
     background-color: #1790ff;
     color: #fff;
+    &:hover {
+        background-color: #1585ed;
+        color: #fff;
+    }
+    &:hover svg path:last-child {
+        fill: #fff;
+    }
+    &:active {
+        color: #fff;
+        background-color: #147ee0;
+    }
+    &:active svg path:last-child {
+        fill: #fff;
+    }
     & svg path:last-child {
         fill: #fff;
     }
