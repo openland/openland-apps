@@ -451,7 +451,7 @@ const EditCommunityEntity = (props: {
                         onClick={() =>
                             updateOrganizaton({
                                 input: {
-                                    name: nameField.value,
+                                    name: nameField.value.trim(),
                                     about: aboutField.value,
                                     website: websiteField.value,
                                     twitter: twitterField.value,

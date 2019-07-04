@@ -50,7 +50,7 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
                 const dataToSend = {
                     roomId: props.roomId,
                     input: {
-                        ...{ title: titleField.value },
+                        ...{ title: titleField.value.trim() },
                         ...{ description: descriptionField.value },
                         ...(newPhoto && newPhoto.uuid !== editPhotoRef
                             ? { photoRef: sanitizeImageRef(newPhoto) }

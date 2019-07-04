@@ -72,7 +72,7 @@ export const CreateOrganizationFormInnerRoom = ({
         () => {
             form.doAction(async () => {
                 await processCreateOrganization({
-                    organizationFieldValue: organizationField.value,
+                    organizationFieldValue: organizationField.value.trim(),
                 });
             });
         },

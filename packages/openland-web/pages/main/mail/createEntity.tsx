@@ -245,7 +245,7 @@ export const CreateEntity = ({
 
         if (typeField.value === SharedRoomKind.GROUP || typeField.value === SharedRoomKind.PUBLIC) {
             const returnedData = await client.mutateRoomCreate({
-                title: titleField.value,
+                title: titleField.value.trim(),
                 kind: typeField.value,
                 photoRef,
                 members: membersToAdd,
@@ -261,7 +261,7 @@ export const CreateEntity = ({
             let res = await client.mutateCreateOrganization({
                 input: {
                     personal: false,
-                    name: titleField.value,
+                    name: titleField.value.trim(),
                     about: aboutField.value,
                     photoRef,
                     isCommunity,

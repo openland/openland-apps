@@ -78,8 +78,8 @@ const CreateProfileFormInnerWeb = (
         () => {
             form.doAction(async () => {
                 const formData = {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
+                    firstName: firstName.value.trim(),
+                    lastName: lastName.value.trim(),
                     photoRef: photoRef.value
                         ? {
                               ...(photoRef.value as any),
