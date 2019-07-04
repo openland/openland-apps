@@ -164,14 +164,12 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                     >
                         <div className={RoomTitleInner}>{room.title}</div>
                         {badge && (
-                            <XWithRole role="feature-non-production">
-                                <XView marginLeft={10} flexDirection="row">
-                                    <XView marginRight={9} justifyContent="center">
-                                        <ReplyCommentsIcon />
-                                    </XView>
-                                    <XView fontWeight="400">{badge.name}</XView>
+                            <XView marginLeft={10} flexDirection="row">
+                                <XView marginRight={9} justifyContent="center">
+                                    <ReplyCommentsIcon />
                                 </XView>
-                            </XWithRole>
+                                <XView fontWeight="400">{badge.name}</XView>
+                            </XView>
                         )}
                     </XView>
                     <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">

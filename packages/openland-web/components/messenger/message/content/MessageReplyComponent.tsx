@@ -15,7 +15,6 @@ import { emoji } from 'openland-y-utils/emoji';
 import { MessageVideoComponent } from './MessageVideoComponent';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { Span } from 'openland-y-utils/spans/Span';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XFeaturedTooltip } from 'openland-x/XFeatured';
 
 interface ReplyMessageProps {
@@ -180,11 +179,9 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                                     })}
                             </XView>
                             {props.senderBadge && (
-                                <XWithRole role="feature-non-production">
-                                    <XView marginLeft={5} alignSelf="center">
-                                        <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} />
-                                    </XView>
-                                </XWithRole>
+                                <XView marginLeft={5} alignSelf="center">
+                                    <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} />
+                                </XView>
                             )}
                             {props.sender!!.primaryOrganization && (
                                 <XView

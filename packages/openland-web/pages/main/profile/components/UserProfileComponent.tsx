@@ -36,7 +36,6 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XPopper } from 'openland-x/XPopper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -359,9 +358,7 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
-                    <XWithRole role="feature-non-production">
-                        <FeaturedIn user={user} />
-                    </XWithRole>
+                    <FeaturedIn user={user} />
                 </XScrollView3>
             </XView>
         </>

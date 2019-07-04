@@ -80,7 +80,7 @@ let SettingsContent = ((props: PageProps) => {
                 subtitleColor={status.status === 'connected' ? theme.accentColor : undefined}
                 path="SettingsProfile"
                 action="Edit profile"
-                score={(NON_PRODUCTION && me.audienceSize > 0) ? me.audienceSize : undefined}
+                score={me.audienceSize > 0 ? me.audienceSize : undefined}
                 scorePress={handleScorePress}
             />
             <ZListItemGroup header="Settings" divider={false}>

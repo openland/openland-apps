@@ -20,7 +20,6 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
-import { NON_PRODUCTION } from '../Init';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -226,7 +225,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     />
                 )}
 
-                {room.featuredMembersCount > 0 && NON_PRODUCTION && (
+                {room.featuredMembersCount > 0 && (
                     <ZListItem
                         leftIcon={require('assets/ic-star-24.png')}
                         text="Featured members"
