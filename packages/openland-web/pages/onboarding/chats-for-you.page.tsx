@@ -199,10 +199,12 @@ export const ChatsForYou = ({
     noTopBar,
     onBack,
     onSkip,
+    fullHeight
 }: {
     noTopBar?: boolean;
     onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: (event: React.MouseEvent) => void;
+    fullHeight?: boolean;
 }) => {
     const client = useClient();
     const isMobile = useIsMobile();
@@ -224,7 +226,7 @@ export const ChatsForYou = ({
     }
 
     return (
-        <Wrapper>
+        <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(10)} />}
             <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>

@@ -320,14 +320,15 @@ const MembersProvider = ({
             {!showTabs && (
                 <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />
             )}
-            {tab === tabs.members && (
-                <SectionContent
-                    noPaddingBottom
-                    withFlex
-                    flexDirection="column"
-                    flexGrow={1}
-                    flexShrink={1}
-                >
+
+            <SectionContent
+                noPaddingBottom
+                withFlex
+                flexDirection="column"
+                flexGrow={1}
+                flexShrink={1}
+            >
+                {tab === tabs.members && (
                     <XView flexGrow={1} flexShrink={1}>
                         <AddMembersModal
                             id={chatId}
@@ -340,8 +341,8 @@ const MembersProvider = ({
                             query={{ field: 'inviteMembers', value: 'true' }}
                         />
                     </XView>
-                </SectionContent>
-            )}
+                )}
+            </SectionContent>
 
             <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
         </Section>
@@ -450,15 +451,15 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
                 <Header chat={chat} />
 
                 {tab === tabs.members && (
-                    <RoomMembersList chatId={chat.id} beforeChildren={beforeItems} />
+                    <RoomMembersList chat={chat} beforeChildren={beforeItems} />
                 )}
 
                 {tab === tabs.featured && (
-                    <RoomFeaturedMembersList chatId={chatId} beforeChildren={beforeItems} />
+                    <RoomFeaturedMembersList chat={chat} beforeChildren={beforeItems} />
                 )}
 
                 {tab === tabs.requests && (
-                    <RoomRequestsMembersList chatId={chatId} requests={requestMembers} beforeChildren={beforeItems} />
+                    <RoomRequestsMembersList chat={chat} requests={requestMembers} beforeChildren={beforeItems} />
                 )}
             </XView>
         </>

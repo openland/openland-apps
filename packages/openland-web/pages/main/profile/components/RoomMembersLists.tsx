@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { RoomMembersPaginated, Room_room_SharedRoom_requests, RoomFull_SharedRoom_requests } from 'openland-api/Types';
+import { RoomMembersPaginated, Room_room_SharedRoom_requests, RoomFull_SharedRoom_requests, Room_room_SharedRoom, SharedRoomKind } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem } from 'openland-x/XMenuItem';
@@ -22,7 +22,7 @@ import { XMutation } from 'openland-x/XMutation';
 import { XButton } from 'openland-x/XButton';
 import { MutationFunc } from 'react-apollo';
 
-const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, roomId: string }) => {
+const MemberCard = ({ member, chat }: { member: RoomFull_SharedRoom_members, chat: Room_room_SharedRoom }) => {
     return (
         <XUserCard
             user={member.user}
@@ -30,27 +30,29 @@ const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, r
             role={member.role}
             customOwnerText="Group creator"
             customMenu={
-                useHasRole('super-admin') || member.canKick || member.user.isYou ? (
+                (useHasRole('super-admin') && chat.kind === SharedRoomKind.PUBLIC) || member.canKick || member.user.isYou ? (
                     <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
                             <>
-                                <XWithRole role="super-admin">
-                                    <XMenuItem
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
+                                {chat.kind === SharedRoomKind.PUBLIC && (
+                                    <XWithRole role="super-admin">
+                                        <XMenuItem
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
 
-                                            showModalBox(
-                                                { title: 'Member featuring' },
-                                                ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={roomId} />
-                                            );
-                                        }}
-                                    >
-                                        {member.badge ? 'Edit featured status' : 'Make featured'}
-                                    </XMenuItem>
-                                </XWithRole>
+                                                showModalBox(
+                                                    { title: 'Member featuring' },
+                                                    ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={chat.id} />
+                                                );
+                                            }}
+                                        >
+                                            {member.badge ? 'Edit featured status' : 'Make featured'}
+                                        </XMenuItem>
+                                    </XWithRole>
+                                )}
                                 <XMenuItem
                                     style="danger"
                                     query={{ field: 'remove', value: member.user.id }}
@@ -68,22 +70,22 @@ const MemberCard = ({ member, roomId }: { member: RoomFull_SharedRoom_members, r
 
 const RequestCard = ({
     member,
-    roomId,
+    chat,
 }: {
     member: RoomFull_SharedRoom_requests;
-    roomId: string;
+    chat: Room_room_SharedRoom;
 }) => {
     const client = useClient();
 
     const accept = async () => {
         await client.mutateRoomAddMember({
-            roomId,
+            roomId: chat.id,
             userId: member.user.id,
         });
     };
     const decline = async () => {
         await client.mutateRoomDeclineJoinReuest({
-            roomId,
+            roomId: chat.id,
             userId: member.user.id,
         });
     };
@@ -121,8 +123,8 @@ const convertToDataSource = (data: RoomMembersPaginated) => {
     }));
 };
 
-export const RoomMembersList = (props: { chatId: string, beforeChildren: any }) => {
-    const { chatId, beforeChildren } = props;
+export const RoomMembersList = (props: { chat: Room_room_SharedRoom, beforeChildren: any }) => {
+    const { chat, beforeChildren } = props;
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const pageSize = 20;
@@ -134,7 +136,7 @@ export const RoomMembersList = (props: { chatId: string, beforeChildren: any }) 
         initialLoadFunction: () => {
             return client.useRoomMembersPaginated(
                 {
-                    roomId: chatId,
+                    roomId: chat.id,
                     first: pageSize,
                 },
                 {
@@ -145,7 +147,7 @@ export const RoomMembersList = (props: { chatId: string, beforeChildren: any }) 
         queryOnNeedMore: async ({ getLastItem }: { getLastItem: () => any }) => {
             const lastItem = getLastItem();
             return await client.queryRoomMembersPaginated({
-                roomId: chatId,
+                roomId: chat.id,
                 first: pageSize,
                 after: lastItem.user.id,
             });
@@ -189,7 +191,7 @@ export const RoomMembersList = (props: { chatId: string, beforeChildren: any }) 
         return (member: any) => {
             return (
                 <div className={itemsWrapperClassName}>
-                    <MemberCard key={member.id} roomId={chatId} member={member} />
+                    <MemberCard key={member.id} chat={chat} member={member} />
                 </div>
             );
         };
@@ -207,24 +209,24 @@ export const RoomMembersList = (props: { chatId: string, beforeChildren: any }) 
     );
 };
 
-const RoomFeaturedMembersInner = (props: { chatId: string }) => {
-    const { chatId } = props;
+const RoomFeaturedMembersInner = (props: { chat: Room_room_SharedRoom }) => {
+    const { chat } = props;
     const client = useClient();
-    const featuredMembers = client.useRoomFeaturedMembers({ roomId: chatId }, { fetchPolicy: 'network-only' }).roomFeaturedMembers;
+    const featuredMembers = client.useRoomFeaturedMembers({ roomId: chat.id }, { fetchPolicy: 'network-only' }).roomFeaturedMembers;
 
     return (
         <>
             {featuredMembers.map((member, i) => (
                 <div className={itemsWrapperClassName}>
-                    <MemberCard key={member.user.id} roomId={chatId} member={member} />
+                    <MemberCard key={member.user.id} chat={chat} member={member} />
                 </div>
             ))}
         </>
     );
 }
 
-export const RoomFeaturedMembersList = (props: { chatId: string, beforeChildren: any }) => {
-    const { chatId, beforeChildren } = props;
+export const RoomFeaturedMembersList = (props: { chat: Room_room_SharedRoom, beforeChildren: any }) => {
+    const { chat, beforeChildren } = props;
 
     const renderLoading = (
         <XView height={50} justifyContent="center">
@@ -237,15 +239,15 @@ export const RoomFeaturedMembersList = (props: { chatId: string, beforeChildren:
             <XView flexDirection="column">
                 {beforeChildren}
                 <React.Suspense fallback={renderLoading}>
-                    <RoomFeaturedMembersInner chatId={chatId} />
+                    <RoomFeaturedMembersInner chat={chat} />
                 </React.Suspense>
             </XView>
         </XScrollView3>
     );
 };
 
-export const RoomRequestsMembersList = (props: { chatId: string, requests: Room_room_SharedRoom_requests[], beforeChildren: any }) => {
-    const { chatId, requests, beforeChildren } = props;
+export const RoomRequestsMembersList = (props: { chat: Room_room_SharedRoom, requests: Room_room_SharedRoom_requests[], beforeChildren: any }) => {
+    const { chat, requests, beforeChildren } = props;
 
     return (
         <XScrollView3 flexGrow={1} flexShrink={1}>
@@ -253,7 +255,7 @@ export const RoomRequestsMembersList = (props: { chatId: string, requests: Room_
                 {beforeChildren}
                 {requests.map((req, i) => (
                     <div className={itemsWrapperClassName}>
-                        <RequestCard key={i} member={req} roomId={chatId} />
+                        <RequestCard key={i} member={req} chat={chat} />
                     </div>
                 ))}
             </XView>

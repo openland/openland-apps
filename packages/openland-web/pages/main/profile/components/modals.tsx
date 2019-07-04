@@ -330,7 +330,7 @@ export const MakeFeaturedModal = (props: {
                     />
                     {featured && (
                         <XView marginTop={20}>
-                            <InputField title="Description" field={descriptionField} setFocusOnError />
+                            <InputField title="Description" field={descriptionField} setFocusOnError maxLength={40} />
                         </XView>
                     )}
                 </XModalContent>

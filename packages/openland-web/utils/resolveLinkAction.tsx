@@ -27,7 +27,7 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         };
     } else if (url === '/onboarding_discover') {
         return () => {
-            showModalBox({ fullScreen: true }, () => <DiscoverOnLocalState />);
+            showModalBox({ fullScreen: true }, () => <DiscoverOnLocalState fullHeight={true} />);
         };
     } else if (url === '/onboarding_send_first_message') {
         return () => {

@@ -39,6 +39,7 @@ export interface XInputBasicProps extends XFlexStyles {
     fontWeight?: number;
     lineHeight?: number;
     padding?: number;
+    maxLength?: number;
 }
 
 let sizeStyles = styleResolver({
@@ -588,6 +589,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     padding={this.props.padding}
                     lineHeight={this.props.lineHeight}
                     fontWeight={this.props.fontWeight}
+                    maxLength={this.props.maxLength}
                 />
                 {placeholder &&
                     (!v || v === '') && (
