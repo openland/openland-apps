@@ -78,7 +78,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     subtitle={sub}
                     subtitleColor={subColor}
                     action={(myID === user.id) ? 'Edit profile' : 'Send message'}
-                    score={(NON_PRODUCTION && user.audienceSize > 0) ? user.audienceSize : undefined}
+                    score={(NON_PRODUCTION && !user.isBot && user.audienceSize > 0) ? user.audienceSize : undefined}
                     scorePress={handleScorePress}
                     onPress={() => {
                         if (myID === user.id) {
