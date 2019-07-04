@@ -38,6 +38,7 @@ const tooltipWrapperClass = css`
         margin-bottom: 12px;
         font-size: 14px;
         white-space: nowrap;
+        z-index: 10;
 
         &:before {
             content: "";
@@ -52,6 +53,20 @@ const tooltipWrapperClass = css`
             left: 50%;
             transform: translate(-50%, 0);
         }
+
+        &.from-bottom {
+            bottom: initial;
+            top: 100%;
+            margin-bottom: initial;
+            margin-top: 12px;
+
+            &:before {
+                bottom: 100%;
+                top: initial;
+                border-top: initial;
+                border-bottom: 5px solid #6E7588;
+            }
+        }
     }
 
     &:hover > span {
@@ -59,10 +74,10 @@ const tooltipWrapperClass = css`
     }
 `;
 
-export const XFeaturedTooltip = XMemo<{ text: string | JSX.Element }>(props => (
+export const XFeaturedTooltip = XMemo<{ text: string | JSX.Element, position?: 'top' | 'bottom' }>(props => (
     <div className={tooltipWrapperClass}>
         <XFeaturedIcon />
 
-        <span>{props.text}</span>
+        <span className={!!props.position ? 'from-' + props.position : undefined}>{props.text}</span>
     </div>
 ));
