@@ -155,7 +155,7 @@ export const GlobalSearchQuery = gql`
 
 export const DiscoverNextPageQuery = gql`
     query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
-        gammaNextDiscoverPage(
+        betaNextDiscoverPage: gammaNextDiscoverPage(
             selectedTagsIds: $selectedTagsIds
             excudedGroupsIds: $excudedGroupsIds
         ) {

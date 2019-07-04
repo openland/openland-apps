@@ -192,13 +192,13 @@ export const Discover = ({
         client.refetchSuggestedRooms().then(() => {
             client.refetchDiscoverIsDone();
         });
-    }, [currentPage.gammaNextDiscoverPage!!.tagGroup]);
+    }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
 
     // Hack to reset discover on /onboarding/discover page
     if (
         rootExclude.length === 0 &&
         discoverDone.betaIsDiscoverDone &&
-        currentPage.gammaNextDiscoverPage!!.tagGroup!!
+        currentPage.betaNextDiscoverPage!!.tagGroup!!
     ) {
         client.mutateBetaNextDiscoverReset().then(() => {
             client.refetchSuggestedRooms().then(() => {
@@ -208,14 +208,14 @@ export const Discover = ({
         return null;
     }
 
-    if (!currentPage.gammaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
+    if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
             return <XLoader />;
         }
         return <ChatsForYou onSkip={onChatsForYouSkip} onBack={onChatsForYouBack} />;
     }
 
-    const currentPageId = currentPage.gammaNextDiscoverPage!!.tagGroup!!.id;
+    const currentPageId = currentPage.betaNextDiscoverPage!!.tagGroup!!.id;
 
     const onLocalSkip = async () => {
         await onSkip({
@@ -245,7 +245,7 @@ export const Discover = ({
         <LocalDiscoverComponent
             onSkip={onLocalSkip}
             onBack={onBack}
-            group={currentPage.gammaNextDiscoverPage!!.tagGroup!!}
+            group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
@@ -255,11 +255,28 @@ export const Discover = ({
 
 export const DiscoverOnLocalState = () => {
     const client = useClient();
+    const router = React.useContext(XRouterContext)!;
     const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
 
     const [rootState, setRootState] = React.useState<{ selected: string[]; exclude: string[] }[]>(
         [],
     );
+
+    const mergeAllSelected = React.useCallback(() => {
+        const allSelectedArrays = rootState.map(({ selected }) => {
+            return selected;
+        });
+
+        const allSelected: string[] = [];
+        for (let selected of allSelectedArrays) {
+            for (let selectedItem of selected) {
+                if (!allSelected.includes(selectedItem)) {
+                    allSelected.push(selectedItem);
+                }
+            }
+        }
+        return allSelected;
+    }, [rootState]);
 
     const onContinueClick = React.useCallback(
         async (props: { selected: string[]; exclude: string[]; currentPageId: string }) => {
@@ -275,6 +292,7 @@ export const DiscoverOnLocalState = () => {
                     exclude: props.exclude,
                 },
             ];
+
             await client.mutateBetaSubmitNextDiscover({
                 selectedTagsIds: props.selected,
                 excudedGroupsIds: props.exclude,
@@ -285,24 +303,22 @@ export const DiscoverOnLocalState = () => {
         [previousChoisesMap, rootState],
     );
 
+    const onChatsForYouSkip = React.useCallback(async () => {
+        router.push('/mail/');
+    }, []);
+
     const onSkip = React.useCallback(
         async (props: { currentPageId: string }) => {
-            const allSelectedArrays = rootState.map(({ selected }) => {
-                return selected;
-            });
-
-            const allSelected: string[] = [];
-            for (let selected of allSelectedArrays) {
-                for (let selectedItem of selected) {
-                    if (!allSelected.includes(selectedItem)) {
-                        allSelected.push(selectedItem);
-                    }
-                }
-            }
+            const allSelected = mergeAllSelected();
 
             await client.mutateBetaDiscoverSkip({
                 selectedTagsIds: allSelected,
             });
+
+            if (allSelected.length === 0) {
+                await onChatsForYouSkip();
+            }
+
             await client.refetchSuggestedRooms();
             await client.refetchDiscoverIsDone();
             setPreviousChoisesMap({
@@ -323,9 +339,12 @@ export const DiscoverOnLocalState = () => {
         }
     }, [rootState]);
 
-    const onChatsForYouSkip = React.useCallback(() => {
-        //
-    }, []);
+    const getLastStateOrEmpty = React.useCallback(() => {
+        if (rootState.length === 0) {
+            return { selected: [], exclude: [] };
+        }
+        return rootState[rootState.length - 1];
+    }, [rootState]);
 
     const onChatsForYouBack = React.useCallback(async () => {
         await client.mutateBetaNextDiscoverReset();
@@ -337,16 +356,9 @@ export const DiscoverOnLocalState = () => {
             excudedGroupsIds: getLastStateOrEmpty().exclude,
         });
 
-        if (result.gammaNextDiscoverPage!!.tagGroup === null) {
+        if (result.betaNextDiscoverPage!!.tagGroup === null) {
             await onBack();
         }
-    }, [rootState]);
-
-    const getLastStateOrEmpty = React.useCallback(() => {
-        if (rootState.length === 0) {
-            return { selected: [], exclude: [] };
-        }
-        return rootState[rootState.length - 1];
     }, [rootState]);
 
     const lastStateOrEmpty = getLastStateOrEmpty();
