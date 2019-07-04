@@ -172,7 +172,7 @@ export const Discover = ({
     rootSelected: string[];
     rootExclude: string[];
     onContinueClick: (newSelected: any) => void;
-    onSkip: (a: { currentPageId: string }) => void;
+    onSkip: (a: { currentPageId: string; exclude: string[] }) => void;
     onBack: (event: React.MouseEvent) => void;
     onChatsForYouSkip: (event: React.MouseEvent) => void;
     onChatsForYouBack: (event: React.MouseEvent) => void;
@@ -218,13 +218,14 @@ export const Discover = ({
 
     const currentPageId = currentPage.betaNextDiscoverPage!!.tagGroup!!.id;
 
+    const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
+
     const onLocalSkip = async () => {
         await onSkip({
             currentPageId,
+            exclude: newExclude,
         });
     };
-
-    const newExclude = [...new Set<string>([...rootExclude, currentPageId]).values()];
 
     let finalSelected = rootSelected;
 
@@ -279,6 +280,22 @@ export const DiscoverOnLocalState = () => {
         return allSelected;
     }, [rootState]);
 
+    const mergeAllExcluded = React.useCallback(() => {
+        const allExcludeArrays = rootState.map(({ exclude }) => {
+            return exclude;
+        });
+
+        const allExclude: string[] = [];
+        for (let exclude of allExcludeArrays) {
+            for (let selectedItem of exclude) {
+                if (!allExclude.includes(selectedItem)) {
+                    allExclude.push(selectedItem);
+                }
+            }
+        }
+        return allExclude;
+    }, [rootState]);
+
     const onContinueClick = React.useCallback(
         async (props: { selected: string[]; exclude: string[]; currentPageId: string }) => {
             setPreviousChoisesMap({
@@ -309,23 +326,31 @@ export const DiscoverOnLocalState = () => {
     }, []);
 
     const onSkip = React.useCallback(
-        async (props: { currentPageId: string }) => {
-            const allSelected = mergeAllSelected();
-
-            await client.mutateBetaDiscoverSkip({
-                selectedTagsIds: allSelected,
-            });
-
-            if (allSelected.length === 0) {
-                await onChatsForYouSkip();
+        async (props: { exclude: string[]; currentPageId: string }) => {
+            if (rootState.length === 0) {
+                router.push('/mail/');
+                return;
             }
 
-            await client.refetchSuggestedRooms();
-            await client.refetchDiscoverIsDone();
             setPreviousChoisesMap({
                 ...previousChoisesMap,
                 [props.currentPageId]: [],
             });
+
+            const newRootState = [
+                ...rootState,
+                {
+                    selected: rootState[rootState.length - 1].selected,
+                    exclude: props.exclude,
+                },
+            ];
+
+            await client.mutateBetaSubmitNextDiscover({
+                selectedTagsIds: mergeAllSelected(),
+                excudedGroupsIds: props.exclude,
+            });
+
+            setRootState(newRootState);
         },
         [previousChoisesMap, rootState],
     );
