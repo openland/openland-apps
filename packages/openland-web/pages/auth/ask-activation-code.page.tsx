@@ -165,7 +165,7 @@ export const WebSignUpActivationCode = ({
                     )}
                 <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                     <InputField
-                        width={isMobile ? '100%' : 300}
+                        width={isMobile ? '100%' : 360}
                         pattern="[0-9]*"
                         type="number"
                         autofocus={true}
