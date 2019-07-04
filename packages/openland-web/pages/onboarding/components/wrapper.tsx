@@ -21,7 +21,7 @@ const androidClassName = css`
     height: calc(100vh - 80px) !important;
 `;
 
-export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {
+export const Wrapper = (props: { children: any; fullHeight?: boolean; isAuthPage?: boolean }) => {
     let userAgent = window.navigator.userAgent,
         platform = window.navigator.platform,
         iosPlatforms = ['iPhone', 'iPad', 'iPod'],
@@ -39,7 +39,7 @@ export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {
                 wrapperClassName,
                 props.fullHeight && heightClassName,
                 props.fullHeight && isIos && iosClassName,
-                isAndroid && androidClassName,
+                props.isAuthPage && isAndroid && androidClassName,
             )}
         >
             <XView

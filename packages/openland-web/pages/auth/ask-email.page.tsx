@@ -171,7 +171,7 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
     return (
         <>
             {!props.roomView && (
-                <Wrapper>
+                <Wrapper isAuthPage>
                     <XDocumentHead title="Ask email" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
                     <XView marginTop={props.isMobile ? 15 : 34}>

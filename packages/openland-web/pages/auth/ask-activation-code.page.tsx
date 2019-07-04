@@ -254,7 +254,7 @@ export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOut
     return (
         <>
             {!props.roomView && (
-                <Wrapper>
+                <Wrapper isAuthPage>
                     <XDocumentHead title="Activation code" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
                     <XView marginTop={props.isMobile ? 15 : 34}>

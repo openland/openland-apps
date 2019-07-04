@@ -240,7 +240,7 @@ export const IntroduceYourselfPageInner = ({
     return (
         <>
             {!roomView && (
-                <Wrapper>
+                <Wrapper isAuthPage>
                     <XDocumentHead title="Introduce yourself" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
                     <XView marginTop={isMobile ? 15 : 34}>

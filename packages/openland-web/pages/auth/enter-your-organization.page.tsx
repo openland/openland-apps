@@ -265,7 +265,7 @@ export const EnterYourOrganizationPageInner = ({
     return (
         <>
             {!roomView && (
-                <Wrapper>
+                <Wrapper isAuthPage>
                     <XDocumentHead title="Enter organization" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
                     <XView marginTop={isMobile ? 15 : 34}>
