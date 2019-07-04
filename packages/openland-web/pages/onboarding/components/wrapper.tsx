@@ -17,21 +17,13 @@ const iosClassName = css`
     overflow: hidden;
 `;
 
-const androidClassName = css`
-    height: calc(100vh - 80px) !important;
-`;
-
-export const Wrapper = (props: { children: any; fullHeight?: boolean; isAuthPage?: boolean }) => {
-    let userAgent = window.navigator.userAgent,
-        platform = window.navigator.platform,
+export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {
+    let platform = window.navigator.platform,
         iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        isIos = false,
-        isAndroid = false;
+        isIos = false;
 
     if (iosPlatforms.indexOf(platform) !== -1) {
         isIos = true;
-    } else if (/Android/.test(userAgent)) {
-        isAndroid = true;
     }
     return (
         <div
@@ -39,7 +31,6 @@ export const Wrapper = (props: { children: any; fullHeight?: boolean; isAuthPage
                 wrapperClassName,
                 props.fullHeight && heightClassName,
                 props.fullHeight && isIos && iosClassName,
-                props.isAuthPage && isAndroid && androidClassName,
             )}
         >
             <XView
