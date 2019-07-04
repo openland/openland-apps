@@ -25,6 +25,7 @@ export const AccountSettingsQuery = gql`
     query AccountSettings {
         me: me {
             ...UserShort
+            audienceSize
         }
         organizations: myOrganizations {
             ...OrganizationShort

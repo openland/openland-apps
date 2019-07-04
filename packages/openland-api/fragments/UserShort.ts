@@ -14,7 +14,6 @@ export const UserShort = gql`
         isYou
         isBot
         shortname
-        audienceSize
         primaryOrganization {
             ...OrganizationShort
         }
