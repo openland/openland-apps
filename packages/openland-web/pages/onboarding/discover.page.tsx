@@ -140,6 +140,7 @@ const LocalDiscoverComponent = ({
                     <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
                     <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
                     <XButton
+                        enabled={!!localSelected.length}
                         flexShrink={0}
                         zIndex={2}
                         text="Continue"
