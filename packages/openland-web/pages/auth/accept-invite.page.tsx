@@ -49,10 +49,8 @@ const AcceptInvite = ({
             <XView marginBottom={40}>
                 <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
                     <p className={textAlignClassName}>
-                        Openland is a professional messenger designed
-                        {!isMobile && <br />} to support all communication needs of a modern
-                        business.
-                        {!isMobile && <br />} Currently it's in invite-only mode.
+                        An invitation-only community <br /> for top startup founders, investors, and
+                        engineers.
                     </p>
                 </XView>
             </XView>
