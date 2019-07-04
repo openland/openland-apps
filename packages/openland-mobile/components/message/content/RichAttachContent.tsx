@@ -17,6 +17,7 @@ interface RichAttachContentProps {
     imageLayout?: { width: number, height: number };
     isSmall?: boolean;
     theme: AppTheme;
+    maxWidth: number;
 }
 
 const paddedTextPrefix = <Text>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 11 }))}</Text>;
@@ -60,9 +61,9 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
     }
 
     render() {
-        let { isSmall } = this.props;
+        const { isSmall, maxWidth } = this.props;
         const { theme } = this.props;
-        let { text, subTitle, keyboard } = this.props.attach;
+        const { title, text, subTitle, keyboard } = this.props.attach;
 
         // prepare image
         let imgCompact = this.imageCompact;
@@ -82,6 +83,8 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
             imgLayout = { width: 36, height: 36 };
             imageSource = require('assets/img-thn-in.png');
         }
+
+        const titleMaxWidth = (imgCompact && imgLayout && imageSource) ? maxWidth - 26 - 36 - 9 : undefined;
 
         return (
             <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubbleColorIn} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
@@ -178,8 +181,8 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                         </View>
                     )}
 
-                    <View flexDirection="column">
-                        {!!this.props.attach.title && (
+                    <View flexDirection="column" width={titleMaxWidth}>
+                        {!!title && (
                             <Text
                                 style={{
                                     color: theme.textColor,
@@ -193,7 +196,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                 onPress={this.onTitleClick}
                                 allowFontScaling={false}
                             >
-                                {this.props.attach.title}
+                                {title}
                             </Text>
                         )}
                         {!!subTitle && (
