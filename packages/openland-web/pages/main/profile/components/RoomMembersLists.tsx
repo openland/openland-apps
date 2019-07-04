@@ -30,29 +30,28 @@ const MemberCard = ({ member, chat }: { member: RoomFull_SharedRoom_members, cha
             role={member.role}
             customOwnerText="Group creator"
             customMenu={
-                (useHasRole('super-admin') && chat.kind === SharedRoomKind.PUBLIC) || member.canKick || member.user.isYou ? (
+                useHasRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
                             <>
-                                {chat.kind === SharedRoomKind.PUBLIC && (
-                                    <XWithRole role="super-admin">
-                                        <XMenuItem
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
+                                <XWithRole role="super-admin">
+                                    <XMenuItem
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
 
-                                                showModalBox(
-                                                    { title: 'Member featuring' },
-                                                    ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={chat.id} />
-                                                );
-                                            }}
-                                        >
-                                            {member.badge ? 'Edit featured status' : 'Make featured'}
-                                        </XMenuItem>
-                                    </XWithRole>
-                                )}
+                                            showModalBox(
+                                                { title: 'Member featuring' },
+                                                ctx => <MakeFeaturedModal ctx={ctx} userId={member.user.id} roomId={chat.id} />
+                                            );
+                                        }}
+                                    >
+                                        {member.badge ? 'Edit featured status' : 'Make featured'}
+                                    </XMenuItem>
+                                </XWithRole>
+
                                 <XMenuItem
                                     style="danger"
                                     query={{ field: 'remove', value: member.user.id }}

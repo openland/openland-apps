@@ -9,7 +9,7 @@ import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
 import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { MakeFeaturedModal } from 'openland-web/pages/main/profile/components/modals';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole, useHasRole } from 'openland-x-permissions/XWithRole';
 
 interface PreambulaContainerProps {
     children: any;
@@ -167,24 +167,22 @@ export const Preambula = ({
         }
     }
 
-    let customButton = !isCommentNotification && !sender.isBot && (room && room.__typename === 'SharedRoom' && room.kind === SharedRoomKind.PUBLIC) ? ((hidePopper: Function) => (
-        <XWithRole role="super-admin">
-            <XButton
-                style="electric"
-                text={senderBadge ? 'Edit featured' : 'Make featured'}
-                size="small"
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+    let customButton = useHasRole('super-admin') && !isCommentNotification && !sender.isBot && (room && room.__typename !== 'PrivateRoom') ? ((hidePopper: Function) => (
+        <XButton
+            style="electric"
+            text={senderBadge ? 'Edit featured' : 'Make featured'}
+            size="small"
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-                    hidePopper();
-                    showModalBox(
-                        { title: 'Member featuring' },
-                        ctx => <MakeFeaturedModal ctx={ctx} userId={sender.id} roomId={chatId} />
-                    );
-                }}
-            />
-        </XWithRole>
+                hidePopper();
+                showModalBox(
+                    { title: 'Member featuring' },
+                    ctx => <MakeFeaturedModal ctx={ctx} userId={sender.id} roomId={chatId} />
+                );
+            }}
+        />
     )) : undefined;
 
     return (
