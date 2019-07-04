@@ -80,6 +80,7 @@ const LocalDiscoverComponent = ({
 }) => {
     const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
+
     React.useLayoutEffect(() => {
         setLocalSelected(selected);
     }, [selected]);
@@ -227,17 +228,15 @@ export const Discover = ({
         });
     };
 
-    let finalSelected = rootSelected;
+    let finalSelected = [];
 
     if (previousChoisesMap[currentPageId]) {
-        finalSelected = [
-            ...new Set<string>([...rootSelected, ...previousChoisesMap[currentPageId]]).values(),
-        ];
+        finalSelected = previousChoisesMap[currentPageId];
     }
 
     const localOnContinueClick = async (newSelected: string[]) => {
         await onContinueClick({
-            selected: newSelected,
+            selected: [...new Set<string>([...rootSelected, ...newSelected]).values()],
             exclude: newExclude,
             currentPageId,
         });
