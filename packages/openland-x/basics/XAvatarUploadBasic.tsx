@@ -106,7 +106,11 @@ const Placeholder = Glamorous.div<PlaceholderProps>(props => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    color: props.hasImage ? 'rgba(255, 255, 255, 0)' : 'rgba(51,69,98,0.5)',
+    color: props.darkMode
+        ? '#7a7a7a'
+        : props.hasImage
+            ? 'rgba(255, 255, 255, 0)'
+            : 'rgba(51,69,98,0.5)',
     zIndex: 1,
     '&:hover': {
         color: props.darkMode ? '#fff' : props.hasImage ? '#fff' : 'rgba(51,69,98,0.5)',
