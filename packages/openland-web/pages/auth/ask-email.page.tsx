@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { InputField } from 'openland-web/components/InputField';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
@@ -15,7 +14,6 @@ import {
     Title,
     ButtonsWrapper,
     SubTitle,
-    ErrorText,
     RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -25,6 +23,7 @@ import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
+import { Wrapper } from '../onboarding/components/wrapper';
 
 type CreateWithEmailProps = {
     fireEmail: Function;
@@ -36,6 +35,7 @@ type CreateWithEmailProps = {
     setEmailError: Function;
     setEmailSent: Function;
     setEmailValue: Function;
+    isMobile: boolean;
 };
 
 type CreateWithEmailInnerProps = {
@@ -56,9 +56,9 @@ export const RoomCreateWithEmail = ({
     emailValue,
     loginEmailStart,
     emailSending,
+    isMobile,
 }: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
-    const isMobile = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     let emailField = useField('input.email', emailValue, form, [
         {
@@ -148,9 +148,9 @@ export const WebSignUpCreateWithEmail = ({
     emailValue,
     loginEmailStart,
     emailSending,
+    isMobile,
 }: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
-    const isMobile = useIsMobile();
     const subTitle = `It's free and easy`;
 
     let emailField = useField('input.email', emailValue, form, [
@@ -181,6 +181,18 @@ export const WebSignUpCreateWithEmail = ({
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
 
+    const button = (
+        <XButton
+            dataTestId="continue-button"
+            style="primary"
+            loading={emailSending}
+            size="large"
+            alignSelf="center"
+            text={InitTexts.auth.continue}
+            onClick={doConfirm}
+        />
+    );
+
     return (
         <XShortcuts
             handlerMap={{
@@ -193,13 +205,23 @@ export const WebSignUpCreateWithEmail = ({
                 },
             }}
         >
-            <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                <Title roomView={false}>{title}</Title>
-                <SubTitle>{subTitle}</SubTitle>
-                <ButtonsWrapper marginTop={40} width={330}>
+            <XView
+                alignItems="center"
+                flexGrow={1}
+                paddingHorizontal={20}
+                justifyContent="center"
+                marginTop={-100}
+            >
+                <XView fontSize={24} color="#000" fontWeight="600" marginBottom={12}>
+                    {title}
+                </XView>
+                <XView fontSize={16} color="#000" marginBottom={36}>
+                    {subTitle}
+                </XView>
+                <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                     <InputField
                         autofocus
-                        width={isMobile ? undefined : 300}
+                        width={isMobile ? '100%' : 300}
                         dataTestId="email"
                         type="email"
                         title={InitTexts.auth.emailPlaceholder}
@@ -208,24 +230,20 @@ export const WebSignUpCreateWithEmail = ({
                         invalid={isInvalid}
                     />
                     {isInvalid && <XErrorMessage2 message={errorText} />}
-                </ButtonsWrapper>
-                <ButtonsWrapper
-                    marginTop={
-                        emailField.input.invalid && emailField.input.errorText ? 40 - 26 : 40
-                    }
-                >
-                    <XVertical alignItems="center">
-                        <XButton
-                            dataTestId="continue-button"
-                            style="primary"
-                            loading={emailSending}
-                            size="large"
-                            alignSelf="center"
-                            text={InitTexts.auth.continue}
-                            onClick={doConfirm}
-                        />
-                    </XVertical>
-                </ButtonsWrapper>
+                </XView>
+                {!isMobile && (
+                    <XView
+                        alignItems="center"
+                        marginTop={emailField.input.invalid && emailField.input.errorText ? 14 : 40}
+                    >
+                        {button}
+                    </XView>
+                )}
+                {isMobile && (
+                    <XView alignItems="center" position="absolute" bottom={30}>
+                        {button}
+                    </XView>
+                )}
             </XView>
         </XShortcuts>
     );
@@ -262,12 +280,12 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
     };
 
     return (
-        <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Ask email" />
+        <>
             {!props.roomView && (
-                <>
+                <Wrapper>
+                    <XDocumentHead title="Ask email" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
-                    <XView marginTop={34}>
+                    <XView marginTop={props.isMobile ? 15 : 34}>
                         <BackSkipLogo
                             onBack={() => {
                                 if (Cookie.get('x-openland-create-new-account')) {
@@ -277,18 +295,24 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
                                 }
                             }}
                             onSkip={null}
+                            noLogo={props.isMobile}
                         />
                     </XView>
-
                     <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
-                </>
+                </Wrapper>
             )}
             {props.roomView && (
-                <RoomSignupContainer pageMode="CreateFromEmail" {...props.roomContainerParams!!}>
-                    <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
-                </RoomSignupContainer>
+                <XView backgroundColor="white" flexGrow={1}>
+                    <XDocumentHead title="Ask email" />
+                    <RoomSignupContainer
+                        pageMode="CreateFromEmail"
+                        {...props.roomContainerParams!!}
+                    >
+                        <RoomCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
+                    </RoomSignupContainer>
+                </XView>
             )}
-        </XView>
+        </>
     );
 };
 

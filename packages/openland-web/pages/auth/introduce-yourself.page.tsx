@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
 import { InputField } from 'openland-web/components/InputField';
@@ -28,6 +29,7 @@ import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
+import { Wrapper } from '../onboarding/components/wrapper';
 
 export type ProfileFormData = {
     firstName: string | null;
@@ -37,23 +39,27 @@ export type ProfileFormData = {
 
 type EnterYourOrganizationPageProps = {
     initialProfileFormData?: ProfileFormData | null;
-    roomView: boolean;
 };
 
 type IntroduceYourselfPageOuterProps = {
     roomView: boolean;
     roomContainerParams: RoomContainerParams;
     initialProfileFormData?: ProfileFormData | null;
+    isMobile: boolean;
 };
 
-export const CreateProfileFormInner = (
-    props: EnterYourOrganizationPageProps & { prefill: any },
+const textAlignClassName = css`
+    text-align: center;
+`;
+
+const CreateProfileFormInnerWeb = (
+    props: EnterYourOrganizationPageProps & { prefill: any; isMobile: boolean },
 ) => {
     const [sending, setSending] = React.useState(false);
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const form = useForm();
-    const { roomView, prefill } = props;
+    const { prefill } = props;
 
     let firstName = useField<string>(
         'input.firstName',
@@ -81,162 +87,66 @@ export const CreateProfileFormInner = (
         form,
     );
 
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            const formData = {
-                firstName: firstName.value,
-                lastName: lastName.value,
-                photoRef: photoRef.value
-                    ? {
-                          ...(photoRef.value as any),
-                          isImage: undefined,
-                          width: undefined,
-                          height: undefined,
-                          crop: undefined,
-                          __typename: undefined,
-                      }
-                    : undefined,
-            };
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                const formData = {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    photoRef: photoRef.value
+                        ? {
+                              ...(photoRef.value as any),
+                              isImage: undefined,
+                              width: undefined,
+                              height: undefined,
+                              crop: undefined,
+                              __typename: undefined,
+                          }
+                        : undefined,
+                };
 
-            if (props.initialProfileFormData) {
-                await client.mutateProfileUpdate({
-                    input: formData,
-                });
-            } else {
-                await client.mutateProfileCreate({
-                    input: formData,
-                });
-            }
-            await client.refetchProfile();
-            await client.refetchProfilePrefill();
-            await client.refetchAccount();
-
-            if (firstName.value) {
-                setSending(true);
-
-                if (Cookie.get('x-openland-org-invite')) {
-                    const orgInvite = Cookie.get('x-openland-org-invite');
-                    Cookie.remove('x-openland-org-invite');
-                    window.location.href = `/join/${orgInvite}`;
+                if (props.initialProfileFormData) {
+                    await client.mutateProfileUpdate({
+                        input: formData,
+                    });
                 } else {
-                    router.push('/authorization/enter-your-organization');
+                    await client.mutateProfileCreate({
+                        input: formData,
+                    });
                 }
-            }
-        });
-    }, [firstName.value, lastName.value, photoRef.value]);
+                await client.refetchProfile();
+                await client.refetchProfilePrefill();
+                await client.refetchAccount();
+
+                if (firstName.value) {
+                    setSending(true);
+
+                    if (Cookie.get('x-openland-org-invite')) {
+                        const orgInvite = Cookie.get('x-openland-org-invite');
+                        Cookie.remove('x-openland-org-invite');
+                        window.location.href = `/join/${orgInvite}`;
+                    } else {
+                        router.push('/authorization/enter-your-organization');
+                    }
+                }
+            });
+        },
+        [firstName.value, lastName.value, photoRef.value],
+    );
 
     const onEnter = () => {
         doConfirm();
     };
 
-    const content = (
-        <XTrack event="signup_profile_view">
-            <ContentWrapper noPadding={true}>
-                <Title roomView={roomView}>{InitTexts.create_profile.title}</Title>
-                <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-                <ButtonsWrapper marginTop={40} width="100%">
-                    <XVertical alignItems="center">
-                        <XView marginBottom={10}>
-                            <XAvatarFormFieldComponent
-                                size="default"
-                                {...photoRef.input}
-                                darkMode={roomView ? undefined : true}
-                                initialUrl={prefill ? prefill.picture : undefined}
-                            />
-                        </XView>
-
-                        <XView maxWidth={500}>
-                            {roomView && (
-                                <XView width={330}>
-                                    <XInput
-                                        invalid={!!form.error}
-                                        size="large"
-                                        title="First name"
-                                        dataTestId="first-name"
-                                        flexGrow={1}
-                                        {...firstName.input}
-                                    />
-                                </XView>
-                            )}
-                            {!roomView && (
-                                <XView width={360}>
-                                    <InputField
-                                        height={56}
-                                        title="First name"
-                                        dataTestId="first-name"
-                                        flexGrow={1}
-                                        field={firstName}
-                                        hideErrorText
-                                    />
-                                </XView>
-                            )}
-
-                            {firstName.input.invalid && firstName.input.errorText && (
-                                <XErrorMessage2 message={firstName.input.errorText} />
-                            )}
-                        </XView>
-
-                        <XView>
-                            {roomView && (
-                                <XView width={330}>
-                                    <XInput
-                                        invalid={!!form.error}
-                                        size="large"
-                                        title="Last name"
-                                        dataTestId="last-name"
-                                        flexGrow={1}
-                                        {...lastName.input}
-                                    />
-                                </XView>
-                            )}
-
-                            {!roomView && (
-                                <XView width={360}>
-                                    <InputField
-                                        height={56}
-                                        title="Last name"
-                                        dataTestId="last-name"
-                                        flexGrow={1}
-                                        field={lastName}
-                                        hideErrorText
-                                    />
-                                </XView>
-                            )}
-                            {lastName.input.invalid && lastName.input.errorText && (
-                                <XErrorMessage2 message={lastName.input.errorText} />
-                            )}
-                        </XView>
-
-                        {roomView && (
-                            <XView marginTop={70 - 8} paddingBottom={84}>
-                                <ButtonsWrapper>
-                                    <XButton
-                                        loading={sending}
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={InitTexts.create_profile.continue}
-                                        size="large"
-                                        onClick={doConfirm}
-                                    />
-                                </ButtonsWrapper>
-                            </XView>
-                        )}
-                        {!roomView && (
-                            <ButtonsWrapper marginTop={40} marginBottom={84}>
-                                <XButton
-                                    loading={sending}
-                                    dataTestId="continue-button"
-                                    style="primary"
-                                    text={InitTexts.create_profile.continue}
-                                    size="large"
-                                    onClick={doConfirm}
-                                />
-                            </ButtonsWrapper>
-                        )}
-                    </XVertical>
-                </ButtonsWrapper>
-            </ContentWrapper>
-        </XTrack>
+    const button = (
+        <XButton
+            loading={sending}
+            dataTestId="continue-button"
+            style="primary"
+            text={InitTexts.create_profile.continue}
+            size="large"
+            onClick={doConfirm}
+        />
     );
 
     return (
@@ -251,12 +161,253 @@ export const CreateProfileFormInner = (
                 },
             }}
         >
-            {!roomView && (
-                <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                    {content}
-                </XView>
-            )}
-            {roomView && <XView>{content}</XView>}
+            <XView
+                alignItems="center"
+                flexGrow={1}
+                paddingHorizontal={20}
+                justifyContent="center"
+                marginTop={-100}
+            >
+                <XTrack event="signup_profile_view">
+                    <XView fontSize={24} color="#000" fontWeight="600" marginBottom={12}>
+                        {InitTexts.create_profile.title}
+                    </XView>
+                    <XView
+                        fontSize={16}
+                        color="#000"
+                        marginBottom={36}
+                        maxWidth={props.isMobile ? 230 : undefined}
+                    >
+                        <span className={textAlignClassName}>
+                            {InitTexts.create_profile.subTitle}
+                        </span>
+                    </XView>
+                    <XView marginBottom={20}>
+                        <XAvatarFormFieldComponent
+                            size="default"
+                            {...photoRef.input}
+                            initialUrl={prefill ? prefill.picture : undefined}
+                            darkMode
+                        />
+                    </XView>
+
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
+                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                            <InputField
+                                height={56}
+                                title="First name"
+                                dataTestId="first-name"
+                                flexGrow={1}
+                                field={firstName}
+                                hideErrorText
+                            />
+                        </XView>
+                        {firstName.input.invalid &&
+                            firstName.input.errorText && (
+                                <XErrorMessage2 message={firstName.input.errorText} />
+                            )}
+                    </XView>
+
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                            <InputField
+                                height={56}
+                                title="Last name"
+                                dataTestId="last-name"
+                                flexGrow={1}
+                                field={lastName}
+                                hideErrorText
+                            />
+                        </XView>
+                        {lastName.input.invalid &&
+                            lastName.input.errorText && (
+                                <XErrorMessage2 message={lastName.input.errorText} />
+                            )}
+                    </XView>
+                    {!props.isMobile && (
+                        <XView
+                            alignItems="center"
+                            marginTop={
+                                firstName.input.invalid && firstName.input.errorText ? 14 : 40
+                            }
+                        >
+                            {button}
+                        </XView>
+                    )}
+                    {props.isMobile && (
+                        <XView alignItems="center" position="absolute" bottom={30}>
+                            {button}
+                        </XView>
+                    )}
+                </XTrack>
+            </XView>
+        </XShortcuts>
+    );
+};
+
+export const CreateProfileFormInnerRoom = (
+    props: EnterYourOrganizationPageProps & { prefill: any },
+) => {
+    const [sending, setSending] = React.useState(false);
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+    const form = useForm();
+    const { prefill } = props;
+
+    let firstName = useField<string>(
+        'input.firstName',
+        (prefill && prefill.firstName) ||
+            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
+            '',
+        form,
+        [
+            {
+                checkIsValid: (value: string) => !!value.trim(),
+                text: `Please enter your name`,
+            },
+        ],
+    );
+    let lastName = useField<string>(
+        'input.lastName',
+        (prefill && prefill.lastName) ||
+            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
+            '',
+        form,
+    );
+    let photoRef = useField<StoredFileT | null>(
+        'input.photoRef',
+        (props.initialProfileFormData && props.initialProfileFormData.photoRef) || null,
+        form,
+    );
+
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                const formData = {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    photoRef: photoRef.value
+                        ? {
+                              ...(photoRef.value as any),
+                              isImage: undefined,
+                              width: undefined,
+                              height: undefined,
+                              crop: undefined,
+                              __typename: undefined,
+                          }
+                        : undefined,
+                };
+
+                if (props.initialProfileFormData) {
+                    await client.mutateProfileUpdate({
+                        input: formData,
+                    });
+                } else {
+                    await client.mutateProfileCreate({
+                        input: formData,
+                    });
+                }
+                await client.refetchProfile();
+                await client.refetchProfilePrefill();
+                await client.refetchAccount();
+
+                if (firstName.value) {
+                    setSending(true);
+
+                    if (Cookie.get('x-openland-org-invite')) {
+                        const orgInvite = Cookie.get('x-openland-org-invite');
+                        Cookie.remove('x-openland-org-invite');
+                        window.location.href = `/join/${orgInvite}`;
+                    } else {
+                        router.push('/authorization/enter-your-organization');
+                    }
+                }
+            });
+        },
+        [firstName.value, lastName.value, photoRef.value],
+    );
+
+    const onEnter = () => {
+        doConfirm();
+    };
+
+    return (
+        <XShortcuts
+            handlerMap={{
+                ENTER: onEnter,
+            }}
+            keymap={{
+                ENTER: {
+                    osx: ['enter'],
+                    windows: ['enter'],
+                },
+            }}
+        >
+            <XView>
+                <XTrack event="signup_profile_view">
+                    <ContentWrapper noPadding={true}>
+                        <Title roomView={true}>{InitTexts.create_profile.title}</Title>
+                        <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+                        <ButtonsWrapper marginTop={40} width="100%">
+                            <XVertical alignItems="center">
+                                <XView marginBottom={10}>
+                                    <XAvatarFormFieldComponent
+                                        size="default"
+                                        {...photoRef.input}
+                                        initialUrl={prefill ? prefill.picture : undefined}
+                                    />
+                                </XView>
+
+                                <XView maxWidth={500}>
+                                    <XView width={330}>
+                                        <XInput
+                                            invalid={!!form.error}
+                                            size="large"
+                                            title="First name"
+                                            dataTestId="first-name"
+                                            flexGrow={1}
+                                            {...firstName.input}
+                                        />
+                                    </XView>
+                                    {firstName.input.invalid &&
+                                        firstName.input.errorText && (
+                                            <XErrorMessage2 message={firstName.input.errorText} />
+                                        )}
+                                </XView>
+
+                                <XView>
+                                    <XView width={330}>
+                                        <XInput
+                                            invalid={!!form.error}
+                                            size="large"
+                                            title="Last name"
+                                            dataTestId="last-name"
+                                            flexGrow={1}
+                                            {...lastName.input}
+                                        />
+                                    </XView>
+                                    {lastName.input.invalid &&
+                                        lastName.input.errorText && (
+                                            <XErrorMessage2 message={lastName.input.errorText} />
+                                        )}
+                                </XView>
+                                <XView marginTop={70 - 8} paddingBottom={84}>
+                                    <ButtonsWrapper>
+                                        <XButton
+                                            loading={sending}
+                                            dataTestId="continue-button"
+                                            style="primary"
+                                            text={InitTexts.create_profile.continue}
+                                            size="large"
+                                            onClick={doConfirm}
+                                        />
+                                    </ButtonsWrapper>
+                                </XView>
+                            </XVertical>
+                        </ButtonsWrapper>
+                    </ContentWrapper>
+                </XTrack>
+            </XView>
         </XShortcuts>
     );
 };
@@ -264,6 +415,7 @@ export const CreateProfileFormInner = (
 export const IntroduceYourselfPageInner = ({
     roomView,
     roomContainerParams,
+    isMobile,
 }: IntroduceYourselfPageOuterProps) => {
     const client = useClient();
 
@@ -286,12 +438,12 @@ export const IntroduceYourselfPageInner = ({
         : null;
 
     return (
-        <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Introduce yourself" />
+        <>
             {!roomView && (
-                <>
+                <Wrapper>
+                    <XDocumentHead title="Introduce yourself" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-                    <XView marginTop={34}>
+                    <XView marginTop={isMobile ? 15 : 34}>
                         <BackSkipLogo
                             onBack={
                                 null
@@ -300,26 +452,28 @@ export const IntroduceYourselfPageInner = ({
                                 // }
                             }
                             onSkip={null}
+                            noLogo={isMobile}
                         />
                     </XView>
-                    <CreateProfileFormInner
+                    <CreateProfileFormInnerWeb
                         prefill={prefill}
-                        roomView={roomView}
                         initialProfileFormData={initialProfileFormData}
+                        isMobile={isMobile}
                     />
-                </>
+                </Wrapper>
             )}
-
             {roomView && (
-                <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
-                    <CreateProfileFormInner
-                        prefill={usePhotoPrefill && data ? data.prefill : null}
-                        roomView={roomView}
-                        initialProfileFormData={initialProfileFormData}
-                    />
-                </RoomSignupContainer>
+                <XView backgroundColor="white" flexGrow={1}>
+                    <XDocumentHead title="Introduce yourself" />
+                    <RoomSignupContainer pageMode="CreateProfile" {...roomContainerParams!!}>
+                        <CreateProfileFormInnerRoom
+                            prefill={usePhotoPrefill && data ? data.prefill : null}
+                            initialProfileFormData={initialProfileFormData}
+                        />
+                    </RoomSignupContainer>
+                </XView>
             )}
-        </XView>
+        </>
     );
 };
 

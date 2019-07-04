@@ -55,6 +55,7 @@ import { InstallApps } from './pages/main/InstallApps';
 import { StartConversation } from './pages/main/StartConversation';
 import { Invites } from './pages/main/Invites';
 import { InvitesMore } from './pages/main/InvitesMore';
+import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -62,6 +63,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)
+  .addRoute('ProfileGroupFeatured', ProfileGroupFeatured)
   .addRoute('EditGroup', EditGroup)
   .addRoute('EditGroupAdvanced', EditGroupAdvanced)
   .addRoute('SettingsProfile', SettingsProfile)

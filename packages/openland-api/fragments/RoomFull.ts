@@ -34,6 +34,7 @@ export const RoomFull = gql`
             membership
             role
             membersCount
+            featuredMembersCount
             members {
                 role
                 membership
@@ -105,6 +106,7 @@ export const RoomFullWithoutMembers = gql`
             membership
             role
             membersCount
+            featuredMembersCount
             settings {
                 id
                 mute

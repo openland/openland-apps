@@ -7,13 +7,9 @@ export const UserForMention = gql`
         id
         name
         photo
-        primaryBadge {
-            ...UserBadge
-        }
         primaryOrganization {
             id
             name
         }
     }
-    ${UserBadge}
 `;

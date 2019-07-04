@@ -357,6 +357,24 @@ export const RoomWithoutMembersQuery = gql`
     ${OrganizationMedium}
 `;
 
+export const RoomFeaturedMembersQuery = gql`
+    query RoomFeaturedMembers($roomId: ID!) {
+        roomFeaturedMembers(roomId: $roomId) {
+            user {
+                ...UserShort
+            }
+            role
+            membership
+            canKick
+            badge {
+                ...UserBadge
+            }
+        }
+    }
+    ${UserShort}
+    ${UserBadge}
+`;
+
 export const RoomTinyQuery = gql`
     query RoomTiny($id: ID!) {
         room(id: $id) {

@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { SettingsFull } from '../fragments/SettingsFragment';
-import { UserBadge } from 'openland-api/fragments/UserBadge';
 
 export const ProfileQuery = gql`
     query Profile {
@@ -33,9 +32,6 @@ export const ProfileQuery = gql`
                 name
                 membersCount
             }
-            primaryBadge {
-                ...UserBadge
-            }
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy {
                 id
@@ -43,7 +39,6 @@ export const ProfileQuery = gql`
             }
         }
     }
-    ${UserBadge}
 `;
 
 export const ProfileUpdateMutation = gql`

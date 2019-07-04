@@ -260,8 +260,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
         <XUserCard
             user={user}
             hideOrganization={true}
-            isAdmin={role === 'ADMIN'}
-            isOwner={role === 'OWNER'}
+            role={role}
             customMenu={customMenu}
         />
     );

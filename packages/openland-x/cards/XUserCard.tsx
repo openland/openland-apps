@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
-import { User_user, UserBadge } from 'openland-api/Types';
+import { User_user, UserBadge, RoomMemberRole, OrganizationMemberRole } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
-import AdminIcon from 'openland-icons/ic-star-admin.svg';
+import CrownIcon from 'openland-icons/ic-crown-4.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { XDate } from 'openland-x/XDate';
@@ -12,6 +12,7 @@ import { css } from 'linaria';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
 import { XFeatured } from 'openland-x/XFeatured';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -50,28 +51,40 @@ const UserStatus = (props: { user: Partial<User_user> }) => {
     }
 };
 
-const AdminIconClass = css`
+const OwnerIconClass = css`
     & * {
-        fill: #ffab00;
+        fill: #F2AA00;
     }
 `;
 
-const Tooltip = ({ isOwner }: { isOwner?: boolean }) => (
-    <XPopper
-        placement="top"
-        showOnHoverContent={false}
-        showOnHover={true}
-        style="dark"
-        content={
-            isOwner ? TextProfiles.Organization.roles.OWNER : TextProfiles.Organization.roles.ADMIN
-        }
-        marginBottom={6}
-    >
-        <XView marginRight={5} alignItems="center" justifyContent="center">
-            <AdminIcon className={AdminIconClass} />
-        </XView>
-    </XPopper>
-);
+const AdminIconClass = css`
+    & * {
+        fill: #B4B4B4;
+    }
+`;
+
+const Tooltip = ({ role, customOwnerText }: { role: RoomMemberRole | OrganizationMemberRole, customOwnerText?: string }) => {
+    if (role !== 'ADMIN' && role !== 'OWNER') {
+        return null;
+    }
+
+    return (
+        <XPopper
+            placement="top"
+            showOnHoverContent={false}
+            showOnHover={true}
+            style="dark"
+            content={
+                role === 'OWNER' ? customOwnerText || TextProfiles.Organization.roles.OWNER : TextProfiles.Organization.roles.ADMIN
+            }
+            marginBottom={6}
+        >
+            <div style={{ display: 'flex', marginRight: 5, alignSelf: 'center', width: 14, height: 14, }}>
+                <CrownIcon className={role === 'OWNER' ? OwnerIconClass : AdminIconClass} />
+            </div>
+        </XPopper>
+    );
+};
 
 interface XUserCardProps {
     onClick?: () => void;
@@ -81,8 +94,8 @@ interface XUserCardProps {
     customButton?: any;
     customMenu?: any;
     extraMenu?: any;
-    isAdmin?: boolean;
-    isOwner?: boolean;
+    role?: RoomMemberRole | OrganizationMemberRole;
+    customOwnerText?: string;
     hideOrganization?: boolean;
     disable?: boolean;
     badge?: UserBadge | null;
@@ -102,9 +115,9 @@ export const XUserCard = ({
     customButton,
     customMenu,
     extraMenu,
-    isAdmin,
+    role,
+    customOwnerText,
     hideOrganization,
-    isOwner,
     onClick,
     disable,
     badge
@@ -210,7 +223,7 @@ export const XUserCard = ({
                             marginTop={-2}
                             marginBottom={2}
                         >
-                            {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
+                            {role && <Tooltip role={role} customOwnerText={customOwnerText} />}
                             <XView minWidth={0} flexShrink={1}>
                                 <div className={userNameClassname}>
                                     {emoji({
@@ -221,9 +234,11 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                             {!isMobile && badge && (
-                                <XView marginLeft={12}>
-                                    <XFeatured text={emoji({ src: badge.name, size: 16 })} />
-                                </XView>
+                                <XWithRole role="feature-non-production">
+                                    <XView marginLeft={12}>
+                                        <XFeatured text={emoji({ src: badge.name, size: 16 })} />
+                                    </XView>
+                                </XWithRole>
                             )}
                         </XView>
                         {!isMobile && user.id && (

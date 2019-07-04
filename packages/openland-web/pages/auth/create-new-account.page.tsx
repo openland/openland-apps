@@ -24,6 +24,7 @@ type AuthMechanism = {
     signin: boolean;
     loginWithGoogle: Function;
     loginWithEmail: Function;
+    isMobile: boolean;
 };
 
 type AuthMechanismOuterProps = {
@@ -112,10 +113,11 @@ const noHightLightClassName = css`
     border: 0 !important;
 `;
 
-const Footer = () => {
+const Footer = (props: { isMobile?: boolean }) => {
+    console.log(props.isMobile);
     return (
         <RoomTerms>
-            By creating an account you are accepting our{' '}
+            By creating an account you are accepting our {props.isMobile && <br />}
             <XLink className={noHightLightClassName} href="https://openland.com/terms">
                 Terms of Service
             </XLink>{' '}
@@ -156,6 +158,7 @@ export const WebSignUpAuthMechanism = ({
     onSignUpClick,
     loginWithGoogle,
     loginWithEmail,
+    isMobile,
 }: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? 'Sign in to Openland' : 'Create new account';
@@ -197,7 +200,7 @@ export const WebSignUpAuthMechanism = ({
 
             <XView position="absolute" bottom={0} width="100%">
                 <XView alignItems="center">
-                    <Footer />
+                    <Footer isMobile={isMobile} />
                 </XView>
             </XView>
         </>

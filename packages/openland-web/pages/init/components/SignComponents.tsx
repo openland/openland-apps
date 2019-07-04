@@ -2,31 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
-import {
-    WebSignUpAuthMechanism as WebSignUpAuthMechanismReimport,
-    RoomAuthMechanism as RoomAuthMechanismReimport,
-} from 'openland-web/pages/auth/create-new-account.page';
-export const RoomAuthMechanism = RoomAuthMechanismReimport;
-export const WebSignUpAuthMechanism = WebSignUpAuthMechanismReimport;
-import {
-    WebSignUpCreateWithEmail as WebSignUpCreateWithEmailReimport,
-    RoomCreateWithEmail as RoomCreateWithEmailReimport,
-} from 'openland-web/pages/auth/ask-email.page';
-export const RoomCreateWithEmail = RoomCreateWithEmailReimport;
-export const WebSignUpCreateWithEmail = WebSignUpCreateWithEmailReimport;
-import {
-    WebSignUpActivationCode as WebSignUpActivationCodeReimport,
-    RoomActivationCode as RoomActivationCodeReimport,
-} from 'openland-web/pages/auth/ask-activation-code.page';
-export const RoomActivationCode = RoomActivationCodeReimport;
-export const WebSignUpActivationCode = WebSignUpActivationCodeReimport;
-import { CreateProfileFormInner as CreateProfileFormInnerReimport } from 'openland-web/pages/auth/introduce-yourself.page';
-export const CreateProfileFormInner = CreateProfileFormInnerReimport;
-import { EnterYourOrganizationPage as CreateOrganizationFormInnerReimport } from 'openland-web/pages/auth/enter-your-organization.page';
-export const CreateOrganizationFormInner = CreateOrganizationFormInnerReimport;
-import { AcceptInvitePage as AcceptInvitePageReimport } from 'openland-web/pages/auth/accept-invite.page';
-export const AcceptInvitePage = AcceptInvitePageReimport;
-
 export const SubTitle = Glamorous.div({
     opacity: 0.7,
     textAlign: 'center',
@@ -184,67 +159,6 @@ export const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
 
 // WebSignUpContainer start
 
-export const RootContainer = Glamorous.div({
-    display: 'flex',
-    width: '100%',
-});
-
-const RootContainerContentStyles = Glamorous.div({
-    backgroundColor: '#fff',
-    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
-    height: '100%',
-    flexBasis: '100%',
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingTop: 19,
-    paddingBottom: 22,
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1,
-    '@media(max-width: 950px)': {
-        flexBasis: '100%',
-    },
-    '@media(max-width: 700px)': {
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 15,
-        paddingBottom: 15,
-    },
-});
-
-export const RootContainerContent = (props: { children: any }) => (
-    <RootContainerContentStyles>{props.children}</RootContainerContentStyles>
-);
-
-const Footer = Glamorous.div({
-    marginTop: 'auto',
-    flexShrink: 0,
-});
-
-const FooterText = Glamorous.div({
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562',
-    opacity: 0.4,
-});
-
-const FooterLink = Glamorous(XLink)({
-    display: 'inline-block',
-    textDecoration: 'underline',
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562',
-    '&:hover': {
-        textDecoration: 'none',
-    },
-});
-
 const Logo = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
@@ -329,80 +243,18 @@ export type PageModeT =
     | 'CreateProfile'
     | 'SignInInvite';
 
-interface SignContainerProps extends HeaderProps {
-    pageMode: PageModeT;
-    showTerms?: boolean;
-    signin?: boolean;
-    children?: any;
-}
-
-export const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
-    return {
-        width: 522,
-        display: 'flex',
-        flexGrow: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...(pageMode === 'CreateProfile'
-            ? { margin: 'auto' }
-            : {
-                  position: 'relative',
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                  height: '100%',
-              }),
-        '@media(max-width: 530px)': {
-            width: '100%',
-            maxWidth: 442,
-        },
-    };
-});
-
-export const WebSignUpFooter = () => {
-    return (
-        <FooterText>
-            By creating an account you are accepting our{' '}
-            <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink> and{' '}
-            <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
-        </FooterText>
-    );
-};
-
-export const WebSignUpContainer = (props: SignContainerProps) => (
-    <RootContainer>
-        <RootContainerContent>
-            <Header
-                text={props.text}
-                path={props.path}
-                linkText={props.linkText}
-                className="header"
-            />
-            <MainContent pageMode={props.pageMode} className="content">
-                {props.children}
-            </MainContent>
-            <Footer>
-                {props.showTerms ? (
-                    <WebSignUpFooter />
-                ) : (
-                    <FooterText>© {new Date().getFullYear()} Openland</FooterText>
-                )}
-            </Footer>
-        </RootContainerContent>
-    </RootContainer>
-);
-
-// WebSignUpContainer end
 // RoomSignup start
 
 export const ButtonsWrapper = Glamorous.div<{
     marginTop?: number;
     marginBottom?: number;
     width?: number | string;
+    maxWidth?: number | string;
 }>(props => ({
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    maxWidth: props.width,
+    maxWidth: props.maxWidth ? props.maxWidth : props.width,
+    width: props.width,
     marginLeft: props.width ? 'auto' : undefined,
     marginRight: props.width ? 'auto' : undefined,
     '@media(max-width: 1300px)': {
@@ -566,48 +418,6 @@ export const RoomSignupContainer = (props: RoomSignupContainerProps) => (
 );
 
 // RoomSignup end
-const SeparatorStyle = Glamorous.div<{
-    marginTop?: number;
-    marginBottom?: number;
-}>(props => ({
-    width: '100%',
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.7,
-    fontSize: 16,
-    lineHeight: 1.5,
-    letterSpacing: 0.5,
-    color: '#1f3449',
-    zIndex: 0,
-    marginTop: props.marginTop ? props.marginTop : 15,
-    marginBottom: props.marginBottom ? props.marginBottom : 15,
-    '&:before': {
-        content: `''`,
-        position: 'absolute',
-        left: 0,
-        top: '50%',
-        display: 'block',
-        height: 1,
-        width: '100%',
-        backgroundColor: '#dcdee4',
-        zIndex: 0,
-    },
-    '& > div': {
-        display: 'block',
-        width: 35,
-        backgroundColor: '#fff',
-        textAlign: 'center',
-        zIndex: 1,
-    },
-}));
-
-export const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
-    <SeparatorStyle {...props}>
-        <div>or</div>
-    </SeparatorStyle>
-);
 
 export const GoogleButton = (props: {
     onClick?: any;

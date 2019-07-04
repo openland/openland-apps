@@ -6,7 +6,7 @@ import { AskActivationPage } from './ask-activation-code.page';
 import { AskEmailPage } from './ask-email.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { EnterYourOrganizationPage } from './enter-your-organization.page';
-import { IntroduceYourselfPage, ProfileFormData } from './introduce-yourself.page';
+import { IntroduceYourselfPage } from './introduce-yourself.page';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
 import { InitTexts } from 'openland-web/pages/init/_text';
@@ -101,9 +101,12 @@ export default () => {
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
-    const toggleSignin = React.useCallback(() => {
-        setSignin(!signin);
-    }, [signin]);
+    const toggleSignin = React.useCallback(
+        () => {
+            setSignin(!signin);
+        },
+        [signin],
+    );
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
@@ -117,10 +120,10 @@ export default () => {
     }
 
     let fromRoom: any = Cookie.get('x-openland-invite');
-    const roomView = !!fromRoom;
+    let roomView = !!fromRoom;
     const isMobile = useIsMobile();
     if (isMobile) {
-        fromRoom = false;
+        roomView = false;
     }
 
     let title;
@@ -283,6 +286,7 @@ export default () => {
                     onAcceptInvite={() => {
                         router.push('/authorization/create-new-account');
                     }}
+                    isMobile={!!isMobile}
                 />
             )}
             {page === pages.createNewAccount && (
@@ -302,6 +306,7 @@ export default () => {
                         signin={signin}
                         loginWithGoogle={loginWithGoogle}
                         loginWithEmail={loginWithEmail}
+                        isMobile={!!isMobile}
                     />
                 </XTrack>
             )}
@@ -319,6 +324,7 @@ export default () => {
                         setEmailError={setEmailError}
                         setEmailSent={setEmailSent}
                         setEmailValue={setEmailValue}
+                        isMobile={!!isMobile}
                     />
                 </XTrack>
             )}
@@ -341,6 +347,7 @@ export default () => {
                         emailSendedTo={emailValue}
                         emailValue={emailValue}
                         emailSending={emailSending}
+                        isMobile={!!isMobile}
                     />
                 </XTrack>
             )}
@@ -348,7 +355,7 @@ export default () => {
                 <IntroduceYourselfPage
                     roomView={roomView}
                     roomContainerParams={roomContainerParams}
-                    
+                    isMobile={!!isMobile}
                 />
             )}
             {page === pages.enterYourOrganization && (
@@ -356,6 +363,7 @@ export default () => {
                     roomView={roomView}
                     inviteKey={appInviteKey}
                     roomContainerParams={roomContainerParams}
+                    isMobile={!!isMobile}
                 />
             )}
         </>

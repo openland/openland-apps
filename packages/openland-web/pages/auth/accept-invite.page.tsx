@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
@@ -9,8 +10,11 @@ import { XText } from 'openland-x/XText';
 import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import LogoBig from 'openland-icons/logo-big.svg';
-import { SubTitle } from 'openland-web/pages/init/components/SignComponents';
 import { XButton } from 'openland-x/XButton';
+
+const textAlignClassName = css`
+    text-align: center;
+`;
 
 const InviterComponent = ({
     inviter,
@@ -35,51 +39,56 @@ const InviterComponent = ({
 };
 
 const AcceptInvite = ({
-    signPath,
     inviter,
     onAcceptInvite,
+    isMobile,
 }: {
     signPath: string;
     inviter: { photo: string | null; name: string; id: string };
     onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
-}) => {
-    return (
-        <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
-            <XView position="absolute" top={56} alignSelf={'center'}>
-                <InviterComponent inviter={inviter} />
+    isMobile: boolean;
+}) => (
+    <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
+        <XView position="absolute" top={56} alignSelf={'center'}>
+            <InviterComponent inviter={inviter} />
+        </XView>
+        <XView alignSelf="center" alignItems="center">
+            <XView marginBottom={24}>
+                <LogoBig />
             </XView>
-            <XView alignSelf="center" alignItems="center">
-                <XView marginBottom={24}>
-                    <LogoBig />
-                </XView>
 
-                <XView marginBottom={40}>
-                    <SubTitle
-                        style={{
-                            maxWidth: 535,
-                        }}
-                    >
-                        <p>
+            <XView marginBottom={40}>
+                <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
+                    {isMobile && (
+                        <p className={textAlignClassName}>
+                            Openland is a professional messenger designed to support all
+                            communication needs of a modern business. Currently it's in invite-only
+                            mode.
+                        </p>
+                    )}
+                    {!isMobile && (
+                        <p className={textAlignClassName}>
                             Openland is a professional messenger designed
                             <br /> to support all communication needs of a modern business.
                             <br /> Currently it's in invite-only mode.
                         </p>
-                    </SubTitle>
+                    )}
                 </XView>
-
-                <XButton text="Accept invite" style="primary" onClick={onAcceptInvite} />
             </XView>
 
-            <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
-                © 2019 Openland
-            </XView>
+            <XButton text="Accept invite" style="primary" size="large" onClick={onAcceptInvite} />
         </XView>
-    );
-};
+
+        <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
+            © 2019 Openland
+        </XView>
+    </XView>
+);
 
 export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
     onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
+    isMobile: boolean;
 }) => {
     const client = useClient();
 
@@ -117,7 +126,12 @@ export const AcceptInvitePage = (props: {
         return <XLoader loading={true} />;
     }
     return (
-        <AcceptInvite signPath={signPath} inviter={inviter} onAcceptInvite={props.onAcceptInvite} />
+        <AcceptInvite
+            signPath={signPath}
+            inviter={inviter}
+            onAcceptInvite={props.onAcceptInvite}
+            isMobile={props.isMobile}
+        />
     );
 };
 

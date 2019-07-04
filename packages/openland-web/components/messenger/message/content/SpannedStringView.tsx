@@ -167,7 +167,6 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
                         isBot: false,
                         shortname: null,
                         primaryOrganization: s.user.primaryOrganization,
-                        primaryBadge: s.user.primaryBadge,
                     }}
                 />,
             );

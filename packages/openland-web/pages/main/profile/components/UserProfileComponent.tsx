@@ -35,6 +35,8 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XPopper } from 'openland-x/XPopper';
+import { XRoomCard } from 'openland-x/cards/XRoomCard';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -284,6 +286,27 @@ const About = (props: { user: User_user }) => {
     );
 };
 
+const FeaturedIn = (props: { user: User_user }) => {
+    const { user } = props;
+
+    if (user.chatsWithBadge.length <= 0) {
+        return null;
+    }
+
+    return (
+        <>
+            <Section separator={0}>
+                <XSubHeader title="Featured in" counter={user.chatsWithBadge.length} paddingBottom={0} />
+                <SectionContent>
+                    {user.chatsWithBadge.map((item, index) => item.chat.__typename === 'SharedRoom' ? (
+                        <XRoomCard room={item.chat} badge={item.badge} customButton={null} customMenu={null} />
+                    ) : null)}
+                </SectionContent>
+            </Section>
+        </>
+    );
+};
+
 interface UserProfileInnerProps extends XWithRouter {
     user: User_user;
     onDirectory?: boolean;
@@ -336,6 +359,9 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
                 <Header user={user} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About user={user} />
+                    <XWithRole role="feature-non-production">
+                        <FeaturedIn user={user} />
+                    </XWithRole>
                 </XScrollView3>
             </XView>
         </>
