@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
 import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { TopBar } from '../components/TopBar';
-import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -32,12 +32,14 @@ import { XPopper } from 'openland-x/XPopper';
 import Glamorous from 'glamorous';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
+import { Wrapper } from '../onboarding/components/wrapper';
 
 type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
 type EnterYourOrganizationPageOuterProps = {
     roomView: boolean;
     roomContainerParams: RoomContainerParams;
+    isMobile: boolean;
 };
 
 const InfoText = Glamorous.span({
@@ -69,10 +71,124 @@ const organizationInputClassName = css`
     }
 `;
 
+const textAlignClassName = css`
+    text-align: center;
+`;
+
 type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
 
-const CreateOrganizationFormInner = ({
-    roomView,
+const CreateOrganizationFormInnerWeb = ({
+    processCreateOrganization,
+    initialOrganizationName,
+    sending,
+    isMobile,
+}: {
+    sending: boolean;
+    initialOrganizationName?: string;
+    inviteKey?: string | null;
+    processCreateOrganization: processCreateOrganizationT;
+    isMobile: boolean;
+}) => {
+    const form = useForm();
+
+    let organizationField = useField('input.organization', initialOrganizationName || '', form, [
+        {
+            checkIsValid: (value: string) => !!value.trim(),
+            text: 'Please enter your organization name',
+        },
+    ]);
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await processCreateOrganization({
+                    organizationFieldValue: organizationField.value,
+                });
+            });
+        },
+        [organizationField.value],
+    );
+
+    const subtitle = 'Give others context about your work';
+
+    const onEnter = () => {
+        doConfirm();
+    };
+
+    const errorText = organizationField.input.errorText;
+    const isInvalid = !!errorText && organizationField.input.invalid;
+
+    const button = (
+        <XButton
+            loading={sending}
+            dataTestId="continue-button"
+            style="primary"
+            text={InitTexts.create_organization.continue}
+            size="large"
+            onClick={doConfirm}
+        />
+    );
+
+    return (
+        <XShortcuts
+            handlerMap={{
+                ENTER: onEnter,
+            }}
+            keymap={{
+                ENTER: {
+                    osx: ['enter'],
+                    windows: ['enter'],
+                },
+            }}
+        >
+            <XView
+                alignItems="center"
+                flexGrow={1}
+                paddingHorizontal={20}
+                justifyContent="center"
+                marginTop={-100}
+            >
+                <XTrack event="signup_org_view">
+                    <XView fontSize={24} color="#000" fontWeight="600" marginBottom={12}>
+                        {InitTexts.create_organization.title}
+                    </XView>
+                    <XView fontSize={16} color="#000" marginBottom={36}>
+                        <span className={textAlignClassName}>{subtitle}</span>
+                    </XView>
+                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                        <InputField
+                            title="Organization name"
+                            dataTestId="organization"
+                            flexGrow={1}
+                            className={organizationInputClassName}
+                            hideErrorText
+                            field={organizationField}
+                        />
+                        {isInvalid && <XErrorMessage2 message={errorText} />}
+                    </XView>
+                    {!isMobile && (
+                        <XView
+                            alignItems="center"
+                            marginTop={
+                                organizationField.input.invalid && organizationField.input.errorText
+                                    ? 14
+                                    : 40
+                            }
+                        >
+                            {button}
+                        </XView>
+                    )}
+                    {isMobile && (
+                        <XView alignItems="center" position="absolute" bottom={30}>
+                            {button}
+                        </XView>
+                    )}
+                </XTrack>
+            </XView>
+        </XShortcuts>
+    );
+};
+
+const CreateOrganizationFormInnerRoom = ({
     processCreateOrganization,
     initialOrganizationName,
     onSkip,
@@ -81,7 +197,6 @@ const CreateOrganizationFormInner = ({
 }: {
     skiping: boolean;
     sending: boolean;
-    roomView: boolean;
     initialOrganizationName?: string;
     inviteKey?: string | null;
     processCreateOrganization: processCreateOrganizationT;
@@ -95,13 +210,16 @@ const CreateOrganizationFormInner = ({
             text: 'Please enter your organization name',
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await processCreateOrganization({
-                organizationFieldValue: organizationField.value,
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await processCreateOrganization({
+                    organizationFieldValue: organizationField.value,
+                });
             });
-        });
-    }, [organizationField.value]);
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Give others context about your work';
 
@@ -112,97 +230,6 @@ const CreateOrganizationFormInner = ({
     const errorText = organizationField.input.errorText;
     const isInvalid = !!errorText && organizationField.input.invalid;
 
-    const content = (
-        <XTrack event="signup_org_view">
-            <ContentWrapper>
-                <Title roomView={roomView} className="title">
-                    {InitTexts.create_organization.title}
-                </Title>
-                <SubTitle className="subtitle">{subtitle}</SubTitle>
-
-                <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
-                    <XVertical alignItems="center" separator="none">
-                        <XVertical separator="none" alignItems="center">
-                            <XVertical alignItems="center" separator="none">
-                                {!roomView && (
-                                    <XView width={360}>
-                                        <InputField
-                                            title="Organization name"
-                                            dataTestId="organization"
-                                            flexGrow={1}
-                                            className={organizationInputClassName}
-                                            hideErrorText
-                                            field={organizationField}
-                                        />
-                                        {isInvalid && <XErrorMessage2 message={errorText} />}
-                                    </XView>
-                                )}
-                            </XVertical>
-                        </XVertical>
-                        {roomView && (
-                            <XView width={330}>
-                                <XHorizontal alignItems="center" separator="none">
-                                    <XInput
-                                        title="Organization name"
-                                        dataTestId="organization"
-                                        flexGrow={1}
-                                        invalid={!!form.error}
-                                        size="large"
-                                        {...organizationField.input}
-                                    />
-                                    <XPopper
-                                        content={
-                                            <InfoText>
-                                                To register as an individual, simply enter your name
-                                            </InfoText>
-                                        }
-                                        showOnHover={true}
-                                        placement="top"
-                                        style="dark"
-                                    >
-                                        <XIconWrapper>
-                                            <IcInfo />
-                                        </XIconWrapper>
-                                    </XPopper>
-                                </XHorizontal>
-                                {isInvalid && <XErrorMessage2 message={errorText} />}
-                            </XView>
-                        )}
-
-                        <XView
-                            flexDirection="row"
-                            marginTop={
-                                organizationField.input.invalid && organizationField.input.errorText
-                                    ? 50 - 26
-                                    : 50
-                            }
-                        >
-                            {roomView && onSkip && (
-                                <XView marginRight={16}>
-                                    <XButton
-                                        loading={skiping}
-                                        onClick={onSkip}
-                                        size="large"
-                                        style="ghost"
-                                        alignSelf="center"
-                                        text={'Skip'}
-                                    />
-                                </XView>
-                            )}
-                            <XButton
-                                loading={sending}
-                                dataTestId="continue-button"
-                                style="primary"
-                                text={InitTexts.create_organization.continue}
-                                size="large"
-                                onClick={doConfirm}
-                            />
-                        </XView>
-                    </XVertical>
-                </ButtonsWrapper>
-            </ContentWrapper>
-        </XTrack>
-    );
     return (
         <XShortcuts
             handlerMap={{
@@ -215,16 +242,79 @@ const CreateOrganizationFormInner = ({
                 },
             }}
         >
-            {roomView && (
-                <XView alignItems="center" flexGrow={1} justifyContent="center">
-                    {content}
-                </XView>
-            )}
-            {!roomView && (
-                <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
-                    {content}
-                </XView>
-            )}
+            <XView alignItems="center" flexGrow={1} justifyContent="center">
+                <XTrack event="signup_org_view">
+                    <ContentWrapper>
+                        <Title roomView={true} className="title">
+                            {InitTexts.create_organization.title}
+                        </Title>
+                        <SubTitle className="subtitle">{subtitle}</SubTitle>
+                        <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
+                            <XVertical alignItems="center" separator="none">
+                                <XView width={330}>
+                                    <XHorizontal alignItems="center" separator="none">
+                                        <XInput
+                                            title="Organization name"
+                                            dataTestId="organization"
+                                            flexGrow={1}
+                                            invalid={!!form.error}
+                                            size="large"
+                                            {...organizationField.input}
+                                        />
+                                        <XPopper
+                                            content={
+                                                <InfoText>
+                                                    To register as an individual, simply enter your
+                                                    name
+                                                </InfoText>
+                                            }
+                                            showOnHover={true}
+                                            placement="top"
+                                            style="dark"
+                                        >
+                                            <XIconWrapper>
+                                                <IcInfo />
+                                            </XIconWrapper>
+                                        </XPopper>
+                                    </XHorizontal>
+                                    {isInvalid && <XErrorMessage2 message={errorText} />}
+                                </XView>
+
+                                <XView
+                                    flexDirection="row"
+                                    marginTop={
+                                        organizationField.input.invalid &&
+                                        organizationField.input.errorText
+                                            ? 50 - 26
+                                            : 50
+                                    }
+                                >
+                                    {onSkip && (
+                                        <XView marginRight={16}>
+                                            <XButton
+                                                loading={skiping}
+                                                onClick={onSkip}
+                                                size="large"
+                                                style="ghost"
+                                                alignSelf="center"
+                                                text={'Skip'}
+                                            />
+                                        </XView>
+                                    )}
+                                    <XButton
+                                        loading={sending}
+                                        dataTestId="continue-button"
+                                        style="primary"
+                                        text={InitTexts.create_organization.continue}
+                                        size="large"
+                                        onClick={doConfirm}
+                                    />
+                                </XView>
+                            </XVertical>
+                        </ButtonsWrapper>
+                    </ContentWrapper>
+                </XTrack>
+            </XView>
         </XShortcuts>
     );
 };
@@ -232,6 +322,7 @@ const CreateOrganizationFormInner = ({
 export const EnterYourOrganizationPageInner = ({
     roomView,
     roomContainerParams,
+    isMobile,
 }: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -355,42 +446,44 @@ export const EnterYourOrganizationPageInner = ({
     }, []);
 
     return (
-        <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Enter organization" />
+        <>
             {!roomView && (
-                <>
+                <Wrapper>
+                    <XDocumentHead title="Enter organization" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
-                    <XView marginTop={34}>
+                    <XView marginTop={isMobile ? 15 : 34}>
                         <BackSkipLogo
                             onBack={() => {
                                 router.replace('/authorization/introduce-yourself');
                             }}
                             onSkip={onSkip}
+                            noLogo={isMobile}
                         />
                     </XView>
-                    <CreateOrganizationFormInner
-                        skiping={skiping}
+                    <CreateOrganizationFormInnerWeb
                         initialOrganizationName={initialOrganizationName}
                         sending={sending}
-                        roomView={roomView}
                         processCreateOrganization={processCreateOrganization}
+                        isMobile={isMobile}
                     />
-                </>
+                </Wrapper>
             )}
 
             {roomView && (
-                <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
-                    <CreateOrganizationFormInner
-                        skiping={skiping}
-                        sending={sending}
-                        initialOrganizationName={initialOrganizationName}
-                        roomView={roomView}
-                        processCreateOrganization={processCreateOrganization}
-                        onSkip={onSkip}
-                    />
-                </RoomSignupContainer>
+                <XView backgroundColor="white" flexGrow={1}>
+                    <XDocumentHead title="Enter organization" />
+                    <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
+                        <CreateOrganizationFormInnerRoom
+                            skiping={skiping}
+                            sending={sending}
+                            initialOrganizationName={initialOrganizationName}
+                            processCreateOrganization={processCreateOrganization}
+                            onSkip={onSkip}
+                        />
+                    </RoomSignupContainer>
+                </XView>
             )}
-        </XView>
+        </>
     );
 };
 
