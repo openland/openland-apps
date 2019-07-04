@@ -118,7 +118,7 @@ export const WebSignUpCreateWithEmail = ({
                 <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                     <InputField
                         autofocus
-                        width={isMobile ? '100%' : 300}
+                        width={isMobile ? '100%' : 360}
                         dataTestId="email"
                         type="email"
                         title={InitTexts.auth.emailPlaceholder}
