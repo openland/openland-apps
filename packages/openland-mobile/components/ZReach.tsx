@@ -36,7 +36,7 @@ export const showReachInfo = ((value: number, theme: AppTheme) => {
 
     builder.flat();
     builder.view(ctx => (
-        <View marginHorizontal={20} marginTop={20}>
+        <View marginHorizontal={20} marginTop={20} marginBottom={20}>
             <View flexDirection="row" alignItems="center" marginBottom={5}>
                 <Text style={{ color: theme.textColor, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }} allowFontScaling={false}>
                     Reach
@@ -44,7 +44,7 @@ export const showReachInfo = ((value: number, theme: AppTheme) => {
                 <ZReach value={value} />
             </View>
             <Text style={{ color: theme.textColor, fontSize: 16, lineHeight: 24 }} allowFontScaling={false}>
-                User's reach is the total number of people in community groups they are in
+                User's reach is the total number of people in community groups they{'\u00a0'}are{'\u00a0'}in
             </Text>
         </View>
     ));
