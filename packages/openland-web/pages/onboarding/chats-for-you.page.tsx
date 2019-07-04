@@ -93,12 +93,9 @@ const ChatsItemList = ({
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(
-        () => {
-            setSelectedIds(rooms.map(({ id }) => id));
-        },
-        [rooms],
-    );
+    React.useLayoutEffect(() => {
+        setSelectedIds(rooms.map(({ id }) => id));
+    }, [rooms]);
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -199,15 +196,17 @@ const ChatsItemList = ({
 };
 
 export const ChatsForYou = ({
+    noTopBar,
     onBack,
     onSkip,
 }: {
-    onSkip: (event: React.MouseEvent) => void;
+    noTopBar?: boolean;
+    onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: (event: React.MouseEvent) => void;
 }) => {
     const client = useClient();
     const isMobile = useIsMobile();
-    let router = React.useContext(XRouterContext)!;
+
     const data = client.useSuggestedRooms({ fetchPolicy: 'network-only' });
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
@@ -227,7 +226,7 @@ export const ChatsForYou = ({
     return (
         <Wrapper>
             <XDocumentHead title="Choose role" />
-            <TopBar progressInPercents={getPercentageOfOnboarding(10)} />
+            {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(10)} />}
             <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
                 <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
             </XView>
