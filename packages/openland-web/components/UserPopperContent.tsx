@@ -29,7 +29,7 @@ const OrgTitle = Glamorous.div({
 
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
-    width: 224,
+    minWidth: 200,
 });
 
 const Status = (({ variables }) => {
