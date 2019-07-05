@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { XLink } from 'openland-x/XLink';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
@@ -66,16 +67,26 @@ interface MenuItemProps {
     path: string;
     icon?: any;
     onClick?: () => void;
+    notification?: boolean;
 }
 
 const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
 `;
 
-export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
+export const MenuItem = ({ path, icon, onClick, title, notification }: MenuItemProps) => (
     <XLink path={path} className={`${MenuItemWrapper} ${icon && MenuItemIcon}`} onClick={onClick}>
         {icon && <div className="icon-wrapper">{icon}</div>}
         <span>{title}</span>
+        {notification && (
+            <XView
+                width={6}
+                height={6}
+                marginRight={6}
+                borderRadius="100%"
+                backgroundColor="#F6564E"
+            />
+        )}
         <RightIcon className="right-icon" />
     </XLink>
 );

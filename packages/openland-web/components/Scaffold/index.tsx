@@ -151,6 +151,9 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const [showMenu, setShowMenu] = React.useState(false);
     const [renderedOnce, setRenderedOnce] = React.useState(false);
 
+    const client = useClient();
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+
     React.useEffect(() => {
         if (!renderedOnce) {
             setRenderedOnce(true);
@@ -219,7 +222,22 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                 <UniversalScafoldMenuItem
                                     name={TextAppBar.items.discover}
                                     path="/discover"
-                                    icon={<ExploreIcon />}
+                                    icon={
+                                        <>
+                                            {!discoverDone.betaIsDiscoverDone && (
+                                                <XView
+                                                    width={6}
+                                                    height={6}
+                                                    position="absolute"
+                                                    right={16}
+                                                    top={14}
+                                                    borderRadius="100%"
+                                                    backgroundColor="#F6564E"
+                                                />
+                                            )}
+                                            <ExploreIcon />
+                                        </>
+                                    }
                                 />
                             </>
                         }

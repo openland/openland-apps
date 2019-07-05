@@ -19,6 +19,7 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
+import { useClient } from 'openland-web/utils/useClient';
 
 const iconWrapper = css`
     & svg * {
@@ -103,22 +104,23 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    !withoutSort && (
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                            options={sortOptions}
-                                        />
-                                    )
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        !withoutSort && (
+                                            <SortPicker
+                                                sort={sort}
+                                                onPick={setSort}
+                                                withoutFeatured={withoutFeatured}
+                                                options={sortOptions}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             onlyFeatured={onlyFeatured}
                             featuredFirst={sort.featured}
@@ -175,6 +177,8 @@ export const DiscoverNavigation = XMemo(
         withoutSort?: boolean;
     }) => {
         const isMobile = useIsMobile();
+        const client = useClient();
+        const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
         return (
             <Navigation
                 title={isMobile ? title : 'Discover'}
@@ -187,6 +191,7 @@ export const DiscoverNavigation = XMemo(
                             path="/discover/recommended"
                             title="Chats for you"
                             icon={<RecommendationIconWrapper />}
+                            notification={!discoverDone.betaIsDiscoverDone}
                         />
                         <MenuItem
                             path="/discover"
@@ -290,8 +295,8 @@ export const ComponentWithSort = ({
     const finalQuery = variables.query
         ? variables.query
         : onlyFeatured
-        ? JSON.stringify({ featured: 'true' })
-        : variables.query;
+            ? JSON.stringify({ featured: 'true' })
+            : variables.query;
 
     const finalVariables = {
         ...(queryToPrefix
