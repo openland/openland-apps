@@ -94,6 +94,14 @@ export default class OpenlandDocument extends Document {
                 if (
                     resolvedInvite &&
                     resolvedInvite.invite &&
+                    resolvedInvite.invite.__typename === 'AppInvite'
+                ) {
+                    metaTagsInfo = {
+                        image: 'https://cdn.openland.com/shared/social-sharing-image.png',
+                    };
+                } else if (
+                    resolvedInvite &&
+                    resolvedInvite.invite &&
                     resolvedInvite.invite.__typename === 'RoomInvite'
                 ) {
                     const room = resolvedInvite.invite.room;
