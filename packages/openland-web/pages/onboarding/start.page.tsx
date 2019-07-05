@@ -54,8 +54,9 @@ export const DiscoverStart = ({
                 </XView>
                 <XView fontSize={16} marginBottom={40}>
                     <span className={textAlignClassName}>
-                        Your account is created! <br />
-                        Now, let’s find chats based on your interests
+                        Find the most useful chats
+                        <br />
+                        based on your interests and needs
                     </span>
                 </XView>
                 {!isMobile && <XView alignItems="center">{button}</XView>}
@@ -71,6 +72,7 @@ export const DiscoverStart = ({
 
 export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
+
     const onSkip = () => {
         router.push('/');
     };
