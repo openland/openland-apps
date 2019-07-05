@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
@@ -107,6 +108,11 @@ export const DeleteUrlAugmentationComponent = withRouter(props => {
     );
 });
 
+const cancelButtonClassName = css`
+    border: 1px solid #e7e7e7 !important;
+    background-color: rgb(242, 243, 244) !important;
+`;
+
 export const LeaveChatComponent = (props: { id: string; ctx: XModalController }) => {
     const client = useClient();
     const form = useForm();
@@ -127,6 +133,14 @@ export const LeaveChatComponent = (props: { id: string; ctx: XModalController })
                 </XText>
             </XModalContent>
             <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton
+                        text="Cancel"
+                        size="large"
+                        className={cancelButtonClassName}
+                        onClick={props.ctx.hide}
+                    />
+                </XView>
                 <XButton text="Leave" style="danger" size="large" onClick={createAction} />
             </XModalFooter>
         </XView>
@@ -314,13 +328,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                {this.props.pinMessage && !this.state.loading && (
-                    <PinMessageComponent
-                        pinMessage={this.props.pinMessage}
-                        chatId={this.props.conversationId}
-                        room={this.props.room}
-                    />
-                )}
+                {this.props.pinMessage &&
+                    !this.state.loading && (
+                        <PinMessageComponent
+                            pinMessage={this.props.pinMessage}
+                            chatId={this.props.conversationId}
+                            room={this.props.room}
+                        />
+                    )}
                 <ConversationMessagesComponent
                     isChannel={isChannel}
                     ref={this.messagesList}
@@ -334,22 +349,23 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     room={this.props.room}
                 />
 
-                {!this.state.hideInput && this.conversation.canSendMessage && (
-                    <UploadContextProvider>
-                        <MessageComposeHandler
-                            conversation={this.conversation}
-                            onChange={this.handleChange}
-                            onSend={this.handleSend}
-                            onSendFile={this.handleSendFile}
-                            scrollToBottom={this.scrollToBottom}
-                            enabled={true}
-                            conversationType={this.props.conversationType}
-                            conversationId={this.props.conversationId}
-                            variables={this.vars}
-                            bright
-                        />
-                    </UploadContextProvider>
-                )}
+                {!this.state.hideInput &&
+                    this.conversation.canSendMessage && (
+                        <UploadContextProvider>
+                            <MessageComposeHandler
+                                conversation={this.conversation}
+                                onChange={this.handleChange}
+                                onSend={this.handleSend}
+                                onSendFile={this.handleSendFile}
+                                scrollToBottom={this.scrollToBottom}
+                                enabled={true}
+                                conversationType={this.props.conversationType}
+                                conversationId={this.props.conversationId}
+                                variables={this.vars}
+                                bright
+                            />
+                        </UploadContextProvider>
+                    )}
             </XView>
         );
     }

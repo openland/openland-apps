@@ -19,6 +19,7 @@ const boxStyle = css`
     max-height: calc(100vh - 48px);
     max-width: calc(100vw - 20px);
     width: 575px;
+    overflow: hidden;
 `;
 
 const boxShowing = css`
