@@ -63,7 +63,7 @@ const AppCategory = (props: AppCategoryProps) => (
 );
 
 const DesktopAppButtonClass = css`
-    background-color: #e8f4ff;
+    background-color: rgba(23, 144, 255, 0.08);
     border-radius: 20px;
     display: flex;
     flex-direction: row;

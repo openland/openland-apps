@@ -11,6 +11,7 @@ import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { Wrapper } from './components/wrapper';
+import { useClient } from 'openland-web/utils/useClient';
 
 const textAlignClassName = css`
     text-align: center;
@@ -72,8 +73,10 @@ export const DiscoverStart = ({
 
 export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
+    const client = useClient();
 
-    const onSkip = React.useCallback(() => {
+    const onSkip = React.useCallback(async () => {
+        await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
         router.push('/');
     }, []);
 
