@@ -20,6 +20,7 @@ import { IsMobileContext } from './IsMobileContext';
 import { RenderedOnceContext } from './RenderedOnceContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import * as Cookie from 'js-cookie';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -144,6 +145,51 @@ const UniversalScafoldMenuItem = AdaptiveHOC({
     fullWidth: true,
 });
 
+export const DiscoverNotDoneRedDotInner = React.memo(({ setShowDot }: { setShowDot: Function }) => {
+    const client = useClient();
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'cache-and-network' });
+
+    React.useLayoutEffect(() => {
+        Cookie.set(
+            'x-openland-show-discover-dot',
+            !discoverDone.betaIsDiscoverDone ? 'true' : 'false',
+        );
+        setShowDot(!discoverDone.betaIsDiscoverDone);
+    }, [discoverDone.betaIsDiscoverDone]);
+
+    return null;
+});
+
+export const DiscoverNotDoneRedDot = () => {
+    const isMobile = useIsMobile();
+    const [showDot, setShowDot] = React.useState(
+        Cookie.get('x-openland-show-discover-dot') === 'true',
+    );
+
+    const content = (
+        <>
+            {showDot && (
+                <XView
+                    width={6}
+                    height={6}
+                    position="absolute"
+                    right={isMobile ? 23 : 16}
+                    top={isMobile ? 11 : 14}
+                    borderRadius="100%"
+                    backgroundColor="#F6564E"
+                />
+            )}
+        </>
+    );
+
+    return (
+        <React.Suspense fallback={content}>
+            <DiscoverNotDoneRedDotInner setShowDot={setShowDot} />
+            {content}
+        </React.Suspense>
+    );
+};
+
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const isMobile = useIsMobile();
 
@@ -151,36 +197,30 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const [showMenu, setShowMenu] = React.useState(false);
     const [renderedOnce, setRenderedOnce] = React.useState(false);
 
-    const client = useClient();
-    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
-
     React.useEffect(() => {
         if (!renderedOnce) {
             setRenderedOnce(true);
         }
     });
 
-    const setSidebarOrInnerMenu = ({
-        mode,
-        value,
-    }: {
-        mode: 'sidebar' | 'menu';
-        value: boolean;
-    }) => {
-        if (mode === 'menu') {
-            setShowMenu(value);
-            if (value) {
-                setShowSidebar(false);
+    const setSidebarOrInnerMenu = React.useCallback(
+        ({ mode, value }: { mode: 'sidebar' | 'menu'; value: boolean }) => {
+            if (mode === 'menu') {
+                setShowMenu(value);
+                if (value) {
+                    setShowSidebar(false);
+                }
             }
-        }
 
-        if (mode === 'sidebar') {
-            setShowSidebar(value);
-            if (value) {
-                setShowMenu(false);
+            if (mode === 'sidebar') {
+                setShowSidebar(value);
+                if (value) {
+                    setShowMenu(false);
+                }
             }
-        }
-    };
+        },
+        [],
+    );
 
     return (
         <RenderedOnceContext.Provider value={renderedOnce}>
@@ -224,17 +264,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                     path="/discover"
                                     icon={
                                         <>
-                                            {!discoverDone.betaIsDiscoverDone && (
-                                                <XView
-                                                    width={6}
-                                                    height={6}
-                                                    position="absolute"
-                                                    right={isMobile ? 23 : 16}
-                                                    top={isMobile ? 11 : 14}
-                                                    borderRadius="100%"
-                                                    backgroundColor="#F6564E"
-                                                />
-                                            )}
+                                            <DiscoverNotDoneRedDot />
                                             <ExploreIcon />
                                         </>
                                     }
@@ -258,6 +288,10 @@ export class Scaffold extends React.PureComponent {
         let menu = findChild(this.props.children, '_isSidebarMenu');
         let content = findChild(this.props.children, '_isSidebarContent');
 
-        return <ScaffoldInner menu={menu} content={content} />;
+        return (
+            <React.Suspense fallback={<XLoader loading={true} />}>
+                <ScaffoldInner menu={menu} content={content} />
+            </React.Suspense>
+        );
     }
 }

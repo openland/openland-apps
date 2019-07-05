@@ -25,10 +25,7 @@ import {
     HeaderWrapper,
     EditButton,
 } from './OrganizationProfileComponent';
-import {
-    Room_room_SharedRoom,
-    RoomFull_SharedRoom_requests,
-} from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomFull_SharedRoom_requests } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -54,7 +51,11 @@ import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { RoomMembersList, RoomFeaturedMembersList, RoomRequestsMembersList } from './RoomMembersLists';
+import {
+    RoomMembersList,
+    RoomFeaturedMembersList,
+    RoomRequestsMembersList,
+} from './RoomMembersLists';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -294,7 +295,7 @@ const MembersProvider = ({
     const requestMembers = requests || [];
     const isRequests = router.query.tab === 'requests' && requestMembers.length > 0 && isOwner;
     const isFeatured = router.query.tab === 'featured' && featuredMembersCount > 0;
-    const tab: tabsT = isRequests ? tabs.requests : (isFeatured ? tabs.featured : tabs.members);
+    const tab: tabsT = isRequests ? tabs.requests : isFeatured ? tabs.featured : tabs.members;
 
     const showTabs = featuredMembersCount > 0 || (requestMembers.length > 0 && isOwner);
 
@@ -306,20 +307,24 @@ const MembersProvider = ({
                         Members
                     </XSwitcher.Item>
                     {featuredMembersCount > 0 && (
-                        <XSwitcher.Item query={{ field: 'tab', value: 'featured' }} counter={featuredMembersCount}>
+                        <XSwitcher.Item
+                            query={{ field: 'tab', value: 'featured' }}
+                            counter={featuredMembersCount}
+                        >
                             Featured
                         </XSwitcher.Item>
                     )}
-                    {(requestMembers.length > 0 && isOwner) && (
-                        <XSwitcher.Item query={{ field: 'tab', value: 'requests' }} counter={requestMembers.length}>
+                    {requestMembers.length > 0 && isOwner && (
+                        <XSwitcher.Item
+                            query={{ field: 'tab', value: 'requests' }}
+                            counter={requestMembers.length}
+                        >
                             Requests
                         </XSwitcher.Item>
                     )}
                 </XSwitcher>
             )}
-            {!showTabs && (
-                <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />
-            )}
+            {!showTabs && <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />}
 
             <SectionContent
                 noPaddingBottom
@@ -439,9 +444,11 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
     const requestMembers = chat.requests || [];
     const isRequests = router.query.tab === 'requests' && requestMembers.length > 0 && isOwner;
     const isFeatured = router.query.tab === 'featured' && chat.featuredMembersCount > 0;
-    const tab: tabsT = isRequests ? tabs.requests : (isFeatured ? tabs.featured : tabs.members);
+    const tab: tabsT = isRequests ? tabs.requests : isFeatured ? tabs.featured : tabs.members;
 
-    const beforeItems = <RoomGroupProfileInner chat={chat} router={router} conversationId={chatId} />
+    const beforeItems = (
+        <RoomGroupProfileInner chat={chat} router={router} conversationId={chatId} />
+    );
 
     return (
         <>
@@ -459,7 +466,11 @@ const RoomGroupProfileProvider = (props: { chatId: string }) => {
                 )}
 
                 {tab === tabs.requests && (
-                    <RoomRequestsMembersList chat={chat} requests={requestMembers} beforeChildren={beforeItems} />
+                    <RoomRequestsMembersList
+                        chat={chat}
+                        requests={requestMembers}
+                        beforeChildren={beforeItems}
+                    />
                 )}
             </XView>
         </>
