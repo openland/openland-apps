@@ -381,14 +381,14 @@ export const DiscoverOnLocalState = ({
     );
 
     const onChatsForYouSkip = React.useCallback(async () => {
-        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+        await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
         router.push('/mail/');
     }, []);
 
     const onSkip = React.useCallback(
         async (data: { exclude: string[]; currentPageId: string }) => {
             if (rootState.length === 0) {
-                client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+                await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
                 router.push('/mail/');
                 return;
             }
