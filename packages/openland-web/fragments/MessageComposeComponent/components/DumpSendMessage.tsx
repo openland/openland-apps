@@ -30,6 +30,11 @@ const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: 
     };
 });
 
+const SendButton = Glamorous(XButton)({
+    paddingLeft: 8,
+    paddingRight: 8,
+});
+
 const SendMessageWrapper = Glamorous.div<{
     fullWidth?: boolean;
     minimal?: boolean;
@@ -160,7 +165,7 @@ export const DumpSendMessage = React.memo(
                                 !hideAttachments && <AttachmentButtons enabled={enabled} />}
 
                             {!minimal && (
-                                <XButton
+                                <SendButton
                                     text="Send"
                                     style="primary"
                                     action={handleSend}
