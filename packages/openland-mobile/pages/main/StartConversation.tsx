@@ -81,9 +81,9 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title="Start a conversation" hairline="hidden" />
+            <SHeader title="Get help from Openland community" hairline="hidden" />
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share what you do and ask for help\nhere will be more text"}</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Choose a chat and share your challenges"}</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />
                 ))}

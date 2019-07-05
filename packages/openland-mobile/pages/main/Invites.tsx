@@ -13,6 +13,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { line } from 'd3-shape';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -22,7 +23,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
 
     let invitesCount = getClient().useWithoutLoaderMySuccessfulInvitesCount();
 
-    let text = "In the heart of the French Alps, in the north east of the Rhone Alps region lies the village of Les Houches. Nestled at one end of the Chamonix valley.\n" + link;
+    let text = "Check out Openland, an invitation-only community for top startup founders, investors, and engineers. There are expert chats on any topic, from fundraising in Silicon Valley to CTOs lessons learned. Finally, can share it here!\n" + link;
     let shareCallback = React.useCallback(() => {
         Share.share({ message: text });
     }, [link]);
@@ -34,29 +35,37 @@ const InvitesComponent = XMemo<PageProps>((props) => {
     }, [link]);
     return (
         <>
-            <SHeader title="Openland apps" hairline="hidden" />
+            <SHeader title="Invite friends" hairline="hidden" />
             <SHeaderButton title="Other invites" marginLeft={-20} onPress={() => props.router.push("InvitesMore")} />
-            <SScrollView justifyContent="flex-start" alignItems="flex-start">
+            <ASSafeAreaView width="100%" height="100%" backgroundColor={theme.backgroundColor}>
                 <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
                 <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Write a post".toUpperCase()}</Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{text}</Text>
-                <View style={{ flexGrow: 1, marginLeft: 16, marginBottom: 31, backgroundColor: theme.separatorColor, height: 1 }} />
-                <View style={{ flexGrow: 1, marginLeft: 4, alignItems: 'flex-start' }} >
-                    <ZRoundedButton onPress={copyTextCallback} style="flat" title="Copy text" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-                    <ZRoundedButton onPress={copyLinkCallback} style="flat" title="Copy link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-                    <ZRoundedButton onPress={shareCallback} style="flat" title="Share" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-
-                    <View flexGrow={1} />
-                    {invitesCount && <View marginBottom={40} flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} borderRadius={10} height={50} backgroundColor={theme.bubbleColorIn}>
-                        <Image source={require('assets/ic-user-24.png')} />
-                        <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
-                    </View>}
-                </View>
-
-            </SScrollView>
+                <View backgroundColor={theme.separatorColor} marginLeft={16} marginBottom={21} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Copy text"
+                    onPress={copyTextCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Copy link"
+                    onPress={copyLinkCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Share"
+                    onPress={shareCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <View flexGrow={1} />
+                {!!invitesCount && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} borderRadius={10} height={50} backgroundColor={theme.bubbleColorIn}>
+                    <Image source={require('assets/ic-user-24.png')} />
+                    <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
+                </View>}
+            </ASSafeAreaView>
 
         </>
     );

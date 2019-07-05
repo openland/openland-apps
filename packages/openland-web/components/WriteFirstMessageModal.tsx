@@ -82,7 +82,7 @@ export const WriteFirstMessageModal = () => {
                     justifyContent="center"
                     marginBottom={12}
                 >
-                    <span className={textAlignClassName}>Start a conversation</span>
+                    <span className={textAlignClassName}>Get help from Openland community</span>
                 </XView>
                 <XView
                     fontSize={16}
@@ -97,7 +97,7 @@ export const WriteFirstMessageModal = () => {
                     maxWidth={300}
                 >
                     <span className={textAlignClassName}>
-                        Share what you do and ask for help here will be more text
+                        Choose a chat and share your challenges
                     </span>
                 </XView>
 

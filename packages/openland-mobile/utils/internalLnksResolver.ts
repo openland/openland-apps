@@ -219,16 +219,16 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
 
         if (link === '/onboarding_discover') {
             resolved = true;
-            getMessenger().history.navigationManager.push('Invites');
+            getMessenger().history.navigationManager.push('Discover');
         }
 
         if (link === '/onboarding_apps') {
             resolved = true;
-            getMessenger().history.navigationManager.push('Invites');
+            getMessenger().history.navigationManager.push('InstallApps');
         }
         if (link === '/onboarding_send_first_message') {
             resolved = true;
-            getMessenger().history.navigationManager.push('Invites');
+            getMessenger().history.navigationManager.push('StartConversation');
         }
         if (link === '/onboarding_invite') {
             resolved = true;
