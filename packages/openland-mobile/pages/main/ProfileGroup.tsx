@@ -71,6 +71,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action('Kick', 'destructive', async () => {
                 await client.mutateRoomKick({ userId: user.id, roomId });
+                await client.refetchRoomWithoutMembers({ id: roomId });
                 await resetMembersList();
             })
             .show();
