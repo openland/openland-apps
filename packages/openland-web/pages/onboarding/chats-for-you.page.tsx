@@ -86,9 +86,11 @@ const ChatsItem = ({
 const ChatsItemList = ({
     rooms,
     isMobile,
+    onJoinChats,
 }: {
     rooms: SuggestedRooms_suggestedRooms_SharedRoom[];
     isMobile: boolean;
+    onJoinChats?: Function;
 }) => {
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
@@ -105,6 +107,9 @@ const ChatsItemList = ({
         setJoinLoader(true);
         await client.mutateRoomsJoin({ roomsIds: selectedIds });
         await router.push('/');
+        if (onJoinChats) {
+            onJoinChats();
+        }
     };
 
     const selectedLength = selectedIds.length;
@@ -199,12 +204,14 @@ export const ChatsForYou = ({
     noTopBar,
     onBack,
     onSkip,
-    fullHeight
+    fullHeight,
+    onJoinChats,
 }: {
     noTopBar?: boolean;
     onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
+    onJoinChats?: Function;
 }) => {
     const client = useClient();
     const isMobile = useIsMobile();
@@ -251,7 +258,7 @@ export const ChatsForYou = ({
                         </XView>
                     </XView>
 
-                    <ChatsItemList rooms={rooms} isMobile={!!isMobile} />
+                    <ChatsItemList onJoinChats={onJoinChats} rooms={rooms} isMobile={!!isMobile} />
                 </XView>
             </XView>
         </Wrapper>

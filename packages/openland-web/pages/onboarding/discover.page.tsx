@@ -72,7 +72,9 @@ const LocalDiscoverComponent = ({
     progressInPercents,
     onSkip,
     onBack,
+    allowContinue,
 }: {
+    allowContinue?: boolean;
     noLogo?: boolean;
     noTopBar?: boolean;
     noBackSkipLogo?: boolean;
@@ -149,7 +151,7 @@ const LocalDiscoverComponent = ({
                     <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
                     <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
                     <XButton
-                        enabled={!!localSelected.length}
+                        enabled={allowContinue || !!localSelected.length}
                         flexShrink={0}
                         zIndex={2}
                         text="Continue"
@@ -180,6 +182,8 @@ export const Discover = ({
     onChatsForYouSkip,
     onChatsForYouBack,
     fullHeight,
+    onJoinChats,
+    allowContinue,
 }: {
     noLogo?: boolean;
     noTopBar?: boolean;
@@ -193,6 +197,8 @@ export const Discover = ({
     onChatsForYouSkip: ((event: React.MouseEvent) => void) | null;
     onChatsForYouBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
+    onJoinChats?: Function;
+    allowContinue?: boolean;
 }) => {
     const client = useClient();
 
@@ -218,6 +224,7 @@ export const Discover = ({
         }
         return (
             <ChatsForYou
+                onJoinChats={onJoinChats}
                 noTopBar={noTopBar}
                 onSkip={onChatsForYouSkip}
                 onBack={onChatsForYouBack}
@@ -265,6 +272,7 @@ export const Discover = ({
             selected={finalSelected}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
             fullHeight={fullHeight}
+            allowContinue={allowContinue}
         />
     );
 };
@@ -276,6 +284,7 @@ export const DiscoverOnLocalState = ({
     noTopBar,
     noBackSkipLogo,
     fullHeight,
+    onJoinChats,
 }: {
     noSkipOnChatsForYou?: boolean;
     noBackOnFirstScreen?: boolean;
@@ -284,6 +293,7 @@ export const DiscoverOnLocalState = ({
     noTopBar?: boolean;
     noBackSkipLogo?: boolean;
     fullHeight?: boolean;
+    onJoinChats?: Function;
 }) => {
     const client = useClient();
     const router = React.useContext(XRouterContext)!;
@@ -420,8 +430,11 @@ export const DiscoverOnLocalState = ({
 
     const lastStateOrEmpty = getLastStateOrEmpty();
 
+    const allowContinue = rootState.length !== 0 && fullHeight;
+
     return (
         <Discover
+            onJoinChats={onJoinChats}
             noLogo={noLogo}
             noTopBar={noTopBar}
             noBackSkipLogo={noBackSkipLogo}
@@ -434,6 +447,7 @@ export const DiscoverOnLocalState = ({
             rootExclude={lastStateOrEmpty.exclude}
             onContinueClick={onContinueClick}
             fullHeight={fullHeight}
+            allowContinue={allowContinue}
         />
     );
 };

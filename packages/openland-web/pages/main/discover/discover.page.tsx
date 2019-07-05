@@ -30,8 +30,8 @@ const DiscoverContent = () => {
     }, [discoverDone.betaIsDiscoverDone]);
 
     const onStartClick = React.useCallback(() => {
-        showModalBox({ fullScreen: true }, () => (
-            <DiscoverOnLocalState fullHeight={true} noTopBar />
+        showModalBox({ fullScreen: true }, ctx => (
+            <DiscoverOnLocalState fullHeight={true} noTopBar onJoinChats={ctx.hide} />
         ));
     }, []);
 

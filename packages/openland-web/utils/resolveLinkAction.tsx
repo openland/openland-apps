@@ -27,7 +27,9 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         };
     } else if (url === '/onboarding_discover') {
         return () => {
-            showModalBox({ fullScreen: true }, () => <DiscoverOnLocalState fullHeight={true} />);
+            showModalBox({ fullScreen: true }, ctx => (
+                <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
+            ));
         };
     } else if (url === '/onboarding_send_first_message') {
         return () => {
