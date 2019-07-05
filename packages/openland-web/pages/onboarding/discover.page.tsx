@@ -72,7 +72,9 @@ const LocalDiscoverComponent = ({
     progressInPercents,
     onSkip,
     onBack,
+    allowContinue,
 }: {
+    allowContinue?: boolean;
     noLogo?: boolean;
     noTopBar?: boolean;
     noBackSkipLogo?: boolean;
@@ -149,7 +151,7 @@ const LocalDiscoverComponent = ({
                     <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
                     <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
                     <XButton
-                        enabled={!!localSelected.length}
+                        enabled={allowContinue || !!localSelected.length}
                         flexShrink={0}
                         zIndex={2}
                         text="Continue"
@@ -181,6 +183,7 @@ export const Discover = ({
     onChatsForYouBack,
     fullHeight,
     onJoinChats,
+    allowContinue,
 }: {
     noLogo?: boolean;
     noTopBar?: boolean;
@@ -195,6 +198,7 @@ export const Discover = ({
     onChatsForYouBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
     onJoinChats?: Function;
+    allowContinue?: boolean;
 }) => {
     const client = useClient();
 
@@ -268,6 +272,7 @@ export const Discover = ({
             selected={finalSelected}
             progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
             fullHeight={fullHeight}
+            allowContinue={allowContinue}
         />
     );
 };
@@ -425,6 +430,8 @@ export const DiscoverOnLocalState = ({
 
     const lastStateOrEmpty = getLastStateOrEmpty();
 
+    const allowContinue = rootState.length !== 0 && fullHeight;
+
     return (
         <Discover
             onJoinChats={onJoinChats}
@@ -440,6 +447,7 @@ export const DiscoverOnLocalState = ({
             rootExclude={lastStateOrEmpty.exclude}
             onContinueClick={onContinueClick}
             fullHeight={fullHeight}
+            allowContinue={allowContinue}
         />
     );
 };
