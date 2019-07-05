@@ -47,7 +47,7 @@ type MetaTagsInfoT = {
 };
 const MetaTags = ({
     title = 'Openland',
-    description = 'Openland is a professional messenger designed to support all communication needs of a modern business.',
+    description = "An invitation-only community where people doing most interesting things in the world are helping each other. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place!",
     image = 'https://cdn.openland.com/shared/img-og-link-oplnd.png',
     url,
 }: MetaTagsInfoT) => {
