@@ -219,30 +219,26 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     });
 
-    dataSourceWrapper = React.memo((props: any) => {
-        return (
-            <>
-                <XScrollViewReverse2
-                    flexGrow={1}
-                    flexShrink={1}
-                    justifyContent="flex-end"
-                    onScroll={this.handlerScroll}
-                    ref={this.scroller}
-                >
-                    {this.isEmpty() && (
-                        <MessagesWrapperEmpty>
-                            <EmptyBlock
-                                conversationType={this.props.conversationType}
-                                onClick={this.props.inputShower}
-                            />
-                        </MessagesWrapperEmpty>
-                    )}
+    dataSourceWrapper = React.memo((props: any) => (
+        <XScrollViewReverse2
+            flexGrow={1}
+            flexShrink={1}
+            justifyContent="flex-end"
+            onScroll={this.handlerScroll}
+            ref={this.scroller}
+        >
+            {this.isEmpty() && (
+                <MessagesWrapperEmpty>
+                    <EmptyBlock
+                        conversationType={this.props.conversationType}
+                        onClick={this.props.inputShower}
+                    />
+                </MessagesWrapperEmpty>
+            )}
 
-                    {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-                </XScrollViewReverse2>
-            </>
-        );
-    });
+            {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
+        </XScrollViewReverse2>
+    ));
 
     render() {
         return (

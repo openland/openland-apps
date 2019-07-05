@@ -147,7 +147,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
 
                                         <XMenuItem
                                             onClick={() =>
-                                                showModalBox({ title: 'Leave the chat' }, ctx => (
+                                                showModalBox({ title: 'Leave chat' }, ctx => (
                                                     <LeaveChatComponent id={chat.id} ctx={ctx} />
                                                 ))
                                             }

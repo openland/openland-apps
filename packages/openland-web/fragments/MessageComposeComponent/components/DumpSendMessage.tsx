@@ -33,8 +33,9 @@ const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: 
 const SendMessageWrapper = Glamorous.div<{
     fullWidth?: boolean;
     minimal?: boolean;
+    bright?: boolean;
     topLevelComment?: boolean;
-}>(({ fullWidth, minimal, topLevelComment }) => {
+}>(({ fullWidth, minimal, bright, topLevelComment }) => {
     return {
         display: 'flex',
         borderBottomLeftRadius: '8px',
@@ -44,14 +45,14 @@ const SendMessageWrapper = Glamorous.div<{
         flexShrink: 0,
         marginBottom: minimal ? -6 : undefined,
         minHeight: minimal ? undefined : 114,
-        backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
+        backgroundColor: minimal || bright ? undefined : XThemeDefault.backyardColor,
         paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 16,
         paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
         paddingTop: minimal ? 6 : 12,
         paddingBottom: minimal ? 0 : 12,
-        borderTopStyle: 'solid',
-        borderTopWidth: minimal ? undefined : '1px',
-        borderTopColor: minimal ? undefined : XThemeDefault.separatorColor,
+        borderTopStyle: bright ? undefined : 'solid',
+        borderTopWidth: minimal || bright ? undefined : '1px',
+        borderTopColor: minimal || bright ? undefined : XThemeDefault.separatorColor,
     };
 });
 
@@ -60,6 +61,7 @@ export type TextInputComponentT = {
     topLevelComment?: boolean;
     fullWidth?: boolean;
     minimal?: boolean;
+    bright?: boolean;
     hideAttachments?: boolean;
     round?: boolean;
     handleChange: (a: { text: string; mentions: UserWithOffset[] }) => void;
@@ -99,6 +101,7 @@ export const DumpSendMessage = React.memo(
         closeEditor,
         fullWidth,
         minimal,
+        bright,
         round,
         hideAttachments,
         placeholder,
@@ -110,6 +113,7 @@ export const DumpSendMessage = React.memo(
             <SendMessageWrapper
                 fullWidth={fullWidth}
                 minimal={minimal}
+                bright={bright}
                 topLevelComment={topLevelComment}
             >
                 <DropZone
@@ -118,13 +122,15 @@ export const DumpSendMessage = React.memo(
                 />
                 <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {closeEditor && quoteState && quoteState.quoteMessageReply && (
-                            <EditView
-                                message={quoteState.quoteMessageReply}
-                                title={quoteState.quoteMessageSender || 'Edit message'}
-                                onCancel={closeEditor}
-                            />
-                        )}
+                        {closeEditor &&
+                            quoteState &&
+                            quoteState.quoteMessageReply && (
+                                <EditView
+                                    message={quoteState.quoteMessageReply}
+                                    title={quoteState.quoteMessageSender || 'Edit message'}
+                                    onCancel={closeEditor}
+                                />
+                            )}
                         {(fileSrc || (fileName && fileSize)) && (
                             <XView marginLeft={14}>
                                 <FileUploader />
@@ -142,6 +148,7 @@ export const DumpSendMessage = React.memo(
                             handleDrop={handleDrop}
                             round={round}
                             minimal={minimal}
+                            bright={bright}
                             hideAttachments={hideAttachments}
                         />
                         <XHorizontal
@@ -149,17 +156,17 @@ export const DumpSendMessage = React.memo(
                             justifyContent="space-between"
                             flexGrow={1}
                         >
-                            {!minimal && !hideAttachments && (
-                                <AttachmentButtons enabled={enabled} />
-                            )}
+                            {!minimal &&
+                                !hideAttachments && <AttachmentButtons enabled={enabled} />}
 
                             {!minimal && (
                                 <XButton
                                     text="Send"
                                     style="primary"
                                     action={handleSend}
-                                    iconRight="send"
+                                    iconRight={bright ? undefined : 'send'}
                                     enabled={enabled}
+                                    square={bright}
                                 />
                             )}
                         </XHorizontal>

@@ -147,16 +147,9 @@ export const Icons = ({
                     <DocumentButton fileSelector={fileSelector} />
                 </XView>
             )}
-            {minimal && (
-                <XView marginRight={16}>
-                    <EmojiButton onEmojiPicked={onEmojiPicked} />
-                </XView>
-            )}
-            {!minimal && (
-                <XView>
-                    <EmojiButton onEmojiPicked={onEmojiPicked} />
-                </XView>
-            )}
+            <XView marginRight={minimal ? 16 : undefined}>
+                <EmojiButton onEmojiPicked={onEmojiPicked} />
+            </XView>
             {minimal && <SendIconWrapper active={!!file || !!hasText} onSubmit={onSubmit} />}
         </XView>
     );

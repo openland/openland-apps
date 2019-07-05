@@ -3,30 +3,32 @@ import Glamorous from 'glamorous';
 import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
 import { TextInputComponentT } from '../DumpSendMessage';
 
-export const TextInputWrapper = Glamorous.div<{ minimal?: boolean }>(({ minimal }) => {
-    return {
-        flexGrow: 1,
-        marginBottom: minimal ? '0 !important' : undefined,
-        maxHeight: '100%',
-        maxWidth: '100%',
-        '& > div': {
+export const TextInputWrapper = Glamorous.div<{ minimal?: boolean; bright?: boolean }>(
+    ({ minimal, bright }) => {
+        return {
+            flexGrow: 1,
+            marginBottom: minimal ? '0 !important' : undefined,
             maxHeight: '100%',
-            height: '100%',
-            '& .DraftEditor-root': {
-                overflow: 'auto',
-                borderRadius: 10,
-                backgroundColor: '#ffffff',
-                border: 'solid 1px #ececec',
-                minHeight: minimal ? undefined : 40,
-                maxHeight: 255,
-                paddingTop: minimal ? 9 : 9,
-                paddingBottom: minimal ? 9 : 9,
-                paddingLeft: 16,
-                paddingRight: minimal ? 150 : 40,
+            maxWidth: '100%',
+            '& > div': {
+                maxHeight: '100%',
+                height: '100%',
+                '& .DraftEditor-root': {
+                    overflow: 'auto',
+                    borderRadius: 10,
+                    backgroundColor: bright ? '#F4F4F4' : '#ffffff',
+                    border: bright ? undefined : 'solid 1px #ececec',
+                    minHeight: minimal ? undefined : 40,
+                    maxHeight: 255,
+                    paddingTop: minimal ? 9 : 9,
+                    paddingBottom: minimal ? 9 : 9,
+                    paddingLeft: 16,
+                    paddingRight: minimal ? 150 : 40,
+                },
             },
-        },
-    };
-});
+        };
+    },
+);
 
 export const DesktopSendMessage = ({
     showAllMentionsSuggestion,
@@ -38,27 +40,26 @@ export const DesktopSendMessage = ({
     getMentionsSuggestions,
     initialMentions,
     minimal,
+    bright,
     hideAttachments,
     round,
     placeholder,
-}: TextInputComponentT) => {
-    return (
-        <TextInputWrapper minimal={minimal}>
-            <XRichTextInput2
-                showAllMentionsSuggestion={showAllMentionsSuggestion}
-                minimal={minimal}
-                hideAttachments={hideAttachments}
-                round={round}
-                flexGrow={1}
-                getMentionsSuggestions={getMentionsSuggestions}
-                initialMentions={initialMentions}
-                placeholder={placeholder || 'Write a message...'}
-                onChange={handleChange}
-                onSubmit={handleSend}
-                ref={inputRef}
-                value={inputValue}
-                onPasteFile={handleDrop}
-            />
-        </TextInputWrapper>
-    );
-};
+}: TextInputComponentT) => (
+    <TextInputWrapper minimal={minimal} bright={bright}>
+        <XRichTextInput2
+            showAllMentionsSuggestion={showAllMentionsSuggestion}
+            minimal={minimal}
+            hideAttachments={hideAttachments}
+            round={round}
+            flexGrow={1}
+            getMentionsSuggestions={getMentionsSuggestions}
+            initialMentions={initialMentions}
+            placeholder={placeholder || 'Write a message...'}
+            onChange={handleChange}
+            onSubmit={handleSend}
+            ref={inputRef}
+            value={inputValue}
+            onPasteFile={handleDrop}
+        />
+    </TextInputWrapper>
+);

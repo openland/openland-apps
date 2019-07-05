@@ -25,7 +25,7 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
     fontWeight: 600,
     letterSpacing: 0,
     lineHeight: '20px',
-    color: 'rgba(0, 0, 0, 0.4)',
+    color: '#7A7A7A',
     opacity: !props.enabled ? 0.7 : undefined,
     cursor: !props.enabled ? 'default !important' : 'pointer',
     '&:first-child': {
@@ -39,10 +39,10 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
     },
     '&:hover': {
         textDecoration: 'none',
-        color: !props.enabled ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
+        color: !props.enabled ? '#a3acb8' : '#7A7A7A',
         backgroundColor: !props.enabled ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {
-            fill: !props.enabled ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
+            fill: !props.enabled ? '#c1c7cf' : '#B4B8BD',
         },
     },
     '&.shortcuts-button > svg, &.document-button > svg': {
@@ -53,7 +53,7 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
         flexShrink: 0,
         marginRight: 10,
         '& > *': {
-            fill: !props.enabled ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
+            fill: !props.enabled ? '#c1c7cf' : '#B4B8BD',
         },
     },
 }));

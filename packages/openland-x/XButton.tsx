@@ -25,6 +25,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
     insaneMode?: boolean;
+    square?: boolean;
 }
 
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>>;
@@ -663,6 +664,7 @@ interface StyledButtonProps extends XFlexStyles {
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
     insaneMode?: boolean;
+    square?: boolean;
 }
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
@@ -680,7 +682,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => ({
         pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
         cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
-        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
+        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease',
     }),
     (props) => (props.loading && {
         '& .main-content': { opacity: 0 }
@@ -719,10 +721,13 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
             background: 'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
             backgroundPosition: '-10px -10px'
         } : {}
-    }))
+    })),
+    (props) => ({
+        borderRadius: props.square ? '8px' : undefined,
+    }),
 ]);
 
-export const Loader = ({ style }: { style?: XButtonStyle }) => 
+export const Loader = ({ style }: { style?: XButtonStyle }) =>
     <XLoadingCircular className="loading-icon" color={loaderStyles(style).color!! as string} />
 
 export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
@@ -747,6 +752,7 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
             responsive={props.iconResponsive ? true : false}
             insaneMode={props.insaneMode}
             data-test-id={props.dataTestId}
+            square={props.square}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">

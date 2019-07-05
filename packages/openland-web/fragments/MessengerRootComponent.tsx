@@ -346,6 +346,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             conversationType={this.props.conversationType}
                             conversationId={this.props.conversationId}
                             variables={this.vars}
+                            bright
                         />
                     </UploadContextProvider>
                 )}

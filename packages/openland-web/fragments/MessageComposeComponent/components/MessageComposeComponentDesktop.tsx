@@ -41,6 +41,7 @@ export interface MessageComposeComponentProps {
     conversation?: ConversationEngine;
     enabled?: boolean;
     minimal?: boolean;
+    bright?: boolean;
     onSend?: (
         text: string,
         mentions:
@@ -155,6 +156,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                 inputValue={inputValue}
                 enabled={props.enabled}
                 closeEditor={closeEditor}
+                bright={props.bright}
             />
         </XShortcuts>
     );
