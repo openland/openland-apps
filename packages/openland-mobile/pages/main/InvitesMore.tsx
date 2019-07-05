@@ -47,32 +47,47 @@ const InvitesMoreComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeader title="Other invites" />
-            <SScrollView justifyContent="flex-start" alignItems="flex-start">
+            <SScrollView width="100%" height="100%" backgroundColor={theme.backgroundColor}>
                 <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 30, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Invite to Openland".toUpperCase()}</Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{link}</Text>
-                <View style={{ flexGrow: 1, marginLeft: 16, marginBottom: 8, backgroundColor: theme.separatorColor, height: 1 }} />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} marginBottom={8} />
                 <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Anyone can use this link to join Openland"}</Text>
-                <View style={{ flexGrow: 1, marginLeft: 4, alignItems: 'flex-start' }} >
-                    <ZRoundedButton onPress={copyLinkCallback} style="flat" title="Copy link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-                    <ZRoundedButton onPress={shareCallback} style="flat" title="Share link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
+                <ZListItem
+                    appearance="action"
+                    text="Copy link"
+                    onPress={copyLinkCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Share link"
+                    onPress={shareCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
 
-                </View>
-
-                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 30, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Invite to ".toUpperCase()}<Text style={{ color: theme.accentColor }} onPress={() => props.router.push("ProfileOrganization", { id: org!.id })}>{getMessenger().engine.user.primaryOrganization!.name.toUpperCase()}</Text></Text>
+                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 40, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Invite to ".toUpperCase()}<Text style={{ color: theme.accentColor }} onPress={() => props.router.push("ProfileOrganization", { id: org!.id })}>{getMessenger().engine.user.primaryOrganization!.name.toUpperCase()}</Text></Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{orgLink}</Text>
-                <View style={{ flexGrow: 1, marginLeft: 16, marginBottom: 8, backgroundColor: theme.separatorColor, height: 1 }} />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
                 <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Anyone can use this link to join your organization"}</Text>
-                <View style={{ flexGrow: 1, marginLeft: 4, alignItems: 'flex-start' }} >
-                    <ZRoundedButton onPress={copyOrgLinkCallback} style="flat" title="Copy link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-                    <ZRoundedButton onPress={shareOrgCallback} style="flat" title="Share link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
-                    <ZRoundedButton onPress={revokeOrgLinkCallback} style="flat" title="Revoke link" uppercase={false} />
-                    <View style={{ marginTop: 10, width: '100%', marginLeft: 12, marginBottom: 10, backgroundColor: theme.separatorColor, height: 1 }} />
+                <ZListItem
+                    appearance="action"
+                    text="Copy link"
+                    onPress={copyOrgLinkCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Share link"
+                    onPress={shareOrgCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <ZListItem
+                    appearance="action"
+                    text="Revoke link"
+                    onPress={revokeOrgLinkCallback}
+                />
+                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
 
-                </View>
             </SScrollView>
 
         </>
