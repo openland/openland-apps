@@ -50,7 +50,7 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
                     <XMenuItem
                         style="danger"
                         onClick={() =>
-                            showModalBox({ title: 'Leave the chat' }, ctx => (
+                            showModalBox({ title: 'Leave chat' }, ctx => (
                                 <LeaveChatComponent id={id} ctx={ctx} />
                             ))
                         }
