@@ -102,8 +102,8 @@ const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) =>
                 {user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={user.lastSeen} format="humanize_cute" />
+                )}
             </div>
         );
     } else if (user && user.online) {
@@ -155,12 +155,18 @@ const reachContentClassName = css`
     background-color: #e8f4ff;
 `;
 
+const textAlignClassName = css`
+    text-align: center;
+`;
+
 const UserReach = XMemo<{ reach: number }>(props => (
     <XPopper
         style="dark"
         placement="bottom"
         content={
-            <span>User's reach is the total number of people in community groups they are in</span>
+            <span className={textAlignClassName}>
+                User's reach is the total number of people in community groups they are in
+            </span>
         }
         marginTop={8}
         width={295}
@@ -212,7 +218,8 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
-                            {user.audienceSize > 0 && !user.isBot && <UserReach reach={user.audienceSize} />}
+                            {user.audienceSize > 0 &&
+                                !user.isBot && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
@@ -295,11 +302,23 @@ const FeaturedIn = (props: { user: User_user }) => {
     return (
         <>
             <Section separator={0}>
-                <XSubHeader title="Featured in" counter={user.chatsWithBadge.length} paddingBottom={0} />
+                <XSubHeader
+                    title="Featured in"
+                    counter={user.chatsWithBadge.length}
+                    paddingBottom={0}
+                />
                 <SectionContent>
-                    {user.chatsWithBadge.map((item, index) => item.chat.__typename === 'SharedRoom' ? (
-                        <XRoomCard room={item.chat} badge={item.badge} customButton={null} customMenu={null} />
-                    ) : null)}
+                    {user.chatsWithBadge.map(
+                        (item, index) =>
+                            item.chat.__typename === 'SharedRoom' ? (
+                                <XRoomCard
+                                    room={item.chat}
+                                    badge={item.badge}
+                                    customButton={null}
+                                    customMenu={null}
+                                />
+                            ) : null,
+                    )}
                 </SectionContent>
             </Section>
         </>
