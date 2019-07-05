@@ -229,8 +229,8 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                                     width={6}
                                                     height={6}
                                                     position="absolute"
-                                                    right={16}
-                                                    top={14}
+                                                    right={isMobile ? 23 : 16}
+                                                    top={isMobile ? 11 : 14}
                                                     borderRadius="100%"
                                                     backgroundColor="#F6564E"
                                                 />
