@@ -70,11 +70,7 @@ export class NativeKeyValue implements KeyValueStore {
             this.queue.post(async () => {
                 try {
                     if (value != null) {
-                        if (Platform.OS === 'android') {
-                            await this.db.executeSql('REPLACE INTO records(key, value) VALUES(?,?)', [key, value]);
-                        } else {
-                            await this.db.executeSql('INSERT INTO records(key, value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=?', [key, value, value]);
-                        }
+                        await this.db.executeSql('REPLACE INTO records(key, value) VALUES(?,?)', [key, value]);
                     } else {
                         await this.db.executeSql('DELETE FROM records WHERE key=?', [key]);
                     }
