@@ -81,8 +81,8 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title="Get help from Openland community" hairline="hidden" />
             <SScrollView justifyContent="flex-start" alignContent="center">
+                <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: TextStyles.weight.bold, color: theme.textColor, marginBottom: 8 }} >Get help from Openland community</Text>
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Choose a chat and share your challenges"}</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />
@@ -93,4 +93,4 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
     );
 });
 
-export const StartConversation = withApp(StartConversationComponent, { navigationAppearance: 'large', hideHairline: true });
+export const StartConversation = withApp(StartConversationComponent, { navigationAppearance: 'small', hideHairline: true });
