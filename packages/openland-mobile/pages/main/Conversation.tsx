@@ -26,7 +26,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { ChannelMuteButton } from './components/ChannelMuteButton';
+import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
 import { EmojiRender } from './components/EmojiRender';
@@ -295,12 +295,20 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let privateRoom = this.props.chat.__typename === 'PrivateRoom' ? this.props.chat : undefined;
-        let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
+        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot : true);
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
         let showSelectedMessagesActions = this.state.messagesActionsState.messages.length > 0 && !this.state.messagesActionsState.action;
         let pinnedMessage = this.props.chat.pinnedMessage;
+
+        let inputPlaceholder = null;
+        if (!showSelectedMessagesActions && sharedRoom && sharedRoom.isChannel) {
+            inputPlaceholder = <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />;
+        }
+        if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
+            inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />
+        }
 
         return (
             <>
@@ -365,7 +373,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                 />
                             )}
-                            {!showInputBar && !showSelectedMessagesActions && sharedRoom && sharedRoom.isChannel && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}
+                            {!showInputBar && inputPlaceholder}
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} />}
                         </View>
                     </KeyboardSafeAreaView>

@@ -53,3 +53,32 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
         </View>
     );
 }
+
+export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string }) => {
+    const theme = React.useContext(ThemeContext);
+    if (Platform.OS === 'ios') {
+        return (
+            <ZKeyboardAwareBar>
+                <TouchableOpacity onPress={props.onPress}>
+                    <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor } as TextStyle}>
+                            {props.text}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </ZKeyboardAwareBar>
+        );
+    }
+
+    return (
+        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundColor}>
+            <TouchableOpacity onPress={props.onPress}>
+                <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor } as TextStyle}>
+                        {props.text}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    );
+}
