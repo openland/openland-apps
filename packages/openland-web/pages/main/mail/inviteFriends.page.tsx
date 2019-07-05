@@ -235,6 +235,7 @@ const SocialButtonClassName = css`
         width: 18px;
     }
     & svg path {
+        opacity: 1;
         transition: all 0.2s ease;
         fill: #1790ff;
     }
@@ -242,6 +243,7 @@ const SocialButtonClassName = css`
         background-color: #1790ff;
     }
     &:hover svg path {
+        opacity: 1;
         fill: #fff;
     }
 `;
@@ -260,7 +262,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        'Check out Openland, an invitation-only community for top startup founders, investors, and engineers. There are expert chats on any topic, from fundraising in Silicon Valley to CTOs lessons learned. Finally, can share it here!\n';
+        'Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that\'s the place! Invite to join:\n';
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
@@ -302,7 +304,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     value={sharingTextFull}
                     onChange={() => null}
                     flexGrow={1}
-                    height={140}
+                    height={180}
                     resize={false}
                     mode="modern"
                     padding={16}
@@ -318,7 +320,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     borderRadius={8}
                     backgroundColor="#f9f9f9"
                     fontSize={14}
-                    lineHeight={1.14}
+                    lineHeight={1.57}
                     color="rgba(0, 0, 0, 0.9)"
                 >
                     <span style={{ whiteSpace: 'pre-wrap' }}>{sharingTextFull}</span>
