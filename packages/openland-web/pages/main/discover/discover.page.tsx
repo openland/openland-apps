@@ -12,7 +12,7 @@ export const tabs: { [K in tabsT]: tabsT } = {
     discover: 'discover',
 };
 
-export default withApp('Discover', 'viewer', () => {
+const DiscoverContent = () => {
     const client = useClient();
 
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
@@ -21,16 +21,12 @@ export default withApp('Discover', 'viewer', () => {
         discoverDone.betaIsDiscoverDone ? tabs.discover : tabs.start,
     );
 
-    // React.useEffect(() => {
-    //     setTab(discoverDone.betaIsDiscoverDone ? tabs.discover : tabs.start);
-    // }, [discoverDone.betaIsDiscoverDone]);
-
-    const onStartClick = () => {
+    const onStartClick = React.useCallback(() => {
         setTab(tabs.discover);
-    };
+    }, [tabs.discover]);
 
     return (
-        <DiscoverNavigation>
+        <React.Suspense fallback={null}>
             {tab === 'start' && (
                 <DiscoverStart onSkip={null} onStartClick={onStartClick} noTopBar noBackSkipLogo />
             )}
@@ -43,6 +39,14 @@ export default withApp('Discover', 'viewer', () => {
                     noBackOnFirstScreen
                 />
             )}
+        </React.Suspense>
+    );
+};
+
+export default withApp('Discover', 'viewer', () => {
+    return (
+        <DiscoverNavigation>
+            <DiscoverContent />
         </DiscoverNavigation>
     );
 });

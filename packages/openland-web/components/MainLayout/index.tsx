@@ -7,6 +7,8 @@ import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 import { DesktopMenu } from './DesktopComponents';
 import { MobileMenu } from './MobileComponents';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
+import * as Cookie from 'js-cookie';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -67,26 +69,59 @@ interface MenuItemProps {
     path: string;
     icon?: any;
     onClick?: () => void;
-    notification?: boolean;
+    notification?: any;
 }
 
 const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
 `;
 
+export const DiscoverNotDoneRedDotInner = React.memo(({ setShowDot }: { setShowDot: Function }) => {
+    const client = useClient();
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'cache-and-network' });
+
+    React.useLayoutEffect(() => {
+        Cookie.set(
+            'x-openland-show-discover-dot',
+            !discoverDone.betaIsDiscoverDone ? 'true' : 'false',
+        );
+        setShowDot(!discoverDone.betaIsDiscoverDone);
+    }, [discoverDone.betaIsDiscoverDone]);
+    return null;
+});
+
+export const DiscoverNotDoneRedDot = () => {
+    const [showDot, setShowDot] = React.useState(
+        Cookie.get('x-openland-show-discover-dot') === 'true',
+    );
+
+    const content = (
+        <>
+            {showDot && (
+                <XView
+                    width={6}
+                    height={6}
+                    marginRight={6}
+                    borderRadius="100%"
+                    backgroundColor="#F6564E"
+                />
+            )}
+        </>
+    );
+
+    return (
+        <React.Suspense fallback={content}>
+            <DiscoverNotDoneRedDotInner setShowDot={setShowDot} />
+            {content}
+        </React.Suspense>
+    );
+};
+
 export const MenuItem = ({ path, icon, onClick, title, notification }: MenuItemProps) => (
     <XLink path={path} className={`${MenuItemWrapper} ${icon && MenuItemIcon}`} onClick={onClick}>
         {icon && <div className="icon-wrapper">{icon}</div>}
         <span>{title}</span>
-        {notification && (
-            <XView
-                width={6}
-                height={6}
-                marginRight={6}
-                borderRadius="100%"
-                backgroundColor="#F6564E"
-            />
-        )}
+        {notification}
         <RightIcon className="right-icon" />
     </XLink>
 );

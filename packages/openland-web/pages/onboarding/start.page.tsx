@@ -73,13 +73,17 @@ export const DiscoverStart = ({
 export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
 
-    const onSkip = () => {
+    const onSkip = React.useCallback(() => {
         router.push('/');
-    };
+    }, []);
 
-    const onStartClick = () => {
+    const onStartClick = React.useCallback(() => {
         router.push('/onboarding/discover');
-    };
+    }, []);
 
-    return <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} />;
+    return (
+        <React.Suspense fallback={null}>
+            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} />
+        </React.Suspense>
+    );
 });
