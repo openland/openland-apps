@@ -2,17 +2,6 @@ fragment UserFull on User {
   __typename
   about
   audienceSize
-  chatsWithBadge {
-    __typename
-    badge {
-      __typename
-      ...UserBadge
-    }
-    chat {
-      __typename
-      ...RoomShort
-    }
-  }
   email
   firstName
   id

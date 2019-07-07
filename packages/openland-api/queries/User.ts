@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { UserShort } from '../fragments/UserShort';
 import { UserFull } from '../fragments/UserFull';
+import { RoomShort } from '../fragments/RoomShort';
+import { UserBadge } from '../fragments/UserBadge';
 
 export const UsersQuery = gql`
     query Users($query: String!) {
@@ -17,6 +19,15 @@ export const UserQuery = gql`
     query User($userId: ID!) {
         user: user(id: $userId) {
             ...UserFull
+
+            chatsWithBadge {
+                chat {
+                    ...RoomShort
+                }
+                badge {
+                    ...UserBadge
+                }
+            }
         }
         conversation: room(id: $userId) {
             ... on PrivateRoom {
@@ -29,6 +40,8 @@ export const UserQuery = gql`
         }
     }
     ${UserFull}
+    ${RoomShort}
+    ${UserBadge}
 `;
 
 export const OnlineQuery = gql`

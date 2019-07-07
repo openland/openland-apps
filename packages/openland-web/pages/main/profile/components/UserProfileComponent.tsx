@@ -325,12 +325,6 @@ const FeaturedIn = (props: { user: User_user }) => {
     );
 };
 
-interface UserProfileInnerProps extends XWithRouter {
-    user: User_user;
-    onDirectory?: boolean;
-    hideBack?: boolean;
-}
-
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
@@ -366,6 +360,12 @@ export const BackButton = () => (
     </BackWrapper>
 );
 
+interface UserProfileInnerProps extends XWithRouter {
+    user: User_user;
+    onDirectory?: boolean;
+    hideBack?: boolean;
+}
+
 export const UserProfileInner = (props: UserProfileInnerProps) => {
     let { user } = props;
 
@@ -384,24 +384,31 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
     );
 };
 
-const UserProvider = (props: { variables: { userId: string }; onDirectory?: boolean }) => {
+interface UserProfileProps {
+    userId: string;
+    onDirectory?: boolean;
+    hideBack?: boolean;
+}
+
+const UserProvider = (props: UserProfileProps) => {
+    const { userId, ...other } = props;
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const data = client.useUser({
-        userId: props.variables.userId,
+        userId: userId,
     });
 
     return (
         <UserProfileInner
             user={data.user}
             router={router}
-            onDirectory={(props as any).onDirectory}
+            {...other}
         />
     );
 };
 
-export const UserProfile = (props: { userId: string; onDirectory?: boolean }) => (
+export const UserProfile = (props: UserProfileProps) => (
     <React.Suspense fallback={<XLoader loading={true} />}>
-        <UserProvider variables={{ userId: props.userId }} onDirectory={props.onDirectory} />
+        <UserProvider {...props} />
     </React.Suspense>
 );

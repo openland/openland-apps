@@ -12,6 +12,17 @@ query User($userId: ID!) {
   }
   user: user(id: $userId) {
     __typename
+    chatsWithBadge {
+      __typename
+      badge {
+        __typename
+        ...UserBadge
+      }
+      chat {
+        __typename
+        ...RoomShort
+      }
+    }
     ...UserFull
   }
 }
