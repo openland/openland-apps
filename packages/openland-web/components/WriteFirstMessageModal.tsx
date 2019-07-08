@@ -11,6 +11,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { setDraftMessage } from 'openland-web/fragments/MessageComposeComponent/hooks/useDraft/DraftStore';
+import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const textAlignClassName = css`
     text-align: center;
@@ -41,7 +42,7 @@ export const WriteFirstMessageModal = () => {
     let goToChat = React.useCallback(
         async () => {
             if (selected) {
-                setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', []);
+                setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
                 router.push('/mail/' + selected.key);
                 if (modal) {
                     modal.close();
