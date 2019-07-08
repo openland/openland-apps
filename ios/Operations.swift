@@ -1205,8 +1205,10 @@ private let SettingsFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("commentNotifications","commentNotifications", notNull(scalar("String"))),
             field("commentNotificationsDelivery","commentNotificationsDelivery", notNull(scalar("String"))),
+            field("countUnreadChats","countUnreadChats", notNull(scalar("Boolean"))),
             field("desktopNotifications","desktopNotifications", notNull(scalar("String"))),
             field("emailFrequency","emailFrequency", notNull(scalar("String"))),
+            field("excludeMutedChats","excludeMutedChats", notNull(scalar("Boolean"))),
             field("id","id", notNull(scalar("ID"))),
             field("mobileAlert","mobileAlert", notNull(scalar("Boolean"))),
             field("mobileIncludeText","mobileIncludeText", notNull(scalar("Boolean"))),
@@ -3613,7 +3615,7 @@ class Operations {
     let Settings = OperationDefinition(
         "Settings",
         .query, 
-        "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
         SettingsSelector
     )
     let SuggestedRooms = OperationDefinition(
@@ -4219,7 +4221,7 @@ class Operations {
     let SettingsUpdate = OperationDefinition(
         "SettingsUpdate",
         .mutation, 
-        "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
         SettingsUpdateSelector
     )
     let SubscribeMessageComments = OperationDefinition(
@@ -4393,7 +4395,7 @@ class Operations {
     let SettingsWatch = OperationDefinition(
         "SettingsWatch",
         .subscription, 
-        "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
         SettingsWatchSelector
     )
     let TypingsWatch = OperationDefinition(

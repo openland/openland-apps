@@ -120,6 +120,8 @@ export interface SettingsWatch_watchSettings {
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
+  excludeMutedChats: boolean;
+  countUnreadChats: boolean;
 }
 
 export interface SettingsWatch {
@@ -68025,6 +68027,8 @@ export interface Settings_settings {
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
+  excludeMutedChats: boolean;
+  countUnreadChats: boolean;
 }
 
 export interface Settings {
@@ -68050,6 +68054,8 @@ export interface SettingsUpdate_updateSettings {
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
+  excludeMutedChats: boolean;
+  countUnreadChats: boolean;
 }
 
 export interface SettingsUpdate {
@@ -80648,6 +80654,8 @@ export interface SettingsFull {
   mobileNotifications: NotificationMessages;
   mobileAlert: boolean;
   mobileIncludeText: boolean;
+  excludeMutedChats: boolean;
+  countUnreadChats: boolean;
 }
 
 /* tslint:disable */

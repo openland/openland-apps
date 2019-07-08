@@ -8,6 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { NON_PRODUCTION } from '../Init';
 
 const SettingsNotificationsContent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
@@ -35,9 +36,17 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                         emailFrequency: settings.emailFrequency,
                         mobileAlert: settings.mobileAlert,
                         mobileIncludeText: settings.mobileIncludeText,
+                        excludeMutedChats: settings.excludeMutedChats,
+                        countUnreadChats: settings.countUnreadChats,
                     }
                 }}
             >
+                {NON_PRODUCTION && (
+                    <ZListItemGroup header="Counter">
+                        <ZListItem text="Show unread chats" toggleField={{ key: 'input.countUnreadChats' }} />
+                        <ZListItem text="Exclude muted chats" toggleField={{ key: 'input.excludeMutedChats' }} />
+                    </ZListItemGroup>
+                )}
                 <ZListItemGroup header="Push notifications">
                     <ZListItem text="Alert" toggleField={{ key: 'input.mobileAlert' }} />
                     <ZListItem text="Include preview of messages" toggleField={{ key: 'input.mobileIncludeText' }} />

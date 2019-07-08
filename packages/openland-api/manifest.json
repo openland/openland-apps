@@ -16,10 +16,10 @@
       }
     },
     {
-      "signature": "6d07b90fd7a317e2f31d31ad13768f4c201a7f04e95824b7c98cffc2c827978c",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
+      "signature": "7d919da369242dba192aedbd92e67bdc6dea12f78392380669b72a2b05835837",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
       }
     },
     {
@@ -1297,17 +1297,17 @@
       }
     },
     {
-      "signature": "7709f5918551a5d0620bc49c0035f9c455827f7bfefeb7cc8ace41038c39e996",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "signature": "e765c54b842799201213ae3ba82ed4d0eb397d2f69e6dafa36847b687bf2e2f5",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
       }
     },
     {
-      "signature": "fae57374f7f6a95b11d535d97c624e510a94d429bb30c1a5ba80574ff5db7a18",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
+      "signature": "35e14b02b3397fc741ac9c4b8d4308a1eb34caf59a2c9c64956878d692d22cc8",
+      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
       }
     },
     {
