@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XView } from 'react-mental';
-import FeaturedIcon from 'openland-icons/ic-featured-star.svg';
+import FeaturedIcon from 'openland-icons/ic-featured-star-3.svg';
 import { css } from 'linaria';
 
 export const XFeaturedIcon = XMemo(props => (
@@ -13,7 +13,7 @@ export const XFeaturedIcon = XMemo(props => (
 export const XFeatured = XMemo<{ text: string | JSX.Element }>(props => (
     <XView flexDirection="row" alignItems="center">
         <XFeaturedIcon />
-        <XView fontWeight="400" marginLeft={6} color="rgba(0, 0, 0, 0.5)" overflow="hidden">
+        <XView fontWeight="400" marginLeft={2} color="rgba(0, 0, 0, 0.5)" overflow="hidden">
             {props.text}
         </XView>
     </XView>

@@ -164,7 +164,6 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                     <XView flexGrow={1} width="100%" paddingTop={1}>
                         <XView alignItems="center" flexDirection="row" marginBottom={4}>
                             <XView
-                                marginRight={props.sender!!.primaryOrganization ? 5 : 0}
                                 fontSize={14}
                                 fontWeight="600"
                                 lineHeight="16px"
@@ -179,7 +178,7 @@ export const MessageReplyComponent = React.memo((props: ReplyMessageProps) => {
                                     })}
                             </XView>
                             {props.senderBadge && (
-                                <XView marginLeft={5} alignSelf="center">
+                                <XView marginLeft={1} marginRight={-3} alignSelf="center">
                                     <XFeaturedTooltip text={props.senderBadgeNameEmojify || props.senderBadge.name} position="bottom" />
                                 </XView>
                             )}
