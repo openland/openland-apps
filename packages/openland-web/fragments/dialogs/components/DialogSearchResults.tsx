@@ -91,15 +91,12 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return;
     };
 
-    React.useEffect(
-        () => {
-            if (selectedIndex !== null) {
-                props.onSearchItemSelected(items[selectedIndex]);
-                return;
-            }
-        },
-        [selectedIndex],
-    );
+    React.useEffect(() => {
+        if (selectedIndex !== null) {
+            props.onSearchItemSelected(items[selectedIndex]);
+            return;
+        }
+    }, [selectedIndex]);
 
     if (items.length === 0 && messages.length === 0) {
         return (
@@ -117,16 +114,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                 SHIFT_COMMAND_UP: handleOptionUp,
                 SHIFT_COMMAND_DOWN: handleOptionDown,
             }}
-            keymap={{
-                SHIFT_COMMAND_UP: {
-                    osx: ['shift+command+up'],
-                    windows: ['shift+ctrl+up'],
-                },
-                SHIFT_COMMAND_DOWN: {
-                    osx: ['shift+command+down'],
-                    windows: ['shift+ctrl+down'],
-                },
-            }}
+            keymap={{}}
         >
             {items.map((i, index) => {
                 let item;

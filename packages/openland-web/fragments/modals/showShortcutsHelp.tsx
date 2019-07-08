@@ -130,14 +130,7 @@ export const ShortcutsBody = () => {
                 {/* overlapse with Cmd + S */}
                 <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
                 {/* overlapse with option + ↑ behaves weird with scroll */}
-                <Shortcut
-                    shortcuts={['Shift + Cmd + ↑ (Mac)', 'Shift + Ctrl + ↑ (Windows)']}
-                    description="Previous chat"
-                />
-                <Shortcut
-                    shortcuts={['Shift + Cmd + ↓ (Mac)', 'Shift + Ctrl + ↓ (Windows)']}
-                    description="Next chat"
-                />
+
                 <Shortcut shortcuts={['Esc']} description="Close chat" />
                 <Shortcut
                     shortcuts={['Ctrl + Option + N (Mac)', 'Ctrl + Alt + N (Windows)']}
@@ -181,10 +174,7 @@ export const ShortcutsBody = () => {
                 </XView>
                 <XView marginTop={12}>
                     <div>
-                        <SpanPreview
-                            spanType={SpanType.code_inline}
-                            text="`one line code block`"
-                        />
+                        <SpanPreview spanType={SpanType.code_inline} text="`one line code block`" />
                     </div>
                 </XView>
                 <XView marginTop={12}>
