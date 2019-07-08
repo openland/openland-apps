@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
+import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
-var watchers: ((isLoading: boolean) => void)[] = [];
+var watchers: ((isLoading: boolean, isNewLoader?: boolean) => void)[] = [];
 var loading = false;
 
-export function startLoader() {
+export function startLoader(isNewLoader?: boolean) {
     if (!loading) {
         loading = true;
         for (let w of watchers) {
-            w(true);
+            w(true, isNewLoader);
         }
     }
 }
@@ -22,23 +23,66 @@ export function stopLoader() {
     }
 }
 
+
+const styles = StyleSheet.create({
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(52, 52, 52, 0.3)'
+    } as ViewStyle,
+    loader: {
+        width: 96,
+        height: 96,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F0F2F5',
+        borderRadius: 18,
+    } as ViewStyle
+});
+
+function GlobalLoader() {
+    return (
+        <View style={styles.overlay}>
+            <View style={styles.loader}>
+                <LoaderSpinner />
+            </View>
+        </View>
+    );
+} 
+
 export const withGlobalLoader = (Wrapped: React.ComponentType) => {
-    class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean }> {
+    class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean, newLoader: boolean }> {
 
         state = {
-            loading: loading
+            loading: loading,
+            newLoader: false
         };
 
         componentWillMount() {
             watchers.push(this.handleLoadingChanged);
         }
 
-        handleLoadingChanged = (isLoading: boolean) => {
+        handleLoadingChanged = (isLoading: boolean, isNewLoader?: boolean ) => {
             console.log(isLoading);
-            this.setState({ loading: isLoading });
+            this.setState({ 
+                loading: isLoading,
+                newLoader: isNewLoader !== undefined
+            });
         }
 
         render() {
+            if (this.state.newLoader) {
+                return (
+                    <View height="100%" width="100%">
+                        <Wrapped />
+                        {this.state.loading && (
+                            <GlobalLoader />
+                        )}
+                    </View>
+                );
+            } 
+
             return (
                 <View height="100%" width="100%">
                     <Wrapped />

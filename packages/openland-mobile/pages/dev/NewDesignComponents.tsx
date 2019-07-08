@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Button } from 'react-native';
 import { withApp } from 'openland-mobile/components/withApp';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeader } from 'react-native-s/SHeader';
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     headerText: {
         padding: 20,
-        fontSize: 20
+        fontSize: 20,
+        textAlign: 'center'
     } as TextStyle
 });
 
@@ -39,6 +40,20 @@ export default withApp(() => {
 
                         <View style={styles.content}>
                             <LoaderSpinner size={'small'} />
+                        </View>
+                    </View>
+                    <Text style={styles.headerText}>
+                        Global Loader
+                    </Text>
+                    <View>
+                        <View style={styles.content}>
+                            <Button 
+                                title={'Show new global loader'}
+                                onPress={() => {
+                                    startLoader(true);
+                                    setTimeout(() => stopLoader(), 2000);
+                                }}
+                            />
                         </View>
                     </View>
                 </SScrollView>
