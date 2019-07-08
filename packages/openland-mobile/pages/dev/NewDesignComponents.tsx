@@ -5,6 +5,8 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { Alert, AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { showLinkCopied, showUnknowError } from 'openland-mobile/components/Toast';
 
 const styles = StyleSheet.create({
     container: {
@@ -55,6 +57,25 @@ export default withApp(() => {
                                 }}
                             />
                         </View>
+                    </View>
+                    <Text style={styles.headerText}>
+                        Alert Blanket
+                    </Text>
+                    <View style={styles.content}>
+                        <Button 
+                            title={'Show alert'}
+                            onPress={() => {
+                                Alert.alert('Test');
+                            }}
+                        />
+                        <Button 
+                            title={'Show unknow Error'}
+                            onPress={() => showUnknowError()}
+                        />
+                        <Button 
+                            title={'Show link copiend'}
+                            onPress={() => showLinkCopied()}
+                        />
                     </View>
                 </SScrollView>
             </View>

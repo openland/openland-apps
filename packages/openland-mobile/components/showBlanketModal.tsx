@@ -15,6 +15,7 @@ interface BlanketModalProps {
     ctx: ZModalController;
     safe: ASSafeArea;
     cancelable?: boolean;
+    withoutWrapper?: boolean;
 }
 
 class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppTheme }> implements ZModalController {
@@ -117,9 +118,32 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppT
 
         SAnimated.commitTransaction(() => { this.props.ctx.hide(); });
     }
+    
+    renderWrapper = () => {
+        if (!isPad) {
+            return this.renderContents();
+        }
+
+        return (
+            <View width={420} alignSelf="center">
+                {this.renderContents()}
+            </View>
+        )
+    }
+
+    renderContents = () => (
+        <View
+            backgroundColor={this.props.theme.modalBackground}
+            borderRadius={16}
+            marginHorizontal={16}
+            onLayout={this.onLayout}
+        >
+            {this.contents}
+        </View>
+    );
 
     render() {
-        const { theme } = this.props;
+        const { theme, withoutWrapper } = this.props;
 
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
@@ -159,26 +183,9 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppT
                     }}
                 >
                     <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom} marginTop={this.props.safe.top + 48}>
-                        {!isPad && (
-                            <View
-                                backgroundColor={theme.modalBackground}
-                                borderRadius={16}
-                                marginHorizontal={16}
-                                onLayout={this.onLayout}
-                            >
+                        {!withoutWrapper ? this.renderWrapper() : (
+                            <View onLayout={this.onLayout}>
                                 {this.contents}
-                            </View>
-                        )}
-                        {isPad && (
-                            <View width={420} alignSelf="center">
-                                <View
-                                    backgroundColor={theme.modalBackground}
-                                    borderRadius={16}
-                                    marginHorizontal={16}
-                                    onLayout={this.onLayout}
-                                >
-                                    {this.contents}
-                                </View>
                             </View>
                         )}
                     </View>
@@ -193,11 +200,23 @@ const ThemedBlanketModal = XMemo((props: BlanketModalProps) => {
     return <BlanketModal {...props} theme={theme} />
 })
 
-export function showBlanketModal(render: (ctx: ZModalController) => React.ReactElement<{}>, cancelable?: boolean) {
+export function showBlanketModal(
+    render: (ctx: ZModalController) => React.ReactElement<{}>, 
+    cancelable?: boolean, 
+    withoutWrapper?: boolean
+) {
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (<ThemedBlanketModal ctx={modal} modal={render} safe={safe} cancelable={cancelable} />)}
+                {safe => (
+                    <ThemedBlanketModal 
+                        ctx={modal} 
+                        modal={render} 
+                        safe={safe} 
+                        cancelable={cancelable} 
+                        withoutWrapper={withoutWrapper}
+                    />
+                )}
             </ASSafeAreaContext.Consumer>
         )
     });
