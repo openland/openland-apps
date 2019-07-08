@@ -277,6 +277,9 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 routes.add('/ui/spans', '/dev/ui/spans');
 routes.add('/ui/spans/', '/dev/ui/spans');
 
+routes.add('/unicorn', '/unicorn/index');
+routes.add('/unicorn/', '/unicorn/index');
+
 //
 // Dev Tools
 //
