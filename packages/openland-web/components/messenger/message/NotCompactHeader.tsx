@@ -115,7 +115,7 @@ export const NotCompactHeader = ({
                     </XView>
                 )}
                 {senderBadge && (
-                    <XView marginLeft={5} alignSelf="center">
+                    <XView alignSelf="center" marginLeft={1} marginRight={-3}>
                         <XFeaturedTooltip text={senderBadgeNameEmojify || senderBadge.name} />
                     </XView>
                 )}

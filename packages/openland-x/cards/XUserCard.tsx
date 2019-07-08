@@ -233,7 +233,7 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                             {!isMobile && badge && (
-                                <XView marginLeft={12}>
+                                <XView marginLeft={7}>
                                     <XFeatured text={emoji({ src: badge.name, size: 16 })} />
                                 </XView>
                             )}

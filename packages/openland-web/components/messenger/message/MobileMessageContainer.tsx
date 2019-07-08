@@ -82,7 +82,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                         {props.senderNameEmojify}
                     </XView>
                     {senderBadge && (
-                        <XView marginLeft={5} alignSelf="center">
+                        <XView marginLeft={1} marginRight={-3} alignSelf="center">
                             <XFeaturedIcon />
                         </XView>
                     )}
