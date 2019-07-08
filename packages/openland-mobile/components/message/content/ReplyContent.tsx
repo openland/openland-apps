@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { View, Text, TextStyle, Dimensions } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
@@ -58,7 +58,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,
                                     marginBottom: 2,
-                                } as TextStyle}
+                                }}
                                 onPress={() => props.onUserPress(generalMesage!.sender.id!)}
                                 allowFontScaling={false}
                             >

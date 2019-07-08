@@ -271,6 +271,7 @@ export default class OpenlandDocument extends Document {
                         }}
                     /> */}
 
+                    {/* <script src="/static/bns.js" /> */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
 

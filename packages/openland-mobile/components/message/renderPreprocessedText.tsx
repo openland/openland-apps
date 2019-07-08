@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, Linking, Clipboard, Share, TextStyle, Platform } from 'react-native';
+import { Text, Linking, Clipboard, Share } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
@@ -84,7 +84,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 <Text
                     key={'text-bold'}
                     allowFontScaling={false}
-                    style={{ fontWeight: TextStyles.weight.bold } as TextStyle}
+                    style={{ fontWeight: TextStyles.weight.bold }}
                 >
                     {children}
                 </Text>

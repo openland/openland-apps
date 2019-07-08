@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FullMessage_GeneralMessage_reactions, UserShort } from 'openland-api/Types';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { ZModalController } from '../ZModal';
-import { View, Image, Text, TextStyle } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -31,7 +31,7 @@ const ReactionsList = (props: ReactionsListProps) => {
                             <Image source={reactionsImagesMap[r]} style={{ width: 20, height: 20 }} />
 
                             <View flexGrow={1} flexShrink={1} paddingLeft={8}>
-                                <Text style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>
+                                <Text style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>
                                     {users.length > 1 ? (users.length + ' people') : '1 person'} reacted with :{r.toLowerCase()}:
                                 </Text>
                             </View>

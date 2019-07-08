@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RoomShort_SharedRoom, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { View, Text, TextStyle } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -42,7 +42,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                         height: 19,
                         color: theme.textColor,
                         fontWeight: TextStyles.weight.medium
-                    } as TextStyle}
+                    }}
                 >
                     {item.title}
                 </Text>

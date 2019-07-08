@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback, TextStyle } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -397,7 +397,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                 <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                     <View height="73%" alignItems="center" justifyContent="center">
                         <Image source={theme.imageEmpty} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                        <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>Cannot view group</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Cannot view group</Text>
                         <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.textColor, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
                     </View>
                     <View height="27%" alignItems="center" justifyContent="center">
