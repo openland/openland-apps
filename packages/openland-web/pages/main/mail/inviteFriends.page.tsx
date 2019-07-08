@@ -248,7 +248,9 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     lineHeight={1.6}
                     color="rgba(0, 0, 0, 0.9)"
                 >
-                    <span style={{ whiteSpace: 'pre-wrap' }}>{sharingTextFull}</span>
+                    <span style={{ whiteSpace: 'pre-wrap', letterSpacing: 0.4 }}>
+                        {sharingTextFull}
+                    </span>
                 </XView>
             </XView>
             <XView
