@@ -131,8 +131,9 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
 export const EmailStart = withApp(EmailStartComponent);
 
-class EmailCodeComponent extends React.PureComponent<PageProps> {
+class EmailCodeComponent extends React.PureComponent<PageProps, { code: string }> {
     private ref = React.createRef<ZForm>();
+    state = { code: '' };
 
     private submitForm = () => {
         this.ref.current!.submitForm();
@@ -160,10 +161,12 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
         this.ref.current!.setField('fields.code');
     }
 
-    private handleChangeText = (value: string) => {
-        if (value.length === 6) {
-            setTimeout(() => this.submitForm(), 100); // Fix form data sync 
-        }
+    private handleCodeChange = (code: string) => {
+        this.setState({ code }, () => {
+            if (code.length === ACTIVATION_CODE_LENGTH) {
+                this.submitForm();
+            }
+        });
     };
 
     render() {
@@ -173,6 +176,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
                     ref={this.ref}
+                    staticData={{ code: this.state.code }}
                     action={async src => {
                         this.validateCode(src.code);
 
@@ -226,8 +230,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         width="100%"
                         returnKeyType="next"
                         onSubmitEditing={this.submitForm}
-                        onChangeText={this.handleChangeText}
-                        maxLength={6}
+                        onChangeText={this.handleCodeChange}
+                        maxLength={ACTIVATION_CODE_LENGTH}
                     />
                 </ZForm>
             </ZTrack>
