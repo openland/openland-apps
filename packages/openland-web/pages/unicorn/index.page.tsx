@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container } from './components/Container';
+import { Container, InnerContainer } from './components/Container';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 
@@ -35,10 +35,12 @@ const blurClass = css`
 export default () => {
     return (
         <Container>
-            <XView alignSelf="stretch" height="1500px">
-                <div className={containerClass} />
-                <div className={blurClass} />
-            </XView>
+            <InnerContainer>
+                <XView alignSelf="stretch" height="1500px">
+                    <div className={containerClass} />
+                    <div className={blurClass} />
+                </XView>
+            </InnerContainer>
             <XView height="50px" position="absolute" bottom={0} left={0} right={0} backgroundColor="red">
                 {}
             </XView>

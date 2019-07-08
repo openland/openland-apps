@@ -15,6 +15,14 @@ const inner = css`
     -webkit-overflow-scrolling: touch;
 `;
 
+export const InnerContainer = (props: { children?: any }) => {
+    return (
+        <div className={inner}>
+            {props.children}
+        </div>
+    );
+}
+
 export const Container = (props: { children?: any }) => {
     return (
         <div className={body}>
