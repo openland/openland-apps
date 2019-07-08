@@ -151,7 +151,9 @@ export default class OpenlandDocument extends Document {
                     <meta name="theme-color" content="#1790ff" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
-                    <meta name="apple-itunes-app" content="app-id=1435537685" />
+                    {process.env.APP_ENVIRONMENT !== 'next' && (
+                        <meta name="apple-itunes-app" content="app-id=1435537685" />
+                    )}
 
                     {/* ORDER IS IMPORTANT! */}
                     <link
