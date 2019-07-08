@@ -66,7 +66,7 @@ type NotCompactHeaderT = {
 };
 
 const sendDataClassName = css`
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 `;
 
 export const NotCompactHeader = ({
@@ -105,7 +105,7 @@ export const NotCompactHeader = ({
                 ) : (
                     <XView
                         flexDirection="row"
-                        fontSize={14}
+                        fontSize={15}
                         fontWeight="600"
                         color="#292929"
                         onMouseEnter={onAvatarOrUserNameMouseEnter}
@@ -122,7 +122,7 @@ export const NotCompactHeader = ({
                 {!isCommentNotification && sender.primaryOrganization && (
                     <XView
                         as="a"
-                        fontSize={12}
+                        fontSize={13}
                         color="#7A7A7A"
                         paddingLeft={8}
                         alignSelf="flex-end"
@@ -163,7 +163,7 @@ export const NotCompactHeader = ({
             {!isComment && !isCommentNotification && !isModal && (
                 <XView
                     paddingLeft={8}
-                    fontSize={12}
+                    fontSize={13}
                     color="#7A7A7A"
                     alignSelf="flex-end"
                     marginBottom={-1}
