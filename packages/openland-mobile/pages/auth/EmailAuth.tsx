@@ -160,6 +160,12 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
         this.ref.current!.setField('fields.code');
     }
 
+    private handleChangeText = (value: string) => {
+        if (value.length === 6) {
+            setTimeout(() => this.submitForm(), 100); // Fix form data sync 
+        }
+    };
+
     render() {
         return (
             <ZTrack event="code_view">
@@ -220,6 +226,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         width="100%"
                         returnKeyType="next"
                         onSubmitEditing={this.submitForm}
+                        onChangeText={this.handleChangeText}
+                        maxLength={6}
                     />
                 </ZForm>
             </ZTrack>
