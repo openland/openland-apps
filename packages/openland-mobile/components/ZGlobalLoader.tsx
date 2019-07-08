@@ -23,7 +23,6 @@ export function stopLoader() {
     }
 }
 
-
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
