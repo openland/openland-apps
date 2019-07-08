@@ -42,7 +42,7 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                 }}
             >
                 {NON_PRODUCTION && (
-                    <ZListItemGroup header="Counter">
+                    <ZListItemGroup header="Counter (NON_PRODUCTION)">
                         <ZListItem text="Show unread chats" toggleField={{ key: 'input.countUnreadChats' }} />
                         <ZListItem text="Exclude muted chats" toggleField={{ key: 'input.excludeMutedChats' }} />
                     </ZListItemGroup>
