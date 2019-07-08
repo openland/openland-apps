@@ -3,6 +3,13 @@ import uuid from 'uuid/v4';
 import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { EventPlatform, Event } from 'openland-api/Types';
+import { createLogger } from 'mental-log';
+import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
+
+const TRACKING_STORAGE_VERSION = 4;
+const BATCH_SIZE = 100;
+
+const log = createLogger('Engine-Tracking');
 
 export interface TrackPlatform {
     name: EventPlatform;
@@ -10,22 +17,32 @@ export interface TrackPlatform {
 }
 
 class TrackingEngine {
-
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
     private pending: Event[] = [];
     private isSending = false;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
+    private storage: AppStorageQueued<Event>;
 
-    setClient(client: OpenlandClient) {
+    constructor() {
+        this.storage = new AppStorageQueued('tracking-pending-' + TRACKING_STORAGE_VERSION);
+    }
+
+    async setClient(client: OpenlandClient) {
         if (!this.client) {
             this.client = client;
-            this.flush();
+
+            const fromStorage = await this.storage.getItems();
+
+            log.log('Found in storage. Count: ' + fromStorage.length);
+
+            this.pending = [...fromStorage, ...this.pending];
+            this.processEvents();
         }
     }
 
-    track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
+    async track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
         let item: Event = {
             id: uuid(),
             event: event,
@@ -33,26 +50,23 @@ class TrackingEngine {
             time: Date.now().toString()
         };
 
+        log.log('New event: ' + JSON.stringify(item));
+
         this.platform = platform;
         this.pending.push(item);
 
-        this.flush();
+        await this.storage.addItem(item);
 
-        console.log('Event: ', item);
+        this.processEvents();
     }
 
-    private async flush() {
-        if (!this.client) {
-            return;
-        }
-        if (this.isSending) {
-            return;
-        }
-        if (this.pending.length === 0) {
+    private async processEvents() {
+        if (!this.client || this.isSending || this.pending.length <= 0) {
             return;
         }
 
         this.isSending = true;
+
         if (!this.initPromise) {
             this.initPromise = (async () => {
                 let did = await AppStorage.readKey<string>('device-id');
@@ -62,25 +76,30 @@ class TrackingEngine {
                 }
                 this.deviceId = did;
 
-                console.log('DEVICE-ID: ' + did);
+                log.log('DEVICE-ID: ' + did);
             })();
         }
 
         await this.initPromise;
+        
+        while (this.pending.length > 0) {
+            const batch = this.pending.splice(0, BATCH_SIZE);
 
-        let events = [...this.pending];
-        this.pending = [];
-        await backoff(async () => {
-            await this.client.mutatePersistEvents({
-                did: this.deviceId,
-                events: events,
-                platform: this.platform.name,
-                isProd: this.platform.isProd
+            await backoff(async () => {
+                await this.client.mutatePersistEvents({
+                    did: this.deviceId,
+                    events: batch,
+                    platform: this.platform.name,
+                    isProd: this.platform.isProd
+                });
+    
+                log.log('Send events. Count: ' + batch.length);
             });
-        })
+
+            await this.storage.removeItems(batch.map(p => p.id));
+        }
 
         this.isSending = false;
-        this.flush();
     }
 }
 
