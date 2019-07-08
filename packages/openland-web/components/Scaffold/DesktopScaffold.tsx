@@ -43,7 +43,7 @@ const NavigationScrollerDiv = Glamorous(XScrollView)<{ mobile?: boolean }>(({ mo
         minHeight: '100%',
         height: '100%',
         width: mobile ? '100%' : 64,
-        backgroundColor: '#f6f6f6',
+        backgroundColor: '#F0F2F5',
         borderRightWidth: '1px',
         borderRightStyle: 'solid',
         borderRightColor: XThemeDefault.separatorColor,

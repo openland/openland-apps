@@ -89,7 +89,7 @@ export class Sidebar extends React.Component<SidebarProps> {
                     paddingRight={16}
                     fontSize={22}
                     lineHeight="24px"
-                    color="rgba(0, 0, 0, 0.9)"
+                    color="#F0F2F5"
                 >
                     {this.props.title}
                 </XView>
