@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UserForMention } from 'openland-api/Types';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { View, Text, TextStyle } from 'react-native';
+import { View, Text, TextStyle, Dimensions } from 'react-native';
 import { ZAvatar } from './ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from './ZListItemBase';
@@ -26,7 +26,9 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                 />
                 <View flexGrow={1} flexShrink={1} paddingLeft={12}>
                     <Text
-                        style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium } as TextStyle}
+                        style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium, width: Dimensions.get('screen').width - 72 }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
                         allowFontScaling={false}
                     >
                         {props.user.name}{'   '}
