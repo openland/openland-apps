@@ -225,7 +225,7 @@ const SocialButtonClassName = css`
     height: 36px;
     background-color: #e8f4ff;
     border-radius: 50px;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
@@ -250,11 +250,12 @@ const SocialButtonClassName = css`
 
 interface SocialButtonProps {
     icon: any;
-    href: string;
+    // href: string;
+    onClick: () => void;
 }
 
 const SocialButton = (props: SocialButtonProps) => (
-    <a href={props.href} target="_blank" className={SocialButtonClassName}>
+    <a className={SocialButtonClassName} onClick={props.onClick}>
         {props.icon}
     </a>
 );
@@ -262,7 +263,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        'Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that\'s the place! Invite to join:\n';
+        "Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place! Invite to join:\n";
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
@@ -287,6 +288,10 @@ const WritePostBlock = (props: { inviteKey: string }) => {
     const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${sharingUrl}`;
     const linkedinHref = `https://www.linkedin.com/shareArticle?mini=false&url=${sharingUrl}`;
     const twitterHref = `https://twitter.com/intent/tweet?text=${encodeURI(sharingTextFull)}`;
+
+    const redirect = (href: string) => {
+        window.open(href, '_blank');
+    };
     return (
         <XView
             flexDirection="column"
@@ -344,9 +349,18 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                         paddingTop={3}
                         justifyContent="space-between"
                     >
-                        <SocialButton icon={<FacebookIcon />} href={facebookHref} />
-                        <SocialButton icon={<LinkedinIcon />} href={linkedinHref} />
-                        <SocialButton icon={<TwitterIcon />} href={twitterHref} />
+                        <SocialButton
+                            icon={<FacebookIcon />}
+                            onClick={() => redirect(facebookHref)}
+                        />
+                        <SocialButton
+                            icon={<LinkedinIcon />}
+                            onClick={() => redirect(linkedinHref)}
+                        />
+                        <SocialButton
+                            icon={<TwitterIcon />}
+                            onClick={() => redirect(twitterHref)}
+                        />
                     </XView>
                 </XView>
             </XView>
