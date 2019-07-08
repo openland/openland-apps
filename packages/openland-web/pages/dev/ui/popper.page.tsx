@@ -7,8 +7,9 @@ import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import Glamorous from 'glamorous';
 import { XVertical2 } from 'openland-x/XVertical2';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 
-const CustomContentDiv = Glamorous(XPopper.Content)({
+const CustomContentDiv = Glamorous(XPopperContent)({
     boxShadow:
         '0 0 0 1px rgba(255, 10, 10, .1), 0 15px 35px 0 rgba(255, 10, 10, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
 });

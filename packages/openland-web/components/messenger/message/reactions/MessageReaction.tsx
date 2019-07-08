@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -285,7 +285,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
             }
             foundMyReaction = true;
             components.push(
-                <XPopper
+                <XPolitePopper
                     key={'reaction' + reactionsMap[k][0].reaction}
                     placement="bottom"
                     style="dark"
@@ -314,7 +314,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                     >
                         {content}
                     </SingleReactionUnset>
-                </XPopper>,
+                </XPolitePopper>,
             );
         } else {
             let content = emojifyReactions({
@@ -329,7 +329,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                 content = <div className={ThumbIconClassName} />;
             }
             components.push(
-                <XPopper
+                <XPolitePopper
                     key={'reaction' + reactionsMap[k][0].reaction}
                     placement="bottom"
                     style="dark"
@@ -358,7 +358,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                     >
                         {content}
                     </SingleReactionSet>
-                </XPopper>,
+                </XPolitePopper>,
             );
         }
     }

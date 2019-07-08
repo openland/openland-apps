@@ -21,16 +21,18 @@ export class XPopperStub extends React.Component<XPopperProps> {
 
 const XPopper = React.lazy(() => import('./XPopper'));
 
-export const XPolitePopper = (props: XPopperProps) => {
-    const [render, setRender] = React.useState(false);
+export const XPolitePopper = React.forwardRef<any, XPopperProps>(
+    (props: XPopperProps, ref: any) => {
+        const [render, setRender] = React.useState(false);
 
-    React.useEffect(() => {
-        setRender(true);
-    }, []);
+        React.useEffect(() => {
+            setRender(true);
+        }, []);
 
-    return (
-        <React.Suspense fallback={<XPopperStub {...props} />}>
-            {render && <XPopper {...props} />}
-        </React.Suspense>
-    );
-};
+        return (
+            <React.Suspense fallback={<XPopperStub {...props} />}>
+                {render && <XPopper {...props} ref={ref} />}
+            </React.Suspense>
+        );
+    },
+);

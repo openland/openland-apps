@@ -1,14 +1,15 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MultiplePicker } from './multiplePicker';
 import { XCheckboxBasic } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 
-const ContentWrapper = Glamorous(XPopper.Content)({
+const ContentWrapper = Glamorous(XPopperContent)({
     minWidth: 180,
 });
 
@@ -147,7 +148,7 @@ export class SortPicker extends React.Component<
             v => v.value === this.props.sort.orderBy,
         );
         return (
-            <XPopper
+            <XPolitePopper
                 placement="bottom-end"
                 show={this.state.popper}
                 content={content}
@@ -165,7 +166,7 @@ export class SortPicker extends React.Component<
                     icon="sort"
                     onClick={this.switch}
                 />
-            </XPopper>
+            </XPolitePopper>
         );
     }
 }

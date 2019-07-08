@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -12,8 +12,10 @@ import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { trackEvent } from 'openland-x-analytics';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopperArrow } from 'openland-x/popper/XPopperArrow';
 
-const CustomPickerDiv = Glamorous(XPopper.Content)({
+const CustomPickerDiv = Glamorous(XPopperContent)({
     padding: '4px 10px',
     borderRadius: 18,
 });
@@ -128,7 +130,7 @@ const ReactionPicker = (props: {
     );
 };
 
-const PopperArrow = Glamorous(XPopper.Arrow)({
+const PopperArrow = Glamorous(XPopperArrow)({
     position: 'absolute',
     left: '115px !important',
     '@media(min-width: 1340px)': {
@@ -218,7 +220,7 @@ export const MessageReactionButton = ({
     }
 
     return (
-        <XPopper
+        <XPolitePopper
             content={
                 <ReactionPicker
                     setReaction={handleSetReaction}
@@ -251,7 +253,7 @@ export const MessageReactionButton = ({
             >
                 <ReactionIcon />
             </ReactionButtonInner>
-        </XPopper>
+        </XPolitePopper>
     );
 };
 
@@ -346,7 +348,7 @@ export const CommentReactionButton = React.memo(
 
         const finalLikeIconElement =
             reactions && reactions.length ? (
-                <XPopper
+                <XPolitePopper
                     content={
                         <XView paddingRight={32} paddingBottom={1}>
                             <XView marginTop={2} fontWeight={'600'} fontSize={11}>
@@ -369,7 +371,7 @@ export const CommentReactionButton = React.memo(
                     style="dark"
                 >
                     {likeIconElement}
-                </XPopper>
+                </XPolitePopper>
             ) : (
                 likeIconElement
             );

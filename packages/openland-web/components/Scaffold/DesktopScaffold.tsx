@@ -12,7 +12,7 @@ import { AppsMenuItem } from './MenuItems/AppsMenuItem';
 import { SuperAdminMenuItem } from './MenuItems/SuperAdminMenuItem';
 import { CreateMenuItem } from './MenuItems/CreateMenuItem';
 import { DesktopUserProfile } from './DesktopUserProfile';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 
 export const DesktopScafoldMenuItem = ({
     name,
@@ -24,7 +24,7 @@ export const DesktopScafoldMenuItem = ({
     icon: any;
 }) => {
     return (
-        <XPopper
+        <XPolitePopper
             placement="right"
             showOnHoverContent={false}
             showOnHover={true}
@@ -34,7 +34,7 @@ export const DesktopScafoldMenuItem = ({
             content={<strong>{name}</strong>}
         >
             <DesktopNavigatorItem path={path}>{icon}</DesktopNavigatorItem>
-        </XPopper>
+        </XPolitePopper>
     );
 };
 

@@ -1,14 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XLink } from 'openland-x/XLink';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XModalHeader, XModalTitle } from 'openland-x-modal/XModal';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XText } from 'openland-x/XText';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
@@ -38,7 +36,7 @@ class DeclineButton extends React.Component<{
 }> {
     render() {
         return (
-            <XPopper
+            <XPolitePopper
                 content="Decline request"
                 showOnHover={true}
                 placement="top-end"
@@ -51,7 +49,7 @@ class DeclineButton extends React.Component<{
                 >
                     <CloseIcon />
                 </DeclineButtonWrapper>
-            </XPopper>
+            </XPolitePopper>
         );
     }
 }

@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import * as Cookie from 'js-cookie';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { TextGlobal } from 'openland-text/TextGlobal';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XModalContext } from 'openland-x-modal/XModalContext';
@@ -117,7 +117,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
         let { primaryOrganization, organizations } = this.props;
 
         return (
-            <XPopper
+            <XPolitePopper
                 placement="right"
                 contentContainer={<XMenuVertical paddingTop={11} />}
                 onClickOutside={this.closer}
@@ -164,7 +164,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                     />
 
                                     {organizations && organizations.length > 1 && (
-                                        <XPopper
+                                        <XPolitePopper
                                             placement="right"
                                             contentContainer={<XMenuVertical />}
                                             showOnHover={true}
@@ -203,7 +203,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                             <XMenuItem iconRight="x-right">
                                                 Other organizations
                                             </XMenuItem>
-                                        </XPopper>
+                                        </XPolitePopper>
                                     )}
                                 </>
                             )}
@@ -214,7 +214,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                 <div onClick={this.switch}>
                     <XAvatar2 src={this.props.picture} title={this.props.name} id={this.props.id} />
                 </div>
-            </XPopper>
+            </XPolitePopper>
         );
     }
 }
