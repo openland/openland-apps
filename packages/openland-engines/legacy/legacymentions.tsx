@@ -127,16 +127,16 @@ export const prepareLegacyMentionsForSend = (
 
 export type UserWithOffset =
     | {
-          typename: 'UserWithOffset';
-          user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
-          offset: number;
-          length: number;
-      }
+        typename: 'UserWithOffset';
+        user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+        offset: number;
+        length: number;
+    }
     | {
-          typename: 'AllMention';
-          offset: number;
-          length: number;
-      };
+        typename: 'AllMention';
+        offset: number;
+        length: number;
+    };
 
 export const convertToMentionInputNoText = (mention: UserWithOffset): MentionInput => {
     if (mention.typename === 'UserWithOffset') {
@@ -207,15 +207,24 @@ export const convertSpansToUserWithOffset = ({
 }): UserWithOffset[] => {
     return spans
         .filter(span => {
-            return span.__typename === 'MessageSpanUserMention';
+            return span.__typename === 'MessageSpanUserMention' || span.__typename === 'MessageSpanAllMention';
         })
-        .map((span: FullMessage_GeneralMessage_spans_MessageSpanUserMention) => {
-            return {
-                typename: 'UserWithOffset' as 'UserWithOffset',
-                user: span.user,
-                offset: span.offset,
-                length: span.length,
-            };
+        .map((span: FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanAllMention) => {
+            if (span.__typename === 'MessageSpanUserMention') {
+                return {
+                    typename: 'UserWithOffset' as 'UserWithOffset',
+                    user: span.user,
+                    offset: span.offset,
+                    length: span.length,
+                };
+            } else {
+                return {
+                    typename: 'AllMention' as 'AllMention',
+                    offset: span.offset,
+                    length: span.length,
+                };
+            }
+
         });
 };
 

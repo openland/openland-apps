@@ -94,6 +94,8 @@ export const getEditorStateFromText = ({
                         }
 
                         return mention.user;
+                    } else if (mention.typename === 'AllMention') {
+                        return { __typename: 'AllMention' as 'AllMention', name: 'All' as 'All' };
                     }
                     return { __typename: 'AllMention' as 'AllMention', name: 'all' as 'all' };
                 }),
