@@ -338,7 +338,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         </ReplyMessageWrapper>,
                     );
                 }
-                if (fileAttach && !richAttach) {
+                if (fileAttach) {
                     if (fileAttach.fileMetadata.isImage) {
                         if (fileAttach.fileMetadata.imageFormat === 'GIF') {
                             content.push(
@@ -392,7 +392,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                 }
 
-                if (fileAttach && !richAttach && !fileAttach.fileMetadata.isImage) {
+                if (fileAttach && !fileAttach.fileMetadata.isImage) {
                     if (
                         fileAttach.fileMetadata.name.endsWith('.mp4') ||
                         fileAttach.fileMetadata.name.endsWith('.mov')
