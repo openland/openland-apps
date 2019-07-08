@@ -24,12 +24,23 @@ const blurClass = css`
     }
 `;
 
+// const Tabs = () => {
+//     let [tab, setTab] =  React.useState(0);
+
+//     return (
+
+//     )
+// };
+
 export default () => {
     return (
         <Container>
             <XView alignSelf="stretch" height="1500px">
                 <div className={containerClass} />
                 <div className={blurClass} />
+            </XView>
+            <XView height="50px" position="absolute" bottom={0} left={0} right={0} backgroundColor="red">
+                {}
             </XView>
         </Container>
     );
