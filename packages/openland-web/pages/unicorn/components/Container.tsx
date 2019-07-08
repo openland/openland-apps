@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 
 const body = css`
-    position: relative;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background-color: #F0F2F5;

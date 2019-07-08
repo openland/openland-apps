@@ -16,7 +16,6 @@ const blurClass = css`
     top: 90px;
     left: 90px;
     background-color: rgba(255, 255, 255, .9);
-    
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, .5);
         backdrop-filter: blur(10px);
