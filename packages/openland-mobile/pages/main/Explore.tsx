@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, Text, View, Image, TextStyle, Dimensions } from 'react-native';
+import { Platform, Text, View, Image, Dimensions } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
@@ -164,7 +164,7 @@ const ExplorePage = (props: PageProps) => {
                         <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom + (small ? 0 : 50)}>
                             <Image marginTop={(theme.blurType === 'light' ? -30 : 0) - (small ? 25 : 0)} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
                             <View alignItems="center" justifyContent="center">
-                                {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold } as TextStyle}>Discover chats</Text>}
+                                {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.bold }}>Discover chats</Text>}
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.textColor }}>Find the right chats for you</Text>}
                             </View>
                             <ZRoundedButton size={small ? 'big' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />

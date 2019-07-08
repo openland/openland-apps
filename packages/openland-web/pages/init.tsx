@@ -15,12 +15,18 @@ let fontFamily =
 
 css.global('html, body', {
     height: '100%',
+    overscrollBehavior: 'none',
+    overflow: 'hidden'
 });
 
 css.global('#__next', {
     display: 'flex',
     minHeight: '100%',
 });
+
+// css.global('body', {
+//     position: 'fixed'
+// });
 
 css.global('html', {
     fontStyle: 'normal',

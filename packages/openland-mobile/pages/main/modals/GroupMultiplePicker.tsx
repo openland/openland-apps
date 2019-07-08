@@ -29,23 +29,17 @@ interface GroupsListProps {
 }
 
 const GroupsList = XMemo<GroupsListProps>((props) => {
-    let groups = getClient().useRoomSearch({
-        query: "",
-        sort: JSON.stringify([
-            { 'featured': { order: 'desc' } },
-            { 'membersCount': { order: 'desc' } },
-        ])
-    }).items.edges;
+    let groups = getClient().useUserAvailableRooms({ limit: 100 }).betaUserAvailableRooms;
 
     return (
         <SScrollView marginTop={props.searchHeight}>
             {groups.map((v, i) => {
-                const group = v.node as RoomShort_SharedRoom;
+                const group = v as RoomShort_SharedRoom;
 
                 return (
-                    <CheckListBoxWraper key={'group-' + i} checked={!!props.groups.find((u: any) => u.id === v.node.id)}>
+                    <CheckListBoxWraper key={'group-' + i} checked={!!props.groups.find((u: any) => u.id === group.id)}>
                         <GroupView
-                            key={v.node.id}
+                            key={group.id}
                             item={group}
                             photo={group.photo}
                             onPress={() => props.onAdd(group)}

@@ -3,20 +3,18 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
-import { View, Text, TextStyle, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { CenteredHeader } from './components/CenteredHeader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { trackEvent } from 'openland-mobile/analytics';
 
 const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (chat: RoomShort) => void }) => {
@@ -46,7 +44,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     height: 19,
                     color: theme.textColor,
                     fontWeight: TextStyles.weight.medium
-                } as TextStyle}
+                }}
             >{props.item.title}
             </Text>
             <Text

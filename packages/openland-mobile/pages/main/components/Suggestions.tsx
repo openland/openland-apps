@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Dimensions, TextStyle } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { AppStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { isAndroid } from 'openland-mobile/utils/isAndroid';
@@ -39,7 +39,7 @@ export const SuggestionsItemName = (props: { theme: AppTheme, name: string; desc
                 style={{
                     color: props.theme.textLabelColor,
                     fontWeight: TextStyles.weight.regular
-                } as TextStyle}
+                }}
                 allowFontScaling={false}
             >
                 {props.description}

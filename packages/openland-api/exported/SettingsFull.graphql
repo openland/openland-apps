@@ -2,8 +2,10 @@ fragment SettingsFull on Settings {
   __typename
   commentNotifications
   commentNotificationsDelivery
+  countUnreadChats
   desktopNotifications
   emailFrequency
+  excludeMutedChats
   id
   mobileAlert
   mobileIncludeText

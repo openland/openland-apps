@@ -134,8 +134,6 @@ routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
-routes.add('/invitePeople', '/main/mail/invitePeople');
-routes.add('/invitePeople/', '/main/mail/invitePeople');
 routes.add('/inviteFriends', '/main/mail/inviteFriends');
 routes.add('/inviteFriends/', '/main/mail/inviteFriends');
 
@@ -276,6 +274,9 @@ routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 routes.add('/ui/spans', '/dev/ui/spans');
 routes.add('/ui/spans/', '/dev/ui/spans');
+
+routes.add('/unicorn', '/unicorn/index');
+routes.add('/unicorn/', '/unicorn/index');
 
 //
 // Dev Tools

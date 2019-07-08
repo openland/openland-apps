@@ -1,4 +1,4 @@
-import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
+import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-engines/legacy/legacymentions';
 
 const getDraftKey = (conversationId?: string): string => {
     if (!conversationId) {
@@ -22,6 +22,8 @@ export const getDraftMessage = (
     mentions = JSON.parse(
         !mentionsString || mentionsString === 'undefined' ? '[]' : mentionsString,
     );
+
+    mentions = convertSpansToUserWithOffset({ spans: mentions });
 
     let draftKey = getDraftKey(conversationId);
 

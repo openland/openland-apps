@@ -28,7 +28,8 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     }
 
     let attaches = (message.attachments || []);
-    let fileAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    let mediaAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    let documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     let augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
 
     let hasReply = !!(message.quotedMessages && message.quotedMessages.length > 0);
@@ -39,22 +40,21 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     if (hasReply) {
         content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
     }
+
+    mediaAttaches.map((file, index) => {
+        let imageLayout = layoutImage(file.fileMetadata, realMaxWidth);
+
+        if (imageLayout) {
+            content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
+        }
+    });
+
     if (hasText) {
         content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} isSmall={isSmall} theme={theme} />);
     }
 
-    fileAttaches.map((file, index) => {
-        let isImage = file.fileMetadata.isImage;
-    
-        if (isImage) {
-            let imageLayout = layoutImage(file.fileMetadata, realMaxWidth);
-    
-            if (imageLayout) {
-                content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
-            }
-        } else {
-            content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} theme={theme} />);
-        }
+    documentsAttaches.map((file, index) => {
+        content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} theme={theme} />);
     });
 
     augmenationAttaches.map((attach, index) => {

@@ -9,12 +9,9 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XImage } from 'react-mental';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XMutation } from 'openland-x/XMutation';
 import { XInput } from 'openland-x/XInput';
 import CheckIcon from 'openland-icons/ic-check.svg';
-import ProfileIcon from 'openland-icons/ic-profile.svg';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
-import ArrowDownIcon from 'openland-icons/ic-arrow-down.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import LinkedinIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
@@ -29,14 +26,8 @@ const textAlignCenterClassName = css`
     text-align: center;
 `;
 
-const profileIconClassName = css`
-    & path:last-child {
-        fill: #bfbfbf;
-        fill-opacity: 1;
-    }
-`;
-
 const InputClassName = css`
+    font-size: 15px !important;
     border-radius: 8px !important;
     background: #f9f9f9 !important;
     border: none !important;
@@ -55,12 +46,14 @@ const copyIconClassName = css`
 interface CopyButtonProps {
     copied: boolean;
     onClick: () => void;
+    bright?: boolean;
+    text?: string;
 }
 
 const CopyButton = (props: CopyButtonProps) => (
     <XView
         height={40}
-        borderRadius={28}
+        borderRadius={8}
         paddingLeft={20}
         paddingRight={20}
         flexDirection="row"
@@ -68,57 +61,23 @@ const CopyButton = (props: CopyButtonProps) => (
         justifyContent="center"
         fontSize={13}
         fontWeight="600"
-        backgroundColor={props.copied ? '#69d06d' : '#1790ff'}
-        color="#fff"
+        backgroundColor={props.copied ? '#69d06d' : props.bright ? '#e8f4ff' : '#1790ff'}
+        color={props.copied ? '#fff' : props.bright ? '#1790ff' : '#fff'}
         cursor="pointer"
         onClick={props.onClick}
     >
-        {props.copied ? <CheckIcon /> : <CopiedIcon className={copyIconClassName} />}
-        <XView marginLeft={10}>{props.copied ? 'Copied' : 'Copy'}</XView>
+        {props.copied ? (
+            <CheckIcon />
+        ) : (
+            <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
+        )}
+        <XView marginLeft={10}>{props.copied ? 'Copied' : props.text ? props.text : 'Copy'}</XView>
     </XView>
 );
 
-interface RenewInviteLinkButtonProps {
-    id: string;
-    onClick: () => void;
-}
-
-const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
-    const client = useClient();
-    const id = props.id;
-    let renew = async () => {
-        await client.mutateOrganizationCreatePublicInvite({ organizationId: id });
-        await client.refetchOrganizationPublicInvite({ organizationId: id });
-    };
-
-    return (
-        <XMutation mutation={renew} onSuccess={props.onClick}>
-            <XView
-                height={40}
-                borderRadius={28}
-                paddingLeft={20}
-                paddingRight={20}
-                fontSize={14}
-                marginRight={16}
-                color="rgba(0, 0, 0, 0.5)"
-                backgroundColor="#f4f4f4"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-                cursor="pointer"
-            >
-                <span className={textAlignCenterClassName}>Revoke</span>
-            </XView>
-        </XMutation>
-    );
-};
-
 interface OwnerLinkComponentProps {
     inviteKey: string | null;
-    footerNote?: boolean;
-    useRevoke?: boolean;
     id?: string;
-    inviteToApp?: boolean;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
@@ -127,7 +86,6 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
     state = {
         copied: false,
-        resetLink: false,
     };
 
     componentWillUnmount() {
@@ -162,58 +120,28 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
         }, 1500);
     };
 
-    private resetLink = () => {
-        this.setState({
-            copied: false,
-            resetLink: true,
-        });
-
-        this.timer = setTimeout(() => {
-            this.setState({
-                copied: false,
-                resetLink: false,
-            });
-        }, 3000);
-    };
-
     render() {
-        const { copied, resetLink } = this.state;
+        const { copied } = this.state;
         const { props } = this;
-        const { inviteToApp } = props;
-        const invitePath = inviteToApp ? 'invite/' : 'join/';
         return (
-            <XView flexDirection="column" flexGrow={0} alignSelf="stretch" marginBottom={90}>
-                <XView flexDirection="column" alignItems="center" flexGrow={1} overflow="hidden">
-                    <XView flexDirection="column" alignSelf="stretch">
-                        <XInput
-                            size="large"
-                            flexGrow={1}
-                            ref={this.handleRef}
-                            className={InputClassName}
-                            value={'https://openland.com/' + invitePath + props.inviteKey}
-                        />
-                        {(props.footerNote || resetLink) && (
-                            <XView
-                                fontSize={12}
-                                color={resetLink ? '#20a825' : 'rgba(0, 0, 0, 0.5)'}
-                                marginLeft={16}
-                                marginBottom={10}
-                                marginTop={5}
-                                alignSelf="flex-start"
-                            >
-                                {resetLink
-                                    ? 'The previous link is revoked and a new one has been created'
-                                    : 'Anyone can use this link to join your organization'}
-                            </XView>
-                        )}
-                    </XView>
-                    <XView flexDirection="row" alignItems="center" marginTop={20}>
-                        {props.useRevoke &&
-                            props.id && (
-                                <RenewInviteLinkButton onClick={this.resetLink} id={props.id} />
-                            )}
-                        <CopyButton copied={copied} onClick={this.copy} />
-                    </XView>
+            <XView flexDirection="row" flexShrink={0} flexGrow={1} alignSelf="stretch">
+                <XView
+                    flexDirection="row"
+                    alignItems="center"
+                    flexGrow={1}
+                    flexShrink={1}
+                    marginRight={12}
+                >
+                    <XInput
+                        size="large"
+                        flexGrow={1}
+                        ref={this.handleRef}
+                        className={InputClassName}
+                        value={'https://openland.com/invite/' + props.inviteKey}
+                    />
+                </XView>
+                <XView flexDirection="row" alignItems="center" flexShrink={0}>
+                    <CopyButton copied={copied} onClick={this.copy} />
                 </XView>
             </XView>
         );
@@ -225,7 +153,7 @@ const SocialButtonClassName = css`
     height: 36px;
     background-color: #e8f4ff;
     border-radius: 50px;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
@@ -250,11 +178,11 @@ const SocialButtonClassName = css`
 
 interface SocialButtonProps {
     icon: any;
-    href: string;
+    onClick: () => void;
 }
 
 const SocialButton = (props: SocialButtonProps) => (
-    <a href={props.href} target="_blank" className={SocialButtonClassName}>
+    <a className={SocialButtonClassName} onClick={props.onClick}>
         {props.icon}
     </a>
 );
@@ -262,7 +190,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        'Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that\'s the place! Invite to join:\n';
+        "Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place! Invite to join:\n";
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const textAreaRef: any = React.useRef();
@@ -287,15 +215,12 @@ const WritePostBlock = (props: { inviteKey: string }) => {
     const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${sharingUrl}`;
     const linkedinHref = `https://www.linkedin.com/shareArticle?mini=false&url=${sharingUrl}`;
     const twitterHref = `https://twitter.com/intent/tweet?text=${encodeURI(sharingTextFull)}`;
+
+    const redirect = (href: string) => {
+        window.open(href, '_blank');
+    };
     return (
-        <XView
-            flexDirection="column"
-            alignItems="center"
-            marginTop={115}
-            flexGrow={0}
-            alignSelf="stretch"
-            marginBottom={92}
-        >
+        <XView flexDirection="column" alignItems="center" flexGrow={0} alignSelf="stretch">
             <XView fontSize={18} color="#000" fontWeight="600" marginBottom={20}>
                 <span className={textAlignCenterClassName}>Write a post</span>
             </XView>
@@ -319,23 +244,26 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     padding={16}
                     borderRadius={8}
                     backgroundColor="#f9f9f9"
-                    fontSize={14}
-                    lineHeight={1.57}
+                    fontSize={15}
+                    lineHeight={1.6}
                     color="rgba(0, 0, 0, 0.9)"
                 >
-                    <span style={{ whiteSpace: 'pre-wrap' }}>{sharingTextFull}</span>
+                    <span style={{ whiteSpace: 'pre-wrap', letterSpacing: 0.4 }}>
+                        {sharingTextFull}
+                    </span>
                 </XView>
             </XView>
-            <XView marginTop={28} flexDirection="row" alignItems="flex-start">
-                <XView flexDirection="column" alignItems="center" marginRight={24}>
-                    <XView fontSize={14} color="#000" marginBottom={14}>
-                        Copy text
-                    </XView>
-                    <CopyButton copied={copied} onClick={copyText} />
-                </XView>
-                <XView flexDirection="column" alignItems="center" marginLeft={24}>
-                    <XView fontSize={14} color="#000" marginBottom={14}>
-                        And share on
+            <XView
+                marginTop={24}
+                alignSelf="stretch"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <CopyButton copied={copied} onClick={copyText} text="Copy text" bright />
+                <XView flexDirection="row" alignItems="center">
+                    <XView fontSize={14} color="#000" marginRight={16}>
+                        Share on
                     </XView>
                     <XView
                         flexDirection="row"
@@ -344,9 +272,18 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                         paddingTop={3}
                         justifyContent="space-between"
                     >
-                        <SocialButton icon={<FacebookIcon />} href={facebookHref} />
-                        <SocialButton icon={<LinkedinIcon />} href={linkedinHref} />
-                        <SocialButton icon={<TwitterIcon />} href={twitterHref} />
+                        <SocialButton
+                            icon={<FacebookIcon />}
+                            onClick={() => redirect(facebookHref)}
+                        />
+                        <SocialButton
+                            icon={<LinkedinIcon />}
+                            onClick={() => redirect(linkedinHref)}
+                        />
+                        <SocialButton
+                            icon={<TwitterIcon />}
+                            onClick={() => redirect(twitterHref)}
+                        />
                     </XView>
                 </XView>
             </XView>
@@ -354,45 +291,22 @@ const WritePostBlock = (props: { inviteKey: string }) => {
     );
 };
 
-interface ShowInviteInputButton {
-    title: string;
-    onClick: () => void;
-}
-
 const InviteAcceptedBlock = (props: { accepted: number }) => (
     <XView
         alignSelf="center"
         alignItems="center"
         flexDirection="row"
-        backgroundColor="#EAF4FE"
+        backgroundColor="#EFF9F1"
         flexGrow={0}
         borderRadius={40}
-        paddingTop={4}
-        paddingBottom={3}
-        paddingHorizontal={10}
-        color="#248bf2"
+        paddingVertical={4}
+        paddingHorizontal={14}
+        color="#5ccc6e"
         fontSize={14}
-        marginTop={20}
+        fontWeight="600"
+        marginTop={18}
     >
         {props.accepted} {`${props.accepted === 1 ? 'invite' : 'invites'} accepted`}
-    </XView>
-);
-
-const ShowInviteInputButton = (props: ShowInviteInputButton) => (
-    <XView
-        flexDirection="row"
-        alignItems="center"
-        fontSize={18}
-        fontWeight="600"
-        color="#000"
-        cursor="pointer"
-        alignSelf="center"
-        onClick={props.onClick}
-    >
-        <XView>{props.title}</XView>
-        <XView marginLeft={8} flexDirection="row" alignItems="center">
-            <ArrowDownIcon />
-        </XView>
     </XView>
 );
 
@@ -402,33 +316,12 @@ interface InviteFriendsFragmentProps {
 }
 
 export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
-    const client = useClient();
+    const client = useClient(),
+        inviteCount = client.useMySuccessfulInvitesCount(),
+        { invite: openlandInvite } = client.useAccountAppInvite(),
+        router = React.useContext(XRouterContext)!,
+        isMobile = useIsMobile() || undefined;
 
-    const user = client.useProfile();
-    const inviteCount = client.useMySuccessfulInvitesCount();
-    const profile = user.profile!;
-
-    const data = client.useOrganizationPublicInvite({
-        organizationId: profile.primaryOrganization!!.id,
-    });
-
-    const { invite: openlandInvite } = client.useAccountAppInvite();
-
-    const primaryOrganizationInvite = data.publicInvite!!.key;
-    const primaryOrganizationId = profile.primaryOrganization!!.id;
-    const primaryOrganizationName = profile.primaryOrganization!!.name;
-    const primaryOrganizationMembersCount = profile.primaryOrganization!!.membersCount;
-    const [inviteLink, showInviteLink] = React.useState(false);
-    const [inviteTeam, showInviteTeam] = React.useState(false);
-    const router = React.useContext(XRouterContext)!;
-
-    const isMobile = useIsMobile() || undefined;
-    const closeModal = React.useCallback(() => {
-        router.replace(`/directory/o/${primaryOrganizationId}`);
-        if (props.modalContext) {
-            props.modalContext.hide();
-        }
-    }, []);
     return (
         <XView
             flexDirection="row"
@@ -466,8 +359,9 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
             <XView
                 flexDirection="column"
                 alignItems="center"
-                width={isMobile ? '100%' : 354}
-                marginTop={83}
+                width={isMobile ? '100%' : 420}
+                maxWidth={420}
+                marginTop={isMobile ? 120 : 32}
                 paddingBottom={40}
             >
                 <XView fontSize={24} fontWeight="600" color="#000" flexGrow={0}>
@@ -475,94 +369,24 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
                         Invite friends to Openland
                     </span>
                 </XView>
-                <XView fontSize={16} color="#000" marginTop={18} flexGrow={0}>
-                    <span className={textAlignCenterClassName}>
-                        Share access to Openland community
-                    </span>
-                </XView>
                 {inviteCount.mySuccessfulInvitesCount > 0 && (
                     <InviteAcceptedBlock accepted={inviteCount.mySuccessfulInvitesCount} />
                 )}
+                <XView flexGrow={0} alignSelf="stretch" marginTop={142} marginBottom={78}>
+                    <XView
+                        flexDirection="row"
+                        alignItems="center"
+                        fontSize={18}
+                        fontWeight="600"
+                        color="#000"
+                        alignSelf="center"
+                        marginBottom={16}
+                    >
+                        <span className={textAlignCenterClassName}>Invite link</span>
+                    </XView>
+                    <OwnerLinkComponent inviteKey={openlandInvite} />
+                </XView>
                 <WritePostBlock inviteKey={openlandInvite} />
-                {!inviteLink && (
-                    <XView marginBottom={20} flexGrow={0} alignSelf="stretch">
-                        <ShowInviteInputButton
-                            onClick={() => showInviteLink(true)}
-                            title="Invite link"
-                        />
-                    </XView>
-                )}
-                {inviteLink && (
-                    <XView flexGrow={0} alignSelf="stretch">
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            fontSize={18}
-                            fontWeight="600"
-                            color="#000"
-                            alignSelf="center"
-                            marginBottom={16}
-                        >
-                            <span className={textAlignCenterClassName}>Invite link</span>
-                        </XView>
-                        <OwnerLinkComponent inviteKey={openlandInvite} inviteToApp={true} />
-                    </XView>
-                )}
-                {!inviteTeam && (
-                    <ShowInviteInputButton
-                        onClick={() => showInviteTeam(true)}
-                        title="Invite teammates"
-                    />
-                )}
-                {inviteTeam && (
-                    <XView flexGrow={0} alignSelf="stretch">
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            fontSize={18}
-                            fontWeight="600"
-                            color="#000"
-                            alignSelf="center"
-                        >
-                            <span className={textAlignCenterClassName}>Invite teammates</span>
-                        </XView>
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            alignSelf="center"
-                            marginBottom={16}
-                        >
-                            <XView
-                                fontSize={14}
-                                fontWeight="600"
-                                color="#248bf2"
-                                cursor="pointer"
-                                onClick={() => closeModal()}
-                                marginRight={8}
-                            >
-                                {primaryOrganizationName}
-                            </XView>
-                            <XView flexDirection="row" alignItems="center">
-                                <ProfileIcon className={profileIconClassName} />
-                                <XView
-                                    fontSize={12}
-                                    fontWeight="600"
-                                    color="#7a7a7a"
-                                    marginLeft={2}
-                                    paddingTop={2}
-                                >
-                                    {primaryOrganizationMembersCount}
-                                </XView>
-                            </XView>
-                        </XView>
-                        <OwnerLinkComponent
-                            footerNote={true}
-                            inviteKey={primaryOrganizationInvite}
-                            id={primaryOrganizationId}
-                            useRevoke={true}
-                        />
-                    </XView>
-                )}
             </XView>
         </XView>
     );

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { XView } from 'react-mental';
+import { withApp } from 'openland-web/components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XStore } from 'openland-y-store/XStore';
@@ -7,6 +8,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XButton } from 'openland-x/XButton';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XVertical2 } from 'openland-x/XVertical2';
+import { XLoader } from 'openland-x/XLoader';
 
 class Toggler extends React.Component<{}, { visible: boolean }> {
     constructor(props: {}) {
@@ -40,6 +42,9 @@ export default withApp('UI Framework - Loaders', 'viewer', props => {
                             <Toggler />
                             <XTitle>Circular Bar</XTitle>
                             <XLoadingCircular color="#000000" />
+                            <XView height={50}>
+                                <XLoader loading={true} />
+                            </XView>
                         </XVertical2>
                     </XStore>
                 </XVertical2>

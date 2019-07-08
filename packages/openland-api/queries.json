@@ -178,8 +178,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "subscription SettingsWatch {\n  watchSettings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "f0a4dd6c5b935b12a9f5a3c48b6068a88deb6c0e515363eb3982172ed8ec1638"
+			"sourceWithFragments": "subscription SettingsWatch {\n  watchSettings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n  excludeMutedChats\n  countUnreadChats\n}",
+			"operationId": "be6c4c4d0674bd19996379b38781232dfafc514f86be205685bec9e705d9f5b7"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Account.ts",
@@ -16911,8 +16911,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "query Settings {\n  settings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "73ec2b5fb03c40d974e377ddeb3894521d8b7681040e1fb3b3b9f721a20d83e2"
+			"sourceWithFragments": "query Settings {\n  settings {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n  excludeMutedChats\n  countUnreadChats\n}",
+			"operationId": "0f764cfacd91d8bc637c4a2daadb3359d254bcb07b37f06f5c1de3da6a65c910"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
@@ -16963,8 +16963,8 @@
 			"fragmentsReferenced": [
 				"SettingsFull"
 			],
-			"sourceWithFragments": "mutation SettingsUpdate($input: UpdateSettingsInput) {\n  updateSettings(settings: $input) {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
-			"operationId": "78e8fa3c801beb5334a134109125875ea622b78ba3f99b6438a0c94407727bd8"
+			"sourceWithFragments": "mutation SettingsUpdate($input: UpdateSettingsInput) {\n  updateSettings(settings: $input) {\n    __typename\n    ...SettingsFull\n  }\n}\nfragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n  excludeMutedChats\n  countUnreadChats\n}",
+			"operationId": "f9edf599cc4edd10c043bf18a016dd150efbc818b97768163e5efb2e6aaecf47"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Track.ts",
@@ -24659,7 +24659,7 @@
 			],
 			"fragmentName": "SettingsFull",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/SettingsFragment.ts",
-			"source": "fragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n}",
+			"source": "fragment SettingsFull on Settings {\n  __typename\n  id\n  primaryEmail\n  emailFrequency\n  desktopNotifications\n  commentNotifications\n  commentNotificationsDelivery\n  mobileNotifications\n  mobileAlert\n  mobileIncludeText\n  excludeMutedChats\n  countUnreadChats\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -24726,6 +24726,20 @@
 				{
 					"responseName": "mobileIncludeText",
 					"fieldName": "mobileIncludeText",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "excludeMutedChats",
+					"fieldName": "excludeMutedChats",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "countUnreadChats",
+					"fieldName": "countUnreadChats",
 					"type": "Boolean!",
 					"isConditional": false,
 					"isDeprecated": false

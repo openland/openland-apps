@@ -11,5 +11,7 @@ export const SettingsFull = gql`
         mobileNotifications
         mobileAlert
         mobileIncludeText
+        excludeMutedChats
+        countUnreadChats
     }
 `;
