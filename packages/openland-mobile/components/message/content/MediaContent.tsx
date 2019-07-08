@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -67,7 +67,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     render() {
         const { imageLayout, theme, message } = this.props;
 
-        let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
+        let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ((Platform.OS === 'android' ? 'file://' : '') + this.state.downloadState.path) : undefined;
 
         return (
             <View
