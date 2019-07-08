@@ -4,10 +4,9 @@ import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { EventPlatform, Event } from 'openland-api/Types';
 import { createLogger } from 'mental-log';
-import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
 
-const TRACKING_STORAGE_VERSION = 3;
+const TRACKING_STORAGE_VERSION = 4;
 const BATCH_SIZE = 100;
 
 const log = createLogger('Engine-Tracking');
@@ -84,7 +83,7 @@ class TrackingEngine {
         await this.initPromise;
         
         while (this.pending.length > 0) {
-            const batch = this.pending.slice(0, BATCH_SIZE);
+            const batch = this.pending.splice(0, BATCH_SIZE);
 
             await backoff(async () => {
                 await this.client.mutatePersistEvents({
@@ -97,11 +96,7 @@ class TrackingEngine {
                 log.log('Send events. Count: ' + batch.length);
             });
 
-            const ids = batch.map(p => p.id);
-    
-            this.pending.splice(0, batch.length);
-
-            await this.storage.removeItems(ids);
+            await this.storage.removeItems(batch.map(p => p.id));
         }
 
         this.isSending = false;
