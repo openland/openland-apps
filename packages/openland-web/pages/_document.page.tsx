@@ -151,7 +151,9 @@ export default class OpenlandDocument extends Document {
                     <meta name="theme-color" content="#1790ff" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
-                    <meta name="apple-itunes-app" content="app-id=1435537685" />
+                    {process.env.APP_ENVIRONMENT !== 'next' && (
+                        <meta name="apple-itunes-app" content="app-id=1435537685" />
+                    )}
 
                     {/* ORDER IS IMPORTANT! */}
                     <link
@@ -242,12 +244,15 @@ export default class OpenlandDocument extends Document {
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"
                     />
+
                     {/* Styles */}
                     <link rel="stylesheet" href="/static/css/draft.css" />
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
                     <link rel="stylesheet" href="/static/css/draft-mentions.css" />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
                     <link rel="stylesheet" href="/static/css/x.css" />
+                    <link rel="stylesheet" href="/static/css/preload-emoji.css" />
+
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 
                     {/* Config */}
