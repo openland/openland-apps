@@ -273,7 +273,6 @@ export default class OpenlandDocument extends Document {
                 </Head>
 
                 <body>
-                    <div id="preload-emoji" />
                     <Main />
                     <div className="main_scripts">
                         <NextScript />

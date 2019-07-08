@@ -6,6 +6,11 @@ import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { XPopper } from 'openland-x/XPopper';
 
+const preloadEmojiClassName = css`
+    background: url(https://unpkg.com/emoji-datasource-emojione@4.0.4/img/emojione/sheets-256/64.png)
+        no-repeat -9999px -9999px;
+`;
+
 const emojiWrapperClassName = css`
     width: 18px;
     height: 18px;
@@ -37,6 +42,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
 
     return (
         <>
+            <div className={preloadEmojiClassName} />
             <XPopper
                 show={showPicker}
                 onClickOutside={() => {
