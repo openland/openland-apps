@@ -573,6 +573,23 @@
             "sizes": [
                 16
             ]
+        },
+        {
+            "name": "ic-loader",
+            "src": "ic-loader-android.svg",
+            "suffix": "android",
+            "sizes": [
+                22,
+                32
+            ]
+        },
+        {
+            "name": "ic-loader",
+            "src": "ic-loader.svg",
+            "sizes": [
+                22,
+                32
+            ]
         }
     ]
 }

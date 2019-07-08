@@ -34,6 +34,7 @@ import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
+import NewDesignComponents from './pages/dev/NewDesignComponents';
 import { GroupList } from './pages/main/GroupList';
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
@@ -113,6 +114,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
   .addRoute('DevColors', Colors)
+  .addRoute('DevNewDesign', NewDesignComponents)
 
   .addRoute('HomeDialogs', HomeDialogs)
 

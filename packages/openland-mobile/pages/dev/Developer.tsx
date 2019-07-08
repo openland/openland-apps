@@ -43,6 +43,7 @@ export const Developer = withApp(() => {
                     <ZListItem text="Components" path="DevComponents" />
                     <ZListItem text="Navigation" path="DevNavigation" />
                     <ZListItem text="Loader" path="DevLoader" />
+                    <ZListItem text="New Design" path="DevNewDesign" />
                     <ZListItem text="Bad User Profile" path="ProfileUser" pathParams={{ id: "1" }} />
                     <ZListItem text="Log out" onPress={handleLogout} />
                 </ZListItemGroup>
