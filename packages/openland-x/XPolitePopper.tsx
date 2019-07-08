@@ -1,39 +1,36 @@
 import * as React from 'react';
-import { XPopper, XPopperProps } from './XPopper';
+import { XPopperProps } from 'openland-x/XPopper';
+import { XPopperArrow } from 'openland-x/popper/XPopperArrow';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
+
+export class XPopperStub extends React.Component<XPopperProps> {
+    static Arrow = XPopperArrow;
+    static Content = XPopperContent;
+    onMouseOverTarget = () => {
+        //
+    };
+
+    onMouseOutTarget = () => {
+        //
+    };
+
+    render() {
+        return <>{this.props.children}</>;
+    }
+}
+
+const XPopper = React.lazy(() => import('./XPopper'));
 
 export const XPolitePopper = (props: XPopperProps) => {
-    // this is to skip initial render
-    const [show, setIsShow] = React.useState(false);
-    // then we render but content is hidded, to preload popper stuff
-    const [preload, setPreload] = React.useState(true);
+    const [render, setRender] = React.useState(false);
 
-    const [showPopper, setShowPopper] = React.useState(true);
-
-    React.useLayoutEffect(() => {
-        setTimeout(() => {
-            setIsShow(true);
-            setTimeout(() => {
-                setShowPopper(!!props.show);
-                setPreload(false);
-            }, 100);
-        }, 0);
+    React.useEffect(() => {
+        setRender(true);
     }, []);
 
-    React.useLayoutEffect(() => {
-        if (showPopper !== show) {
-            setShowPopper(!!props.show);
-        }
-    }, [props.show]);
-
-    const content = !show ? null : (
-        <div
-            style={{
-                visibility: preload ? 'hidden' : 'visible',
-            }}
-        >
-            {props.content}
-        </div>
+    return (
+        <React.Suspense fallback={<XPopperStub {...props} />}>
+            {render && <XPopper {...props} />}
+        </React.Suspense>
     );
-
-    return <XPopper {...props} content={content} show={showPopper} />;
 };

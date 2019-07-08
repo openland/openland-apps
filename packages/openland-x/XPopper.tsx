@@ -25,7 +25,7 @@ export type Placement =
     | 'left'
     | 'left-start';
 
-interface XPopperProps {
+export interface XPopperProps {
     placement?: Placement;
     nodeSelector?: (elem: Element | null | Text) => Element | null | Text;
 
@@ -61,6 +61,7 @@ interface XPopperProps {
     arrow?: any | null;
     contentContainer?: any;
     zIndex?: number;
+    children: any;
 }
 
 interface XPopperState {
@@ -530,3 +531,5 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         );
     }
 }
+
+export default XPopper;

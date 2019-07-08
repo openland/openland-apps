@@ -4,7 +4,7 @@ import data from 'emoji-mart/data/emojione.json';
 import { css } from 'linaria';
 import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 
 const emojiWrapperClassName = css`
     width: 18px;
@@ -37,7 +37,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
 
     return (
         <>
-            <XPopper
+            <XPolitePopper
                 show={showPicker}
                 onClickOutside={() => {
                     setShowPicker(false);
@@ -67,7 +67,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
                 >
                     <EmojiIcon />
                 </div>
-            </XPopper>
+            </XPolitePopper>
         </>
     );
 };
