@@ -24,7 +24,6 @@ export const getDraftMessage = (
     );
 
     mentions = convertSpansToUserWithOffset({ spans: mentions });
-    console.warn(mentions);
 
     let draftKey = getDraftKey(conversationId);
 
