@@ -7,10 +7,9 @@ import { SHeaderSafeArea } from 'react-native-s/SHeaderSafeArea';
 import { ZLoader } from './ZLoader';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { View, Image, Text, TextStyle } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SRouter } from 'react-native-s/SRouter';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 function PageError(props: { refresh: () => void }) {
@@ -21,7 +20,7 @@ function PageError(props: { refresh: () => void }) {
             <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                 <View height="73%" alignItems="center" justifyContent="center">
                     <Image source={theme.imageEmpty} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                    <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>Content is unavailable</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Content is unavailable</Text>
                     <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.textColor, opacity: 0.6 }} allowFontScaling={false}>This content doesn't exist or you don't have permission to view it</Text>
                 </View>
                 <View height="27%" alignItems="center" justifyContent="center">

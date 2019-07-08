@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
-import { View, Image, Text, TextStyle, Clipboard, LayoutChangeEvent } from 'react-native';
+import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
@@ -84,7 +84,7 @@ export const CommentsList = (props: CommentsListProps) => {
             <View height={1} backgroundColor={theme.separatorColor} marginTop={15} />
 
             <View marginTop={20} marginBottom={15}>
-                <Text style={{ fontSize: 16, color: theme.textLabelColor, fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
+                <Text style={{ fontSize: 16, color: theme.textLabelColor, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
             <View marginHorizontal={-16}>

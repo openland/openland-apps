@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform, Linking, PixelRatio, View, Text, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import { Platform, Linking, PixelRatio, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -95,7 +95,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular,
-                        } as TextStyle}
+                        }}
                         numberOfLines={1}
                         allowFontScaling={false}
                     >
@@ -144,7 +144,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular
-                        } as TextStyle}
+                        }}
                         numberOfLines={1}
                         allowFontScaling={false}
                     >
@@ -191,7 +191,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     marginTop: Platform.OS === 'android' ? -4 : -1,
                                     marginBottom: 4,
                                     fontWeight: TextStyles.weight.medium,
-                                } as TextStyle}
+                                }}
                                 numberOfLines={this.imageCompact ? 1 : 3}
                                 onPress={this.onTitleClick}
                                 allowFontScaling={false}
@@ -208,7 +208,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     fontSize: 14,
                                     marginBottom: 4,
                                     fontWeight: TextStyles.weight.regular,
-                                } as TextStyle}
+                                }}
                                 numberOfLines={1}
                                 allowFontScaling={false}
                             >
@@ -228,7 +228,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             lineHeight: 19,
                             fontWeight: TextStyles.weight.regular,
                             zIndex: 1,
-                        } as TextStyle}
+                        }}
                         numberOfLines={5}
                         allowFontScaling={false}
                     >
@@ -258,7 +258,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                             color: theme.linkColor,
                                             fontSize: 14,
                                             fontWeight: TextStyles.weight.medium,
-                                        } as TextStyle}
+                                        }}
                                         allowFontScaling={false}
                                     >
                                         {button.title}

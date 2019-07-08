@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { View, Image, Text, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap, extractReactionsSorted } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -34,7 +34,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                                 marginTop: 2,
                                 fontSize: 13,
                                 color: props.theme.textLabelColor
-                            } as TextStyle}
+                            }}
                             numberOfLines={1}
                             allowFontScaling={false}
                         >

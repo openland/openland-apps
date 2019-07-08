@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Message_message } from 'openland-api/Types';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
@@ -23,7 +23,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
     return (
         <View marginLeft={Platform.OS === 'android' ? 12 : 48} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor={theme.linkColor} borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
             <View flexGrow={1} flexShrink={1}>
-                <Text style={{ color: theme.linkColor, fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{title}</Text>
+                <Text style={{ color: theme.linkColor, fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium }} numberOfLines={1} allowFontScaling={false}>{title}</Text>
                 <Text style={{ color: theme.textLabelColor, fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{text}</Text>
             </View>
             <TouchableWithoutFeedback onPress={onClearPress}>

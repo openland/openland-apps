@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { View, Share, Text, TextStyle, AsyncStorage } from 'react-native';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { View, Text, AsyncStorage } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
@@ -41,7 +38,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
                     height: 19,
                     color: theme.textColor,
                     fontWeight: TextStyles.weight.medium
-                } as TextStyle}
+                }}
             >{props.item.title}
             </Text>
         </View>
