@@ -67,6 +67,9 @@ type NotCompactHeaderT = {
 
 const sendDataClassName = css`
     letter-spacing: 0.3px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 `;
 
 export const NotCompactHeader = ({
@@ -104,6 +107,7 @@ export const NotCompactHeader = ({
                     <DeletedCommentHeader />
                 ) : (
                     <XView
+                        flexShrink={1}
                         flexDirection="row"
                         fontSize={15}
                         fontWeight="600"
