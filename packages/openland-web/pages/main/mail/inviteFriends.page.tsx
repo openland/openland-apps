@@ -27,6 +27,7 @@ const textAlignCenterClassName = css`
 `;
 
 const InputClassName = css`
+    font-size: 15px !important;
     border-radius: 8px !important;
     background: #f9f9f9 !important;
     border: none !important;
@@ -243,8 +244,8 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     padding={16}
                     borderRadius={8}
                     backgroundColor="#f9f9f9"
-                    fontSize={14}
-                    lineHeight={1.57}
+                    fontSize={15}
+                    lineHeight={1.6}
                     color="rgba(0, 0, 0, 0.9)"
                 >
                     <span style={{ whiteSpace: 'pre-wrap' }}>{sharingTextFull}</span>
