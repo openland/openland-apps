@@ -12,6 +12,7 @@ const inner = css`
     display: flex;
     width: 100%;
     height: 100%;
+    -webkit-overflow-scrolling: touch;
 `;
 
 export const Container = (props: { children?: any }) => {
