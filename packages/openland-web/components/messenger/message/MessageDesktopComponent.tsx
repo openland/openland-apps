@@ -168,7 +168,7 @@ const MessageImageComponentWrapper = React.memo(
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     DesktopMessageComponentInnerState
-> {
+    > {
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
@@ -310,8 +310,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                          a => a.__typename === 'MessageAttachmentFile',
-                                      )[0]
+                                        a => a.__typename === 'MessageAttachmentFile',
+                                    )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
@@ -337,6 +337,31 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             })}
                         </ReplyMessageWrapper>,
                     );
+                }
+                if (fileAttach && !richAttach) {
+                    if (fileAttach.fileMetadata.isImage) {
+                        if (fileAttach.fileMetadata.imageFormat === 'GIF') {
+                            content.push(
+                                <MessageAnimationComponent
+                                    key={'file' + message.id}
+                                    file={fileAttach.fileId!}
+                                    fileName={fileAttach.fileMetadata.name}
+                                    width={fileAttach.fileMetadata.imageWidth || 0}
+                                    height={fileAttach.fileMetadata.imageHeight || 0}
+                                />,
+                            );
+                        } else {
+                            content.push(
+                                <MessageImageComponentWrapper
+                                    key={'image' + message.id}
+                                    fileAttach={fileAttach}
+                                    isComment={!!this.props.isComment}
+                                    message={message}
+                                    hideMenu={hideMenu}
+                                />,
+                            );
+                        }
+                    }
                 }
                 if (message.text && message.text.length > 0) {
                     if (message.isService) {
@@ -367,30 +392,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                 }
 
-                if (fileAttach && !richAttach) {
-                    if (fileAttach.fileMetadata.isImage) {
-                        if (fileAttach.fileMetadata.imageFormat === 'GIF') {
-                            content.push(
-                                <MessageAnimationComponent
-                                    key={'file' + message.id}
-                                    file={fileAttach.fileId!}
-                                    fileName={fileAttach.fileMetadata.name}
-                                    width={fileAttach.fileMetadata.imageWidth || 0}
-                                    height={fileAttach.fileMetadata.imageHeight || 0}
-                                />,
-                            );
-                        } else {
-                            content.push(
-                                <MessageImageComponentWrapper
-                                    key={'image' + message.id}
-                                    fileAttach={fileAttach}
-                                    isComment={!!this.props.isComment}
-                                    message={message}
-                                    hideMenu={hideMenu}
-                                />,
-                            );
-                        }
-                    } else if (
+                if (fileAttach && !richAttach && !fileAttach.fileMetadata.isImage) {
+                    if (
                         fileAttach.fileMetadata.name.endsWith('.mp4') ||
                         fileAttach.fileMetadata.name.endsWith('.mov')
                     ) {
