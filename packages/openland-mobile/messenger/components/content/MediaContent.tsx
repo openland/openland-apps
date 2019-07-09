@@ -25,6 +25,8 @@ interface MediaContentProps {
     layout: { width: number, height: number },
     compensateBubble?: boolean;
     theme: ThemeGlobal;
+    hasText?: boolean;
+    hasReply?: boolean;
 }
 
 export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
@@ -112,10 +114,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 flexDirection="column"
                 width={this.props.single ? this.props.layout.width : undefined}
                 height={this.props.layout.height}
-                marginTop={this.props.compensateBubble ? -contentInsetsTop : undefined}
-                marginLeft={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
-                marginRight={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
-                marginBottom={this.props.compensateBubble ? (this.props.single ? - contentInsetsBottom : 8) : undefined}
+                marginTop={this.props.compensateBubble ? (this.props.hasReply ? 0 : -contentInsetsTop) : undefined}
+                marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : undefined}
+                marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : undefined}
+                marginBottom={this.props.compensateBubble ? (this.props.single || !this.props.hasText ? -contentInsetsBottom : 8) : undefined}
                 backgroundColor={!this.props.single ? this.props.theme.chatImageBackground : undefined}
                 borderRadius={18}
                 alignItems="center"
