@@ -36,11 +36,10 @@ const SendButton = Glamorous(XButton)({
 });
 
 const SendMessageWrapper = Glamorous.div<{
-    fullWidth?: boolean;
     minimal?: boolean;
     bright?: boolean;
     topLevelComment?: boolean;
-}>(({ fullWidth, minimal, bright, topLevelComment }) => {
+}>(({ minimal, bright, topLevelComment }) => {
     return {
         display: 'flex',
         borderBottomLeftRadius: '8px',
@@ -51,8 +50,8 @@ const SendMessageWrapper = Glamorous.div<{
         marginBottom: minimal ? -6 : undefined,
         minHeight: minimal ? undefined : 114,
         backgroundColor: minimal || bright ? undefined : XThemeDefault.backyardColor,
-        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 26,
-        paddingRight: minimal ? 0 : fullWidth ? 32 : 26,
+        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : 32,
+        paddingRight: minimal ? 0 : 32,
         paddingTop: minimal ? 6 : 12,
         paddingBottom: minimal ? 0 : 12,
         borderTopStyle: bright ? undefined : 'solid',
@@ -115,12 +114,7 @@ export const DumpSendMessage = React.memo(
         const { fileSrc, fileName, fileSize, handleDrop } = React.useContext(UploadContext);
 
         return (
-            <SendMessageWrapper
-                fullWidth={fullWidth}
-                minimal={minimal}
-                bright={bright}
-                topLevelComment={topLevelComment}
-            >
+            <SendMessageWrapper minimal={minimal} bright={bright} topLevelComment={topLevelComment}>
                 <DropZone
                     height={dropZoneHeight ? dropZoneHeight : 'calc(100% - 115px)'}
                     onFileDrop={handleDrop}
