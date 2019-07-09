@@ -7,6 +7,7 @@ import { ZBlurredView } from './ZBlurredView';
 
 export interface AppBarBottomItemProps {
     icon: NodeRequire;
+    iconSelected: NodeRequire;
     selected?: boolean;
     counter?: number;
     dot?: boolean;
@@ -15,7 +16,7 @@ export interface AppBarBottomItemProps {
 
 export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { icon, selected, counter, dot, onPress } = props;
+    const { icon, iconSelected, selected, counter, dot, onPress } = props;
 
     return (
         <TouchableWithoutFeedback onPressIn={onPress} delayPressIn={0}>
@@ -40,7 +41,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                     }}
                 >
                     <Image
-                        source={icon}
+                        source={selected ? iconSelected : icon}
                         style={{
                             width: 24,
                             height: 24,

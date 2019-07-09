@@ -40,18 +40,21 @@ export const Home = XMemo<PageProps>((props) => {
                 <AppBarBottom>
                     <AppBarBottomItem
                         dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
-                        icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-rooms-ios-28.png')}
+                        icon={require('assets/ic-discover-24.png')}
+                        iconSelected={require('assets/ic-discover-active-24.png')}
                         selected={tab === 0}
                         onPress={() => setTab(0)}
                     />
                     <AppBarBottomItem
-                        icon={Platform.OS === 'android' ? require('assets/ic-messages.png') : require('assets/ic-messages-ios.png')}
-                        selected={tab === 1}
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
+                        icon={require('assets/ic-chats-24.png')}
+                        iconSelected={require('assets/ic-chats-active-24.png')}
+                        selected={tab === 1}
                         onPress={() => setTab(1)}
                     />
                     <AppBarBottomItem
-                        icon={Platform.OS === 'android' ? require('assets/ic-settings.png') : require('assets/ic-settings-ios.png')}
+                        icon={require('assets/ic-profile-24.png')}
+                        iconSelected={require('assets/ic-profile-active-24.png')}
                         selected={tab === 2}
                         onPress={() => setTab(2)}
                     />
