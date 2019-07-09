@@ -52,7 +52,7 @@ export default withApp(() => {
                             <Button 
                                 title={'Show new global loader'}
                                 onPress={() => {
-                                    startLoader(true);
+                                    startLoader();
                                     setTimeout(() => stopLoader(), 2000);
                                 }}
                             />
