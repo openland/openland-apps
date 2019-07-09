@@ -638,6 +638,20 @@
             "sizes": [
                 32
             ]
+        },
+        {
+            "name": "ic-input-attach",
+            "src": "ic-input-attach.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-input-send",
+            "src": "ic-input-send.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

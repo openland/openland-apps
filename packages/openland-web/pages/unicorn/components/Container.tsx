@@ -3,6 +3,7 @@ import { css } from 'linaria';
 import { LayoutProvider } from './LayoutContext';
 
 const body = css`
+    overflow: hidden;
     width: 100vw;
     height: 100vh;
     background-color: #F0F2F5;

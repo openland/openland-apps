@@ -2,14 +2,14 @@ import * as React from 'react';
 import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
-var watchers: ((isLoading: boolean, isNewLoader?: boolean) => void)[] = [];
+var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;
 
-export function startLoader(isNewLoader?: boolean) {
+export function startLoader() {
     if (!loading) {
         loading = true;
         for (let w of watchers) {
-            w(true, isNewLoader);
+            w(true);
         }
     }
 }
@@ -24,6 +24,10 @@ export function stopLoader() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%'
+    } as ViewStyle,
     overlay: {
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F0F2F5',
-        borderRadius: 18,
+        borderRadius: 18
     } as ViewStyle
 });
 
@@ -51,47 +55,25 @@ function GlobalLoader() {
 } 
 
 export const withGlobalLoader = (Wrapped: React.ComponentType) => {
-    class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean, newLoader: boolean }> {
-
-        state = {
-            loading: loading,
-            newLoader: false
-        };
+    class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean }> {
+        state = { loading: loading };
 
         componentWillMount() {
             watchers.push(this.handleLoadingChanged);
         }
 
-        handleLoadingChanged = (isLoading: boolean, isNewLoader?: boolean ) => {
+        handleLoadingChanged = (isLoading: boolean) => {
             console.log(isLoading);
-            this.setState({ 
-                loading: isLoading,
-                newLoader: isNewLoader !== undefined
-            });
+            this.setState({ loading: isLoading });
         }
 
         render() {
-            if (this.state.newLoader) {
-                return (
-                    <View height="100%" width="100%">
-                        <Wrapped />
-                        {this.state.loading && (
-                            <GlobalLoader />
-                        )}
-                    </View>
-                );
-            } 
-
             return (
-                <View height="100%" width="100%">
+                <View style={styles.container}>
                     <Wrapped />
-                    {this.state.loading &&
-                        <View position="absolute" left={0} top={0} right={0} bottom={0} alignContent="center" justifyContent="center" backgroundColor="rgba(52, 52, 52, 0.3)">
-                            <View width={100} height={100} backgroundColor="#fff" borderRadius={6} alignContent="center" justifyContent="center" alignSelf="center">
-                                <ActivityIndicator size="large" />
-                            </View>
-                        </View>
-                    }
+                    {this.state.loading && (
+                        <GlobalLoader />
+                    )}
                 </View>
             );
         }
