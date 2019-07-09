@@ -5,7 +5,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-type XAvatarSize = 80 | 74 | 58 | 40 | 36 | 32 | 26 | 28 | 24 | 18;
+type XAvatarSize = 80 | 74 | 58 | 56 | 40 | 36 | 32 | 26 | 28 | 24 | 18;
 
 export interface XAvatar2Props {
     title: string;
@@ -29,6 +29,7 @@ const PlaceholderFontSize = {
     80: 28,
     74: 26,
     58: 22,
+    56: 20,
     40: 16,
     36: 16,
     32: 15,
@@ -96,7 +97,7 @@ const OnlineDot80 = () => (
         borderRadius={5}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -110,7 +111,7 @@ const OnlineDot74 = () => (
         borderRadius={5}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -124,7 +125,21 @@ const OnlineDot58 = () => (
         borderRadius={5}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
+    />
+);
+
+const OnlineDot56 = () => (
+    <XView
+        position="absolute"
+        bottom={3}
+        right={3}
+        width={10}
+        height={10}
+        borderRadius={4}
+        borderWidth={2}
+        borderColor="#ffffff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -138,7 +153,7 @@ const OnlineDot40 = () => (
         borderRadius={4}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -152,7 +167,7 @@ const OnlineDot36 = () => (
         borderRadius={4}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -166,7 +181,7 @@ const OnlineDot32 = () => (
         borderRadius={4}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -180,7 +195,7 @@ const OnlineDot28 = () => (
         borderRadius={4}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -194,7 +209,7 @@ const OnlineDot26 = () => (
         borderRadius={3}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -208,7 +223,7 @@ const OnlineDot24 = () => (
         borderRadius={3}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -222,7 +237,7 @@ const OnlineDot18 = () => (
         borderRadius={3}
         borderWidth={1}
         borderColor="#ffffff"
-        backgroundColor="#5eb2ff"
+        backgroundColor="#0C7FF2"
     />
 );
 
@@ -258,6 +273,16 @@ const AvatarContainer58 = (props: AvatarContainerProps) => (
         </XView>
 
         {props.online && <OnlineDot58 />}
+    </XView>
+);
+
+const AvatarContainer56 = (props: AvatarContainerProps) => (
+    <XView width={56} height={56}>
+        <XView width="100%" height="100%" borderRadius={28} overflow="hidden">
+            {props.content}
+        </XView>
+
+        {props.online && <OnlineDot56 />}
     </XView>
 );
 
@@ -350,6 +375,8 @@ export const XAvatar2 = XMemo<XAvatar2Props>(props => {
         return <AvatarContainer74 content={content} online={props.online} />;
     } else if (props.size === 58) {
         return <AvatarContainer58 content={content} online={props.online} />;
+    } else if (props.size === 56) {
+        return <AvatarContainer56 content={content} online={props.online} />;
     } else if (props.size === 36) {
         return <AvatarContainer36 content={content} online={props.online} />;
     } else if (props.size === 32) {
