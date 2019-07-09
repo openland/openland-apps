@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { LayoutProvider } from './LayoutContext';
 
 const body = css`
     width: 100vw;
@@ -47,10 +48,12 @@ export const Container = (props: { children?: any }) => {
     //     }
     // }, []);
     return (
-        <div className={body}>
-            <div className={inner}>
-                {props.children}
+        <LayoutProvider>
+            <div className={body}>
+                <div className={inner}>
+                    {props.children}
+                </div>
             </div>
-        </div>
+        </LayoutProvider>
     );
 }

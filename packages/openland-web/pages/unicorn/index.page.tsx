@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Container, InnerContainer } from './components/Container';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
+import { css as css2 } from 'glamor';
+import { LayoutContext } from './components/LayoutContext';
 
 const containerClass = css`
     width: 100px;
@@ -24,6 +26,11 @@ const blurClass = css`
     }
 `;
 
+css2.global('html, body', {
+    overscrollBehavior: 'none',
+    overflow: 'hidden'
+});
+
 // const Tabs = () => {
 //     let [tab, setTab] =  React.useState(0);
 
@@ -31,6 +38,23 @@ const blurClass = css`
 
 //     )
 // };
+
+const Navigation = () => {
+    let layout = React.useContext(LayoutContext);
+    if (layout === 'desktop') {
+        return (
+            <XView width="50px" position="absolute" top={0} left={0} bottom={0} backgroundColor="red">
+                {}
+            </XView>
+        );
+    } else {
+        return (
+            <XView height="50px" position="absolute" bottom={0} left={0} right={0} backgroundColor="red">
+                {}
+            </XView>
+        );
+    }
+};
 
 export default () => {
     return (
@@ -41,9 +65,7 @@ export default () => {
                     <div className={blurClass} />
                 </XView>
             </InnerContainer>
-            <XView height="50px" position="absolute" bottom={0} left={0} right={0} backgroundColor="red">
-                {}
-            </XView>
+            <Navigation/>
         </Container>
     );
 };
