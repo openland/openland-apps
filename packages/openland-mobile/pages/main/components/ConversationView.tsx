@@ -81,7 +81,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
-                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
+                {/* {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />} */}
+                {!this.state.conversation.loading && <View position="absolute" left={0} top={0} right={0} height="100%" backgroundColor="#0084FE" />}
 
                 <ConversationMessagesView
                     // ref={this.listRef}
