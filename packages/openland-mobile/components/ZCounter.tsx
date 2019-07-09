@@ -1,37 +1,32 @@
 import * as React from 'react';
-import { Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
-import { AppStyles } from '../styles/AppStyles';
+import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
-        height: 16,
-        paddingLeft: 4,
-        paddingRight: 4,
-        backgroundColor: AppStyles.primaryColor,
+        height: 20,
+        padding: 2,
+        borderRadius: 10
+    } as ViewStyle,
+    containerInner: {
+        flexDirection: 'row',
+        paddingHorizontal: 4,
         borderRadius: 8,
         minWidth: 16,
-        flexDirection: 'row',
-    } as ViewStyle,
-    containerMuted: {
-        backgroundColor: '#bcc3cc'
-    } as ViewStyle,
-    containerContrast: {
-        backgroundColor: '#ff3b30'
+        height: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
     } as ViewStyle,
     text: {
-        color: '#fff',
-        fontSize: 12,
-        lineHeight: 12,
-        minWidth: 8,
-        textAlign: 'center',
-        marginTop: 3,
+        fontSize: 10,
+        lineHeight: 16,
+        fontWeight: TextStyles.weight.bold
     } as TextStyle
 });
 
 export interface ZCounterProps {
     value: number;
-    appearance?: 'default' | 'muted' | 'contrast';
     theme: ThemeGlobal,
 }
 
@@ -72,9 +67,13 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
     }
 
     render() {
+        const { theme } = this.props;
+
         return (
-            <Animated.View style={[{ opacity: this.opacity }, styles.container, this.props.appearance === 'muted' && styles.containerMuted, , this.props.appearance === 'contrast' && styles.containerContrast]}>
-                <Text style={styles.text}>{this.state.value}</Text>
+            <Animated.View style={[{ opacity: this.opacity }, styles.container, { backgroundColor: theme.backgroundPrimary }]}>
+                <View style={[styles.containerInner, { backgroundColor: theme.accentNegative }]}>
+                    <Text style={[styles.text, { color: theme.contrastPrimary }]} allowFontScaling={false}>{this.state.value}</Text>
+                </View>
             </Animated.View>
         );
     }
