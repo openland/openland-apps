@@ -14,7 +14,7 @@ const XCounterBig = (props: XCounterProps) => (
         justifyContent="center"
         fontWeight="600"
         color="#ffffff"
-        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#1790ff'}
+        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#0C7FF2'}
 
         whiteSpace="nowrap"
         overflow="hidden"
@@ -37,7 +37,7 @@ const XCounterSmall = (props: XCounterProps) => (
         justifyContent="center"
         fontWeight="600"
         color="#ffffff"
-        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#1790ff'}
+        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#0C7FF2'}
 
         whiteSpace="nowrap"
         overflow="hidden"
