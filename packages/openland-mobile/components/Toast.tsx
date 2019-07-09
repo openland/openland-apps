@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
 
 const styles = StyleSheet.create({
@@ -18,11 +18,17 @@ const styles = StyleSheet.create({
     toastText: {
         color: '#78808F',
         fontSize: 15,
-        fontWeight: 'bold',
+        fontWeight: '600',
         textAlign: 'center',
         lineHeight: 20,
-        letterSpacing: -0.24
-    } as TextStyle
+    } as TextStyle,
+    toast: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    toastIcon: {
+        marginBottom: 5
+    } as ImageStyle
 });
 
 export const showToastModal = (content: React.ReactElement, duration: number) => {
@@ -39,25 +45,30 @@ export const showToastModal = (content: React.ReactElement, duration: number) =>
     }, false, true);
 }
 
-export const showUnknowError = (duration = 2000) => {
+export const showToastUnknowError = (duration = 2000) => {
     showToastModal(
-        <>
+        <View style={styles.toast}>
+            <View style={styles.toastIcon}>
+                <Image source={require('assets/ic-toast-attention-32.png')} />
+            </View>
             <Text style={styles.toastText}>
-                Unknow error
+                Unknown error
             </Text>
-        </>
-        ,
+        </View>,
         duration
     );
 }
 
-export const showLinkCopied = (duration = 2000) => {
+export const showToastLinkCopied = (duration = 2000) => {
     showToastModal(
-        <>
+        <View style={styles.toast}>
+            <View style={styles.toastIcon}>
+                <Image source={require('assets/ic-toast-checkmark-32.png')} />
+            </View>
             <Text style={styles.toastText}>
                 Link copied
             </Text>
-        </>,
+        </View>,
         duration
     );
 }

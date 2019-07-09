@@ -161,7 +161,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         if(scrollToIndex >= 0){
             // TODO: figure out how to make it scroll without animation and delay
             Handler().postDelayed( {
-                this.eventController.requestScrollToPosition(scrollToIndex + 1000 , true)
+                this.eventController.requestScrollToPosition(scrollToIndex + 1 , true)
             }, 100)
             this.state.scrollToKey = null
         }
