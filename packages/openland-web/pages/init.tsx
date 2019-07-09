@@ -15,8 +15,8 @@ let fontFamily =
 
 css.global('html, body', {
     height: '100%',
-    overscrollBehavior: 'none',
-    overflow: 'hidden'
+    // overscrollBehavior: 'none',
+    // overflow: 'hidden'
 });
 
 css.global('#__next', {

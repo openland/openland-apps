@@ -4,7 +4,6 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { css } from 'linaria';
 import { MobileCustomPromo } from './MobileCustomPromo';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 
 let pageBorderClass = css`
     background-color: rgba(237, 239, 243, 0.6);
@@ -25,15 +24,14 @@ export const Page = (props: PageProps) => (
         overflow="hidden"
         flexDirection="column"
         width="100vw"
+        minHeight="100vh"
         backgroundColor="#ffffff"
         color="#1f3449"
     >
-        <XScrollView3 flexGrow={1} height="100vh">
-            <MobileCustomPromo />
-            <Header />
-            {props.withBorder && <div className={pageBorderClass} />}
-            <XView flexGrow={1}>{props.children}</XView>
-            <Footer />
-        </XScrollView3>
+        <MobileCustomPromo />
+        <Header />
+        {props.withBorder && <div className={pageBorderClass} />}
+        <XView flexGrow={1}>{props.children}</XView>
+        <Footer />
     </XView>
 );
