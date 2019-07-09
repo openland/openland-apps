@@ -73,25 +73,25 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
 
     return (
         <>
-            {(theme.headerColor !== theme.backgroundColor) && <View backgroundColor={theme.headerColor} height={1000} marginTop={-1000} />}
-            <View style={[styles.container, { backgroundColor: theme.headerColor }]}>
+            {(theme.backgroundSecondary !== theme.backgroundPrimary) && <View backgroundColor={theme.backgroundSecondary} height={1000} marginTop={-1000} />}
+            <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
                 <View width={86} height={86}>
                     <XPAvatarWithPreview size={86} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
                     {!!score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
-                            <View style={{ borderWidth: 3, borderColor: theme.headerColor, borderRadius: 16 }}>
+                            <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: 16 }}>
                                 <ZReach value={score} onPress={scorePress} />
                             </View>
                         </View>
                     )}
                 </View>
-                <View style={[styles.body, { height: theme.headerColor === theme.backgroundColor ? 94 : 114, paddingBottom: theme.headerColor === theme.backgroundColor ? 0 : 24 }]}>
+                <View style={[styles.body, { height: theme.backgroundSecondary === theme.backgroundPrimary ? 94 : 114, paddingBottom: theme.backgroundSecondary === theme.backgroundPrimary ? 0 : 24 }]}>
                     <View style={styles.header}>
                         <View flexDirection="row">
                             {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: titleColor || '#000' }} />}
-                            <Text style={[styles.title, titleColor ? { color: titleColor } : { color: theme.textColor }]} numberOfLines={titleLines || 1}>{title}</Text>
+                            <Text style={[styles.title, titleColor ? { color: titleColor } : { color: theme.foregroundPrimary }]} numberOfLines={titleLines || 1}>{title}</Text>
                         </View>
-                        <Text style={[styles.subtitle, subtitleColor ? { color: subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{subtitle}</Text>
+                        <Text style={[styles.subtitle, subtitleColor ? { color: subtitleColor } : { color: theme.foregroundPrimary }]} numberOfLines={1}>{subtitle}</Text>
                     </View>
                     {action && (
                         <View style={styles.footer}>

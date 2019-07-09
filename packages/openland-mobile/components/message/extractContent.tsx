@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { MediaContent } from './content/MediaContent';
 import { ReplyContent } from './content/ReplyContent';
@@ -9,10 +8,11 @@ import { RichAttachContent } from './content/RichAttachContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
 import { Dimensions } from 'react-native';
 import { isPad } from 'openland-mobile/pages/Root';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ExtractContentProps {
     message: FullMessage_GeneralMessage;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;

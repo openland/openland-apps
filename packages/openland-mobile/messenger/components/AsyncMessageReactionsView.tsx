@@ -7,9 +7,8 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { AppTheme } from 'openland-mobile/themes/themes';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
 
@@ -62,7 +61,7 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
 }
 
 interface AsyncMessageReactionsViewProps {
-    theme: AppTheme;
+    theme: ThemeGlobal;
     message: DataSourceMessageItem;
     isChannel?: boolean;
 
@@ -89,20 +88,20 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
     sw.next();
     return (
-        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundColor} >
+        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundPrimary} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
                 {(props.isChannel || commentsCount > 0) && (
-                    <ASFlex backgroundColor={theme.commentsBackground} borderRadius={13} marginRight={5} onPress={props.onCommentsPress}>
+                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={13} marginRight={5} onPress={props.onCommentsPress}>
                         <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">
-                            {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} width={24} height={24} />}
-                            {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} width={24} height={24} />}
-                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} color={theme.commentsColor} opacity={0.8}>{commentsCount}</ASText>}
+                            {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
+                            {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
+                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary} opacity={0.8}>{commentsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
 
                 {reactions.reactionsSorted.length > 0 && (
-                    <ASFlex backgroundColor={theme.reactionsBackground} borderRadius={13} onPress={props.onReactionsPress}>
+                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={13} onPress={props.onReactionsPress}>
                         <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
                             {[...reactions.reactionsSorted].map((i) =>
                                 (
@@ -110,7 +109,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                                 )
                             )}
 
-                            {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={theme.reactionsColor}>{reactions.usersString}</ASText>}
+                            {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactions.usersString}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}

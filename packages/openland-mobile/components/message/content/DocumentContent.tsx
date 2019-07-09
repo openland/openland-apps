@@ -6,12 +6,12 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface DocumentContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
@@ -85,7 +85,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     >
                         <Text
                             style={{
-                                color: this.props.theme.textColor,
+                                color: this.props.theme.foregroundPrimary,
                                 fontSize: 15,
                                 lineHeight: 18,
                             }}

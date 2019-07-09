@@ -31,7 +31,7 @@ const ReactionsList = (props: ReactionsListProps) => {
                             <Image source={reactionsImagesMap[r]} style={{ width: 20, height: 20 }} />
 
                             <View flexGrow={1} flexShrink={1} paddingLeft={8}>
-                                <Text style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>
+                                <Text style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>
                                     {users.length > 1 ? (users.length + ' people') : '1 person'} reacted with :{r.toLowerCase()}:
                                 </Text>
                             </View>

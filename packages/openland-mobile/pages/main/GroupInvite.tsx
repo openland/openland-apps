@@ -73,23 +73,23 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
         <ASSafeAreaView flexGrow={1}>
             <View paddingHorizontal={32} flexGrow={1}>
                 <View paddingTop={20}>
-                    <Text style={[styles.label, { color: theme.textColor }]}>
+                    <Text style={[styles.label, { color: theme.foregroundPrimary }]}>
                         <Text style={styles.userName}>{user.name}</Text> invites you to join chat
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
                     <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
-                    <Text style={[styles.title, { color: theme.textColor }]}>{room.title}</Text>
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]}>{room.title}</Text>
 
                     <View flexDirection="row">
-                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={[styles.membersIcon, { tintColor: theme.textColor }]} />)}
-                        <Text style={[styles.members, { color: theme.textColor }]}>
+                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={[styles.membersIcon, { tintColor: theme.foregroundPrimary }]} />)}
+                        <Text style={[styles.members, { color: theme.foregroundPrimary }]}>
                             {showMembersCount ? (room.membersCount + ' members') : 'New ' + (room.isChannel ? 'channel' : 'group')}
                         </Text>
                     </View>
 
                     {typeof room.description === 'string' && (
-                        <Text style={[styles.description, { color: theme.textLabelColor }]}>{room.description}</Text>
+                        <Text style={[styles.description, { color: theme.foregroundPrimary }]}>{room.description}</Text>
                     )}
                 </View>
 
@@ -97,7 +97,6 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     <View width={178}>
                         <ZRoundedButton
                             size="large"
-                            uppercase={false}
                             title="Accept invitation"
                             onPress={async () => {
                                 startLoader();

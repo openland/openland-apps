@@ -7,37 +7,33 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-type ZRoundedButtonStyle = 'default' | 'flat' | 'secondary' | 'danger' | 'flat-danger';
-type ZRoundedButtonSize = 'default' | 'big' | 'large';
+type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
+type ZRoundedButtonSize = 'small' | 'medium' | 'large';
 
-const stylesDefault = StyleSheet.create({
+const stylesSmall = StyleSheet.create({
     container: {
-        backgroundColor: '#0084fe',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 13,
-        height: 26,
-        paddingHorizontal: 12,
+        borderRadius: 14,
+        height: 28,
+        paddingHorizontal: 16,
     } as ViewStyle,
     title: {
-        color: '#fff',
         textAlignVertical: 'center',
         fontWeight: TextStyles.weight.medium,
         fontSize: 14,
     } as TextStyle,
 });
 
-const stylesBig = StyleSheet.create({
+const stylesMedium = StyleSheet.create({
     container: {
-        backgroundColor: '#0084fe',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 18,
         height: 35,
-        paddingHorizontal: 19,
+        paddingHorizontal: 16,
     } as ViewStyle,
     title: {
-        color: '#fff',
         textAlignVertical: 'center',
         fontWeight: TextStyles.weight.medium,
         fontSize: 16,
@@ -46,15 +42,13 @@ const stylesBig = StyleSheet.create({
 
 const stylesLarge = StyleSheet.create({
     container: {
-        backgroundColor: '#0084fe',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 18,
+        borderRadius: 24,
         height: 56,
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
     } as ViewStyle,
     title: {
-        color: '#fff',
         textAlignVertical: 'center',
         fontWeight: TextStyles.weight.medium,
         fontSize: 15,
@@ -65,8 +59,8 @@ const stylesLarge = StyleSheet.create({
 });
 
 const resolveStylesBySize = {
-    default: stylesDefault,
-    big: stylesBig,
+    small: stylesSmall,
+    medium: stylesMedium,
     large: stylesLarge,
 };
 
@@ -80,14 +74,13 @@ export interface ZRoundedButtonProps {
     path?: string;
     size?: ZRoundedButtonSize;
     style?: ZRoundedButtonStyle
-    uppercase?: boolean;
     enabled?: boolean;
 }
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
-    let [actionInProgress, setActionInProgress] = React.useState(false);
-    let theme = React.useContext(ThemeContext);
-    let handlePress = React.useCallback(async () => {
+    const [ actionInProgress, setActionInProgress ] = React.useState(false);
+    const theme = React.useContext(ThemeContext);
+    const handlePress = React.useCallback(async () => {
         if (props.onPress) {
             props.onPress();
         }
@@ -116,55 +109,48 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
             }
         }
     }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
-    let size = props.size || 'default';
-    let themeStyle = props.style === 'secondary' ? 'secondary' : 'default';
-    let styles = resolveStylesBySize[size];
+
+    const size: ZRoundedButtonSize = props.size || 'small';
+    const style: ZRoundedButtonStyle = props.style || 'primary';
+    const styles = resolveStylesBySize[size];
 
     return (
-        <View borderRadius={size === 'default' ? 13 : 18}>
-            <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
-                <View
-                    style={[
-                        styles.container,
-                        { backgroundColor: theme.roundButtonBackground[themeStyle] },
-                        {
-                            ...props.style === 'flat' ? { backgroundColor: 'transparent' } :
-                                props.style === 'danger' ? { backgroundColor: '#ff3b30' } :
-                                    props.style === 'flat-danger' ? { backgroundColor: 'transparent' } : {}
-                        }
-                    ]}
-                >
-                    <View >
-                        <Text
-                            style={[
-                                styles.title,
-                                { color: theme.roundButtonText[themeStyle] },
-                                {
-                                    ...props.style === 'flat' ? { color: theme.accentColor } :
-                                        props.style === 'danger' ? { color: theme.backgroundColor } :
-                                            props.style === 'flat-danger' ? { color: '#ff3b30' } : {}
-                                },
-                                {
-                                    ...actionInProgress ? { color: 'transparent' } : {}
-                                },
-                                {
-                                    opacity: props.enabled === false ? 0.7 : undefined
-                                }
-                            ]}
-                            allowFontScaling={false}
-                        >
-                            {props.uppercase !== false ? props.title.toUpperCase() : props.title}
-                        </Text>
+        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        backgroundColor: style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary)
+                    },
+                ]}
+            >
+                <View >
+                    <Text
+                        style={[
+                            styles.title,
+                            {
+                                color: (style === 'primary' || style === 'danger') ? theme.contrastPrimary : theme.foregroundSecondary
+                            },
+                            {
+                                ...actionInProgress ? { color: 'transparent' } : {}
+                            },
+                            {
+                                opacity: props.enabled === false ? 0.7 : undefined
+                            }
+                        ]}
+                        allowFontScaling={false}
+                    >
+                        {props.title}
+                    </Text>
 
-                        {actionInProgress && (
-                            <View width="100%" height="100%" justifyContent="center" position="absolute" >
-                                <ActivityIndicator height="100%" color={props.style === 'flat' ? theme.accentColor : theme.backgroundColor} />
-                            </View>
-                        )}
-                    </View>
+                    {actionInProgress && (
+                        <View width="100%" height="100%" justifyContent="center" position="absolute" >
+                            <ActivityIndicator height="100%" color={(style === 'primary' || style === 'danger') ? theme.contrastPrimary : theme.foregroundSecondary} />
+                        </View>
+                    )}
                 </View>
-            </TouchableOpacity>
-        </View >
+            </View>
+        </TouchableOpacity>
     );
 })
 

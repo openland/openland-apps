@@ -133,7 +133,7 @@ const CreateGroupComponent = (props: PageProps) => {
                             onPress={handleKindPress}
                             text={`${chatTypeString} type`}
                             description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
-                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? theme.dialogTitleSecureColor : undefined}
+                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? theme.accentPositive : undefined}
                             descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
                             navigationIcon={true}
                         />

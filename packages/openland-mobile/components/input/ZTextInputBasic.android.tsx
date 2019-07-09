@@ -30,9 +30,9 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 label={title}
                 placeholder={title ? undefined : placeholder}
                 labelFontSize={14}
-                tintColor={theme.accentColor}
+                tintColor={theme.accentPrimary}
                 baseColor="#9B9B9B"
-                textColor={theme.textColor}
+                textColor={theme.foregroundPrimary}
                 placeholderTextColor="#a0a0a0"
                 fontSize={16}
                 animationDuration={150}

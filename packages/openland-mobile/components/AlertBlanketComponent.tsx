@@ -66,20 +66,20 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
         <View
             flexDirection="column"
             justifyContent="center"
-            backgroundColor={state === 'error' ? '#d75454' : theme.modalBackground}
+            backgroundColor={state === 'error' ? theme.accentNegative : theme.backgroundSecondary}
             borderRadius={16}
         >
             <SAnimated.View
                 name={key + '--ctns'}
                 style={{
-                    backgroundColor: theme.modalBackground,
+                    backgroundColor: theme.backgroundSecondary,
                     borderRadius: 16,
                     paddingHorizontal: 24,
                     paddingVertical: 20,
                 }}
             >
-                {props.builder._title && <Text style={{ marginBottom: props.builder._message ? 12 : 16, color: theme.textColor, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{props.builder._title}</Text>}
-                {props.builder._message && <Text style={{ marginBottom: 16, color: theme.textColor, fontSize: 16 }}>{props.builder._message}</Text>}
+                {props.builder._title && <Text style={{ marginBottom: props.builder._message ? 12 : 16, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{props.builder._title}</Text>}
+                {props.builder._message && <Text style={{ marginBottom: 16, color: theme.foregroundPrimary, fontSize: 16 }}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {props.builder._actions.map((a, i) => (
@@ -87,8 +87,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                             <View style={{ width: 4 }} />
                             <ZRoundedButton
                                 key={i + '-ac'}
-                                size="big"
-                                style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
+                                style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
                                 title={a.name}
                                 onPress={async () => {
                                     if (a.callback) {

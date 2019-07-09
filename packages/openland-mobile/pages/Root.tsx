@@ -4,9 +4,9 @@ import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from '
 import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export interface RootProps {
     width: number;
@@ -17,11 +17,11 @@ export interface RootProps {
 
 export const isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
-class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { masterRouting?: SRouting, masterKey?: string }> {
+class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal }, { masterRouting?: SRouting, masterKey?: string }> {
 
     private isIPad = false;
 
-    constructor(props: RootProps & { theme: AppTheme }) {
+    constructor(props: RootProps & { theme: ThemeGlobal }) {
         super(props);
 
         this.state = {};
@@ -33,7 +33,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
         }
     }
 
-    componentWillReceiveProps(nextProps: RootProps & { theme: AppTheme }) {
+    componentWillReceiveProps(nextProps: RootProps & { theme: ThemeGlobal }) {
         if (this.isIPad && nextProps.width <= 375 * 2 && this.props.width > 375 * 2) {
             this.setState({ masterKey: undefined, masterRouting: undefined });
         }
@@ -50,11 +50,11 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
     }
 
     render() {
-        let bgColor = this.props.theme.backgroundColor;
-        let headerColor = this.props.theme.headerColor;
-        let textColor = this.props.theme.textColor;
+        let bgColor = this.props.theme.backgroundPrimary;
+        let headerColor = this.props.theme.backgroundSecondary;
+        let textColor = this.props.theme.foregroundPrimary;
         let blurType = this.props.theme.blurType;
-        let accentColor = this.props.theme.accentColor;
+        let accentColor = this.props.theme.accentPrimary;
         let style: Partial<SNavigationViewStyle> = {
             accentColor,
             backgroundColor: bgColor,
@@ -83,7 +83,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
                         navigationBarStyle={style}
                     />
                     <View height={'100%'} width={0.5} backgroundColor={this.props.theme.separatorColor} />
-                    <View width={this.props.width - sideWidth} height={'100%'} backgroundColor={this.props.theme.backgroundColor}>
+                    <View width={this.props.width - sideWidth} height={'100%'} backgroundColor={this.props.theme.backgroundPrimary}>
                         {this.state.masterRouting && (
                             <SNavigationView
                                 key={this.state.masterKey!!}

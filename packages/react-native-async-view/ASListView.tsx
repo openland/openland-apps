@@ -33,7 +33,7 @@ export const ASListView = XMemo<ASListViewProps>((props) => {
             inverted={props.inverted}
             onScroll={props.onScroll}
             overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
-            loaderColor={processColor(props.loaderColor ? props.loaderColor : (Platform.OS === 'android' ? theme.loaderColorAndroid : theme.loaderColorIos))}
+            loaderColor={processColor(props.loaderColor ? props.loaderColor : theme.foregroundSecondary)}
             applyModes={props.applyModes || []}
         />
     );

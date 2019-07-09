@@ -18,16 +18,15 @@ export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalCont
             paddingHorizontal={24}
             paddingVertical={20}
         >
-            {builder._title && <Text style={{ marginBottom: 12, color: theme.textColor, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{builder._title}</Text>}
-            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.textInputColor }} keyboardAppearance={theme.keyboardAppearance} />
+            {builder._title && <Text style={{ marginBottom: 12, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{builder._title}</Text>}
+            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.foregroundPrimary }} keyboardAppearance={theme.keyboardAppearance} />
             <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                 {builder._actions.map((a, i) => (
                     <>
                         <View style={{ width: 4 }} />
                         <ZRoundedButton
                             key={i + '-ac'}
-                            size="big"
-                            style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
+                            style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
                             title={a.name}
                             onPress={() => {
                                 Keyboard.dismiss();

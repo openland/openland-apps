@@ -3,16 +3,16 @@ import { ASText } from 'react-native-async-view/ASText';
 import { UserForMention } from 'openland-api/Types';
 import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { Text, View } from 'react-native';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface OthersUsersWrapperProps {
     children?: any;
     users: UserForMention[];
     onUserPress: (id: string) => void;
     useAsync: boolean;
-    theme: AppTheme
+    theme: ThemeGlobal;
 }
 
 export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps> {
@@ -37,7 +37,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
         return this.props.useAsync ? (
             <ASText
                 key={'service_text'}
-                color={this.props.theme.linkColor}
+                color={this.props.theme.accentPrimary}
                 fontSize={12}
                 lineHeight={17}
                 marginLeft={6}
@@ -50,7 +50,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                 <Text
                     key={'service_text'}
                     style={{
-                        color: this.props.theme.linkColor,
+                        color: this.props.theme.accentPrimary,
                         fontSize: 12,
                         lineHeight: 17,
                         marginLeft: 6,

@@ -16,27 +16,26 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 <ZListItemGroup header="Theme">
                     <ZListItem
                         text="Light"
-                        checkmark={theme === 'light'}
+                        checkmark={theme === 'LightBlue'}
                         onPress={() => {
                             setTimeout(() => {
-                                setTheme('light');
-                                ThemeController.theme = 'light';
+                                setTheme('LightBlue');
+                                ThemeController.theme = 'LightBlue';
                             }, 10);
                         }}
                     />
                     <ZListItem
                         text="Dark"
-                        checkmark={theme === 'dark'}
+                        checkmark={theme === 'DarkBlue'}
                         onPress={() => {
                             setTimeout(() => {
-                                setTheme('dark');
-                                ThemeController.theme = 'dark';
+                                setTheme('DarkBlue');
+                                ThemeController.theme = 'DarkBlue';
                             }, 10);
                         }}
                     />
                 </ZListItemGroup>
             </SScrollView>
-            {/* <SettingsNotificationsContent {...this.props} /> */}
         </>
     );
 });

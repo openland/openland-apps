@@ -3,10 +3,10 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASText, ASTextProps } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface TextWrapperProps extends ASTextProps {
     color: string;
@@ -33,7 +33,7 @@ interface RenderSpansProps {
     message: DataSourceMessageItem;
     padded?: boolean;
     fontStyle?: 'italic' | 'normal';
-    theme: AppTheme;
+    theme: ThemeGlobal;
     maxWidth: number;
     insetLeft: number;
     insetRight: number;
@@ -48,7 +48,7 @@ interface RenderSpansProps {
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
-        const mainTextColor = emojiOnly ? theme.textColor : (message.isOut ? theme.textColorOut : theme.textColor);
+        const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.contrastPrimary : theme.foregroundPrimary);
         const content = getSpansSlices(spans, padded);
 
         return (

@@ -10,7 +10,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 });
 
-const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: string, theme: AppTheme }>((props) => {
+const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme } = props;
     const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
 
@@ -75,19 +75,19 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     return (
         <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.dialogTitleSecureColor }} /></View>)}
-                {(room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.dialogTitleSecureColor : theme.textColor }} /></View>)}
-                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, room.kind === 'GROUP' && { color: theme.dialogTitleSecureColor }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.accentPositive }} /></View>)}
+                {(room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.accentPositive : theme.foregroundPrimary }} /></View>)}
+                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
-            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentColor } : { color: theme.textLabelColor }]}>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundPrimary }]}>
                 {subtitle}
-                {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentColor }}>{'  '}{onlineCount} online</Text>)}
+                {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }}>{'  '}{onlineCount} online</Text>)}
             </Text>
         </View>
     );
 });
 
-const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, theme: AppTheme }>((props) => {
+const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme } = props;
 
     let title = room.user.name;
@@ -116,9 +116,9 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
     return (
         <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
-            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentColor } : { color: theme.textLabelColor }]}>{subtitle}</Text>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundPrimary }]}>{subtitle}</Text>
         </View>
     );
 });

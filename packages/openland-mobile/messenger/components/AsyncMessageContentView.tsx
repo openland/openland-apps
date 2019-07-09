@@ -16,17 +16,17 @@ import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
-    theme: AppTheme;
+    theme: ThemeGlobal;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -34,24 +34,24 @@ interface AsyncMessageTextViewProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 
-export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: AppTheme, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
+export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
         if (span.type === 'link') {
-            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
-            return <ASText key={'mention-user'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+            return <ASText key={'mention-user'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
-            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
+            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
-            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
             return <ASText key={'bold'} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
         } else if (span.type === 'date') {
-            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {
@@ -137,15 +137,15 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
             <ASFlex
                 marginBottom={2}
                 onPress={() => props.onUserPress(props.message.senderId)}
-                key={'name-' + props.theme.linkColor}
+                key={'name-' + props.theme.accentPrimary}
             >
                 {!!props.message.senderBadge && (
-                    <ASImage marginRight={3} marginTop={Platform.OS === 'ios' ? 1 : undefined} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.linkColor} />
+                    <ASImage marginRight={3} marginTop={Platform.OS === 'ios' ? 1 : undefined} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.accentPrimary} />
                 )}
                 <ASText
                     fontSize={12}
                     fontWeight={TextStyles.weight.medium}
-                    color={props.theme.linkColor}
+                    color={props.theme.accentPrimary}
                 >
                     {props.message.senderName}
                 </ASText>
@@ -200,7 +200,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
+            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleIn} backgroundColor={theme.backgroundPrimary}>
                 <ASFlex
                     flexDirection="column"
                     alignItems="stretch"
@@ -225,14 +225,14 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                         >
                             {props.message.isEdited && (
                                 <ASFlex width={10} height={10} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.textColorOut : props.theme.textColor} opacity={props.message.isOut ? 0.7 : 0.5} />
+                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary} opacity={props.message.isOut ? 0.7 : 0.5} />
                                 </ASFlex>
                             )}
                             <ASText
                                 marginLeft={3}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
-                                color={hasImage ? '#fff' : props.message.isOut ? props.theme.textColorOut : props.theme.textColor}
+                                color={hasImage ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
                                 opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
                             >
                                 {formatTime(props.message.date)}
@@ -248,8 +248,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 </ASFlex>
 
             </AsyncBubbleView >
-            {!!bottomContent.length && <ASFlex height={3} backgroundColor={theme.backgroundColor} />}
-            {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
+            {!!bottomContent.length && <ASFlex height={3} backgroundColor={theme.backgroundPrimary} />}
+            {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleIn} backgroundColor={theme.backgroundPrimary}>
                 {bottomContent}
             </AsyncBubbleView >}
         </ASFlex>

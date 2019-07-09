@@ -3,14 +3,14 @@ import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export interface ServiceMessageDefaultProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
@@ -19,7 +19,7 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
 
     return (
         <ASFlex
-            backgroundColor={props.theme.backgroundColor}
+            backgroundColor={props.theme.backgroundPrimary}
             flexDirection="column"
             alignItems="center"
         >
@@ -32,7 +32,7 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
                 alignItems="center"
             >
                 <ASText
-                    color={props.theme.textSecondaryColor}
+                    color={props.theme.foregroundSecondary}
                     fontSize={12}
                     lineHeight={17}
                     marginLeft={6}

@@ -44,7 +44,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                             width: size,
                             height: size,
                             opacity: 1,
-                            tintColor: props.selected ? theme.tabColorActive : theme.tabColor
+                            tintColor: props.selected ? theme.accentPrimary : theme.foregroundSecondary
                         }}
                     />
                     <View
@@ -66,7 +66,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                                 height: 11,
                                 borderRadius: 5,
                                 padding: 2,
-                                backgroundColor: theme.headerColor
+                                backgroundColor: theme.backgroundSecondary
                             }}
                         >
                             <View
@@ -82,7 +82,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                 </View>
                 <Text
                     style={{
-                        color: props.selected ? theme.tabColorActive : theme.tabColor,
+                        color: props.selected ? theme.accentPrimary : theme.foregroundSecondary,
                         fontSize: 12,
                         fontWeight: Platform.OS === 'android' ? '500' : '400',
                         height: Platform.OS === 'android' ? 16 : 14,
@@ -102,7 +102,7 @@ export const AppBarBottom = React.memo<{ children?: any }>((props) => {
     return (
         <ZBlurredView
             style={{
-                // backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundPrimary,
                 paddingBottom: SDevice.safeArea.bottom,
                 flexDirection: 'column',
                 alignItems: 'stretch',

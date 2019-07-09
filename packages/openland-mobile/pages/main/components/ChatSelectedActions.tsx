@@ -49,7 +49,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             {canDelete && (
                 <TouchableOpacity onPress={del}>
                     <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
-                        <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
+                        <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
                     </View>
                 </TouchableOpacity>
             )}
@@ -59,13 +59,13 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             <View flexGrow={1} />
             <TouchableOpacity onPress={cancel}>
                 <View style={{ height: height, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={require('assets/ic-cancel-gray-26.png')} style={{ tintColor: theme.inputIconsColor }} />
+                    <Image source={require('assets/ic-cancel-gray-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
                 </View>
             </TouchableOpacity>
             <View flexGrow={1} />
             <TouchableOpacity onPress={fwd}>
                 <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginRight: 30 }}>
-                    <Image source={require('assets/ic-forward-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
+                    <Image source={require('assets/ic-forward-ios-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
                 </View>
             </TouchableOpacity >
         </View>
@@ -79,7 +79,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundColor}>
+        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
             {res}
         </View>
     );

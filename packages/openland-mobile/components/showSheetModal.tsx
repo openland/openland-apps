@@ -8,9 +8,9 @@ import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAre
 import { ZActionSheetItem } from './ZActionSheetItem';
 import { ZBlurredView } from './ZBlurredView';
 import { isPad } from 'openland-mobile/pages/Root';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface SheetModalProps {
     ctx: ZModalController;
@@ -19,7 +19,7 @@ interface SheetModalProps {
     safe: ASSafeArea;
 }
 
-class SheetModal extends React.PureComponent<SheetModalProps & { theme: AppTheme }> implements ZModalController {
+class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlobal }> implements ZModalController {
     key = randomKey();
     contents: any;
 
@@ -171,7 +171,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: AppTheme
                         <>
                             {!isPad && (
                                 <View
-                                    backgroundColor={theme.modalBackground}
+                                    backgroundColor={theme.backgroundSecondary}
                                     borderTopRightRadius={12}
                                     borderTopLeftRadius={12}
                                     paddingBottom={Platform.select({ ios: undefined, android: safe.bottom + 8 })}
@@ -190,7 +190,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: AppTheme
                                     overflow="hidden"
                                     width={350}
                                     alignSelf="center"
-                                    backgroundColor={theme.modalBackground}
+                                    backgroundColor={theme.backgroundSecondary}
                                     onLayout={this.onLayout}
                                 >
                                     <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>

@@ -7,13 +7,13 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface MediaContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
     imageLayout: { width: number, height: number };
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
@@ -71,7 +71,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
         return (
             <View
-                backgroundColor={theme.bubbleColorIn}
+                backgroundColor={theme.bubbleIn}
                 borderRadius={8}
                 marginVertical={5}
             >

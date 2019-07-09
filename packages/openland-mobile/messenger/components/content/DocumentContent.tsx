@@ -3,8 +3,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { Platform } from 'react-native';
-import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -14,7 +13,8 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
+
 interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
@@ -23,7 +23,7 @@ interface DocumentContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     compensateBubble?: boolean;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 export class DocumentContent extends React.PureComponent<DocumentContentProps, { downloadState?: DownloadState }> {
     private handlePress = () => {
@@ -91,14 +91,14 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     />
                     {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
                         width={40}
-                        backgroundColor={this.props.theme.backgroundColor}
+                        backgroundColor={this.props.theme.backgroundPrimary}
                         borderRadius={20}
                         marginRight={10}
                         overlay={true}
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <ASText color={this.props.theme.textColor} opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        <ASText color={this.props.theme.foregroundPrimary} opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
                     </ASFlex>}
                 </ASFlex>
 
@@ -111,7 +111,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 >
                     <ASText
                         maxWidth={bubbleMaxWidth - 110}
-                        color={message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor}
+                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
                         height={18}
                         fontSize={15}
                         lineHeight={18}

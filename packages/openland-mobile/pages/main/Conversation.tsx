@@ -33,7 +33,6 @@ import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
@@ -42,11 +41,12 @@ import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openla
 import { findSpans } from 'openland-y-utils/findSpans';
 import throttle from 'lodash/throttle';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
     chat: Room_room;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 
 interface ConversationRootState {
@@ -328,26 +328,26 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             {pinnedMessage && (
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
-                                        <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.headerColor} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
+                                        <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.backgroundSecondary} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
                                             <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(pinnedMessage!.id)}>
                                                 <View flexDirection="row" paddingRight={16} alignItems="center">
                                                     <View width={50} height={showPinAuthor ? 52 : 44} alignItems="center" justifyContent="center">
-                                                        <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentColor }} source={require('assets/ic-pinned.png')} />
+                                                        <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentPrimary }} source={require('assets/ic-pinned.png')} />
                                                     </View>
 
                                                     <View height={showPinAuthor ? 52 : 44} flexGrow={1} flexShrink={1} paddingTop={9} >
                                                         {showPinAuthor && <View flexDirection="row">
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, fontWeight: TextStyles.weight.medium }}>
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, fontWeight: TextStyles.weight.medium }}>
                                                                 {pinnedMessage!.sender.name}
                                                             </Text>
 
                                                             {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textLabelColor, marginLeft: 8, fontWeight: TextStyles.weight.medium }}>
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, marginLeft: 8, fontWeight: TextStyles.weight.medium }}>
                                                                     {pinnedMessage!.sender.primaryOrganization!.name}
                                                                 </Text>
                                                             }
                                                         </View>}
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor }}>
+                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.foregroundPrimary }}>
                                                             {pinnedMessage!.fallback}
                                                         </Text>
                                                     </View>
@@ -396,16 +396,15 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                 <SHeaderButton />
                 <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                     <View height="73%" alignItems="center" justifyContent="center">
-                        <Image source={theme.imageEmpty} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                        <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.textColor, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Cannot view group</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.textColor, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
+                        <Image source={theme.type === 'light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                        <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Cannot view group</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.foregroundPrimary, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
                     </View>
                     <View height="27%" alignItems="center" justifyContent="center">
                         <View width={118}>
                             <ZRoundedButton
                                 size="large"
                                 title="Go back"
-                                uppercase={false}
                                 style="secondary"
                                 onPress={() => props.router.back()}
                             />
@@ -437,15 +436,13 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
                         />
                         <View flexDirection="column" zIndex={- 1}>
-                            <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                            <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                            <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
+                            <Text style={{ fontSize: 20, fontWeight: '500', color: theme.foregroundPrimary, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
+                            <Text style={{ fontSize: 15, color: theme.foregroundPrimary, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
+                            <Text style={{ fontSize: 14, color: theme.foregroundPrimary, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
                         </View>
                     </View>
                     <View alignSelf="center" marginBottom={46}>
                         <ZRoundedButton
-                            size="big"
-                            uppercase={false}
                             title="Join"
                             onPress={async () => {
                                 startLoader();

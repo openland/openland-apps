@@ -40,7 +40,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                         fontSize: 16,
                         lineHeight: 19,
                         height: 19,
-                        color: theme.textColor,
+                        color: theme.foregroundPrimary,
                         fontWeight: TextStyles.weight.medium
                     }}
                 >
@@ -53,7 +53,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                         fontSize: 13,
                         lineHeight: 15,
                         height: 15,
-                        color: theme.textLabelColor,
+                        color: theme.foregroundPrimary,
                     }}
                 >
                     {membersCount + (membersCount > 1 ? ' members' : ' member')}

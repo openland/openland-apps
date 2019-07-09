@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions, Platform, Animated, Easing } from 'react-native';
-import { ZLoader } from '../../../components/ZLoader';
+import { View, Image, Text, Platform, Animated, Easing } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
-import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { trackEvent } from 'openland-mobile/analytics';
-import { SRouter } from 'react-native-s/SRouter';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { useMessageSelected, useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
+import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -21,13 +18,13 @@ export interface MessagesListProps {
 }
 export const androidMessageInputListOverlap = 50;
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }) {
+    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }) {
         super(props);
         let initialState = props.engine.getState();
 
@@ -84,7 +81,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
-                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleGradientOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
+                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
                 <ConversationMessagesView
                     // ref={this.listRef}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZText } from './ZText';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ZListItemGroupProps {
     header?: string | null;
@@ -63,9 +64,9 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                 >
                     <Text
                         style={{
-                            color: theme.groupHeaderColor,
+                            color: theme.foregroundPrimary,
                             fontSize: 16,
-                            fontWeight: Platform.OS === 'android' ? '500' : '600',
+                            fontWeight: TextStyles.weight.medium,
                             height: Platform.OS === 'android' ? 21 : 20,
                             paddingLeft: 16,
                             flexShrink: 1,
@@ -96,7 +97,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         <TouchableOpacity onPress={props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
                             <Text
                                 style={{
-                                    color: theme.accentColor,
+                                    color: theme.accentPrimary,
                                     fontSize: 15,
                                     fontWeight: Platform.OS === 'android' ? '500' : '600',
                                     height: 18,

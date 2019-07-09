@@ -54,29 +54,28 @@ export interface MessageInputBarProps {
 
 export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
     let theme = React.useContext(ThemeContext);
-    let resolved = Image.resolveAssetSource(theme.androidInputBackground);
 
     return (
         <View marginBottom={SDevice.safeArea.bottom}>
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                 {!props.suggestions && !props.topView && (
                     <>
-                        <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={[theme.backgroundColor, theme.backgroundColor, theme.transparent, theme.transparent]} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
-                        <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor={theme.backgroundColor} />
+                        <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={[theme.backgroundPrimary, theme.backgroundPrimary, theme.transparent, theme.transparent]} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
+                        <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor={theme.backgroundPrimary} />
                     </>
                 )}
 
                 {props.suggestions && (
                     <>
-                        <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor={theme.backgroundColor} />
-                        <View style={{ backgroundColor: theme.backgroundColor, position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
+                        <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor={theme.backgroundPrimary} />
+                        <View style={{ backgroundColor: theme.backgroundPrimary, position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
                             {props.suggestions}
                         </View>
                     </>
                 )}
 
                 {props.topView && (
-                    <View backgroundColor={theme.backgroundColor}>
+                    <View backgroundColor={theme.backgroundPrimary}>
                         {props.topView}
                     </View>
                 )}
@@ -91,11 +90,10 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                 width={30}
                                 height={30}
                                 borderRadius={15}
-                                backgroundColor={theme.inputIconsColorBackground}
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                <Image source={iconAttach} style={{ width: 17, height: 17, tintColor: theme.inputIconsColor }} />
+                                <Image source={iconAttach} style={{ width: 17, height: 17, tintColor: theme.foregroundSecondary }} />
                             </View>
                         </TouchableOpacity>
                     )}
@@ -112,12 +110,12 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                         >
                             <ASFlex
                                 flexGrow={1}
-                                backgroundPatch={{ source: resolved.uri, scale: resolved.scale, top: 21, left: 21, right: 21, bottom: 21 }}
+                                backgroundColor={theme.backgroundTertiary}
                             />
                         </ASView>
                         <TextInput
                             ref={ref}
-                            style={[styles.textInput, { color: theme.textInputColor }]}
+                            style={[styles.textInput, { color: theme.foregroundPrimary }]}
                             placeholder={props.placeholder}
                             placeholderTextColor="#aaaaaa"
                             onChangeText={props.onChangeText}
@@ -146,7 +144,6 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                     width={30}
                                     height={30}
                                     borderRadius={30}
-                                    backgroundColor={props.canSubmit && props.enabled !== false ? theme.inputIconsColorActiveBackground : theme.inputIconsColorInactiveBackground}
                                     marginHorizontal={6}
                                 >
                                     <Image
@@ -155,7 +152,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                             width: 17,
                                             height: 17,
                                             marginRight: -4,
-                                            tintColor: props.canSubmit && props.enabled !== false ? theme.inputIconsColorActive : theme.inputIconsColorInactive
+                                            tintColor: props.canSubmit && props.enabled !== false ? theme.foregroundSecondary : theme.foregroundQuaternary
                                         }}
                                     />
                                 </View>

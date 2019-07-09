@@ -47,11 +47,11 @@ const InvitesMoreComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeader title="Other invites" />
-            <SScrollView width="100%" height="100%" backgroundColor={theme.backgroundColor}>
-                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 30, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Invite to Openland".toUpperCase()}</Text>
-                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{link}</Text>
+            <SScrollView width="100%" height="100%" backgroundColor={theme.backgroundPrimary}>
+                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 30, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Invite to Openland".toUpperCase()}</Text>
+                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{link}</Text>
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} marginBottom={8} />
-                <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Anyone can use this link to join Openland"}</Text>
+                <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Anyone can use this link to join Openland"}</Text>
                 <ZListItem
                     appearance="action"
                     text="Copy link"
@@ -65,10 +65,10 @@ const InvitesMoreComponent = XMemo<PageProps>((props) => {
                 />
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
 
-                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 40, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Invite to ".toUpperCase()}<Text style={{ color: theme.accentColor }} onPress={() => props.router.push("ProfileOrganization", { id: org!.id })}>{getMessenger().engine.user.primaryOrganization!.name.toUpperCase()}</Text></Text>
-                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{orgLink}</Text>
+                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginTop: 40, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Invite to ".toUpperCase()}<Text style={{ color: theme.accentPrimary }} onPress={() => props.router.push("ProfileOrganization", { id: org!.id })}>{getMessenger().engine.user.primaryOrganization!.name.toUpperCase()}</Text></Text>
+                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{orgLink}</Text>
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
-                <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Anyone can use this link to join your organization"}</Text>
+                <Text style={{ fontSize: 13, marginBottom: 31, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Anyone can use this link to join your organization"}</Text>
                 <ZListItem
                     appearance="action"
                     text="Copy link"

@@ -9,14 +9,14 @@ import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessa
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
     isSmall?: boolean;
-    theme: AppTheme;
+    theme: ThemeGlobal;
     maxWidth: number;
 }
 
@@ -87,11 +87,11 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         const titleMaxWidth = (imgCompact && imgLayout && imageSource) ? maxWidth - 26 - 36 - 9 : undefined;
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubbleColorIn} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubbleIn} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
-                            color: theme.textColor,
+                            color: theme.foregroundPrimary,
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular,
@@ -140,7 +140,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     <Text
                         style={{
                             marginTop: 5,
-                            color: theme.textColor,
+                            color: theme.foregroundPrimary,
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular
@@ -185,7 +185,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                         {!!title && (
                             <Text
                                 style={{
-                                    color: theme.textColor,
+                                    color: theme.foregroundPrimary,
                                     letterSpacing: -0.3,
                                     fontSize: 14,
                                     marginTop: Platform.OS === 'android' ? -4 : -1,
@@ -203,7 +203,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             <Text
                                 style={{
                                     marginTop: (Platform.OS === 'android' ? -4 : -1),
-                                    color: theme.textColor,
+                                    color: theme.foregroundPrimary,
                                     opacity: 0.6,
                                     fontSize: 14,
                                     marginBottom: 4,
@@ -221,7 +221,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 {!!text && (
                     <Text
                         style={{
-                            color: theme.textColor,
+                            color: theme.foregroundPrimary,
                             fontSize: 14,
                             marginTop: this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0,
                             marginBottom: 4,
@@ -243,7 +243,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             <TouchableWithoutFeedback key={'button-' + i + '-' + j} onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}>
                                 <View
                                     marginTop={i !== 0 ? 4 : 0}
-                                    backgroundColor={theme.backgroundColor}
+                                    backgroundColor={theme.backgroundPrimary}
                                     borderRadius={8}
                                     marginLeft={j > 0 ? 4 : 0}
                                     marginRight={j < line.length - 1 ? 4 : 0}
@@ -255,7 +255,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     <Text
                                         style={{
                                             textAlign: 'center',
-                                            color: theme.linkColor,
+                                            color: theme.accentPrimary,
                                             fontSize: 14,
                                             fontWeight: TextStyles.weight.medium,
                                         }}

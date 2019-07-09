@@ -36,15 +36,15 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
                     fontSize: 16,
                     lineHeight: 19,
                     height: 19,
-                    color: theme.textColor,
+                    color: theme.foregroundPrimary,
                     fontWeight: TextStyles.weight.medium
                 }}
             >{props.item.title}
             </Text>
         </View>
 
-        {/* <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentColor : theme.backgroundColor} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentColor : theme.accentDisabledColor} borderWidth={2} borderRadius={12} width={24} height={24} >
-            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.textInverseColor }} />}
+        {/* <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
+            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
         </View> */}
     </ZListItemBase>
 }
@@ -83,8 +83,8 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: TextStyles.weight.bold, color: theme.textColor, marginBottom: 8 }} >Get help from Openland community</Text>
-                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Choose a chat and share your challenges"}</Text>
+                <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: TextStyles.weight.bold, color: theme.foregroundPrimary, marginBottom: 8 }} >Get help from Openland community</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>Choose a chat and share your challenges</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />
                 ))}

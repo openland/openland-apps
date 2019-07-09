@@ -8,7 +8,7 @@ export const CenteredHeader = (props: { title: string, padding?: number }) => {
     return (
         <SHeaderView>
             <View flexGrow={1} alignSelf="stretch" alignItems="center" justifyContent="center" height={56} paddingLeft={props.padding}>
-                <Text style={{color: theme.textColor, height: 56, fontSize: 22, fontWeight: '600', includeFontPadding: true, textAlignVertical: 'center'}}>{props.title}</Text>
+                <Text style={{color: theme.foregroundPrimary, height: 56, fontSize: 22, fontWeight: '600', includeFontPadding: true, textAlignVertical: 'center'}}>{props.title}</Text>
             </View>
         </SHeaderView>
     )

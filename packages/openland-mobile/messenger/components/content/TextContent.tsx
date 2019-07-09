@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming } from '../AsyncBubbleView';
 import { RenderSpans } from './AsyncRenderSpans';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface TextContentProps {
     message: DataSourceMessageItem;
     padded?: boolean;
     fontStyle?: 'italic' | 'normal';
-    theme: AppTheme;
+    theme: ThemeGlobal;
     emojiOnly: boolean;
     maxWidth?: number;
     compensateBubble?: boolean;
