@@ -13,6 +13,7 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolean }>((props) => {
     let theme = React.useContext(ThemeContext);
@@ -64,15 +65,17 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                 )}
             >
                 <SScrollView keyboardDismissMode="interactive">
-                    <ZListItemGroup divider={false}>
-                        <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
-                        <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
-                        <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
-                    </ZListItemGroup>
-                    <View height={15} />
-                    <React.Suspense fallback={<ActivityIndicator />}>
-                        <UserSearchComponent query="" router={props.router} useScroll={false} />
-                    </React.Suspense>
+                    <SDeferred>
+                        <ZListItemGroup divider={false}>
+                            <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
+                            <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
+                            <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
+                        </ZListItemGroup>
+                        <View height={15} />
+                        <React.Suspense fallback={<ActivityIndicator />}>
+                            <UserSearchComponent query="" router={props.router} useScroll={false} />
+                        </React.Suspense>
+                    </SDeferred>
                 </SScrollView>
             </SSearchControler>
         </>
