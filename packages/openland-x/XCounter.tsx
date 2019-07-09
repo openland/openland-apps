@@ -21,7 +21,7 @@ const XCounterBig = (props: XCounterProps) => (
         textOverflow="ellipsis"
         minWidth={20}
         height={20}
-        borderRadius={9}
+        borderRadius={10}
         fontSize={13}
         lineHeight="10px"
         paddingLeft={5}
