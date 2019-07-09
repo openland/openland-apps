@@ -64,10 +64,10 @@ const Navigation = React.memo(() => {
 const Page = (props: { text: string }) => {
     let controller = useController();
     return (
-        <XView>
-            <XView>
+        <XView width="100%" height="100%" backgroundImage="url(/static/download3.png)">
+            {/* <XView>
                 {props.text}
-            </XView>
+            </XView> */}
             <XButton onClick={() => controller.pop()} />
         </XView>
     );
