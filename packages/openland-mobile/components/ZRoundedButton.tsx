@@ -44,7 +44,7 @@ const stylesLarge = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 24,
+        borderRadius: 12,
         height: 56,
         paddingHorizontal: 24,
     } as ViewStyle,
