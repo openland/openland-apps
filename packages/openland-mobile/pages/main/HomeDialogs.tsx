@@ -57,7 +57,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
     return (
         <ZTrack event="mail_view">
             {Platform.OS === 'ios' && (
-                <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Messages')} />
+                <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
             )}
             {Platform.OS === 'android' && (
                 <>
