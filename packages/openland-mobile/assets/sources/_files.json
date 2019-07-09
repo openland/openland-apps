@@ -590,6 +590,48 @@
                 22,
                 32
             ]
+        },
+        {
+            "name": "ic-discover",
+            "src": "ic-discover.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-discover-active",
+            "src": "ic-discover-active.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-chats",
+            "src": "ic-chats.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-chats-active",
+            "src": "ic-chats-active.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-profile",
+            "src": "ic-profile.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-profile-active",
+            "src": "ic-profile-active.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }
