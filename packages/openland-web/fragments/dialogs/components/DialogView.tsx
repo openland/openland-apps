@@ -191,16 +191,16 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             as="a"
             ref={props.handleRef}
             onMouseDown={() => router!.navigate('/mail/' + dialog.key)}
-            height={72}
+            height={80}
             flexDirection="row"
             paddingLeft={16}
-            paddingTop={4}
-            paddingBottom={4}
+            paddingTop={8}
+            paddingBottom={8}
             minWidth={0}
             alignItems="center"
             hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
             selectedBackgroundColor="#4596e1"
-            selectedHoverBackgroundColor="#4596e1"
+            selectedHoverBackgroundColor="#509BE6"
             linkSelectable={true}
             hoverTextDecoration="none"
         >
@@ -210,14 +210,16 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
                 src={dialog.photo}
                 online={dialog.online}
+                size={56}
             />
             <XView
                 flexDirection="column"
                 flexGrow={1}
                 flexShrink={1}
-                paddingLeft={12}
+                paddingLeft={16}
                 paddingRight={16}
                 minWidth={0}
+                height="100%"
             >
                 <XViewSelectedContext.Consumer>
                     {active => (
@@ -226,14 +228,13 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             flexGrow={1}
                             flexShrink={0}
                             minWidth={0}
-                            marginBottom={3}
                         >
                             <XView
                                 flexDirection="row"
                                 flexGrow={1}
                                 flexShrink={1}
                                 minWidth={0}
-                                fontSize={14}
+                                fontSize={15}
                                 fontWeight="600"
                                 lineHeight="18px"
                                 color={
@@ -241,7 +242,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         ? '#fff'
                                         : highlightSecretChat && dialog.kind === 'GROUP'
                                         ? '#129f25'
-                                        : '#292929'
+                                        : '#1C2229'
                                 }
                                 overflow="hidden"
                                 whiteSpace="nowrap"
@@ -282,10 +283,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 <XView
                                     height={18}
                                     marginLeft={5}
-                                    fontSize={12}
+                                    fontSize={13}
                                     lineHeight="19px"
                                     whiteSpace="nowrap"
-                                    color={active ? '#fff' : '#B8B8B8'}
+                                    color={active ? '#fff' : '#A9AEB8'}
                                 >
                                     <span className={LetterSpacingClassName}>
                                         <XDate
@@ -305,12 +306,12 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         flexShrink={1}
                         flexBasis={0}
                         minWidth={0}
-                        fontSize={13}
+                        fontSize={14}
                         fontWeight="400"
                         lineHeight="17px"
                         overflow="hidden"
                         selectedOpacity={1}
-                        color={theme.dialogMessageTextColor}
+                        color="#78808F"
                         selectedColor={theme.dialogMessageTextColorSelected}
                     >
                         {message}
