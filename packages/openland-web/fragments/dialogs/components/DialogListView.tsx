@@ -15,6 +15,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
 import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
+import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 
 const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
@@ -38,7 +39,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     if (!ds) {
         ds = dialogListWebDataSource(messenger.dialogList.dataSource);
     }
-    let dataSource = ds!;
+    let dataSource = new DataSourceWindow(ds!, 20);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
