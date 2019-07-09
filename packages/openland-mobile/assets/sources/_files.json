@@ -652,6 +652,20 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-header-bell",
+            "src": "ic-header-bell.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-header-plus",
+            "src": "ic-header-plus.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }
