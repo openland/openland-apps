@@ -58,7 +58,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     },
 
     separatorColor: '#eaeaea',
-    modalOverlay: 'rgba(4, 4, 15, 0.4)',
+    modalOverlay: 'rgba(0, 0, 0, 0.4)',
     hairlineColor: '#e0e3e7',
     settingsNotificationIcon: '#0084fe',
     settingsAppearanceIcon: '#eb7272',
@@ -128,7 +128,7 @@ export const ThemeDarkBlue: ThemeGlobal = {
     },
 
     separatorColor: '#eaeaea',
-    modalOverlay: 'rgba(4, 4, 15, 0.4)',
+    modalOverlay: 'rgba(0, 0, 0, 0.4)',
     hairlineColor: '#e0e3e7',
     settingsNotificationIcon: '#262626',
     settingsAppearanceIcon: '#262626',
