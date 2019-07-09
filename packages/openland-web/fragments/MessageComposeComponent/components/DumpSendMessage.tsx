@@ -17,10 +17,10 @@ import { XView } from 'react-mental';
 const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
     return {
         width: '100%',
-        maxWidth: fullWidth ? '100%' : 930,
+        maxWidth: fullWidth ? '100%' : 980,
         minWidth: fullWidth ? '100%' : 512,
         flexBasis: '100%',
-        paddingLeft: fullWidth ? 0 : 97,
+        paddingLeft: fullWidth ? 0 : 124,
         paddingRight: fullWidth ? 0 : 112,
         '@media (max-width: 750px)': {
             minWidth: 0,
@@ -51,8 +51,8 @@ const SendMessageWrapper = Glamorous.div<{
         marginBottom: minimal ? -6 : undefined,
         minHeight: minimal ? undefined : 114,
         backgroundColor: minimal || bright ? undefined : XThemeDefault.backyardColor,
-        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 16,
-        paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
+        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 26,
+        paddingRight: minimal ? 0 : fullWidth ? 32 : 26,
         paddingTop: minimal ? 6 : 12,
         paddingBottom: minimal ? 0 : 12,
         borderTopStyle: bright ? undefined : 'solid',
