@@ -13,4 +13,10 @@ a:hover {
     display: none;
 }
 
+span {
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: -0.24px;
+}
+
 *{ min-height: 0;min-width: 0; }
