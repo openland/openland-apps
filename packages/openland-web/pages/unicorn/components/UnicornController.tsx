@@ -150,7 +150,7 @@ function animationReducer(
         return {
             pages: state.pages.map((v) => {
                 if (v.key === action.key) {
-                    return { ...v, state: 'exiting' }
+                    return { ...v, state: 'exiting' as any }
                 } else {
                     return v;
                 }
@@ -161,7 +161,7 @@ function animationReducer(
             pages: state.pages.map((v) => {
                 if (v.key === action.key) {
                     if (v.state === 'entering') {
-                        return { ...v, state: 'visible' }
+                        return { ...v, state: 'visible' as any }
                     } else {
                         return v;
                     }
@@ -179,7 +179,7 @@ function animationReducer(
             return {
                 pages: state.pages.map((v) => {
                     if (v.state === 'mounting') {
-                        return { ...v, state: 'entering' }
+                        return { ...v, state: 'entering' as any }
                     } else {
                         return v;
                     }
