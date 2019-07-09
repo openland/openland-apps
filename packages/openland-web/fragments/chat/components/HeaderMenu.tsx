@@ -19,8 +19,6 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
     const isChannel = !!(sharedRoom && sharedRoom.isChannel);
     return (
         <XOverflow
-            flat={true}
-            small={true}
             placement="bottom-end"
             width={152}
             content={

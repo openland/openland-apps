@@ -147,7 +147,6 @@ export const XUserCard = ({
             <>
                 {extraMenu && (
                     <XOverflow
-                        flat={true}
                         placement="bottom-end"
                         content={<div>{extraMenu}</div>}
                     />

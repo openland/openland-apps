@@ -93,7 +93,6 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
             <>
                 <XWithRole role={['super-admin', 'editor']}>
                     <XOverflow
-                        flat={true}
                         placement="bottom-end"
                         content={
                             <div style={{ width: 160 }} onClick={e => e.stopPropagation()}>
@@ -109,7 +108,6 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                 {extraMenu && (
                     <XWithRole role={['super-admin', 'editor']} negate={true}>
                         <XOverflow
-                            flat={true}
                             placement="bottom-end"
                             content={<div>{extraMenu}</div>}
                         />

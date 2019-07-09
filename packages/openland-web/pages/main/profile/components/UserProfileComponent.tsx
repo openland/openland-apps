@@ -235,7 +235,6 @@ const Header = (props: { user: User_user }) => {
                             {user.isYou && (
                                 <XOverflow
                                     placement="bottom-end"
-                                    flat={true}
                                     content={
                                         <>
                                             <XMenuItem path="/settings/profile/">

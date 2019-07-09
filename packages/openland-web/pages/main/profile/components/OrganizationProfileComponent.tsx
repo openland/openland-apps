@@ -170,7 +170,6 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
     let customMenu: any = (
         <XOverflow
             placement="bottom-end"
-            flat={true}
             content={
                 <>
                     {isMeOwner && !isYou && role === 'ADMIN' && (
@@ -598,7 +597,6 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                     {organization.isMine && (
                         <XOverflow
                             placement="bottom-end"
-                            flat={true}
                             content={
                                 <>
                                     <XWithRole role="admin" orgPermission={organization.id}>
@@ -627,7 +625,6 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                         <XWithRole role={['editor', 'super-admin']}>
                             <XOverflow
                                 placement="bottom-end"
-                                flat={true}
                                 content={
                                     <XWithRole role={['editor', 'super-admin']}>
                                         <XMenuItem
