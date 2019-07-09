@@ -9,7 +9,7 @@ export const NotificationCenterEmpty = XMemo((props) => {
 
     return (
         <ASSafeAreaView flexGrow={1} paddingHorizontal={48} alignItems="center" justifyContent="center">
-            <Image source={theme.type === 'light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+            <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
             <Text style={{ fontSize: 15, color: theme.foregroundPrimary, textAlign: 'center' }} allowFontScaling={false}>
                 Comments in threads you are involved in will be right here
             </Text>

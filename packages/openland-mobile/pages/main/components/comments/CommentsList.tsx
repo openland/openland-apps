@@ -65,7 +65,7 @@ export const CommentsList = (props: CommentsListProps) => {
     if (comments.length === 0) {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
-                <Image source={theme.type === 'light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
                 <Text style={{ fontSize: 15, color: theme.foregroundPrimary }} allowFontScaling={false}>Write the first comment</Text>
             </View>
         );

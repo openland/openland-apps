@@ -75,11 +75,11 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     return (
         <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.accentPositive }} /></View>)}
+                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.accentPositive }} /></View>)}
                 {(room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.accentPositive : theme.foregroundPrimary }} /></View>)}
                 <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
-            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundPrimary }]}>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundSecondary }]}>
                 {subtitle}
                 {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }}>{'  '}{onlineCount} online</Text>)}
             </Text>
@@ -118,7 +118,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
             <View flexDirection="row">
                 <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
-            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundPrimary }]}>{subtitle}</Text>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentPrimary } : { color: theme.foregroundSecondary }]}>{subtitle}</Text>
         </View>
     );
 });

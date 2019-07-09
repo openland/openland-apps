@@ -396,7 +396,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                 <SHeaderButton />
                 <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                     <View height="73%" alignItems="center" justifyContent="center">
-                        <Image source={theme.type === 'light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                        <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
                         <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Cannot view group</Text>
                         <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.foregroundPrimary, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
                     </View>

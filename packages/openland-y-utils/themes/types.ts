@@ -1,7 +1,8 @@
-export type ThemeGlobalKind = 'LightBlue' | 'DarkBlue';
+export type ThemeGlobalKind = 'LightBlue' | 'Dark';
 
 export type ThemeGlobal = {
-    type: 'light' | 'dark';
+    type: 'Light' | 'Dark';
+    kind: ThemeGlobalKind;
 
     transparent: string;
 
@@ -22,7 +23,14 @@ export type ThemeGlobal = {
     backgroundTertiaryHover: string;
     backgroundTertiaryActive: string;
 
+    backgroundHighlight: string;
+
     contrastPrimary: string;
+    contrastSpecial: string;
+
+    overlayHeavy: string;
+    overlayMedium: string;
+    overlayLight: string;
 
     accentPrimary: string;
     accentPrimaryHover: string;
@@ -36,12 +44,19 @@ export type ThemeGlobal = {
     accentNegativeHover: string;
     accentNegativeActive: string;
 
+    tint1: string;
+    tint2: string;
+    tint3: string;
+    tint4: string;
+    tint5: string;
+    tint6: string;
+
     blurType: 'dark' | 'light';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
 
     bubbleIn: string;
-    bubbleOut: string[];
+    bubbleOut: string;
 
     ironySpan: {
         backgroundOut: string;
@@ -57,17 +72,11 @@ export type ThemeGlobal = {
         paddedText: string;
     },
 
-    // Legacy. Need to discuss!
+    // legacy
+
     separatorColor: string;
-    modalOverlay: string;
     hairlineColor: string;
-    settingsNotificationIcon: string;
-    settingsAppearanceIcon: string;
-    settingsInviteIcon: string;
-    settingsHelpIcon: string;
-    settingsRateIcon: string;
     accentBackgroundColor: string;
-    highlightedComment: string;
     chatImageBackground: string;
 }
 

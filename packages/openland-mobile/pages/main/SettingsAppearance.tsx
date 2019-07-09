@@ -26,11 +26,11 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                     />
                     <ZListItem
                         text="Dark"
-                        checkmark={theme === 'DarkBlue'}
+                        checkmark={theme === 'Dark'}
                         onPress={() => {
                             setTimeout(() => {
-                                setTheme('DarkBlue');
-                                ThemeController.theme = 'DarkBlue';
+                                setTheme('Dark');
+                                ThemeController.theme = 'Dark';
                             }, 10);
                         }}
                     />

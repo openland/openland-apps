@@ -138,14 +138,15 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
                 marginBottom={2}
                 onPress={() => props.onUserPress(props.message.senderId)}
                 key={'name-' + props.theme.accentPrimary}
+                alignItems="center"
             >
                 {!!props.message.senderBadge && (
-                    <ASImage marginRight={3} marginTop={Platform.OS === 'ios' ? 1 : undefined} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.accentPrimary} />
+                    <ASImage marginRight={3} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.foregroundPrimary} />
                 )}
                 <ASText
-                    fontSize={12}
+                    fontSize={15}
                     fontWeight={TextStyles.weight.medium}
-                    color={props.theme.accentPrimary}
+                    color={props.theme.foregroundPrimary}
                 >
                     {props.message.senderName}
                 </ASText>
