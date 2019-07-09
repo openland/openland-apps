@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
+import { DataSourceItem, ReadableDataSource } from 'openland-y-utils/DataSource';
 import { XView } from 'react-mental';
 import throttle from 'lodash/throttle';
 import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
 
-function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[], boolean] {
+function useDataSource<T extends DataSourceItem>(dataSource: ReadableDataSource<T>): [T[], boolean] {
     let [items, setItems] = React.useState<T[]>([]);
     let [completed, setCompleted] = React.useState<boolean>(false);
     React.useEffect(
@@ -62,7 +62,7 @@ function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[
 }
 
 export interface XListViewProps<T extends DataSourceItem> {
-    dataSource: DataSource<T>;
+    dataSource: ReadableDataSource<T>;
     itemHeight: number;
     loadingHeight: number;
     renderItem: (item: T) => React.ReactElement<any>;
