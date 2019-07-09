@@ -3,7 +3,10 @@ import { Container, InnerContainer } from './components/Container';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { css as css2 } from 'glamor';
-import { LayoutContext } from './components/LayoutContext';
+import { useLayout } from './components/LayoutContext';
+import { UnicornProvider, useController } from './components/UnicornController';
+import { XButton } from 'openland-x/XButton';
+import uuid from 'uuid';
 
 const containerClass = css`
     width: 100px;
@@ -40,7 +43,7 @@ css2.global('html, body', {
 // };
 
 const Navigation = () => {
-    let layout = React.useContext(LayoutContext);
+    let layout = useLayout();
     if (layout === 'desktop') {
         return (
             <XView width="50px" position="absolute" top={0} left={0} bottom={0} backgroundColor="red">
@@ -56,16 +59,30 @@ const Navigation = () => {
     }
 };
 
+const Page = (props: { text: string }) => {
+    return (<XView>{props.text}</XView>)
+}
+
+const Root = () => {
+    let controller = useController();
+
+    return (
+        <XView alignSelf="stretch" height="1500px" backgroundColor="yellow">
+            <div className={containerClass} />
+            <div className={blurClass} />
+
+            <XButton onClick={() => controller.push(<Page text={uuid()} />)} />
+        </XView>
+    );
+}
+
 export default () => {
     return (
         <Container>
             <InnerContainer>
-                <XView alignSelf="stretch" height="1500px">
-                    <div className={containerClass} />
-                    <div className={blurClass} />
-                </XView>
+                <UnicornProvider root={<Root />} />
             </InnerContainer>
-            <Navigation/>
+            <Navigation />
         </Container>
     );
 };

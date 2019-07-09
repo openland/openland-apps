@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const LayoutContext = React.createContext<'mobile' | 'desktop'>('desktop');
+const LayoutContext = React.createContext<'mobile' | 'desktop'>('desktop');
 
 export const LayoutProvider = (props: { children?: any }) => {
     const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 750);
@@ -26,3 +26,5 @@ export const LayoutProvider = (props: { children?: any }) => {
         return (<LayoutContext.Provider value="desktop">{props.children}</LayoutContext.Provider>);
     }
 }
+
+export const useLayout = () => React.useContext(LayoutContext);
