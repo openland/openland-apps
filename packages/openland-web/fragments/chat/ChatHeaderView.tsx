@@ -69,7 +69,7 @@ const ChatHeaderViewAbstract = XMemo(
             <XView
                 flexDirection="row"
                 alignItems="center"
-                maxWidth={950}
+                maxWidth={810}
                 width="100%"
                 justifyContent="space-between"
                 minWidth={0}
@@ -333,6 +333,7 @@ export const ChatHeaderViewLoader = (props: {
     const client = useClient();
     let room = client.useRoomHeader({ id: props.variables.id });
     let ctx = React.useContext(UserInfoContext);
+    const isMobile = React.useContext(IsMobileContext);
     const user = ctx!!.user!!;
 
     if (!room || !room.room) {
@@ -346,8 +347,7 @@ export const ChatHeaderViewLoader = (props: {
                 alignItems="center"
                 justifyContent="center"
                 height={55}
-                paddingLeft={20}
-                paddingRight={20}
+                paddingHorizontal={isMobile ? 20 : 75}
             >
                 <ChatHeaderView room={room.room} me={user} />
             </XView>
