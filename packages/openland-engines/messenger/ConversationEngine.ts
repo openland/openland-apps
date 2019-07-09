@@ -14,6 +14,7 @@ import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 const log = createLogger('Engine-Messages');
 
@@ -24,7 +25,7 @@ export interface ConversationStateHandler {
 }
 
 const timeGroup = 1000 * 60 * 60;
-const loadToUnread = false;
+let loadToUnread = false;
 
 export interface DataSourceMessageItem {
     chatId: string;
@@ -196,6 +197,7 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
+        loadToUnread = NON_PRODUCTION
         this.engine = engine;
         this.conversationId = conversationId;
 
@@ -231,20 +233,23 @@ export class ConversationEngine implements MessageSendHandler {
         messages.reverse();
 
         this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
-        let overLoad = 1;
-        let pagesToload = 10;
+        let maxPagesToload = 10;
+        let loadToUnreadBatchSize = 40;
 
         if (loadToUnread) {
-            while (messages.length > 0 && this.lastReadedDividerMessageId && ((!messages.find(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId)) || overLoad--) && pagesToload--) {
+            let unreadIndex = messages.findIndex(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId);
+            while (messages.length > 0 && this.lastReadedDividerMessageId && unreadIndex === -1 && maxPagesToload--) {
                 let serverMessages = messages.filter(m => isServerMessage(m));
                 let first = serverMessages[0];
                 if (!first) {
                     break;
                 }
-                let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: 20 }));
+                let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: loadToUnreadBatchSize }));
+                loadToUnreadBatchSize = loadToUnreadBatchSize * 2;
                 let batch = [...loaded.messages];
                 batch.reverse();
                 messages.unshift(...batch);
+                unreadIndex = messages.findIndex(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId);
             }
         }
 
