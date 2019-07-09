@@ -24,7 +24,7 @@ export const InnerContainer = (props: { children?: any }) => {
     );
 }
 
-export const Container = (props: { children?: any }) => {
+export const Container = React.memo((props: { children?: any }) => {
     // React.useLayoutEffect(() => {
     //     let callback = (e: any) => {
     //         console.log(e.target);
@@ -56,4 +56,4 @@ export const Container = (props: { children?: any }) => {
             </div>
         </LayoutProvider>
     );
-}
+});

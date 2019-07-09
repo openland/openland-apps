@@ -42,13 +42,15 @@ css2.global('html, body', {
 //     )
 // };
 
-const Navigation = () => {
+const Navigation = React.memo(() => {
     let layout = useLayout();
     if (layout === 'desktop') {
         return (
-            <XView width="50px" position="absolute" top={0} left={0} bottom={0} backgroundColor="red">
-                {}
-            </XView>
+            <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, transform: 'translate3d(0,0,1px)' }} >
+                <XView width="50px" height="100%" backgroundColor="red">
+                    {}
+                </XView>
+            </div>
         );
     } else {
         return (
@@ -57,7 +59,7 @@ const Navigation = () => {
             </XView>
         );
     }
-};
+});
 
 const Page = (props: { text: string }) => {
     let controller = useController();
