@@ -358,6 +358,7 @@ fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
         props.nullableString("textAlign")?.let { res.textAlign = it }
         props.nullableString("fontStyle")?.let { res.fontStyle = it }
         props.nullableString("fontType")?.let { res.fontType = it }
+        props.nullableInt("numberOfLines")?.let { res.numberOfLines = it }
 
         props.nullableFloat("lineHeight")?.let { res.lineHeight = it }
         props.nullableString("touchableKey")?.let { res.touchableKey = it }
