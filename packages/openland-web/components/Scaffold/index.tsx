@@ -43,7 +43,7 @@ const CounterWrapper = (props: { count: number }) => (
 //
 
 const MenuView = Glamorous(XScrollView)({
-    width: 344,
+    width: 360,
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#ffffff',

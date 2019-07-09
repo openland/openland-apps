@@ -76,7 +76,7 @@ const containerStyle = css`
     position: relative;
     flex-direction: column;
     height: 100%;
-    width: 344px;
+    width: 360px;
     flex-shrink: 0;
     border-right-width: 1px;
     border-right-style: solid;
@@ -95,7 +95,7 @@ const contentStyle = css`
     flex-direction: column;
     height: 100%;
     flex-grow: 1;
-    width: calc(100% - 344px);
+    width: calc(100% - 360px);
     flex-shrink: 0;
     @media (max-width: 1100px) {
         width: calc(100% - 300px);
