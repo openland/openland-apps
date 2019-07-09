@@ -60,7 +60,15 @@ const Navigation = () => {
 };
 
 const Page = (props: { text: string }) => {
-    return (<XView>{props.text}</XView>)
+    let controller = useController();
+    return (
+        <XView>
+            <XView>
+                {props.text}
+            </XView>
+            <XButton onClick={() => controller.pop()} />
+        </XView>
+    );
 }
 
 const Root = () => {

@@ -10,19 +10,28 @@ export interface UnicornPage {
 
 export class UnicornController {
     pages: UnicornPage[] = [];
-    listeners: ((pages: UnicornPage[]) => void)[] = [];
+    private _listeners: ((pages: UnicornPage[]) => void)[] = [];
 
     push = (component: any) => {
         this.pages.push({ component, key: uuid() });
-        for (let l of this.listeners) {
+        for (let l of this._listeners) {
+            l(this.pages);
+        }
+    }
+
+    pop = () => {
+        if (this.pages.length > 0) {
+            this.pages.splice(this.pages.length - 1, 1);
+        }
+        for (let l of this._listeners) {
             l(this.pages);
         }
     }
 
     addListener = (handler: (pages: UnicornPage[]) => void) => {
-        this.listeners.push(handler);
+        this._listeners.push(handler);
         return () => {
-            this.listeners.splice(this.listeners.indexOf(handler), 1);
+            this._listeners.splice(this._listeners.indexOf(handler), 1);
         }
     }
 }
@@ -45,7 +54,7 @@ const UnicornContainer = (props: { root: any, controller: UnicornController }) =
                 </XView>
                 {pages.map((v) => (
                     <XView left={0} top={0} right={0} bottom={0} position="absolute" key={v.key}>
-                        <XView width="100%" height="100%" position="relative" alignItems="flex-start">
+                        <XView width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="white">
                             {v.component}
                         </XView>
                     </XView>
@@ -55,12 +64,12 @@ const UnicornContainer = (props: { root: any, controller: UnicornController }) =
     } else {
         return (
             <XView width="100%" height="100%" flexDirection="row" paddingLeft={50}>
-                <XView width={370} height="100%" flexDirection="column">
+                <XView maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                     {props.root}
                 </XView>
-                <XView width={0} flexGrow={1} minWidth={0} height="100%" flexDirection="column" backgroundColor="purple" position="relative">
+                <XView width={0} flexGrow={1} minWidth={500} height="100%" flexDirection="column" backgroundColor="purple" position="relative">
                     {pages.map((v) => (
-                        <XView left={0} top={0} right={0} bottom={0} position="absolute" key={v.key}>
+                        <XView left={0} top={0} right={0} bottom={0} position="absolute" key={v.key} backgroundColor="white">
                             <XView width="100%" height="100%" position="relative" alignItems="flex-start">
                                 {v.component}
                             </XView>
