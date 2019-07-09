@@ -106,11 +106,11 @@ const NotCompactPreambulaContainer = ({ children }: PreambulaContainerProps) => 
         <XView
             alignSelf="flex-start"
             minHeight={23}
-            width={55}
+            flexShrink={0}
+            marginRight={16}
             fontSize={12}
             whiteSpace={'nowrap'}
             paddingTop={3}
-            paddingLeft={3}
         >
             {children}
         </XView>
