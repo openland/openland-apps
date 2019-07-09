@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Types from 'openland-api/Types';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { trackProfile } from 'openland-x-analytics';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export interface UserInfo {
     user: Types.UserShort | null;
@@ -71,7 +72,7 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
             isCompleted: this.props.sessionState.isCompleted && hasUser,
             isBlocked: this.props.sessionState.isBlocked,
         };
-
+        AppConfig.setNonProduction(this.props.roles.indexOf('feature-non-production') >= 0);
         this.rolesCtx = {
             roles: this.props.roles,
             currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined,

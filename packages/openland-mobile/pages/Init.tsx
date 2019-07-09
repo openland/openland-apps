@@ -25,6 +25,7 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { Track } from 'openland-engines/Tracking';
 import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -171,7 +172,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     if (res && res.me) {
                         NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                         SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
-
+                        AppConfig.setNonProduction(NON_PRODUCTION);
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });
@@ -192,6 +193,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         if (res.me) {
                             NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                             SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
+                            AppConfig.setNonProduction(NON_PRODUCTION);
 
                             let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
                             setMessenger(new MobileMessenger(messenger, this.history));
