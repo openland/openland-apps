@@ -7,6 +7,7 @@ import { useLayout } from './components/LayoutContext';
 import { UnicornProvider, useController } from './components/UnicornController';
 import { XButton } from 'openland-x/XButton';
 import uuid from 'uuid';
+import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 
 const containerClass = css`
     width: 100px;
@@ -64,11 +65,11 @@ const Navigation = React.memo(() => {
 const Page = (props: { text: string }) => {
     let controller = useController();
     return (
-        <XView>
-            <XView>
+        <XView width="100%" height="100%">
+            <DialogListFragment onSearchItemSelected={() => {/* Nothing to do */ }} />
+            {/* {/* <XView>
                 {props.text}
-            </XView>
-            <XButton onClick={() => controller.pop()} />
+            </XView> */}
         </XView>
     );
 }

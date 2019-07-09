@@ -50,10 +50,26 @@ const baseClassName = css`
     will-change: transform;
 `;
 
+const baseClassNameContainer = css`
+    position: absolute;
+    background-color: black;
+    opacity: 0.3;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 0px;
+    will-change: opacity;
+`;
+
 const initialClassName = css`
     transform: translateX(100%);
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
+`;
+
+const initialClassNameContainer = css`
+    opacity: 0;
+    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const mountedClassName = css`
@@ -61,10 +77,20 @@ const mountedClassName = css`
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
+const mountedClassNameContainer = css`
+    opacity: 0.3;
+    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+`;
+
 const exitingClassName = css`
     transform: translateX(100%);
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
+`;
+
+const exitingClassNameContainer = css`
+    opacity: 0.0;
+    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const PageAnimator = React.memo((props: {
@@ -75,12 +101,16 @@ const PageAnimator = React.memo((props: {
 }) => {
 
     let className;
+    let className2;
     if (props.state === 'mounting') {
         className = initialClassName;
+        className2 = initialClassNameContainer;
     } else if (props.state === 'entering' || props.state === 'visible') {
         className = mountedClassName;
+        className2 = mountedClassNameContainer;
     } else if (props.state === 'exiting') {
         className = exitingClassName;
+        className2 = exitingClassNameContainer;
     } else {
         className = '';
     }
@@ -109,9 +139,12 @@ const PageAnimator = React.memo((props: {
     }, [props.state]);
 
     return (
-        <div className={baseClassName + ' ' + className}>
-            {props.children}
-        </div>
+        <>
+            <div className={baseClassNameContainer + ' ' + className2} />
+            <div className={baseClassName + ' ' + className}>
+                {props.children}
+            </div>
+        </>
     );
 });
 

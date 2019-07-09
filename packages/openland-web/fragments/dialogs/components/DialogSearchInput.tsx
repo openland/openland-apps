@@ -13,7 +13,7 @@ let searchStyle = css`
     & svg > path,
     &:focus-within svg > path,
     &:focus svg > path {
-        fill: #b0b2b3 !important;
+        fill: #78808F !important;
     }
     & a {
         top: calc(50% - 10px) !important;
@@ -30,17 +30,17 @@ let searchStyle = css`
     }
     &:focus-within input,
     &:focus input {
-        background-color: #f1f1f1;
-    }
-    &:focus-within svg > path {
-        fill: rgba(23, 144, 255, 0.5);
+        background-color: #F0F2F5;
     }
     & .input-placeholder,
     & input {
+        font-size: 15px;
+        font-weight: 500;
+        color: #78808F;
         padding-left: 33px;
     }
     & input {
-        background-color: #f6f6f6;
+        background-color: #F0F2F5;
         border-radius: 10px;
         padding-bottom: 3px;
     }
@@ -48,7 +48,7 @@ let searchStyle = css`
         left: 12px !important;
     }
     & .icon svg path:last-child {
-        fill: #b0b2b3 !important;
+        fill: #78808F !important;
     }
 `;
 
