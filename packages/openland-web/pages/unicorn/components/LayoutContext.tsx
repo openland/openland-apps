@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const LayoutContext = React.createContext<'mobile' | 'desktop'>('desktop');
 
-export const LayoutProvider = (props: { children?: any }) => {
+export const LayoutProvider = React.memo((props: { children?: any }) => {
     const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 750);
     React.useEffect(() => {
         let prev = window.innerWidth <= 750;
@@ -25,6 +25,6 @@ export const LayoutProvider = (props: { children?: any }) => {
     } else {
         return (<LayoutContext.Provider value="desktop">{props.children}</LayoutContext.Provider>);
     }
-}
+});
 
 export const useLayout = () => React.useContext(LayoutContext);
