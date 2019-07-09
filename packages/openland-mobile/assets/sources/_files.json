@@ -584,14 +584,6 @@
             ]
         },
         {
-            "name": "ic-loader",
-            "src": "ic-loader.svg",
-            "sizes": [
-                22,
-                32
-            ]
-        },
-        {
             "name": "ic-discover",
             "src": "ic-discover.svg",
             "sizes": [
@@ -631,6 +623,20 @@
             "src": "ic-profile-active.svg",
             "sizes": [
                 24
+            ]
+        },
+        {
+            "name": "ic-toast-attention",
+            "src": "ic-toast-attention.svg",
+            "sizes": [
+                32
+            ]
+        },
+        {
+            "name": "ic-toast-checkmark",
+            "src": "ic-toast-checkmark.svg",
+            "sizes": [
+                32
             ]
         }
     ]
