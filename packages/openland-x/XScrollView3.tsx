@@ -69,6 +69,7 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
+    will-change: transform;
 `;
 
 const ScrollContent = css`
@@ -77,7 +78,6 @@ const ScrollContent = css`
     align-items: stretch;
     flex-grow: 1;
     flex-shrink: 0;
-    will-change: transform;
 `;
 
 const NativeBackend = React.memo<{
