@@ -2,13 +2,13 @@ import * as React from 'react'
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/types';
-import { ThemeLightBlue, ThemeDarkBlue } from 'openland-y-utils/themes';
+import { ThemeLightBlue, ThemeDark } from 'openland-y-utils/themes';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLightBlue);
 
 function resolveTheme(theme: ThemeGlobalKind) {
-    if (theme === 'DarkBlue') {
-        return ThemeDarkBlue;
+    if (theme === 'Dark') {
+        return ThemeDark;
     } else {
         return ThemeLightBlue;
     }

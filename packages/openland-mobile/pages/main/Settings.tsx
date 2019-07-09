@@ -85,13 +85,13 @@ let SettingsContent = ((props: PageProps) => {
             />
             <ZListItemGroup header="Settings" divider={false}>
                 <ZListItem
-                    leftIconColor={theme.settingsAppearanceIcon}
+                    leftIconColor={theme.tint1}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
                 />
                 <ZListItem
-                    leftIconColor={theme.settingsNotificationIcon}
+                    leftIconColor={theme.tint5}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
@@ -99,21 +99,21 @@ let SettingsContent = ((props: PageProps) => {
             </ZListItemGroup>
             <ZListItemGroup header="Support" divider={false}>
                 <ZListItem
-                    leftIconColor={theme.settingsInviteIcon}
+                    leftIconColor={theme.tint2}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-invite-fill-24.png')}
                     appearance="default"
                     text="Invite friends"
                     onPress={handleGlobalInvitePress}
                 />
                 {/* <ZListItem
-                    leftIconColor={theme.settingsHelpIcon}
+                    leftIconColor={theme.tint4}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
                     appearance="default"
                     text="Ask for help"
                     onPress={() => props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
                 /> */}
                 <ZListItem
-                    leftIconColor={theme.settingsRateIcon}
+                    leftIconColor={theme.tint6}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-rate-24.png') : require('assets/ic-rate-fill-24.png')}
                     appearance="default"
                     text="Rate the App"

@@ -1,7 +1,8 @@
 import { ThemeGlobal } from './types';
 
 export const ThemeLightBlue: ThemeGlobal = {
-    type: 'light',
+    type: 'Light',
+    kind: 'LightBlue',
 
     transparent: 'rgba(255, 255, 255, 0)',
 
@@ -11,18 +12,25 @@ export const ThemeLightBlue: ThemeGlobal = {
     foregroundQuaternary: '#D7DAE0',
 
     backgroundPrimary: '#FFFFFF',
-    backgroundPrimaryHover: '#FFFFFF',
-    backgroundPrimaryActive: '#FFFFFF',
+    backgroundPrimaryHover: '#F0F2F5',
+    backgroundPrimaryActive: '#F0F2F5',
 
     backgroundSecondary: '#FFFFFF',
-    backgroundSecondaryHover: '#FFFFFF',
-    backgroundSecondaryActive: '#FFFFFF',
+    backgroundSecondaryHover: '#F0F2F5',
+    backgroundSecondaryActive: '#F0F2F5',
 
     backgroundTertiary: '#F0F2F5',
     backgroundTertiaryHover: '#F0F2F5',
     backgroundTertiaryActive: '#F0F2F5',
 
+    backgroundHighlight: '#FFFEE8',
+
     contrastPrimary: '#FFFFFF',
+    contrastSpecial: '#FFFFFF',
+
+    overlayHeavy: '#000000',
+    overlayMedium: 'rgba(0, 0, 0, 0.48)',
+    overlayLight: 'rgba(0, 0, 0, 0.32)',
 
     accentPrimary: '#0C7FF2',
     accentPrimaryHover: '#0D86FF',
@@ -36,12 +44,19 @@ export const ThemeLightBlue: ThemeGlobal = {
     accentNegativeHover: '#FF0D35',
     accentNegativeActive: '#E60C30',
 
+    tint1: '#FF5148',
+    tint2: '#FFA201',
+    tint3: '#3DBF1E',
+    tint4: '#01C1CE',
+    tint5: '#0C7FF2',
+    tint6: '#9C10F2',
+
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
 
     bubbleIn: '#f3f5f7',
-    bubbleOut: ['#1970ff', '#11b2ff'],
+    bubbleOut: '#1970ff',
 
     ironySpan: {
         backgroundOut: 'rgba(255, 56, 46, 0.9)',
@@ -57,46 +72,49 @@ export const ThemeLightBlue: ThemeGlobal = {
         paddedText: '\u202F',
     },
 
+    // legacy
+
     separatorColor: '#eaeaea',
-    modalOverlay: 'rgba(0, 0, 0, 0.4)',
     hairlineColor: '#e0e3e7',
-    settingsNotificationIcon: '#0084fe',
-    settingsAppearanceIcon: '#eb7272',
-    settingsInviteIcon: '#fe9400',
-    settingsHelpIcon: '#00bfff',
-    settingsRateIcon: '#8a54ff',
     accentBackgroundColor: '#e5f2fe',
-    highlightedComment: '#fffee8',
     chatImageBackground: '#dbdce1',
 }
 
-export const ThemeDarkBlue: ThemeGlobal = {
-    type: 'dark',
+export const ThemeDark: ThemeGlobal = {
+    type: 'Dark',
+    kind: 'Dark',
 
     transparent: 'rgba(0, 0, 0, 0)',
 
-    foregroundPrimary: '#1C2229',
-    foregroundSecondary: '#78808F',
-    foregroundTertiary: '#A9AEB8',
-    foregroundQuaternary: '#D7DAE0',
+    foregroundPrimary: '#FFFFFF',
+    foregroundSecondary: '#8F8F8F',
+    foregroundTertiary: '#5C5C5C',
+    foregroundQuaternary: '#292929',
 
-    backgroundPrimary: '#FFFFFF',
-    backgroundPrimaryHover: '#FFFFFF',
-    backgroundPrimaryActive: '#FFFFFF',
+    backgroundPrimary: '#000000',
+    backgroundPrimaryHover: '#1F1F1F',
+    backgroundPrimaryActive: '#1F1F1F',
 
-    backgroundSecondary: '#FFFFFF',
-    backgroundSecondaryHover: '#FFFFFF',
-    backgroundSecondaryActive: '#FFFFFF',
+    backgroundSecondary: '#1F1F1F',
+    backgroundSecondaryHover: '#1F1F1F',
+    backgroundSecondaryActive: '#1F1F1F',
 
-    backgroundTertiary: '#F0F2F5',
-    backgroundTertiaryHover: '#F0F2F5',
-    backgroundTertiaryActive: '#F0F2F5',
+    backgroundTertiary: '#1F1F1F',
+    backgroundTertiaryHover: '#1F1F1F',
+    backgroundTertiaryActive: '#1F1F1F',
+
+    backgroundHighlight: '#002140',
 
     contrastPrimary: '#FFFFFF',
+    contrastSpecial: '#000000',
 
-    accentPrimary: '#0C7FF2',
-    accentPrimaryHover: '#0D86FF',
-    accentPrimaryActive: '#0B78E6',
+    overlayHeavy: '#000000',
+    overlayMedium: 'rgba(0, 0, 0, 0.48)',
+    overlayLight: 'rgba(0, 0, 0, 0.32)',
+
+    accentPrimary: '#FFFFFF',
+    accentPrimaryHover: '#FFFFFF',
+    accentPrimaryActive: '#FFFFFF',
 
     accentPositive: '#26BF66',
     accentPositiveHover: '#2BD974',
@@ -106,12 +124,19 @@ export const ThemeDarkBlue: ThemeGlobal = {
     accentNegativeHover: '#FF0D35',
     accentNegativeActive: '#E60C30',
 
+    tint1: '#262626',
+    tint2: '#262626',
+    tint3: '#262626',
+    tint4: '#262626',
+    tint5: '#262626',
+    tint6: '#262626',
+
     blurType: 'dark',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
 
-    bubbleIn: '#f3f5f7',
-    bubbleOut: ['#1970ff', '#11b2ff'],
+    bubbleIn: '#333333',
+    bubbleOut: '#4d4d4d',
 
     ironySpan: {
         backgroundOut: 'transparent',
@@ -127,15 +152,10 @@ export const ThemeDarkBlue: ThemeGlobal = {
         paddedText: '\u202F',
     },
 
-    separatorColor: '#eaeaea',
-    modalOverlay: 'rgba(0, 0, 0, 0.4)',
-    hairlineColor: '#e0e3e7',
-    settingsNotificationIcon: '#262626',
-    settingsAppearanceIcon: '#262626',
-    settingsInviteIcon: '#262626',
-    settingsHelpIcon: '#262626',
-    settingsRateIcon: '#262626',
-    accentBackgroundColor: '#e5f2fe',
-    highlightedComment: '#fffee8',
-    chatImageBackground: '#dbdce1',
+    // legacy
+
+    separatorColor: '#262629',
+    hairlineColor: '#1C1C1E',
+    accentBackgroundColor: '#808080',
+    chatImageBackground: '#555555',
 }

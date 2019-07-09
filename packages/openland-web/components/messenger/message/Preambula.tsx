@@ -167,23 +167,28 @@ export const Preambula = ({
         }
     }
 
-    let customButton = useHasRole('super-admin') && !isCommentNotification && !sender.isBot && (room && room.__typename !== 'PrivateRoom') ? ((hidePopper: Function) => (
-        <XButton
-            style="electric"
-            text={senderBadge ? 'Edit featured' : 'Make featured'}
-            size="small"
-            onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+    let customButton =
+        useHasRole('super-admin') &&
+        !isCommentNotification &&
+        !sender.isBot &&
+        (room && room.__typename !== 'PrivateRoom')
+            ? (hidePopper: Function) => (
+                  <XButton
+                      style="electric"
+                      text={senderBadge ? 'Edit featured' : 'Make featured'}
+                      size="small"
+                      onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
 
-                hidePopper();
-                showModalBox(
-                    { title: 'Member featuring' },
-                    ctx => <MakeFeaturedModal ctx={ctx} userId={sender.id} roomId={chatId} />
-                );
-            }}
-        />
-    )) : undefined;
+                          hidePopper();
+                          showModalBox({ title: 'Member featuring' }, ctx => (
+                              <MakeFeaturedModal ctx={ctx} userId={sender.id} roomId={chatId} />
+                          ));
+                      }}
+                  />
+              )
+            : undefined;
 
     return (
         <PreambulaContainer>
@@ -202,7 +207,7 @@ export const Preambula = ({
                             id={sender.id}
                             title={sender.name}
                             src={sender.photo}
-                            size={commentDepth && commentDepth > 0 ? 26 : 36}
+                            size={commentDepth && commentDepth > 0 ? 26 : 40}
                         />
                     </UserPopper>
                 )

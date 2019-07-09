@@ -6,8 +6,8 @@ class ThemePersisterImpl {
     prepare = async () => {
         let res = await AsyncStorage.getItem('app.theme') as ThemeGlobalKind;
 
-        if (res === 'DarkBlue') {
-            ThemeController.theme = 'DarkBlue';
+        if (res === 'Dark') {
+            ThemeController.theme = 'Dark';
         } else {
             ThemeController.theme = 'LightBlue';
         }

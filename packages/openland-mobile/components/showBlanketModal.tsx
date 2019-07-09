@@ -165,7 +165,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                backgroundColor: theme.modalOverlay,
+                                backgroundColor: theme.overlayMedium,
                                 opacity: 0
                             }}
                         />

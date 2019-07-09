@@ -33,7 +33,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
         <ASFlex
             height={height}
             flexDirection="row"
-            highlightColor={theme.backgroundPrimaryHover}
+            highlightColor={theme.backgroundPrimaryActive}
             onPress={() => {
                 props.onPress(props.item.key, item);
             }}

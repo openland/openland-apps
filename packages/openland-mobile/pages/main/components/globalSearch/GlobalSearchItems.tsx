@@ -23,7 +23,7 @@ const ItemBase = XMemo<ItemBaseProps>((props) => {
     const height = 48;
 
     return (
-        <ASFlex height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryHover} onPress={onPress} alignItems={'center'}>
+        <ASFlex height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems={'center'}>
             <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                 {avatar}
             </ASFlex>

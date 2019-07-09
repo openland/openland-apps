@@ -129,7 +129,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                         style={[
                             styles.title,
                             {
-                                color: (style === 'primary' || style === 'danger') ? theme.contrastPrimary : theme.foregroundSecondary
+                                color: (style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary
                             },
                             {
                                 ...actionInProgress ? { color: 'transparent' } : {}
@@ -145,7 +145,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
                     {actionInProgress && (
                         <View width="100%" height="100%" justifyContent="center" position="absolute" >
-                            <ActivityIndicator height="100%" color={(style === 'primary' || style === 'danger') ? theme.contrastPrimary : theme.foregroundSecondary} />
+                            <ActivityIndicator height="100%" color={(style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary} />
                         </View>
                     )}
                 </View>

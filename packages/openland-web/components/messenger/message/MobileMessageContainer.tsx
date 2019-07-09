@@ -57,7 +57,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
 
     const preambula = (
         <NotCompactPreambulaContainer>
-            <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+            <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={40} />
         </NotCompactPreambulaContainer>
     );
 

@@ -62,13 +62,13 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         if ((!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) && (this.props.enabled !== false)) {
             if (Platform.OS === 'android') {
                 return (
-                    <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple(this.props.theme.backgroundPrimaryHover, false)} delayPressIn={20}>
+                    <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple(this.props.theme.backgroundPrimaryActive, false)} delayPressIn={20}>
                         {content}
                     </TouchableNativeFeedback>
                 );
             } else {
                 return (
-                    <TouchableHighlight underlayColor={this.props.underlayColor || this.props.theme.backgroundPrimaryHover} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                    <TouchableHighlight underlayColor={this.props.underlayColor || this.props.theme.backgroundPrimaryActive} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                         {content}
                     </TouchableHighlight>
                 )
