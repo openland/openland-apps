@@ -16,8 +16,8 @@ export function UserAvatar(props: AsyncAvatarProps & { online?: boolean, theme: 
 
             <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
                 {props.online && (props.size > 30) && (
-                    <ASFlex width={11} height={11} borderRadius={5} backgroundColor={props.theme.backgroundPrimary} justifyContent="center" marginRight={3} marginBottom={3}>
-                        <ASFlex width={7} height={7} borderRadius={3} backgroundColor={props.theme.accentPrimary} marginLeft={2} marginTop={2} marginRight={2} />
+                    <ASFlex width={12} height={12} borderRadius={6} backgroundColor={props.theme.backgroundPrimary} justifyContent="center" marginRight={2} marginBottom={2}>
+                        <ASFlex width={8} height={8} borderRadius={4} backgroundColor={props.theme.accentPrimary} marginLeft={2} marginTop={2} marginRight={2} />
                     </ASFlex>
                 )}
                 {props.online && (props.size <= 30) && (
