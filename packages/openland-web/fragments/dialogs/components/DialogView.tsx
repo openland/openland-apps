@@ -198,7 +198,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             paddingBottom={8}
             minWidth={0}
             alignItems="center"
-            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+            hoverBackgroundColor="#F0F2F5"
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#509BE6"
             linkSelectable={true}
