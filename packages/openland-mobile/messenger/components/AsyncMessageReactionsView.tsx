@@ -95,7 +95,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                         <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">
                             {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
                             {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
-                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary} opacity={0.8}>{commentsCount}</ASText>}
+                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
