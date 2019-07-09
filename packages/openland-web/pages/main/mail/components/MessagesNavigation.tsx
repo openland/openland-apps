@@ -146,7 +146,6 @@ export const MessagesNavigation = XMemo(
                                         }}
                                     />
                                 )}
-                                <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                             </React.Suspense>
                         }
                         firstFragment={

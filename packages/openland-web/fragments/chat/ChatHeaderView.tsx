@@ -69,7 +69,7 @@ const ChatHeaderViewAbstract = XMemo(
             <XView
                 flexDirection="row"
                 alignItems="center"
-                maxWidth={810}
+                maxWidth={820}
                 width="100%"
                 justifyContent="space-between"
                 minWidth={0}
@@ -262,7 +262,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
     const id = sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : '';
 
-    const avatar = <XAvatar2 size={36} src={photo} title={avatarTitle} id={id} />;
+    const avatar = <XAvatar2 size={40} src={photo} title={avatarTitle} id={id} />;
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
@@ -346,8 +346,8 @@ export const ChatHeaderViewLoader = (props: {
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="center"
-                height={55}
-                paddingHorizontal={isMobile ? 20 : 75}
+                height={56}
+                paddingHorizontal={isMobile ? 20 : 105}
             >
                 <ChatHeaderView room={room.room} me={user} />
             </XView>
