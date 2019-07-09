@@ -47,7 +47,6 @@ const baseClassName = css`
     right: 0px;
     bottom: 0px;
     top: 0px;
-    will-change: transform;
 `;
 
 const baseClassNameContainer = css`
@@ -77,6 +76,10 @@ const mountedClassName = css`
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
+// const visibleClassName = css`
+//     transform: translateX(0%);
+// `;
+
 const mountedClassNameContainer = css`
     opacity: 0.3;
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -93,13 +96,16 @@ const exitingClassNameContainer = css`
     transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
+const displayNone = css`
+    display: none;
+`;
+
 const PageAnimator = React.memo((props: {
     children?: any,
     k: string,
-    state: 'mounting' | 'entering' | 'visible' | 'exiting',
+    state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting',
     dispatch: React.Dispatch<AnimationAction>
 }) => {
-
     let className;
     let className2;
     if (props.state === 'mounting') {
@@ -111,6 +117,9 @@ const PageAnimator = React.memo((props: {
     } else if (props.state === 'exiting') {
         className = exitingClassName;
         className2 = exitingClassNameContainer;
+    } else if (props.state === 'hidden') {
+        className = displayNone;
+        className2 = displayNone;
     } else {
         className = '';
     }
@@ -142,7 +151,7 @@ const PageAnimator = React.memo((props: {
         <>
             <div className={baseClassNameContainer + ' ' + className2} />
             <div className={baseClassName + ' ' + className}>
-                {props.children}
+                {props.state !== 'hidden' && props.children}
             </div>
         </>
     );
@@ -169,7 +178,7 @@ type AnimationState = {
     pages: {
         key: string;
         component: any;
-        state: 'mounting' | 'entering' | 'visible' | 'exiting'
+        state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
 }
 
@@ -191,7 +200,7 @@ function animationReducer(
         }
     } else if (action.type === 'entered') {
         return {
-            pages: state.pages.map((v) => {
+            pages: state.pages.map((v, i) => {
                 if (v.key === action.key) {
                     if (v.state === 'entering') {
                         return { ...v, state: 'visible' as any }
@@ -199,6 +208,11 @@ function animationReducer(
                         return v;
                     }
                 } else {
+                    if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
+                        if (v.state === 'visible') {
+                            return { ...v, state: 'hidden' as any };
+                        }
+                    }
                     return v;
                 }
             })
@@ -233,7 +247,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     React.useLayoutEffect(() => { setTimeout(() => dispatch({ type: 'mounted' }), 10); });
     if (layout === 'mobile') {
         return (
-            <XView width="100%" height="100%" position="relative">
+            <XView width="100%" height="100%" position="relative" overflow="hidden">
                 <XView left={0} top={0} right={0} bottom={50} position="absolute">
                     <XView width="100%" height="100%" position="relative" alignItems="flex-start">
                         {props.root}
@@ -248,7 +262,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
         )
     } else {
         return (
-            <XView width="100%" height="100%" flexDirection="row" paddingLeft={50}>
+            <XView width="100%" height="100%" flexDirection="row" paddingLeft={50} overflow="hidden">
                 <XView maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                     {props.root}
                 </XView>

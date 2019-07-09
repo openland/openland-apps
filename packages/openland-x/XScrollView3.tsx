@@ -71,6 +71,15 @@ const NativeScrollStyle = css`
     flex-direction: column;
 `;
 
+const ScrollContent = css`
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+    will-change: transform;
+`;
+
 const NativeBackend = React.memo<{
     onScroll: (values: XScrollValues) => void;
     innerRef: any;
@@ -82,10 +91,12 @@ const NativeBackend = React.memo<{
             src.addEventListener(
                 'scroll',
                 () => {
-                    let scrollHeight = (src as HTMLDivElement).scrollHeight;
-                    let scrollTop = (src as HTMLDivElement).scrollTop;
-                    let clientHeight = (src as HTMLDivElement).clientHeight;
-                    props.onScroll({ scrollHeight, scrollTop, clientHeight });
+                    requestAnimationFrame(() => {
+                        let scrollHeight = (src as HTMLDivElement).scrollHeight;
+                        let scrollTop = (src as HTMLDivElement).scrollTop;
+                        let clientHeight = (src as HTMLDivElement).clientHeight;
+                        props.onScroll({ scrollHeight, scrollTop, clientHeight });
+                    });
                 },
                 { passive: true },
             );
@@ -207,14 +218,9 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             return (
                 <XView overflow="hidden" {...other}>
                     <NativeBackend onScroll={this.onScroll} innerRef={this.nativeBackendElemRef}>
-                        <XView
-                            flexDirection="column"
-                            alignItems="stretch"
-                            flexGrow={1}
-                            flexShrink={0}
-                        >
+                        <div className={ScrollContent}>
                             {children}
-                        </XView>
+                        </div>
                     </NativeBackend>
                 </XView>
             );
@@ -224,9 +230,9 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         return (
             <XView overflow="hidden" {...other}>
                 <CustomBackend onScroll={this.onScroll}>
-                    <XView flexDirection="column" alignItems="stretch" flexGrow={1} flexShrink={0}>
+                    <div className={ScrollContent}>
                         {children}
-                    </XView>
+                    </div>
                 </CustomBackend>
             </XView>
         );

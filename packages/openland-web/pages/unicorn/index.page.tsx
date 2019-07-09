@@ -8,6 +8,7 @@ import { UnicornProvider, useController } from './components/UnicornController';
 import { XButton } from 'openland-x/XButton';
 import uuid from 'uuid';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
+import { XLoader } from 'openland-x/XLoader';
 
 const containerClass = css`
     width: 100px;
@@ -62,6 +63,29 @@ const Navigation = React.memo(() => {
     }
 });
 
+class SDeferred extends React.PureComponent<{}, { inited: boolean }> {
+    state = {
+        inited: false
+    };
+
+    componentWillMount() {
+        // console.log('SDeferred: Waiting');
+        setTimeout(() => { /*console.log('SDeferred: Mounting');*/ this.setState({ inited: true }); }, 10);
+    }
+
+    render() {
+        if (!this.state.inited) {
+            return null;
+        } else {
+            return (
+                <>
+                    {this.props.children}
+                </>
+            );
+        }
+    }
+}
+
 const Page = (props: { text: string }) => {
     let controller = useController();
     return (
@@ -81,6 +105,10 @@ const Root = () => {
         <XView alignSelf="stretch" height="1500px" backgroundColor="yellow">
             <div className={containerClass} />
             <div className={blurClass} />
+
+            <XView width="100px" height="100px">
+                <XLoader loading={true} />
+            </XView>
 
             <XButton onClick={() => controller.push(<Page text={uuid()} />)} />
         </XView>
