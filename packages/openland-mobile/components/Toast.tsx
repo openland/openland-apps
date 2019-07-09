@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Image } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
-import { ImageStyle } from 'react-native-fast-image';
 
 const styles = StyleSheet.create({
     modalWrapper: { 
