@@ -137,7 +137,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         fontWeight={TextStyles.weight.medium}
                         fontSize={13}
                         lineHeight={20}
-                        color={theme.foregroundPrimary}
+                        color={theme.foregroundSecondary}
                         date={item.date}
                     />
 

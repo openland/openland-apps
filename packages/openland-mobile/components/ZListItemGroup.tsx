@@ -75,7 +75,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         numberOfLines={1}
                         ellipsizeMode="tail"
                     >
-                        {Platform.OS === 'android' ? props.header : props.header.toUpperCase()}
+                        {props.header}
                     </Text>
 
                     {props.counter !== undefined && props.counter !== null && (
@@ -97,7 +97,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         <TouchableOpacity onPress={props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
                             <Text
                                 style={{
-                                    color: theme.accentPrimary,
+                                    color: theme.foregroundSecondary,
                                     fontSize: 15,
                                     fontWeight: Platform.OS === 'android' ? '500' : '600',
                                     height: 18,

@@ -30,7 +30,7 @@ const messagesWrapperClassName = css`
     align-items: stretch;
     align-self: center;
     padding-top: 96px;
-    padding-bottom: 40px;
+    padding-bottom: 4px;
     width: 100%;
     max-width: 930px;
     @media (min-width: 750px) {
@@ -84,18 +84,15 @@ const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
     const ref = React.useRef<any | null>(null);
     let isChatActive = React.useContext(IsActivePoliteContext);
 
-    React.useEffect(
-        () => {
-            return isChatActive.listen(async active => {
-                await delay(0);
-                if (ref.current && props.scrollTo && active) {
-                    ref.current.scrollIntoView();
-                    props.scrollTo.key = undefined;
-                }
-            });
-        },
-        [ref.current, props.scrollTo],
-    );
+    React.useEffect(() => {
+        return isChatActive.listen(async active => {
+            await delay(0);
+            if (ref.current && props.scrollTo && active) {
+                ref.current.scrollIntoView();
+                props.scrollTo.key = undefined;
+            }
+        });
+    }, [ref.current, props.scrollTo]);
     return (
         <div key={props.dividerKey} ref={ref}>
             <XView

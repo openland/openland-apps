@@ -33,14 +33,14 @@ const RoomsList = (props: { router: SRouter }) => {
             {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />}
 
             <ZListItemGroup
-                header="Top groups"
+                header="Top Groups"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         isChannel: false,
                         initial: availableChats,
-                        title: 'Top groups',
+                        title: 'Top Groups',
                     })
                 }}
             >
@@ -62,14 +62,14 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Top channels"
+                header="Top Channels"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         isChannel: true,
                         initial: availableChannels,
-                        title: 'Top channels',
+                        title: 'Top Channels',
                     })
                 }}
             >
@@ -91,7 +91,7 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Top communities"
+                header="Top Communities"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('CommunityList', {
@@ -118,12 +118,12 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Chats for you"
+                header="Chats For You"
                 divider={false}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         initial: suggestedRooms,
-                        title: 'Chats for you',
+                        title: 'Chats For You',
                     })
                 }}
             >

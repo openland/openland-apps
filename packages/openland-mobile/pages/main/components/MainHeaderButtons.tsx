@@ -11,7 +11,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPre
 
     const icon = Platform.OS === 'ios' ? require('assets/ic-header-notifications-26.png') : require('assets/ic-notifications-24.png');
     const size = Platform.OS === 'ios' ? 26 : 24;
-    const color = Platform.OS === 'ios' ? theme.accentPrimary : theme.foregroundPrimary;
+    const color = theme.foregroundSecondary;
 
     return (
         <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
@@ -31,7 +31,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPre
                             backgroundColor: theme.backgroundSecondary
                         }}
                     >
-                        <View style={{ width: 6, height: 6, backgroundColor: '#ff3b30', borderRadius: 3 }} />
+                        <View style={{ width: 6, height: 6, backgroundColor: theme.accentNegative, borderRadius: 3 }} />
                     </View>
                 )}
             </View>

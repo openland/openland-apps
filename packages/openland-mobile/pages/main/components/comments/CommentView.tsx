@@ -120,7 +120,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <ZRelativeDate style={[styles.date, { color: theme.foregroundPrimary }]} date={date} />
+            <ZRelativeDate style={[styles.date, { color: theme.foregroundSecondary }]} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
@@ -169,9 +169,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
-                                <Text style={[styles.senderName, { color: !deleted ? theme.accentPrimary : theme.foregroundPrimary }]} allowFontScaling={false}>{sender.name}</Text>
+                                <Text style={[styles.senderName, { color: !deleted ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{sender.name}</Text>
 
-                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundPrimary }]} allowFontScaling={false}>• Edited</Text>}
+                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundSecondary }]} allowFontScaling={false}>• Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 

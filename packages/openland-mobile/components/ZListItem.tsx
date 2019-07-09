@@ -40,16 +40,12 @@ export interface ZListItemProps {
 }
 
 const LeftIcon = (props: { theme: ThemeGlobal, src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) => {
-    let theme = useThemeGlobal();
-    if (Platform.OS === 'ios') {
-        return (
-            <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || (props.appearance === 'danger' ? theme.accentNegative : theme.tint5), marginLeft: 16, alignSelf: 'center' }}>
-                <Image source={props.src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.contrastPrimary }} />
-            </View>
-        );
-    }
+    const theme = useThemeGlobal();
+
     return (
-        <Image source={props.src} style={{ tintColor: props.appearance === 'danger' ? theme.accentNegative : props.theme.accentPrimary, width: 24, height: 24, marginRight: 7, marginLeft: 23, alignSelf: 'center' }} />
+        <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || (props.appearance === 'danger' ? theme.accentNegative : theme.tint5), marginLeft: 16, alignSelf: 'center' }}>
+            <Image source={props.src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.contrastPrimary }} />
+        </View>
     );
 }
 
