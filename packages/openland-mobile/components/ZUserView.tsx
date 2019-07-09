@@ -26,7 +26,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                 />
                 <View flexGrow={1} flexShrink={1} paddingLeft={12}>
                     <Text
-                        style={{ color: theme.textColor, fontWeight: TextStyles.weight.medium, width: Dimensions.get('screen').width - 72 }}
+                        style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.medium, width: Dimensions.get('screen').width - 72 }}
                         numberOfLines={1}
                         ellipsizeMode="tail"
                         allowFontScaling={false}
@@ -34,7 +34,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                         {props.user.name}{'   '}
                         {props.user.primaryOrganization && (
                             <Text
-                                style={{ color: theme.textLabelColor, fontWeight: TextStyles.weight.regular }}
+                                style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.regular }}
                                 allowFontScaling={false}
                             >
                                 {props.user.primaryOrganization.name}

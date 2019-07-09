@@ -2,16 +2,16 @@ import * as React from 'react';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform, View, Image } from 'react-native';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SRouter } from 'react-native-s/SRouter';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
-const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress: () => void }>((props) => {
+const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPress: () => void }>((props) => {
     const { dot, theme, onPress } = props;
 
     const icon = Platform.OS === 'ios' ? require('assets/ic-header-notifications-26.png') : require('assets/ic-notifications-24.png');
     const size = Platform.OS === 'ios' ? 26 : 24;
-    const color = Platform.OS === 'ios' ? theme.accentColor : theme.textColor;
+    const color = Platform.OS === 'ios' ? theme.accentPrimary : theme.foregroundPrimary;
 
     return (
         <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
@@ -28,7 +28,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress:
                             height: 10,
                             borderRadius: 5,
                             padding: 2,
-                            backgroundColor: theme.headerColor
+                            backgroundColor: theme.backgroundSecondary
                         }}
                     >
                         <View style={{ width: 6, height: 6, backgroundColor: '#ff3b30', borderRadius: 3 }} />
@@ -39,7 +39,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: AppTheme, onPress:
     );
 });
 
-export const MainHeaderButtons = XMemo<{ router: SRouter, theme: AppTheme }>((props) => {
+export const MainHeaderButtons = XMemo<{ router: SRouter, theme: ThemeGlobal }>((props) => {
     const { router, theme } = props;
 
     const notificationCenter = getClient().useWithoutLoaderMyNotificationCenter();

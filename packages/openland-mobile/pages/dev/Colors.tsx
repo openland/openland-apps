@@ -4,8 +4,8 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { DefaultTheme, DarkTheme } from 'openland-mobile/themes/themes';
 import { isArray } from 'util';
+import { ThemeLightBlue, ThemeDarkBlue } from 'openland-y-utils/themes';
 
 interface ColorRow {
     key: string;
@@ -32,8 +32,8 @@ const getColorRowFromObject = (key: string, lightObject: any, darkObject: any): 
 }
 
 const ColorsComponent = (props: PageProps) => {
-    const light = DefaultTheme;
-    const dark = DarkTheme;
+    const light = ThemeLightBlue;
+    const dark = ThemeDarkBlue;
     const rows: ColorRow[] = [];
 
     Object.keys(light).map(key => {
@@ -58,12 +58,12 @@ const ColorsComponent = (props: PageProps) => {
                     <View marginTop={15}>
                         <Text style={{ paddingHorizontal: 10 }}>{row.key}</Text>
                         <View flexDirection="row">
-                            <View flexDirection="row" flex={1} backgroundColor={light.backgroundColor} height={50} padding={10}>
+                            <View flexDirection="row" flex={1} backgroundColor={light.backgroundPrimary} height={50} padding={10}>
                                 {(row.light || []).map(color => (
                                     <View flex={1} backgroundColor={color} />
                                 ))}
                             </View>
-                            <View flexDirection="row" flex={1} backgroundColor={dark.backgroundColor} height={50} padding={10}>
+                            <View flexDirection="row" flex={1} backgroundColor={dark.backgroundPrimary} height={50} padding={10}>
                                 {(row.dark || []).map(color => (
                                     <View flex={1} backgroundColor={color} />
                                 ))}

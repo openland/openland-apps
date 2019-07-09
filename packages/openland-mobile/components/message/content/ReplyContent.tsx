@@ -6,11 +6,11 @@ import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
 import { DocumentContent } from './DocumentContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ReplyContentProps {
     quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
-    theme: AppTheme;
+    theme: ThemeGlobal;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -47,13 +47,13 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     })}
 
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.accentColor} paddingLeft={8}>
+                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.accentPrimary} paddingLeft={8}>
                             <Text
                                 style={{
                                     marginTop: -2,
                                     height: 15,
                                     lineHeight: 15,
-                                    color: theme.accentColor,
+                                    color: theme.accentPrimary,
                                     letterSpacing: -0.3,
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,

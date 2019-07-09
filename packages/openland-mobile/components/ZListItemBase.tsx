@@ -4,7 +4,7 @@ import { isAndroid } from '../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -23,7 +23,7 @@ export interface ZListItemBaseProps {
     children?: any;
 }
 
-class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: SRouter, theme: AppTheme }> {
+class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: SRouter, theme: ThemeGlobal }> {
 
     handlePress = () => {
         if (this.props.onPress) {
@@ -52,7 +52,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
                 <View style={{ height: height, flexDirection: 'row' }}>
                     <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
                     {(!isAndroid && (this.props.path || this.props.navigationIcon) && (this.props.navigationIcon !== false)) && (
-                        <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} style={{ tintColor: this.props.theme.arrowColor }} />
+                        <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} style={{ tintColor: this.props.theme.foregroundTertiary }} />
                     )}
                 </View>
                 {this.props.separator !== false && <View style={{ backgroundColor: this.props.separatorColor || this.props.theme.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
@@ -62,13 +62,13 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         if ((!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) && (this.props.enabled !== false)) {
             if (Platform.OS === 'android') {
                 return (
-                    <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple(this.props.theme.selectorColor, false)} delayPressIn={20}>
+                    <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple(this.props.theme.backgroundPrimaryHover, false)} delayPressIn={20}>
                         {content}
                     </TouchableNativeFeedback>
                 );
             } else {
                 return (
-                    <TouchableHighlight underlayColor={this.props.underlayColor || this.props.theme.selectorColor} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                    <TouchableHighlight underlayColor={this.props.underlayColor || this.props.theme.backgroundPrimaryHover} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                         {content}
                     </TouchableHighlight>
                 )

@@ -35,15 +35,15 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
                 borderRadius: 12,
                 borderWidth: 2,
 
-                backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentColor : theme.accentBackgroundColor) : theme.accentBackgroundColor,
-                borderColor: props.selected ? theme.accentColor : theme.accentBackgroundColor
+                backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentPrimary : theme.accentBackgroundColor) : theme.accentBackgroundColor,
+                borderColor: props.selected ? theme.accentPrimary : theme.accentBackgroundColor
             }}
         >
             <Text
                 style={{
                     fontSize: 16,
                     fontWeight: TextStyles.weight.medium,
-                    color: props.selected ? (style === 'fill' ? theme.textInverseColor : theme.accentColor) : theme.accentColor
+                    color: props.selected ? (style === 'fill' ? theme.contrastPrimary : theme.accentPrimary) : theme.accentPrimary
                 }}
             >
                 {props.tag.title}
@@ -74,7 +74,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
     return (
         <View flexDirection="column">
             <View height={15} />
-            {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.textColor }}>{props.tagsGroup.title}</Text>} */}
+            {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.foregroundPrimary }}>{props.tagsGroup.title}</Text>} */}
             <View marginBottom={18} flexDirection="row" flexWrap="wrap">
                 {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
                     <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
@@ -114,18 +114,18 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
         <>
             {title && <SHeader title={title} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.headerColor, color: theme.textColor }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.backgroundSecondary, color: theme.foregroundPrimary }}>{subtitle}</Text>}
                 <View paddingHorizontal={18}>
                     <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
                 </View>
                 <View height={120} />
             </SScrollView>
-            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
+            <LinearGradient colors={[theme.transparent, theme.backgroundPrimary, theme.backgroundPrimary]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
 
             <ASSafeAreaContext.Consumer>
                 {sa => (
                     <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
-                        <ZRoundedButton size="large" title="  Next  " style="default" enabled={!disabled} onPress={next} />
+                        <ZRoundedButton size="large" title="  Next  " enabled={!disabled} onPress={next} />
                     </View>
                 )}
             </ASSafeAreaContext.Consumer>

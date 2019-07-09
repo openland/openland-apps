@@ -5,11 +5,11 @@ import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap, extractReactionsSorted } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ReactionsViewProps {
     reactions: FullMessage_GeneralMessage_reactions[];
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 
 export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
@@ -33,7 +33,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                                 marginRight: 7,
                                 marginTop: 2,
                                 fontSize: 13,
-                                color: props.theme.textLabelColor
+                                color: props.theme.foregroundPrimary
                             }}
                             numberOfLines={1}
                             allowFontScaling={false}

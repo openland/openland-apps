@@ -36,16 +36,16 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShor
             <SHeader title={'Cannot view ' + typeString} />
             <ASSafeAreaView flexGrow={1}>
                 <View flexGrow={1}>
-                    <View paddingHorizontal={16} paddingVertical={15} backgroundColor={theme.subHeaderColor}>
-                        <Text style={{ color: theme.textColor, textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
-                        <Text style={{ color: theme.textColor, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
+                    <View paddingHorizontal={16} paddingVertical={15} backgroundColor={theme.backgroundTertiary}>
+                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
+                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
                     </View>
                     <View paddingTop={screenHeight <= 640 ? 60 : 100} paddingHorizontal={16} alignItems="center" flexDirection="column">
                         <ZAvatar size={86} src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
-                        <Text style={{ color: theme.textColor, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: TextStyles.weight.medium }}>{organization.name}</Text>
+                        <Text style={{ color: theme.foregroundPrimary, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: TextStyles.weight.medium }}>{organization.name}</Text>
 
                         {!!organization.about && (
-                            <Text style={{ color: theme.textLabelColor, fontSize: 15, lineHeight: 22, marginTop: 8, textAlign: 'center' }}>{organization.about}</Text>
+                            <Text style={{ color: theme.foregroundPrimary, fontSize: 15, lineHeight: 22, marginTop: 8, textAlign: 'center' }}>{organization.about}</Text>
                         )}
                     </View>
                     <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
@@ -53,7 +53,6 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShor
                             <ZRoundedButton
                                 size="large"
                                 style="secondary"
-                                uppercase={false}
                                 title="Go back"
                                 onPress={() => router.back()}
                             />

@@ -22,7 +22,7 @@ const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
                         <UserView
                             user={item.user}
                             subtitle={item.badge ? item.badge.name : undefined}
-                            subtitleColor={theme.textLabelColor}
+                            subtitleColor={theme.foregroundPrimary}
                             onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                         />
                     ))}

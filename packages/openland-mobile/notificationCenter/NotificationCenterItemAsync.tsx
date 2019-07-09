@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { extractContent } from 'openland-mobile/messenger/components/AsyncMessageContentView';
@@ -15,12 +14,13 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { RoomNano_SharedRoom } from 'openland-api/Types';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { NotificationCenterHandlers } from './NotificationCenterHandlers';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
 }
 
-const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps & { theme: AppTheme }>((props) => {
+const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps & { theme: ThemeGlobal }>((props) => {
     const { theme, item } = props;
     const messenger = getMessenger();
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);
@@ -74,7 +74,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         fontSize={14}
                         lineHeight={18}
                         fontWeight={TextStyles.weight.medium}
-                        color={theme.textColor}
+                        color={theme.foregroundPrimary}
                         marginLeft={8}
                     >
                         {item.senderName}
@@ -83,7 +83,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
 
                 {sharedRoom && (
                     <>
-                        <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.textLabelColor} />
+                        <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.foregroundPrimary} />
                         <ASFlex onPress={() => messenger.handleConversationClick(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
                                 size={18}
@@ -96,7 +96,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                                 fontSize={14}
                                 lineHeight={18}
                                 fontWeight={TextStyles.weight.medium}
-                                color={theme.textColor}
+                                color={theme.foregroundPrimary}
                                 marginLeft={8}
                             >
                                 {sharedRoom.title}
@@ -107,14 +107,14 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
             </ASFlex>
 
             {!!item.replyQuoteText && (
-                <ASFlex marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.accentColor}>
+                <ASFlex marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.accentPrimary}>
                     <ASText
                         marginLeft={10}
                         fontSize={15}
                         lineHeight={18}
                         height={18}
                         numberOfLines={1}
-                        color={theme.textLabelColor}
+                        color={theme.foregroundPrimary}
                         maxWidth={maxWidth - 10}
                     >
                         {item.replyQuoteText}
@@ -137,15 +137,15 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         fontWeight={TextStyles.weight.medium}
                         fontSize={13}
                         lineHeight={20}
-                        color={theme.textLabelColor}
+                        color={theme.foregroundPrimary}
                         date={item.date}
                     />
 
                     <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
-                        <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentColor} width={16} height={16} opacity={0.7} />
+                        <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentPrimary} width={16} height={16} opacity={0.7} />
                         <ASText
                             fontWeight={TextStyles.weight.medium}
-                            color={theme.accentColor}
+                            color={theme.accentPrimary}
                             fontSize={13}
                             lineHeight={20}
                             marginLeft={6}

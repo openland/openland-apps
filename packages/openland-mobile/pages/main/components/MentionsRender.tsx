@@ -68,7 +68,7 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
                                 )}
                                 {mention.__typename === 'AllMention' && (
                                     <View alignItems="center" justifyContent="center" width={28} height={28}>
-                                        <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.textColor, opacity: 0.3, width: 18, height: 18 }} />
+                                        <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.foregroundPrimary, opacity: 0.3, width: 18, height: 18 }} />
                                     </View>
                                 )}
                             </View>

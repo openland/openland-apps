@@ -31,7 +31,7 @@ export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
         return (
             <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.textColor }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.foregroundPrimary }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
             </KeyboardSafeAreaView>
         );

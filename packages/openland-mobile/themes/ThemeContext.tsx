@@ -1,44 +1,47 @@
 import * as React from 'react'
-import { ThemeKind, ThemeController } from './ThemeControler';
+import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { AppTheme, DefaultTheme, DarkTheme } from './themes';
+import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/types';
+import { ThemeLightBlue, ThemeDarkBlue } from 'openland-y-utils/themes';
 
-export const ThemeContext = React.createContext<AppTheme>(DefaultTheme);
+export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLightBlue);
 
-function resolveTheme(theme: ThemeKind) {
-    if (theme === 'dark') {
-        return DarkTheme;
+function resolveTheme(theme: ThemeGlobalKind) {
+    if (theme === 'DarkBlue') {
+        return ThemeDarkBlue;
     } else {
-        return DefaultTheme;
+        return ThemeLightBlue;
     }
 }
 
 export const ThemeProvider = (props: { children?: any }) => {
     let [theme, setTheme] = React.useState(resolveTheme(ThemeController.theme));
+
     React.useEffect(() => {
         return ThemeController.watch((t) => {
             let r = resolveTheme(t);
             SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
         })
-    }, [])
-    // console.log('render theme: ' + theme.backgroundColor);
+    }, []);
 
     return (
         <ThemeContext.Provider value={theme}>
             {props.children}
         </ThemeContext.Provider>
-    )
+    );
 };
 
 export const useThemeGlobal = () => {
     let [theme, setTheme] = React.useState(resolveTheme(ThemeController.theme));
+
     React.useEffect(() => {
         return ThemeController.watch((t) => {
             let r = resolveTheme(t);
             SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
         })
-    }, [])
+    }, []);
+
     return theme;
 }

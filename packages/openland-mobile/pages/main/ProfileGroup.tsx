@@ -166,7 +166,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     let subtitle = (
         <>
             <Text>{(room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member'}</Text>
-            {onlineCount > 0 && (<Text style={{ color: theme.accentColor }}>{'   '}{onlineCount} online</Text>)}
+            {onlineCount > 0 && (<Text style={{ color: theme.accentPrimary }}>{'   '}{onlineCount} online</Text>)}
         </>
     );
 
@@ -176,7 +176,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         <>
             <ZListItemHeader
                 titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
-                titleColor={room.kind === 'GROUP' ? theme.dialogTitleSecureColor : undefined}
+                titleColor={room.kind === 'GROUP' ? theme.accentPositive : undefined}
                 title={room.title}
                 subtitle={subtitle}
                 photo={room.photo}

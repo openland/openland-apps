@@ -7,13 +7,11 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
-import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
-import { AppTheme } from 'openland-mobile/themes/themes';
-import { TextContent } from './TextContent';
 import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
@@ -23,7 +21,7 @@ interface ReplyContentProps {
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
@@ -49,14 +47,14 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}
+                                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}
                                         letterSpacing={-0.3}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}

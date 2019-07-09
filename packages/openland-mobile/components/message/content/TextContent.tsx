@@ -3,9 +3,9 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Text, TextStyle, View, TextProps } from 'react-native';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface TextWrapperProps extends TextProps {
     color: string;
@@ -32,7 +32,7 @@ interface TextContentProps {
 
     fontStyle?: 'italic' | 'normal';
     isSmall?: boolean;
-    theme: AppTheme;
+    theme: ThemeGlobal;
     inReply?: boolean;
 
     onUserPress: (id: string) => void;
@@ -70,7 +70,7 @@ export const TextContent = (props: TextContentProps) => {
                     {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
                         <TextWrapper
                             key={c.type + '-' + i}
-                            color={theme.textColor}
+                            color={theme.foregroundPrimary}
                             style={{
                                 fontStyle: fontStyle,
                                 marginTop: (c.type === 'loud' && i !== 0) ? (isSmall ? 5 : 8) : undefined,
@@ -98,7 +98,7 @@ export const TextContent = (props: TextContentProps) => {
                                     fontSize: fontSize[c.type],
                                     lineHeight: lineHeight[c.type]
                                 }}
-                                color={theme.textColor}
+                                color={theme.foregroundPrimary}
                             >
                                 {renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                             </TextWrapper>

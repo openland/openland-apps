@@ -4,7 +4,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ActionSheetBuilder } from './ActionSheet';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export interface ZReachProps {
     value: number;
@@ -31,19 +31,19 @@ export const ZReach = XMemo<ZReachProps>(props => {
     return <ZReachInner {...props} />;
 })
 
-export const showReachInfo = ((value: number, theme: AppTheme) => {
+export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
     const builder = new ActionSheetBuilder();
 
     builder.flat();
     builder.view(ctx => (
         <View marginHorizontal={20} marginTop={20} marginBottom={20}>
             <View flexDirection="row" alignItems="center" marginBottom={5}>
-                <Text style={{ color: theme.textColor, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }} allowFontScaling={false}>
+                <Text style={{ color: theme.foregroundPrimary, fontSize: 18, fontWeight: TextStyles.weight.medium, lineHeight: 21, marginRight: 8 }} allowFontScaling={false}>
                     Reach
                 </Text>
                 <ZReach value={value} />
             </View>
-            <Text style={{ color: theme.textColor, fontSize: 16, lineHeight: 24 }} allowFontScaling={false}>
+            <Text style={{ color: theme.foregroundPrimary, fontSize: 16, lineHeight: 24 }} allowFontScaling={false}>
                 User's reach is the total number of people in community groups they{'\u00a0'}are{'\u00a0'}in
             </Text>
         </View>

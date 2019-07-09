@@ -42,10 +42,11 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     fontSize: 16,
                     lineHeight: 19,
                     height: 19,
-                    color: theme.textColor,
+                    color: theme.foregroundPrimary,
                     fontWeight: TextStyles.weight.medium
                 }}
-            >{props.item.title}
+            >
+                {props.item.title}
             </Text>
             <Text
                 numberOfLines={1}
@@ -54,14 +55,15 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     fontSize: 13,
                     lineHeight: 15,
                     height: 15,
-                    color: theme.textSecondaryColor,
+                    color: theme.foregroundSecondary,
                 }}
-            >{props.item.membersCount + (props.item.membersCount === 1 ? ' members' : ' members')}
+            >
+                {props.item.membersCount + (props.item.membersCount === 1 ? ' members' : ' members')}
             </Text>
         </View>
 
-        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentColor : theme.backgroundColor} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentColor : theme.accentDisabledColor} borderWidth={2} borderRadius={12} width={24} height={24} >
-            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.textInverseColor }} />}
+        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
+            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
         </View>
     </ZListItemBase>
 }
@@ -120,14 +122,14 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
             <SHeader title={"Chats for you"} />
             <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Recommendations based on your answers"}</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>Recommendations based on your answers</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
                         numberOfLines={1}
                         style={{
                             flexGrow: 1,
                             fontSize: 16,
-                            color: theme.textSecondaryColor,
+                            color: theme.foregroundSecondary,
                             fontWeight: TextStyles.weight.medium
                         }}
                     >
@@ -141,11 +143,11 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
                 ))}
                 <View height={120} />
             </SScrollView>
-            <LinearGradient colors={[theme.transparent, theme.backgroundColor, theme.backgroundColor]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
+            <LinearGradient colors={[theme.transparent, theme.backgroundPrimary, theme.backgroundPrimary]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
             <ASSafeAreaContext.Consumer>
                 {sa => (
                     <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
-                        <ZRoundedButton size="large" title={`   ${selected.size === 0 ? 'Skip' : ('Join' + (selected.size === props.chats.length ? ' all' : ''))}   `} style="default" onPress={onAdd} />
+                        <ZRoundedButton size="large" title={`   ${selected.size === 0 ? 'Skip' : ('Join' + (selected.size === props.chats.length ? ' all' : ''))}   `} onPress={onAdd} />
                     </View>
                 )}
             </ASSafeAreaContext.Consumer>

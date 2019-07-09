@@ -8,12 +8,12 @@ import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
     name: string;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 
     onPress: () => void;
 }
@@ -23,13 +23,13 @@ const ItemBase = XMemo<ItemBaseProps>((props) => {
     const height = 48;
 
     return (
-        <ASFlex height={height} flexDirection="row" highlightColor={theme.selectorColor} onPress={onPress} alignItems={'center'}>
+        <ASFlex height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryHover} onPress={onPress} alignItems={'center'}>
             <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                 {avatar}
             </ASFlex>
             <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex alignItems="center">
-                    <ASText fontSize={15} lineHeight={Platform.OS === 'android' ? 22 : 18} fontWeight={TextStyles.weight.medium} color={theme.textColor} flexGrow={1} flexBasis={0} marginRight={10}>
+                    <ASText fontSize={15} lineHeight={Platform.OS === 'android' ? 22 : 18} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} marginRight={10}>
                         {name}
                     </ASText>
                 </ASFlex>

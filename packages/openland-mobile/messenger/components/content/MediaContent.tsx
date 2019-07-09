@@ -12,7 +12,7 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface MediaContentProps {
     single?: boolean;
@@ -24,7 +24,7 @@ interface MediaContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number },
     compensateBubble?: boolean;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 }
 
 export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
@@ -149,10 +149,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         alignItems="center"
                     >
                         <ASFlex
-                            backgroundColor={this.props.theme.backgroundColor}
+                            backgroundColor={this.props.theme.backgroundPrimary}
                             borderRadius={20}
                         >
-                            <ASText color={this.props.theme.textColor} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                            <ASText color={this.props.theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
                         </ASFlex>
                     </ASFlex>}
                 </ASFlex>

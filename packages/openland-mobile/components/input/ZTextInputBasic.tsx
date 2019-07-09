@@ -52,7 +52,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                     placeholderTextColor="#a0a0a0"
                     keyboardAppearance={theme.keyboardAppearance}
                     style={{
-                        color: theme.textColor,
+                        color: theme.foregroundPrimary,
                         flex: 1,
                         minHeight: realBorder ? 43 : 44,
                         fontSize: 17,

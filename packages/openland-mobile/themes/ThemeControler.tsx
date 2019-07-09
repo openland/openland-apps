@@ -1,21 +1,21 @@
-export type ThemeKind = 'light' | 'dark';
+import { ThemeGlobalKind } from 'openland-y-utils/themes/types';
 
 class ThemeControllerImpl {
-    private _theme: ThemeKind = 'light';
-    private _watchers: ((theme: ThemeKind) => void)[] = [];
+    private _theme: ThemeGlobalKind = 'LightBlue';
+    private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
-    get theme(): ThemeKind {
+    get theme(): ThemeGlobalKind {
         return this._theme;
     }
 
-    set theme(theme: ThemeKind) {
+    set theme(theme: ThemeGlobalKind) {
         this._theme = theme;
         for (let w of this._watchers) {
             w(theme);
         }
     }
 
-    watch(handler: (theme: ThemeKind) => void) {
+    watch(handler: (theme: ThemeGlobalKind) => void) {
         this._watchers.push(handler);
         handler(this._theme);
         return () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
-import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 export interface ZCounterProps {
     value: number;
     appearance?: 'default' | 'muted' | 'contrast';
-    theme: AppTheme,
+    theme: ThemeGlobal,
 }
 
 export class ZCounter extends React.PureComponent<ZCounterProps, { value: number }> {

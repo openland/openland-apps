@@ -37,10 +37,10 @@ const InvitesComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Invite friends" hairline="hidden" />
             <SHeaderButton title="Other invites" marginLeft={-20} onPress={() => props.router.push("InvitesMore")} />
-            <ASSafeAreaView width="100%" height="100%" backgroundColor={theme.backgroundColor}>
-                <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.textColor, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
-                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginHorizontal: 16, color: theme.textSecondaryColor }}>{"Write a post".toUpperCase()}</Text>
-                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.textColor }}>{text}</Text>
+            <ASSafeAreaView width="100%" height="100%" backgroundColor={theme.backgroundPrimary}>
+                <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
+                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Write a post".toUpperCase()}</Text>
+                <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{text}</Text>
                 <View backgroundColor={theme.separatorColor} marginLeft={16} marginBottom={21} height={1} />
                 <ZListItem
                     appearance="action"
@@ -61,7 +61,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                 />
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
                 <View flexGrow={1} />
-                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={10} height={50} backgroundColor={theme.bubbleColorIn}>
+                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={10} height={50} backgroundColor={theme.bubbleIn}>
                     <Image source={require('assets/ic-user-24.png')} />
                     <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
                 </View>}

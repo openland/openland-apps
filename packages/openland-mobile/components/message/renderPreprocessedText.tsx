@@ -3,11 +3,11 @@ import { Text, Linking, Clipboard, Share } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
@@ -19,7 +19,7 @@ let openContextMenu = (link: string) => {
     builder.show();
 }
 
-export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, theme: AppTheme) => {
+export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, theme: ThemeGlobal) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -27,7 +27,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'link'}
-                    style={{ color: theme.accentColor }}
+                    style={{ color: theme.accentPrimary }}
                     onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))}
                     onLongPress={() => openContextMenu(span.link)}
                     allowFontScaling={false}
@@ -39,7 +39,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'mention-user'}
-                    style={{ color: theme.accentColor }}
+                    style={{ color: theme.accentPrimary }}
                     onPress={() => onUserPress(span.user.id)}
                     allowFontScaling={false}
                 >
@@ -50,7 +50,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'mention-user'}
-                    style={{ color: theme.accentColor }}
+                    style={{ color: theme.accentPrimary }}
                     allowFontScaling={false}
                 >
                     {children}
@@ -60,7 +60,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'mention-room'}
-                    style={{ color: theme.accentColor }}
+                    style={{ color: theme.accentPrimary }}
                     onPress={() => onGroupPress(span.id)}
                     allowFontScaling={false}
                 >
@@ -93,7 +93,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'date'}
-                    style={{ color: theme.accentColor }}
+                    style={{ color: theme.accentPrimary }}
                     onPress={openCalendar(span.date)}
                     onLongPress={() => openCalendarContextMenu(span.date, span.textRaw!)}
                     allowFontScaling={false}

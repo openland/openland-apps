@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-export interface AppTheme {
+interface AppTheme {
     headerColor: string;
     subHeaderColor: string;
     backgroundColor: string;
@@ -101,7 +101,7 @@ export interface AppTheme {
     imageEmpty: NodeRequire;
 }
 
-export const DefaultTheme: AppTheme = {
+const DefaultTheme: AppTheme = {
     headerColor: 'white',
     subHeaderColor: '#eff0f2',
     transparent: 'rgba(255,255,255,0)',
@@ -199,7 +199,7 @@ export const DefaultTheme: AppTheme = {
     imageEmpty: require('assets/img-empty.png')
 }
 
-export const DarkTheme: AppTheme = {
+const DarkTheme: AppTheme = {
     headerColor: '#1a1a1a',
     subHeaderColor: '#1a1a1a',
     transparent: 'rgba(0,0,0,0)',

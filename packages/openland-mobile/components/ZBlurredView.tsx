@@ -17,7 +17,7 @@ export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'hig
                         right: 0,
                         top: 0,
                         bottom: 0,
-                        backgroundColor: theme.backgroundColor,
+                        backgroundColor: theme.backgroundPrimary,
                         opacity: intensity === 'high' ? 0.9 : 0.8
                     }}
                 />
@@ -37,7 +37,7 @@ export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'hig
         );
     } else {
         return (
-            <View {...props} backgroundColor={props.fallbackColor || theme.backgroundColor}>
+            <View {...props} backgroundColor={props.fallbackColor || theme.backgroundPrimary}>
                 {props.children}
             </View>
         );

@@ -6,9 +6,9 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { isPad } from 'openland-mobile/pages/Root';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface BlanketModalProps {
     modal: ZModal;
@@ -18,7 +18,7 @@ interface BlanketModalProps {
     withoutWrapper?: boolean;
 }
 
-class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppTheme }> implements ZModalController {
+class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }> implements ZModalController {
     key = randomKey();
     contents: any;
 
@@ -133,7 +133,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppT
 
     renderContents = () => (
         <View
-            backgroundColor={this.props.theme.modalBackground}
+            backgroundColor={this.props.theme.backgroundSecondary}
             borderRadius={16}
             marginHorizontal={16}
             onLayout={this.onLayout}

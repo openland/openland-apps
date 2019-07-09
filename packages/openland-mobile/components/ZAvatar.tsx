@@ -37,11 +37,11 @@ const XPAvatarInner = XMemo<ZAvatarProps>((props) => {
     if (props.src && !props.src.startsWith('ph://')) {
         return (
             <View>
-                <View style={{ width: props.size, height: props.size, borderRadius: props.size / 2, backgroundColor: theme.backgroundColor }}>
+                <View style={{ width: props.size, height: props.size, borderRadius: props.size / 2, backgroundColor: theme.backgroundPrimary }}>
                     <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={props.size} height={props.size} source={props.src} borderRadius={props.size / 2} />
                     {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                 </View>
-                {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundColor, backgroundColor: theme.accentColor, borderWidth: onlineSize / 10 }} />}
+                {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundPrimary, backgroundColor: theme.accentPrimary, borderWidth: onlineSize / 10 }} />}
             </View>
         );
     }
@@ -70,7 +70,7 @@ const XPAvatarInner = XMemo<ZAvatarProps>((props) => {
                     <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
                 </View>
             </ZLinearGradient>
-            {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundColor, backgroundColor: theme.accentColor, borderWidth: onlineSize / 10 }} />}
+            {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundPrimary, backgroundColor: theme.accentPrimary, borderWidth: onlineSize / 10 }} />}
         </View>
     );
 })

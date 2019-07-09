@@ -32,7 +32,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
             <ZKeyboardAwareBar>
                 <TouchableOpacity onPress={handleNotifications}>
                     <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor }}>
+                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
                             {notifications ? 'Mute' : 'Unmute'}
                         </Text>
                     </View>
@@ -42,10 +42,10 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundColor}>
+        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
             <TouchableOpacity onPress={handleNotifications}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor }}>
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
                         {notifications ? 'Mute' : 'Unmute'}
                     </Text>
                 </View>
@@ -61,7 +61,7 @@ export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string
             <ZKeyboardAwareBar>
                 <TouchableOpacity onPress={props.onPress}>
                     <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor }}>
+                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
                             {props.text}
                         </Text>
                     </View>
@@ -71,10 +71,10 @@ export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundColor}>
+        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
             <TouchableOpacity onPress={props.onPress}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor }}>
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
                         {props.text}
                     </Text>
                 </View>

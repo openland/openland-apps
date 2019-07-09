@@ -7,16 +7,16 @@ import { NotificationCenterHeader } from 'openland-mobile/notificationCenter/Not
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/NotificationCenterEmpty';
 import { Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { NON_PRODUCTION } from '../Init';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface NotificationCenterPageProps {
-    theme: AppTheme;
+    theme: ThemeGlobal;
     engine: NotificationCenterEngine;
 }
 

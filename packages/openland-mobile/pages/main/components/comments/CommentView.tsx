@@ -8,9 +8,9 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -41,7 +41,7 @@ export interface CommentViewProps {
     depth: number;
     deleted: boolean;
     highlighted: boolean;
-    theme: AppTheme;
+    theme: ThemeGlobal;
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
@@ -105,7 +105,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let avatar = (
         <View marginRight={6}>
             {deleted && (
-                <View width={16} height={16} borderRadius={8} backgroundColor={theme.textLabelColor} opacity={0.4} />
+                <View width={16} height={16} borderRadius={8} backgroundColor={theme.foregroundPrimary} opacity={0.4} />
             )}
             {!deleted && (
                 <ZAvatar
@@ -120,22 +120,22 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <ZRelativeDate style={[styles.date, { color: theme.textLabelColor }]} date={date} />
+            <ZRelativeDate style={[styles.date, { color: theme.foregroundPrimary }]} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
                     {depth === 0 && (
                         <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
                             <View flexDirection="row">
-                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
-                                <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
+                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentPrimary, width: 16, height: 16, opacity: 0.7 }} />
+                                <Text style={[styles.reply, { color: theme.accentPrimary }]} allowFontScaling={false}>Reply</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     )}
 
                     {depth !== 0 && (
                         <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentPrimary, width: 16, height: 16, opacity: 0.7}} />
                         </TouchableWithoutFeedback>
                     )}
                 </View>
@@ -147,7 +147,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
             <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? theme.textColor : theme.textLabelColor }} allowFontScaling={false}>{likesCount}</Text>}
+                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? theme.foregroundPrimary : theme.foregroundPrimary }} allowFontScaling={false}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
     ) : undefined;
@@ -160,7 +160,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundPrimary, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">
@@ -169,9 +169,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
-                                <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : theme.textLabelColor }]} allowFontScaling={false}>{sender.name}</Text>
+                                <Text style={[styles.senderName, { color: !deleted ? theme.accentPrimary : theme.foregroundPrimary }]} allowFontScaling={false}>{sender.name}</Text>
 
-                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.textLabelColor }]} allowFontScaling={false}>• Edited</Text>}
+                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundPrimary }]} allowFontScaling={false}>• Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 

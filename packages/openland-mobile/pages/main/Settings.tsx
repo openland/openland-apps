@@ -77,7 +77,7 @@ let SettingsContent = ((props: PageProps) => {
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
                 subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
-                subtitleColor={status.status === 'connected' ? theme.accentColor : undefined}
+                subtitleColor={status.status === 'connected' ? theme.accentPrimary : undefined}
                 path="SettingsProfile"
                 action="Edit profile"
                 score={me.audienceSize > 0 ? me.audienceSize : undefined}

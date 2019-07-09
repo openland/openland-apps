@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 let months = [
@@ -37,7 +36,7 @@ export const AsyncDateSeparator = React.memo<{ year: number, month: number, date
         date = props.year + ', ' + months[props.month] + ' ' + props.date;
     }
     return (
-        <ASFlex alignItems="center" justifyContent="center" backgroundColor={theme.backgroundColor}>
+        <ASFlex alignItems="center" justifyContent="center" backgroundColor={theme.backgroundPrimary}>
             {/* <ASFlex marginTop={16} height={20} backgroundColor="rgba(153,162,176,0.6)" borderRadius={10}> */}
             <ASText marginTop={20} marginBottom={4} color="#8a8a8f" fontSize={14} height={20} marginLeft={6} marginRight={6}>{date}</ASText>
             {/* </ASFlex> */}
