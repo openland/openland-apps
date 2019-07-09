@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -216,7 +216,7 @@ export const NewOptionsButton = XMemo(() => {
     }
 
     return (
-        <XPopper
+        <XPolitePopper
             contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
             placement="bottom-end"
             show={show}
@@ -239,6 +239,6 @@ export const NewOptionsButton = XMemo(() => {
             >
                 <NewButton onClick={toggle} />
             </XShortcuts>
-        </XPopper>
+        </XPolitePopper>
     );
 });

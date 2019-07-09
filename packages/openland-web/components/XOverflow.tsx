@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XPopper, Placement } from 'openland-x/XPopper';
+import { Placement } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
 import NotifyIcon from 'openland-icons/notify-icon.svg';
 
@@ -194,7 +195,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         return (
             <>
                 {shadow && typeof show !== 'undefined' && <Shadow active={show} />}
-                <XPopper
+                <XPolitePopper
                     show={show}
                     contentContainer={<XMenuVertical />}
                     content={this.props.content}
@@ -228,7 +229,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                             <div />
                         </DottedMenuButtonStyle>
                     )}
-                </XPopper>
+                </XPolitePopper>
             </>
         );
     }

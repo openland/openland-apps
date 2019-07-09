@@ -3,8 +3,9 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import Loadable from 'react-loadable';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { UserForMention } from 'openland-api/Types';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -35,7 +36,7 @@ const UserAvatarWrapper = Glamorous(XAvatar)({
     },
 });
 
-const Container = Glamorous(XPopper.Content)({
+const Container = Glamorous(XPopperContent)({
     padding: 0,
     animationDuration: `500ms`,
     animationName: `${showAnimation}`,
@@ -89,7 +90,7 @@ export class UserPopper extends React.PureComponent<
         showPopper: boolean;
     }
 > {
-    xPopperRef = React.createRef<XPopper>();
+    xPopperRef = React.createRef<any>();
 
     showPopper = () => {
         if (this.xPopperRef.current) {
@@ -117,7 +118,7 @@ export class UserPopper extends React.PureComponent<
         let { user, isMe, noCardOnMe, children, startSelected, customButton } = this.props;
 
         return (
-            <XPopper
+            <XPolitePopper
                 ref={this.xPopperRef}
                 nodeSelector={this.getXPopperTargetNode}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
@@ -141,7 +142,7 @@ export class UserPopper extends React.PureComponent<
                 <span onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                     {children ? children : <UserAvatar user={user} startSelected={startSelected} />}
                 </span>
-            </XPopper>
+            </XPolitePopper>
         );
     }
 }

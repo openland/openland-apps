@@ -34,7 +34,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 
 const ModalCloser = Glamorous(XLink)({
@@ -160,7 +160,7 @@ const textAlignClassName = css`
 `;
 
 const UserReach = XMemo<{ reach: number }>(props => (
-    <XPopper
+    <XPolitePopper
         style="dark"
         placement="bottom"
         content={
@@ -174,7 +174,7 @@ const UserReach = XMemo<{ reach: number }>(props => (
         showOnHover={true}
     >
         <div className={reachContentClassName}>Reach {props.reach}</div>
-    </XPopper>
+    </XPolitePopper>
 ));
 
 const Header = (props: { user: User_user }) => {
@@ -218,8 +218,9 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
-                            {user.audienceSize > 0 &&
-                                !user.isBot && <UserReach reach={user.audienceSize} />}
+                            {user.audienceSize > 0 && !user.isBot && (
+                                <UserReach reach={user.audienceSize} />
+                            )}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
@@ -308,16 +309,15 @@ const FeaturedIn = (props: { user: User_user }) => {
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    {user.chatsWithBadge.map(
-                        (item, index) =>
-                            item.chat.__typename === 'SharedRoom' ? (
-                                <XRoomCard
-                                    room={item.chat}
-                                    badge={item.badge}
-                                    customButton={null}
-                                    customMenu={null}
-                                />
-                            ) : null,
+                    {user.chatsWithBadge.map((item, index) =>
+                        item.chat.__typename === 'SharedRoom' ? (
+                            <XRoomCard
+                                room={item.chat}
+                                badge={item.badge}
+                                customButton={null}
+                                customMenu={null}
+                            />
+                        ) : null,
                     )}
                 </SectionContent>
             </Section>
@@ -398,13 +398,7 @@ const UserProvider = (props: UserProfileProps) => {
         userId: userId,
     });
 
-    return (
-        <UserProfileInner
-            user={data.user}
-            router={router}
-            {...other}
-        />
-    );
+    return <UserProfileInner user={data.user} router={router} {...other} />;
 };
 
 export const UserProfile = (props: UserProfileProps) => (

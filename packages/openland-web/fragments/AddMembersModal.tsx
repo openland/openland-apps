@@ -23,7 +23,7 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XMutation } from 'openland-x/XMutation';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import RevokeIcon from 'openland-icons/ic-revoke.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
@@ -227,7 +227,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                     value={'https://openland.com' + invitePath + props.invite}
                                     className={InputClassName}
                                 />
-                                <XPopper
+                                <XPolitePopper
                                     content="Revoke link"
                                     style="dark"
                                     showOnHover={true}
@@ -242,7 +242,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                             isOrganization={props.isOrganization}
                                         />
                                     </RenewInviteLinkButtonWrapper>
-                                </XPopper>
+                                </XPolitePopper>
                             </XView>
                             <div
                                 className={cx(

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
 import { withUserInfo } from '../UserInfo';
 import { DesktopNavigatorItem } from './DesktopNavigatorItem';
@@ -27,7 +27,7 @@ export const MenuItemWithPopper = ({
     });
 
     return (
-        <XPopper
+        <XPolitePopper
             contentContainer={contentContainer || <XMenuVertical />}
             placement="right-end"
             arrow={null}
@@ -38,6 +38,6 @@ export const MenuItemWithPopper = ({
             onClickOutside={onClickOutside}
         >
             <DesktopNavigatorItem onClick={onClick}>{targetElement}</DesktopNavigatorItem>
-        </XPopper>
+        </XPolitePopper>
     );
 };

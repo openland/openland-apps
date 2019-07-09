@@ -17,7 +17,7 @@ import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { processCreateOrganizationT } from '../enter-your-organization.page';
 import { RoomContainerParams } from '../root.page';
@@ -68,16 +68,13 @@ export const CreateOrganizationFormInnerRoom = ({
             text: 'Please enter your organization name',
         },
     ]);
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                await processCreateOrganization({
-                    organizationFieldValue: organizationField.value.trim(),
-                });
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            await processCreateOrganization({
+                organizationFieldValue: organizationField.value.trim(),
             });
-        },
-        [organizationField.value],
-    );
+        });
+    }, [organizationField.value]);
 
     const subtitle = 'Give others context about your work';
 
@@ -119,7 +116,7 @@ export const CreateOrganizationFormInnerRoom = ({
                                             size="large"
                                             {...organizationField.input}
                                         />
-                                        <XPopper
+                                        <XPolitePopper
                                             content={
                                                 <InfoText>
                                                     To register as an individual, simply enter your
@@ -133,7 +130,7 @@ export const CreateOrganizationFormInnerRoom = ({
                                             <XIconWrapper>
                                                 <IcInfo />
                                             </XIconWrapper>
-                                        </XPopper>
+                                        </XPolitePopper>
                                     </XHorizontal>
                                     {isInvalid && <XErrorMessage2 message={errorText} />}
                                 </XView>

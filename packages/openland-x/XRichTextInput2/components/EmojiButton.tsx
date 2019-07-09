@@ -4,7 +4,7 @@ import data from 'emoji-mart/data/emojione.json';
 import { css } from 'linaria';
 import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import { XPopper } from 'openland-x/XPopper';
+import { XPolitePopper } from 'openland-x/XPolitePopper';
 
 const preloadEmojiClassName = css`
     background: url(https://unpkg.com/emoji-datasource-emojione@4.0.4/img/emojione/sheets-256/64.png)
@@ -43,7 +43,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
     return (
         <>
             <div className={preloadEmojiClassName} />
-            <XPopper
+            <XPolitePopper
                 show={showPicker}
                 onClickOutside={() => {
                     setShowPicker(false);
@@ -73,7 +73,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
                 >
                     <EmojiIcon />
                 </div>
-            </XPopper>
+            </XPolitePopper>
         </>
     );
 };
