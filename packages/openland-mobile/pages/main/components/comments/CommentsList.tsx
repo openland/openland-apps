@@ -66,7 +66,7 @@ export const CommentsList = (props: CommentsListProps) => {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
                 <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                <Text style={{ fontSize: 15, color: theme.foregroundPrimary }} allowFontScaling={false}>Write the first comment</Text>
+                <Text style={{ fontSize: 15, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
             </View>
         );
     }
@@ -84,7 +84,7 @@ export const CommentsList = (props: CommentsListProps) => {
             <View height={1} backgroundColor={theme.separatorColor} marginTop={15} />
 
             <View marginTop={20} marginBottom={15}>
-                <Text style={{ fontSize: 16, color: theme.foregroundPrimary, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
+                <Text style={{ fontSize: 16, color: theme.foregroundSecondary, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
             <View marginHorizontal={-16}>
