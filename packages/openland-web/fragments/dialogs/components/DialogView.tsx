@@ -223,12 +223,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             >
                 <XViewSelectedContext.Consumer>
                     {active => (
-                        <XView
-                            flexDirection="row"
-                            flexGrow={1}
-                            flexShrink={0}
-                            minWidth={0}
-                        >
+                        <XView flexDirection="row" flexGrow={1} flexShrink={0} minWidth={0}>
                             <XView
                                 flexDirection="row"
                                 flexGrow={1}
@@ -302,14 +297,14 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 </XViewSelectedContext.Consumer>
                 <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
                     <XView
-                        height={34}
+                        height={40}
                         flexGrow={1}
                         flexShrink={1}
                         flexBasis={0}
                         minWidth={0}
                         fontSize={14}
                         fontWeight="400"
-                        lineHeight="17px"
+                        lineHeight="20px"
                         overflow="hidden"
                         selectedOpacity={1}
                         color="#78808F"
