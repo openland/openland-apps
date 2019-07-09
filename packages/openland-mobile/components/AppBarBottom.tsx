@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { View, TouchableWithoutFeedback, Image, Text, Platform } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
-import { AppStyles } from '../styles/AppStyles';
 import { ZCounter } from './ZCounter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZBlurredView } from './ZBlurredView';
 
 export interface AppBarBottomItemProps {
-    title: string;
-    icon?: any;
+    icon: NodeRequire;
     selected?: boolean;
     counter?: number;
     dot?: boolean;
@@ -16,10 +14,11 @@ export interface AppBarBottomItemProps {
 }
 
 export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
-    let theme = React.useContext(ThemeContext);
-    let size = Platform.OS === 'android' ? 22 : 28;
+    const theme = React.useContext(ThemeContext);
+    const { icon, selected, counter, dot, onPress } = props;
+
     return (
-        <TouchableWithoutFeedback onPressIn={props.onPress} delayPressIn={0}>
+        <TouchableWithoutFeedback onPressIn={onPress} delayPressIn={0}>
             <View
                 style={{
                     flexBasis: 0,
@@ -28,93 +27,67 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                     justifyContent: 'center'
                 }}
             >
+                {selected && (
+                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center' }}>
+                        <View style={{ width: 93, height: 2, backgroundColor: theme.accentPrimary, borderBottomLeftRadius: 2, borderBottomRightRadius: 2 }} />
+                    </View>
+                )}
                 <View
                     style={{
-                        // width: 28,
-                        height: size,
-                        marginBottom: Platform.OS === 'android' ? -1 : 0,
+                        height: 24,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
                 >
                     <Image
-                        source={props.icon}
-                        resizeMode="contain"
+                        source={icon}
                         style={{
-                            width: size,
-                            height: size,
+                            width: 24,
+                            height: 24,
                             opacity: 1,
-                            tintColor: props.selected ? theme.accentPrimary : theme.foregroundSecondary
+                            tintColor: selected ? theme.accentPrimary : theme.foregroundSecondary
                         }}
                     />
-                    <View
-                        style={{
-                            position: 'absolute',
-                            top: Platform.OS === 'android' ? -6 : -2,
-                            right: -5
-                        }}
-                    >
-                        {props.counter !== undefined && (<ZCounter theme={theme} value={props.counter} appearance="contrast" />)}
-                    </View>
-                    {props.dot && (
+                    {counter !== undefined && (
                         <View
                             style={{
                                 position: 'absolute',
-                                top: Platform.OS === 'android' ? -6 : 0,
-                                right: Platform.OS === 'android' ? -6 : 0,
-                                width: 11,
-                                height: 11,
-                                borderRadius: 5,
-                                padding: 2,
-                                backgroundColor: theme.backgroundSecondary
+                                top: -6,
+                                left: 14
                             }}
                         >
-                            <View
-                                style={{
-                                    width: 7,
-                                    height: 7,
-                                    backgroundColor: '#ff3b30',
-                                    borderRadius: 3,
-                                }}
-                            />
+                            <ZCounter theme={theme} value={counter} />
                         </View>
                     )}
+                    {dot && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: -2,
+                                right: -3,
+                                width: 6,
+                                height: 6,
+                                borderRadius: 6,
+                                backgroundColor: theme.accentNegative
+                            }}
+                        />
+                    )}
                 </View>
-                <Text
-                    style={{
-                        color: props.selected ? theme.accentPrimary : theme.foregroundSecondary,
-                        fontSize: 12,
-                        fontWeight: Platform.OS === 'android' ? '500' : '400',
-                        height: Platform.OS === 'android' ? 16 : 14,
-                        overflow: 'visible',
-                        opacity: Platform.OS === 'android' ? (props.selected ? 1 : 0.5) : 1
-                    }}
-                >
-                    {props.title}
-                </Text>
             </View>
         </TouchableWithoutFeedback>
     );
 });
 
 export const AppBarBottom = React.memo<{ children?: any }>((props) => {
-    let theme = React.useContext(ThemeContext);
     return (
         <ZBlurredView
             style={{
-                // backgroundColor: theme.backgroundPrimary,
                 paddingBottom: SDevice.safeArea.bottom,
                 flexDirection: 'column',
                 alignItems: 'stretch',
-                // shadowColor: '#000',
-                // shadowOpacity: 0.2,
-                // shadowOffset: { width: 0, height: 1 }
             }}
         >
-            {/* {Platform.OS === 'ios' && (<View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />)}
-            {Platform.OS !== 'ios' && (<View style={{ height: 1, backgroundColor: '#f5f5f5' }} />)} */}
-            {/* <View style={{ height: 1, backgroundColor: theme.separatorColor }} /> */}
-            <View style={{ flexDirection: 'row', height: 48 }}>
+            <View style={{ flexDirection: 'row', height: 52 }}>
                 {props.children}
             </View>
         </ZBlurredView>
