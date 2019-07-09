@@ -90,7 +90,9 @@ const Page = (props: { text: string }) => {
     let controller = useController();
     return (
         <XView width="100%" height="100%">
-            <DialogListFragment onSearchItemSelected={() => {/* Nothing to do */ }} />
+            <SDeferred>
+                <DialogListFragment onSearchItemSelected={() => {/* Nothing to do */ }} />
+            </SDeferred>
             {/* {/* <XView>
                 {props.text}
             </XView> */}
