@@ -27,9 +27,6 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
     React.Children.forEach(props.children, (c) => {
         if (c !== null && c !== undefined) {
             components.push(c);
-            if (components.length > 0 && props.divider !== false && !(c as any).props.divider) {
-                components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.leftIcon ? 64 : (c as any).props.leftAvatar ? 69 : 15 }} width="100%"><View backgroundColor={theme.separatorColor} height={1} /></View>);
-            }
         }
     });
 

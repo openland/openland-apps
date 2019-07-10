@@ -102,7 +102,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 path={this.props.path}
                 pathParams={this.props.pathParams}
                 pathRemove={this.props.pathRemove}
-                height={this.props.multiline ? null : ((this.props.title || this.props.subTitle || this.props.leftAvatar) ? 60 : (this.props.leftIcon ? 60 : (Platform.OS === 'android' ? 48 : 44)))}
+                height={this.props.multiline ? null : ((this.props.title || this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor) ? 56 : 48)}
                 navigationIcon={this.props.navigationIcon}
             >
                 {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}

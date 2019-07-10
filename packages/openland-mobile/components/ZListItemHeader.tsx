@@ -10,8 +10,9 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         paddingTop: 8,
-        paddingLeft: Platform.OS === 'android' ? 16 : 13,
-        paddingRight: 16
+        paddingLeft: 16,
+        paddingRight: 16,
+        marginBottom: 9
     } as ViewStyle,
     body: {
         flexDirection: 'column',
@@ -75,8 +76,8 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
         <>
             {(theme.backgroundSecondary !== theme.backgroundPrimary) && <View backgroundColor={theme.backgroundSecondary} height={1000} marginTop={-1000} />}
             <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
-                <View width={86} height={86}>
-                    <XPAvatarWithPreview size={86} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
+                <View width={72} height={72}>
+                    <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
                     {!!score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
                             <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: 16 }}>
