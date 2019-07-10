@@ -11,6 +11,7 @@ const containerStyle = css`
     left: 0px;
     right: 0px;
     bottom: 0px;
+    pointer-events: auto;
 `;
 
 //
@@ -62,7 +63,7 @@ const shadowStateStyles = {
     opacity: 0.0;
 `};
 
-export const PageContainer = (props: {
+export const PageLayout = (props: {
     children?: any,
     state: 'mounting' | 'entering' | 'visible' | 'exiting',
     container: React.RefObject<HTMLDivElement>

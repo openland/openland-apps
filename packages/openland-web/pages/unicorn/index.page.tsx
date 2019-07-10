@@ -4,11 +4,12 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { css as css2 } from 'glamor';
 import { useLayout } from './components/LayoutContext';
-import { UnicornProvider, useController } from './components/UnicornController';
+import { useController } from './components/UnicornController';
 import { XButton } from 'openland-x/XButton';
 import uuid from 'uuid';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { XLoader } from 'openland-x/XLoader';
+import { UnicornLayout } from './components/UnicornLayout';
 
 const containerClass = css`
     width: 100px;
@@ -163,7 +164,7 @@ export default () => {
     return (
         <Container>
             <InnerContainer>
-                <UnicornProvider root={<Root />} />
+                <UnicornLayout root={<Root />} />
             </InnerContainer>
             <Navigation />
         </Container>
