@@ -14,6 +14,7 @@ import NotificationsIcon from 'openland-icons/notifications_icon.svg';
 import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { useClient } from 'openland-web/utils/useClient';
+import { tabs } from './tabs';
 
 const Section = ({ title, children }: { title: string; children: any }) => {
     return (
@@ -117,6 +118,8 @@ export default withApp('Apps', 'viewer', () => {
     const client = useClient();
     const myOrganizations = client.useMyOrganizations();
 
+    const tab = tabs.account;
+
     return (
         <Navigation
             fullHeight
@@ -175,7 +178,10 @@ export default withApp('Apps', 'viewer', () => {
                                     </XView>
                                 }
                             >
-                                123
+                                {tabs.profile === tab && <div>profile</div>}
+                                {tabs.appearance === tab && <div>appearance</div>}
+                                {tabs.downloadApps === tab && <div>downloadApps</div>}
+                                {tabs.notifications === tab && <div>notifications</div>}
                             </React.Suspense>
                         </XView>
                     </XScrollView3>
