@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/types';
@@ -22,7 +22,7 @@ export const ThemeProvider = (props: { children?: any }) => {
             let r = resolveTheme(t);
             SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
-        })
+        });
     }, []);
 
     return (
@@ -40,8 +40,8 @@ export const useThemeGlobal = () => {
             let r = resolveTheme(t);
             SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
-        })
+        });
     }, []);
 
     return theme;
-}
+};

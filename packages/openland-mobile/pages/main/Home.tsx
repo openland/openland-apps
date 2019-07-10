@@ -61,7 +61,7 @@ export const Home = XMemo<PageProps>((props) => {
                 </AppBarBottom>
             </View>
         </View>
-    )
+    );
 });
 
 Home.displayName = 'Home';

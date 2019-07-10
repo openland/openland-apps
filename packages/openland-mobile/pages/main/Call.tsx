@@ -44,7 +44,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             RNSDevice.proximityDisable();
             SStatusBar.setBarStyle(theme.statusBar);
 
-        }
+        };
     }, []);
 
     React.useLayoutEffect(() => {
@@ -54,7 +54,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let calls = getMessenger().engine.calls;
     let callsState = calls.useState();
 
-    let conference = getClient().useWithoutLoaderConference({ id: props.id })
+    let conference = getClient().useWithoutLoaderConference({ id: props.id });
     useWatchCall(conference && conference.conference.id);
 
     let onCallEnd = React.useCallback(() => {
@@ -65,7 +65,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         setTimeout(() => {
             SStatusBar.setBarStyle(theme.statusBar);
             props.hide();
-        }, 2000)
+        }, 2000);
     }, []);
 
     React.useEffect(() => {
@@ -123,7 +123,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 {conference && conference.conference.peers.map(p => {
                     return <View key={p.id} margin={10}>
                         <ZAvatar size={45} placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
-                    </View>
+                    </View>;
 
                 })}
             </View>}
@@ -171,14 +171,14 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
             </View> */}
         </ASSafeAreaView>
-    )
+    );
 });
 
 class CallContainer extends React.Component<{ id: string, modal: ZModalController }> {
 
     private key = randomKey();
     private ended = false;
-    private container = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 })
+    private container = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 });
 
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -229,7 +229,7 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
                     </React.Suspense>
                 </LinearGradient>
             </SAnimated.View>
-        )
+        );
     }
 }
 
@@ -240,8 +240,8 @@ export function showCallModal(id: string) {
             showModal((ctx) => {
                 return (
                     <CallContainer id={id} modal={ctx} />
-                )
-            })
+                );
+            });
         }
 
     })();

@@ -5,7 +5,7 @@ type PropsValue = t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressi
 export interface PropsTransformer {
     name: string;
     tranform: (src: PropsValue) => PropsValue | undefined;
-    imports?: { what: string, from: string }[]
+    imports?: { what: string, from: string }[];
 }
 
 export interface Transformer {
@@ -21,9 +21,9 @@ function processWrapper(name: string, src: PropsValue) {
     }
 
     if (src.type === 'StringLiteral') {
-        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src]))
+        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src]));
     } else if (src.type === 'JSXExpressionContainer') {
-        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src.expression as t.Expression]))
+        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src.expression as t.Expression]));
     }
     // if (s2.type === 'JSXExpressionContainer') {
     //     s2 = s2.expression;
@@ -37,7 +37,7 @@ const backgroundColorProcessor: PropsTransformer = {
     tranform: (src) => {
         return processWrapper('processColor', src);
     }
-}
+};
 
 const colorProcessor: PropsTransformer = {
     name: 'color',
@@ -45,7 +45,7 @@ const colorProcessor: PropsTransformer = {
     tranform: (src) => {
         return processWrapper('processColor', src);
     }
-}
+};
 
 const tintColorProcessor: PropsTransformer = {
     name: 'tintColor',
@@ -53,7 +53,7 @@ const tintColorProcessor: PropsTransformer = {
     tranform: (src) => {
         return processWrapper('processColor', src);
     }
-}
+};
 
 const backgroundGradientProcessor: PropsTransformer = {
     name: 'backgroundGradient',
@@ -61,7 +61,7 @@ const backgroundGradientProcessor: PropsTransformer = {
     tranform: (src) => {
         return processWrapper('processGradient', src);
     }
-}
+};
 
 const backgroundPatchTintColorTransformer: PropsTransformer = {
     name: 'backgroundPatchTintColor',
@@ -69,7 +69,7 @@ const backgroundPatchTintColorTransformer: PropsTransformer = {
     tranform: (src) => {
         return processWrapper('processColor', src);
     }
-}
+};
 
 const flexTransformer: Transformer = {
     name: 'ASFlex',
@@ -80,7 +80,7 @@ const flexTransformer: Transformer = {
         backgroundGradientProcessor,
         backgroundPatchTintColorTransformer
     ]
-}
+};
 
 const textTransformer: Transformer = {
     name: 'ASText',
@@ -91,6 +91,6 @@ const textTransformer: Transformer = {
         backgroundGradientProcessor,
         colorProcessor
     ]
-}
+};
 
 export const allTransformers = [flexTransformer, textTransformer];

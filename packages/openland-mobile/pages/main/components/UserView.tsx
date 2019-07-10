@@ -37,4 +37,4 @@ export const UserView = (props: UserViewProps) => {
             </View>
         </ZListItemBase>
     );
-}
+};

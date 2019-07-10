@@ -517,7 +517,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         });
 
         return value;
-    };
+    }
 
     handleChange = (newValue: any) => {
         this.setState({
@@ -527,7 +527,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         if (this.props.onChange) {
             this.props.onChange(newValue);
         }
-    };
+    }
 
     handleFocus = (e: any) => {
         this.setState({
@@ -537,7 +537,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
-    };
+    }
 
     handleBlur = (e: any) => {
         this.setState({
@@ -547,7 +547,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         if (this.props.onBlur) {
             this.props.onBlur(e);
         }
-    };
+    }
 
     valueWithSubtitleRender: any = (option: any) => (
         <XView marginTop={1}>
@@ -574,7 +574,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
                 {option.subtitle}
             </Glamorous.Div>
         </XView>
-    );
+    )
 
     optionWithSubtitleHelpRender: any = (option: any) => (
         <XView marginTop={1} marginBottom={-1}>
@@ -591,7 +591,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
                 {option.subtitle}
             </XView>
         </XView>
-    );
+    )
 
     render() {
         if (this.props.render) {

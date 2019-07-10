@@ -29,7 +29,7 @@ const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </SScrollView>
         </>
-    )
+    );
 });
 
 export const ProfileGroupFeatured = withApp(ProfileGroupFeaturedComponent, { navigationAppearance: 'small-hidden' });

@@ -33,4 +33,4 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
             </TouchableWithoutFeedback>
         </View>
     );
-}
+};

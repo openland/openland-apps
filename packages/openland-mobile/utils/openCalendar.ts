@@ -16,8 +16,8 @@ export const openCalendar = (date: string) => {
         }
 
         stopLoader();
-    }
-}
+    };
+};
 
 export const openCalendarContextMenu = (date: string, text: string) => {
     let builder = new ActionSheetBuilder();
@@ -26,4 +26,4 @@ export const openCalendarContextMenu = (date: string, text: string) => {
     builder.action('Open in Calendar', openCalendar(date));
 
     builder.show();
-}
+};

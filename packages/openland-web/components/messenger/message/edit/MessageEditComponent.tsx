@@ -83,7 +83,7 @@ class XRichTextInputStored extends React.PureComponent<
                 ...value,
             });
         }
-    };
+    }
 
     render() {
         let value;

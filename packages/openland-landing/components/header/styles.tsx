@@ -42,8 +42,16 @@ let headerNavigationClass = css`
     padding: 0 0 0 70px;
     display: flex;
 
+    & > *:last-child {
+        margin: 0;
+    }
+
     @media (max-width: 767px) {
         display: none;
+    }
+
+    @media (min-width: 768px) and (max-width: 999px) {
+        padding: 0 0 0 30px;
     }
 `;
 
@@ -53,6 +61,10 @@ let headerAppsClass = css`
 
     @media (max-width: 767px) {
         display: none;
+    }
+
+    @media (min-width: 768px) and (max-width: 999px) {
+        padding: 0;
     }
 `;
 

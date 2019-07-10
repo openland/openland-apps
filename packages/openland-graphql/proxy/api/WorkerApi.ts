@@ -29,4 +29,4 @@ export type WorkerResponse = {
         { type: 'result', data: any } |
         { type: 'error', data: any } |
         { type: 'status', status: string }
-    )
+    );

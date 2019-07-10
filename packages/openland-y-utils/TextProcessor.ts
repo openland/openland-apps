@@ -14,12 +14,12 @@ let linkifyInstance = linkify()
                 let tail = text.slice(pos);
                 let split = tail.split(' ');
                 if (split.length > 1) {
-                    return split[0].length
+                    return split[0].length;
                 }
                 return tail.length;
             },
             normalize: ((match: any) => {
-                match.text = match.url.replace('tel:', '')
+                match.text = match.url.replace('tel:', '');
             }) as any
         })
     .tlds(tlds)

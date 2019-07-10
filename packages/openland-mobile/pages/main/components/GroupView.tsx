@@ -21,7 +21,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
 
     let handlePress = React.useCallback(() => {
         props.onPress(props.item.id);
-    }, [props.item.id, props.onPress])
+    }, [props.item.id, props.onPress]);
 
     return (
         <ZListItemBase height={60} onPress={handlePress} onLongPress={props.onLongPress} separator={false} navigationIcon={true}>

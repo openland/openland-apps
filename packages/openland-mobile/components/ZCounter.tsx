@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 export interface ZCounterProps {
     value: number;
-    theme: ThemeGlobal,
+    theme: ThemeGlobal;
 }
 
 export class ZCounter extends React.PureComponent<ZCounterProps, { value: number }> {

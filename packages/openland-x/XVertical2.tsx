@@ -11,5 +11,5 @@ export const XVertical2 = React.memo<XVertical2Props>((props) => {
         <XView flexDirection="column" alignItems="stretch" {...extractContainerStyles(props)}>
             {props.children}
         </XView>
-    )
+    );
 });

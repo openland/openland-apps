@@ -130,7 +130,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
             ref.current.close();
         }
     }
-        , [])
+        , []);
 
     let handleShareClick = React.useCallback(async () => {
         let file = await DownloadManagerInstance.copyFileWithNewName(props.config.url, 'image.png');
@@ -161,8 +161,8 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
 
     React.useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-        return () => BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
-    })
+        return () => BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    });
 
     let handleTap = React.useCallback(() => {
         if (barVisible) {
@@ -281,4 +281,4 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         </View>
     );
 
-})
+});

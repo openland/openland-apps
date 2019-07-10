@@ -56,7 +56,7 @@ export class CallsEngine {
         let [res, setRes] = React.useState(this._state);
         React.useEffect(() => {
             this._stateSubscriptions.push((s) => setRes(s));
-        }, [])
+        }, []);
         return res;
     }
 

@@ -23,7 +23,7 @@ export interface ZAvatarPickerRenderProps {
 
 export interface ZAvatarPickerProps {
     size?: number;
-    initialUrl?: string
+    initialUrl?: string;
     field?: string;
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
@@ -32,7 +32,7 @@ export interface ZAvatarPickerProps {
     pickSize?: {
         width: number;
         height: number;
-    }
+    };
 }
 
 class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { loading: boolean, localPath?: string }> {

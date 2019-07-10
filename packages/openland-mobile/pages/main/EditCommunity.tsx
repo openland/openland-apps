@@ -111,7 +111,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </ZForm>
         </>
-    )
+    );
 });
 
 export const EditCommunity = withApp(EditCommunityComponent, { navigationAppearance: 'small' });

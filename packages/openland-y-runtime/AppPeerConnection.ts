@@ -2,6 +2,6 @@ import { AppPeerConnectionApi, AppPeerConnectionConfiguration } from 'openland-y
 
 export const AppPeerConnectionFactory: AppPeerConnectionApi = {
     createConnection(configuration: AppPeerConnectionConfiguration) {
-        throw Error('Unsupported')
+        throw Error('Unsupported');
     }
 };

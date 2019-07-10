@@ -70,7 +70,7 @@ class SDeferred extends React.PureComponent<{}, { inited: boolean }> {
 
     componentWillMount() {
         // console.log('SDeferred: Waiting');
-        setTimeout(() => { /*console.log('SDeferred: Mounting');*/ this.setState({ inited: true }); }, 10);
+        setTimeout(() => { /*console.log('SDeferred: Mounting');*/ this.setState({ inited: true }); }, 50);
     }
 
     render() {
@@ -86,19 +86,39 @@ class SDeferred extends React.PureComponent<{}, { inited: boolean }> {
     }
 }
 
+const Timer = () => {
+    let [counter, setCounter] = React.useState(0);
+    React.useEffect(() => {
+        let t = setInterval(() => {
+            // setCounter((c) => c + 1);
+            let start = Date.now();
+            while (Date.now() - start < 40) {
+                //
+            }
+        }, 10);
+        return () => clearInterval(t);
+    }, []);
+
+    // React.useLayoutEffect(() => {
+    //     let start = Date.now();
+    //     while (Date.now() - start < 30) {
+    //         //
+    //     }
+    // })
+
+    return <XView paddingTop={counter}>{counter}</XView>;
+};
+
 const Page = (props: { text: string }) => {
     let controller = useController();
     return (
         <XView width="100%" height="100%">
             <SDeferred>
-                <DialogListFragment onSearchItemSelected={() => {/* Nothing to do */ }} />
+                <DialogListFragment onSearchItemSelected={() => {/*  */ }} />
             </SDeferred>
-            {/* {/* <XView>
-                {props.text}
-            </XView> */}
         </XView>
     );
-}
+};
 
 const Root = () => {
     let controller = useController();
@@ -112,10 +132,32 @@ const Root = () => {
                 <XLoader loading={true} />
             </XView>
 
-            <XButton onClick={() => controller.push(<Page text={uuid()} />)} />
+            <XButton
+                text="Next"
+                onClick={() => {
+                    controller.push(<Page text={uuid()} />);
+                    // setTimeout(() => {
+                    //     requestAnimationFrame(() => {
+                    //         let start = Date.now();
+                    //         while (Date.now() - start < 2000) {
+                    //             //
+                    //         }
+                    //     });
+                    // }, 30);
+                }}
+            />
+            <XButton
+                text="Freeze"
+                onClick={() => {
+                    let start = Date.now();
+                    while (Date.now() - start < 2000) {
+                        //
+                    }
+                }}
+            />
         </XView>
     );
-}
+};
 
 export default () => {
     return (

@@ -60,7 +60,7 @@ export const AppPeerConnectionFactory: AppPeerConnectionApi = {
                 username: v.username ? v.username : undefined,
             })),
             iceTransportPolicy: configuration.iceTransportPolicy,
-        })
+        });
         return new AppPeerConnectionNative(peerConnection);
     }
 };

@@ -78,7 +78,7 @@ export class ActionSheetBuilder {
                         </>
                     ))}
                 </View>
-            )
+            );
         }, this._flat);
     }
 }

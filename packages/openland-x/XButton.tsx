@@ -728,7 +728,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
 ]);
 
 export const Loader = ({ style }: { style?: XButtonStyle }) =>
-    <XLoadingCircular className="loading-icon" color={loaderStyles(style).color!! as string} />
+    <XLoadingCircular className="loading-icon" color={loaderStyles(style).color!! as string} />;
 
 export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (

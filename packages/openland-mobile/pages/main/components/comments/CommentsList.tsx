@@ -103,11 +103,11 @@ export const CommentsList = (props: CommentsListProps) => {
                             highlighted={isHighlighted}
                             theme={theme}
                         />
-                    )
+                    );
                 })}
 
                 <View backgroundColor={theme.backgroundPrimary} height={8} zIndex={2} marginTop={-8} marginBottom={8} />
             </View>
         </>
     );
-}
+};

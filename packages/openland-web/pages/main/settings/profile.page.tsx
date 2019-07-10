@@ -81,7 +81,7 @@ class MakeWebFastCheckbox extends React.PureComponent<{}, { fast: boolean }> {
         localStorage.setItem('meke_web_great_again', checked.checked ? 'true' : 'false');
         this.setState({ fast: checked.checked });
         EmojiFlags.ignoreEmojione = checked.checked;
-    };
+    }
 
     render() {
         return (

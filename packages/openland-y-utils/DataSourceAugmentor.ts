@@ -8,7 +8,7 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
     constructor(src: DataSource<T>) {
         this.dataSource = new DataSource(() => {
             src.needMore();
-        })
+        });
         src.watch({
             onDataSourceCompleted: () => {
                 this.dataSource.complete();
@@ -43,7 +43,7 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
             onDataSourceScrollToKeyRequested: (key: string) => {
                 this.dataSource.requestScrollToKey(key);
             }
-        })
+        });
     }
 
     setAugmentation(key: string, value: V) {
@@ -55,7 +55,7 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
     }
 
     removeAugmentation(key: string) {
-        this.augmentations.delete(key)
+        this.augmentations.delete(key);
         let itm = this.dataSource.getItem(key);
         if (itm) {
             this.dataSource.updateItem(this.getItem(itm.key));
@@ -64,7 +64,7 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
 
     private getItem(key: string): T & Partial<V> {
         let src = this.source.get(key)!!;
-        let aug = this.augmentations.get(src.key)
+        let aug = this.augmentations.get(src.key);
         if (aug) {
             return { ...src, ...aug };
         } else {

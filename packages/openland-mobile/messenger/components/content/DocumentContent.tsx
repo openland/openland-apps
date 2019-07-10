@@ -132,6 +132,6 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     </ASText>
                 </ASFlex>
             </ASFlex>
-        )
+        );
     }
 }

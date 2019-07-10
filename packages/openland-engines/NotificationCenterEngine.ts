@@ -39,8 +39,8 @@ const convertCommentNotification = (id: string, peer: Types.NotificationFragment
         // rewrite results from convertMessage
         key: id,
         isOut: false
-    }
-}
+    };
+};
 
 export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
     const content = notification.content;
@@ -55,7 +55,7 @@ export const convertNotification = (notification: Types.NotificationFragment): N
     } else {
         return notificationUnsupported(notification.id);
     }
-}
+};
 
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;

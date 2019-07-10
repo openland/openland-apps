@@ -173,7 +173,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 offset,
             });
         }
-    };
+    }
 
     public scrollToBottomOfElement = ({
         targetElem,
@@ -189,7 +189,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 offset,
             });
         }
-    };
+    }
 
     public scrollToBottom = () => {
         if (this.nativeBackendElemRef.current) {
@@ -197,13 +197,13 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 scrollContainer: this.nativeBackendElemRef.current,
             });
         }
-    };
+    }
 
     private onScroll = (values: XScrollValues) => {
         if (this.props.onScroll) {
             this.props.onScroll(values);
         }
-    };
+    }
 
     render() {
         const { props } = this;

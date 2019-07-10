@@ -30,7 +30,7 @@ const getColorRowFromObject = (key: string, lightObject: any, darkObject: any): 
     }
             
     return row;
-}
+};
 
 const ColorsComponent = (props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -47,7 +47,7 @@ const ColorsComponent = (props: PageProps) => {
                     if (!ignoreParams.includes(subkey)) {
                         rows.push(getColorRowFromObject(key + ' - ' + subkey, light[key][subkey], dark[key][subkey]));
                     }
-                })
+                });
             }
         }
     });
@@ -76,6 +76,6 @@ const ColorsComponent = (props: PageProps) => {
             </SScrollView>
         </>
     );
-}
+};
 
 export const Colors = withApp(ColorsComponent, { navigationAppearance: 'small' });

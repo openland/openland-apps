@@ -25,9 +25,9 @@ export const ZText = (props: ZTextProps) => {
     let linkifyPressFallback = React.useCallback((link: string) => {
         return (async () => {
             if (await Linking.canOpenURL(link)) {
-                await Linking.openURL(link)
+                await Linking.openURL(link);
             } else {
-                await openContextMenu(link)
+                await openContextMenu(link);
             }
         });
     }, []);
@@ -43,7 +43,7 @@ export const ZText = (props: ZTextProps) => {
                         key={'link-' + i}
                         style={[props.style, props.linkify && { color: theme.accentPrimary }]}
                         onLongPress={() => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!)}
-                        onPress={props.onPress ? () => { props.onPress!(v.link!) } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
+                        onPress={props.onPress ? () => { props.onPress!(v.link!); } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
                     >
                         {v.text}
                     </Text>
@@ -56,4 +56,4 @@ export const ZText = (props: ZTextProps) => {
     } else {
         return <Text style={props.style} numberOfLines={props.numberOfLines} />;
     }
-}
+};

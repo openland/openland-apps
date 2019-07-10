@@ -18,7 +18,7 @@ export const ClientCacheContext = React.createContext<ClientCache | undefined>(u
 
 export const ClientCacheProvider = (props: { children: any }) => {
     const cache = React.useMemo(() => new ClientCache(), []);
-    React.useEffect(() => { return () => cache.cleanup() }, []);
+    React.useEffect(() => { return () => cache.cleanup(); }, []);
 
     return (
         <ClientCacheContext.Provider value={cache}>

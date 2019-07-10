@@ -43,7 +43,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
     let rawGroup = getClient().useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
     let group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
-    let roomAdmins = getClient().useRoomOrganizationAdminMembers({ id: props.router.params.id })
+    let roomAdmins = getClient().useRoomOrganizationAdminMembers({ id: props.router.params.id });
 
     const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
@@ -151,7 +151,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                     </ZListItemGroup>
                 </ZForm>
             </>
-        )
+        );
     } else {
         return null;
     }

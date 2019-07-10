@@ -73,7 +73,7 @@ export interface ZRoundedButtonProps {
     onActionError?: (e: Error) => void;
     path?: string;
     size?: ZRoundedButtonSize;
-    style?: ZRoundedButtonStyle
+    style?: ZRoundedButtonStyle;
     enabled?: boolean;
 }
 
@@ -152,6 +152,6 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
             </View>
         </TouchableOpacity>
     );
-})
+});
 
 export const ZRoundedButton = withRouter<ZRoundedButtonProps>(ZRoundedButtonComponent);

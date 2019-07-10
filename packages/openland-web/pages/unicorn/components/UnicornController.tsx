@@ -3,6 +3,7 @@ import uuid from 'uuid';
 import { useLayout } from './LayoutContext';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { PageContainer } from './PageContainer';
 
 export interface UnicornPage {
     key: string;
@@ -10,10 +11,18 @@ export interface UnicornPage {
 }
 
 export class UnicornController {
+    ref: React.RefObject<HTMLDivElement>;
     pages: UnicornPage[] = [];
     private _listeners: ((action: { type: 'push', key: string, component: any } | { type: 'pop', key: string }) => void)[] = [];
 
+    constructor(ref: React.RefObject<HTMLDivElement>) {
+        this.ref = ref;
+    }
+
     push = (component: any) => {
+        if (!this.ref.current) {
+            return;
+        }
         let key = uuid();
         this.pages.push({ component, key });
         for (let l of this._listeners) {
@@ -22,6 +31,9 @@ export class UnicornController {
     }
 
     pop = () => {
+        if (!this.ref.current) {
+            return;
+        }
         if (this.pages.length > 0) {
             let r = this.pages.splice(this.pages.length - 1, 1);
             for (let l of this._listeners) {
@@ -34,99 +46,29 @@ export class UnicornController {
         this._listeners.push(handler);
         return () => {
             this._listeners.splice(this._listeners.indexOf(handler), 1);
-        }
+        };
     }
 }
 
 const UnicornContext = React.createContext<UnicornController>(undefined as any);
 
-const baseClassName = css`
-    position: absolute;
-    background-color: white;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 0px;
-`;
-
-const baseClassNameContainer = css`
-    position: absolute;
-    background-color: black;
-    opacity: 0.3;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 0px;
-    will-change: opacity;
-`;
-
-const initialClassName = css`
-    transform: translateX(100%);
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    pointer-events: none;
-`;
-
-const initialClassNameContainer = css`
-    opacity: 0.01;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const mountedClassName = css`
-    transform: translateX(0%);
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-// const visibleClassName = css`
-//     transform: translateX(0%);
-// `;
-
-const mountedClassNameContainer = css`
-    opacity: 0.3;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const exitingClassName = css`
-    transform: translateX(100%);
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    pointer-events: none;
-`;
-
-const exitingClassNameContainer = css`
-    opacity: 0.01;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const displayNone = css`
-    display: none;
+const rootClassName = css`
+    display: flex;
+    width: 100%;
+    height: 100%;
 `;
 
 const PageAnimator = React.memo((props: {
     children?: any,
     k: string,
     state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting',
-    dispatch: React.Dispatch<AnimationAction>
+    dispatch: React.Dispatch<AnimationAction>,
+    controller: UnicornController
 }) => {
-    let className;
-    let className2;
-    if (props.state === 'mounting') {
-        className = initialClassName;
-        className2 = initialClassNameContainer;
-    } else if (props.state === 'entering' || props.state === 'visible') {
-        className = mountedClassName;
-        className2 = mountedClassNameContainer;
-    } else if (props.state === 'exiting') {
-        className = exitingClassName;
-        className2 = exitingClassNameContainer;
-    } else if (props.state === 'hidden') {
-        className = displayNone;
-        className2 = displayNone;
-    } else {
-        className = '';
-    }
 
     console.log('render[' + props.k + ']: ' + props.state);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         let active = true;
         if (props.state === 'entering') {
             setTimeout(() => {
@@ -147,13 +89,15 @@ const PageAnimator = React.memo((props: {
         };
     }, [props.state]);
 
+    let state = props.state;
+    if (state === 'hidden') {
+        return null;
+    }
+
     return (
-        <>
-            <div className={baseClassNameContainer + ' ' + className2} />
-            <div className={baseClassName + ' ' + className}>
-                {props.state !== 'hidden' && props.children}
-            </div>
-        </>
+        <PageContainer state={state} container={props.controller.ref}>
+            {props.children}
+        </PageContainer>
     );
 });
 
@@ -180,7 +124,7 @@ type AnimationState = {
         component: any;
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
-}
+};
 
 function animationReducer(
     state: AnimationState,
@@ -192,18 +136,18 @@ function animationReducer(
         return {
             pages: state.pages.map((v) => {
                 if (v.key === action.key) {
-                    return { ...v, state: 'exiting' as any }
+                    return { ...v, state: 'exiting' as any };
                 } else {
                     return v;
                 }
             })
-        }
+        };
     } else if (action.type === 'entered') {
         return {
             pages: state.pages.map((v, i) => {
                 if (v.key === action.key) {
                     if (v.state === 'entering') {
-                        return { ...v, state: 'visible' as any }
+                        return { ...v, state: 'visible' as any };
                     } else {
                         return v;
                     }
@@ -216,22 +160,22 @@ function animationReducer(
                     return v;
                 }
             })
-        }
+        };
     } else if (action.type === 'exited') {
         return {
             pages: state.pages.filter((v) => v.key !== action.key)
-        }
+        };
     } else if (action.type === 'mounted') {
         if (state.pages.find((v) => v.state === 'mounting')) {
             return {
                 pages: state.pages.map((v) => {
                     if (v.state === 'mounting') {
-                        return { ...v, state: 'entering' as any }
+                        return { ...v, state: 'entering' as any };
                     } else {
                         return v;
                     }
                 })
-            }
+            };
         } else {
             return state;
         }
@@ -244,7 +188,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     let layout = useLayout();
     let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
     React.useEffect(() => { return props.controller.addListener(dispatch); }, []);
-    React.useLayoutEffect(() => { setTimeout(() => dispatch({ type: 'mounted' }), 10); });
+    React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
     if (layout === 'mobile') {
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
@@ -254,12 +198,12 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                     </XView>
                 </XView>
                 {state.pages.map((v) => (
-                    <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch}>
+                    <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
                         {v.component}
                     </PageAnimator>
                 ))}
             </XView>
-        )
+        );
     } else {
         return (
             <XView width="100%" height="100%" flexDirection="row" paddingLeft={50} overflow="hidden">
@@ -268,22 +212,25 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                 </XView>
                 <XView width={0} flexGrow={1} minWidth={500} height="100%" flexDirection="column" backgroundColor="purple" position="relative">
                     {state.pages.map((v) => (
-                        <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch}>
+                        <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
                             {v.component}
                         </PageAnimator>
                     ))}
                 </XView>
             </XView>
-        )
+        );
     }
 });
 
 export const UnicornProvider = React.memo((props: { root: any }) => {
-    let controller = React.useMemo(() => new UnicornController(), []);
+    let ref = React.useRef<HTMLDivElement>(null);
+    let controller = React.useMemo(() => new UnicornController(ref), []);
     return (
-        <UnicornContext.Provider value={controller}>
-            <UnicornContainer root={props.root} controller={controller} />
-        </UnicornContext.Provider>
+        <div className={rootClassName} ref={ref}>
+            <UnicornContext.Provider value={controller}>
+                <UnicornContainer root={props.root} controller={controller} />
+            </UnicornContext.Provider>
+        </div>
     );
 });
 export const useController = () => React.useContext(UnicornContext);

@@ -28,7 +28,7 @@ class HighlightSecretGroups extends React.PureComponent<
             confirm: false,
             beChange: true,
         });
-    };
+    }
 
     handleOff = () => {
         clearInterval(this.timer);
@@ -37,7 +37,7 @@ class HighlightSecretGroups extends React.PureComponent<
             confirm: false,
             beChange: true,
         });
-    };
+    }
 
     onSave = () => {
         this.setState({
@@ -49,14 +49,14 @@ class HighlightSecretGroups extends React.PureComponent<
                 beChange: false,
             });
         }, 1000);
-    };
+    }
 
     resetButtonStyle = () => {
         clearInterval(this.timer);
         this.setState({
             confirm: false,
         });
-    };
+    }
 
     componentWillUnmount() {
         clearInterval(this.timer);
@@ -127,7 +127,7 @@ class ImagesView extends React.PureComponent<{}, ImagesViewState> {
             confirm: false,
             beChange: true,
         });
-    };
+    }
 
     handleOff = () => {
         clearInterval(this.timer);
@@ -136,7 +136,7 @@ class ImagesView extends React.PureComponent<{}, ImagesViewState> {
             confirm: false,
             beChange: true,
         });
-    };
+    }
 
     onSave = () => {
         this.setState({
@@ -148,14 +148,14 @@ class ImagesView extends React.PureComponent<{}, ImagesViewState> {
                 beChange: false,
             });
         }, 1000);
-    };
+    }
 
     resetButtonStyle = () => {
         clearInterval(this.timer);
         this.setState({
             confirm: false,
         });
-    };
+    }
 
     componentWillUnmount() {
         clearInterval(this.timer);

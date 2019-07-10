@@ -96,7 +96,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         if (onClickTarget) {
             onClickTarget();
         }
-    };
+    }
 
     handleClose = () => {
         const { show, onClickOutside } = this.props;
@@ -105,11 +105,11 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         } else if (onClickOutside !== undefined) {
             onClickOutside();
         }
-    };
+    }
 
     createRef = (el: any) => {
         this.refComp = el;
-    };
+    }
 
     render() {
         const { target, useCustomTarget } = this.props;

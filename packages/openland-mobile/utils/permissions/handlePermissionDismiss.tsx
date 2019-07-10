@@ -8,11 +8,11 @@ interface AlertOpenSettingsLabels {
     ios?: {
         title: string,
         message?: string,
-    },
+    };
     android?: {
         title: string,
         message?: string,
-    }
+    };
 }
 
 const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
@@ -41,7 +41,7 @@ const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
         builder.button('Settings', 'default', () => (AndroidOpenSettings.appDetailsSettings()));
         builder.show();
     }
-}
+};
 
 export const handlePermissionDismiss = (permission: permissionsType) => {
     if (permission === 'gallery') {
@@ -96,4 +96,4 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             }
         });
     }
-}
+};

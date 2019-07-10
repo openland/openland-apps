@@ -106,5 +106,5 @@ class ZLoaderComponent extends React.PureComponent<ZLoaderProps & { theme: Theme
 
 export const ZLoader = React.memo<ZLoaderProps>((props) => {
     let theme = React.useContext(ThemeContext);
-    return (<ZLoaderComponent {...props} theme={theme} />)
+    return (<ZLoaderComponent {...props} theme={theme} />);
 });

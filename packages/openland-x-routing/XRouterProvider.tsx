@@ -90,15 +90,15 @@ export class XRouterProvider extends React.Component<{
             window.scrollTo(0, 0);
             document.body.focus();
         });
-    };
+    }
 
     resolveLink = (path: string) => {
         return this.props.routes.findAndGetUrls(path).urls.as;
-    };
+    }
 
     push = (path: string) => {
         this.props.routes.Router.pushRoute(path).then(this.scrollToTop);
-    };
+    }
     pushQuery = (field: string, value?: string, clear?: boolean) => {
         let q = qs.stringify(
             Object.assign({}, clear ? {} : this.xRouterState.query, { [field]: value }),
@@ -108,7 +108,7 @@ export class XRouterProvider extends React.Component<{
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.pushRoute(pathParts[0] + q);
-    };
+    }
 
     pushQueryParams = (params?: {}) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
@@ -117,11 +117,11 @@ export class XRouterProvider extends React.Component<{
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.pushRoute(pathParts[0] + q);
-    };
+    }
 
     replace = (path: string) => {
         this.props.routes.Router.replaceRoute(path).then(this.scrollToTop);
-    };
+    }
 
     replaceQuery = (field: string, value?: string) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value }));
@@ -131,7 +131,7 @@ export class XRouterProvider extends React.Component<{
 
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.replaceRoute(pathParts[0] + q);
-    };
+    }
 
     replaceQueryParams = (params?: {}) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
@@ -140,7 +140,7 @@ export class XRouterProvider extends React.Component<{
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.replaceRoute(pathParts[0] + q);
-    };
+    }
 
     componentWillReceiveProps(nextProps: {}, nextContext: any) {
         this.xRouterState = this.buildState(nextContext);

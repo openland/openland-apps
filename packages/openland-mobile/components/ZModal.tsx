@@ -69,7 +69,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
                 hide: () => {
                     this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
                 }
-            }
+            };
             let element = modal(cont);
             this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
         }, 1);
@@ -86,6 +86,6 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
                     </View>
                 ))}
             </>
-        )
+        );
     }
 }

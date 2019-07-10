@@ -8,7 +8,7 @@ export const XFeaturedIcon = XMemo(props => (
     <XView width={18} height={18}>
         <FeaturedIcon />
     </XView>
-))
+));
 
 export const XFeatured = XMemo<{ text: string | JSX.Element }>(props => (
     <XView flexDirection="row" alignItems="center">

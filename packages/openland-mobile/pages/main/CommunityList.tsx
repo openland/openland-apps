@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../../openland-api/Types'
+import * as Types from '../../../openland-api/Types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
@@ -29,9 +29,9 @@ const CommunityListComponent = React.memo<PageProps>((props) => {
                 }
             }
 
-            setNeedMore(needMo)
+            setNeedMore(needMo);
 
-            setCommunities([...communities, ...res.items.edges.filter(c => !initial.find(i => i.id === c.node.id)).map(n => n.node)])
+            setCommunities([...communities, ...res.items.edges.filter(c => !initial.find(i => i.id === c.node.id)).map(n => n.node)]);
             setLoading(false);
         }
 

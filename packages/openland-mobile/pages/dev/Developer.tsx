@@ -27,7 +27,7 @@ export const Developer = withApp(() => {
             await AppStorage.resetToken();
             RNRestart.Restart();
         })();
-    }
+    };
     return (
         <>
             <SHeader title="Developer" />
@@ -49,5 +49,5 @@ export const Developer = withApp(() => {
                 </ZListItemGroup>
             </SScrollView>
         </>
-    )
+    );
 });

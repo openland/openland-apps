@@ -35,7 +35,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                                     input: {
                                         alphaPrimaryOrganizationId: org.id
                                     }
-                                })
+                                });
 
                                 await getClient().refetchMyOrganizations();
                                 await getClient().refetchAccount();
@@ -50,6 +50,6 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
             </SScrollView>
         </>
     );
-}
+};
 
 export const SelectPrimaryOrganization = withApp(SelectPrimaryOrganizationComponent, { navigationAppearance: 'small' });

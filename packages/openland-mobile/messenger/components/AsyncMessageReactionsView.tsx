@@ -19,7 +19,7 @@ export const reactionsImagesMap = {
     'SCREAM': require('assets/reactions/ic-reaction-wow.png'),
     'CRYING': require('assets/reactions/ic-reaction-sad.png'),
     'ANGRY': require('assets/reactions/ic-reaction-angry.png')
-}
+};
 
 export let reactionMap = {
     'LIKE': '❤️',
@@ -58,7 +58,7 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
     }
 
     return { reactionsSorted, usersString };
-}
+};
 
 interface AsyncMessageReactionsViewProps {
     theme: ThemeGlobal;

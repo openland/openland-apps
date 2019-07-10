@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../../openland-api/Types'
+import * as Types from '../../../openland-api/Types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
@@ -24,7 +24,7 @@ const GroupListComponent = React.memo<PageProps>((props) => {
             if (!res.length) {
                 setNeedMore(false);
             }
-            setRooms([...rooms, ...res])
+            setRooms([...rooms, ...res]);
             setLoading(false);
         }
 

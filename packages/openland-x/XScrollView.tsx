@@ -125,7 +125,7 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 // tslint:enable
             }
         }
-    };
+    }
 
     render() {
         return (

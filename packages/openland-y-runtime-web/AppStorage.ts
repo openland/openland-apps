@@ -22,7 +22,7 @@ class AppStorageImpl implements AppStorageApi {
         } else {
             await localStorage.removeItem(key);
         }
-    };
+    }
 }
 
 export const AppStorage = new AppStorageImpl();

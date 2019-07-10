@@ -100,7 +100,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 </View>
             </ZForm>
         </>
-    )
+    );
 });
 
 class SettingsProfileComponent extends React.Component<PageProps> {

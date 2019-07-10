@@ -50,7 +50,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             fileSrc: `https://ucarecdn.com/${fileId}/`,
             fileId: fileId,
         });
-    };
+    }
 
     private handleSetFile = ({
         fileId,
@@ -66,7 +66,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             fileName,
             fileSize,
         });
-    };
+    }
 
     private handleDrop = (droppedFile: any) => {
         const reader = new FileReader();
@@ -90,7 +90,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
                 });
             }
         };
-    };
+    }
 
     private fileRemover = () => {
         this.setState({
@@ -100,7 +100,7 @@ export class UploadContextProvider extends React.Component<any, ContextT> {
             fileId: null,
             fileSize: null,
         });
-    };
+    }
 
     render() {
         return (

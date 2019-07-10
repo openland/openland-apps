@@ -24,7 +24,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
 
     componentDidMount() {
         this.mounted = true;
-        (async () => { await joinInviteIfHave(); })()
+        (async () => { await joinInviteIfHave(); })();
         this.checkWaitlistPassed();
     }
 
@@ -41,7 +41,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
             RNRestart.Restart();
         } else {
             setTimeout(() => {
-                this.checkWaitlistPassed()
+                this.checkWaitlistPassed();
             }, 5000);
         }
     }

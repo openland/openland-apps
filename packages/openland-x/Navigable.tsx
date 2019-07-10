@@ -188,7 +188,7 @@ export function makeNavigable<T>(
                 e.preventDefault();
                 // e.stopPropagation();
             }
-        };
+        }
 
         render() {
             let linkHref = '#';

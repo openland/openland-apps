@@ -18,7 +18,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
     let key = randomKey();
 
     let contentView = new SAnimatedShadowView(key + '--ctns', { opacity: 1 });
-    let overlayView = new SAnimatedShadowView(key + '--overlay', { opacity: 0 })
+    let overlayView = new SAnimatedShadowView(key + '--overlay', { opacity: 0 });
 
     let onSuccess = React.useCallback(async (originalCallback?: () => void) => {
         setState('done');

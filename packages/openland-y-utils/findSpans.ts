@@ -17,11 +17,11 @@ const spanInputMap = {
 
 const isSpanMaster = (symbol: string) => {
     return SpanSymbolToType[symbol] ? !!SpanSymbolToType[symbol].master : false;
-}
+};
 
 const isSpanLined = (symbol: string) => {
     return SpanSymbolToType[symbol] ? !!SpanSymbolToType[symbol].lined : false;
-}
+};
 
 const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string): string | false => {
     let isSpec = false;
@@ -38,7 +38,7 @@ const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string
 
     if (isSpec) {
         if (currentSpecSymbol === symbol) {
-            return whiteListAfterSpec.includes(text.charAt(index + symbol.length)) ? symbol : false
+            return whiteListAfterSpec.includes(text.charAt(index + symbol.length)) ? symbol : false;
         } else {
             if (isSpanLined(symbol)) {
                 return ['', '\n'].includes(text.charAt(index - 1)) ? symbol : false;
@@ -49,7 +49,7 @@ const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string
     }
 
     return false;
-}
+};
 
 const createSpan = (symbol: string, offset: number, length: number): MessageSpanInput | false => {
     if (length > symbol.length * (isSpanLined(symbol) ? 1 : 2)) {
@@ -61,7 +61,7 @@ const createSpan = (symbol: string, offset: number, length: number): MessageSpan
     } else {
         return false;
     }
-}
+};
 
 export const findSpans = (text: string): MessageSpanInput[] => {
     let res: MessageSpanInput[] = [];
@@ -114,7 +114,7 @@ export const findSpans = (text: string): MessageSpanInput[] => {
     }
 
     return res;
-}
+};
 
 export const prepareLegacySpans = (spans: MessageSpanInput[]): FullMessage_GeneralMessage_spans[] => {
     let res: FullMessage_GeneralMessage_spans[] = [];
@@ -128,4 +128,4 @@ export const prepareLegacySpans = (spans: MessageSpanInput[]): FullMessage_Gener
     });
 
     return res;
-}
+};

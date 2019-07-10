@@ -61,7 +61,7 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShor
                 </View>
             </ASSafeAreaView>
         </>
-    )
+    );
 });
 
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
@@ -69,7 +69,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const organization = getClient().useOrganizationMembersShortPaginated({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization;
 
     if (!organization.isMine && organization.isPrivate) {
-        return <PrivateProfile {...props} organization={organization} />
+        return <PrivateProfile {...props} organization={organization} />;
     }
 
     const myUserID = getMessenger().engine.user.id;

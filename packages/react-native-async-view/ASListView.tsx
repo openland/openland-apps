@@ -37,4 +37,4 @@ export const ASListView = XMemo<ASListViewProps>((props) => {
             applyModes={props.applyModes || []}
         />
     );
-})
+});

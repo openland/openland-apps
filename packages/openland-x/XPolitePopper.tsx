@@ -8,11 +8,11 @@ export class XPopperStub extends React.Component<XPopperProps> {
     static Content = XPopperContent;
     onMouseOverTarget = () => {
         //
-    };
+    }
 
     onMouseOutTarget = () => {
         //
-    };
+    }
 
     render() {
         return <>{this.props.children}</>;

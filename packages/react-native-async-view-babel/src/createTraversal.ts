@@ -26,17 +26,17 @@ export function createTraversal() {
 
                             // Check blacklisted
                             for (let attr of node.openingElement.attributes) {
-                                let jsxAttr = attr as t.JSXAttribute
+                                let jsxAttr = attr as t.JSXAttribute;
                                 let jsxName = jsxAttr.name.name;
                                 // Check if backlisted
                                 if (transformer!.blacklist.find((v2) => jsxName === v2)) {
-                                    return
+                                    return;
                                 }
                             }
 
                             // Process props
                             for (let attr of node.openingElement.attributes) {
-                                let jsxAttr = attr as t.JSXAttribute
+                                let jsxAttr = attr as t.JSXAttribute;
                                 let jsxName = jsxAttr.name.name;
                                 for (let pt of transformer!.propTransformers) {
                                     if (pt.name === jsxName) {
@@ -63,13 +63,13 @@ export function createTraversal() {
                             node.openingElement.attributes.push(t.jsxAttribute(
                                 t.jsxIdentifier('asyncViewName'),
                                 t.jsxExpressionContainer(t.stringLiteral(transformer.asyncName))
-                            ))
+                            ));
                             if (node.closingElement) {
-                                (node.closingElement.name as t.JSXIdentifier).name = 'asyncview'
+                                (node.closingElement.name as t.JSXIdentifier).name = 'asyncview';
                             }
                         }
                     }
-                })
+                });
                 // t.importDeclaration([t.importSpecifier(t.identifier('calculateStyles'), t.identifier('calculateStyles'))], t.stringLiteral('openland-x-styles/calculateStyles'))
                 for (let p of pending) {
                     traversePath.node.body.unshift(p);
@@ -89,6 +89,6 @@ export function createTraversal() {
                 // }
             }
         }
-    }
+    };
     return traverseOptions;
 }

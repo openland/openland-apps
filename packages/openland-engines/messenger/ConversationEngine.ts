@@ -77,7 +77,7 @@ export interface DataSourceDateItem {
 export interface DataSourceNewDividerItem {
     key: string;
     type: 'new_divider';
-    date: undefined
+    date: undefined;
 }
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
@@ -85,7 +85,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
     let reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined;
-    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
+    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : [];
 
     return {
         chatId: chaId,
@@ -156,16 +156,16 @@ const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
         date: date.getDate(),
         month: date.getMonth(),
         year: date.getFullYear()
-    }
-}
+    };
+};
 
 const createNewMessageDividerSourceItem = (messageId: string): DataSourceNewDividerItem => {
     return {
         type: 'new_divider',
         date: undefined,
         key: 'new_divider-' + messageId,
-    }
-}
+    };
+};
 
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
@@ -265,7 +265,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
         this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
         if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
-            this.user = initialChat.room.user
+            this.user = initialChat.room.user;
         }
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -343,7 +343,7 @@ export class ConversationEngine implements MessageSendHandler {
 
     loadBefore = async (id?: string) => {
         if (this.historyFullyLoaded) {
-            return
+            return;
         }
         if (id === undefined) {
             let serverMessages = this.messages.filter(m => isServerMessage(m));
@@ -564,7 +564,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         let old = this.dataSource.getItem(key);
         if (old && old.type === 'message') {
-            let updated = { ...old, progress }
+            let updated = { ...old, progress };
             this.dataSource.updateItem(updated);
         }
     }
@@ -669,7 +669,6 @@ export class ConversationEngine implements MessageSendHandler {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
-                        __typename: undefined,
                         key: event.repeatKey,
                         attachments: (msgs[existing] as any).attachments,
                         date: msgs[existing].date
@@ -749,13 +748,13 @@ export class ConversationEngine implements MessageSendHandler {
             if (prev && prev.type === 'message') {
                 conv.attachTop = prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage');
                 if (prev.isService && !prev.serviceMetaData && src.__typename === 'GeneralMessage' && prev.senderId === src.sender.id) {
-                    conv.attachTop = false
+                    conv.attachTop = false;
                 }
             }
         } else {
             let p = src as PendingMessage;
             let reply = p.quoted ? (p.quoted.map(convertMessageBack).sort((a, b) => a.date - b.date) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined;
-            let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : []
+            let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : [];
             conv = {
                 type: 'message',
                 chatId: this.conversationId,
@@ -823,7 +822,7 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             } else {
                 // sander changed or sevice
-                const dateToAdd = createDateDataSourceItem(new Date(conv.date))
+                const dateToAdd = createDateDataSourceItem(new Date(conv.date));
                 if (!this.dataSource.hasItem(dateToAdd.key) && (!prev || prev.date && !isSameIntDate(prev.date, conv.date))) {
                     this.dataSource.addItem(dateToAdd, 0);
                     conv.attachTop = false;

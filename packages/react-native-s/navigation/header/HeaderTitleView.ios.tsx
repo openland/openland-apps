@@ -95,7 +95,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         </SAnimated.View>
                     </View>
                 </SEquisiteCentered>
-            )
+            );
         } else {
             content = (
                 <View style={{ width: '100%', flexDirection: 'row' }}>
@@ -113,7 +113,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         </SAnimated.View>
                     </View>
                 </View>
-            )
+            );
         }
 
         return (

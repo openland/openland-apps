@@ -19,6 +19,6 @@ export function convertError(errors: GraphQLError[]) {
         }
         return new ApiError(message, invalidFields);
     } else {
-        return new UnknownError()
+        return new UnknownError();
     }
 }

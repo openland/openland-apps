@@ -76,7 +76,7 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
         if (this.props.onFileDrop) {
             this.props.onFileDrop(file);
         }
-    };
+    }
 
     private handleWindowDragover = (e: any) => {
         if (e.dataTransfer.types[0] !== 'Files') {
@@ -86,33 +86,33 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
         this.setState({
             dragOn: true,
         });
-    };
+    }
 
     private handleMouseOut = () => {
         this.setState({
             dragOn: false,
             dragUnder: false,
         });
-    };
+    }
 
     private handleWindowDrop = (e: any) => {
         e.preventDefault();
         this.setState({
             dragOn: false,
         });
-    };
+    }
 
     private handleDragOver = (e: any) => {
         this.setState({
             dragUnder: true,
         });
-    };
+    }
 
     private handleDragLeave = (e: any) => {
         this.setState({
             dragUnder: false,
         });
-    };
+    }
 
     componentDidMount() {
         window.addEventListener('dragover', this.handleWindowDragover);

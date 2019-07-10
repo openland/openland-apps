@@ -149,14 +149,14 @@ const MobileAppButton = (props: { href: string; image: string }) => (
     </XView>
 );
 
-export const NativeAppsModal = () => {
-    const isMobile = useIsMobile() || undefined;
+export type OS = 'Mac' | 'iOS' | 'Windows' | 'Android' | 'Linux';
+export const detectOS = (): OS | null => {
+    let os: OS | null = null;
     let userAgent = window.navigator.userAgent,
         platform = window.navigator.platform,
         macPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
         windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        os = null;
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'];
 
     if (macPlatforms.indexOf(platform) !== -1) {
         os = 'Mac';
@@ -170,6 +170,20 @@ export const NativeAppsModal = () => {
         os = 'Linux';
     }
 
+    return os;
+};
+
+interface NativaAppsModalProps {
+    title?: string;
+    text?: string;
+    hideLogo?: boolean;
+}
+
+export const NativeAppsModal = (props: NativaAppsModalProps) => {
+    const { title, text, hideLogo } = props;
+    const isMobile = useIsMobile() || undefined;
+    const os = detectOS();
+
     return (
         <XView
             flexDirection="row"
@@ -180,9 +194,11 @@ export const NativeAppsModal = () => {
             paddingRight={isMobile ? 40 : 0}
             paddingBottom={80}
         >
-            <XView position="fixed" top={19} left={32}>
-                <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-            </XView>
+            {!hideLogo && (
+                <XView position="fixed" top={19} left={32}>
+                    <XImage src="/static/landing/logotype.svg" width={145} height={42} />
+                </XView>
+            )}
             <XView
                 flexGrow={0}
                 flexShrink={0}
@@ -200,7 +216,7 @@ export const NativeAppsModal = () => {
                     justifyContent="center"
                     marginTop={120}
                 >
-                    <span className={textAlignClassName}>Install Openland apps</span>
+                    <span className={textAlignClassName}>{title || 'Install Openland apps'}</span>
                 </XView>
                 <XView
                     fontSize={15}
@@ -215,8 +231,12 @@ export const NativeAppsModal = () => {
                     maxWidth={300}
                 >
                     <span className={textAlignClassName}>
-                        Get our fastest experience
-                        <br /> and never miss a message
+                        {text || (
+                            <>
+                                Get our fastest experience
+                                <br /> and never miss a message
+                            </>
+                        )}
                     </span>
                 </XView>
                 <XView flexDirection="row" alignItems="center" marginLeft={50}>

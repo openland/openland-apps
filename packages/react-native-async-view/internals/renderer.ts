@@ -56,9 +56,9 @@ const createReconciler = (onChanged: () => void) => {
 
         cancelPassiveEffects() {
             if (scheduledPassiveCallback === null) {
-                throw new Error('No passive effects callback is scheduled.')
+                throw new Error('No passive effects callback is scheduled.');
             }
-            clearTimeout(scheduledPassiveCallback)
+            clearTimeout(scheduledPassiveCallback);
         },
 
         //

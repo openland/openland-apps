@@ -21,7 +21,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     counter = 0;
     onThemeSelect = (theme: ConversationTheme & { index: number }) => {
         let { index, ...t } = theme;
-        this.setState({ ...t, spiral: this.state.spiral })
+        this.setState({ ...t, spiral: this.state.spiral });
 
         if (index === this.lastThemeIndex) {
             this.counter++;
@@ -36,7 +36,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     }
 
     onSpiralSwitch = (val: boolean) => {
-        this.setState({ spiral: val })
+        this.setState({ spiral: val });
     }
 
     componentDidUpdate() {
@@ -46,7 +46,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     render() {
         let colorPickerSze = 40;
 
-        const themes = ZStyles.avatars.map((a, i) => ({ ...ConversationThemeResolver.getCachedOrDefault(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor, index: i }))
+        const themes = ZStyles.avatars.map((a, i) => ({ ...ConversationThemeResolver.getCachedOrDefault(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor, index: i }));
 
         return (
             <View marginBottom={14}>
@@ -83,7 +83,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
 
                 </ZListItemGroup>
             </View>
-        )
+        );
     }
 }
 
@@ -99,4 +99,4 @@ export let changeThemeModal = async (id: string) => {
         .action('Save', 'default', async () => await ConversationThemeResolver.update(id, changes))
         .show();
 
-}
+};

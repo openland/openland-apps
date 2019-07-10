@@ -58,7 +58,7 @@ export class UploadManager {
                         .then((s: any) => resolver({ name, uri, fileSize: s.size, isImage, imageSize }))
                         .catch((e: any) => onError(e));
                 } else {
-                    resolver({ name, uri, fileSize, isImage, imageSize })
+                    resolver({ name, uri, fileSize, isImage, imageSize });
                 }
             }),
             watch: (handler) => w.watch(handler)

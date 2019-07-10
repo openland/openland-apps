@@ -56,8 +56,8 @@ interface ConversationRootState {
     selection: {
         start: number,
         end: number
-    },
-    messagesActionsState: MessagesActionsState,
+    };
+    messagesActionsState: MessagesActionsState;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -95,7 +95,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     componentWillMount() {
         this.engine.messagesActionsState.listen(state => {
-            this.setState({ messagesActionsState: state })
+            this.setState({ messagesActionsState: state });
 
             if (state.messages && state.messages.length > 0 && state.action === 'edit') {
                 const editMessage = state.messages[0];
@@ -103,7 +103,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 this.setState({
                     text: editMessage.text || '',
                     mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
-                })
+                });
             }
         });
     }
@@ -286,11 +286,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && ['reply', 'forward'].includes(messagesActionsState.action || '')) {
             canSubmit = true;
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />
+            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
         }
 
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
-            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />
+            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
@@ -307,7 +307,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             inputPlaceholder = <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />;
         }
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
-            inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />
+            inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
 
         return (

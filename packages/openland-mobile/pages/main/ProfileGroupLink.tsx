@@ -77,7 +77,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                 />
             </ZListItemGroup>
         </ZTrack>
-    )
+    );
 });
 
 class ProfileGroupLinkComponent extends React.PureComponent<PageProps> {

@@ -438,7 +438,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (e) {
             this.inputRef = e;
         }
-    };
+    }
 
     handleChange = (e: any) => {
         if (this.props.onChange) {
@@ -448,7 +448,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: e.target.value,
         });
-    };
+    }
 
     handleClear = () => {
         if (this.props.onChange) {
@@ -458,7 +458,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: '',
         });
-    };
+    }
 
     handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -466,7 +466,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 this.props.onEnter();
             }
         }
-    };
+    }
 
     focus() {
         this.inputRef.focus();
@@ -481,7 +481,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onFocus) {
             this.props.onFocus();
         }
-    };
+    }
 
     handleBlur = () => {
         this.setState({
@@ -492,7 +492,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onBlur) {
             this.props.onBlur();
         }
-    };
+    }
 
     render() {
         const {

@@ -35,7 +35,7 @@ export function createPoliteContext<T>({
             for (let l of this.listeners) {
                 l(this.value);
             }
-        };
+        }
 
         listen = (lisener: (isActive: K) => void) => {
             this.listeners.add(lisener);
@@ -43,7 +43,7 @@ export function createPoliteContext<T>({
             return () => {
                 this.listeners.delete(lisener);
             };
-        };
+        }
 
         getValue = () => this.value;
         useValue = () => {
@@ -54,7 +54,7 @@ export function createPoliteContext<T>({
                 });
             });
             return value;
-        };
+        }
     }
     const contextState = new ContextState(defaultValue);
     const Context = React.createContext<ContextStateInterface<T>>(contextState);

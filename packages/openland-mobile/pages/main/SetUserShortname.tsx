@@ -46,7 +46,7 @@ export const getErrorByShortname = (shortname: string | null, label: 'Shortname'
     }
 
     return validateResult;
-}
+};
 
 export const validateShortname = (shortname: string | null, min: number, max: number) => {
     let validateResult = false;
@@ -60,7 +60,7 @@ export const validateShortname = (shortname: string | null, min: number, max: nu
     }
 
     return validateResult;
-}
+};
 
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
     let account = getClient().useAccount({ fetchPolicy: 'network-only' });
@@ -142,7 +142,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </ZForm>
         </>
-    )
+    );
 });
 
 class SetUserShortnameComponent extends React.Component<PageProps> {

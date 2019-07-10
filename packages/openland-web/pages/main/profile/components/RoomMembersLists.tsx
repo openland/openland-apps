@@ -221,7 +221,7 @@ const RoomFeaturedMembersInner = (props: { chat: Room_room_SharedRoom }) => {
             ))}
         </>
     );
-}
+};
 
 export const RoomFeaturedMembersList = (props: { chat: Room_room_SharedRoom, beforeChildren: any }) => {
     const { chat, beforeChildren } = props;

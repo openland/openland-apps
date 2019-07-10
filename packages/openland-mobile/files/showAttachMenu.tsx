@@ -121,4 +121,4 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
     }, false, Platform.OS === 'android' ? require('assets/ic-document-24.png') : undefined);
 
     builder.show();
-}
+};

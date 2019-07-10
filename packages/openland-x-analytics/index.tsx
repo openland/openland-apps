@@ -49,6 +49,6 @@ const trackLaunch = async () => {
             trackEvent('session_start');
         }
     }
-}
+};
 
 trackLaunch();

@@ -13,4 +13,4 @@ export const RNSDevice = {
             RNSDeviceNative.proximityDisable();
         }
     }
-}
+};

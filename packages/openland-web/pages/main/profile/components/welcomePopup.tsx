@@ -81,7 +81,7 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
                 isOpen: false,
             });
         }
-    };
+    }
 
     componentWillMount() {
         if (canUseDOM) {

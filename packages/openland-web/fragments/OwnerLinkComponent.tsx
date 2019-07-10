@@ -91,7 +91,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
             return;
         }
         this.input = e;
-    };
+    }
 
     private copy = (e: any) => {
         const { props } = this;
@@ -123,7 +123,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                 this.props.modalContext.hide();
             }
         }, 1500);
-    };
+    }
 
     private resetLink = () => {
         this.setState({
@@ -137,7 +137,7 @@ export class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps>
                 resetLink: false,
             });
         }, 3000);
-    };
+    }
 
     render() {
         const { copied, resetLink } = this.state;

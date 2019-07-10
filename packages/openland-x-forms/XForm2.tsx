@@ -107,7 +107,7 @@ class XFormController extends React.PureComponent<
         });
 
         return collectedErrors;
-    };
+    }
 
     componentWillReceiveProps(nextProps: XFormControllerProps, nextState: XFormControllerState) {
         let nextTouched: any[] = [];
@@ -212,12 +212,12 @@ class XFormController extends React.PureComponent<
             this.props.store.writeValue('form.loading', false);
             this.props.store.writeValue('form.enabled', true);
         }
-    };
+    }
 
     onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         this.submit();
-    };
+    }
 
     render() {
         if (LOGGING) {

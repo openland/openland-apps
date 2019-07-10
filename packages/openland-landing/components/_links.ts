@@ -1,6 +1,7 @@
 export const LandingLinks = {
     home: '/',
 
+    download: '/download',
     about: '/about',
     privacy: '/privacy',
     terms: '/terms',

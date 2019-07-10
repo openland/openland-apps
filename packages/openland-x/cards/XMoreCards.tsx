@@ -64,7 +64,7 @@ export class XMoreCards extends React.Component<XMoreCardsProps, XMoreCardsState
         this.setState({
             isShown: !this.state.isShown,
         });
-    };
+    }
 
     render() {
         if (React.Children.count(this.props.children) > 11) {

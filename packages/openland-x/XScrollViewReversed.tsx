@@ -43,7 +43,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
 
             this.scroller = src;
         }
-    };
+    }
 
     scrollToBottom = () => {
         if (this.scroller) {
@@ -52,7 +52,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
                 this.scroller.scrollTop = this.scroller.scrollHeight;
             }
         }
-    };
+    }
 
     private restoreScroll = () => {
         if (this.lastDimensions) {
@@ -60,7 +60,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
         } else {
             this.scrollToBottom();
         }
-    };
+    }
 
     restorePreviousScroll = () => {
         if (this.lastDimensions) {
@@ -70,7 +70,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
         } else {
             this.scrollToBottom();
         }
-    };
+    }
 
     private handleWindowResize = () => {
         // let container = this.scroller!!.children.item(0).children.item(0);
@@ -89,7 +89,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
         } else {
             this.scrollToBottom();
         }
-    };
+    }
 
     updateDimensions = () => {
         let dimensions = this.getDimensions();
@@ -104,7 +104,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
         } else {
             this.lastDimensions = dimensions;
         }
-    };
+    }
 
     private getDimensions = () => {
         return {
@@ -112,7 +112,7 @@ export class XScrollViewReversedInner extends React.PureComponent<
             scrollHeight: this.scroller!.scrollHeight,
             offsetHeight: this.scroller!.offsetHeight,
         };
-    };
+    }
 
     componentWillReceiveProps(props: XScrollViewReversedInnerProps) {
         this.updateDimensions();

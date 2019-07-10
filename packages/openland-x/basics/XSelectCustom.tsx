@@ -98,7 +98,7 @@ export class XSelectCustomUsersRender extends React.Component<
             return;
         }
         this.input = e;
-    };
+    }
 
     componentWillReceiveProps(props: XSelectCustomProps) {
         if (
@@ -134,15 +134,15 @@ export class XSelectCustomUsersRender extends React.Component<
             e.preventDefault();
             this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
         }
-    };
+    }
 
     focusInHandler = (e: any) => {
         this.setState({ focus: true });
-    };
+    }
 
     focusOutHandler = () => {
         this.setState({ focus: false });
-    };
+    }
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
@@ -162,7 +162,7 @@ export class XSelectCustomUsersRender extends React.Component<
         if (this.props.onInputChange) {
             this.props.onInputChange(e.currentTarget.value);
         }
-    };
+    }
 
     onDelete = (value?: string) => {
         let res = this.state.lastValue.filter(v => v.value !== value);
@@ -171,7 +171,7 @@ export class XSelectCustomUsersRender extends React.Component<
         } else {
             this.setState({ lastValue: res });
         }
-    };
+    }
 
     onPick = (option: { type: string | null; label: string; value: string }) => {
         if (this.props.multi === false && this.state.lastValue[0] !== undefined) {
@@ -187,7 +187,7 @@ export class XSelectCustomUsersRender extends React.Component<
         } else {
             this.setState({ lastValue: res, inputVal: '', focus: false });
         }
-    };
+    }
 
     render() {
         const {

@@ -27,7 +27,7 @@ export class AppStorageQueued<T extends AppStorageQueuedItem> {
                 } catch (e) {
                     reject(e);
                 }
-            })
+            });
         });
     }
 

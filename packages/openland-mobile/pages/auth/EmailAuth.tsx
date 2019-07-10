@@ -66,14 +66,14 @@ const requestActivationCode = async () => {
     });
 
     session = res.session;
-}
+};
 
 class EmailStartComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    };
+    }
 
     private validateEmail = (value?: string) => {
         if (!value) {
@@ -137,7 +137,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps, { code: string }
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    };
+    }
 
     private validateCode = (value?: string) => {
         if (!value) {
@@ -167,7 +167,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps, { code: string }
                 this.submitForm();
             }
         });
-    };
+    }
 
     render() {
         return (

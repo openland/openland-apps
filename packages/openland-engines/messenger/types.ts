@@ -2,7 +2,7 @@ import { FullMessage, FullMessage_GeneralMessage_spans, UserBadge } from 'openla
 import { DataSourceMessageItem } from './ConversationEngine';
 
 export interface PendingMessage {
-    isService?: false,
+    isService?: false;
     date: string;
     key: string;
     progress: number;
@@ -33,7 +33,7 @@ export interface FileMetadata {
     uri?: string;
     fileSize?: number;
     isImage?: boolean;
-    imageSize?: { width: number, height: number }
+    imageSize?: { width: number, height: number };
 }
 
 export enum UploadStatus {

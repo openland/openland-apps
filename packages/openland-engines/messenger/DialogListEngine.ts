@@ -39,7 +39,7 @@ export interface DialogDataSourceItemStored {
     forward?: boolean;
     messageId?: string;
     message?: string;
-    fallback: string
+    fallback: string;
     isService?: boolean;
     sender?: string;
     isOut?: boolean;
@@ -131,13 +131,13 @@ export class DialogListEngine {
                     items: res.dialogs.items.map((v) => extractDialog(v, engine.user.id)),
                     cursor: res.dialogs.cursor ? res.dialogs.cursor : undefined,
                     state: res.state.state!!
-                }
+                };
             },
             onStarted: (state: string) => {
                 engine.global.handleDialogsStarted(state);
 
             }
-        }
+        };
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
         let typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored, { typing: string }>(this._dataSourceStored.dataSource);
         let onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored & { typing?: string }, { online: boolean }>(typingsAugmentator.dataSource);
@@ -149,7 +149,7 @@ export class DialogListEngine {
                     if (i.kind === 'PRIVATE') {
                         this.userConversationMap.set(i.flexibleId, i.key);
                         if (this.useOnlines.has(i.flexibleId)) {
-                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
+                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! });
                         }
                         this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     }
@@ -161,7 +161,7 @@ export class DialogListEngine {
                     if (i.kind === 'PRIVATE') {
                         this.userConversationMap.set(i.flexibleId, i.key);
                         if (this.useOnlines.has(i.flexibleId)) {
-                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
+                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! });
                         }
                         this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
                     }
@@ -172,7 +172,7 @@ export class DialogListEngine {
                 if (item.kind === 'PRIVATE') {
                     this.userConversationMap.set(item.flexibleId, item.key);
                     if (this.useOnlines.has(item.flexibleId)) {
-                        onlineAugmentator.setAugmentation(item.flexibleId, { online: this.useOnlines.get(item.flexibleId)!! })
+                        onlineAugmentator.setAugmentation(item.flexibleId, { online: this.useOnlines.get(item.flexibleId)!! });
                     }
                     this.engine.getOnlines().onPrivateChatAppears(item.flexibleId);
 
@@ -202,7 +202,7 @@ export class DialogListEngine {
             if (!conversationId) {
                 return;
             }
-            onlineAugmentator.setAugmentation(conversationId, { online })
+            onlineAugmentator.setAugmentation(conversationId, { online });
         });
 
         engine.getTypings().subcribe((typing, users, conversationId) => {
@@ -228,7 +228,7 @@ export class DialogListEngine {
                 haveMention
             });
         }
-    };
+    }
 
     handleIsMuted = async (conversationId: string, isMuted: boolean) => {
         let res = await this._dataSourceStored.getItem(conversationId);
@@ -238,14 +238,14 @@ export class DialogListEngine {
                 isMuted,
             });
         }
-    };
+    }
 
     handleDialogDeleted = async (event: any) => {
         const cid = event.cid as string;
         if (await this._dataSourceStored.hasItem(cid)) {
             await this._dataSourceStored.removeItem(cid);
         }
-    };
+    }
 
     handleMessageUpdated = async (event: any) => {
         const conversationId = event.cid as string;
@@ -264,7 +264,7 @@ export class DialogListEngine {
                 });
             }
         }
-    };
+    }
 
     handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean, uid: string) => {
         let existing = await this._dataSourceStored.getItem(cid);
@@ -275,7 +275,7 @@ export class DialogListEngine {
                 cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
             }, uid));
         }
-    };
+    }
 
     handleTitleUpdated = async (cid: string, title: string) => {
         let existing = await this._dataSourceStored.getItem(cid);
@@ -285,7 +285,7 @@ export class DialogListEngine {
                 title: title,
             });
         }
-    };
+    }
 
     handleMuteUpdated = async (cid: string, mute: boolean) => {
         let existing = await this._dataSourceStored.getItem(cid);
@@ -295,7 +295,7 @@ export class DialogListEngine {
                 isMuted: mute,
             });
         }
-    };
+    }
 
     handlePhotoUpdated = async (cid: string, photo: string) => {
         let existing = await this._dataSourceStored.getItem(cid);
@@ -305,7 +305,7 @@ export class DialogListEngine {
                 photo: photo,
             });
         }
-    };
+    }
 
     handleChatNewMessage = async (event: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
         // this.handleNewMessage({ message: event.message, cid, unread: 0, haveMention: false }, false, true);
@@ -400,5 +400,5 @@ export class DialogListEngine {
                 0
             );
         }
-    };
+    }
 }

@@ -97,7 +97,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 </View>
             </ZForm>
         </>
-    )
+    );
 });
 
 export const EditOrganization = withApp(EditOrganizationComponent, { navigationAppearance: 'small' });

@@ -30,7 +30,7 @@ export interface ConversationTheme {
     reactionTextColorOut: string;
 
     // service messages
-    serviceTextColor: string
+    serviceTextColor: string;
 
 }
 
@@ -127,7 +127,7 @@ class ConversationThemeResolverInner {
 
         return (() => {
             this.listeners.get(conversationId)!.delete(onThemeChanged);
-        })
+        });
     }
 }
 

@@ -33,5 +33,5 @@ export const Worker = withApp(() => {
                 </ZListItemGroup>
             </SScrollView>
         </>
-    )
+    );
 });
