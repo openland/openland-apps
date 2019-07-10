@@ -3,6 +3,7 @@ import uuid from 'uuid';
 import { useLayout } from './LayoutContext';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { PageContainer } from './PageContainer';
 
 export interface UnicornPage {
     key: string;
@@ -57,64 +58,6 @@ const rootClassName = css`
     height: 100%;
 `;
 
-const baseClassName = css`
-    position: absolute;
-    background-color: white;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 0px;
-    will-change: transform;
-`;
-
-const baseClassNameContainer = css`
-    position: absolute;
-    background-color: black;
-    opacity: 0.3;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 0px;
-    will-change: opacity;
-`;
-
-const initialClassName = css`
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    pointer-events: none;
-`;
-
-const initialClassNameContainer = css`
-    opacity: 0.01;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const mountedClassName = css`
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-// const visibleClassName = css`
-//     transform: translateX(0%);
-// `;
-
-const mountedClassNameContainer = css`
-    opacity: 0.3;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const exitingClassName = css`
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    pointer-events: none;
-`;
-
-const exitingClassNameContainer = css`
-    opacity: 0.01;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-`;
-
-const displayNone = css`
-    display: none;
-`;
-
 const PageAnimator = React.memo((props: {
     children?: any,
     k: string,
@@ -122,32 +65,10 @@ const PageAnimator = React.memo((props: {
     dispatch: React.Dispatch<AnimationAction>,
     controller: UnicornController
 }) => {
-    let className;
-    let className2;
-    let offset = 0;
-    if (props.state === 'mounting') {
-        className = initialClassName;
-        className2 = initialClassNameContainer;
-        offset = props.controller.ref.current!.clientWidth;
-    } else if (props.state === 'entering' || props.state === 'visible') {
-        className = mountedClassName;
-        className2 = mountedClassNameContainer;
-        offset = 0;
-    } else if (props.state === 'exiting') {
-        className = exitingClassName;
-        className2 = exitingClassNameContainer;
-        offset = props.controller.ref.current!.clientWidth;
-    } else if (props.state === 'hidden') {
-        className = displayNone;
-        className2 = displayNone;
-        offset = props.controller.ref.current!.clientWidth;
-    } else {
-        className = '';
-    }
 
     console.log('render[' + props.k + ']: ' + props.state);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         let active = true;
         if (props.state === 'entering') {
             setTimeout(() => {
@@ -168,13 +89,15 @@ const PageAnimator = React.memo((props: {
         };
     }, [props.state]);
 
+    let state = props.state;
+    if (state === 'hidden') {
+        return null;
+    }
+
     return (
-        <>
-            <div className={baseClassNameContainer + ' ' + className2} />
-            <div className={baseClassName + ' ' + className} style={{ transform: 'translateX(' + offset + 'px)' }}>
-                {props.state !== 'hidden' && props.children}
-            </div>
-        </>
+        <PageContainer state={state} container={props.controller.ref}>
+            {props.children}
+        </PageContainer>
     );
 });
 

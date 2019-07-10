@@ -26,28 +26,6 @@ export const InnerContainer = (props: { children?: any }) => {
 }
 
 export const Container = React.memo((props: { children?: any }) => {
-    // React.useLayoutEffect(() => {
-    //     let callback = (e: any) => {
-    //         console.log(e.target);
-    //         if (e.target === document.body) {
-    //             e.preventDefault();
-    //         }
-    //         if (e.target === window) {
-    //             e.preventDefault();
-    //         }
-    //     };
-    //     document.body.addEventListener('touchstart', callback, { passive: false });
-    //     document.body.addEventListener('touchmove', callback, { passive: false });
-    //     window.addEventListener('touchstart', callback, { passive: false });
-    //     window.addEventListener('touchmove', callback, { passive: false });
-
-    //     return () => {
-    //         document.body.removeEventListener('touchstart', callback);
-    //         document.body.removeEventListener('touchmove', callback);
-    //         window.removeEventListener('touchstart', callback);
-    //         window.removeEventListener('touchmove', callback);
-    //     }
-    // }, []);
     return (
         <LayoutProvider>
             <div className={body}>
