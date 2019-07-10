@@ -10,10 +10,18 @@ export interface UnicornPage {
 }
 
 export class UnicornController {
+    ref: React.RefObject<HTMLDivElement>;
     pages: UnicornPage[] = [];
     private _listeners: ((action: { type: 'push', key: string, component: any } | { type: 'pop', key: string }) => void)[] = [];
 
+    constructor(ref: React.RefObject<HTMLDivElement>) {
+        this.ref = ref;
+    }
+
     push = (component: any) => {
+        if (!this.ref.current) {
+            return;
+        }
         let key = uuid();
         this.pages.push({ component, key });
         for (let l of this._listeners) {
@@ -22,6 +30,9 @@ export class UnicornController {
     }
 
     pop = () => {
+        if (!this.ref.current) {
+            return;
+        }
         if (this.pages.length > 0) {
             let r = this.pages.splice(this.pages.length - 1, 1);
             for (let l of this._listeners) {
@@ -40,6 +51,12 @@ export class UnicornController {
 
 const UnicornContext = React.createContext<UnicornController>(undefined as any);
 
+const rootClassName = css`
+    display: flex;
+    width: 100%;
+    height: 100%;
+`;
+
 const baseClassName = css`
     position: absolute;
     background-color: white;
@@ -47,6 +64,7 @@ const baseClassName = css`
     right: 0px;
     bottom: 0px;
     top: 0px;
+    will-change: transform;
 `;
 
 const baseClassNameContainer = css`
@@ -61,7 +79,6 @@ const baseClassNameContainer = css`
 `;
 
 const initialClassName = css`
-    transform: translateX(100%);
     transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
 `;
@@ -72,7 +89,6 @@ const initialClassNameContainer = css`
 `;
 
 const mountedClassName = css`
-    transform: translateX(0%);
     transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
@@ -86,7 +102,6 @@ const mountedClassNameContainer = css`
 `;
 
 const exitingClassName = css`
-    transform: translateX(100%);
     transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
 `;
@@ -104,22 +119,28 @@ const PageAnimator = React.memo((props: {
     children?: any,
     k: string,
     state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting',
-    dispatch: React.Dispatch<AnimationAction>
+    dispatch: React.Dispatch<AnimationAction>,
+    controller: UnicornController
 }) => {
     let className;
     let className2;
+    let offset = 0;
     if (props.state === 'mounting') {
         className = initialClassName;
         className2 = initialClassNameContainer;
+        offset = props.controller.ref.current!.clientWidth;
     } else if (props.state === 'entering' || props.state === 'visible') {
         className = mountedClassName;
         className2 = mountedClassNameContainer;
+        offset = 0;
     } else if (props.state === 'exiting') {
         className = exitingClassName;
         className2 = exitingClassNameContainer;
+        offset = props.controller.ref.current!.clientWidth;
     } else if (props.state === 'hidden') {
         className = displayNone;
         className2 = displayNone;
+        offset = props.controller.ref.current!.clientWidth;
     } else {
         className = '';
     }
@@ -150,7 +171,7 @@ const PageAnimator = React.memo((props: {
     return (
         <>
             <div className={baseClassNameContainer + ' ' + className2} />
-            <div className={baseClassName + ' ' + className}>
+            <div className={baseClassName + ' ' + className} style={{ transform: 'translateX(' + offset + 'px)' }}>
                 {props.state !== 'hidden' && props.children}
             </div>
         </>
@@ -244,7 +265,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     let layout = useLayout();
     let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
     React.useEffect(() => { return props.controller.addListener(dispatch); }, []);
-    React.useLayoutEffect(() => { setTimeout(() => dispatch({ type: 'mounted' }), 10); });
+    React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
     if (layout === 'mobile') {
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
@@ -254,7 +275,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                     </XView>
                 </XView>
                 {state.pages.map((v) => (
-                    <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch}>
+                    <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
                         {v.component}
                     </PageAnimator>
                 ))}
@@ -268,7 +289,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                 </XView>
                 <XView width={0} flexGrow={1} minWidth={500} height="100%" flexDirection="column" backgroundColor="purple" position="relative">
                     {state.pages.map((v) => (
-                        <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch}>
+                        <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
                             {v.component}
                         </PageAnimator>
                     ))}
@@ -279,11 +300,14 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
 });
 
 export const UnicornProvider = React.memo((props: { root: any }) => {
-    let controller = React.useMemo(() => new UnicornController(), []);
+    let ref = React.useRef<HTMLDivElement>(null);
+    let controller = React.useMemo(() => new UnicornController(ref), []);
     return (
-        <UnicornContext.Provider value={controller}>
-            <UnicornContainer root={props.root} controller={controller} />
-        </UnicornContext.Provider>
+        <div className={rootClassName} ref={ref}>
+            <UnicornContext.Provider value={controller}>
+                <UnicornContainer root={props.root} controller={controller} />
+            </UnicornContext.Provider>
+        </div>
     );
 });
 export const useController = () => React.useContext(UnicornContext);
