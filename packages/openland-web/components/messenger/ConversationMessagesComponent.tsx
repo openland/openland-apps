@@ -10,20 +10,20 @@ import { TypingsView } from './typings/TypingsView';
 const TypingComponent = React.memo((props: { chatId: string }) => (
     <XView
         alignItems="center"
-        width={'100%'}
+        width="100%"
         flexShrink={0}
-        position={'absolute'}
+        position="absolute"
+        backgroundColor="#fff"
         bottom={0}
         left={0}
     >
         <XView
             alignItems="flex-start"
-            width={'100%'}
-            backgroundColor={'#fff'}
+            width="100%"
             maxHeight={33}
             maxWidth={930}
             paddingLeft={60}
-            paddingRight={40}
+            paddingRight={60}
         >
             <TypingsView conversationId={props.chatId} />
         </XView>

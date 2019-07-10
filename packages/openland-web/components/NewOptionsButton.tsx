@@ -9,33 +9,33 @@ import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
 import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
-import NewIcon from 'openland-icons/add-24.svg';
 import { makeActionable } from 'openland-x/Actionable';
 // import { XShortcuts } from 'openland-x/XShortcuts';
 // import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
-import NotificationsIcon from 'openland-icons/notifications-24.svg';
-import NotificationsNewIcon from 'openland-icons/notifications-new-24.svg';
+import PlusIcon from 'openland-icons/ic-add.svg';
+import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
+import NotificationIcon from 'openland-icons/ic-notification.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useWithWidth } from '../hooks/useWithWidth';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
+        width={32}
+        height={32}
         cursor="pointer"
-        fontSize={16}
-        fontWeight="600"
-        color="#1790ff"
         flexDirection="row"
         alignItems="center"
+        justifyContent="center"
+        borderRadius={32}
+        hoverBackgroundColor="#F0F2F5"
         onClick={props.onClick}
     >
-        <XView marginRight={5}>
-            <NewIcon />
-        </XView>
+        <PlusIcon />
     </XView>
 ));
 
 const NotificationButton = ({ haveNotification }: { haveNotification: boolean }) => {
-    return <>{haveNotification ? <NotificationsNewIcon /> : <NotificationsIcon />}</>;
+    return <>{haveNotification ? <NotificationNewIcon /> : <NotificationIcon />}</>;
 };
 
 export const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
@@ -45,12 +45,14 @@ export const NotificationsButton = makeActionable<{ onClick: () => void }>(() =>
     let router = React.useContext(XRouterContext)!;
     return (
         <XView
+            width={32}
+            height={32}
             cursor="pointer"
-            fontSize={16}
-            fontWeight="600"
-            color="#1790ff"
             flexDirection="row"
             alignItems="center"
+            justifyContent="center"
+            borderRadius={32}
+            hoverBackgroundColor="#F0F2F5"
             onClick={() => {
                 if (router) {
                     router.push(`/notifications/comments`);
@@ -203,9 +205,12 @@ export const NewOptionsButton = XMemo(() => {
     //     router.push(`/mail`);
     // };
 
-    const toggle = React.useCallback(() => {
-        setShow(!show);
-    }, [show]);
+    const toggle = React.useCallback(
+        () => {
+            setShow(!show);
+        },
+        [show],
+    );
 
     let marginRight = 0;
     if (width && width < 951) {

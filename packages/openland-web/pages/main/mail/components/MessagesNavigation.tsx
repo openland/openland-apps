@@ -127,11 +127,11 @@ export const MessagesNavigation = XMemo(
                     }}
                 >
                     <Navigation
-                        title="Messages"
+                        title="Chats"
                         tab={tab}
                         menuRightContent={
                             <XView flexDirection="row" alignItems="center">
-                                <XView marginRight={16} justifyContent="center">
+                                <XView marginRight={7} justifyContent="center" alignItems="center">
                                     <NotificationsButton />
                                 </XView>
                                 <NewOptionsButton />
@@ -139,13 +139,14 @@ export const MessagesNavigation = XMemo(
                         }
                         secondFragmentHeader={
                             <React.Suspense fallback={null}>
-                                {chatId && !isRoomProfile && (
-                                    <ChatHeaderViewLoader
-                                        variables={{
-                                            id: chatId,
-                                        }}
-                                    />
-                                )}
+                                {chatId &&
+                                    !isRoomProfile && (
+                                        <ChatHeaderViewLoader
+                                            variables={{
+                                                id: chatId,
+                                            }}
+                                        />
+                                    )}
                             </React.Suspense>
                         }
                         firstFragment={

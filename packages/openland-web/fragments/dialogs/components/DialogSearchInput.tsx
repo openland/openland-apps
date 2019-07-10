@@ -4,11 +4,11 @@ import { XInputProps, XInput } from 'openland-x/XInput';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 let searchStyle = css`
+    border: none !important;
     border-color: transparent !important;
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-top: 5px;
-    margin-bottom: 12px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 14px;
     height: 40px !important;
     & svg > path,
     &:focus-within svg > path,
@@ -37,7 +37,7 @@ let searchStyle = css`
         font-size: 15px;
         font-weight: 500;
         color: #78808F;
-        padding-left: 33px;
+        padding-left: 36px;
     }
     & input {
         background-color: #F0F2F5;

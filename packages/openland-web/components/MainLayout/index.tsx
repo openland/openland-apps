@@ -127,12 +127,11 @@ export const MenuItem = ({ path, icon, onClick, title, notification }: MenuItemP
 );
 
 const titleClassName = css`
-    font-size: 22px;
-    line-height: 28px;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: #000;
-    opacity: 0.9;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    color: #171B1F;
 `;
 
 export const Title = ({ children, onClick }: { children: any; onClick?: (event: any) => void }) => {

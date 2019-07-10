@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const styleInner = css`
     display: flex;

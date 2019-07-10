@@ -40,7 +40,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     if (typing) {
         return (
             <XView
-                marginLeft={isMobile ? 13 : 53}
+                marginLeft={isMobile ? 13 : 66}
                 alignItems="flex-start"
                 marginTop={8}
                 marginBottom={8}

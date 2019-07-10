@@ -33,7 +33,7 @@ const messagesWrapperClassName = css`
     width: 100%;
     max-width: 1040px;
     padding-top: 96px;
-    padding-bottom: 4px;
+    padding-bottom: 35px;
     padding-left: 53px;
     padding-right: 53px;
 `;
