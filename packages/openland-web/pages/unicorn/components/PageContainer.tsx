@@ -70,7 +70,7 @@ export const PageContainer = (props: {
     let offset: number;
     switch (props.state) {
         case 'mounting':
-            offset = props.container.current!.clientWidth
+            offset = props.container.current!.clientWidth;
             break;
         case 'entering':
             offset = 0;
@@ -79,7 +79,7 @@ export const PageContainer = (props: {
             offset = 0;
             break;
         case 'visible':
-            offset = props.container.current!.clientWidth
+            offset = props.container.current!.clientWidth;
             break;
         default:
             offset = 0;
