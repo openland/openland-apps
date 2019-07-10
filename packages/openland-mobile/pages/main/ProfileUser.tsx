@@ -34,7 +34,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 if (groups.length > 0) {
                     startLoader();
                     try {
-                        await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) })
+                        await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) });
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
@@ -55,8 +55,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     let sub = undefined;
     let subColor = undefined;
     if (user.isBot) {
-        sub = 'bot'
-        subColor = '#0084fe'
+        sub = 'bot';
+        subColor = '#0084fe';
     } else {
         if (!userQuery.user.online && userQuery.user.lastSeen) {
             sub = formatLastSeen(userQuery.user.lastSeen);

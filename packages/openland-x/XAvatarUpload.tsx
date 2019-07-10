@@ -114,7 +114,7 @@ class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { sto
         } else {
             this.props.store.writeValue(key, null);
         }
-    };
+    }
 
     render() {
         let { valueStoreKey, field, ...other } = this.props;

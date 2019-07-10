@@ -65,7 +65,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                     />
                 </ZForm>
             </>
-        )
+        );
     } else {
         return null;
     }

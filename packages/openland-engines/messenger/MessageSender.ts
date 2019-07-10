@@ -6,7 +6,7 @@ import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacyment
 
 export type MentionToSend = UserForMention | {
     __typename: "AllMention";
-}
+};
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;

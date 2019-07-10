@@ -55,10 +55,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let handleUserPress = (id: string) => {
         props.onUserPress(id);
-    }
+    };
     let handleGroupPress = (id: string) => {
         props.onGroupPress(id);
-    }
+    };
     let handleDoublePress = () => {
         if (!props.message.isSending) {
             const now = Date.now();
@@ -70,23 +70,23 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                 lastTap = now;
             }
         }
-    }
+    };
     let handleLongPress = () => {
         if (!props.message.isSending) {
             props.onMessageLongPress(props.message, props.engine.conversationId);
         }
-    }
+    };
     let handleCommentsPress = () => {
         props.onCommentsPress(props.message, props.engine.conversationId);
-    }
+    };
     let handleReactionsPress = () => {
         props.onReactionsPress(props.message);
-    }
+    };
 
     let res;
 
     if (props.message.isService) {
-        return <ServiceMessageDefault message={props.message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} theme={theme} />
+        return <ServiceMessageDefault message={props.message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} theme={theme} />;
     }
 
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {

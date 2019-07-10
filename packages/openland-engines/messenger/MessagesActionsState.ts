@@ -29,7 +29,7 @@ export class MessagesActionsStateEngine {
         listener(this.state);
         return () => {
             this.listeners.delete(listener);
-        }
+        };
     }
 
     clear = () => {
@@ -53,17 +53,17 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, self: Dat
     React.useEffect(() => {
         return engine.listen((s) => {
             setSelected(s.messages.includes(self));
-        })
-    }, [self])
+        });
+    }, [self]);
     return selected;
-}
+};
 
 export const useChatSelectionMode = (engine: MessagesActionsStateEngine) => {
     let [selectionActive, setSelectionActive] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
             setSelectionActive(s.messages.length > 0 && !s.action);
-        })
-    })
+        });
+    });
     return selectionActive;
-}
+};

@@ -174,7 +174,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
 
     handleOnLoad = () => {
         this.setState({ srcLoading: false });
-    };
+    }
     render() {
         let hasImage =
             (this.props.value &&

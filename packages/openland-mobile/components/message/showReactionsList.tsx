@@ -47,7 +47,7 @@ const ReactionsList = (props: ReactionsListProps) => {
             })}
         </View>
     );
-}
+};
 
 export const showReactionsList = (reactions: FullMessage_GeneralMessage_reactions[]) => {
     if (reactions.length === 0) {
@@ -70,4 +70,4 @@ export const showReactionsList = (reactions: FullMessage_GeneralMessage_reaction
 
     builder.view((ctx: ZModalController) => <ReactionsList ctx={ctx} list={reactionList} />);
     builder.show();
-}
+};

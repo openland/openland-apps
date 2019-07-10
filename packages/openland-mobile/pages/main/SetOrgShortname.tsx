@@ -98,7 +98,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </ZForm>
         </>
-    )
+    );
 });
 
 class SetOrgShortnameComponent extends React.Component<PageProps> {

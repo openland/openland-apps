@@ -23,7 +23,7 @@ export const InnerContainer = (props: { children?: any }) => {
             {props.children}
         </div>
     );
-}
+};
 
 export const Container = React.memo((props: { children?: any }) => {
     // React.useLayoutEffect(() => {

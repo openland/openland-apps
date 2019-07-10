@@ -33,7 +33,7 @@ interface AppTheme {
     roundButtonBackground: {
         default: string;
         secondary: string;
-    },
+    };
     roundButtonText: {
         default: string;
         secondary: string;
@@ -197,7 +197,7 @@ const DefaultTheme: AppTheme = {
     },
 
     imageEmpty: require('assets/img-empty.png')
-}
+};
 
 const DarkTheme: AppTheme = {
     headerColor: '#1a1a1a',
@@ -294,4 +294,4 @@ const DarkTheme: AppTheme = {
     },
 
     imageEmpty: require('assets/img-empty-dark.png')
-}
+};

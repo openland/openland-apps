@@ -2,8 +2,8 @@ import * as humanize from 'humanize';
 import { formatDate, formatAbsoluteDate } from './formatDate';
 
 const addLeadingZero = (time: number) => {
-    return ('0' + time).substr(-2)
-}
+    return ('0' + time).substr(-2);
+};
 
 export function formatTime(date: number) {
     let dt = new Date(date);

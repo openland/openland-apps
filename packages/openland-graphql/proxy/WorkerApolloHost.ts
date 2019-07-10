@@ -14,7 +14,7 @@ export class WorkerApolloHost {
         this.client = client;
         this.client.watchStatus((status) => {
             this.postMessage({ id: randomKey(), type: 'status', status: status.status });
-        })
+        });
         this.worker.setHandler((msg) => {
             this.handleMessage(msg);
         });
@@ -50,7 +50,7 @@ export class WorkerApolloHost {
                 this.postResult(msg.id, v);
             }).catch((v) => {
                 this.postError(msg.id, v);
-            })
+            });
         } else if (msg.type === 'watch') {
             let id = msg.id;
             let watch = this.client.queryWatch(msg.body, msg.variables, msg.params);

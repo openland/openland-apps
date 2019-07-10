@@ -16,7 +16,7 @@ class AppStorageImpl implements AppStorageApi {
         } else {
             await AsyncStorage.removeItem(key);
         }
-    };
+    }
 }
 
 export const AppStorage = new AppStorageImpl();

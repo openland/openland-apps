@@ -24,7 +24,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
 
     started = false;
     ended = false;
-    bgView = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 })
+    bgView = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 });
     contentView = new SAnimatedShadowView(this.key + '--ctns', { opacity: 0 });
     contentHeight = 0;
 
@@ -128,7 +128,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
             <View width={420} alignSelf="center">
                 {this.renderContents()}
             </View>
-        )
+        );
     }
 
     renderContents = () => (
@@ -140,7 +140,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         >
             {this.contents}
         </View>
-    );
+    )
 
     render() {
         const { theme, withoutWrapper } = this.props;
@@ -191,14 +191,14 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                     </View>
                 </SAnimated.View>
             </View>
-        )
+        );
     }
 }
 
 const ThemedBlanketModal = XMemo((props: BlanketModalProps) => {
     let theme = React.useContext(ThemeContext);
-    return <BlanketModal {...props} theme={theme} />
-})
+    return <BlanketModal {...props} theme={theme} />;
+});
 
 export function showBlanketModal(
     render: (ctx: ZModalController) => React.ReactElement<{}>, 
@@ -218,6 +218,6 @@ export function showBlanketModal(
                     />
                 )}
             </ASSafeAreaContext.Consumer>
-        )
+        );
     });
 }

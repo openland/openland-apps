@@ -1,6 +1,6 @@
 export class ExecutionQueue {
     private _queue: (() => any)[] = [];
-    private _executing = false
+    private _executing = false;
 
     post = (action: () => any) => {
         this._queue.push(action);

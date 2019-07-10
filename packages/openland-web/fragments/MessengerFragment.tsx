@@ -46,7 +46,7 @@ class MessagengerFragmentInner extends React.PureComponent<
 > {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
-    };
+    }
 
     render() {
         const { state, room } = this.props;

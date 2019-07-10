@@ -4,8 +4,8 @@ import uuid from 'uuid/v4';
 class AppStorageStatic {
 
     private started: boolean = false;
-    private inited = false
-    private initPromise!: Promise<void>
+    private inited = false;
+    private initPromise!: Promise<void>;
     private _token?: string;
     private _storage?: string;
 
@@ -25,16 +25,16 @@ class AppStorageStatic {
 
     prepare = async () => {
         if (!this.started) {
-            this.initPromise = this.doPrepare()
+            this.initPromise = this.doPrepare();
         }
-        await this.initPromise
+        await this.initPromise;
     }
 
     resetToken = async () => {
         if (!this.inited) {
             throw Error('AppStorage not inited');
         }
-        await AsyncStorage.multiRemove(['openland-token', 'openland-storage'])
+        await AsyncStorage.multiRemove(['openland-token', 'openland-storage']);
         this._token = undefined;
         this._storage = undefined;
     }
@@ -49,7 +49,7 @@ class AppStorageStatic {
         await AsyncStorage.multiSet([
             ['openland-token', token],
             ['openland-storage', storage]
-        ])
+        ]);
     }
 
     private doPrepare = async () => {

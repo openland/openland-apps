@@ -98,7 +98,7 @@ const Page = (props: { text: string }) => {
             </XView> */}
         </XView>
     );
-}
+};
 
 const Root = () => {
     let controller = useController();
@@ -115,7 +115,7 @@ const Root = () => {
             <XButton onClick={() => controller.push(<Page text={uuid()} />)} />
         </XView>
     );
-}
+};
 
 export default () => {
     return (

@@ -25,7 +25,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
 
     started = false;
     ended = false;
-    bgView = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 })
+    bgView = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 });
     contentView = new SAnimatedShadowView(this.key + '--ctns', { opacity: 0 });
     contentHeight = 0;
 
@@ -244,14 +244,14 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                     )}
                 </SAnimated.View>
             </View>
-        )
+        );
     }
 }
 
 const ThemedSheetModal = XMemo((props: SheetModalProps) => {
     let theme = React.useContext(ThemeContext);
-    return <SheetModal {...props} theme={theme} />
-})
+    return <SheetModal {...props} theme={theme} />;
+});
 
 export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean) {
     showModal((ctx) => {
@@ -259,6 +259,6 @@ export function showSheetModal(render: (ctx: ZModalController) => React.ReactEle
             <ASSafeAreaContext.Consumer>
                 {safe => <ThemedSheetModal modal={render} safe={safe} flat={flat} ctx={ctx} />}
             </ASSafeAreaContext.Consumer>
-        )
+        );
     });
 }

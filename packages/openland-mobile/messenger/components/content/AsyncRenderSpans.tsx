@@ -88,6 +88,6 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                     </>
                 ))}
             </>
-        )
+        );
     }
 }

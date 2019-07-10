@@ -85,7 +85,7 @@ class SingleReaction extends React.PureComponent<{
         } else {
             this.props.handler(reaction);
         }
-    };
+    }
     render() {
         return (
             <ReactionItem isMy={this.props.isMy} onClick={this.handleChangeReaction}>

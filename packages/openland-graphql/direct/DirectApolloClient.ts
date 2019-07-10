@@ -31,13 +31,13 @@ export class DirectApollolClient implements GraphqlClient {
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
         let fetchPolicy: FetchPolicy = 'cache-first';
         if (params && params.fetchPolicy) {
-            fetchPolicy = params.fetchPolicy
+            fetchPolicy = params.fetchPolicy;
         }
         let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy });
         if (res.errors && res.errors.length > 0) {
             throw convertError([...res.errors]);
         }
-        return res.data
+        return res.data;
     }
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
@@ -48,15 +48,15 @@ export class DirectApollolClient implements GraphqlClient {
 
         let fetchPolicy: FetchPolicy = 'cache-first';
         if (params && params.fetchPolicy) {
-            fetchPolicy = params.fetchPolicy
+            fetchPolicy = params.fetchPolicy;
         }
-        let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy })
+        let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy });
         let resolved = false;
         let resolve!: () => void;
         let promise = new Promise<void>((rl, rj) => {
             resolve = rl;
         });
-        let res = source.currentResult()
+        let res = source.currentResult();
         if (fetchPolicy === 'cache-and-network' || fetchPolicy === 'cache-first') {
             if (!res.partial) {
                 resolved = true;
@@ -83,7 +83,7 @@ export class DirectApollolClient implements GraphqlClient {
                 resolve();
             },
             complete: () => {
-                throwFatalError('Fatal error: Query Watch can\'t be completed')
+                throwFatalError('Fatal error: Query Watch can\'t be completed');
             }
         });
         // let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
@@ -99,7 +99,7 @@ export class DirectApollolClient implements GraphqlClient {
                         //     return;
                         // }
                         if (v.errors) {
-                            handler({ error: convertError([...v.errors]) })
+                            handler({ error: convertError([...v.errors]) });
                         } else {
                             handler({ data: v.data });
                         }
@@ -108,22 +108,22 @@ export class DirectApollolClient implements GraphqlClient {
                         handler({ error: e });
                     },
                     complete: () => {
-                        throwFatalError('Fatal error: Query Watch can\'t be completed')
+                        throwFatalError('Fatal error: Query Watch can\'t be completed');
                     }
                 });
                 return () => {
                     if (!subscription.closed) {
                         subscription.unsubscribe();
                     }
-                }
+                };
             },
             currentResult: () => {
                 let res2 = source.currentResult();
                 if (res2.errors && res2.errors.length > 0) {
-                    return ({ error: convertError([...res2.errors]) })
+                    return ({ error: convertError([...res2.errors]) });
                 } else {
                     if (!res2.partial) {
-                        return ({ data: res2.data as TQuery })
+                        return ({ data: res2.data as TQuery });
                     }
                 }
                 return undefined;
@@ -134,7 +134,7 @@ export class DirectApollolClient implements GraphqlClient {
                     baseSubscription.unsubscribe();
                 }
             }
-        }
+        };
     }
 
     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
@@ -173,7 +173,7 @@ export class DirectApollolClient implements GraphqlClient {
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
         try {
-            return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
+            return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
         } catch (e) {
             return null;
         }

@@ -22,17 +22,17 @@ let useOnlineState = () => {
     React.useEffect(() => {
         return useClient().client.watchStatus((s) => {
             setStatus(s);
-        })
-    }, [])
+        });
+    }, []);
     return status;
-}
+};
 
 let SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
 
     if (resp.me === null) {
-        return null
+        return null;
     }
 
     const me = resp.me;

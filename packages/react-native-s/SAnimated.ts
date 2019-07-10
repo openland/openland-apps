@@ -86,7 +86,7 @@ class SAnimatedImpl {
     private _dynamic = new Map<string, SAnimatedDynamic>();
 
     constructor() {
-        log.log('Register SAnimated')
+        log.log('Register SAnimated');
         if (Platform.OS === 'ios') {
             RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
                 let clb = this._callbacks.get(args.key);
@@ -399,7 +399,7 @@ class SAnimatedImpl {
             } else {
                 console.warn('Double unmount detected');
             }
-        }
+        };
     }
 }
 

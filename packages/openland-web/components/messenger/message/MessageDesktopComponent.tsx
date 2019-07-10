@@ -255,11 +255,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isSending) {
             messagesContext.switchMessageSelect(message);
         }
-    };
+    }
 
     private hideEditView = () => {
         this.props.messagesContext.resetAll();
-    };
+    }
 
     render() {
         let {

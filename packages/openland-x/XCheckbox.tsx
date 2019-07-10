@@ -166,7 +166,7 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                 isChecked: !this.state.isChecked,
             });
         }
-    };
+    }
 
     render() {
         const id = `toggle_${Math.random()
@@ -249,7 +249,7 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             this.props.onChange([...this.selected]);
         }
         this.setState({ selected: [...this.selected] });
-    };
+    }
 
     render() {
         let res = [];
@@ -295,7 +295,7 @@ class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XSto
         if (this.props.onChange) {
             this.props.onChange(src);
         }
-    };
+    }
 
     render() {
         let { valueStoreKey, store, field, ...other } = this.props;

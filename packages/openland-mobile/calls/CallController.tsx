@@ -8,7 +8,7 @@ export const CallController = XMemo<{ id: string, mute: boolean, isPrivate: bool
         calls.joinCall(props.id, props.isPrivate);
         return () => {
             calls.leaveCall();
-        }
+        };
     }, []);
     React.useEffect(() => {
         calls.setMute(props.mute);

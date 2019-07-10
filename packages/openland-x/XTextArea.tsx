@@ -15,7 +15,7 @@ class XTextAreaStored extends React.PureComponent<XTextAreaProps & { store: XSto
         if (this.props.valueStoreKey) {
             this.props.store.writeValue(this.props.valueStoreKey, value);
         }
-    };
+    }
 
     render() {
         let { valueStoreKey, store, ...other } = this.props;
@@ -40,7 +40,7 @@ export class XTextArea extends React.PureComponent<XTextAreaProps> {
         if (src) {
             this.textAreaRef = src;
         }
-    };
+    }
 
     focus() {
         this.textAreaRef.focus();

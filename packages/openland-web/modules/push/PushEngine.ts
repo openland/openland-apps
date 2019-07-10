@@ -70,7 +70,7 @@ export class PushEngine {
         } else {
             log.warn('Service Workers not supported');
         }
-    };
+    }
 
     private handleNotificationsState = (state: AppNotifcationsState) => {
         if (state === 'granted' && !this.grantedReceived) {
@@ -78,7 +78,7 @@ export class PushEngine {
             log.log('Granted state received');
             this.createSubscriptions();
         }
-    };
+    }
 
     private deleteSubscriptions = async () => {
         if (this.pushSupported) {
@@ -89,7 +89,7 @@ export class PushEngine {
             }
             log.warn('Push engine stopped');
         }
-    };
+    }
 
     private createSubscriptions = () => {
         if (this.serviceWorkerSupported && this.notificationsSupported && this.pushSupported) {
@@ -180,7 +180,7 @@ export class PushEngine {
         } else {
             log.warn('Push notifications not supported');
         }
-    };
+    }
 
     private async handleUnsubscription(subscription: PushSubscription) {
         log.log('Unsubscribing');

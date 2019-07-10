@@ -46,7 +46,7 @@ export const findEmojiByShortname = (activeWord: string) => {
 
         return res;
     }
-}
+};
 
 interface EmojiRenderProps {
     activeWord: string;
@@ -83,4 +83,4 @@ export const EmojiRender = (props: EmojiRenderProps) => {
     }
 
     return emojiWrapper;
-}
+};

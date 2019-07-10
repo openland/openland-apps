@@ -125,7 +125,7 @@ export class MediaSessionManager {
                 let peers = (await subscription.get()).alphaConferenceWatch.peers;
                 let ownPeerDetected = !!peers.find(p => p.id === this.peerId);
                 if (this.ownPeerDetected && !ownPeerDetected) {
-                    this.onDestroyRequested()
+                    this.onDestroyRequested();
                 }
                 this.ownPeerDetected = ownPeerDetected;
             } catch (e) {
@@ -212,9 +212,9 @@ export class MediaSessionManager {
                 this.client.mutateConferenceKeepAlive({
                     id: confId,
                     peerId,
-                })
+                });
             } else {
-                AppBackgroundTask.clearInterval(intervalId)
+                AppBackgroundTask.clearInterval(intervalId);
                 this.client.mutateConferenceLeave({
                     id: confId,
                     peerId: peerId

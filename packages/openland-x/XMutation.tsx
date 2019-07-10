@@ -41,7 +41,7 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
             }
             this.setState({ loading: false });
         }
-    };
+    }
 
     render() {
         let childs = [];

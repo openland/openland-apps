@@ -72,7 +72,7 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
                 <AppPlaceholder loading={props.loading} />
             </View>
         </ThemeProvider>
-    )
+    );
 });
 
 export let NON_PRODUCTION = false;
@@ -157,7 +157,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     componentDidUpdate() {
         (async () => {
             await this.tryResolveLink(this.state.state);
-        })()
+        })();
     }
     componentDidMount() {
         Linking.addEventListener('url', this.handleOpenURL);
@@ -267,6 +267,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             <AppContainer loading={loading} onLayout={this.handleLayoutChange}>
                 {content}
             </AppContainer>
-        )
+        );
     }
 }

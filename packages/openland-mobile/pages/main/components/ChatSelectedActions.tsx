@@ -10,7 +10,7 @@ import { forward } from 'openland-mobile/messenger/MobileMessenger';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface ChatSelectedActionsProps {
-    conversation: ConversationEngine
+    conversation: ConversationEngine;
 }
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
@@ -25,13 +25,13 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     props.conversation.messagesActionsState.clear();
                 })
             .show();
-    }, [])
+    }, []);
     const fwd = React.useCallback(() => {
         forward(props.conversation, props.conversation.messagesActionsState.getState().messages);
-    }, [])
+    }, []);
     const cancel = React.useCallback(() => {
         props.conversation.messagesActionsState.clear();
-    }, [])
+    }, []);
     let height = Platform.OS === 'ios' ? 50 : 64;
 
     let canDelete = true;
@@ -68,7 +68,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     <Image source={require('assets/ic-forward-ios-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
                 </View>
             </TouchableOpacity >
-        </View>
+        </View>;
 
     if (Platform.OS === 'ios') {
         return (
@@ -83,4 +83,4 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             {res}
         </View>
     );
-}
+};

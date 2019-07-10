@@ -104,7 +104,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
             return this.queue.shift();
         } else {
             if (this.pending) {
-                throw Error('Multiple subscribers are not supported yet')
+                throw Error('Multiple subscribers are not supported yet');
             }
             return await new Promise<any>((resolver) => this.pending = resolver);
         }
@@ -118,7 +118,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
         if (this.stopped) {
             return;
         }
-        this.stopped = true
+        this.stopped = true;
         this.statusSubscription();
         this.tryStop();
     }

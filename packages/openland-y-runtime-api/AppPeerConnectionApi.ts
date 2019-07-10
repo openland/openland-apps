@@ -28,5 +28,5 @@ export interface AppIceServer {
 }
 
 export interface AppPeerConnectionApi {
-    createConnection(configuration: AppPeerConnectionConfiguration): AppPeerConnection
+    createConnection(configuration: AppPeerConnectionConfiguration): AppPeerConnection;
 }

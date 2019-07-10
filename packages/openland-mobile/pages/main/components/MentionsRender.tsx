@@ -30,7 +30,7 @@ export const findMentions = (activeWord: string, groupId: string): MentionToSend
     res.push(...mentionedUsers);
 
     return res;
-}
+};
 
 interface MentionsRenderProps {
     activeWord: string;
@@ -96,10 +96,10 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
     }
 
     return mentionsWrapper;
-}
+};
 
 export const MentionsRender = (props: MentionsRenderProps) => (
     <React.Suspense fallback={<View paddingTop={10} paddingBottom={6}><ActivityIndicator /></View>}>
         <MentionsRenderInner {...props} />
     </React.Suspense>
-)
+);

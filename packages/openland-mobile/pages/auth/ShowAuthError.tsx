@@ -27,4 +27,4 @@ export const ShowAuthError = (error: NamedError) => {
             .title('An unexpected error occurred')
             .button('TRY AGAIN').show();
     }
-}
+};

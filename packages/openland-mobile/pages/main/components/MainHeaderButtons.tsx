@@ -52,5 +52,5 @@ export const MainHeaderButtons = XMemo<{ router: SRouter, theme: ThemeGlobal }>(
                 onPress={() => props.router.push('Compose')}
             />
         </>
-    )
+    );
 });

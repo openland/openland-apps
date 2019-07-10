@@ -31,7 +31,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
     
             builder.show();
         }
-    };
+    }
 
     render() {
         return this.props.useAsync ? (

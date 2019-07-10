@@ -87,7 +87,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </ZForm>
         </>
-    )
+    );
 });
 
 class SignupUserComponent extends React.PureComponent<PageProps> {

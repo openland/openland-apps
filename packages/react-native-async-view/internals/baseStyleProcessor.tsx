@@ -13,7 +13,7 @@ export function baseStyleProcessor(src: any) {
 export function rm(src: { [key: string]: ASViewStyle }) {
     let res = {};
     for (let k of Object.keys(src)) {
-        res[k] = { props: baseStyleProcessor(src[k]) }
+        res[k] = { props: baseStyleProcessor(src[k]) };
     }
     return res;
 }

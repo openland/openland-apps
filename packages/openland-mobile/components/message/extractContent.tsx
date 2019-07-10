@@ -68,4 +68,4 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     });
 
     return content;
-}
+};

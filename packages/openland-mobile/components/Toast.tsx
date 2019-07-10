@@ -38,7 +38,7 @@ type ToastBuildConfig = {
     iconSource?: ImageSourcePropType;
     IconComponent?: () => React.ReactElement;
     duration?: number;
-}
+};
 
 const ToastComponent = ({ text, iconSource, IconComponent }: ToastBuildConfig) => (
     <View style={styles.modalWrapper}>

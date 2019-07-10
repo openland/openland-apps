@@ -66,7 +66,7 @@ export const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
             }
         />
     );
-})
+});
 
 interface ItemOrganizationProps extends ItemProps {
     item: GlobalSearch_items_Organization;
@@ -92,7 +92,7 @@ export const GlobalSearchItemOrganization = XMemo<ItemOrganizationProps>((props)
             }
         />
     );
-})
+});
 
 interface ItemUserProps extends ItemProps {
     item: GlobalSearch_items_User;
@@ -120,4 +120,4 @@ export const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
             }
         />
     );
-})
+});

@@ -25,7 +25,7 @@ export interface TViewProps {
 }
 
 function bindValue(src: string): any {
-    return { bind: src }
+    return { bind: src };
 }
 
 function bindText(src: string): any {
@@ -60,11 +60,11 @@ export interface TTextProps {
 
 export const TText = (props: TTextProps) => {
     return <ttext {...props}>{props.children}</ttext>;
-}
+};
 
 export const TIF = (props: { negate?: boolean, condition: string, children: any }) => {
     return <tif {...props}>{props.children}</tif>;
-}
+};
 
 export const Example = () => {
     return (
@@ -93,5 +93,5 @@ export const Example = () => {
                 </TView>
             </TView>
         </TView>
-    )
+    );
 };

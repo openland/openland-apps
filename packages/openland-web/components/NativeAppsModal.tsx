@@ -171,7 +171,7 @@ export const detectOS = (): OS | null => {
     }
 
     return os;
-}
+};
 
 interface NativaAppsModalProps {
     title?: string;

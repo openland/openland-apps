@@ -51,18 +51,18 @@ const styles = StyleSheet.create({
 });
 
 export interface ZListItemHeaderProps {
-    photo?: string | null,
-    id?: string,
-    userId?: string,
-    title?: string | null,
+    photo?: string | null;
+    id?: string;
+    userId?: string;
+    title?: string | null;
     titleIcon?: any;
     titleColor?: string;
     titleLines?: number;
-    subtitle?: string | null | JSX.Element,
-    subtitleColor?: string,
-    path?: string,
+    subtitle?: string | null | JSX.Element;
+    subtitleColor?: string;
+    path?: string;
     onPress?: () => void;
-    action?: string
+    action?: string;
     score?: number;
     scorePress?: () => void;
 }
@@ -102,4 +102,4 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
             </View>
         </>
     );
-})
+});

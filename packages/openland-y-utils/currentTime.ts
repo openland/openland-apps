@@ -1,3 +1,3 @@
 export function currentTimeMillis() {
-    return new Date().getTime()
+    return new Date().getTime();
 }

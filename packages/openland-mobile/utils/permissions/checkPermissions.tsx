@@ -16,7 +16,7 @@ const nativePermissionChecker = async (nativePermission: Permission | Permission
                     if (granted[k] !== PermissionsAndroid.RESULTS.GRANTED) {
                         hasPermissions = false;
                     }
-                })
+                });
 
                 if (!hasPermissions) {
                     handlePermissionDismiss(simplePermissionType);
@@ -38,7 +38,7 @@ const nativePermissionChecker = async (nativePermission: Permission | Permission
     }
 
     return hasPermissions;
-}
+};
 
 export const checkPermissions = async (permission: permissionsType) => {
     if (permission === 'android-storage') {
@@ -59,10 +59,10 @@ export const checkPermissions = async (permission: permissionsType) => {
     if (permission === 'microphone') {
         let authorized = (await Permissions.request('microphone')) === 'authorized';
         if (!authorized) {
-            handlePermissionDismiss(permission)
+            handlePermissionDismiss(permission);
         } else {
             return true;
         }
     }
     return false;
-}
+};

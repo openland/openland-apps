@@ -32,4 +32,4 @@ export const ZAvatarPickerInputsGroup = (props: { avatarField: string; children?
             </View>
         </View>
     );
-}
+};

@@ -18,14 +18,14 @@ export class ZRelativeDateAsync extends React.Component<ZRelativeDateAsyncProps,
 
         this.state = {
             huminizedDate: formatRelativeTime(this.props.date)
-        }
+        };
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
             this.setState({
                 huminizedDate: formatRelativeTime(this.props.date)
-            })
+            });
         }, 1000 * 60);
     }
 
@@ -40,6 +40,6 @@ export class ZRelativeDateAsync extends React.Component<ZRelativeDateAsyncProps,
 
         return (
             <ASText {...other}>{this.state.huminizedDate}</ASText>
-        )
+        );
     }
-};
+}

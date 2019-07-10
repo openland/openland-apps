@@ -73,8 +73,8 @@ const XPAvatarInner = XMemo<ZAvatarProps>((props) => {
             {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundPrimary, backgroundColor: theme.accentPrimary, borderWidth: onlineSize / 10 }} />}
         </View>
     );
-})
+});
 
 export const ZAvatar = XMemo<ZAvatarProps>((props) => {
     return (<XPAvatarInner {...props} />);
-})
+});

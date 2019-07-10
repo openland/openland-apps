@@ -138,12 +138,12 @@ export class MessageStateProviderComponent extends React.PureComponent<
         }
 
         return true;
-    };
+    }
 
     private checkMixIsSame = (state1: any, mix: any) => {
         const result = this.checkIsSame(mix, state1);
         return result;
-    };
+    }
 
     private switchMessageSelect = (message: DataSourceMessageItem) => {
         let res = new Set(this.state.selectedMessages);
@@ -161,7 +161,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private setEditMessage = (id: string | null, message: string | null) => {
         let target = {
@@ -173,7 +173,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private setForwardMessages = (id: Set<string>) => {
         let useHeader = false;
@@ -190,7 +190,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private forwardMessages = () => {
         let target = {
@@ -203,7 +203,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private setReplyMessages = (id: Set<string>, messages: Set<string>, sender: Set<string>) => {
         let target = {
@@ -218,7 +218,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private changeForwardConverstion = () => {
         let target = {
@@ -233,7 +233,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     private resetAll = () => {
         console.log('resetAll');
@@ -254,7 +254,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             console.log('set state');
             this.setState(target);
         }
-    };
+    }
 
     render() {
         // console.log('render MessageStateProviderComponent', this.state);

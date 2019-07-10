@@ -21,7 +21,7 @@ export const TextStyles = {
     family: {
         monospace: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace'
     }
-}
+};
 
 export const TypeStyles = {
     title1: {
@@ -69,4 +69,4 @@ export const TypeStyles = {
         lineHeight: 18,
         fontWeight: TextStyles.weight.regular
     } as TextStyle
-}
+};

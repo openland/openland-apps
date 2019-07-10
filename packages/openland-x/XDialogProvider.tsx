@@ -35,7 +35,7 @@ export class XDialogProviderComponent
                 modals: [...state.modals, { key, element, escHandler: esc }],
             }));
         }, 1);
-    };
+    }
     componentWillMount() {
         registerModalProvider(this);
     }

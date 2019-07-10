@@ -31,7 +31,7 @@ class NotificationSettingsComponent extends React.Component<
                 roomId: this.props.roomId,
             },
         });
-    };
+    }
 
     render() {
         return (

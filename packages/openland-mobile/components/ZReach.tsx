@@ -25,11 +25,11 @@ export const ZReach = XMemo<ZReachProps>(props => {
                     <ZReachInner {...props} />
                 </View>
             </TouchableWithoutFeedback>
-        )
+        );
     }
 
     return <ZReachInner {...props} />;
-})
+});
 
 export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
     const builder = new ActionSheetBuilder();
@@ -50,4 +50,4 @@ export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
     ));
 
     builder.show();
-})
+});

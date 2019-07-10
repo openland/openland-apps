@@ -30,7 +30,7 @@ const Tasks = React.memo(() => {
                         id: randomKey(),
                         name: value
                     }])
-                }])
+                }]);
             })
             .title('New project')
             .show();
@@ -54,9 +54,9 @@ const Tasks = React.memo(() => {
                                     userStorage.setKeys('app.tasks', [{
                                         key: 'index.projects',
                                         value: JSON.stringify(data.filter((v2) => v.id !== v2.id))
-                                    }])
+                                    }]);
                                 });
-                                builder.title('Are you sure want to delete ' + v.name + '?')
+                                builder.title('Are you sure want to delete ' + v.name + '?');
                                 builder.show();
                             }}
                         />
@@ -76,9 +76,9 @@ const Tasks = React.memo(() => {
                                     userStorage.setKeys('app.tasks', [{
                                         key: 'index.inbox',
                                         value: JSON.stringify(inbox.filter((v2) => v.id !== v2.id))
-                                    }])
+                                    }]);
                                 });
-                                builder.title('Are you sure want to delete ' + v.name + '?')
+                                builder.title('Are you sure want to delete ' + v.name + '?');
                                 builder.show();
                             }}
                         />

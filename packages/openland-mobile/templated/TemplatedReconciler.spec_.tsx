@@ -4,7 +4,7 @@ import { Example } from './TempatedView';
 
 describe('TemplatedReconciler', () => {
     it('should work', () => {
-        let element = (<Example />)
+        let element = (<Example />);
         let root = { type: 'root', children: [] };
         let reconciler = TemplatedReconciler();
         let container = reconciler.createContainer(root);

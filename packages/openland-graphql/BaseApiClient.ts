@@ -43,10 +43,10 @@ export class BaseApiClient {
 
     private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
         log.log('useQuery: ' + JSON.stringify(opts));
-        const clientCache = React.useContext(ClientCacheContext)
+        const clientCache = React.useContext(ClientCacheContext);
         
         if (!clientCache && (opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only'))) {
-            throw Error('Unable to use cache-and-network or network-only fetch policy outside of cache context')
+            throw Error('Unable to use cache-and-network or network-only fetch policy outside of cache context');
         }
         if (clientCache) {
             log.log('Found cache ' + clientCache.key);
@@ -62,16 +62,16 @@ export class BaseApiClient {
         // Subscription
         React.useEffect(() => {
             return observableQuery.subscribe((args) => {
-                setResponseId(x => x + 1)
+                setResponseId(x => x + 1);
             });
         }, [observableQuery]);
 
-        return [observableQuery, currentResult]
+        return [observableQuery, currentResult];
     }
 
     private getQueryWatch<TQuery, TVars>(cache: Map<String, GraphqlQueryWatch<{}>>, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): GraphqlQueryWatch<TQuery> {
         let shouldBeScoped = opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only');
-        let cacheKey = (opts && opts.fetchPolicy && opts.fetchPolicy) || 'cache-first'
+        let cacheKey = (opts && opts.fetchPolicy && opts.fetchPolicy) || 'cache-first';
         let q = cache;
         if (!shouldBeScoped) {
             q = this.queries;
@@ -79,10 +79,10 @@ export class BaseApiClient {
         let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars) + '$' + cacheKey;
         if (q.has(key)) {            
             if (opts && (opts.fetchPolicy === 'cache-and-network')) {
-                this.refetch(query, vars)
+                this.refetch(query, vars);
             }
             
-            return q.get(key)!! as GraphqlQueryWatch<TQuery>
+            return q.get(key)!! as GraphqlQueryWatch<TQuery>;
         } else {
             let res = this.client.queryWatch(query, vars, opts);
             q.set(key, res);

@@ -142,13 +142,13 @@ export abstract class BridgedClient implements GraphqlClient {
                 callbacks.set(cbid, handler);
                 return () => {
                     callbacks.delete(cbid);
-                }
+                };
             },
             currentResult: () => {
                 if (watch.hasError) {
-                    return ({ error: watch.error })
+                    return ({ error: watch.error });
                 } else if (watch.hasValue) {
-                    return ({ data: watch.value })
+                    return ({ data: watch.value });
                 }
                 return undefined;
             },
@@ -161,7 +161,7 @@ export abstract class BridgedClient implements GraphqlClient {
                     this.postQueryWatchEnd(currentId);
                 }
             }
-        }
+        };
     }
 
     //
@@ -197,15 +197,15 @@ export abstract class BridgedClient implements GraphqlClient {
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         let id = this.nextKey();
         let queue = new Queue();
-        var variables = vars
-        var currentId = id
+        var variables = vars;
+        var currentId = id;
         this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
             if (error) {
                 log.warn('Received subscription error: restarting');
                 log.warn(variables);
                 this.handlersMap.delete(currentId);
-                currentId = this.nextKey()
+                currentId = this.nextKey();
                 this.handlersMap.set(currentId, id);
                 this.postSubscribe(currentId, subscription, variables);
             } else {
@@ -215,10 +215,10 @@ export abstract class BridgedClient implements GraphqlClient {
         this.postSubscribe(id, subscription, vars);
         return {
             get: () => {
-                return queue.get()
+                return queue.get();
             },
             updateVariables: (vars2: TVars) => {
-                variables = vars2
+                variables = vars2;
                 this.postSubscribeUpdate(id, vars2);
             },
             destroy: () => {
@@ -226,7 +226,7 @@ export abstract class BridgedClient implements GraphqlClient {
                 this.handlers.delete(id);
                 this.postUnsubscribe(id);
             }
-        }
+        };
     }
 
     //
@@ -291,20 +291,20 @@ export abstract class BridgedClient implements GraphqlClient {
         }
     }
 
-    protected abstract postQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void
-    protected abstract postQueryWatch<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void
-    protected abstract postQueryWatchEnd(id: string): void
+    protected abstract postQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void;
+    protected abstract postQueryWatch<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void;
+    protected abstract postQueryWatchEnd(id: string): void;
 
-    protected abstract postMutation<TMutation, TVars>(id: string, query: GraphqlMutation<TMutation, TVars>, vars?: TVars): void
+    protected abstract postMutation<TMutation, TVars>(id: string, query: GraphqlMutation<TMutation, TVars>, vars?: TVars): void;
 
-    protected abstract postSubscribe<TSubscription, TVars>(id: string, query: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): void
-    protected abstract postSubscribeUpdate(id: string, vars: any): void
-    protected abstract postUnsubscribe(id: string): void
+    protected abstract postSubscribe<TSubscription, TVars>(id: string, query: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): void;
+    protected abstract postSubscribeUpdate(id: string, vars: any): void;
+    protected abstract postUnsubscribe(id: string): void;
 
-    protected abstract postReadQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void
-    protected abstract postWriteQuery<TQuery, TVars>(id: string, data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void
+    protected abstract postReadQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void;
+    protected abstract postWriteQuery<TQuery, TVars>(id: string, data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void;
 
-    protected abstract postWriteFragment<TFragment>(id: string, data: any, query: GraphqlFragment<TFragment>): void
+    protected abstract postWriteFragment<TFragment>(id: string, data: any, query: GraphqlFragment<TFragment>): void;
 
     private nextKey() {
         return randomKey();

@@ -32,7 +32,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     let fileAttaches = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
                     let contentAttach: JSX.Element[] = [];
 
-                    {fileAttaches.map((file, index) => {
+                    fileAttaches.map((file, index) => {
                         let isImage = file.fileMetadata.isImage;
                     
                         if (isImage) {
@@ -44,7 +44,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                         } else {
                             contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} message={generalMesage!} onDocumentPress={props.onDocumentPress} theme={theme} />);
                         }
-                    })}
+                    });
 
                     return (
                         <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.accentPrimary} paddingLeft={8}>
@@ -74,9 +74,9 @@ export const ReplyContent = (props: ReplyContentProps) => {
                         <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
                             <TextContent message={quote} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} theme={theme} />
                         </View>
-                    )
+                    );
                 }
             })}
         </>
     );
-}
+};

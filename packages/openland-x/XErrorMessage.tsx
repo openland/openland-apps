@@ -16,5 +16,5 @@ export const XErrorMessage = React.memo<{ message: string }>((props) => {
         >
             {props.message}
         </XView>
-    )
+    );
 });

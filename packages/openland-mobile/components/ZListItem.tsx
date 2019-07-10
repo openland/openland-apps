@@ -47,7 +47,7 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, appearance?: 'default' 
             <Image source={props.src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.contrastPrimary }} />
         </View>
     );
-}
+};
 
 class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState, theme: ThemeGlobal }> {
 

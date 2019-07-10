@@ -31,4 +31,4 @@ export const EditView = (props: EditViewProps) => {
             </TouchableWithoutFeedback>
         </View>
     );
-}
+};
