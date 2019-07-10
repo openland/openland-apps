@@ -2,11 +2,6 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { LandingLinks } from '../_links';
 
-const AppPaths = {
-    ios: LandingLinks.apple,
-    android: LandingLinks.google,
-};
-
 let footerAppClass = css`
     margin: 0 15px 0 0;
     background: no-repeat;
@@ -47,7 +42,7 @@ interface FooterAppProps {
 }
 
 export const FooterApp = (props: FooterAppProps) => (
-    <a href={AppPaths[props.system]} target="_blank" className={footerAppClass}>
+    <a href={LandingLinks.apps[props.system]} target="_blank" className={footerAppClass}>
         {props.system === 'ios' && (
             <img src="/static/landing/appstore.png" alt="" className={footerAppIosClass} />
         )}
