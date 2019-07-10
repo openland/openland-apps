@@ -50,9 +50,11 @@ export const WebSignUpCreateWithEmail = ({
     loginEmailStart,
     emailSending,
     isMobile,
+    signin
 }: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
-    const subTitle = `It's free and easy`;
+    const title = signin ? 'Enter your email' : 'Create new account';
+    const subTitle = signin ? 'We will send you an activation code' : `It's free and easy`;
 
     let emailField = useField('input.email', emailValue, form, [
         {
@@ -77,7 +79,6 @@ export const WebSignUpCreateWithEmail = ({
     const onEnter = () => {
         doConfirm();
     };
-    const title = 'Create new account';
 
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;

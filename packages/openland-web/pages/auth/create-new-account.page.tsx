@@ -53,7 +53,7 @@ export const SignUpAuthMechanism = ({
                     <XView flexDirection="row" alignItems="center">
                         <>
                             <XView>
-                                {!signin ? 'Already have an account?' : 'Create new account?'}
+                                {!signin ? 'Already have an account?' : 'Need new account?'}
                             </XView>
                             <XView marginLeft={-10} marginRight={-16} height={20}>
                                 <XButton
