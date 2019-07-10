@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 import { Alert, AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { showToastLinkCopied, showToastUnknowError } from 'openland-mobile/components/Toast';
+import Toast from 'openland-mobile/components/Toast';
 
 const styles = StyleSheet.create({
     container: {
@@ -64,11 +64,21 @@ export default withApp(() => {
                     <View style={styles.content}>
                         <Button 
                             title={'Show unknow Error'}
-                            onPress={() => showToastUnknowError()}
+                            onPress={() => {
+                                Toast.failure({ text: 'Unknown error', duration: 1000 }).show();
+                            }}
                         />
                         <Button 
                             title={'Show link copiend'}
-                            onPress={() => showToastLinkCopied()}
+                            onPress={() => {
+                                Toast
+                                    .build({ 
+                                        text: 'Link copiend',
+                                        iconSource: require('assets/ic-toast-checkmark-32.png'),
+                                        duration: 1000
+                                    })
+                                    .show();
+                            }}
                         />
                     </View>
                 </SScrollView>
