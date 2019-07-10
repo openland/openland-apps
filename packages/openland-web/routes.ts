@@ -12,6 +12,8 @@ routes.add('/terms', '/landing/terms');
 routes.add('/terms/', '/landing/terms');
 routes.add('/privacy', '/landing/privacy');
 routes.add('/privacy/', '/landing/privacy');
+routes.add('/download', '/landing/download');
+routes.add('/download/', '/landing/download');
 
 //
 // App Root

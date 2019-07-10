@@ -103,6 +103,11 @@ export const MobileMenu = (props: MobileMenuProps) => {
                         onClick={props.onClose}
                     />
                     <MobileMenuLink
+                        path={LandingLinks.download}
+                        content="Download"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
                         path={LandingLinks.about}
                         content="About"
                         onClick={props.onClose}

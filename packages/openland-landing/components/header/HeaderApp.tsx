@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import AndroidIcon from 'openland-icons/landing/android.svg';
-import IosIcon from 'openland-icons/landing/ios.svg';
+import AndroidIcon from 'openland-icons/landing/ic_android.svg';
+import IosIcon from 'openland-icons/landing/ic_ios.svg';
+import LinuxIcon from 'openland-icons/landing/ic_linux.svg';
+import WindowsIcon from 'openland-icons/landing/ic_win.svg';
+import MacOSIcon from 'openland-icons/landing/ic_mac.svg';
 import { LandingLinks } from '../_links';
 
 const AppIcons = {
     ios: <IosIcon />,
     android: <AndroidIcon />,
+    linux: <LinuxIcon />,
+    windows: <WindowsIcon />,
+    macos: <MacOSIcon />,
 };
 
 interface HeaderAppProps {
@@ -20,7 +26,7 @@ export const HeaderApp = (props: HeaderAppProps) => (
         target="_blank"
         alignItems="center"
         justifyContent="center"
-        width={51}
+        width={48}
         height={40}
         hoverOpacity={0.7}
     >
