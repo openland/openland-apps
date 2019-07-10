@@ -12,7 +12,7 @@ export const DesktopMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 paddingLeft={16}
                 paddingRight={16}
                 marginTop={4}
-                marginBottom={3}
+                marginBottom={4}
                 flexShrink={0}
                 alignItems="center"
             >
