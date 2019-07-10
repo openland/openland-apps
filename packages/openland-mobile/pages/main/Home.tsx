@@ -17,7 +17,7 @@ export const Home = XMemo<PageProps>((props) => {
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
-            <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 48 : 0}>
+            <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 52 : 0}>
                 <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
