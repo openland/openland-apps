@@ -29,12 +29,6 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
     color: '#969AA3',
     opacity: !props.enabled ? 0.7 : undefined,
     cursor: !props.enabled ? 'default !important' : 'pointer',
-    '@media (max-width: 1230px)': {
-        fontSize: 0,
-        '& > svg': {
-            marginRight: '0!important',
-        },
-    },
     '&:hover': {
         textDecoration: 'none',
         color: !props.enabled ? '#a3acb8' : '#969AA3',
@@ -51,6 +45,15 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
         marginRight: 10,
         '& > *': {
             fill: !props.enabled ? '#c1c7cf' : '#969AA3',
+        },
+    },
+    '@media (max-width: 1230px)': {
+        fontSize: 0,
+        '& > svg': {
+            marginRight: '0!important',
+        },
+        '& > span': {
+            display: 'none !important',
         },
     },
 }));
@@ -119,7 +122,7 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     };
 
     return (
-        <XHorizontal separator={3}>
+        <XHorizontal separator={2}>
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
             <PhotoButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
             <DocumentButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
