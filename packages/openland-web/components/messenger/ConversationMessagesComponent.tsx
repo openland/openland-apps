@@ -57,7 +57,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
-    };
+    }
 
     render() {
         return (
