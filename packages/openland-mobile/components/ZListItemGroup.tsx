@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZText } from './ZText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ZListItemGroupProps {
     header?: string | null;
@@ -37,40 +37,23 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
         return null;
     }
 
-    // if (isAndroid) {
-    //     return (
-    //         <View backgroundColor={AppStyles.backyardColor}>
-    //             {this.props.header !== null && this.props.header !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
-    //             {this.props.header === null && <View height={30} />}
-    //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-    //             <View backgroundColor="#fff">
-    //                 {components}
-    //             </View>
-    //             {this.props.footer !== null && this.props.footer !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.footer}</Text>}
-    //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-    //         </View>
-    //     );
-    // }
-
     return (
         <View>
             {props.header !== null && props.header !== undefined &&
                 <View
                     style={{
-                        paddingTop: 30,
-                        paddingBottom: 8,
-                        flexDirection: 'row'
+                        marginTop: 16,
+                        flexDirection: 'row',
+                        height: 48,
+                        alignItems: 'center',
                     }}
                 >
                     <Text
                         style={{
+                            ...TypeStyles.title3,
                             color: theme.foregroundPrimary,
-                            fontSize: 16,
-                            fontWeight: TextStyles.weight.medium,
-                            height: Platform.OS === 'android' ? 21 : 20,
                             paddingLeft: 16,
                             flexShrink: 1,
-                            opacity: Platform.OS === 'android' ? 0.7 : 1.0
                         }}
                         numberOfLines={1}
                         ellipsizeMode="tail"
@@ -94,14 +77,11 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                     <View flexGrow={1} paddingRight={16} />
 
                     {props.actionRight && (
-                        <TouchableOpacity onPress={props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
+                        <TouchableOpacity onPress={props.actionRight.onPress}>
                             <Text
                                 style={{
+                                    ...TypeStyles.label2,
                                     color: theme.foregroundSecondary,
-                                    fontSize: 15,
-                                    fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                    height: 18,
-                                    lineHeight: 18,
                                     paddingLeft: 16,
                                     paddingRight: 16,
                                 }}
