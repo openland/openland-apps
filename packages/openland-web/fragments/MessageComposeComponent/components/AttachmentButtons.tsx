@@ -13,6 +13,7 @@ const FileInput = Glamorous.input({
 });
 
 export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props => ({
+    marginTop: -5,
     paddingLeft: 12,
     paddingRight: 12,
     height: 32,
@@ -24,13 +25,10 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: 0,
-    lineHeight: '20px',
-    color: '#7A7A7A',
+    lineHeight: '5px',
+    color: '#969AA3',
     opacity: !props.enabled ? 0.7 : undefined,
     cursor: !props.enabled ? 'default !important' : 'pointer',
-    '&:first-child': {
-        marginLeft: 6,
-    },
     '@media (max-width: 1230px)': {
         fontSize: 0,
         '& > svg': {
@@ -39,21 +37,20 @@ export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props =>
     },
     '&:hover': {
         textDecoration: 'none',
-        color: !props.enabled ? '#a3acb8' : '#7A7A7A',
-        backgroundColor: !props.enabled ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
+        color: !props.enabled ? '#a3acb8' : '#969AA3',
+        backgroundColor: !props.enabled ? 'transparent' : '#F0F2F5',
         '& > svg > *': {
-            fill: !props.enabled ? '#c1c7cf' : '#B4B8BD',
+            fill: !props.enabled ? '#c1c7cf' : '#969AA3',
         },
     },
-    '&.shortcuts-button > svg, &.document-button > svg': {
-        marginTop: 1,
-        marginBottom: -1,
+    '& > span': {
+        letterSpacing: 0.7,
     },
     '& > svg': {
         flexShrink: 0,
         marginRight: 10,
         '& > *': {
-            fill: !props.enabled ? '#c1c7cf' : '#B4B8BD',
+            fill: !props.enabled ? '#c1c7cf' : '#969AA3',
         },
     },
 }));
@@ -122,7 +119,7 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     };
 
     return (
-        <XHorizontal separator="none">
+        <XHorizontal separator={3}>
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
             <PhotoButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
             <DocumentButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />

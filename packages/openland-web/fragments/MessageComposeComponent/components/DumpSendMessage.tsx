@@ -17,22 +17,18 @@ import { XView } from 'react-mental';
 const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
     return {
         width: '100%',
-        maxWidth: fullWidth ? '100%' : 980,
+        maxWidth: fullWidth ? '100%' : 956,
         minWidth: fullWidth ? '100%' : 512,
+        paddingLeft: fullWidth ? 0 : 130,
+        paddingRight: fullWidth ? 0 : 130,
         flexBasis: '100%',
-        paddingLeft: fullWidth ? 0 : 124,
-        paddingRight: fullWidth ? 0 : 112,
+        alignSelf: 'stretch',
         '@media (max-width: 750px)': {
             minWidth: 0,
             paddingLeft: 0,
             paddingRight: 0,
         },
     };
-});
-
-const SendButton = Glamorous(XButton)({
-    paddingLeft: 8,
-    paddingRight: 8,
 });
 
 const SendMessageWrapper = Glamorous.div<{
@@ -48,12 +44,12 @@ const SendMessageWrapper = Glamorous.div<{
         alignItems: 'stretch',
         flexShrink: 0,
         marginBottom: minimal ? -6 : undefined,
-        minHeight: minimal ? undefined : 114,
+        minHeight: minimal ? undefined : 120,
         backgroundColor: minimal || bright ? undefined : XThemeDefault.backyardColor,
         paddingLeft: minimal ? (topLevelComment ? 39 : 26) : 32,
         paddingRight: minimal ? 0 : 32,
-        paddingTop: minimal ? 6 : 12,
-        paddingBottom: minimal ? 0 : 12,
+        paddingTop: minimal ? 6 : 16,
+        paddingBottom: minimal ? 0 : 16,
         borderTopStyle: bright ? undefined : 'solid',
         borderTopWidth: minimal || bright ? undefined : '1px',
         borderTopColor: minimal || bright ? undefined : XThemeDefault.separatorColor,
@@ -120,7 +116,7 @@ export const DumpSendMessage = React.memo(
                     onFileDrop={handleDrop}
                 />
                 <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
-                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                    <XVertical flexGrow={1} maxWidth="100%">
                         {closeEditor &&
                             quoteState &&
                             quoteState.quoteMessageReply && (
@@ -159,7 +155,7 @@ export const DumpSendMessage = React.memo(
                                 !hideAttachments && <AttachmentButtons enabled={enabled} />}
 
                             {!minimal && (
-                                <SendButton
+                                <XButton
                                     text="Send"
                                     style="primary"
                                     action={handleSend}

@@ -12,7 +12,7 @@ const statusOffline = css`
 `;
 
 const statusOnline = css`
-    color: #1790ff;
+    color: #1885F2;
     font-size: 13px;
     line-height: 16px;
     font-weight: 400;
