@@ -64,10 +64,10 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                     {props.counter !== undefined && props.counter !== null && (
                         <Text
                             style={{
-                                color: '#b9c1cd',
-                                fontSize: 16,
-                                fontWeight: Platform.OS === 'android' ? '500' : '600',
+                                ...TypeStyles.label1,
+                                color: theme.foregroundTertiary,
                                 paddingLeft: 6,
+                                marginTop: 1,
                             }}
                         >
                             {props.counter.toString()}
