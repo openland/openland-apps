@@ -2,8 +2,8 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { Container } from './Container';
-import AndroidIcon from 'openland-icons/landing/android.svg';
-import IosIcon from 'openland-icons/landing/ios.svg';
+import AndroidIcon from 'openland-icons/landing/ic_android.svg';
+import IosIcon from 'openland-icons/landing/ic_ios.svg';
 import { LandingLinks } from './_links';
 import CloseIcon from 'openland-icons/landing/close.svg';
 
