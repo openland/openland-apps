@@ -122,7 +122,7 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     };
 
     return (
-        <XHorizontal separator={2}>
+        <XHorizontal separator={3}>
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
             <PhotoButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
             <DocumentButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />

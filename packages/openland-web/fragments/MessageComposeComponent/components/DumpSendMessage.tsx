@@ -19,8 +19,8 @@ const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: 
         width: '100%',
         maxWidth: fullWidth ? '100%' : 956,
         minWidth: fullWidth ? '100%' : 512,
-        paddingLeft: fullWidth ? 0 : 130,
-        paddingRight: fullWidth ? 0 : 130,
+        paddingLeft: fullWidth ? 0 : 128,
+        paddingRight: fullWidth ? 0 : 128,
         flexBasis: '100%',
         alignSelf: 'stretch',
         '@media (max-width: 750px)': {
