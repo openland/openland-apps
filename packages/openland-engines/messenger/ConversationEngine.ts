@@ -669,7 +669,6 @@ export class ConversationEngine implements MessageSendHandler {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
-                        __typename: undefined,
                         key: event.repeatKey,
                         attachments: (msgs[existing] as any).attachments,
                         date: msgs[existing].date
