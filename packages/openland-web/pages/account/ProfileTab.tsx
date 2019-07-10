@@ -10,6 +10,7 @@ import {
     SelectWithDropdownOption,
 } from 'openland-web/pages/main/mail/SelectWithDropdown';
 import { XButton } from 'openland-x/XButton';
+import { XTextArea } from 'openland-x/XTextArea';
 
 export const AccountTab = ({ photo }: { photo: string }) => {
     const form = useForm();
@@ -51,7 +52,8 @@ export const AccountTab = ({ photo }: { photo: string }) => {
                         title={'Primary organization'}
                         selectOptions={primaryOrganizationSelectOption}
                     />
-                    <XInput title={'About'} {...aboutField.input} size="large" />
+
+                    <XTextArea title="About" {...aboutField.input} resize={false} />
                     <XInput title={'Location'} {...locationField.input} size="large" />
 
                     <XInput title={'Username'} {...usernameField.input} size="large" />
