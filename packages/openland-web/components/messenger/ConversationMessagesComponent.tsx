@@ -6,29 +6,35 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { TypingsView } from './typings/TypingsView';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
-const TypingComponent = React.memo((props: { chatId: string }) => (
-    <XView
-        alignItems="center"
-        width="100%"
-        flexShrink={0}
-        position="absolute"
-        backgroundColor="#fff"
-        bottom={0}
-        left={0}
-    >
+const TypingComponent = React.memo((props: { chatId: string }) => {
+    const isMobile = React.useContext(IsMobileContext);
+    return (
         <XView
-            alignItems="flex-start"
+            alignItems="center"
             width="100%"
-            maxHeight={33}
-            maxWidth={930}
-            paddingLeft={60}
-            paddingRight={60}
+            flexShrink={0}
+            position="absolute"
+            backgroundColor="#fff"
+            bottom={0}
+            left={0}
+            paddingLeft={32}
+            paddingRight={32}
         >
-            <TypingsView conversationId={props.chatId} />
+            <XView
+                alignItems="flex-start"
+                width="100%"
+                maxHeight={33}
+                maxWidth={980}
+                paddingLeft={isMobile ? 20 : 136}
+                paddingRight={isMobile ? 20 : 136}
+            >
+                <TypingsView conversationId={props.chatId} />
+            </XView>
         </XView>
-    </XView>
-));
+    );
+});
 
 interface ConversationMessagesComponentProps {
     isChannel: boolean;
@@ -51,7 +57,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
-    }
+    };
 
     render() {
         return (
