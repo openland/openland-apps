@@ -83,39 +83,28 @@ let SettingsContent = ((props: PageProps) => {
                 score={me.audienceSize > 0 ? me.audienceSize : undefined}
                 scorePress={handleScorePress}
             />
-            <ZListItemGroup header="Settings" divider={false}>
+            <ZListItem
+                leftIconColor={theme.tint2}
+                leftIcon={require('assets/ic-invite-fill-24.png')}
+                text="Invite friends"
+                onPress={handleGlobalInvitePress}
+            />
+            <ZListItemGroup header="Settings">
+                <ZListItem
+                    leftIconColor={theme.tint5}
+                    leftIcon={require('assets/ic-notifications-fill-24.png')}
+                    text="Notifications"
+                    path="SettingsNotifications"
+                />
                 <ZListItem
                     leftIconColor={theme.tint1}
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
+                    leftIcon={require('assets/ic-appearance-fill-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
                 />
                 <ZListItem
-                    leftIconColor={theme.tint5}
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
-                    text="Notifications"
-                    path="SettingsNotifications"
-                />
-            </ZListItemGroup>
-            <ZListItemGroup header="Support" divider={false}>
-                <ZListItem
-                    leftIconColor={theme.tint2}
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-invite-fill-24.png')}
-                    appearance="default"
-                    text="Invite friends"
-                    onPress={handleGlobalInvitePress}
-                />
-                {/* <ZListItem
-                    leftIconColor={theme.tint4}
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
-                    appearance="default"
-                    text="Ask for help"
-                    onPress={() => props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
-                /> */}
-                <ZListItem
                     leftIconColor={theme.tint6}
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-rate-24.png') : require('assets/ic-rate-fill-24.png')}
-                    appearance="default"
+                    leftIcon={require('assets/ic-rate-fill-24.png')}
                     text="Rate the App"
                     onPress={() => {
                         Rate.rate({
@@ -125,8 +114,16 @@ let SettingsContent = ((props: PageProps) => {
                     }}
                 />
             </ZListItemGroup>
+            <ZListItemGroup header="Support">
+                <ZListItem
+                    leftIconColor={theme.tint4}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
+                    text="Ask for help"
+                    onPress={() => props.router.push('Conversation', { flexibleId: 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
+                />
+            </ZListItemGroup>
 
-            <ZListItemGroup header="Organizations" divider={false} actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
+            <ZListItemGroup header="Organizations" actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
                     leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
@@ -145,7 +142,7 @@ let SettingsContent = ((props: PageProps) => {
                 ))}
             </ZListItemGroup>
             {(NON_PRODUCTION) && (
-                <ZListItemGroup header={null} divider={false}>
+                <ZListItemGroup header={null}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListItemGroup>
             )}
