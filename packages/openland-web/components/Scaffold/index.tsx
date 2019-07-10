@@ -7,8 +7,6 @@ import { TextAppBar } from 'openland-text/TextAppBar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import RoomIcon from 'openland-icons/channel-2.svg';
-import ExploreIcon from 'openland-icons/ic-explore.svg';
-import MobileChatIcon from 'openland-icons/ic-chat.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { findChild } from '../utils';
@@ -20,7 +18,14 @@ import { IsMobileContext } from './IsMobileContext';
 import { RenderedOnceContext } from './RenderedOnceContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import MessagesIcon from 'openland-icons/messages_icon.svg';
+import MessagesSelectedIcon from 'openland-icons/messages_selected_icon.svg';
+import DiscoverIcon from 'openland-icons/discover_icon.svg';
+import DiscoverSelectedIcon from 'openland-icons/discover_selected_icon.svg';
+import AccountIcon from 'openland-icons/account_icon.svg';
+import AccountSelectedIcon from 'openland-icons/account_selected_icon.svg';
 import * as Cookie from 'js-cookie';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -190,6 +195,47 @@ export const DiscoverNotDoneRedDot = () => {
     );
 };
 
+const RoutedActiveIcon = ({
+    name,
+    path,
+    IconComponent,
+    icon,
+}: {
+    name: string;
+    path: string;
+    IconComponent?: any;
+    icon?: any;
+}) => {
+    let router = React.useContext(XRouterContext)!;
+
+    return (
+        <UniversalScafoldMenuItem
+            isActive={router.path === path}
+            name={name}
+            path={path}
+            icon={icon ? icon : <IconComponent isActive={router.path === path} />}
+        />
+    );
+};
+
+const AccountActiveIcon = ({ isActive }: { isActive: boolean }) => (
+    <>{isActive ? <AccountSelectedIcon /> : <AccountIcon />}</>
+);
+
+const DiscoverActiveIcon = ({ isActive }: { isActive: boolean }) => (
+    <>
+        {isActive ? <DiscoverSelectedIcon /> : <DiscoverIcon />}
+        <DiscoverNotDoneRedDot />
+    </>
+);
+
+const MessageActiveIcon = ({ isActive }: { isActive: boolean }) => (
+    <>
+        {isActive ? <MessagesSelectedIcon /> : <MessagesIcon />}
+        <NotificationCounter />
+    </>
+);
+
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const isMobile = useIsMobile();
 
@@ -240,35 +286,28 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                     <UniversalScaffold
                         topItems={
                             <>
-                                <UniversalScafoldMenuItem
+                                <RoutedActiveIcon
                                     name={'Messages'}
                                     path="/mail"
-                                    icon={
-                                        <>
-                                            <MobileChatIcon />
-                                            <NotificationCounter />
-                                        </>
-                                    }
+                                    IconComponent={MessageActiveIcon}
                                 />
-
+                                <RoutedActiveIcon
+                                    name={TextAppBar.items.discover}
+                                    path="/discover"
+                                    IconComponent={DiscoverActiveIcon}
+                                />
+                                <RoutedActiveIcon
+                                    name={'Account'}
+                                    path="/account"
+                                    IconComponent={AccountActiveIcon}
+                                />
                                 <XWithRole role="feature-non-production">
-                                    <UniversalScafoldMenuItem
+                                    <RoutedActiveIcon
                                         name={TextAppBar.items.apps}
                                         path="/apps"
                                         icon={<RoomIcon />}
                                     />
                                 </XWithRole>
-
-                                <UniversalScafoldMenuItem
-                                    name={TextAppBar.items.discover}
-                                    path="/discover"
-                                    icon={
-                                        <>
-                                            <DiscoverNotDoneRedDot />
-                                            <ExploreIcon />
-                                        </>
-                                    }
-                                />
                             </>
                         }
                         menu={menu}

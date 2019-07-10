@@ -306,6 +306,12 @@ routes.add('/performance', '/perf/perf');
 routes.add('/test', '/dev/test');
 
 //
+// Account
+//
+
+routes.add('/account', '/account/root');
+
+//
 // Authentication
 //
 
