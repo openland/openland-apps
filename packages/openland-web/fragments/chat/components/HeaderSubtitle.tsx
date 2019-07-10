@@ -6,7 +6,7 @@ export const HeaderSubtitle = (props: { value: string; path?: string }) => (
         as="a"
         fontSize={13}
         fontWeight="400"
-        color="rgba(0, 0, 0, 0.4)"
+        color="#7A7A7A"
         lineHeight="16px"
         path={props.path}
         hoverTextDecoration="none"

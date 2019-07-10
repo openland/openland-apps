@@ -8,6 +8,15 @@ const titleClassName = css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    & span {
+        letter-spacing: 0;
+    }
+`;
+
+const orgClassName = css`
+    & span {
+        letter-spacing: 0.3px;
+    }
 `;
 
 export const HeaderTitle = React.memo(
@@ -19,15 +28,15 @@ export const HeaderTitle = React.memo(
         <XView marginTop={-2} minWidth={0} flexShrink={1} flexDirection="row">
             <XView
                 as="a"
-                fontSize={14}
                 fontWeight="600"
-                lineHeight="18px"
-                color="#000000"
+                lineHeight="20px"
+                fontSize={15}
+                color="#292929"
                 path={props.path}
                 minWidth={0}
                 flexShrink={1}
                 hoverTextDecoration="none"
-                height={18}
+                height={24}
                 overflow="hidden"
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
@@ -44,18 +53,19 @@ export const HeaderTitle = React.memo(
                 <XView
                     as="a"
                     marginLeft={6}
+                    marginTop={1}
                     fontSize={13}
-                    fontWeight="600"
-                    color="rgba(0, 0, 0, 0.4)"
-                    lineHeight="18px"
+                    color="#7A7A7A"
                     path={'/mail/o/' + props.organization.id}
                     hoverTextDecoration="none"
                 >
-                    {emoji({
-                        src: props.organization.name,
-                        size: 16,
-                        cache: true,
-                    })}
+                    <span className={orgClassName}>
+                        {emoji({
+                            src: props.organization.name,
+                            size: 16,
+                            cache: true,
+                        })}
+                    </span>
                 </XView>
             )}
         </XView>

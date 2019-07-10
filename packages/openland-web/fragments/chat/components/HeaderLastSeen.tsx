@@ -4,10 +4,11 @@ import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 
 const statusOffline = css`
-    color: rgba(0, 0, 0, 0.4);
+    color: #7A7A7A;
     font-size: 13px;
     line-height: 16px;
     font-weight: 400;
+    letter-spacing: 0.2px;
 `;
 
 const statusOnline = css`
@@ -15,6 +16,7 @@ const statusOnline = css`
     font-size: 13px;
     line-height: 16px;
     font-weight: 400;
+    letter-spacing: 0.2px;
 `;
 
 export const HeaderLastSeen = (props: { variables: { userId: string } }) => {

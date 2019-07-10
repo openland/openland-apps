@@ -44,6 +44,10 @@ const inviteButtonClass = css`
     }
 `;
 
+const subtitleClassName = css`
+    letter-spacing: 0.2px;
+`;
+
 export interface ChatHeaderViewProps {
     room: RoomHeader_room;
     me: UserShort;
@@ -69,6 +73,7 @@ const ChatHeaderViewAbstract = XMemo(
             <XView
                 flexDirection="row"
                 alignItems="center"
+                alignSelf="stretch"
                 maxWidth={820}
                 width="100%"
                 justifyContent="space-between"
@@ -88,6 +93,8 @@ const ChatHeaderViewAbstract = XMemo(
                 </HideOnDesktop>
                 <XView
                     flexDirection="row"
+                    alignItems="center"
+                    alignSelf="stretch"
                     path={headerPath}
                     flexGrow={1}
                     minWidth={0}
@@ -95,9 +102,15 @@ const ChatHeaderViewAbstract = XMemo(
                     paddingRight={16}
                 >
                     {avatar}
-                    <XView marginLeft={16} minWidth={0} flexShrink={1}>
+                    <XView
+                        marginLeft={16}
+                        minWidth={0}
+                        flexShrink={1}
+                        alignSelf="stretch"
+                        justifyContent="center"
+                    >
                         {title}
-                        <XView marginTop={4}>{subtitle}</XView>
+                        <XView>{subtitle}</XView>
                     </XView>
                 </XView>
                 {rightButtons}
@@ -156,13 +169,18 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
     return (
         <XView
             fontSize={13}
+            flexDirection="row"
+            alignItems="center"
             fontWeight="400"
             color="#1790ff"
             lineHeight="16px"
             marginLeft={6}
             cursor={'pointer'}
         >
-            {`${onlineCount} online`}
+            <XView color="#7A7A7A" marginRight={6}>
+                ·
+            </XView>
+            <XView>{`${onlineCount} online`}</XView>
         </XView>
     );
 };
@@ -197,19 +215,25 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     if (sharedRoom) {
         if (sharedRoom.kind === 'INTERNAL') {
             headerPath = '/mail/o/' + sharedRoom.organization!.id;
-            subtitle = <HeaderSubtitle value="Organization" />;
+            subtitle = (
+                <span className={subtitleClassName}>
+                    <HeaderSubtitle value="Organization" />
+                </span>
+            );
         } else {
             headerPath = '/mail/p/' + sharedRoom.id;
             subtitle = (
-                <XView flexDirection="row">
-                    <HeaderSubtitle
-                        value={
-                            sharedRoom.membersCount +
-                            (sharedRoom.membersCount === 1 ? ' member' : ' members')
-                        }
-                    />
-                    {!isMobile && <ChatOnlinesTitle chatId={sharedRoom.id} />}
-                </XView>
+                <span className={subtitleClassName}>
+                    <XView flexDirection="row">
+                        <HeaderSubtitle
+                            value={
+                                sharedRoom.membersCount +
+                                (sharedRoom.membersCount === 1 ? ' member' : ' members')
+                            }
+                        />
+                        {!isMobile && <ChatOnlinesTitle chatId={sharedRoom.id} />}
+                    </XView>
+                </span>
             );
 
             threeDots = <HeaderMenu room={sharedRoom} />;
@@ -266,13 +290,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-            <HeaderTitle
-                key={privateRoom!!.user.id}
-                value={privateRoom!!.user.name}
-                path={'/mail/u/' + privateRoom!!.user.id}
-                organization={privateRoom!!.user.primaryOrganization}
-            />
-        );
+        <HeaderTitle
+            key={privateRoom!!.user.id}
+            value={privateRoom!!.user.name}
+            path={'/mail/u/' + privateRoom!!.user.id}
+            organization={privateRoom!!.user.primaryOrganization}
+        />
+    );
 
     return (
         <ChatHeaderViewAbstract
@@ -283,11 +307,12 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             modals={modals}
             rightButtons={
                 <RowWithSeparators separatorWidth={25}>
-                    {!isMobile && (privateRoom ? !privateRoom.user.isBot : true) && (
-                        <XView>
-                            <CallButton room={room} />
-                        </XView>
-                    )}
+                    {!isMobile &&
+                        (privateRoom ? !privateRoom.user.isBot : true) && (
+                            <XView>
+                                <CallButton room={room} />
+                            </XView>
+                        )}
                     {inviteButton}
                     <HeaderMuteButton settings={room.settings} roomId={room.id} />
                     {threeDots}
