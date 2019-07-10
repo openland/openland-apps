@@ -4,7 +4,7 @@ import { MenuPropsT, Title } from './';
 
 export const DesktopMenu = ({ title, rightContent, children }: MenuPropsT) => {
     return (
-        <XView width="100%">
+        <XView width="100%" height="100%" flexGrow={1}>
             <XView
                 flexDirection="row"
                 width="100%"
@@ -24,7 +24,7 @@ export const DesktopMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 </XView>
             </XView>
 
-            <XView flexDirection="column" alignItems="stretch" backgroundColor="#fff">
+            <XView flexDirection="column" flexGrow={1} alignItems="stretch" backgroundColor="#fff">
                 {children}
             </XView>
         </XView>

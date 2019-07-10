@@ -17,7 +17,7 @@ import { useClient } from 'openland-web/utils/useClient';
 
 const Section = ({ title, children }: { title: string; children: any }) => {
     return (
-        <XView paddingHorizontal={16}>
+        <XView paddingHorizontal={16} flexGrow={1}>
             <XView color={'#171B1F'} marginBottom={20}>
                 <XText mode={Mode.TitleTwo}>{title}</XText>
             </XView>
@@ -118,33 +118,13 @@ export default withApp('Apps', 'viewer', () => {
     const myOrganizations = client.useMyOrganizations();
 
     return (
-        <XView flexGrow={1} flexShrink={1}>
-            <XView>Hello</XView>
-            <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
-                <Section title="Organizations">
-                    {myOrganizations.myOrganizations.map((organization, key) => {
-                        return (
-                            <OrganizationItem
-                                key={key}
-                                id={organization.id}
-                                image={organization.photo}
-                                text={organization.name}
-                                isPrimary={organization.isPrimary}
-                            />
-                        );
-                    })}
-                </Section>
-            </XScrollView3>
-            <XView>lol</XView>
-        </XView>
-    );
-    return (
         <Navigation
+            fullHeight
             title={isMobile ? 'title' : 'Account'}
             swapFragmentsOnMobile
             menuRightContent={<NewOptionsButton />}
             menuChildrenContent={
-                <XView flexShrink={0}>
+                <XView flexGrow={1}>
                     <UserProfile />
                     <XView marginBottom={44} paddingHorizontal={16} flexDirection="row">
                         <InviteFriendsIcon />
@@ -161,8 +141,9 @@ export default withApp('Apps', 'viewer', () => {
                             <SettingsItem icon={<DownloadAppsIcon />} text="Download Apps" />
                         </Section>
                     </XView>
-                    <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1}>
-                        <Section title="Organizations">
+
+                    <Section title="Organizations">
+                        <XScrollView3 useDefaultScroll flexGrow={1} flexShrink={1} flexBasis={0}>
                             {myOrganizations.myOrganizations.map((organization, key) => {
                                 return (
                                     <OrganizationItem
@@ -174,8 +155,8 @@ export default withApp('Apps', 'viewer', () => {
                                     />
                                 );
                             })}
-                        </Section>
-                    </XScrollView3>
+                        </XScrollView3>
+                    </Section>
                 </XView>
             }
             secondFragment={

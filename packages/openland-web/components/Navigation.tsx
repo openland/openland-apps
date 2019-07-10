@@ -75,6 +75,7 @@ const containerStyle = css`
     display: flex;
     position: relative;
     flex-direction: column;
+    flex-grow: 1;
     height: 100%;
     width: 360px;
     flex-shrink: 0;
@@ -151,6 +152,7 @@ const PageInner = AdaptiveHOC({
 
 export const Navigation = XMemo(
     ({
+        fullHeight,
         title,
         documentHead,
         tab,
@@ -161,6 +163,7 @@ export const Navigation = XMemo(
         firstFragment,
         secondFragment,
     }: {
+        fullHeight?: boolean;
         title: string;
         documentHead?: XDocumentHeadT;
         tab?: any;
@@ -180,7 +183,6 @@ export const Navigation = XMemo(
                             flexDirection="row"
                             flexGrow={1}
                             flexShrink={0}
-                            // overflow="hidden"
                             alignItems="stretch"
                             height="100%"
                             width="100%"
@@ -189,7 +191,11 @@ export const Navigation = XMemo(
                                 tab={tab}
                                 swapFragmentsOnMobile={swapFragmentsOnMobile}
                                 firstFragmentMenu={
-                                    <Menu title={title} rightContent={menuRightContent}>
+                                    <Menu
+                                        fullHeight={fullHeight}
+                                        title={title}
+                                        rightContent={menuRightContent}
+                                    >
                                         {menuChildrenContent}
                                     </Menu>
                                 }
