@@ -72,10 +72,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                 <View alignSelf="center" marginTop={30} marginBottom={10}>
                     <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} />
                 </View>
-                <ZListItemGroup
-                    divider={false}
-                    footer="Please, provide your name. This information is part of your public profile."
-                >
+                <ZListItemGroup footer="Please, provide your name. This information is part of your public profile.">
                     <ZTextInput
                         field="input.firstName"
                         placeholder="First name"

@@ -21,14 +21,12 @@ const SettingsOrganizatonsContent = XMemo<PageProps>((props) => {
                     leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
                     description="Primary"
                     onPress={() => props.router.push('ProfileOrganization', { id: primary.id })}
-                    navigationIcon={true}
                 />
                 {secondary.map((v) => (
                     <ZListItem
                         text={v.name}
                         leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
                         onPress={() => props.router.push('ProfileOrganization', { id: v.id })}
-                        navigationIcon={true}
                     />
                 ))}
             </ZListItemGroup>

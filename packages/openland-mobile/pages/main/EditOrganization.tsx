@@ -56,7 +56,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
-                <ZListItemGroup divider={false} footer="Publicly describe this organization for all to see">
+                <ZListItemGroup footer="Publicly describe this organization for all to see">
                     <ZTextInput
                         field="input.about"
                         placeholder="Add a short description"

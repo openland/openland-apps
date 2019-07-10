@@ -6,13 +6,13 @@ import { TextStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ZListItemGroupProps {
     header?: string | null;
+    marginTop?: number;
     counter?: number | null;
     footer?: {
         text: string;
         onPress: (link: string) => void;
         onLongPress?: (link: string) => void;
-    } | string | null;
-    divider?: boolean;
+    } | string;
     actionRight?: {
         title: string,
         onPress: () => void
@@ -21,10 +21,11 @@ interface ZListItemGroupProps {
 }
 
 export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
-    let theme = React.useContext(ThemeContext);
+    const theme = React.useContext(ThemeContext);
+    const { header, marginTop, counter, footer, actionRight, children, } = props;
+    const components: any[] = [];
 
-    let components: any[] = [];
-    React.Children.forEach(props.children, (c) => {
+    React.Children.forEach(children, (c) => {
         if (c !== null && c !== undefined) {
             components.push(c);
         }
@@ -36,10 +37,10 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
 
     return (
         <View>
-            {props.header !== null && props.header !== undefined &&
+            {header !== null && header !== undefined &&
                 <View
                     style={{
-                        marginTop: 16,
+                        marginTop: (marginTop !== undefined) ? marginTop : 16,
                         flexDirection: 'row',
                         height: 48,
                         alignItems: 'center',
@@ -55,10 +56,10 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         numberOfLines={1}
                         ellipsizeMode="tail"
                     >
-                        {props.header}
+                        {header}
                     </Text>
 
-                    {props.counter !== undefined && props.counter !== null && (
+                    {counter !== undefined && counter !== null && (
                         <Text
                             style={{
                                 ...TypeStyles.label1,
@@ -67,14 +68,14 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                                 marginTop: 1,
                             }}
                         >
-                            {props.counter.toString()}
+                            {counter.toString()}
                         </Text>
                     )}
 
                     <View flexGrow={1} paddingRight={16} />
 
-                    {props.actionRight && (
-                        <TouchableOpacity onPress={props.actionRight.onPress}>
+                    {actionRight && (
+                        <TouchableOpacity onPress={actionRight.onPress}>
                             <Text
                                 style={{
                                     ...TypeStyles.label2,
@@ -85,24 +86,22 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
                             >
-                                {props.actionRight.title}
+                                {actionRight.title}
                             </Text>
                         </TouchableOpacity>
                     )}
                 </View>
             }
-            {props.header === null && <View height={22} />}
-            {/* <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" /> */}
+            {header === null && <View height={22} />}
             <View>
                 {components}
             </View>
-            {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
-            {props.footer !== null && props.footer !== undefined && (
+            {footer !== undefined && (
                 <ZText
                     linkify={true}
-                    text={typeof props.footer === 'string' ? props.footer : props.footer.text}
-                    onPress={typeof props.footer === 'string' ? undefined : props.footer.onPress}
-                    onLongPress={typeof props.footer === 'string' ? undefined : props.footer.onLongPress}
+                    text={typeof footer === 'string' ? footer : footer.text}
+                    onPress={typeof footer === 'string' ? undefined : footer.onPress}
+                    onLongPress={typeof footer === 'string' ? undefined : footer.onLongPress}
                     style={{
                         color: Platform.OS === 'android' ? '#939393' : '#8e8e93',
                         fontSize: 13,

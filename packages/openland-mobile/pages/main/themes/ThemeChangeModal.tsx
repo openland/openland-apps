@@ -50,7 +50,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
 
         return (
             <View marginBottom={14}>
-                <ZListItemGroup divider={false}>
+                <ZListItemGroup>
                     <View flexDirection="row" justifyContent="center">
                         {themes.map(theme => (
                             <TouchableOpacity onPress={() => this.onThemeSelect(theme)}>

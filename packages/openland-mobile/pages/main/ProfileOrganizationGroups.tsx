@@ -14,7 +14,7 @@ class GroupsList extends React.PureComponent<{ groups: (Organization_organizatio
     render() {
         return (
             <SScrollView>
-                <ZListItemGroup divider={false}>
+                <ZListItemGroup>
                     {this.props.groups
                         .sort((a, b) => (b!.membersCount || 0) - (a!.membersCount || 0))
                         .map((v) => (

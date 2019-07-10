@@ -28,7 +28,7 @@ export const Worker = withApp(() => {
         <>
             <SHeader title="Worker" />
             <SScrollView>
-                <ZListItemGroup header={null} divider={false}>
+                <ZListItemGroup header={null}>
                     {}
                 </ZListItemGroup>
             </SScrollView>

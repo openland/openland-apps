@@ -84,7 +84,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
-                <ZListItemGroup divider={false} footer="Publicly describe this community for all to see">
+                <ZListItemGroup footer="Publicly describe this community for all to see">
                     <ZTextInput
                         field="input.about"
                         placeholder="Add a short description"
@@ -97,7 +97,6 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         text="Community type"
                         description={organization.isPrivate ? 'Private' : 'Public'}
                         onPress={organization.isOwner ? handleChangeTypePress : undefined}
-                        navigationIcon={organization.isOwner ? true : undefined}
                     />
                 </ZListItemGroup>
                 <View height={15} />

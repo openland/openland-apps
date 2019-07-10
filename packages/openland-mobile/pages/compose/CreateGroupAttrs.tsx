@@ -135,7 +135,6 @@ const CreateGroupComponent = (props: PageProps) => {
                             description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
                             descriptionColor={selectedKind === SharedRoomKind.GROUP ? theme.accentPositive : undefined}
                             descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
-                            navigationIcon={true}
                         />
                     </ZListItemGroup>
 

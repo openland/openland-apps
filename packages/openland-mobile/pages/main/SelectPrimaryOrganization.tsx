@@ -18,7 +18,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
             <SScrollView>
                 <View marginTop={Platform.OS === 'ios' ? 5 : undefined} />
 
-                <ZListItemGroup divider={false} footer="Choose organization that people will see in your profile.">
+                <ZListItemGroup footer="Choose organization that people will see in your profile.">
                     {organizations.map(org => (
                         <ZListItem
                             text={org.name}

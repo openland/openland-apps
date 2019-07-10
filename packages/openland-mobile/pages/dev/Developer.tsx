@@ -32,7 +32,7 @@ export const Developer = withApp(() => {
         <>
             <SHeader title="Developer" />
             <SScrollView>
-                <ZListItemGroup header={null} divider={false}>
+                <ZListItemGroup header={null}>
                     <ZListItem text="Colors" path="DevColors" />
                     <ZListItem text="Worker" path="DevWorker" />
                     <ZListItem text="Components" path="DevComponents" />

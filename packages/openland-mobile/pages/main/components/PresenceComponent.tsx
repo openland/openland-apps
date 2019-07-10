@@ -1,21 +1,30 @@
 import * as React from 'react';
-import { TextStyle, Text } from 'react-native';
+import { TextStyle, Text, TextProps } from 'react-native';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-export const PresenceComponent = XMemo<{ uid: string, isBot?: boolean, lastSeen?: string|null, online?: boolean, style?: TextStyle, onlineStyle?: TextStyle }>((props) => {
-    if (props.isBot) {
-        return (<Text style={[props.style, props.onlineStyle]}>bot</Text>);
+interface PresenceComponentProps extends TextProps {
+    uid: string;
+    isBot?: boolean;
+    lastSeen?: string | null;
+    online?: boolean;
+    onlineStyle?: TextStyle;
+}
+
+export const PresenceComponent = XMemo<PresenceComponentProps>((props) => {
+    const { uid, isBot, lastSeen, online, onlineStyle, style, ...other } = props;
+    if (isBot) {
+        return (<Text style={[style, onlineStyle]} {...other}>bot</Text>);
     }
     let sub = undefined;
     let isOnline = false;
-    if (!props.online && props.lastSeen) {
-        sub = formatLastSeen(props.lastSeen);
-    } else if (props.online) {
+    if (!online && lastSeen) {
+        sub = formatLastSeen(lastSeen);
+    } else if (online) {
         sub = 'online';
         isOnline = true;
     }
     return (
-        <Text style={[props.style, isOnline && props.onlineStyle]}>{sub}</Text>
+        <Text style={[style, isOnline && onlineStyle]} {...other}>{sub}</Text>
     );
 });

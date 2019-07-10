@@ -118,7 +118,6 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                             <ZListItem
                                 text="Sender"
                                 description={welcomeMessageSender ? welcomeMessageSender.name : undefined}
-                                navigationIcon={true}
                                 onPress={() => {
                                     Modals.showUserPicker(
                                         props.router,
@@ -143,7 +142,6 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                     <ZListItemGroup
                         header="Social sharing image"
                         footer="Choose an image to display when sharing invite to this group on social networks"
-                        divider={false}
                     >
                         <View paddingHorizontal={16}>
                             <ZAvatarPicker field="input.socialImageRef" render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />

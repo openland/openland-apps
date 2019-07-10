@@ -4,9 +4,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Text } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
-export interface GroupViewProps {
+interface GroupViewProps {
     item: RoomShort_SharedRoom | GlobalSearch_items_SharedRoom;
     photo?: string;
     paddingRight?: number;
@@ -15,33 +15,30 @@ export interface GroupViewProps {
 }
 
 export const GroupView = React.memo<GroupViewProps>((props) => {
-    let theme = React.useContext(ThemeContext);
-    let item = props.item;
-    let membersCount = item.membersCount || 0;
+    const theme = React.useContext(ThemeContext);
+    const { item, photo, paddingRight, onPress, onLongPress } = props;
+    const membersCount = item.membersCount || 0;
 
-    let handlePress = React.useCallback(() => {
-        props.onPress(props.item.id);
-    }, [props.item.id, props.onPress]);
+    const handlePress = React.useCallback(() => {
+        onPress(item.id);
+    }, [item.id, onPress]);
 
     return (
-        <ZListItemBase height={60} onPress={handlePress} onLongPress={props.onLongPress} separator={false} navigationIcon={true}>
-            <View width={74} height={60} alignItems="center" justifyContent="center">
+        <ZListItemBase height={52} onPress={handlePress} onLongPress={onLongPress} separator={false}>
+            <View marginHorizontal={16} height={52} alignItems="center" justifyContent="center">
                 <ZAvatar
-                    src={props.photo}
-                    size={42}
+                    src={photo}
+                    size={40}
                     placeholderKey={item.id}
                     placeholderTitle={item.title}
                 />
             </View>
-            <View paddingRight={props.paddingRight || 10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+            <View paddingRight={paddingRight || 10} flexDirection="column" flexGrow={1} flexBasis={0} justifyContent="center">
                 <Text
                     numberOfLines={1}
                     style={{
-                        fontSize: 16,
-                        lineHeight: 19,
-                        height: 19,
+                        ...TypeStyles.label1,
                         color: theme.foregroundPrimary,
-                        fontWeight: TextStyles.weight.medium
                     }}
                 >
                     {item.title}
@@ -49,11 +46,8 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                 <Text
                     numberOfLines={1}
                     style={{
-                        marginTop: 5,
-                        fontSize: 13,
-                        lineHeight: 15,
-                        height: 15,
-                        color: theme.foregroundPrimary,
+                        ...TypeStyles.subhead,
+                        color: theme.foregroundTertiary,
                     }}
                 >
                     {membersCount + (membersCount > 1 ? ' members' : ' member')}

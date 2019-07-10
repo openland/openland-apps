@@ -293,7 +293,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
 
-            <ZListItemGroup header="About" divider={false}>
+            <ZListItemGroup header="About" marginTop={0}>
                 {organization.about && (
                     <ZListItem multiline={true} text={organization.about} copy={true} />
                 )}
@@ -319,7 +319,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             
             <ZListItemGroup
                 header="Groups and Channels"
-                divider={false}
                 counter={organization.rooms.length}
                 actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
             >
@@ -328,7 +327,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         leftIcon={require('assets/ic-add-24.png')}
                         text="Create new"
                         onPress={handleCreatePress}
-                        navigationIcon={false}
                     />
                 )}
                 {organization.rooms
@@ -347,7 +345,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
             <ZListItemGroup
                 header="Members"
-                divider={false}
                 counter={organization.membersCount}
             >
                 {organization.isMine && (

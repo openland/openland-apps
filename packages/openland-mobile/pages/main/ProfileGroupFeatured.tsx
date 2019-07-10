@@ -17,7 +17,7 @@ const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Featured members" />
             <SScrollView>
-                <ZListItemGroup divider={false}>
+                <ZListItemGroup>
                     {members.map((item, index) => (
                         <UserView
                             user={item.user}

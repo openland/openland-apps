@@ -91,7 +91,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     }}
                 />
 
-                <ZListItemGroup header="About" divider={false}>
+                <ZListItemGroup header="About" marginTop={0}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
                     {!!user.about && <View height={10} />}
                     {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
@@ -103,7 +103,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
 
                 {(myID !== user.id) && (
-                    <ZListItemGroup header="Settings" footer={null} divider={false}>
+                    <ZListItemGroup header="Settings">
                         <NotificationSettings
                             id={(conversation as User_conversation_PrivateRoom).id}
                             mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
@@ -113,13 +113,12 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                                 leftIcon={require('assets/ic-invite-fill-24.png')}
                                 text="Add to groups"
                                 onPress={handleAddMember}
-                                navigationIcon={true}
                             />
                         )}
                     </ZListItemGroup>
                 )}
 
-                <ZListItemGroup header="Featured in" counter={user.chatsWithBadge.length} footer={null} divider={false}>
+                <ZListItemGroup header="Featured in" counter={user.chatsWithBadge.length}>
                     {user.chatsWithBadge.map((item, index) => (
                         <ZListItem
                             leftAvatar={{
@@ -136,7 +135,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
 
                 {!!user.primaryOrganization && (
-                    <ZListItemGroup header="Organization" footer={null} divider={false}>
+                    <ZListItemGroup header="Organization">
                         <ZListItem
                             leftAvatar={{
                                 photo: user.primaryOrganization.photo,

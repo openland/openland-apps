@@ -102,7 +102,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                 }}
             >
                 <ZListItemGroup
-                    divider={false}
                     header={null}
                     footer={{
                         text: 'You can choose a username in Openland.' + '\n' +

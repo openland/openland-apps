@@ -185,7 +185,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 onPress={handleSend}
             />
 
-            <ZListItemGroup header="About" divider={false}>
+            <ZListItemGroup header="About" marginTop={0}>
                 {!!room.description && (
                     <ZListItem
                         text={room.description}
@@ -206,11 +206,11 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'} divider={false}>
+            <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListItemGroup>
 
-            <ZListItemGroup header="Members" divider={false} counter={room.membersCount}>
+            <ZListItemGroup header="Members" counter={room.membersCount}>
                 <ZListItem
                     text="Add members"
                     leftIcon={require('assets/ic-add-24.png')}
@@ -222,7 +222,6 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text={`Invite to ${chatTypeStr} with a link`}
                         onPress={() => props.router.present('ProfileGroupLink', { room })}
-                        navigationIcon={false}
                     />
                 )}
 
@@ -232,7 +231,6 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         text="Featured members"
                         onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
                         description={room.featuredMembersCount + ''}
-                        navigationIcon={true}
                     />
                 )}
             </ZListItemGroup>
