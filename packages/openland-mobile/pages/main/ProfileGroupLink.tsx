@@ -8,6 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -27,6 +28,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
         });
 
         Clipboard.setString(link);
+        Toast.showCopiedLink();
     }, [link]);
 
     const handleShareClick = React.useCallback(() => {

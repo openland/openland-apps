@@ -106,4 +106,8 @@ export function failure(config: ToastBuildConfig = {}) {
     });
 }
 
-export default { build, loader, success, failure };
+export function showCopiedLink() {
+    success({ text: 'Link copied', duration: 1000 }).show();
+}
+
+export default { build, loader, success, failure, showCopiedLink };
