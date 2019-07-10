@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 import { NamedError } from 'openland-y-forms/errorHandling';
 import { ACTIVATION_CODE_LENGTH } from './EmailAuth';
 
@@ -14,10 +15,7 @@ export const ShowAuthError = (error: NamedError) => {
             .message('Please check your email address and try again.')
             .button('TRY AGAIN').show();
     } else if (error.name === 'wrong_code' || error.name === 'wrong_code_length') {
-        Alert.builder()
-            .title('The code you entered is incorrect')
-            .message('Please check the code in the email and try again.')
-            .button('TRY AGAIN').show();
+        Toast.failure({ text: 'wrong code', duration: 1000 }).show();
     } else if (error.name === 'no_code') {
         Alert.builder()
             .title('Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email')
