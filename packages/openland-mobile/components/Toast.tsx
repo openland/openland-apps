@@ -10,13 +10,17 @@ const styles = StyleSheet.create({
         alignItems: 'center' 
     } as ViewStyle,
     toastContainer: {
-        paddingVertical: 20,
+        paddingVertical: 25,
         paddingHorizontal: 30,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F0F2F5',
         borderRadius: 18
     } as ViewStyle,
+    toastContainerWithoutText: {
+        paddingHorizontal: 32, 
+        paddingVertical: 32
+    } as ViewStyle, 
     toastText: {
         color: '#78808F',
         fontSize: 15,
@@ -28,9 +32,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     } as ViewStyle,
-    toastIcon: {
+    toastIconWrapper: {
         marginBottom: 5
-    } as ImageStyle
+    } as ViewStyle,
 });
 
 type ToastBuildConfig = {
@@ -38,32 +42,30 @@ type ToastBuildConfig = {
     iconSource?: ImageSourcePropType;
     IconComponent?: () => React.ReactElement;
     duration?: number;
+    textStyle?: TextStyle;
 };
 
-const ToastComponent = ({ text, iconSource, IconComponent }: ToastBuildConfig) => (
-    <View style={styles.modalWrapper}>
-        <View style={styles.toastContainer}>
-            <View style={styles.toast}>
-                {iconSource && (
-                    <View style={styles.toastIcon}>
-                        <Image source={iconSource} />
-                    </View>
-                )}
-                {IconComponent && (
-                    <View style={styles.toastIcon}>
-                        {IconComponent()}
-                    </View>
-                )}
+const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConfig) => {
+    const textIndent = !!(iconSource || IconComponent) && { marginTop: 8 };
+    const toastContainerStyle = !text && styles.toastContainerWithoutText;
 
-                {text && (
-                    <Text style={styles.toastText}>
-                        {text}
-                    </Text>
-                )}
+    return (
+        <View style={styles.modalWrapper}>
+            <View style={[styles.toastContainer, toastContainerStyle]}>
+                <View style={styles.toast}>
+                    {iconSource && <Image source={iconSource} />}
+                    {IconComponent && IconComponent()}
+                    
+                    {text && (
+                        <Text style={[styles.toastText, textIndent, textStyle]}>
+                            {text}
+                        </Text>
+                    )}
+                </View>
             </View>
         </View>
-    </View>
-);
+    );
+};
 
 export function build(config: ToastBuildConfig) {
     let modal: ZModalController;
