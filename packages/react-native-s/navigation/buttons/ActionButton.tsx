@@ -29,7 +29,7 @@ export class ActionButton extends React.PureComponent<{ title: string, icon?: an
 }
 
 export const ActionButtonView = XMemo<{ onPress?: () => void; children?: any }>((props) => (
-    <STouchable style={{ alignItems: 'center', justifyContent: 'center', padding: 4, margin: 8, backgroundColor: 'transparent' }} onPress={props.onPress}>
+    <STouchable style={{ alignItems: 'center', justifyContent: 'center', height: 44 }} onPress={props.onPress}>
         {props.children}
     </STouchable>
 ));
