@@ -1,9 +1,7 @@
 import * as React from 'react';
 import UUID from 'uuid/v4';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
-import { Platform, Button } from 'react-native';
-import { ActionButtonAndroid, ActionButtonAndroidView } from './navigation/buttons/ActionButtonAndroid';
-import { ActionButtonIOS, ActionButtonIOSView } from './navigation/buttons/ActionButtonIOS';
+import { ActionButton, ActionButtonView } from './navigation/buttons/ActionButton';
 import { SNavigationViewStyle } from './SNavigationView';
 
 export interface FastHeaderButtonDescription {
@@ -12,7 +10,6 @@ export interface FastHeaderButtonDescription {
 }
 
 export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void, style?: SNavigationViewStyle }> {
-
     private buttonId = UUID();
 
     private handlePress = () => {
@@ -23,34 +20,14 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
 
     private renderButton = (style: SNavigationViewStyle) => {
         if (this.props.title) {
-            if (Platform.OS === 'android') {
-                return (
-                    <ActionButtonAndroid icon={this.props.icon} title={this.props.title} onPress={this.handlePress} tintColor={style.textColor} />
-                );
-            } else if (Platform.OS === 'ios') {
-                return (
-                    <ActionButtonIOS title={this.props.title} icon={this.props.icon} tintColor={style.accentColor} onPress={this.handlePress} />
-                );
-            }
-            return (<Button color={style.accentColor} onPress={this.handlePress} title={this.props.title} />);
-        } else {
-            if (Platform.OS === 'android') {
-                return (
-                    <ActionButtonAndroidView onPress={this.handlePress}>
-                        {this.props.children}
-                    </ActionButtonAndroidView>
-                );
-            } else if (Platform.OS === 'ios') {
-                return (
-                    <ActionButtonIOSView onPress={this.handlePress}>
-                        {this.props.children}
-                    </ActionButtonIOSView>
-                );
-            }
             return (
-                <>
+                <ActionButton icon={this.props.icon} title={this.props.title} onPress={this.handlePress} tintColor={style.textColor} />
+            );
+        } else {
+            return (
+                <ActionButtonView onPress={this.handlePress}>
                     {this.props.children}
-                </>
+                </ActionButtonView>
             );
         }
     }
