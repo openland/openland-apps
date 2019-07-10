@@ -8,7 +8,7 @@ let searchStyle = css`
     border-color: transparent !important;
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 14px;
+    margin-bottom: 13px;
     height: 40px !important;
     & svg > path,
     &:focus-within svg > path,
