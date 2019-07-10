@@ -8,20 +8,22 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
 import { DesktopNavigatorItem } from './DesktopNavigatorItem';
-import { AppsMenuItem } from './MenuItems/AppsMenuItem';
 import { SuperAdminMenuItem } from './MenuItems/SuperAdminMenuItem';
-import { CreateMenuItem } from './MenuItems/CreateMenuItem';
-import { DesktopUserProfile } from './DesktopUserProfile';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
+import AccountIcon from 'openland-icons/account_icon.svg';
+import { AppsMenuItem } from './MenuItems/AppsMenuItem';
+import { DesktopUserProfile } from './DesktopUserProfile';
 
 export const DesktopScafoldMenuItem = ({
     name,
     path,
     icon,
+    isActive,
 }: {
     name: string;
     path: string;
     icon: any;
+    isActive: boolean;
 }) => {
     return (
         <XPolitePopper
@@ -33,7 +35,9 @@ export const DesktopScafoldMenuItem = ({
             groupId="scaffold_tooltip"
             content={<strong>{name}</strong>}
         >
-            <DesktopNavigatorItem path={path}>{icon}</DesktopNavigatorItem>
+            <DesktopNavigatorItem path={path} isActive={isActive}>
+                {icon}
+            </DesktopNavigatorItem>
         </XPolitePopper>
     );
 };
@@ -82,8 +86,8 @@ const Logo = () => (
         <XImage
             width={38}
             height={38}
-            src="/static/X/logo-5.png"
-            srcSet="/static/X/logo-5@2x.png 2x"
+            src="/static/X/logo-6.png"
+            srcSet="/static/X/logo-6@2x.png 2x"
         />
     </XView>
 );
@@ -101,35 +105,6 @@ const DesktopNavigationContainer = (props: { children?: any }) => (
         {props.children}
     </XView>
 );
-
-const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
-    let theme = React.useContext(ThemeContext);
-    if (props.position === 'top') {
-        return (
-            <XView
-                width={38}
-                height={1}
-                marginTop={0}
-                marginBottom={16}
-                alignSelf="center"
-                backgroundColor={theme.appBarSeparatorInnerColor}
-                flexShrink={0}
-            />
-        );
-    } else {
-        return (
-            <XView
-                width={38}
-                height={1}
-                marginTop={10}
-                marginBottom={10}
-                alignSelf="center"
-                backgroundColor={theme.appBarSeparatorInnerColor}
-                flexShrink={0}
-            />
-        );
-    }
-};
 
 const BottomNavigation = (props: { children?: any }) => (
     <XView
@@ -193,18 +168,10 @@ export const DesktopScaffold = ({
             <NavigationScroller>
                 <DesktopNavigationContainer>
                     <Logo />
-                    <NavigationDivider position="top" />
 
                     {topItems}
                     <BottomNavigation>
-                        <CreateMenuItem />
-                        <AppsMenuItem />
                         <SuperAdminMenuItem />
-
-                        <NavigationDivider position="bottom" />
-                        <DesktopNavigatorItem>
-                            <DesktopUserProfile />
-                        </DesktopNavigatorItem>
                     </BottomNavigation>
                 </DesktopNavigationContainer>
             </NavigationScroller>

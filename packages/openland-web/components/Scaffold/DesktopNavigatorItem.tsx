@@ -7,6 +7,7 @@ interface NavigatorItemProps {
     path?: string;
     onClick?: React.MouseEventHandler<any>;
     children?: any;
+    isActive: boolean;
 }
 
 const desktopNavigatorItemClassname = css`
@@ -19,19 +20,27 @@ const desktopNavigatorItemClassname = css`
     flex-grow: 1;
 `;
 
+const leftBarClassname = css`
+    position: absolute;
+    width: 2px;
+    height: 48px;
+    left: 0px;
+    top: 0px;
+    background: #0c7ff2;
+    border-radius: 0px 100px 100px 0px;
+`;
+
 export class DesktopNavigatorItem extends React.Component<NavigatorItemProps> {
     render() {
-        const { path, onClick, children } = this.props;
+        const { path, onClick, children, isActive } = this.props;
         return (
             <XView
                 as="a"
                 position="relative"
-                height={55}
+                height={48}
                 flexShrink={0}
                 cursor="pointer"
                 color="#b4b8bd"
-                selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
-                hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
                 linkSelectable={path ? true : undefined}
                 linkStrict={path ? true : undefined}
                 path={path}
@@ -39,6 +48,7 @@ export class DesktopNavigatorItem extends React.Component<NavigatorItemProps> {
                 hoverTextDecoration="none"
             >
                 <div className={cx(desktopNavigatorItemClassname, counterBorderHoverClassname)}>
+                    {isActive && <div className={leftBarClassname} />}
                     {children}
                 </div>
             </XView>
