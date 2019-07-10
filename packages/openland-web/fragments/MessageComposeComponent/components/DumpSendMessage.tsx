@@ -17,7 +17,7 @@ import { XView } from 'react-mental';
 const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
     return {
         width: '100%',
-        maxWidth: fullWidth ? '100%' : 956,
+        maxWidth: fullWidth ? '100%' : 980,
         minWidth: fullWidth ? '100%' : 512,
         paddingLeft: fullWidth ? 0 : 128,
         paddingRight: fullWidth ? 0 : 128,
