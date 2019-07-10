@@ -1,26 +1,33 @@
 import * as React from 'react';
 import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import Toast from 'openland-mobile/components/Toast';
 
 var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;
 
+const loader = Toast.loader();
+
 export function startLoader() {
-    if (!loading) {
-        loading = true;
-        for (let w of watchers) {
-            w(true);
-        }
-    }
+    loader.show();
+    
+    // if (!loading) {
+    //     loading = true;
+    //     for (let w of watchers) {
+    //         w(true);
+    //     }
+    // }
 }
 
 export function stopLoader() {
-    if (loading) {
-        loading = false;
-        for (let w of watchers) {
-            w(false);
-        }
-    }
+    loader.hide();
+    
+    // if (loading) {
+    //     loading = false;
+    //     for (let w of watchers) {
+    //         w(false);
+    //     }
+    // }
 }
 
 const styles = StyleSheet.create({
