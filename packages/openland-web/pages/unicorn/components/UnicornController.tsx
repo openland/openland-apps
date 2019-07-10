@@ -62,18 +62,18 @@ const baseClassNameContainer = css`
 
 const initialClassName = css`
     transform: translateX(100%);
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
 `;
 
 const initialClassNameContainer = css`
-    opacity: 0;
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    opacity: 0.01;
+    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const mountedClassName = css`
     transform: translateX(0%);
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 // const visibleClassName = css`
@@ -82,18 +82,18 @@ const mountedClassName = css`
 
 const mountedClassNameContainer = css`
     opacity: 0.3;
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const exitingClassName = css`
     transform: translateX(100%);
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
     pointer-events: none;
 `;
 
 const exitingClassNameContainer = css`
-    opacity: 0.0;
-    transition: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    opacity: 0.01;
+    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const displayNone = css`

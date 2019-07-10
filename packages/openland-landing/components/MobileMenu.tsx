@@ -115,10 +115,10 @@ export const MobileMenu = (props: MobileMenuProps) => {
                 </Container>
             </div>
             <XView position="absolute" bottom={14} left={10} flexDirection="row">
-                <a href={LandingLinks.google} target="_blank" className={menuAppClass}>
+                <a href={LandingLinks.apps.android} target="_blank" className={menuAppClass}>
                     <AndroidIcon />
                 </a>
-                <a href={LandingLinks.apple} target="_blank" className={menuAppClass}>
+                <a href={LandingLinks.apps.ios} target="_blank" className={menuAppClass}>
                     <IosIcon />
                 </a>
             </XView>

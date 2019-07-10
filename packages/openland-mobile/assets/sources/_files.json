@@ -666,6 +666,20 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-header-back",
+            "src": "ic-header-back.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-header-close",
+            "src": "ic-header-close.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

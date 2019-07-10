@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle, ImageSourcePropType } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
+import { ZModalController } from './ZModal';
+import LoaderSpinner from './LoaderSpinner';
 
 const styles = StyleSheet.create({
     modalWrapper: { 
@@ -25,50 +27,81 @@ const styles = StyleSheet.create({
     toast: {
         justifyContent: 'center',
         alignItems: 'center',
-    },
+    } as ViewStyle,
     toastIcon: {
         marginBottom: 5
     } as ImageStyle
 });
 
-export const showToastModal = (content: React.ReactElement, duration: number) => {
-    showBlanketModal(ctx => {
-        setTimeout(() => ctx.hide(), duration);
+type ToastBuildConfig = {
+    text?: string;
+    iconSource?: ImageSourcePropType;
+    IconComponent?: () => React.ReactElement;
+    duration?: number;
+}
 
-        return (
-            <View style={styles.modalWrapper}>
-                <View style={styles.toastContainer}>
-                    {content}
-                </View>
+const ToastComponent = ({ text, iconSource, IconComponent }: ToastBuildConfig) => (
+    <View style={styles.modalWrapper}>
+        <View style={styles.toastContainer}>
+            <View style={styles.toast}>
+                {iconSource && (
+                    <View style={styles.toastIcon}>
+                        <Image source={iconSource} />
+                    </View>
+                )}
+                {IconComponent && (
+                    <View style={styles.toastIcon}>
+                        {IconComponent()}
+                    </View>
+                )}
+
+                {text && (
+                    <Text style={styles.toastText}>
+                        {text}
+                    </Text>
+                )}
             </View>
-        )
+        </View>
+    </View>
+);
+
+export function build(config: ToastBuildConfig) {
+    let modal: ZModalController;
+
+    const show = () => showBlanketModal(ctx => {
+        modal = ctx;
+
+        if (config.duration) {
+            setTimeout(() => modal.hide(), config.duration);
+        }
+
+        return <ToastComponent {...config} />;
     }, false, true);
+
+    const hide = () => modal && modal.hide();
+
+    return { show, hide };
 }
 
-export const showToastUnknowError = (duration = 2000) => {
-    showToastModal(
-        <View style={styles.toast}>
-            <View style={styles.toastIcon}>
-                <Image source={require('assets/ic-toast-attention-32.png')} />
-            </View>
-            <Text style={styles.toastText}>
-                Unknown error
-            </Text>
-        </View>,
-        duration
-    );
+export function loader(config: ToastBuildConfig = {}) {
+    return build({
+        IconComponent: () => <LoaderSpinner />,
+        ...config
+    });
 }
 
-export const showToastLinkCopied = (duration = 2000) => {
-    showToastModal(
-        <View style={styles.toast}>
-            <View style={styles.toastIcon}>
-                <Image source={require('assets/ic-toast-checkmark-32.png')} />
-            </View>
-            <Text style={styles.toastText}>
-                Link copied
-            </Text>
-        </View>,
-        duration
-    );
+export function success(config: ToastBuildConfig = {}) {
+    return build({
+        iconSource: require('assets/ic-toast-checkmark-32.png'),
+        ...config
+    });
 }
+
+export function failure(config: ToastBuildConfig = {}) {
+    return build({
+        iconSource: require('assets/ic-toast-attention-32.png'),
+        ...config
+    });
+}
+
+export default { build, loader, success, failure };
