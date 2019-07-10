@@ -23,7 +23,7 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
     let theme = React.useContext(ThemeContext);
     let callback = React.useCallback(() => {
         props.onPress(props.tag);
-    }, [props.tag])
+    }, [props.tag]);
     return <TouchableOpacity onPress={callback} activeOpacity={0.6}>
 
         <View
@@ -49,8 +49,8 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
                 {props.tag.title}
             </Text>
         </View >
-    </TouchableOpacity>
-}
+    </TouchableOpacity>;
+};
 
 const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelectedChange: (selected: Set<string>) => void }) => {
 
@@ -58,7 +58,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
 
     let onShowAll = React.useCallback(() => {
         setShowAll(!showAll);
-    }, [showAll])
+    }, [showAll]);
 
     let onTagPress = (tag: Tag) => {
         let selected = props.selected.has(tag.id);
@@ -69,7 +69,7 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
             props.selected.add(tag.id);
         }
         props.onSelectedChange(props.selected);
-    }
+    };
 
     return (
         <View flexDirection="column">
@@ -83,8 +83,8 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
             </View>
             {/* {sub} */}
         </View>
-    )
-}
+    );
+};
 
 const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
     let [selected, setCurretnSelected] = React.useState(props.selected);
@@ -141,13 +141,13 @@ const DiscoverComponent = (props: PageProps) => {
 
     if (currentPage.betaNextDiscoverPage) {
         if (currentPage.betaNextDiscoverPage.chats) {
-            return <SuggestedChatsPage chats={currentPage.betaNextDiscoverPage.chats} router={props.router} selectedTagIds={[...selected.values()]} />
+            return <SuggestedChatsPage chats={currentPage.betaNextDiscoverPage.chats} router={props.router} selectedTagIds={[...selected.values()]} />;
         } else if (currentPage.betaNextDiscoverPage.tagGroup) {
             exclude.add(currentPage.betaNextDiscoverPage.tagGroup.id);
-            return < TagsGroupPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />
+            return < TagsGroupPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />;
         }
     }
-    return <ZLoader />
-}
+    return <ZLoader />;
+};
 
 export const Discover = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });

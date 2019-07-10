@@ -11,5 +11,5 @@ export const CenteredHeader = (props: { title: string, padding?: number }) => {
                 <Text style={{color: theme.foregroundPrimary, height: 56, fontSize: 22, fontWeight: '600', includeFontPadding: true, textAlignVertical: 'center'}}>{props.title}</Text>
             </View>
         </SHeaderView>
-    )
-}
+    );
+};

@@ -52,7 +52,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
             </TouchableOpacity>
         </View>
     );
-}
+};
 
 export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string }) => {
     const theme = React.useContext(ThemeContext);
@@ -81,4 +81,4 @@ export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string
             </TouchableOpacity>
         </View>
     );
-}
+};

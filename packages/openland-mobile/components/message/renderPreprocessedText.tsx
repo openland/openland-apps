@@ -17,7 +17,7 @@ let openContextMenu = (link: string) => {
     builder.action('Open', resolveInternalLink(link, async () => await Linking.openURL(link)));
 
     builder.show();
-}
+};
 
 export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, theme: ThemeGlobal) => {
     const SpanView = (props: { span: Span, children?: any }) => {
@@ -124,7 +124,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         }
     
         return props.children ? <Text key={'unknown'}>{props.children}</Text> : null;
-    }
+    };
     
-    return renderSpans(SpanView, spans)
-}
+    return renderSpans(SpanView, spans);
+};

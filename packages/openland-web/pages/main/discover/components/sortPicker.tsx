@@ -100,7 +100,7 @@ export class SortPicker extends React.Component<
             featured: this.props.sort.featured,
             orderBy: q.value,
         });
-    };
+    }
 
     onFeturedChange = (checked: { label: string; checked: boolean }) => {
         this.setState({ featured: checked.checked });
@@ -110,15 +110,15 @@ export class SortPicker extends React.Component<
                 orderBy: this.props.sort.orderBy,
             });
         });
-    };
+    }
 
     switch = () => {
         this.setState({ popper: !this.state.popper });
-    };
+    }
 
     close = () => {
         this.setState({ popper: false });
-    };
+    }
 
     render() {
         let content = (

@@ -15,7 +15,7 @@ class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     accept = async () => {
         await this.props.mutation({});
         window.location.href = '/';
-    };
+    }
     render() {
         return <XLoader loading={true} />;
     }

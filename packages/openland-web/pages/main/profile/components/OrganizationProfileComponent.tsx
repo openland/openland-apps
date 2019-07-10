@@ -273,7 +273,7 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
         this.setState({
             status: 'accepted',
         });
-    };
+    }
 
     declineRequest = (e: any) => {
         e.preventDefault();
@@ -282,7 +282,7 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
         this.setState({
             status: 'declined',
         });
-    };
+    }
 
     render() {
         const { user } = this.props.member;

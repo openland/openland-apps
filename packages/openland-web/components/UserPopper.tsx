@@ -96,23 +96,23 @@ export class UserPopper extends React.PureComponent<
         if (this.xPopperRef.current) {
             this.xPopperRef.current.onMouseOverTarget();
         }
-    };
+    }
 
     hidePopper = () => {
         if (this.xPopperRef.current) {
             this.xPopperRef.current.onMouseOutTarget();
         }
-    };
+    }
 
     hidePopperInstantly = () => {
         if (this.xPopperRef.current) {
             this.xPopperRef.current.hide();
         }
-    };
+    }
 
     getXPopperTargetNode = (elem: Element | null | Text) => {
         return elem && elem instanceof Element ? elem.children[0] : elem;
-    };
+    }
 
     render() {
         let { user, isMe, noCardOnMe, children, startSelected, customButton } = this.props;

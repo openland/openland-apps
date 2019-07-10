@@ -12,7 +12,7 @@ export class AlertBlanketBuilder {
 
     alert(message: string) {
         this._title = message;
-        this._actions = [{ name: 'Cancel' }]
+        this._actions = [{ name: 'Cancel' }];
         this.show();
     }
 
@@ -50,7 +50,7 @@ export class AlertBlanketBuilder {
         showBlanketModal((ctx) => {
             return (
                 <AlertBlanketComponent builder={this} modalController={ctx} />
-            )
+            );
         }, this._cancelable);
     }
 }

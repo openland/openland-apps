@@ -62,7 +62,8 @@
             "check-type",
             "check-typecast"
         ],
-        "jsx-boolean-value": false
+        "jsx-boolean-value": false,
+        "semicolon": [true, "always"]
     },
     "jsRules": {
         "no-empty": true

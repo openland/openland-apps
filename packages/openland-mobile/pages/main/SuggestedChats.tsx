@@ -65,8 +65,8 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
         <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
             {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
         </View>
-    </ZListItemBase>
-}
+    </ZListItemBase>;
+};
 
 export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, selectedTagIds: string[] }) => {
     let [selected, setSelected] = React.useState(new Set<string>(props.chats.map(c => c.id)));
@@ -89,18 +89,18 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
 
     let skip = React.useCallback(() => {
         (async () => {
-            toHome()
-        })()
+            toHome();
+        })();
     }, []);
 
     let join = React.useCallback((selectedIds: string[]) => {
         (async () => {
             startLoader();
-            await getClient().mutateRoomsJoin({ roomsIds: selectedIds })
+            await getClient().mutateRoomsJoin({ roomsIds: selectedIds });
             stopLoader();
-            toHome()
-        })()
-    }, [])
+            toHome();
+        })();
+    }, []);
 
     let onAdd = React.useCallback(() => {
         trackEvent('chats_after_navigator', { count: selected.size });
@@ -108,14 +108,14 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
         if (selected.size) {
             join([...selected.values()]);
         } else {
-            toHome()
+            toHome();
         }
 
     }, [selected]);
 
     let selectAll = React.useCallback(() => {
         setSelected(new Set<string>(props.chats.map(c => c.id)));
-    }, [])
+    }, []);
 
     return (
         <>

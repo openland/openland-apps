@@ -29,4 +29,4 @@ export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
             filterOptions={(options) => options}
         />;
     };
-};
+}

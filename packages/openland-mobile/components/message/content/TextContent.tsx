@@ -25,7 +25,7 @@ const TextWrapper = (props: TextWrapperProps) => (
     >
         {props.children}
     </Text>
-)
+);
 
 interface TextContentProps {
     message: FullMessage_GeneralMessage | FullMessage_GeneralMessage_quotedMessages;
@@ -54,14 +54,14 @@ export const TextContent = (props: TextContentProps) => {
         'loud': isSmall ? 16 : 20,
         'slice': isSmall ? 15 : 16,
         'code_block': 14,
-    }
+    };
 
     const lineHeight = {
         'emoji': isSmall ? 30 : 34,
         'loud': isSmall ? 20 : 24,
         'slice': undefined,
         'code_block': undefined,
-    }
+    };
 
     return (
         <>
@@ -108,4 +108,4 @@ export const TextContent = (props: TextContentProps) => {
             ))}
         </>
     );
-}
+};

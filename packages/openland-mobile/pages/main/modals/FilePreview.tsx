@@ -39,7 +39,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
     constructor(props: any) {
         super(props);
         this.state = { completed: false };
-        this.isPdf = props.router.params.config.name.toLowerCase().endsWith('.pdf')
+        this.isPdf = props.router.params.config.name.toLowerCase().endsWith('.pdf');
     }
 
     componentDidMount() {
@@ -95,7 +95,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         </View>;
 
         if (this.state.completed && this.state.path && this.isPdf) {
-            content = <PdfPreview path={this.state.path} />
+            content = <PdfPreview path={this.state.path} />;
         }
         return (
             <>

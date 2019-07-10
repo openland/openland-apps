@@ -15,7 +15,7 @@ export class NativeKeyValue implements KeyValueStore {
             SQLite.DEBUG(__DEV__);
             this.db = await SQLite.openDatabase({ name: name + '-' + AppStorage.storage + '-v2', location: 'default' });
             await this.db.executeSql('CREATE TABLE IF NOT EXISTS records(key TEXT PRIMARY KEY, value TEXT);');
-        })
+        });
     }
 
     async readKey(key: string): Promise<string | null> {
@@ -31,8 +31,8 @@ export class NativeKeyValue implements KeyValueStore {
                 } catch (e) {
                     reject(e);
                 }
-            })
-        })
+            });
+        });
     }
 
     async readKeys(keys: string[]): Promise<{ key: string, value: string | null }[]> {

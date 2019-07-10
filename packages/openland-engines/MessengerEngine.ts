@@ -46,7 +46,7 @@ export class MessengerEngine {
         this.options = {
             conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
             store: options && options.store ? options.store : new InMemoryKeyValueStore()
-        }
+        };
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
@@ -83,7 +83,7 @@ export class MessengerEngine {
 
     private loadingSequence = async () => {
         await this.global.start();
-    };
+    }
 
     handleTyping = (
         conversationId: string,
@@ -94,7 +94,7 @@ export class MessengerEngine {
     ) => {
         this.getTypings(conversationId).onTyping(data, conversationId);
         this.getTypings('global_typings').onTyping(data, conversationId);
-    };
+    }
 
     awaitLoading() {
         return this.loadingPromise;
@@ -115,7 +115,7 @@ export class MessengerEngine {
     }
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
-        this.dialogList.handleChatNewMessage(message, cid)
+        this.dialogList.handleChatNewMessage(message, cid);
     }
 
     getConversation(conversationId: string) {
@@ -174,12 +174,12 @@ export class MessengerEngine {
     private handleConversationVisible = (conversationId: string) => {
         this.getConversation(conversationId).onOpen();
         this.global.onConversationVisible(conversationId);
-    };
+    }
 
     private handleConversationHidden = (conversationId: string) => {
         this.getConversation(conversationId).onClosed();
         this.global.onConversationHidden(conversationId);
-    };
+    }
 
     private handleVisibleChanged = (isVisible: boolean) => {
         if (this.isVisible === isVisible) {
@@ -204,7 +204,7 @@ export class MessengerEngine {
         if (this.onlineReporter) {
             this.onlineReporter.onVisible(isVisible);
         }
-    };
+    }
 }
 
 export const MessengerContext = React.createContext<MessengerEngine>(undefined as any);

@@ -248,7 +248,7 @@ export const convertMentionsFromMessage = (text?: string | null, spans?: FullMes
                 __typename: 'AllMention',
             });
         }
-    })
+    });
 
     return res;
-}
+};

@@ -147,7 +147,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             return;
         }
         this.input = e;
-    };
+    }
 
     private copy = (e: any) => {
         const { props } = this;
@@ -179,7 +179,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 copied: false,
             });
         }, 1500);
-    };
+    }
 
     private resetLink = () => {
         this.setState({
@@ -193,7 +193,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 resetLink: false,
             });
         }, 3000);
-    };
+    }
 
     render() {
         const { props } = this;
@@ -431,7 +431,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
             searchQuery: data,
         });
         return data;
-    };
+    }
 
     private onChange = (data: { label: string; value: string }[]) => {
         let newSelected = new Map();
@@ -442,7 +442,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
         this.setState({
             selectedUsers: newSelected,
         });
-    };
+    }
 
     private selectMembers = (label: string, value: string) => {
         let selected = this.state.selectedUsers || new Map();
@@ -452,14 +452,14 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
         this.setState({
             selectedUsers: selected,
         });
-    };
+    }
 
     private onClosed = () => {
         this.setState({
             selectedUsers: null,
             searchQuery: '',
         });
-    };
+    }
 
     render() {
         const { props } = this;

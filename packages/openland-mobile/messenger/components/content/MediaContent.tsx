@@ -22,7 +22,7 @@ interface MediaContentProps {
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    layout: { width: number, height: number },
+    layout: { width: number, height: number };
     compensateBubble?: boolean;
     theme: ThemeGlobal;
     hasText?: boolean;
@@ -40,7 +40,7 @@ export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeigh
         return layoutMedia(fileMetadata.imageWidth, fileMetadata.imageHeight, maxSize, maxSize);
     }
     return undefined;
-}
+};
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
     mounted = false;
     serverDownloadManager = false;
@@ -76,7 +76,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         if (fileAttach && fileAttach.uri) {
             this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => {
                 if (this.mounted) {
-                    this.setState({ downloadState: { progress: s.progress } })
+                    this.setState({ downloadState: { progress: s.progress } });
                 }
             });
         }
@@ -159,6 +159,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                     </ASFlex>}
                 </ASFlex>
             </ASFlex>
-        )
+        );
     }
 }

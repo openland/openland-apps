@@ -100,6 +100,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                     )}
                 </View>
             </View>
-        )
+        );
     }
 }

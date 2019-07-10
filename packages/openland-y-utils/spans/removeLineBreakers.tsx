@@ -25,4 +25,4 @@ export const removeLineBreakers = (spans: Span[], sliceBy: string[]): Span[]  =>
     res.push(...spans.slice(lastSliceStart));
 
     return res;
-}
+};

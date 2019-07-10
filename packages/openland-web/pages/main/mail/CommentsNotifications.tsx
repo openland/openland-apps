@@ -91,13 +91,13 @@ class CommentsNotificationsInner extends React.PureComponent<
                 <XLoader loading={true} />
             </LoadingWrapper>
         );
-    };
+    }
 
     private handleScroll = (e: XScrollValues) => {
         if (e.scrollTop < 300) {
             this.dataSource.needMore();
         }
-    };
+    }
 
     private dataSourceWrapper = (props: { children?: any }) => {
         return (
@@ -112,7 +112,7 @@ class CommentsNotificationsInner extends React.PureComponent<
                 </XScrollView3>
             </>
         );
-    };
+    }
 
     private renderMessage = (i: (DataSourceWebMessageItem | DataSourceDateItem) & ScrollTo) => {
         const data = i as any;
@@ -132,7 +132,7 @@ class CommentsNotificationsInner extends React.PureComponent<
                 }}
             />
         );
-    };
+    }
 
     render() {
         if (!this.dataSource.isInited()) {

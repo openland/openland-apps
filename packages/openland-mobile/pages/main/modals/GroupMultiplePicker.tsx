@@ -84,7 +84,7 @@ const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
 
     let handleRemoveGroup = React.useCallback((id: string) => {
         setGroups(groups.filter((v) => v.id !== id));
-    }, [groups])
+    }, [groups]);
 
     let handleAddGroup = React.useCallback((item: PickedItems) => {
         if (!groups.find((v) => v.id === item.id)) {
@@ -92,7 +92,7 @@ const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
         } else {
             handleRemoveGroup(item.id);
         }
-    }, [groups])
+    }, [groups]);
 
     let handleSearchLayout = React.useCallback((event: LayoutChangeEvent) => {
         setSearchHeight(event.nativeEvent.layout.height);
@@ -134,6 +134,6 @@ const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
             </ASSafeAreaContext.Consumer>
         </>
     );
-})
+});
 
 export const GroupMultiplePicker = withApp(GroupMultiplePickerComponent, { navigationAppearance: 'small' });

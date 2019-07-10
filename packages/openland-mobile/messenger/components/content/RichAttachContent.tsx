@@ -30,7 +30,7 @@ interface UrlAugmentationContentProps {
 
 export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
     return attach && attach.titleLink && (attach.titleLink.includes('openland.com/invite') || attach.titleLink.includes('openland.com/joinChannel'));
-}
+};
 
 export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
     return attach && attach.image &&
@@ -38,8 +38,8 @@ export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
             (attach.image.metadata && attach.image.metadata.imageHeight === attach.image.metadata.imageWidth)
             ||
             isInvite(attach)
-        )
-}
+        );
+};
 
 export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
 
@@ -272,6 +272,6 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
             </ASFlex>
 
-        )
+        );
     }
 }

@@ -269,6 +269,6 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     </View>
                 )}
             </View>
-        )
+        );
     }
 }

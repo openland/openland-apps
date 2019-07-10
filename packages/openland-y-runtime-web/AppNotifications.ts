@@ -112,7 +112,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                 localStorage.setItem('openland-active-tab-ts', timeStampInMs.toString());
             }
         }, 500);
-    };
+    }
 
     blinkDocumentFavicon = () => {
         if (canUseDOM) {
@@ -170,7 +170,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                 }
             }
         }
-    };
+    }
 
     playIncomingSound() {
         this.sound!.play();

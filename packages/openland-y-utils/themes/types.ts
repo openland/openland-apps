@@ -78,9 +78,9 @@ export type ThemeGlobal = {
     hairlineColor: string;
     accentBackgroundColor: string;
     chatImageBackground: string;
-}
+};
 
 export type PlaceholderGlobal = {
     start: string;
     end: string;
-}
+};

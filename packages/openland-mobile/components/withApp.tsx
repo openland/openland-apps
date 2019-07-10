@@ -34,13 +34,13 @@ function PageError(props: { refresh: () => void }) {
                 </View>
             </ASSafeAreaView>
         </>
-    )
+    );
 }
 
 class PageErrorBoundary extends React.Component<{}, { isError: boolean, retry: number }> {
 
     constructor(props: {}) {
-        super(props)
+        super(props);
 
         this.state = { isError: false, retry: 0 };
     }
@@ -57,9 +57,9 @@ class PageErrorBoundary extends React.Component<{}, { isError: boolean, retry: n
         if (this.state.isError) {
             return (
                 <PageError refresh={this.refresh} />
-            )
+            );
         }
-        return <View key={'try-' + this.state.retry} width="100%" height="100%">{this.props.children}</View>
+        return <View key={'try-' + this.state.retry} width="100%" height="100%">{this.props.children}</View>;
     }
 }
 

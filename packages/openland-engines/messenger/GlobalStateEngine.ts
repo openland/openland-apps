@@ -161,7 +161,7 @@ export class GlobalStateEngine {
         } else if (event.__typename === 'DialogTitleUpdated') {
             log.warn('new title ' + event);
             await this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
-            this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
+            this.engine.getConversation(event.cid).handleTitleUpdated(event.title);
         } else if (event.__typename === 'DialogBump') {
             let visible = this.visibleConversations.has(event.cid);
             // Global counter
@@ -178,11 +178,11 @@ export class GlobalStateEngine {
             log.warn('new mute ' + event);
             await this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
             log.log(event.cid);
-            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
+            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute);
         } else if (event.__typename === 'DialogPhotoUpdated') {
             log.warn('new photo ' + event);
             await this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
-            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
+            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo);
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
             // console.log(event);

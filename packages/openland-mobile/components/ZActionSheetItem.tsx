@@ -69,7 +69,7 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
             </ZListItemBase>
         );
     }
-}
+};
 
 export const ZActionSheetViewItem = (props: { children?: any, separator?: boolean }) => {
     const theme = React.useContext(ThemeContext);
@@ -85,4 +85,4 @@ export const ZActionSheetViewItem = (props: { children?: any, separator?: boolea
             {props.separator !== false && <View style={{ backgroundColor: separatorColor, height: 1 }} />}
         </>
     );
-}
+};

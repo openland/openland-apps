@@ -4,12 +4,12 @@ interface ZErrorBoundaryProps {
     fallback: any;
     onError?: (error: Error) => void;
     children?: any;
-};
+}
 
 interface ZErrorBoundaryState {
     hasError: boolean;
-    error: Error | undefined,
-};
+    error: Error | undefined;
+}
 
 export class ZErrorBoundary extends React.Component<ZErrorBoundaryProps, ZErrorBoundaryState> {
     static getDerivedStateFromError(error: Error) {
@@ -22,7 +22,7 @@ export class ZErrorBoundary extends React.Component<ZErrorBoundaryProps, ZErrorB
         this.state = {
             hasError: false,
             error: undefined
-        }
+        };
     }
   
     componentDidCatch(error: Error): void {

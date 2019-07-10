@@ -44,7 +44,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     onChatLostAccess = () => {
         console.warn('onChatLostAccess');
-    };
+    }
 
     componentWillMount() {
         this.unmount2 = this.props.engine.engine.mountConversation(this.props.engine.conversationId);

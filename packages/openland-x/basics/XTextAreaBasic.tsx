@@ -194,14 +194,14 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
         if (e) {
             this.textAreaRef = e;
         }
-    };
+    }
 
     handleChange = (src: any) => {
         let val = src.target.value as string;
         if (this.props.onChange) {
             this.props.onChange(val);
         }
-    };
+    }
 
     handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter') {
@@ -209,7 +209,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTe
                 this.props.onEnter();
             }
         }
-    };
+    }
 
     focus() {
         this.textAreaRef.focus();

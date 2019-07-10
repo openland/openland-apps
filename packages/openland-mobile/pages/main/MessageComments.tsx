@@ -178,7 +178,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     }
                 },
                 size
-            )
+            );
         });
     }, [message, inputText, mentions, replied, edited]);
 
@@ -199,7 +199,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         setReplied(undefined);
         setEdited(comment);
         setInputText(comment.message || '');
-        setMentions(convertMentionsFromMessage(comment.message, comment.spans))
+        setMentions(convertMentionsFromMessage(comment.message, comment.spans));
 
         if (inputRef.current) {
             inputRef.current.focus();
@@ -323,7 +323,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             </ASSafeAreaContext.Consumer>
         </>
     );
-}
+};
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
     const chatId = props.router.params.chatId;

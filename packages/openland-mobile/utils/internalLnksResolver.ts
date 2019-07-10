@@ -14,7 +14,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let resolved = false;
         let link = srcLink;
         if (link.includes('?')) {
-            link = link.split('?')[0]
+            link = link.split('?')[0];
         }
         let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
         let patternBaseDeep = 'openland\\://deep/';
@@ -37,7 +37,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             } catch (e) {
                 Alert.alert(e.message);
             }
-        }
+        };
 
         let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
             if (invite) {
@@ -53,7 +53,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             } else {
                 Alert.alert('Invite not found');
             }
-        }
+        };
 
         //
         // GENERIC INVITE
@@ -95,7 +95,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
 
             if (match && match.invite) {
                 resolved = true;
-                startLoader()
+                startLoader();
                 let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
                 await joinRoom(info.invite, match.invite);
                 stopLoader();
@@ -184,7 +184,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                     } else if (info.item.__typename === 'Organization') {
                         getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
                     } else {
-                        Alert.alert('No such user or organization')
+                        Alert.alert('No such user or organization');
                     }
                 }
             } catch (e) {
@@ -239,7 +239,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             await fallback();
         }
 
-    }
+    };
 };
 
 export let saveLinkIfInvite = async (srcLink: string) => {
@@ -247,7 +247,7 @@ export let saveLinkIfInvite = async (srcLink: string) => {
     let keep =
         (link.includes('openland.com/joinchannel/') || link.includes('openland://deep/joinroom/')) ||
         (link.includes('openland.com/join/') || link.includes('openland://deep/joinorg/')) ||
-        link.includes('openland.com/invite/')
+        link.includes('openland.com/invite/');
 
     if (keep) {
         await AsyncStorage.setItem('initial_invite_link', srcLink);
@@ -259,7 +259,7 @@ export const joinInviteIfHave = async () => {
 
     let link = srcLink;
     if (link.includes('?')) {
-        link = link.split('?')[0]
+        link = link.split('?')[0];
     }
     let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
     let patternBaseDeep = 'openland\\://deep/';
@@ -278,7 +278,7 @@ export const joinInviteIfHave = async () => {
         } else {
             Alert.alert('Invite not found');
         }
-    }
+    };
 
     let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
         if (invite) {
@@ -294,7 +294,7 @@ export const joinInviteIfHave = async () => {
         } else {
             Alert.alert('Invite not found');
         }
-    }
+    };
 
     // 
     // JOIN ROOMS
@@ -365,4 +365,4 @@ export const joinInviteIfHave = async () => {
 
     await AsyncStorage.removeItem('initial_invite_link');
 
-}
+};

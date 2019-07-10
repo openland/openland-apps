@@ -38,7 +38,7 @@ const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
             <SHeader title={props.router.params.title || 'Groups'} />
             <GroupsList router={props.router} groups={organization.rooms} />
         </>
-    )
+    );
 });
 
 export const ProfileOrganizationGroups = withApp(ProfileOrganizationGroupsComponent, { navigationAppearance: 'small-hidden' });

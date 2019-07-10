@@ -14,7 +14,7 @@ export const LayoutProvider = React.memo((props: { children?: any }) => {
                 console.log('updated with mobile: ' + prev);
                 setIsMobile(n);
             }
-        }
+        };
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);

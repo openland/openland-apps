@@ -8,6 +8,6 @@ export function useWatchCall(id?: string | null) {
         }
         let s = getClient().subscribeConferenceWatch({ id: id });
         // TODO: Merge data
-        return () => s.destroy()
-    }, [id])
+        return () => s.destroy();
+    }, [id]);
 }

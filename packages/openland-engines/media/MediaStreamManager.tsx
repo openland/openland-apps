@@ -60,33 +60,33 @@ export class MediaStreamManager {
                         id: this.id,
                         peerId: this.peerId,
                         candidate: ev.candidate
-                    })
+                    });
                 }
             });
         };
 
         this.peerConnection.onnegotiationneeded = () => {
-            console.warn('[WEBRTC]: onnegotiationneeded')
+            console.warn('[WEBRTC]: onnegotiationneeded');
             if (this.streamConfig.state === 'READY' && this.iceConnectionState === 'connected') {
                 backoff(async () => {
                     if (this.destroyed) {
                         return;
                     }
-                    await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId })
-                })
+                    await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId });
+                });
             }
-        }
+        };
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
-            console.warn('[WEBRTC]: oniceconnectionstatechange ')
+            console.warn('[WEBRTC]: oniceconnectionstatechange ');
             this.iceConnectionState = ev.target.iceConnectionState;
             if (ev.target.iceConnectionState === 'failed') {
                 this.destroy();
                 backoff(async () => {
-                    await this.client.mutateMediaFailed({ id: this.id, peerId: this.peerId })
-                })
+                    await this.client.mutateMediaFailed({ id: this.id, peerId: this.peerId });
+                });
             }
-        }
+        };
         this.peerConnection.addStream(this.stream);
         this.handleState();
     }

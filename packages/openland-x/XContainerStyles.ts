@@ -67,5 +67,5 @@ export function extractContainerStyles(src: XContainerStyles): XContainerStyles 
         minWidth: src.minWidth,
         maxHeight: src.maxHeight,
         maxWidth: src.maxWidth,
-    }
+    };
 }

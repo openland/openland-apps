@@ -228,7 +228,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this.initPopperIfNeeded();
             }
         }
-    };
+    }
     caputurePopperNode = (node: any | null) => {
         if (node) {
             if (this._node) {
@@ -240,7 +240,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._node = node;
             this.initPopperIfNeeded();
         }
-    };
+    }
 
     caputurePopperArrowNode = (node: any | null) => {
         if (node) {
@@ -253,7 +253,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._arrowNode = node;
             this.initPopperIfNeeded();
         }
-    };
+    }
 
     caputurePopperContentNode = (node: any | null) => {
         if (node) {
@@ -266,12 +266,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._contentNode = node;
             this.initPopperIfNeeded();
         }
-    };
+    }
 
     captureMounted = () => {
         this.mounted = true;
         this.initPopperIfNeeded();
-    };
+    }
 
     captureUnmounted = () => {
         this.mounted = false;
@@ -279,7 +279,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._popper.destroy();
             this._popper = undefined;
         }
-    };
+    }
 
     initPopperIfNeeded = () => {
         if (
@@ -330,13 +330,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 placement: this.props.placement !== undefined ? this.props.placement : 'auto',
             });
         }
-    };
+    }
 
     onMouseOverContent = () => {
         if (this.props.showOnHoverContent !== false) {
             this.onMouseOverTarget();
         }
-    };
+    }
 
     onMouseOverTarget = () => {
         if (this.hideTimeout) {
@@ -358,13 +358,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 item.setState({ currentPopper: this });
             }
         }
-    };
+    }
 
     onMouseOutContent = () => {
         if (this.props.showOnHoverContent !== false) {
             this.onMouseOutTarget();
         }
-    };
+    }
 
     hide = () => {
         this.setState({ showPopper: false }, () => {
@@ -372,7 +372,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this._popper.scheduleUpdate();
             }
         });
-    };
+    }
 
     onMouseOutTarget = () => {
         if (this.hideTimeout) {
@@ -397,7 +397,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         this.hideTimeout = window.setTimeout(() => {
             this.hide();
         }, animationDurationOut);
-    };
+    }
 
     onMouseDown = (e: any) => {
         if (
@@ -410,7 +410,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         ) {
             this.props.onClickOutside();
         }
-    };
+    }
 
     dispose = () => {
         if (this.hideTimeout) {
@@ -425,13 +425,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._popper.destroy();
             this._popper = undefined;
         }
-    };
+    }
 
     invalidate = () => {
         if (this._popper) {
             this._popper.scheduleUpdate();
         }
-    };
+    }
 
     componentDidMount() {
         if (this.props.onClickOutside) {

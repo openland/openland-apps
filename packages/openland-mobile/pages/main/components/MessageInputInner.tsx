@@ -39,7 +39,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
         multiline: true,
         allowFontScaling: false,
         keyboardAppearance: theme.keyboardAppearance,
-    }
+    };
 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined }}>

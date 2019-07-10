@@ -83,7 +83,7 @@ export class XRadioItem extends React.Component<{
                         : this.props.label,
             );
         }
-    };
+    }
 
     render() {
         const id = `toggle_${Math.random()
@@ -137,7 +137,7 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
             this.props.onChange(checked);
         }
         this.setState({ selected: checked });
-    };
+    }
 
     modifyProps = (component: any): any => {
         let res: any = {};
@@ -151,7 +151,7 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
         }
 
         return res;
-    };
+    }
 
     render() {
         let children: any[] = [];

@@ -27,7 +27,7 @@ class ScrollArea extends React.PureComponent<{
 
     renderView = ({ style, ...props }: any) => (
         <div style={{ ...style, width: 'calc(100% + 20px)' }} {...props} />
-    );
+    )
 
     trackV = ({ style, ...props }: any) => (
         <div
@@ -42,7 +42,7 @@ class ScrollArea extends React.PureComponent<{
             }}
             {...props}
         />
-    );
+    )
 
     thumbV = ({ style, ...props }: any) => {
         const { top, scrollHeight, clientHeight } = this.state;
@@ -72,7 +72,7 @@ class ScrollArea extends React.PureComponent<{
                 {...props}
             />
         );
-    };
+    }
 
     trackH = ({ style, ...props }: any) => <div style={{ ...style }} {...props} />;
 

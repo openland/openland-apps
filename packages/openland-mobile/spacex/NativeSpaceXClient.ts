@@ -23,7 +23,7 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
     write: (key: string, id: string, data: any, query: string, vars: any) => void;
 
     writeFragment: (key: string, id: string, data: any, fragment: string) => void;
-}
+};
 
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 const log = createLogger('GraphQL-Native');

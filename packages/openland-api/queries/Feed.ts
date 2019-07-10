@@ -21,4 +21,4 @@ export const FeedPostMutation = gql`
             id
         }
     }
-`
+`;

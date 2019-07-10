@@ -60,6 +60,6 @@ export class PdfPreview extends React.PureComponent<{ path: string }, {
                     />
                 </View>
             </ASSafeAreaView>
-        )
+        );
     }
 }

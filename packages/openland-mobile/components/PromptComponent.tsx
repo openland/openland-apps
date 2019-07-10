@@ -41,4 +41,4 @@ export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalCont
             </View>
         </View>
     );
-})
+});

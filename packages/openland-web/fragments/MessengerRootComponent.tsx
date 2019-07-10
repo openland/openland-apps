@@ -216,13 +216,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
-    };
+    }
 
     onMessageSend = () => {
         trackEvent('message_sent');
 
         this.scrollToBottom();
-    };
+    }
 
     onChatLostAccess = () => {
         if (this.props.onChatLostAccess) {
@@ -230,7 +230,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.messenger.removeConversation(this.props.conversationId);
             this.props.onChatLostAccess();
         }
-    };
+    }
 
     //
     // Lifecycle
@@ -238,7 +238,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading });
-    };
+    }
 
     unsubscribe = () => {
         if (this.unmounter) {
@@ -249,7 +249,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.unmounter2();
             this.unmounter2 = null;
         }
-    };
+    }
 
     componentWillUnmount() {
         this.unsubscribe();
@@ -271,7 +271,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
 
         this.messageText = text;
-    };
+    }
 
     handleSend = (
         text: string,
@@ -296,7 +296,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                   })
                 : null,
         );
-    };
+    }
 
     handleSendFile = (file: UploadCare.File) => {
         if (!this.conversation) {
@@ -304,13 +304,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
 
         this.conversation.sendFile(new UploadCareUploading(file));
-    };
+    }
 
     handleShowIput = (show: boolean) => {
         this.setState({
             hideInput: !show,
         });
-    };
+    }
 
     //
     // Rendering

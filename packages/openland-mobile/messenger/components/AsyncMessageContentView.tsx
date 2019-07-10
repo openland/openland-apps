@@ -75,10 +75,10 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         }
 
         return props.children ? <ASText key={'unknown'}>{props.children}</ASText> : null;
-    }
+    };
 
     return renderSpans(SpanView, spans) || [];
-}
+};
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
     // todo: handle multiple attaches
@@ -167,8 +167,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         richAttachImageLayout,
         richAttachIsCompact,
         isEmojiOnly
-    }
-}
+    };
+};
 
 export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
     let theme = props.theme;

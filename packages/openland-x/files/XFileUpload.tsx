@@ -102,7 +102,7 @@ export class XFileUpload extends React.Component<
         dialog.done(r => {
             this.doStartUpload(r);
         });
-    };
+    }
 
     doStartUpload(file: UploadCare.File) {
         this.setState({ isLoading: true, progress: 0 });
@@ -139,7 +139,7 @@ export class XFileUpload extends React.Component<
         if (this.props.onChange) {
             this.props.onChange(null);
         }
-    };
+    }
 
     render() {
         let value = this.isControlled ? this.props.value : this.state.value;

@@ -49,4 +49,4 @@ export const ZStyles = {
         placeholderColorStart: '#aa22ff',
         placeholderColorEnd: '#8e00e6'
     }]
-}
+};

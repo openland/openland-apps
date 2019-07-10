@@ -34,7 +34,7 @@ class XSelectStored extends React.PureComponent<XSelectProps & { store: XStoreSt
         if (this.props.onChange) {
             this.props.onChange(src);
         }
-    };
+    }
 
     render() {
         let { valueStoreKey, store, field, onChange, ...other } = this.props;

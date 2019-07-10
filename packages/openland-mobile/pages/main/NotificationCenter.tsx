@@ -59,7 +59,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
                     {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
-            )
+            );
         }
 
         const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');

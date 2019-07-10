@@ -121,7 +121,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
         }
 
         return rangeWithDots;
-    };
+    }
 
     render() {
         let route = this.props.currentRoute || '/discover';

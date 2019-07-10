@@ -9,4 +9,4 @@ export const TrackAuthError = (error: NamedError) => {
     } else {
         trackEvent('signup_error', { error_type: error.name});
     }
-}
+};

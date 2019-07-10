@@ -31,6 +31,6 @@ export class InMemoryKeyValueStore implements KeyValueStore {
             } else {
                 return { key: v, value: null };
             }
-        })
+        });
     }
 }

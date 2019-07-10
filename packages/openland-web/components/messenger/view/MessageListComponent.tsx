@@ -148,20 +148,20 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (this.scroller && this.scroller.current) {
             this.scroller.current.scrollToBottom();
         }
-    };
+    }
 
     handlerScroll = (e: XScrollValues) => {
         if (e.scrollTop < 300) {
             this.props.conversation.loadBefore();
         }
-    };
+    }
 
     isEmpty = () => {
         return (
             this.props.conversation.historyFullyLoaded &&
             this.props.conversation.getState().messages.length === 0
         );
-    };
+    }
 
     renderMessage = React.memo(
         (

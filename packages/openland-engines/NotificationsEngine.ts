@@ -33,7 +33,7 @@ export class NotificationsEngine {
     handleGlobalCounterChanged = (counter: number) => {
         this.counter = counter;
         AppBadge.setBadge(counter);
-    };
+    }
 
     handleIncomingNotification = async (event: NewNotification) => {
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
@@ -71,7 +71,7 @@ export class NotificationsEngine {
                 });
             }
         }
-    };
+    }
 
     handleIncomingMessage = async (cid: string, event: NewMessage) => {
         const msg = event;
@@ -114,5 +114,5 @@ export class NotificationsEngine {
                 });
             }
         }
-    };
+    }
 }

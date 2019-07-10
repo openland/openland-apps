@@ -19,7 +19,7 @@ export class OnlineWatcher {
 
     subscribe() {
         this.destroy();
-        let toSubscrive = [...this.users, ...this.privateChats.filter(uid => !this.users.includes(uid))]
+        let toSubscrive = [...this.users, ...this.privateChats.filter(uid => !this.users.includes(uid))];
 
         let s = this.client.subscribeOnlineWatch({ users: toSubscrive });
         this.sub = s;
@@ -47,7 +47,7 @@ export class OnlineWatcher {
         if (!this.users.includes(uid)) {
             this.users.unshift(uid);
             if (this.users.length > 50) {
-                this.users.pop()
+                this.users.pop();
             }
             this.subscribe();
         }
@@ -79,5 +79,5 @@ export class OnlineWatcher {
         if (this.sub) {
             this.sub.destroy();
         }
-    };
+    }
 }

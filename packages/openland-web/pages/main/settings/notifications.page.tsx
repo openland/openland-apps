@@ -81,11 +81,11 @@ class BrowserNotifications extends React.Component<
                 notificationsState: state,
             });
         }
-    };
+    }
 
     handleEnableClick = () => {
         AppNotifications.requestPermission();
-    };
+    }
 
     render() {
         if (canUseDOM) {
@@ -258,37 +258,37 @@ class NotificationsSettingsPageInner extends React.Component<
         this.setState({
             isNotificationSelectChanged: true,
         });
-    };
+    }
 
     handleEmailSelectChange = () => {
         this.setState({
             isEmailSelectChanged: true,
         });
-    };
+    }
 
     handleCommentSelectChange = () => {
         this.setState({
             isCommentSelectChanged: true,
         });
-    };
+    }
 
     handleNotificationSelectSaved = () => {
         this.setState({
             isNotificationSelectChanged: false,
         });
-    };
+    }
 
     handleEmailSelectSaved = () => {
         this.setState({
             isEmailSelectChanged: false,
         });
-    };
+    }
 
     handleCommentSelectSaved = () => {
         this.setState({
             isCommentSelectChanged: false,
         });
-    };
+    }
 
     render() {
         let notificationParams = this.props.settings.desktopNotifications;

@@ -99,7 +99,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
         this.setState({
             show: !this.state.show,
         });
-    };
+    }
 
     closer = () => {
         if (!this.inner) {
@@ -107,11 +107,11 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                 show: false,
             });
         }
-    };
+    }
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
-    };
+    }
 
     render() {
         let { primaryOrganization, organizations } = this.props;

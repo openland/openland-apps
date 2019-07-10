@@ -30,5 +30,5 @@ export function foreverBreakable(handler: () => Promise<void>) {
         break: () => {
             working = false;
         }
-    }
+    };
 }

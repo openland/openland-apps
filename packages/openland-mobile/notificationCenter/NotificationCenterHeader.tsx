@@ -10,7 +10,7 @@ export const NotificationCenterHeader = XMemo<{ theme: ThemeGlobal }>((props) =>
     const { theme } = props;
 
     if (Platform.OS === 'android') {
-        return <SHeader title="Comments" />
+        return <SHeader title="Comments" />;
     }
 
     return (

@@ -18,7 +18,7 @@ export class ASView extends React.PureComponent<ASViewProps> {
     constructor(props: ASViewProps) {
         super(props);
         if (supportsAsyncRendering) {
-            let start = Date.now()
+            let start = Date.now();
             this.renderer = new AsyncRenderer(this.handleChanged, this.props.children);
             console.log('Rendered in ' + (Date.now() - start) + ' ms');
             RNAsyncConfigManager.setConfig(this.key, JSON.stringify(this.renderer.getState()));

@@ -78,7 +78,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     hairlineColor: '#e0e3e7',
     accentBackgroundColor: '#e5f2fe',
     chatImageBackground: '#dbdce1',
-}
+};
 
 export const ThemeDark: ThemeGlobal = {
     type: 'Dark',
@@ -158,4 +158,4 @@ export const ThemeDark: ThemeGlobal = {
     hairlineColor: '#1C1C1E',
     accentBackgroundColor: '#808080',
     chatImageBackground: '#555555',
-}
+};

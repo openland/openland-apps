@@ -40,7 +40,7 @@ class AppPeerConnectionWeb implements AppPeerConnection {
         };
 
         this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
-        this.connection.onconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any)
+        this.connection.onconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
 
         // let audio = new Audio();
         // audio.autoplay = true;
@@ -82,7 +82,7 @@ class AppPeerConnectionWeb implements AppPeerConnection {
 
     addIceCandidate = (candidate: string) => {
         return this.connection.addIceCandidate(JSON.parse(candidate));
-    };
+    }
 
     close = () => {
         if (!this.started) {
@@ -106,7 +106,7 @@ export const AppPeerConnectionFactory: AppPeerConnectionApi = {
                 username: v.username ? v.username : undefined,
             })),
             iceTransportPolicy: configuration.iceTransportPolicy,
-        })
+        });
         return new AppPeerConnectionWeb(peerConnection);
     }
 };

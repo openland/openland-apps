@@ -48,7 +48,7 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
             }
         }
     });
-}
+};
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -82,7 +82,7 @@ export class MobileMessenger {
                 } else if (item.type === 'date') {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 } else {
-                    return <AsyncNewMessageDivider />
+                    return <AsyncNewMessageDivider />;
                 }
             }));
         }
@@ -197,7 +197,7 @@ export class MobileMessenger {
                 builder.action('Edit', () => {
                     conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
                 });
-            };
+            }
 
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
@@ -208,7 +208,7 @@ export class MobileMessenger {
             builder.action('Pin', async () => {
                 startLoader();
                 try {
-                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! })
+                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
                 } finally {
                     stopLoader();
                 }

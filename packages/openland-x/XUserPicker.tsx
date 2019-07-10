@@ -107,10 +107,10 @@ class EntriesComponentInner extends React.Component<EntriesComponentProps & { is
     targetRef?: any;
     captureContainerRef = (ref: any) => {
         this.containerRef = ref;
-    };
+    }
     captureTargetRef = (ref: any) => {
         this.targetRef = ref;
-    };
+    }
 
     componentDidUpdate() {
         if (
@@ -352,7 +352,7 @@ export class UserPicker extends React.Component<UserPickerProps, UserPickerState
         }
 
         this.setState({ selected: [x, y], scrollToSelected: true });
-    };
+    }
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);

@@ -48,4 +48,4 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
             />
         </View>
     );
-}
+};

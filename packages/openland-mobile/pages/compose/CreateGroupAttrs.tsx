@@ -26,7 +26,7 @@ const CreateGroupComponent = (props: PageProps) => {
     let isChannel = !!props.router.params.isChannel;
     let orgIdFromRouter = props.router.params.organizationId;
 
-    let chatTypeString = isChannel ? 'Channel' : 'Group'
+    let chatTypeString = isChannel ? 'Channel' : 'Group';
 
     let organizations = getClient().useMyOrganizations().myOrganizations;
 
@@ -159,6 +159,6 @@ const CreateGroupComponent = (props: PageProps) => {
             </ZForm>
         </>
     );
-}
+};
 
 export const CreateGroupAttrs = withApp(CreateGroupComponent, { navigationAppearance: 'small' });

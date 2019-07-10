@@ -5,7 +5,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private readonly _inner: ReadableDataSource<T>;
     private readonly _subscription: WatchSubscription;
     private readonly _proxy: DataSource<T>;
-    private readonly _windowSize: number
+    private readonly _windowSize: number;
     private _isPassThrough = false;
     private _innerCompleted = false;
 

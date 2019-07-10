@@ -41,6 +41,6 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 onUserPress={onUserPress}
                 onGroupPress={onGroupPress}
             />
-        )
+        );
     }
 }

@@ -29,7 +29,7 @@ class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSen
                 isSended: false,
             });
         }, 3000);
-    };
+    }
 
     render() {
         return (

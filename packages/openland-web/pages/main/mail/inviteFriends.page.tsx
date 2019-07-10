@@ -97,7 +97,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             return;
         }
         this.input = e;
-    };
+    }
 
     private copy = () => {
         if (this.input && this.input.inputRef) {
@@ -118,7 +118,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 copied: false,
             });
         }, 1500);
-    };
+    }
 
     render() {
         const { copied } = this.state;

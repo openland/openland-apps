@@ -35,21 +35,21 @@ export interface GraphqlActiveSubscription<TSubs, TVars> {
     get(): Promise<TSubs>;
     updateVariables(src?: TVars): void;
     destroy(): void;
-};
+}
 
 export interface GraphqlQueryWatch<TQuery> {
     subscribe(handler: (args: GraphqlQueryResult<TQuery>) => void): () => void;
     currentResult(): GraphqlQueryResult<TQuery> | undefined;
     result(): Promise<void>;
     destroy(): void;
-};
+}
 
 export interface OperationParameters {
-    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache'
+    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache';
 }
 
 export interface QueryWatchParameters {
-    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network'
+    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network';
 }
 
 export interface GraphqlClientStatus {
@@ -59,14 +59,14 @@ export interface GraphqlClientStatus {
 export interface GraphqlClient {
 
     status: GraphqlClientStatus;
-    watchStatus(handler: (status: GraphqlClientStatus) => void): () => void
+    watchStatus(handler: (status: GraphqlClientStatus) => void): () => void;
 
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery>;
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery>;
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation>;
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars>;
 
-    updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean>
+    updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean>;
     readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null>;
     writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<void>;
 

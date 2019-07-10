@@ -100,13 +100,13 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         />
                                     ) : null}
                                 </ASFlex>
-                            )
+                            );
                         } else {
                             return null;
                         }
                     })
                 )}
             </>
-        )
+        );
     }
 }

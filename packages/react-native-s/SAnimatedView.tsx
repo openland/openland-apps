@@ -38,7 +38,7 @@ export class SAnimatedView extends React.PureComponent<SAnimatedViewProps, SAnim
     private _unsubscribe: () => void;
     private _handler = (src: SAnimatedDynamic) => {
         this.setState({ translateX: src.translateX, translateY: src.translateY, opacity: src.opacity });
-    };
+    }
 
     constructor(props: SAnimatedViewProps) {
         super(props);

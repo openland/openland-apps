@@ -71,7 +71,7 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
                 />
             </ZListItemGroup>
         </ZTrack>
-    )
+    );
 });
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {

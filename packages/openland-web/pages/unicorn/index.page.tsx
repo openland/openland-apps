@@ -106,8 +106,8 @@ const Timer = () => {
     //     }
     // })
 
-    return <XView paddingTop={counter}>{counter}</XView>
-}
+    return <XView paddingTop={counter}>{counter}</XView>;
+};
 
 const Page = (props: { text: string }) => {
     let controller = useController();
@@ -118,7 +118,7 @@ const Page = (props: { text: string }) => {
             </SDeferred>
         </XView>
     );
-}
+};
 
 const Root = () => {
     let controller = useController();
@@ -157,7 +157,7 @@ const Root = () => {
             />
         </XView>
     );
-}
+};
 
 export default () => {
     return (

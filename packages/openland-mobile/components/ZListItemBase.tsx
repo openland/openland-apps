@@ -71,7 +71,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
                     <TouchableHighlight underlayColor={this.props.underlayColor || this.props.theme.backgroundPrimaryActive} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                         {content}
                     </TouchableHighlight>
-                )
+                );
             }
         } else {
             return (
@@ -86,5 +86,5 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
 export const ZListItemBase = React.memo<ZListItemBaseProps>((props) => {
     let router = React.useContext(SRouterContext)!;
     let theme = React.useContext(ThemeContext);
-    return (<ZListItemBaseImpl {...props} router={router} theme={theme} />)
+    return (<ZListItemBaseImpl {...props} router={router} theme={theme} />);
 });

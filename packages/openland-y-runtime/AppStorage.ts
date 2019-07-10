@@ -7,7 +7,7 @@ class AppStorageImpl implements AppStorageApi {
     }
     async writeKey<T>(key: string, value: T | null | undefined) {
         throw Error('');
-    };
+    }
 }
 
 export const AppStorage = new AppStorageImpl();

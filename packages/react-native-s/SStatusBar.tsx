@@ -5,9 +5,9 @@ class SStatusBarImpl {
     setBarStyle(style: StatusBarStyle) {
         if (Platform.OS === 'android') {
             if (style === 'default' || style === 'dark-content') {
-                Native.setStatusBarColor('light')
+                Native.setStatusBarColor('light');
             } else {
-                Native.setStatusBarColor('dark')
+                Native.setStatusBarColor('dark');
             }
         } else {
             StatusBar.setBarStyle(style);

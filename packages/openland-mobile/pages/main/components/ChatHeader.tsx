@@ -95,7 +95,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
     let subtitle = '';
 
     if (room.user.isBot) {
-        subtitle = 'bot'
+        subtitle = 'bot';
         accent = true;
     } else {
         // use data about user online from room query
@@ -103,7 +103,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
             subtitle = formatLastSeen(room.user.lastSeen);
             accent = false;
         } else if (room.user.online) {
-            subtitle = 'online'
+            subtitle = 'online';
             accent = true;
         }
     }

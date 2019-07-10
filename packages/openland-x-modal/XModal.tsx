@@ -276,7 +276,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
         this.setState({
             isOpen: true,
         });
-    };
+    }
 
     onModalCloseRequest = () => {
         if (this.props.onClosed) {
@@ -289,7 +289,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
             }
         }
-    };
+    }
 
     render() {
         let size = this.props.size || 'default';

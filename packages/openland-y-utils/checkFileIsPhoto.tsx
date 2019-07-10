@@ -8,4 +8,4 @@ export let checkFileIsPhoto = (path: string) => {
     }
 
     return false;
-}
+};

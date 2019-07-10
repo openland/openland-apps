@@ -114,7 +114,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                 </View>
             </View>
         </ASSafeAreaView>
-    )
+    );
 });
 
 class GroupInviteComponent extends React.Component<PageProps> {

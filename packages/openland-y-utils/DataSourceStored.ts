@@ -8,7 +8,7 @@ const log = createLogger('datasource');
 
 export interface DataSourceStoredProvider<T extends DataSourceItem> {
     onStarted: (state: string, items?: T[]) => void;
-    loadMore: (cursor?: string) => Promise<{ state: string, cursor?: string, items: T[] }>
+    loadMore: (cursor?: string) => Promise<{ state: string, cursor?: string, items: T[] }>;
 }
 
 class KeyValueStoreVersioned implements KeyValueStore {
@@ -41,7 +41,7 @@ export class DataSourceStored<T extends DataSourceItem> {
     private _state!: string;
     private _index!: string[];
     private _queue: ExecutionQueue;
-    private _provider: DataSourceStoredProvider<T>
+    private _provider: DataSourceStoredProvider<T>;
     private _inited = false;
     private _loadingMore = false;
     private _storage: KeyValueStore;
@@ -55,12 +55,12 @@ export class DataSourceStored<T extends DataSourceItem> {
         this.name = name;
         this.pageSize = pageSize;
         this.dataSource = new DataSource<T>(() => { this.needMore(); });
-        storage = new KeyValueStoreVersioned(storage)
+        storage = new KeyValueStoreVersioned(storage);
         this._storage = storage;
         this._limitStored = limit;
         this._queue.post(async () => {
             let start = currentTimeMillis();
-            let ind = await storage.readKeys(['ds.' + name + '.version', 'ds.' + name + '.state', 'ds.' + name + '.index'])
+            let ind = await storage.readKeys(['ds.' + name + '.version', 'ds.' + name + '.state', 'ds.' + name + '.index']);
             let ver = ind.find((v) => v.key === 'ds.' + name + '.version')!.value;
             let state = ind.find((v) => v.key === 'ds.' + name + '.state')!.value;
             let index = ind.find((v) => v.key === 'ds.' + name + '.index')!.value;
@@ -71,7 +71,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
                 // Write records
                 for (let i of data.items) {
-                    await storage.writeKey('ds.' + name + '.item.' + i.key, JSON.stringify(i))
+                    await storage.writeKey('ds.' + name + '.item.' + i.key, JSON.stringify(i));
                 }
 
                 // Write cursor
@@ -195,7 +195,7 @@ export class DataSourceStored<T extends DataSourceItem> {
      */
     updateAllItems = async (updateFn: (item: T) => T | undefined) => {
         if (!this._limitStored) {
-            throw new Error('updateAllItems should not be used without limit!')
+            throw new Error('updateAllItems should not be used without limit!');
         }
         await this._queue.sync(async () => {
             // console.warn(this._index, await this.getItemUnsafe(this._index[0]));
@@ -255,7 +255,7 @@ export class DataSourceStored<T extends DataSourceItem> {
     addItem = async (item: T, index: number) => {
         await this._queue.sync(async () => {
             // Write record
-            await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item))
+            await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
 
             // Write index
             if (index > this._index.length) {
@@ -318,7 +318,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
             // Write records
             for (let i of data.items) {
-                await this._storage.writeKey('ds.' + this.name + '.item.' + i.key, JSON.stringify(i))
+                await this._storage.writeKey('ds.' + this.name + '.item.' + i.key, JSON.stringify(i));
             }
 
             // Update Index

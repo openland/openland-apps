@@ -74,7 +74,7 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
             </ZForm>
         </>
-    )
+    );
 });
 
 class SettingsNotifciationsComponent extends React.Component<PageProps> {

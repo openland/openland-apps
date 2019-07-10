@@ -36,7 +36,7 @@ export class FormSubmit extends React.PureComponent<
         if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && props.keyDownSubmit !== false) {
             await this.submit();
         }
-    };
+    }
 
     componentDidMount() {
         if (this.props.disableEnterKey) {
@@ -54,7 +54,7 @@ export class FormSubmit extends React.PureComponent<
 
     handleClick = async () => {
         await this.submit();
-    };
+    }
 
     submit = async () => {
         this.setState({ loading: true });
@@ -75,7 +75,7 @@ export class FormSubmit extends React.PureComponent<
         } else {
             this.setState({ loading: false });
         }
-    };
+    }
 
     render() {
         let { action, ...other } = this.props;

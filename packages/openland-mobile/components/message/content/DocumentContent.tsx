@@ -110,6 +110,6 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-        )
+        );
     }
 }

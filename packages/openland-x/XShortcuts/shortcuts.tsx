@@ -67,13 +67,13 @@ export default class extends React.Component<{
         this._combokeys.bind(shortcutsArr, this._handleShortcuts, this.props.eventType);
 
         element.addEventListener('shortcuts:global', this._customGlobalHandler);
-    };
+    }
 
     _customGlobalHandler = (e: any) => {
         const { character, modifiers, event } = e.detail;
 
         this._combokeys.handleKey(character, modifiers, event, true);
-    };
+    }
 
     _decorateCombokeys = () => {
         const element = this._getElementToBind();
@@ -142,25 +142,25 @@ export default class extends React.Component<{
                 originalHandleKey(character, modifiers, event);
             }
         };
-    };
+    }
 
     _getElementToBind = () => {
         return document.documentElement;
-    };
+    }
 
     _unbindShortcuts = () => {
         if (this._combokeys) {
             this._combokeys.detach();
             this._combokeys.reset();
         }
-    };
+    }
 
     _onUpdate = () => {
         const shortcutsArr =
             this.props.name && this.context.shortcuts.getShortcuts(this.props.name);
         this._unbindShortcuts();
         this._bindShortcuts(shortcutsArr || []);
-    };
+    }
 
     _handleShortcuts = (event: any, keyName: any) => {
         if (this.props.name) {
@@ -170,7 +170,7 @@ export default class extends React.Component<{
                 this.props.handler(shortcutName, event);
             }
         }
-    };
+    }
 
     render() {
         return <>{this.props.children}</>;

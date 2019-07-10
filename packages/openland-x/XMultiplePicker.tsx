@@ -84,10 +84,10 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
     targetRef?: any;
     captureContainerRef = (ref: any) => {
         this.containerRef = ref;
-    };
+    }
     captureTargetRef = (ref: any) => {
         this.targetRef = ref;
-    };
+    }
 
     componentDidUpdate() {
         if (
@@ -275,7 +275,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
         }
 
         this.setState({ selected: [x, y], scrollToSelected: true });
-    };
+    }
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);

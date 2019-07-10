@@ -28,7 +28,7 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((p
             </View>
         </View>
     );
-})
+});
 
 const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
     let users = getClient().useExplorePeople({ query: props.query });
@@ -70,7 +70,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
 
     let handleRemoveUser = React.useCallback((id: string) => {
         setUsers(users.filter((v) => v.id !== id));
-    }, [users])
+    }, [users]);
 
     let handleAddUser = React.useCallback((user: UserShort) => {
         if (!users.find((v) => v.id === user.id)) {
@@ -78,7 +78,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
         } else {
             handleRemoveUser(user.id);
         }
-    }, [users])
+    }, [users]);
 
     let handleSearchLayout = React.useCallback((event: LayoutChangeEvent) => {
         serSearchHeight(event.nativeEvent.layout.height);
@@ -118,6 +118,6 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
             </ASSafeAreaContext.Consumer>
         </>
     );
-})
+});
 
 export const UserMultiplePicker = withApp(UserMultiplePickerComponent, { navigationAppearance: 'small' });

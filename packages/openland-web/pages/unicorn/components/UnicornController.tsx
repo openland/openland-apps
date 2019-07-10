@@ -46,7 +46,7 @@ export class UnicornController {
         this._listeners.push(handler);
         return () => {
             this._listeners.splice(this._listeners.indexOf(handler), 1);
-        }
+        };
     }
 }
 
@@ -124,7 +124,7 @@ type AnimationState = {
         component: any;
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
-}
+};
 
 function animationReducer(
     state: AnimationState,
@@ -136,18 +136,18 @@ function animationReducer(
         return {
             pages: state.pages.map((v) => {
                 if (v.key === action.key) {
-                    return { ...v, state: 'exiting' as any }
+                    return { ...v, state: 'exiting' as any };
                 } else {
                     return v;
                 }
             })
-        }
+        };
     } else if (action.type === 'entered') {
         return {
             pages: state.pages.map((v, i) => {
                 if (v.key === action.key) {
                     if (v.state === 'entering') {
-                        return { ...v, state: 'visible' as any }
+                        return { ...v, state: 'visible' as any };
                     } else {
                         return v;
                     }
@@ -160,22 +160,22 @@ function animationReducer(
                     return v;
                 }
             })
-        }
+        };
     } else if (action.type === 'exited') {
         return {
             pages: state.pages.filter((v) => v.key !== action.key)
-        }
+        };
     } else if (action.type === 'mounted') {
         if (state.pages.find((v) => v.state === 'mounting')) {
             return {
                 pages: state.pages.map((v) => {
                     if (v.state === 'mounting') {
-                        return { ...v, state: 'entering' as any }
+                        return { ...v, state: 'entering' as any };
                     } else {
                         return v;
                     }
                 })
-            }
+            };
         } else {
             return state;
         }
@@ -203,7 +203,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                     </PageAnimator>
                 ))}
             </XView>
-        )
+        );
     } else {
         return (
             <XView width="100%" height="100%" flexDirection="row" paddingLeft={50} overflow="hidden">
@@ -218,7 +218,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                     ))}
                 </XView>
             </XView>
-        )
+        );
     }
 });
 

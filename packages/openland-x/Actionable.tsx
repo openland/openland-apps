@@ -90,7 +90,7 @@ export function makeActionable<T>(
                 this.isLoading = false;
                 this.setState({ loading: false });
             }
-        };
+        }
 
         render() {
             let isLoading = this.state.loading || this.props.loading || false;
