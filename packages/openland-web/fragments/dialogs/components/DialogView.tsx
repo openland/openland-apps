@@ -223,12 +223,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             >
                 <XViewSelectedContext.Consumer>
                     {active => (
-                        <XView
-                            flexDirection="row"
-                            flexGrow={1}
-                            flexShrink={0}
-                            minWidth={0}
-                        >
+                        <XView flexDirection="row" flexGrow={1} flexShrink={0} minWidth={0}>
                             <XView
                                 flexDirection="row"
                                 flexGrow={1}
@@ -286,6 +281,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     fontSize={13}
                                     lineHeight="19px"
                                     whiteSpace="nowrap"
+                                    alignSelf="center"
                                     color={active ? '#fff' : '#A9AEB8'}
                                 >
                                     <span className={LetterSpacingClassName}>
@@ -301,14 +297,14 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 </XViewSelectedContext.Consumer>
                 <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
                     <XView
-                        height={34}
+                        height={40}
                         flexGrow={1}
                         flexShrink={1}
                         flexBasis={0}
                         minWidth={0}
                         fontSize={14}
                         fontWeight="400"
-                        lineHeight="17px"
+                        lineHeight="20px"
                         overflow="hidden"
                         selectedOpacity={1}
                         color="#78808F"
@@ -317,7 +313,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         {message}
                     </XView>
                     {dialog.unread > 0 && (
-                        <>
+                        <XView flexDirection="row" alignItems="center" alignSelf="flex-end">
                             {haveMention && (
                                 <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
                                     <MentionIcon />
@@ -326,7 +322,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             <XView paddingLeft={12} alignSelf="center">
                                 <XCounter grey={isMuted} big={true} count={dialog.unread} />
                             </XView>
-                        </>
+                        </XView>
                     )}
                 </XView>
             </XView>

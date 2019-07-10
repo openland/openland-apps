@@ -161,16 +161,17 @@ export const Menu = React.memo(
         } else {
             contentElem = (
                 <>
-                    {out && !deleted && (
-                        <XMenuItem
-                            onClick={(e: any) => {
-                                setEditMessage(e);
-                                setShowMenu(false);
-                            }}
-                        >
-                            Edit
-                        </XMenuItem>
-                    )}
+                    {out &&
+                        !deleted && (
+                            <XMenuItem
+                                onClick={(e: any) => {
+                                    setEditMessage(e);
+                                    setShowMenu(false);
+                                }}
+                            >
+                                Edit
+                            </XMenuItem>
+                        )}
                     <XMenuItem
                         onClick={(e: any) => {
                             setReplyMessages(e);
@@ -179,15 +180,17 @@ export const Menu = React.memo(
                     >
                         Reply
                     </XMenuItem>
-                    {pinMessageAccess && message.id && room && (
-                        <PinMessageButton
-                            variables={{
-                                chatId: room.id,
-                                messageId: message.id,
-                            }}
-                            onSuccess={() => setShowMenu(false)}
-                        />
-                    )}
+                    {pinMessageAccess &&
+                        message.id &&
+                        room && (
+                            <PinMessageButton
+                                variables={{
+                                    chatId: room.id,
+                                    messageId: message.id,
+                                }}
+                                onSuccess={() => setShowMenu(false)}
+                            />
+                        )}
                     <XMenuItem
                         onClick={() => {
                             setShowMenu(false);
@@ -197,14 +200,15 @@ export const Menu = React.memo(
                     >
                         Forward
                     </XMenuItem>
-                    {message.id && out && (
-                        <XMenuItem
-                            style="danger"
-                            onClick={() => ShowDeleteMessageModal(message.id!!)}
-                        >
-                            Delete
-                        </XMenuItem>
-                    )}
+                    {message.id &&
+                        out && (
+                            <XMenuItem
+                                style="danger"
+                                onClick={() => ShowDeleteMessageModal(message.id!!)}
+                            >
+                                Delete
+                            </XMenuItem>
+                        )}
                 </>
             );
         }
@@ -229,30 +233,32 @@ export const Menu = React.memo(
                                     reactions={message.reactions}
                                 />
                             )}
-                            {!isComment && !isCommentNotification && hover && (
-                                <MessageReactionButton messageId={message.id!} />
-                            )}
-                            {hover && !isCommentNotification && !isComment && !isChannel && (
-                                <CommentsIconWrapper onClick={commentsClick}>
-                                    <CommentIcon />
-                                </CommentsIconWrapper>
-                            )}
+                            {!isComment &&
+                                !isCommentNotification &&
+                                hover && <MessageReactionButton messageId={message.id!} />}
+                            {hover &&
+                                !isCommentNotification &&
+                                !isComment &&
+                                !isChannel && (
+                                    <CommentsIconWrapper onClick={commentsClick}>
+                                        <CommentIcon />
+                                    </CommentsIconWrapper>
+                                )}
                             {!isComment && (
                                 <XOverflow
                                     show={showMenu}
                                     placement="bottom-end"
                                     useCustomTarget={true}
                                     onClickOutside={() => setShowMenu(false)}
-                                    target={
-                                        <XOverflowDefalutTarget
-                                            onClick={() => setShowMenu(!showMenu)}
-                                            active={showMenu}
-                                            marginLeft={0}
-                                            flat={true}
-                                            opacity={hover || showMenu ? 1 : 0}
-                                        />
-                                    }
                                     content={contentElem}
+                                    target={
+                                        <div style={{ marginLeft: 0, opacity: hover ? 1 : 0 }}>
+                                            <XOverflowDefalutTarget
+                                                onClick={() => setShowMenu(!showMenu)}
+                                                active={showMenu}
+                                            />
+                                        </div>
+                                    }
                                 />
                             )}
                         </XHorizontal>

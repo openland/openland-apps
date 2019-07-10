@@ -60,7 +60,6 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
             typeof customMenu === 'undefined' ? (
                 <XOverflow
                     placement="bottom-end"
-                    flat={true}
                     content={
                         <>
                             {extraMenu}

@@ -11,8 +11,8 @@ import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import NewIcon from 'openland-icons/add-24.svg';
 import { makeActionable } from 'openland-x/Actionable';
-import { XShortcuts } from 'openland-x/XShortcuts';
-import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
+// import { XShortcuts } from 'openland-x/XShortcuts';
+// import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import NotificationsIcon from 'openland-icons/notifications-24.svg';
 import NotificationsNewIcon from 'openland-icons/notifications-new-24.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -186,7 +186,7 @@ export const NewOptionsMenu = () => (
 );
 
 export const NewOptionsButton = XMemo(() => {
-    let router = React.useContext(XRoutingContext)!;
+    // let router = React.useContext(XRoutingContext)!;
     const [show, setShow] = React.useState(false);
     const [width] = useWithWidth();
 
@@ -194,20 +194,20 @@ export const NewOptionsButton = XMemo(() => {
         setShow(false);
     }, []);
 
-    const open = React.useCallback(() => {
-        setShow(true);
-    }, []);
+    // const open = React.useCallback(() => {
+    //     setShow(true);
+    // }, []);
 
-    const ctrlOptionN = () => {
-        open();
-        router.push(`/mail`);
-    };
+    // const ctrlOptionN = () => {
+    //     open();
+    //     router.push(`/mail`);
+    // };
 
     const toggle = React.useCallback(() => {
         setShow(!show);
-    }, []);
+    }, [show]);
 
-    let marginRight = -5;
+    let marginRight = 0;
     if (width && width < 951) {
         marginRight = -150;
     }
@@ -226,19 +226,20 @@ export const NewOptionsButton = XMemo(() => {
             onClickOutside={closer}
             content={<NewOptionsMenu />}
         >
-            <XShortcuts
-                handlerMap={{
-                    CTRL_OPTION_N: ctrlOptionN,
-                }}
-                keymap={{
-                    CTRL_OPTION_N: {
-                        osx: ['ctrl+option+n'],
-                        windows: ['ctrl+alt+n'],
-                    },
-                }}
-            >
-                <NewButton onClick={toggle} />
-            </XShortcuts>
+            <NewButton onClick={toggle} />
+            {/*<XShortcuts*/}
+            {/*    handlerMap={{*/}
+            {/*        CTRL_OPTION_N: ctrlOptionN,*/}
+            {/*    }}*/}
+            {/*    keymap={{*/}
+            {/*        CTRL_OPTION_N: {*/}
+            {/*            osx: ['ctrl+option+n'],*/}
+            {/*            windows: ['ctrl+alt+n'],*/}
+            {/*        },*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*    <NewButton onClick={toggle} />*/}
+            {/*</XShortcuts>*/}
         </XPolitePopper>
     );
 });

@@ -197,7 +197,6 @@ export const XOrganizationCard = (props: XOrganizationCardProps) => {
         typeof customMenu === 'undefined' ? (
             <XOverflow
                 placement="bottom-end"
-                flat={true}
                 content={
                     <>
                         {extraMenu}

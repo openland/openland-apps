@@ -3,37 +3,16 @@ import Glamorous from 'glamorous';
 import { Placement } from 'openland-x/XPopper';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
-import NotifyIcon from 'openland-icons/notify-icon.svg';
-
-const Shadow = Glamorous.div<{ active: boolean }>(props => ({
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    width: '100vw',
-    height: '100vh',
-    visibility: props.active ? 'visible' : 'hidden',
-    opacity: props.active ? 1 : 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 11,
-}));
 
 interface DottedMenuButtonStyleProps {
-    small?: boolean;
     active?: boolean;
     horizontal?: boolean;
-    flat?: boolean;
-    marginLeft?: number;
-    marginRight?: number;
-    opacity?: number;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    ({ small, horizontal, flat, active, marginLeft, marginRight, opacity }) => ({
-        marginLeft: marginLeft !== undefined ? `${marginLeft}px !important` : undefined,
-        marginRight: marginRight !== undefined ? `${marginRight}px !important` : undefined,
-        width: small ? 10 : 22,
+    ({ horizontal, active }) => ({
+        width: 20,
         height: 20,
-        opacity: opacity !== undefined ? opacity : undefined,
         display: 'flex',
         flexDirection: horizontal ? 'row' : 'column',
         alignItems: 'center',
@@ -41,18 +20,14 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
         flexShrink: 0,
         cursor: 'pointer',
         borderRadius: 5,
-        backgroundColor: flat ? 'transparent' : active ? '#654bfa' : 'transparent',
-        border: flat ? 'none' : 'solid 1px transparent',
         transition: 'background-color .2s',
         '&:hover': {
-            border: flat ? 'none' : active ? 'solid 1px transparent' : 'solid 1px #dcdee4',
-
             '& > div': {
-                backgroundColor: flat ? '#1790ff' : undefined,
+                backgroundColor: '#1790ff',
             },
         },
         '& > div': {
-            backgroundColor: flat && active ? '#1790ff' : active ? '#fff' : 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: active ? '#1790ff' : 'rgba(0, 0, 0, 0.2)',
             width: 4,
             height: 4,
             borderRadius: 100,
@@ -67,32 +42,6 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
     }),
 );
 
-const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
-    width: 32,
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    borderRadius: 5,
-    '& svg': {
-        marginTop: 1,
-        marginBottom: -1,
-        height: 21,
-        width: 15,
-        '& > g > path:last-child': {
-            fill: props.active ? '#1790ff' : 'rgba(0, 0, 0, 0.2)',
-        },
-    },
-    '&:hover': {
-        '& svg': {
-            '& > g > path:last-child': {
-                fill: '#1790ff',
-            },
-        },
-    },
-}));
-
 export class XOverflowDefalutTarget extends React.PureComponent<
     DottedMenuButtonStyleProps & { onClick: () => void }
 > {
@@ -102,12 +51,7 @@ export class XOverflowDefalutTarget extends React.PureComponent<
             <DottedMenuButtonStyle
                 onClick={props.onClick}
                 active={props.active}
-                small={props.small}
                 horizontal={props.horizontal}
-                flat={props.flat}
-                marginLeft={props.marginLeft}
-                marginRight={props.marginRight}
-                opacity={props.opacity}
             >
                 <div />
                 <div />
@@ -118,16 +62,12 @@ export class XOverflowDefalutTarget extends React.PureComponent<
 }
 
 interface XOverflowProps {
-    small?: boolean;
     placement?: Placement;
     show?: boolean;
     content: any;
     width?: number;
     target?: any;
-    shadow?: boolean;
     horizontal?: boolean;
-    flat?: boolean;
-    notificationStyle?: boolean;
     onClickTarget?: any;
     useCustomTarget?: boolean;
     showOnHover?: boolean;
@@ -172,7 +112,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
     };
 
     render() {
-        const { target, shadow, small, useCustomTarget } = this.props;
+        const { target, useCustomTarget } = this.props;
 
         let targetElement: any;
 
@@ -193,44 +133,31 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         }
 
         return (
-            <>
-                {shadow && typeof show !== 'undefined' && <Shadow active={show} />}
-                <XPolitePopper
-                    show={show}
-                    contentContainer={<XMenuVertical />}
-                    content={this.props.content}
-                    arrow={null}
-                    placement={this.props.placement || 'auto'}
-                    width={this.props.width}
-                    onClickOutside={this.handleClose}
-                    showOnHover={this.props.showOnHover}
-                >
-                    {targetElement ? (
-                        targetElement
-                    ) : this.props.notificationStyle === true && typeof show !== 'undefined' ? (
-                        <NotificationButton
-                            onClick={this.switch}
-                            active={show}
-                            innerRef={this.createRef}
-                        >
-                            <NotifyIcon />
-                        </NotificationButton>
-                    ) : (
-                        <DottedMenuButtonStyle
-                            onClick={this.switch}
-                            active={show}
-                            small={small}
-                            innerRef={this.createRef}
-                            horizontal={this.props.horizontal}
-                            flat={this.props.flat}
-                        >
-                            <div />
-                            <div />
-                            <div />
-                        </DottedMenuButtonStyle>
-                    )}
-                </XPolitePopper>
-            </>
+            <XPolitePopper
+                show={show}
+                contentContainer={<XMenuVertical />}
+                content={this.props.content}
+                arrow={null}
+                placement={this.props.placement || 'auto'}
+                width={this.props.width}
+                onClickOutside={this.handleClose}
+                showOnHover={this.props.showOnHover}
+            >
+                {targetElement ? (
+                    targetElement
+                ) : (
+                    <DottedMenuButtonStyle
+                        onClick={this.switch}
+                        active={show}
+                        innerRef={this.createRef}
+                        horizontal={this.props.horizontal}
+                    >
+                        <div />
+                        <div />
+                        <div />
+                    </DottedMenuButtonStyle>
+                )}
+            </XPolitePopper>
         );
     }
 }

@@ -33,7 +33,6 @@ const MemberCard = ({ member, chat }: { member: RoomFull_SharedRoom_members, cha
                 useHasRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
                         placement="bottom-end"
-                        flat={true}
                         content={
                             <>
                                 <XWithRole role="super-admin">

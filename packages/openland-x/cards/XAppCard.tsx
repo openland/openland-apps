@@ -30,7 +30,6 @@ export class XAppCard extends React.Component<XUserCardProps, XUserCardState> {
                 <>
                     {extraMenu && (
                         <XOverflow
-                            flat={true}
                             placement="bottom-end"
                             content={<div>{extraMenu}</div>}
                         />

@@ -8,7 +8,7 @@ import {
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { DataSourceRender, ScrollTo } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -21,6 +21,7 @@ import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import { delay } from 'openland-y-utils/timer';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -29,18 +30,28 @@ const messagesWrapperClassName = css`
     flex-direction: column;
     align-items: stretch;
     align-self: center;
+    width: 100%;
+    max-width: 1040px;
     padding-top: 96px;
     padding-bottom: 4px;
-    width: 100%;
-    max-width: 930px;
-    @media (min-width: 750px) {
-        min-width: 512px;
-    }
+    padding-left: 55px;
+    padding-right: 55px;
 `;
 
-const MessagesWrapper = React.memo(({ children }: { children?: any }) => (
-    <div className={messagesWrapperClassName}>{children}</div>
-));
+const mobileMessageWrapperClassName = css`
+    padding-left: 0;
+    padding-right: 0;
+    min-width: 622px;
+`;
+
+const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
+    const isMobile = React.useContext(IsMobileContext);
+    return (
+        <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
+            {children}
+        </div>
+    );
+});
 
 const messagesWrapperEmptyClassName = css`
     display: flex;
@@ -84,15 +95,18 @@ const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
     const ref = React.useRef<any | null>(null);
     let isChatActive = React.useContext(IsActivePoliteContext);
 
-    React.useEffect(() => {
-        return isChatActive.listen(async active => {
-            await delay(0);
-            if (ref.current && props.scrollTo && active) {
-                ref.current.scrollIntoView();
-                props.scrollTo.key = undefined;
-            }
-        });
-    }, [ref.current, props.scrollTo]);
+    React.useEffect(
+        () => {
+            return isChatActive.listen(async active => {
+                await delay(0);
+                if (ref.current && props.scrollTo && active) {
+                    ref.current.scrollIntoView();
+                    props.scrollTo.key = undefined;
+                }
+            });
+        },
+        [ref.current, props.scrollTo],
+    );
     return (
         <div key={props.dividerKey} ref={ref}>
             <XView

@@ -1,24 +1,17 @@
 import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
-import { AppStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export const SuggestionsWrapper = (props: { children: any }) => (
-    <>
-        {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
+    <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={186}>
+        <View height={6} />
 
-        <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={186}>
-            <View height={6} />
+        {props.children}
 
-            {props.children}
-
-            <View height={6} />
-        </ScrollView>
-
-        {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-    </>
+        <View height={6} />
+    </ScrollView>
 );
 
 export const SuggestionsItemName = (props: { theme: ThemeGlobal, name: string; description?: string }) => (
@@ -37,7 +30,7 @@ export const SuggestionsItemName = (props: { theme: ThemeGlobal, name: string; d
         {!!props.description && (
             <Text
                 style={{
-                    color: props.theme.foregroundPrimary,
+                    color: props.theme.foregroundSecondary,
                     fontWeight: TextStyles.weight.regular
                 }}
                 allowFontScaling={false}

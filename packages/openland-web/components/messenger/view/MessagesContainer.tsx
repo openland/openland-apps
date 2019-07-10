@@ -40,15 +40,8 @@ type MessagesContainerProps = {
 };
 
 export const MessagesContainer = ({ children, conversationId }: MessagesContainerProps) => {
-    const isMobile = React.useContext(IsMobileContext);
     return (
-        <XView
-            flexDirection="column"
-            flexGrow={1}
-            flexShrink={1}
-            paddingHorizontal={!isMobile ? 50 : undefined}
-            overflow="hidden"
-        >
+        <XView flexDirection="column" flexGrow={1} flexShrink={1} overflow="hidden">
             <div className={`${getMessagesWrapperClassName(conversationId)} ` + styleInner}>
                 {children}
             </div>

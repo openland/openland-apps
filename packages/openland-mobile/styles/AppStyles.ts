@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, TextStyle } from 'react-native';
 
 export const AppStyles = {
     primaryColor: '#0084fe',
@@ -21,4 +21,52 @@ export const TextStyles = {
     family: {
         monospace: Platform.OS === 'ios' ? 'CourierNewPSMT' : 'monospace'
     }
+}
+
+export const TypeStyles = {
+    title1: {
+        fontSize: 34,
+        lineHeight: 40,
+        fontWeight: TextStyles.weight.bold
+    } as TextStyle,
+    title2: {
+        fontSize: 28,
+        lineHeight: 32,
+        fontWeight: TextStyles.weight.bold
+    } as TextStyle,
+    title3: {
+        fontSize: 20,
+        lineHeight: 26,
+        fontWeight: TextStyles.weight.bold
+    } as TextStyle,
+    label1: {
+        fontSize: 17,
+        lineHeight: 24,
+        fontWeight: TextStyles.weight.medium
+    } as TextStyle,
+    label2: {
+        fontSize: 15,
+        lineHeight: 20,
+        fontWeight: TextStyles.weight.medium
+    } as TextStyle,
+    body: {
+        fontSize: 17,
+        lineHeight: 24,
+        fontWeight: TextStyles.weight.regular
+    } as TextStyle,
+    densed: {
+        fontSize: 17,
+        lineHeight: 22,
+        fontWeight: TextStyles.weight.regular
+    } as TextStyle,
+    subhead: {
+        fontSize: 15,
+        lineHeight: 20,
+        fontWeight: TextStyles.weight.regular
+    } as TextStyle,
+    caption: {
+        fontSize: 13,
+        lineHeight: 18,
+        fontWeight: TextStyles.weight.regular
+    } as TextStyle
 }

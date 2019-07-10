@@ -9,30 +9,27 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPress: () => void }>((props) => {
     const { dot, theme, onPress } = props;
 
-    const icon = Platform.OS === 'ios' ? require('assets/ic-header-notifications-26.png') : require('assets/ic-notifications-24.png');
+    const icon = require('assets/ic-header-bell-24.png');
     const size = Platform.OS === 'ios' ? 26 : 24;
     const color = theme.foregroundSecondary;
 
     return (
         <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
-            <View width={Platform.OS === 'ios' ? 34 : undefined} height={44} alignItems="center" justifyContent="center">
-                <Image source={icon} style={{ width: size, height: size, tintColor: color, marginTop: Platform.OS === 'ios' ? 3 : undefined }} resizeMode="contain" />
+            <View width={44} height={44} alignItems="center" justifyContent="center">
+                <Image source={icon} style={{ width: size, height: size, tintColor: color }} resizeMode="contain" />
     
                 {dot && (
                     <View
                         style={{
                             position: 'absolute',
-                            top: Platform.OS === 'ios' ? 10 : 10,
-                            right: Platform.OS === 'ios' ? 7 : 2,
-                            width: 10,
-                            height: 10,
-                            borderRadius: 5,
-                            padding: 2,
-                            backgroundColor: theme.backgroundSecondary
+                            top: 5,
+                            right: 5,
+                            width: 6,
+                            height: 6,
+                            borderRadius: 3,
+                            backgroundColor: theme.accentNegative
                         }}
-                    >
-                        <View style={{ width: 6, height: 6, backgroundColor: theme.accentNegative, borderRadius: 3 }} />
-                    </View>
+                    />
                 )}
             </View>
         </SHeaderButton>
@@ -51,7 +48,7 @@ export const MainHeaderButtons = XMemo<{ router: SRouter, theme: ThemeGlobal }>(
             <SHeaderButton
                 key={'compose-button-' + dot}
                 title="New"
-                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
+                icon={require('assets/ic-header-plus-24.png')}
                 onPress={() => props.router.push('Compose')}
             />
         </>

@@ -19,10 +19,10 @@ const XCounterBig = (props: XCounterProps) => (
         whiteSpace="nowrap"
         overflow="hidden"
         textOverflow="ellipsis"
-        minWidth={18}
-        height={18}
-        borderRadius={9}
-        fontSize={12}
+        minWidth={20}
+        height={20}
+        borderRadius={10}
+        fontSize={13}
         lineHeight="10px"
         paddingLeft={5}
         paddingRight={5}
