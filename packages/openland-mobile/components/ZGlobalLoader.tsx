@@ -9,25 +9,25 @@ var loading = false;
 const loader = Toast.loader();
 
 export function startLoader() {
-    loader.show();
+    // loader.show();
     
-    // if (!loading) {
-    //     loading = true;
-    //     for (let w of watchers) {
-    //         w(true);
-    //     }
-    // }
+    if (!loading) {
+        loading = true;
+        for (let w of watchers) {
+            w(true);
+        }
+    }
 }
 
 export function stopLoader() {
-    loader.hide();
+    // loader.hide();
     
-    // if (loading) {
-    //     loading = false;
-    //     for (let w of watchers) {
-    //         w(false);
-    //     }
-    // }
+    if (loading) {
+        loading = false;
+        for (let w of watchers) {
+            w(false);
+        }
+    }
 }
 
 const styles = StyleSheet.create({
