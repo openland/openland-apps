@@ -388,12 +388,12 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
         >
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
             <XView
-                maxWidth={1080}
+                maxWidth={1040}
                 width="100%"
                 height={60}
                 flexShrink={0}
                 flexGrow={1}
-                paddingHorizontal={isMobile ? 20 : 130}
+                paddingHorizontal={isMobile ? 20 : 110}
                 alignItems="center"
                 flexDirection="row"
                 justifyContent="space-between"

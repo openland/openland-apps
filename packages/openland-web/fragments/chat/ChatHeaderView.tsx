@@ -294,8 +294,8 @@ export const ChatHeaderViewLoader = (props: {
                 alignItems="center"
                 justifyContent="center"
                 height={56}
-                paddingLeft={isMobile ? 20 : 130}
-                paddingRight={isMobile ? 20 : 130}
+                paddingLeft={isMobile ? 20 : 110}
+                paddingRight={isMobile ? 20 : 110}
             >
                 <ChatHeaderView room={room.room} me={user} />
             </XView>
