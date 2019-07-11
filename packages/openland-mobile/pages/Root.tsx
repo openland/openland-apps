@@ -106,7 +106,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
                     routing={this.props.routing}
                     navigationBarStyle={style}
                 />
-                {Platform.OS === 'android' && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: SDevice.safeArea.bottom, backgroundColor: bgColor }} />}
+                {Platform.OS === 'android' && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: SDevice.safeArea.bottom, backgroundColor: this.props.theme.backgroundTertiary }} />}
             </View>
         );
     }
