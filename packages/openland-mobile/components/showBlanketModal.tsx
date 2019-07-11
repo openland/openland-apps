@@ -9,6 +9,7 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 interface BlanketModalProps {
     modal: ZModal;
@@ -134,7 +135,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
     renderContents = () => (
         <View
             backgroundColor={this.props.theme.backgroundSecondary}
-            borderRadius={16}
+            borderRadius={RadiusStyles.large}
             marginHorizontal={16}
             onLayout={this.onLayout}
         >
