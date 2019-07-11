@@ -13,7 +13,6 @@ interface AsyncBubbleViewProps {
     isOut: boolean;
     attachTop: boolean;
     attachBottom: boolean;
-    appearance?: 'media' | 'text';
     colorIn: string;
     colorOut: string;
     backgroundColor: string;
@@ -22,7 +21,7 @@ interface AsyncBubbleViewProps {
 
 export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, appearance, colorIn, colorOut, backgroundColor, width } = this.props;
+        const { isOut, attachTop, attachBottom, colorIn, colorOut, backgroundColor, width } = this.props;
 
         let bubbleRes = this.props.isOut ? 'outgoing' : 'incoming';
 

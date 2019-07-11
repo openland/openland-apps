@@ -95,7 +95,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     if (!res) {
         res =
-            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} appearance="text" colorIn={theme.bubbleIn} backgroundColor={theme.backgroundPrimary}>
+            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut} backgroundColor={theme.backgroundPrimary}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
                     <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>

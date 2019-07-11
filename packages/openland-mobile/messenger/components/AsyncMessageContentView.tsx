@@ -201,12 +201,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} appearance={imageOnly ? 'media' : 'text'} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut} backgroundColor={theme.backgroundPrimary}>
-                <ASFlex
-                    flexDirection="column"
-                    alignItems="stretch"
-                >
-
+            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut} backgroundColor={theme.backgroundPrimary}>
+                <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
 
                     <ASFlex

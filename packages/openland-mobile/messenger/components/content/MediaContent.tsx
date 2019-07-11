@@ -13,6 +13,7 @@ import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
 
 interface MediaContentProps {
     single?: boolean;
@@ -56,6 +57,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         if (path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
+
+            console.warn('boom', event.instanceKey);
 
             this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event }, undefined, this.props.message.senderName, this.props.message.date);
         }
@@ -108,49 +111,76 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        let fileAttach = this.props.attach;
+        const { single, message, attach, onUserPress, onGroupPress, onMediaPress, onDocumentPress, layout, compensateBubble, theme, hasText, hasReply } = this.props;
+        const { downloadState } = this.state;
+
         return (
             <ASFlex
                 flexDirection="column"
-                width={this.props.single ? this.props.layout.width : undefined}
-                height={this.props.layout.height}
-                marginTop={this.props.compensateBubble ? (this.props.hasReply ? 0 : -contentInsetsTop) : undefined}
-                marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : undefined}
-                marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : undefined}
-                marginBottom={this.props.compensateBubble ? (this.props.single || !this.props.hasText ? -contentInsetsBottom : 8) : undefined}
-                backgroundColor={!this.props.single ? this.props.theme.chatImageBackground : undefined}
+                width={single ? layout.width : undefined}
+                height={layout.height}
+                marginTop={compensateBubble ? (hasReply ? 0 : -contentInsetsTop) : undefined}
+                marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
+                marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
+                marginBottom={compensateBubble ? (single || !hasText ? -contentInsetsBottom : 8) : undefined}
+                backgroundColor={!single ? theme.chatImageBackground : undefined}
                 alignItems="center"
             >
-                <ASImage
-                    maxWidth={this.props.layout.width}
-                    onPress={this.handlePress}
-                    source={{ uri: (fileAttach && fileAttach.uri) ? fileAttach.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                    isGif={fileAttach!!.fileMetadata.imageFormat === 'GIF'}
-                    width={this.props.layout.width}
-                    height={this.props.layout.height}
-                />
+                <ASFlex>
+                    <ASImage
+                        key={'media-' + attach.id}
+                        maxWidth={layout.width}
+                        source={{ uri: (attach && attach.uri) ? attach.uri : (downloadState && downloadState.path) ? ('file://' + downloadState.path) : undefined }}
+                        isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
+                        width={layout.width}
+                        height={layout.height}
+                        onPress={this.handlePress}
+                    />
 
-                <ASFlex
-                    overlay={true}
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                    marginRight={8}
-                >
-                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                    <ASFlex
                         overlay={true}
-                        width={this.props.layout.width}
-                        height={this.props.layout.height}
-                        justifyContent="center"
-                        alignItems="center"
+                        alignItems="flex-end"
+                        justifyContent="flex-end"
+                        marginRight={8}
                     >
-                        <ASFlex
-                            backgroundColor={this.props.theme.backgroundPrimary}
-                            borderRadius={20}
+                        {downloadState && downloadState.progress !== undefined && downloadState.progress < 1 && !downloadState.path && <ASFlex
+                            overlay={true}
+                            width={layout.width}
+                            height={layout.height}
+                            justifyContent="center"
+                            alignItems="center"
                         >
-                            <ASText color={this.props.theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
-                        </ASFlex>
-                    </ASFlex>}
+                            <ASFlex
+                                backgroundColor={theme.backgroundPrimary}
+                                borderRadius={20}
+                            >
+                                <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(downloadState.progress * 100)}</ASText>
+                            </ASFlex>
+                        </ASFlex>}
+                    </ASFlex>
                 </ASFlex>
+
+                {single && compensateBubble && (
+                    <ASFlex
+                        overlay={true}
+                        width={layout.width}
+                        height={layout.height}
+                        marginTop={-contentInsetsTop}
+                        marginLeft={-contentInsetsHorizontal}
+                        marginRight={-contentInsetsHorizontal}
+                        marginBottom={-contentInsetsBottom}
+                    >
+                        <AsyncBubbleMediaView
+                            isOut={message.isOut}
+                            attachTop={message.attachTop}
+                            attachBottom={message.attachBottom}
+                            theme={theme}
+                            width={layout.width}
+                            height={layout.height}
+                            onPress={this.handlePress}
+                        />
+                    </ASFlex>
+                )}
             </ASFlex>
         );
     }
