@@ -200,6 +200,7 @@ const UnicornContainer = React.memo((props: {
                 <XView width={64} height="100%">
                     {props.desktopBar}
                 </XView>
+                <XView width={1} backgroundColor="rgba(120, 128, 143, 0.08)" height="100%" />
                 <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                     <XView width="100%" height="100%" position="relative" alignItems="flex-start">
                         {props.root}
