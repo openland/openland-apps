@@ -20,6 +20,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
+import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -170,8 +171,6 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         </>
     );
 
-    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
-
     const content = (
         <>
             <ZListItemHeader
@@ -240,7 +239,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeader title={room.title} />
-            <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />
+            <ZManageButton onPress={handleManageClick} />
 
             <SFlatList
                 data={members}

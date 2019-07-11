@@ -24,6 +24,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 
 const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShortPaginated_organization }>((props) => {
     const { router, organization } = props;
@@ -281,8 +282,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             }
         }, [ organization, members, loading ]);
 
-    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
-
     const content = (
         <>
             <ZListItemHeader
@@ -362,7 +361,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title={organization.name} />
 
-            {showManageBtn && <SHeaderButton key={'manage-btn-' + showManageBtn} title="Manage" icon={manageIcon} onPress={handleManageClick} />}
+            {showManageBtn && <ZManageButton key={'manage-btn-' + showManageBtn} onPress={handleManageClick} />}
 
             <SFlatList
                 data={members}
