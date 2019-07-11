@@ -18,6 +18,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
+import { AppsFragment } from '../apps/AppsFragment';
 
 const UserProfile = withUserInfo(({ user, onClick }: any) => {
     if (user) {
@@ -152,6 +153,13 @@ export const AccountFragment = React.memo(() => {
                 icon={<DownloadAppsIcon />}
                 onClick={() => {
                     controller.push(<NativeAppsModal />);
+                }}
+            />
+            <UListItem
+                text="Apps"
+                icon={<DownloadAppsIcon />}
+                onClick={() => {
+                    controller.push(<AppsFragment />);
                 }}
             />
             <UListHeader text="Organizations" />
