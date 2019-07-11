@@ -14,6 +14,14 @@ import NotificationsIcon from 'openland-icons/notifications_icon.svg';
 import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
+import { showModalBox } from 'openland-x/showModalBox';
+import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
+import { AppearanceTab } from './AppearanceTab';
+import { Notifications } from './Notifications';
+import { ProfileTab } from './ProfileTab';
 import { tabs } from './tabs';
 
 const Section = ({ title, children }: { title: string; children: any }) => {
@@ -27,9 +35,19 @@ const Section = ({ title, children }: { title: string; children: any }) => {
     );
 };
 
-const SettingsItem = ({ text, icon }: { text: string; icon: any }) => {
+const SettingsItem = ({
+    text,
+    icon,
+    onClick,
+    path,
+}: {
+    text: string;
+    icon: any;
+    path?: string;
+    onClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
+}) => {
     return (
-        <XView flexDirection="row">
+        <XView cursor="pointer" flexDirection="row" onClick={onClick} path={path}>
             <XView marginRight={19}>{icon}</XView>
             <XText mode={Mode.BodyRegular}>{text}</XText>
         </XView>
@@ -114,11 +132,23 @@ const UserProfile = withUserInfo(({ user, onClick }: any) => {
 });
 
 export default withApp('Apps', 'viewer', () => {
-    let isMobile = React.useContext(IsMobileContext);
     const client = useClient();
     const myOrganizations = client.useMyOrganizations();
 
-    const tab = tabs.account;
+    let isMobile = React.useContext(IsMobileContext);
+    const router = React.useContext(XRouterContext) as XRouter;
+
+    const { path } = router;
+
+    let tab = tabs.profile;
+
+    if (path.endsWith('/profile')) {
+        tab = tabs.profile;
+    } else if (path.endsWith('/appearance')) {
+        tab = tabs.appearance;
+    } else if (path.endsWith('/notifications')) {
+        tab = tabs.notifications;
+    }
 
     return (
         <Navigation
@@ -129,19 +159,49 @@ export default withApp('Apps', 'viewer', () => {
             menuChildrenContent={
                 <XView flexGrow={1}>
                     <UserProfile />
-                    <XView marginBottom={44} paddingHorizontal={16} flexDirection="row">
+                    <XView
+                        cursor="pointer"
+                        marginBottom={44}
+                        paddingHorizontal={16}
+                        flexDirection="row"
+                        onClick={() => {
+                            showModalBox({ fullScreen: true }, ctx => (
+                                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                                    <InviteFriendsFragment asModalContent modalContext={ctx} />
+                                </XScrollView3>
+                            ));
+                        }}
+                    >
                         <InviteFriendsIcon />
                         <XView marginLeft={18}>Invite Friends</XView>
                     </XView>
                     <XView marginBottom={43}>
                         <Section title="Settings">
                             <XView marginBottom={29}>
-                                <SettingsItem icon={<NotificationsIcon />} text="Notifications" />
+                                <SettingsItem
+                                    icon={<NotificationsIcon />}
+                                    text="Notifications"
+                                    path="/settings/notifications"
+                                />
                             </XView>
                             <XView marginBottom={29}>
-                                <SettingsItem icon={<AppearanceIcon />} text="Appearence" />
+                                <SettingsItem
+                                    icon={<AppearanceIcon />}
+                                    text="Appearence"
+                                    path="/settings/appearance"
+                                />
                             </XView>
-                            <SettingsItem icon={<DownloadAppsIcon />} text="Download Apps" />
+                            <SettingsItem
+                                icon={<DownloadAppsIcon />}
+                                text="Download Apps"
+                                onClick={() => {
+                                    showModalBox({ fullScreen: true }, () => (
+                                        <XScrollView3 flexGrow={1} flexShrink={1}>
+                                            <NativeAppsModal />
+                                        </XScrollView3>
+                                    ));
+                                }}
+                            />
                         </Section>
                     </XView>
 
@@ -178,10 +238,9 @@ export default withApp('Apps', 'viewer', () => {
                                     </XView>
                                 }
                             >
-                                {tabs.profile === tab && <div>profile</div>}
-                                {tabs.appearance === tab && <div>appearance</div>}
-                                {tabs.downloadApps === tab && <div>downloadApps</div>}
-                                {tabs.notifications === tab && <div>notifications</div>}
+                                {tabs.profile === tab && <ProfileTab />}
+                                {tabs.appearance === tab && <AppearanceTab />}
+                                {tabs.notifications === tab && <Notifications />}
                             </React.Suspense>
                         </XView>
                     </XScrollView3>

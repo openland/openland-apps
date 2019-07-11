@@ -14,7 +14,11 @@ enum MessagesNotificationsOptions {
 export const AppearanceTab = () => {
     const form = useForm();
     const client = useClient();
-    let secretGroupDisplay = useField('input.secretGroupDisplay', '', form);
+    let secretGroupDisplay = useField(
+        'input.secretGroupDisplay',
+        MessagesNotificationsOptions.DEFAULT,
+        form,
+    );
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {

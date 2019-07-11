@@ -26,17 +26,26 @@ enum EmailNotificationsOptions {
 export const Notifications = () => {
     const form = useForm();
     const client = useClient();
-    let messagesNotifications = useField('input.messagesNotifications', '', form);
-    let commentsNotifications = useField('input.commentsNotifications', '', form);
-    let emailNotifications = useField('input.emailNotifications', '', form);
+    let messagesNotifications = useField(
+        'input.messagesNotifications',
+        MessagesNotificationsOptions.ALL_NEW_MESSAGES,
+        form,
+    );
+    let commentsNotifications = useField(
+        'input.commentsNotifications',
+        CommentsNotificationsOptions.ALL_NEW_COMMENTS,
+        form,
+    );
+    let emailNotifications = useField(
+        'input.emailNotifications',
+        EmailNotificationsOptions.AT_MOST_ONCE_EVERY_15_MINS,
+        form,
+    );
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
             //
         });
     }, []);
-
-    const commentsNotificationsOptions: any[] = [];
-    const emailNotificationsOptions: any[] = [];
 
     return (
         <XView>

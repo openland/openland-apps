@@ -298,7 +298,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                 />
                                 <RoutedActiveIcon
                                     name={'Account'}
-                                    path="/account"
+                                    path="/settings"
                                     IconComponent={AccountActiveIcon}
                                 />
                                 <XWithRole role="feature-non-production">

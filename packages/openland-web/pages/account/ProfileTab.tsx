@@ -12,9 +12,11 @@ import {
 import { XButton } from 'openland-x/XButton';
 import { XTextArea } from 'openland-x/XTextArea';
 
-export const AccountTab = ({ photo }: { photo: string }) => {
+export const ProfileTab = () => {
     const form = useForm();
     const client = useClient();
+
+    const photo = '';
 
     let firstNameField = useField('input.firstName', '', form);
     let secondNameField = useField('input.secondName', '', form);
@@ -38,44 +40,42 @@ export const AccountTab = ({ photo }: { photo: string }) => {
         });
     }, []);
 
-    const primaryOrganizationSelectOption: any[] = [];
+    // const primaryOrganizationSelectOption = [];
 
     return (
-        <div>
+        <XView flexDirection="row">
             <XView>
-                <XView>
-                    <XInput title={'First name'} {...firstNameField.input} size="large" />
-                    <XInput title={'Second name'} {...secondNameField.input} size="large" />
+                <XInput title={'First name'} {...firstNameField.input} size="large" />
+                <XInput title={'Second name'} {...secondNameField.input} size="large" />
 
-                    <SelectWithDropdown
-                        {...primaryOrganizationField.input}
-                        title={'Primary organization'}
-                        selectOptions={primaryOrganizationSelectOption}
-                    />
+                {/* <SelectWithDropdown
+                    {...primaryOrganizationField.input}
+                    title={'Primary organization'}
+                    selectOptions={primaryOrganizationSelectOption}
+                /> */}
 
-                    <XTextArea title="About" {...aboutField.input} resize={false} />
-                    <XInput title={'Location'} {...locationField.input} size="large" />
+                <XTextArea title="About" {...aboutField.input} resize={false} />
+                <XInput title={'Location'} {...locationField.input} size="large" />
 
-                    <XInput title={'Username'} {...usernameField.input} size="large" />
+                <XInput title={'Username'} {...usernameField.input} size="large" />
 
-                    <XInput title={'Phone number'} {...phoneNumberField.input} size="large" />
+                <XInput title={'Phone number'} {...phoneNumberField.input} size="large" />
 
-                    <XInput title={'Email'} {...emailField.input} size="large" />
+                <XInput title={'Email'} {...emailField.input} size="large" />
 
-                    <XInput title={'Website'} {...websiteField.input} size="large" />
+                <XInput title={'Website'} {...websiteField.input} size="large" />
 
-                    <XInput {...linkedinField.input} size="large" />
-                    <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
-                </XView>
-                <XAvatarFormFieldComponent
-                    {...avatarField.input}
-                    size="default"
-                    placeholder={{
-                        add: 'Add photo',
-                        change: 'Change Photo',
-                    }}
-                />
+                <XInput {...linkedinField.input} size="large" />
+                <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
             </XView>
-        </div>
+            <XAvatarFormFieldComponent
+                {...avatarField.input}
+                size="default"
+                placeholder={{
+                    add: 'Add photo',
+                    change: 'Change Photo',
+                }}
+            />
+        </XView>
     );
 };
