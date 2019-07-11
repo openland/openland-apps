@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import AppLogo from './app_logo.svg';
 import DiscoverIcon from './icon_discover.svg';
 import DiscoverActiveIcon from './icon_discover_active.svg';
 import ChatIcon from './icon_chat.svg';
@@ -25,7 +24,7 @@ export const AppBarDesktop = React.memo((props: { selected: number, setSelected:
     return (
         <XView height="100%" width="100%" backgroundColor={ThemeLightBlue.backgroundTertiary} paddingTop={2}>
             <XView width={64} height={64} alignItems="center" justifyContent="center">
-                <AppLogo />
+                <img src="/static/img/logo.png" srcSet="/static/img/logo@2x.png" width={36} height={36} />
             </XView>
             <XView
                 width={64}
