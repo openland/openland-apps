@@ -37,7 +37,7 @@ export interface ZListItemProps {
     multiline?: boolean;
     linkify?: boolean;
     copy?: boolean;
-    flatIcon?: boolean;
+    small?: boolean;
 }
 
 const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) => {
@@ -101,8 +101,8 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         const enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
         const linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
         const descriptionColor = this.props.descriptionColor ? this.props.descriptionColor : theme.foregroundTertiary;
-        const isBig = this.props.title || this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor;
-        const height = this.props.multiline ? null : ((isBig || (this.props.leftIcon && !this.props.flatIcon)) ? 56 : 48);
+        const isBig = this.props.title || this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
+        const height = this.props.multiline ? null : ((isBig) ? 56 : 48);
 
         return (
             <ZListItemBase
@@ -116,7 +116,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 pathRemove={this.props.pathRemove}
                 height={height}
             >
-                {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} flatIcon={this.props.flatIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
+                {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingHorizontal={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.foregroundPrimary, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
@@ -124,7 +124,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                         <ZText
                             linkify={linkify}
                             style={{
-                                ...((!isBig || this.props.flatIcon) ? TypeStyles.body : TypeStyles.label1),
+                                ...((!isBig || this.props.small) ? TypeStyles.body : TypeStyles.label1),
                                 color: this.props.appearance === 'action' ? this.props.theme.accentPrimary
                                     : this.props.appearance === 'danger' ? '#f6564e'
                                         : this.props.theme.foregroundPrimary,
