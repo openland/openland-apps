@@ -6,6 +6,7 @@ import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import { XButton } from 'openland-x/XButton';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
+import { FormFooter } from './components/FormFooter';
 
 enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -40,7 +41,9 @@ export const AppearanceTab = () => {
                     ]}
                 />
             </FormSection>
-            <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+            <FormFooter>
+                <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+            </FormFooter>
         </FormWrapper>
     );
 };

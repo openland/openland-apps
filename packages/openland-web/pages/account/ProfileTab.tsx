@@ -11,6 +11,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { InputField } from 'openland-web/components/InputField';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
+import { FormFooter } from './components/FormFooter';
 
 export const ProfileTab = () => {
     const form = useForm();
@@ -118,7 +119,14 @@ export const ProfileTab = () => {
                             size="large"
                         />
                     </FormSection>
-                    <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+                    <FormFooter>
+                        <XButton
+                            text="Save changes"
+                            style="primary"
+                            size="large"
+                            onClick={doConfirm}
+                        />
+                    </FormFooter>
                 </XView>
                 <XAvatarFormFieldComponent
                     {...avatarField.input}

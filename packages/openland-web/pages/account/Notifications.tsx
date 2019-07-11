@@ -11,6 +11,7 @@ import {
 } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
+import { FormFooter } from './components/FormFooter';
 
 export const Notifications = () => {
     const form = useForm();
@@ -100,7 +101,9 @@ export const Notifications = () => {
                     ]}
                 />
             </FormSection>
-            <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+            <FormFooter>
+                <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+            </FormFooter>
         </FormWrapper>
     );
 };
