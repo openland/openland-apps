@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, ActivityIndicator, Platform } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -61,7 +62,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     flexBasis={0}
                     style={{
                         backgroundColor: theme.backgroundTertiary,
-                        borderRadius: 18,
+                        borderRadius: RadiusStyles.large,
                         paddingHorizontal: 12,
                         paddingVertical: 6,
                         marginVertical: 8,
@@ -88,7 +89,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                         maxHeight: 100,
                         fontSize: 17,
                         backgroundColor: theme.backgroundTertiary,
-                        borderRadius: 18,
+                        borderRadius: RadiusStyles.large,
                         paddingHorizontal: 12,
                         paddingTop: 3,
                         paddingBottom: 5,

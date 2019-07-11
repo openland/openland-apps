@@ -153,18 +153,12 @@ class SettingsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                {Platform.OS === 'ios' && (
-                    <SHeader title="Settings" />
-                )}
-                {Platform.OS === 'android' && (
-                    <CenteredHeader title="Settings" />
-                )}
-
+                <SHeader title="Account" />
                 <SettingsContent {...this.props} />
             </>
         );
     }
 }
 
-export const Settings = withApp(SettingsComponent, { navigationAppearance: 'small-hidden' });
+export const Settings = withApp(SettingsComponent);
 Settings.displayName = 'Settings';

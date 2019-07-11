@@ -31,6 +31,7 @@ import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { trackEvent } from 'openland-mobile/analytics';
 import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
+import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -244,8 +245,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         }
     }, []);
 
-    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
-
     let activeWord = findActiveWord(inputText, inputSelection);
 
     let suggestions: JSX.Element;
@@ -285,7 +284,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         <>
             <SHeader title="Comments" />
 
-            {canPin && chat.pinnedMessage && (chat.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManagePress} />}
+            {canPin && chat.pinnedMessage && (chat.pinnedMessage.id === message.id) && <ZManageButton onPress={handleManagePress} />}
 
             <ASSafeAreaContext.Consumer>
                 {area => (

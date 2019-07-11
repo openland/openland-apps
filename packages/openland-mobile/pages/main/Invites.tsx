@@ -12,7 +12,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { line } from 'd3-shape';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
@@ -61,7 +61,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                 />
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
                 <View flexGrow={1} />
-                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={10} height={50} backgroundColor={theme.bubbleIn}>
+                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.medium} height={50} backgroundColor={theme.bubbleIn}>
                     <Image source={require('assets/ic-user-24.png')} />
                     <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
                 </View>}

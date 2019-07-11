@@ -4,7 +4,7 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
@@ -54,10 +54,11 @@ export interface ZRoundedButtonProps {
     size?: ZRoundedButtonSize;
     style?: ZRoundedButtonStyle;
     enabled?: boolean;
+    loading?: boolean;
 }
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
-    const [ actionInProgress, setActionInProgress ] = React.useState(false);
+    const [ actionInProgress, setActionInProgress ] = React.useState(props.loading || false);
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {
         if (props.onPress) {
@@ -92,42 +93,28 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
+    const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
     return (
-        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
-            <View
-                style={[
-                    styles.container,
-                    {
-                        backgroundColor: style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary)
-                    },
-                ]}
-            >
-                <View >
-                    <Text
-                        style={[
-                            styles.title,
-                            {
-                                color: (style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary
-                            },
-                            {
-                                ...actionInProgress ? { color: 'transparent' } : {}
-                            },
-                            {
-                                opacity: props.enabled === false ? 0.7 : undefined
-                            }
-                        ]}
-                        allowFontScaling={false}
-                    >
-                        {props.title}
-                    </Text>
+        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} disabled={actionInProgress || props.enabled === false} activeOpacity={0.6}>
+            <View style={[styles.container, { backgroundColor: backgroundColor }]}>
+                <Text
+                    style={[
+                        styles.title,
+                        { color: actionInProgress ? 'transparent' : textColor },
+                        { opacity: props.enabled === false ? 0.7 : undefined }
+                    ]}
+                    allowFontScaling={false}
+                >
+                    {props.title}
+                </Text>
 
-                    {actionInProgress && (
-                        <View width="100%" height="100%" justifyContent="center" position="absolute" >
-                            <ActivityIndicator height="100%" color={(style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary} />
-                        </View>
-                    )}
-                </View>
+                {actionInProgress && (
+                    <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
+                        <ActivityIndicator height="100%" color={textColor} />
+                    </View>
+                )}
             </View>
         </TouchableOpacity>
     );

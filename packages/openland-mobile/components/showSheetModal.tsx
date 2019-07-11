@@ -11,6 +11,7 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 interface SheetModalProps {
     ctx: ZModalController;
@@ -185,7 +186,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             )}
                             {isPad && (
                                 <View
-                                    borderRadius={14}
+                                    borderRadius={RadiusStyles.medium}
                                     marginHorizontal={10}
                                     overflow="hidden"
                                     width={350}
@@ -206,7 +207,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                                 <>
                                     <ZBlurredView
                                         intensity="high"
-                                        borderRadius={14}
+                                        borderRadius={RadiusStyles.medium}
                                         marginHorizontal={10}
                                         overflow="hidden"
                                     >
@@ -215,7 +216,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                                         </ScrollView>
                                     </ZBlurredView>
                                     <ZBlurredView
-                                        borderRadius={14}
+                                        borderRadius={RadiusStyles.medium}
                                         marginBottom={safe.bottom || 10}
                                         marginTop={10}
                                         marginHorizontal={10}
@@ -228,7 +229,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             {isPad && (
                                 <ZBlurredView
                                     intensity="high"
-                                    borderRadius={14}
+                                    borderRadius={RadiusStyles.medium}
                                     overflow="hidden"
                                     width={350}
                                     alignSelf="center"

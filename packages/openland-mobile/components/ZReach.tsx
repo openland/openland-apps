@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ActionSheetBuilder } from './ActionSheet';
@@ -12,7 +12,7 @@ export interface ZReachProps {
 }
 
 const ZReachInner = XMemo<ZReachProps>(props => (
-    <LinearGradient colors={['#FEBD17', '#FF9B04']} style={{ height: 20, paddingHorizontal: 6, borderRadius: 16 }}>
+    <LinearGradient colors={['#FEBD17', '#FF9B04']} style={{ height: 20, paddingHorizontal: 6, borderRadius: RadiusStyles.large }}>
         <Text style={{ fontSize: 13, lineHeight: 20, color: '#ffffff', fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>{props.value}</Text>
     </LinearGradient>
 ));

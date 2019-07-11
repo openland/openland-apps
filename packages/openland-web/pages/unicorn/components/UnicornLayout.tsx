@@ -19,6 +19,7 @@ const containerMobile = css`
     top: 0px;
     bottom: 0px;
     pointer-events: none;
+    z-index: 2;
 `;
 
 const containerDesktop = css`
@@ -29,8 +30,9 @@ const containerDesktop = css`
     min-width: 500px;
     height: 100%;
     flex-direction: column;
-    background-color: purple;
+    background-color: #F0F2F5;
     pointer-events: none;
+    z-index: 2;
 `;
 
 const PageAnimator = React.memo((props: {
@@ -164,12 +166,7 @@ function animationReducer(
     }
 }
 
-const UnicornContainer = React.memo((props: {
-    root: any,
-    controller: UnicornController
-    desktopBar: any,
-    mobileBar: any
-}) => {
+const UnicornContainer = React.memo((props: { root: any, controller: UnicornController }) => {
     let layout = useLayout();
     let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
     React.useEffect(() => { return props.controller.addListener(dispatch); }, []);
@@ -178,11 +175,8 @@ const UnicornContainer = React.memo((props: {
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
                 <XView key="root" left={0} top={0} right={0} bottom={0} position="absolute">
-                    <XView width="100%" height="100%" position="relative" paddingBottom={50} alignItems="flex-start">
+                    <XView width="100%" height="100%" position="relative" paddingBottom={52} alignItems="flex-start">
                         {props.root}
-                    </XView>
-                    <XView position="absolute" left={0} right={0} bottom={0} height={50}>
-                        {props.mobileBar}
                     </XView>
                 </XView>
                 <div key="content" className={containerMobile} ref={props.controller.ref}>
@@ -196,15 +190,14 @@ const UnicornContainer = React.memo((props: {
         );
     } else {
         return (
-            <XView width="100%" height="100%" flexDirection="row" overflow="hidden">
-                <XView width={50} height="100%">
-                    {props.desktopBar}
-                </XView>
+            <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingLeft={64}>
+                <XView width={1} backgroundColor="rgba(120, 128, 143, 0.08)" height="100%" />
                 <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                     <XView width="100%" height="100%" position="relative" alignItems="flex-start">
                         {props.root}
                     </XView>
                 </XView>
+                <XView width={1} height="100%" backgroundColor="rgba(0, 0, 0, 0.08)" />
                 <div key="content" className={containerDesktop} ref={props.controller.ref}>
                     {state.pages.map((v) => (
                         <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
@@ -217,11 +210,7 @@ const UnicornContainer = React.memo((props: {
     }
 });
 
-export const UnicornLayout = React.memo((props: {
-    root: any,
-    desktopBar: any,
-    mobileBar: any
-}) => {
+export const UnicornLayout = React.memo((props: { root: any }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     let controller = React.useMemo(() => new UnicornController(ref), []);
     return (
@@ -229,8 +218,6 @@ export const UnicornLayout = React.memo((props: {
             <UnicornContext.Provider value={controller}>
                 <UnicornContainer
                     root={props.root}
-                    desktopBar={props.desktopBar}
-                    mobileBar={props.mobileBar}
                     controller={controller}
                 />
             </UnicornContext.Provider>

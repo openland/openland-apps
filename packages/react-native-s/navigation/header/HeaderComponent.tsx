@@ -31,12 +31,12 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
 
                 {Platform.OS !== 'android' && (
                     <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                        <View style={{ backgroundColor: this.props.style.hairlineColor, width: '100%', height: SDevice.pixel }} />
+                        {/* <View style={{ backgroundColor: this.props.style.hairlineColor, width: '100%', height: SDevice.pixel }} /> */}
                     </SAnimated.View>
                 )}
                 {Platform.OS === 'android' && (
                     <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                        <Image resizeMode="stretch" source={require('assets-s/shadow.png')} style={{ width: '100%', height: 3 }} />
+                        {/* <Image resizeMode="stretch" source={require('assets-s/shadow.png')} style={{ width: '100%', height: 3 }} /> */}
                     </SAnimated.View>
                 )}
 

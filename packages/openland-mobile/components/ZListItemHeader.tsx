@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'r
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
 
 const styles = StyleSheet.create({
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         minWidth: 0,
         paddingLeft: 16,
         paddingRight: 16,
+        height: 94,
     } as ViewStyle,
     header: {
         flexGrow: 1,
@@ -74,19 +75,18 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
 
     return (
         <>
-            {(theme.backgroundSecondary !== theme.backgroundPrimary) && <View backgroundColor={theme.backgroundSecondary} height={1000} marginTop={-1000} />}
-            <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
+            <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}>
                 <View width={72} height={72}>
                     <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
                     {!!score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
-                            <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: 16 }}>
+                            <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: RadiusStyles.large }}>
                                 <ZReach value={score} onPress={scorePress} />
                             </View>
                         </View>
                     )}
                 </View>
-                <View style={[styles.body, { height: theme.backgroundSecondary === theme.backgroundPrimary ? 94 : 114, paddingBottom: theme.backgroundSecondary === theme.backgroundPrimary ? 0 : 24 }]}>
+                <View style={[styles.body]}>
                     <View style={styles.header}>
                         <View flexDirection="row">
                             {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: titleColor || '#000' }} />}

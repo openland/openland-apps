@@ -40,7 +40,7 @@ const NotificationButton = ({ haveNotification }: { haveNotification: boolean })
 
 export const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
     const client = useClient();
-    const notificationsCenter = client.useMyNotificationCenter({ fetchPolicy: 'network-only' });
+    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({ fetchPolicy: 'network-only' });
 
     let router = React.useContext(XRouterContext)!;
     return (
@@ -60,7 +60,7 @@ export const NotificationsButton = makeActionable<{ onClick: () => void }>(() =>
             }}
         >
             <NotificationButton
-                haveNotification={!!notificationsCenter.myNotificationCenter.unread}
+                haveNotification={notificationsCenter ? !!notificationsCenter.myNotificationCenter.unread : false}
             />
         </XView>
     );

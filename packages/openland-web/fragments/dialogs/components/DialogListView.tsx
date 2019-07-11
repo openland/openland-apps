@@ -66,8 +66,8 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
-                <XView flexDirection="column" alignItems="center" justifyContent="center">
-                    <XLoader loading={true} />
+                <XView flexDirection="column" alignItems="center" justifyContent="center" height={80}>
+                    <XLoader loading={true} size={ds && ds.isInited() ? 'small' : 'medium'} />
                 </XView>
             );
         };

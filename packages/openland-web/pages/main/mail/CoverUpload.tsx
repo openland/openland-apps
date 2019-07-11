@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import AddPhotoIcon from 'openland-icons/ic-photo-create-room.svg';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
+import { XLoader } from 'openland-x/XLoader';
 
 const CoverWrapperClassName = css`
     width: 120px;
@@ -99,7 +99,7 @@ export const CoverUpload = ({
 
     return (
         <div className={CoverWrapperClassName} onClick={handleSetCover}>
-            {coverUploading && <XLoadingCircular color="#373754" />}
+            {coverUploading && <XLoader size="small" transparentBackground color="#373754" />}
             {!coverUploading && (
                 <>
                     {coverSrc && (

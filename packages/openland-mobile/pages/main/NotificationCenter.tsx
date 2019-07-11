@@ -2,21 +2,18 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { NotificationCenterHeader } from 'openland-mobile/notificationCenter/NotificationCenterHeader';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/NotificationCenterEmpty';
-import { Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { NON_PRODUCTION } from '../Init';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { SHeader } from 'react-native-s/SHeader';
+import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 
 interface NotificationCenterPageProps {
-    theme: ThemeGlobal;
     engine: NotificationCenterEngine;
 }
 
@@ -48,26 +45,22 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     }
 
     render() {
-        const { theme } = this.props;
-
         const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isInited();
 
         if (isEmpty) {
             return (
                 <>
-                    <NotificationCenterHeader theme={theme} />
+                    <SHeader title="Comments" />
                     {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
             );
         }
 
-        const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
-
         return (
             <>
-                <NotificationCenterHeader theme={theme} />
-                {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />}
+                <SHeader title="Comments" />
+                {NON_PRODUCTION && <ZManageButton key={'btn-' + isEmpty} onPress={this.handleManagePress} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
@@ -87,10 +80,9 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
 }
 
 const NotificationCenterWrapper = XMemo<PageProps>((props) => {
-    const theme = React.useContext(ThemeContext);
     const engine = getMessenger().engine.notificationCenter;
 
-    return <NotificationCenterPage theme={theme} engine={engine} />;
+    return <NotificationCenterPage engine={engine} />;
 });
 
-export const NotificationCenter = withApp(NotificationCenterWrapper, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
+export const NotificationCenter = withApp(NotificationCenterWrapper, { navigationAppearance: 'small' });

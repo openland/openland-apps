@@ -6,10 +6,10 @@ export const ThemeLightBlue: ThemeGlobal = {
 
     transparent: 'rgba(255, 255, 255, 0)',
 
-    foregroundPrimary: '#1C2229',
-    foregroundSecondary: '#78808F',
-    foregroundTertiary: '#A9AEB8',
-    foregroundQuaternary: '#D7DAE0',
+    foregroundPrimary: '#171B1F',
+    foregroundSecondary: '#676D7A',
+    foregroundTertiary: '#969AA3',
+    foregroundQuaternary: '#C4C7CC',
 
     backgroundPrimary: '#FFFFFF',
     backgroundPrimaryHover: '#F0F2F5',
@@ -30,17 +30,17 @@ export const ThemeLightBlue: ThemeGlobal = {
 
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
-    overlayLight: 'rgba(0, 0, 0, 0.32)',
+    overlayLight: 'rgba(0, 0, 0, 0.24)',
 
-    accentPrimary: '#0C7FF2',
+    accentPrimary: '#1885F2',
     accentPrimaryHover: '#0D86FF',
     accentPrimaryActive: '#0B78E6',
 
-    accentPositive: '#26BF66',
+    accentPositive: '#30BF6C',
     accentPositiveHover: '#2BD974',
     accentPositiveActive: '#24B35F',
 
-    accentNegative: '#F20C32',
+    accentNegative: '#F22447',
     accentNegativeHover: '#FF0D35',
     accentNegativeActive: '#E60C30',
 
@@ -110,17 +110,17 @@ export const ThemeDark: ThemeGlobal = {
 
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
-    overlayLight: 'rgba(0, 0, 0, 0.32)',
+    overlayLight: 'rgba(0, 0, 0, 0.24)',
 
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',
     accentPrimaryActive: '#FFFFFF',
 
-    accentPositive: '#26BF66',
+    accentPositive: '#30BF6C',
     accentPositiveHover: '#2BD974',
     accentPositiveActive: '#24B35F',
 
-    accentNegative: '#F20C32',
+    accentNegative: '#F22447',
     accentNegativeHover: '#FF0D35',
     accentNegativeActive: '#E60C30',
 
