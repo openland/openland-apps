@@ -7,11 +7,17 @@ export const Deferred = React.memo((props: { children?: any }) => {
         let active = true;
 
         requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                if (active) {
-                    setInited(true);
-                }
-            });
+            if (active) {
+                requestAnimationFrame(() => {
+                    if (active) {
+                        setTimeout(() => {
+                            if (active) {
+                                setInited(true);
+                            }
+                        }, 50);
+                    }
+                });
+            }
         });
 
         return () => { active = false; };
