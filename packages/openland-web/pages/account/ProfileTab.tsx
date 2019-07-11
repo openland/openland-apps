@@ -83,12 +83,22 @@ export const ProfileTab = () => {
                 />
 
                 <XTextArea mode="modern" title="About" {...aboutField.input} resize={false} />
-                <InputField title={'Location'} field={locationField} size="large" />
+                <InputField
+                    title={''}
+                    placeholder={'Location'}
+                    field={locationField}
+                    size="large"
+                />
                 <InputField title={'Username'} field={usernameField} size="large" />
-                <InputField title={'Phone number'} field={phoneNumberField} size="large" />
+                <InputField
+                    placeholder={'Phone number'}
+                    title={''}
+                    field={phoneNumberField}
+                    size="large"
+                />
                 <InputField title={'Email'} field={emailField} size="large" />
                 <InputField title={'Website'} field={websiteField} size="large" />
-                <InputField title={''} field={linkedinField} size="large" />
+                <InputField placeholder="Linkedin" title={''} field={linkedinField} size="large" />
                 <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
             </XView>
             <XAvatarFormFieldComponent
