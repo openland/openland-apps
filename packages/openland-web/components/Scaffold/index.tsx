@@ -210,7 +210,7 @@ const RoutedActiveIcon = ({
 
     return (
         <UniversalScafoldMenuItem
-            isActive={router.path === path}
+            isActive={path.includes(router.path)}
             name={name}
             path={path}
             icon={icon ? icon : <IconComponent isActive={router.path === path} />}

@@ -10,9 +10,6 @@ import { PromoBanner } from './PromoBanner';
 import { DesktopNavigatorItem } from './DesktopNavigatorItem';
 import { SuperAdminMenuItem } from './MenuItems/SuperAdminMenuItem';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
-import AccountIcon from 'openland-icons/account_icon.svg';
-import { AppsMenuItem } from './MenuItems/AppsMenuItem';
-import { DesktopUserProfile } from './DesktopUserProfile';
 
 export const DesktopScafoldMenuItem = ({
     name,
