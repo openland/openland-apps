@@ -34,13 +34,13 @@ export const Developer = withApp(() => {
             <SScrollView>
                 <ZListItemGroup header={null}>
                     <ZListItem text="Colors" path="DevColors" />
+                    <ZListItem text="Typography" path="DevTypography" />
+                    <ZListItem text="List items" path="DevComponents" />
+                    <ZListItem text="Buttons" path="DevButtons" />
                     <ZListItem text="Worker" path="DevWorker" />
-                    <ZListItem text="Components" path="DevComponents" />
                     <ZListItem text="Benchmarks" path="DevBenchmarks" />
                     <ZListItem text="Benchmarks Async" path="DevBenchmarksAsync" />
                     <ZListItem text="Benchmarks Async Direct" path="DevBenchmarksAsyncDirect" />
-                    <ZListItem text="Typography" path="DevTypography" />
-                    <ZListItem text="Components" path="DevComponents" />
                     <ZListItem text="Navigation" path="DevNavigation" />
                     <ZListItem text="Loader" path="DevLoader" />
                     <ZListItem text="New Design" path="DevNewDesign" />

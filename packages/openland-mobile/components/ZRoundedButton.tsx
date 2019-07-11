@@ -8,29 +8,14 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
-type ZRoundedButtonSize = 'small' | 'medium' | 'large';
+type ZRoundedButtonSize = 'default' | 'large';
 
-const stylesSmall = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 14,
-        height: 28,
-        paddingHorizontal: 16,
-    } as ViewStyle,
-    title: {
-        textAlignVertical: 'center',
-        fontWeight: TextStyles.weight.medium,
-        fontSize: 14,
-    } as TextStyle,
-});
-
-const stylesMedium = StyleSheet.create({
+const stylesDefault = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 18,
-        height: 35,
+        height: 36,
         paddingHorizontal: 16,
     } as ViewStyle,
     title: {
@@ -59,8 +44,7 @@ const stylesLarge = StyleSheet.create({
 });
 
 const resolveStylesBySize = {
-    small: stylesSmall,
-    medium: stylesMedium,
+    default: stylesDefault,
     large: stylesLarge,
 };
 
@@ -110,7 +94,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
         }
     }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
 
-    const size: ZRoundedButtonSize = props.size || 'small';
+    const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
 
