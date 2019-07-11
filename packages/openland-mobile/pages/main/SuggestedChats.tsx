@@ -5,7 +5,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -62,7 +62,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
+        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.medium} width={24} height={24} >
             {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
         </View>
     </ZListItemBase>;

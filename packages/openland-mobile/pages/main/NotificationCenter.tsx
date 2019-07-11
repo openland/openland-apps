@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { NotificationCenterHeader } from 'openland-mobile/notificationCenter/NotificationCenterHeader';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -14,6 +13,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { SHeader } from 'react-native-s/SHeader';
 
 interface NotificationCenterPageProps {
     theme: ThemeGlobal;
@@ -55,7 +55,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         if (isEmpty) {
             return (
                 <>
-                    <NotificationCenterHeader theme={theme} />
+                    <SHeader title="Comments" />
                     {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
@@ -66,7 +66,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
 
         return (
             <>
-                <NotificationCenterHeader theme={theme} />
+                <SHeader title="Comments" />
                 {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} title="Manage" icon={manageIcon} onPress={this.handleManagePress} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (

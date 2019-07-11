@@ -16,11 +16,12 @@ import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
     const height = 100;
-    const radius = 10;
+    const radius = RadiusStyles.medium;
 
     return (
         <TouchableOpacity onPress={props.showPicker}>
@@ -29,7 +30,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
                 <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, borderWidth: 1, borderColor: '#eff0f2' }}>
                     {!props.loading && <Image style={{ tintColor: props.url ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
                     {props.loading && (
-                        <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={17} justifyContent="center">
+                        <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={RadiusStyles.large} justifyContent="center">
                             <ActivityIndicator color="rgba(0, 0, 0, 0.4)" />
                         </View>
                     )}
