@@ -14,9 +14,9 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 interface OrganizationItemProps {
     organization:
-        | MyOrganizations_myOrganizations
-        | Organization_organization
-        | OrganizationWithoutMembersFragment;
+    | MyOrganizations_myOrganizations
+    | Organization_organization
+    | OrganizationWithoutMembersFragment;
     onSelect: (v: string) => void;
     isSelected: boolean;
 }
@@ -92,7 +92,7 @@ const InOtherOrganization = (props: { inOrgId: string }) => {
                 justifyContent="center"
                 marginTop={40}
             >
-                <XLoader loading={true} height={40} />
+                <XLoader size="small" />
             </XView>
         );
     }
@@ -134,7 +134,7 @@ export const OrganizationsList = ({
                 justifyContent="center"
                 marginTop={40}
             >
-                <XLoader loading={true} height={40} />
+                <XLoader />
             </XView>
         );
     }

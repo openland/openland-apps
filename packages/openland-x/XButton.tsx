@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
-import { XLoadingCircular } from './XLoadingCircular';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
+import { XLoader } from './XLoader';
 
 export type XButtonSize = 'large' | 'default' | 'small' | 'tiny';
 export type XButtonStyle = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'ghost' | 'electric' | 'flat' | 'light' | 'link' | 'link-danger';
@@ -714,7 +714,6 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         '& i.icon-svg': {
             display: 'flex'
         },
-        '& svg': iconsIndentation(props.buttonSize)
     }),
     (props => ({
         ...props.insaneMode ? {
@@ -728,7 +727,11 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
 ]);
 
 export const Loader = ({ style }: { style?: XButtonStyle }) =>
+<<<<<<< HEAD
     <XLoadingCircular className="loading-icon" color={loaderStyles(style).color!! as string} />;
+=======
+    <XLoader transparentBackground size="small" color={loaderStyles(style).color!! as string} />
+>>>>>>> feat(web): new loader
 
 export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (

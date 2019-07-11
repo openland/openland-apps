@@ -233,7 +233,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     renderLoading = React.memo(() => {
         return (
             <LoadingWrapper>
-                <XLoader loading={true} />
+                <XLoader loading={true} size="small" />
             </LoadingWrapper>
         );
     });

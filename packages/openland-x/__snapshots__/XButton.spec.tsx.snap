@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XButton should render correctly 1`] = `
-.css-1imwqsd,
-[data-css-1imwqsd] {
+.css-cw2xwq,
+[data-css-cw2xwq] {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -31,8 +31,8 @@ exports[`XButton should render correctly 1`] = `
   -moz-transition: box-shadow 0.08s ease-in, color 0.08s ease-in, border 0s,
     all 0.15s ease;
 }
-.css-1imwqsd .loading-icon,
-[data-css-1imwqsd] .loading-icon {
+.css-cw2xwq .loading-icon,
+[data-css-cw2xwq] .loading-icon {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -40,53 +40,48 @@ exports[`XButton should render correctly 1`] = `
   top: calc(50% - 16px);
   left: calc(50% - 16px);
 }
-.css-1imwqsd .icon-responsive,
-[data-css-1imwqsd] .icon-responsive {
+.css-cw2xwq .icon-responsive,
+[data-css-cw2xwq] .icon-responsive {
   display: none;
 }
-.css-1imwqsd:hover,
-[data-css-1imwqsd]:hover,
-.css-1imwqsd:hover *,
-[data-css-1imwqsd]:hover * {
+.css-cw2xwq:hover,
+[data-css-cw2xwq]:hover,
+.css-cw2xwq:hover *,
+[data-css-cw2xwq]:hover * {
   text-decoration: none !important;
 }
-.css-1imwqsd:hover,
-[data-css-1imwqsd]:hover {
+.css-cw2xwq:hover,
+[data-css-cw2xwq]:hover {
   background-color: #e6e9ec;
   color: rgba(0, 0, 0, 0.7);
 }
-.css-1imwqsd:active,
-[data-css-1imwqsd]:active {
+.css-cw2xwq:active,
+[data-css-cw2xwq]:active {
   background-color: #1790ff;
   color: #ffffff;
 }
-.css-1imwqsd:focus,
-[data-css-1imwqsd]:focus {
+.css-cw2xwq:focus,
+[data-css-cw2xwq]:focus {
   box-shadow: 0 0 0 1px rgba(50, 151, 211, 0.2),
     0 0 0 2px rgba(50, 151, 211, 0.25), 0 2px 5px 0 rgba(0, 0, 0, 0.1),
     0 0 0 0 transparent, 0 0 0 0 transparent;
 }
-.css-1imwqsd .button-content,
-[data-css-1imwqsd] .button-content {
+.css-cw2xwq .button-content,
+[data-css-cw2xwq] .button-content {
   padding-left: 16px;
   padding-right: 16px;
 }
-.css-1imwqsd .icon.material,
-[data-css-1imwqsd] .icon.material {
+.css-cw2xwq .icon.material,
+[data-css-cw2xwq] .icon.material {
   font-size: 20px;
 }
-.css-1imwqsd i.icon-svg,
-[data-css-1imwqsd] i.icon-svg {
+.css-cw2xwq i.icon-svg,
+[data-css-cw2xwq] i.icon-svg {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-}
-.css-1imwqsd svg,
-[data-css-1imwqsd] svg {
-  margin-left: -2px;
-  margin-right: 4px;
 }
 .css-11a8r8c,
 [data-css-11a8r8c] {
@@ -221,12 +216,6 @@ exports[`XButton should render correctly 1`] = `
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-}
-
-.css-0 svg,
-[data-css-0] svg {
-  margin-left: -2px;
-  margin-right: 4px;
 }
 
 .css-4,

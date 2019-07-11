@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { makeActionable, ActionableParentProps } from './Actionable';
-import { XLoadingCircular } from './XLoadingCircular';
 
 const CheckboxInputDiv = Glamorous.div<{
     active: boolean;
@@ -197,9 +196,6 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                         <span style={{ opacity: this.props.loading ? 0 : 1 }}>
                             {this.props.label}
                         </span>
-                        {this.props.loading && (
-                            <XLoadingCircular className="loading-icon" color="#1790ff" />
-                        )}
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}
                 </label>
@@ -210,12 +206,12 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
 
 interface XCheckboxGroupProps {
     elements:
-        | string[]
-        | {
-              value: string;
-              label: string;
-              hint?: string;
-          }[];
+    | string[]
+    | {
+        value: string;
+        label: string;
+        hint?: string;
+    }[];
     selected?: string[];
     onChange?: (value: string[]) => void;
     divided?: boolean;
@@ -273,8 +269,8 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
                         <XCheckboxBasic {...checkboxProps} />
                     </Divided>
                 ) : (
-                    <XCheckboxBasic {...checkboxProps} />
-                ),
+                        <XCheckboxBasic {...checkboxProps} />
+                    ),
             );
         }
         return res;
@@ -288,8 +284,8 @@ class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XSto
                 ? this.props.trueValue
                 : 'true'
             : this.props.falseValue !== undefined
-            ? this.props.falseValue
-            : 'false';
+                ? this.props.falseValue
+                : 'false';
         this.props.store.writeValue(this.props.valueStoreKey || 'fields.' + this.props.field, val);
 
         if (this.props.onChange) {

@@ -45,6 +45,9 @@ export default withApp('UI Framework - Loaders', 'viewer', props => {
                             <XView height={50}>
                                 <XLoader loading={true} />
                             </XView>
+                            <XView height={50}>
+                                <XLoader size="small" loading={true} />
+                            </XView>
                         </XVertical2>
                     </XStore>
                 </XVertical2>
