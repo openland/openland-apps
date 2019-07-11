@@ -9,6 +9,13 @@ import ProfileActiveIcon from './icon_profile_active.svg';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 
 export const AppBarMobile = React.memo((props: { selected: number, setSelected: (index: number) => void }) => {
+    let [selected, setSelected] = React.useState(props.selected);
+    let setSelectedClb = (id: number) => {
+        setSelected(id);
+        setTimeout(() => {
+            props.setSelected(id);
+        }, 10);
+    };
     return (
         <XView height={52} backgroundColor={ThemeLightBlue.backgroundPrimary} flexDirection="row">
             <XView
@@ -20,10 +27,10 @@ export const AppBarMobile = React.memo((props: { selected: number, setSelected: 
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(0)}
+                onClick={() => setSelectedClb(0)}
             >
-                {props.selected === 0 && <DiscoverActiveIcon />}
-                {props.selected !== 0 && <DiscoverIcon />}
+                {selected === 0 && <DiscoverActiveIcon />}
+                {selected !== 0 && <DiscoverIcon />}
             </XView>
             <XView
                 height={52}
@@ -34,10 +41,10 @@ export const AppBarMobile = React.memo((props: { selected: number, setSelected: 
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(1)}
+                onClick={() => setSelectedClb(1)}
             >
-                {props.selected === 1 && <ChatActiveIcon />}
-                {props.selected !== 1 && <ChatIcon />}
+                {selected === 1 && <ChatActiveIcon />}
+                {selected !== 1 && <ChatIcon />}
             </XView>
             <XView
                 height={52}
@@ -48,10 +55,10 @@ export const AppBarMobile = React.memo((props: { selected: number, setSelected: 
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(2)}
+                onClick={() => setSelectedClb(2)}
             >
-                {props.selected === 2 && <ProfileActiveIcon />}
-                {props.selected !== 2 && <ProfileIcon />}
+                {selected === 2 && <ProfileActiveIcon />}
+                {selected !== 2 && <ProfileIcon />}
             </XView>
         </XView>
     );
