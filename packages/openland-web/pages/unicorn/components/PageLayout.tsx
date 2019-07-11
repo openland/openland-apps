@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from "linaria";
-
+import { PageHeader } from './PageHeader';
 //
 // Container style
 //
@@ -57,7 +57,6 @@ const shadowStateStyles = {
 `,
     visible: css`
     opacity: 0.3;
-    display: none;
 `,
     exiting: css`
     opacity: 0.0;
@@ -79,7 +78,7 @@ export const PageLayout = (props: {
         case 'visible':
             offset = 0;
             break;
-        case 'visible':
+        case 'exiting':
             offset = props.container.current!.clientWidth;
             break;
         default:
@@ -90,6 +89,7 @@ export const PageLayout = (props: {
         <div className={containerStyle}>
             <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
             <div className={contentStyle} style={{ transform: 'translateX(' + offset + 'px)' }}>
+                <PageHeader />
                 {props.children}
             </div>
         </div>

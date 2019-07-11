@@ -33,8 +33,6 @@ const containerDesktop = css`
     pointer-events: none;
 `;
 
-{/* <XView width={0} flexGrow={1} minWidth={500} height="100%" flexDirection="column" backgroundColor="purple" position="relative" ref={props.controller.ref}></XView> */}
-
 const PageAnimator = React.memo((props: {
     children?: any,
     k: string,
@@ -111,10 +109,15 @@ function animationReducer(
         return { pages: [...state.pages, { key: action.key, component: action.component, state: 'mounting' }] };
     } else if (action.type === 'pop') {
         return {
-            pages: state.pages.map((v) => {
+            pages: state.pages.map((v, i) => {
                 if (v.key === action.key) {
                     return { ...v, state: 'exiting' as any };
                 } else {
+                    if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
+                        if (v.state !== 'visible') {
+                            return { ...v, state: 'visible' as any };
+                        }
+                    }
                     return v;
                 }
             })
