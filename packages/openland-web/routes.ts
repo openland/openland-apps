@@ -309,7 +309,10 @@ routes.add('/test', '/dev/test');
 // Account
 //
 
-routes.add('/account', '/account/root');
+routes.add('/settings', '/account/root');
+routes.add('/settings/profile', '/account/root');
+routes.add('/settings/appearance', '/account/root');
+routes.add('/settings/notifications', '/account/root');
 
 //
 // Authentication

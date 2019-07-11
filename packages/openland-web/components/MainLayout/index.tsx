@@ -143,6 +143,7 @@ export const Title = ({ children, onClick }: { children: any; onClick?: (event: 
 };
 
 export type MenuPropsT = {
+    fullHeight?: boolean;
     title: string;
     rightContent?: any;
     children?: any;
@@ -153,6 +154,7 @@ export const Menu = XMemo<MenuPropsT>(props => {
     return (
         <AdaptiveComponent
             fullWidth={true}
+            fullHeight={props.fullHeight}
             mobile={<MobileMenu {...props} />}
             desktop={<DesktopMenu {...props} />}
         />
