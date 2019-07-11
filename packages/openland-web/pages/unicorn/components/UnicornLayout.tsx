@@ -205,6 +205,7 @@ const UnicornContainer = React.memo((props: {
                         {props.root}
                     </XView>
                 </XView>
+                <XView width={1} height="100%" backgroundColor="rgba(0, 0, 0, 0.08)" />
                 <div key="content" className={containerDesktop} ref={props.controller.ref}>
                     {state.pages.map((v) => (
                         <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} controller={props.controller}>
