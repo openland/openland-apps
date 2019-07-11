@@ -9,9 +9,9 @@ import { sanitizeImageRef } from '../../utils/sanitizer';
 import { XButton } from 'openland-x/XButton';
 import { XTextArea } from 'openland-x/XTextArea';
 import { InputField } from 'openland-web/components/InputField';
-import { FormSection } from './components/FormSection';
-import { FormWrapper } from './components/FormWrapper';
-import { FormFooter } from './components/FormFooter';
+import { FormSection } from '../../pages/account/components/FormSection';
+import { FormWrapper } from '../../pages/account/components/FormWrapper';
+import { FormFooter } from '../../pages/account/components/FormFooter';
 
 export const ProfileTab = () => {
     const form = useForm();

@@ -19,9 +19,9 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { showModalBox } from 'openland-x/showModalBox';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
-import { AppearanceTab } from './AppearanceTab';
-import { Notifications } from './Notifications';
-import { ProfileTab } from './ProfileTab';
+import { AppearanceTab } from '../../fragments/account/AppearanceTab';
+import { Notifications } from '../../fragments/account/Notifications';
+import { ProfileTab } from '../../fragments/account/ProfileTab';
 import { tabs } from './tabs';
 
 const Section = ({ title, children }: { title: string; children: any }) => {
