@@ -44,12 +44,12 @@ routes.add('/404', '/404');
 // Settings
 //
 
-routes.add('/settings/profile', '/main/settings/profile');
-routes.add('/settings/profile/', '/main/settings/profile');
-routes.add('/settings/notifications', '/main/settings/notifications');
-routes.add('/settings/notifications/', '/main/settings/notifications');
-routes.add('/settings/appearance', '/main/settings/appearance');
-routes.add('/settings/appearance/', '/main/settings/appearance');
+// routes.add('/settings/profile', '/main/settings/profile');
+// routes.add('/settings/profile/', '/main/settings/profile');
+// routes.add('/settings/notifications', '/main/settings/notifications');
+// routes.add('/settings/notifications/', '/main/settings/notifications');
+// routes.add('/settings/appearance', '/main/settings/appearance');
+// routes.add('/settings/appearance/', '/main/settings/appearance');
 routes.add('/settings/apps', '/main/settings/apps');
 routes.add('/settings/apps/', '/main/settings/apps');
 routes.add('/settings/dev', '/main/settings/developer');
