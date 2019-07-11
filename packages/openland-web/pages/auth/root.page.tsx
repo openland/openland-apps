@@ -80,24 +80,36 @@ export default () => {
 
     if (router.path.includes('accept-invite') || isInvitePage) {
         page = pages.acceptInvite;
-    } else if (router.path.includes('ask-activation-code')) {
+    }
+    
+    if (router.path.includes('ask-activation-code')) {
         page = pages.askActivationCode;
-    } else if (router.path.includes('ask-email')) {
+    }
+    
+    if (router.path.includes('ask-email')) {
         page = pages.askEmail;
-    } else if (router.path.includes('create-new-account')) {
+    }
+    
+    if (router.path.includes('create-new-account')) {
         Cookie.set('x-openland-create-new-account', 'true');
         page = pages.createNewAccount;
-    } else if (
+    }
+    
+    if (
         router.path.includes('enter-your-organization') ||
         router.path.includes('/createOrganization')
     ) {
         page = pages.enterYourOrganization;
-    } else if (
+    }
+    
+    if (
         router.path.includes('introduce-yourself') ||
         router.path.includes('/createProfile')
     ) {
         page = pages.introduceYourself;
     }
+
+    console.warn('boom', router.path);
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
