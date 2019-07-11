@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { AppStyles } from '../styles/AppStyles';
 import { YForm } from 'openland-y-forms/YForm';
-import { startLoader, stopLoader } from './ZGlobalLoader';
-import { formatError } from 'openland-y-forms/errorHandling';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Alert } from './AlertBlanket';
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 export interface ZFormProps {
     action: (src: any) => any;

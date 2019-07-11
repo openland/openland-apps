@@ -57,9 +57,6 @@ export const Modals = {
             router.push('UserPicker', { action, title, users, selectedUser, disableUsers });
         }
     },
-    showCountryPicker(router: SRouter, action: (value: string) => any) {
-        router.push('CountryPicker', { 'action': action });
-    },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
     }

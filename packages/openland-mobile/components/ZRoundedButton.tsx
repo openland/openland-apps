@@ -4,7 +4,7 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
@@ -14,14 +14,13 @@ const stylesDefault = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 18,
+        borderRadius: RadiusStyles.large,
         height: 36,
         paddingHorizontal: 16,
     } as ViewStyle,
     title: {
+        ...TypeStyles.label1,
         textAlignVertical: 'center',
-        fontWeight: TextStyles.weight.medium,
-        fontSize: 16,
     } as TextStyle
 });
 
@@ -29,17 +28,13 @@ const stylesLarge = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 12,
+        borderRadius: RadiusStyles.medium,
         height: 56,
         paddingHorizontal: 24,
     } as ViewStyle,
     title: {
+        ...TypeStyles.label1,
         textAlignVertical: 'center',
-        fontWeight: TextStyles.weight.medium,
-        fontSize: 15,
-        height: 56,
-        lineHeight: 56,
-        letterSpacing: 0.2
     } as TextStyle
 });
 

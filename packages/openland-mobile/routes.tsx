@@ -16,7 +16,6 @@ import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
 import { EditCommunity } from './pages/main/EditCommunity';
-import { PhoneVerify, CountryPicker } from './pages/auth/PhoneVerify';
 import { SignupUser } from './pages/auth/SignupUser';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Waitlist } from './pages/auth/Waitlist';
@@ -28,7 +27,6 @@ import { ProfileOrganizationLink } from './pages/main/ProfileOrganizationLink';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
 import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroups';
-import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
@@ -76,8 +74,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditCommunity', EditCommunity)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('FilePreview', FilePreview)
-  .addRoute('PhoneVerify', PhoneVerify)
-  .addRoute('CountryPicker', CountryPicker)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateChannel', CreateChannel)
@@ -87,7 +83,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('UserPicker', UserPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
-  .addRoute('ExploreOrganizations', ExploreOrganizations)
   .addRoute('GroupList', GroupList)
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('MessageComments', MessageComments)

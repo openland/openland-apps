@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { View, ScrollView, SafeAreaView, Text } from 'react-native';
-import { AppStyles } from '../../styles/AppStyles';
+import { View, ScrollView, SafeAreaView } from 'react-native';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 
 class ComponentsComponent extends React.PureComponent<PageProps> {
     render() {
         return (
-            <ScrollView width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
+            <ScrollView width="100%" height="100%">
                 <SafeAreaView>
                     <View flexDirection="column">
                         <View width={100} height={100} backgroundColor="red"/>

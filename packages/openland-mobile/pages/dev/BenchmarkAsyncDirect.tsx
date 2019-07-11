@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ScrollView, SafeAreaView, processColor } from 'react-native';
-import { AppStyles } from '../../styles/AppStyles';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { ASView } from 'react-native-async-view/ASView';
@@ -8,7 +7,7 @@ import { ASView } from 'react-native-async-view/ASView';
 class ComponentsComponent extends React.PureComponent<PageProps> {
     render() {
         return (
-            <ScrollView width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
+            <ScrollView width="100%" height="100%">
                 <SafeAreaView>
                     <ASView style={{ height: 100 * 1000, width: 200 }}>
                         <asyncview asyncViewName="flex" flexDirection="column">

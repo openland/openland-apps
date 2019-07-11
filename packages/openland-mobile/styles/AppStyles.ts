@@ -1,12 +1,9 @@
 import { Platform, TextStyle } from 'react-native';
 
-export const AppStyles = {
-    primaryColor: '#0084fe',
-    primaryColorLight: '#BDBDE4',
-    separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
-    backyardColor: '#f3f3f3',
-    backgroundColor: '#fff',
-    dangerColor: '#d75454',
+export const RadiusStyles = {
+    small: 6,
+    medium: 12,
+    large: 18,
 };
 
 export const TextStyles = {
