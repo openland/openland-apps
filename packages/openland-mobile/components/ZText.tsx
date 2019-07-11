@@ -36,7 +36,7 @@ export const ZText = (props: ZTextProps) => {
         let preprocessed = preprocessText(props.text);
         let parts = preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
-                return <Text key={'br-' + i} style={props.style} >{'\n'}</Text>;
+                return <Text key={'br-' + i} style={props.style} allowFontScaling={false}>{'\n'}</Text>;
             } else if (v.type === 'link') {
                 return (
                     <Text
@@ -44,16 +44,17 @@ export const ZText = (props: ZTextProps) => {
                         style={[props.style, props.linkify && { color: theme.accentPrimary }]}
                         onLongPress={() => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!)}
                         onPress={props.onPress ? () => { props.onPress!(v.link!); } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
+                        allowFontScaling={false}
                     >
                         {v.text}
                     </Text>
                 );
             } else {
-                return <Text key={'text-' + i} style={props.style}>{v.text}</Text>;
+                return <Text key={'text-' + i} style={props.style} allowFontScaling={false}>{v.text}</Text>;
             }
         });
-        return <Text style={props.style} numberOfLines={props.numberOfLines}>{parts}</Text>;
+        return <Text style={props.style} numberOfLines={props.numberOfLines} allowFontScaling={false}>{parts}</Text>;
     } else {
-        return <Text style={props.style} numberOfLines={props.numberOfLines} />;
+        return <Text style={props.style} numberOfLines={props.numberOfLines} allowFontScaling={false} />;
     }
 };

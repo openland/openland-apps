@@ -55,6 +55,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         }}
                         numberOfLines={1}
                         ellipsizeMode="tail"
+                        allowFontScaling={false}
                     >
                         {header}
                     </Text>
@@ -67,8 +68,9 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                                 paddingLeft: 6,
                                 marginTop: 1,
                             }}
+                            allowFontScaling={false}
                         >
-                            {counter.toString()}
+                            {counter}
                         </Text>
                     )}
 
@@ -85,6 +87,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
+                                allowFontScaling={false}
                             >
                                 {actionRight.title}
                             </Text>

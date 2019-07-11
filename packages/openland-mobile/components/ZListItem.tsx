@@ -119,7 +119,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingHorizontal={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
-                    {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.foregroundPrimary, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
+                    {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.foregroundPrimary, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }} allowFontScaling={false}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         <ZText
                             linkify={linkify}
@@ -172,9 +172,9 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             />
                         )}
                     </View>
-                    {this.props.subTitle && <Text style={{ ...TypeStyles.subhead, color: this.props.theme.foregroundSecondary }}>{this.props.subTitle}</Text>}
+                    {this.props.subTitle && <Text style={{ ...TypeStyles.subhead, color: this.props.theme.foregroundSecondary }} allowFontScaling={false}>{this.props.subTitle}</Text>}
 
-                    {this.props.title && Platform.OS === 'android' && <Text style={{ color: this.props.theme.foregroundPrimary, opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
+                    {this.props.title && Platform.OS === 'android' && <Text style={{ color: this.props.theme.foregroundPrimary, opacity: 0.4, fontSize: 14, height: 22 }} allowFontScaling={false}>{this.props.title}</Text>}
                 </View>
                 {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
             </ZListItemBase >
