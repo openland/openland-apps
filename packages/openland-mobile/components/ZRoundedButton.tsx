@@ -92,30 +92,18 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
+    const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
     return (
         <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
-            <View
-                style={[
-                    styles.container,
-                    {
-                        backgroundColor: style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary)
-                    },
-                ]}
-            >
+            <View style={[styles.container, { backgroundColor: backgroundColor }]}>
                 <View >
                     <Text
                         style={[
                             styles.title,
-                            {
-                                color: (style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary
-                            },
-                            {
-                                ...actionInProgress ? { color: 'transparent' } : {}
-                            },
-                            {
-                                opacity: props.enabled === false ? 0.7 : undefined
-                            }
+                            { color: actionInProgress ? 'transparent' : textColor },
+                            { opacity: props.enabled === false ? 0.7 : undefined }
                         ]}
                         allowFontScaling={false}
                     >
@@ -123,8 +111,8 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                     </Text>
 
                     {actionInProgress && (
-                        <View width="100%" height="100%" justifyContent="center" position="absolute" >
-                            <ActivityIndicator height="100%" color={(style === 'primary' || style === 'danger') ? theme.contrastSpecial : theme.foregroundSecondary} />
+                        <View width="100%" height="100%" justifyContent="center" position="absolute">
+                            <ActivityIndicator height="100%" color={textColor} />
                         </View>
                     )}
                 </View>
