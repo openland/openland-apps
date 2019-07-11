@@ -9,6 +9,7 @@ import { AppBarDesktop } from './navigation/AppBarDesktop';
 import { AppBarMobile } from './navigation/AppBarMobile';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
+import { useLayout } from './components/LayoutContext';
 
 const Chat = (props: { id: string }) => {
     return (
@@ -55,17 +56,31 @@ const Root = () => {
     );
 };
 
-export default () => {
+const Inner = () => {
+    let layout = useLayout();
     return (
-        <Container>
+        <>
             <InnerContainer>
-                <UnicornLayout
-                    root={<Root />}
-                    desktopBar={<AppBarDesktop />}
-                    mobileBar={<AppBarMobile />}
-                />
+                <UnicornLayout root={<Root />} />
+                {layout === 'desktop' && (
+                    <XView position="absolute" top={0} left={0} bottom={0} width={64}>
+                        <AppBarDesktop />
+                    </XView>
+                )}
             </InnerContainer>
-
-        </Container>
+            {layout === 'mobile' && (
+                <XView position="absolute" bottom={0} left={0} right={0} height={56} zIndex={1}>
+                    <AppBarMobile />
+                </XView>
+            )}
+        </>
     );
 };
+
+export default React.memo(() => {
+    return (
+        <Container>
+            <Inner />
+        </Container>
+    );
+});
