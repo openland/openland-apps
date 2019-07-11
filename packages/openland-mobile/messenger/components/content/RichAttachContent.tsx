@@ -132,7 +132,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex
                         backgroundColor={theme.chatImageBackground}
-                        marginTop={this.props.compensateBubble ? -5 : 5}
+                        marginTop={this.props.compensateBubble ? 10 : 5}
                         marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         justifyContent="center"

@@ -81,8 +81,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
-                {!this.state.conversation.loading && <View position="absolute" left={0} top={0} right={0} height="100%" backgroundColor={this.props.theme.bubbleOut} />}
-
                 <ConversationMessagesView
                     inverted={this.props.inverted}
                     paddingBottom={this.props.messagesPaddingBottom}
