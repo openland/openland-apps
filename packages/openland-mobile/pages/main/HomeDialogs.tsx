@@ -5,7 +5,6 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { Platform } from 'react-native';
-import { CenteredHeader } from './components/CenteredHeader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -56,15 +55,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
     return (
         <ZTrack event="mail_view">
-            {Platform.OS === 'ios' && (
-                <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
-            )}
-            {Platform.OS === 'android' && (
-                <>
-                    {(props.router.params.share || props.router.params.title) && <SHeader title={props.router.params.title || 'Share with'} />}
-                    {!props.router.params.share && !props.router.params.title && <CenteredHeader title="Chats" padding={98} />}
-                </>
-            )}
+            <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
             {!props.router.params.share && !props.router.params.title && (
                 <MainHeaderButtons theme={theme} router={props.router} />
             )}

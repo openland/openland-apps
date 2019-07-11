@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         minWidth: 0,
         paddingLeft: 16,
         paddingRight: 16,
+        height: 94,
     } as ViewStyle,
     header: {
         flexGrow: 1,
@@ -74,8 +75,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
 
     return (
         <>
-            {(theme.backgroundSecondary !== theme.backgroundPrimary) && <View backgroundColor={theme.backgroundSecondary} height={1000} marginTop={-1000} />}
-            <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
+            <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}>
                 <View width={72} height={72}>
                     <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
                     {!!score && (
@@ -86,7 +86,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
                         </View>
                     )}
                 </View>
-                <View style={[styles.body, { height: theme.backgroundSecondary === theme.backgroundPrimary ? 94 : 114, paddingBottom: theme.backgroundSecondary === theme.backgroundPrimary ? 0 : 24 }]}>
+                <View style={[styles.body]}>
                     <View style={styles.header}>
                         <View flexDirection="row">
                             {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: titleColor || '#000' }} />}
