@@ -10,6 +10,25 @@ import { AppBarMobile } from './navigation/AppBarMobile';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { useLayout } from './components/LayoutContext';
+import { css } from 'linaria';
+
+const visibleContainer = css`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+`;
+
+const invisibleContainer = css`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: none;
+`;
 
 const Chat = (props: { id: string }) => {
     return (
@@ -58,19 +77,30 @@ const Root = () => {
 
 const Inner = () => {
     let layout = useLayout();
+    let [selected, setSelected] = React.useState(0);
+    let root1 = React.useMemo(() => <Root />, []);
     return (
         <>
             <InnerContainer>
-                <UnicornLayout root={<Root />} />
+                <div className={selected === 0 ? visibleContainer : invisibleContainer}>
+                    <UnicornLayout root={root1} />
+                </div>
+                <div className={selected === 1 ? visibleContainer : invisibleContainer}>
+                    <UnicornLayout root={root1} />
+                </div>
+                <div className={selected === 2 ? visibleContainer : invisibleContainer}>
+                    <UnicornLayout root={root1} />
+                </div>
+
                 {layout === 'desktop' && (
                     <XView position="absolute" top={0} left={0} bottom={0} width={64}>
-                        <AppBarDesktop />
+                        <AppBarDesktop selected={selected} setSelected={setSelected} />
                     </XView>
                 )}
             </InnerContainer>
             {layout === 'mobile' && (
                 <XView position="absolute" bottom={0} left={0} right={0} height={56} zIndex={1}>
-                    <AppBarMobile />
+                    <AppBarMobile selected={selected} setSelected={setSelected} />
                 </XView>
             )}
         </>
