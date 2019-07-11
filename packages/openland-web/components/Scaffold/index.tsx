@@ -207,13 +207,13 @@ const RoutedActiveIcon = ({
     icon?: any;
 }) => {
     let router = React.useContext(XRouterContext)!;
-
+    const isActive = router.path.includes(path);
     return (
         <UniversalScafoldMenuItem
-            isActive={path.includes(router.path)}
+            isActive={isActive}
             name={name}
             path={path}
-            icon={icon ? icon : <IconComponent isActive={router.path === path} />}
+            icon={icon ? icon : <IconComponent isActive={isActive} />}
         />
     );
 };
