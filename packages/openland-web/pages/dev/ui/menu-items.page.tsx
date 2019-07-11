@@ -22,16 +22,7 @@ export default withApp('UI Framework - Menu Items', 'viewer', props => {
                         <XMenuItem>default</XMenuItem>
                         <XMenuItem style="danger">danger</XMenuItem>
                         <XMenuItemSeparator />
-                        <XMenuItem icon="chat">With icon</XMenuItem>
-                        <XMenuItem iconRight="chevron_right">With right icon</XMenuItem>
-                        <XMenuItem iconRight="x-right">With custom right icon</XMenuItem>
                         <XMenuItemSeparator />
-                        <XMenuItem icon="chat" iconRight="chevron_right">
-                            Very long title in XMenuItem
-                        </XMenuItem>
-                        <XMenuItem style="danger" icon="chat" iconRight="chevron_right">
-                            Very long title in XMenuItem
-                        </XMenuItem>
                         <XMenuItemSeparator />
                         <XMenuItemWrapper>
                             <XVertical2>

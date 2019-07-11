@@ -7,27 +7,29 @@ import { XMenuVertical } from 'openland-x/XMenuItem';
 interface DottedMenuButtonStyleProps {
     active?: boolean;
     horizontal?: boolean;
+    rounded?: boolean;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    ({ horizontal, active }) => ({
-        width: 20,
-        height: 20,
+    ({ horizontal, active, rounded }) => ({
+        width: rounded ? 32 : 20,
+        height: rounded ? 32 : 20,
         display: 'flex',
         flexDirection: horizontal ? 'row' : 'column',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
         cursor: 'pointer',
-        borderRadius: 5,
-        transition: 'background-color .2s',
+        borderRadius: 32,
+        backgroundColor: rounded && active ? '#F0F2F5' : 'transparent',
         '&:hover': {
+            backgroundColor: rounded ? '#F0F2F5' : undefined,
             '& > div': {
-                backgroundColor: '#1790ff',
-            },
+                backgroundColor: rounded ? '#676D7A' : '#1790ff',
+            }
         },
         '& > div': {
-            backgroundColor: active ? '#1790ff' : 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: rounded ? '#676D7A' : active ? '#1790ff' : 'rgba(0, 0, 0, 0.2)',
             width: 4,
             height: 4,
             borderRadius: 100,
@@ -72,6 +74,7 @@ interface XOverflowProps {
     useCustomTarget?: boolean;
     showOnHover?: boolean;
     onClickOutside?: () => void;
+    rounded?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -151,6 +154,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                         active={show}
                         innerRef={this.createRef}
                         horizontal={this.props.horizontal}
+                        rounded={this.props.rounded}
                     >
                         <div />
                         <div />

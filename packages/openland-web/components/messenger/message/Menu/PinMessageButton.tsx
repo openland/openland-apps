@@ -14,12 +14,12 @@ export const PinButtonStyle = Glamorous(XButton)({
     justifyContent: 'flex-start',
     height: 40,
     backgroundColor: '#fff',
-    color: '#000',
+    color: '#171B1F',
     borderRadius: 0,
     transition: 'none',
     '&:hover, &:active': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#1790ff',
+        backgroundColor: '#F0F2F5',
+        color: '#171B1F',
     },
     '& > div': {
         padding: '0 16px',
