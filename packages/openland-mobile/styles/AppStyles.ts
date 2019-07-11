@@ -39,6 +39,11 @@ export const TypeStyles = {
         lineHeight: 26,
         fontWeight: TextStyles.weight.bold
     } as TextStyle,
+    title4: {
+        fontSize: 17,
+        lineHeight: 24,
+        fontWeight: TextStyles.weight.bold
+    } as TextStyle,
     label1: {
         fontSize: 17,
         lineHeight: 24,
