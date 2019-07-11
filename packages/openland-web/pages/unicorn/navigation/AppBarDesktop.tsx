@@ -17,10 +17,18 @@ const selectorStyle = css`
     width: 3px;
     background-color: #1885F2;
     border-radius: 0px 100px 100px 0px;
-    transition: transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+    will-change: transform;
 `;
 
 export const AppBarDesktop = React.memo((props: { selected: number, setSelected: (index: number) => void }) => {
+    let [selected, setSelected] = React.useState(props.selected);
+    let setSelectedClb = (id: number) => {
+        setSelected(id);
+        setTimeout(() => {
+            props.setSelected(id);
+        }, 10);
+    };
     return (
         <XView height="100%" width="100%" backgroundColor={ThemeLightBlue.backgroundTertiary} paddingTop={2}>
             <XView width={64} height={64} alignItems="center" justifyContent="center">
@@ -33,10 +41,10 @@ export const AppBarDesktop = React.memo((props: { selected: number, setSelected:
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundTertiaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(0)}
+                onClick={() => setSelectedClb(0)}
             >
-                {props.selected !== 0 && (<DiscoverIcon />)}
-                {props.selected === 0 && (<DiscoverActiveIcon />)}
+                {selected !== 0 && (<DiscoverIcon />)}
+                {selected === 0 && (<DiscoverActiveIcon />)}
             </XView>
             <XView
                 width={64}
@@ -45,10 +53,10 @@ export const AppBarDesktop = React.memo((props: { selected: number, setSelected:
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundTertiaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(1)}
+                onClick={() => setSelectedClb(1)}
             >
-                {props.selected !== 1 && (<ChatIcon />)}
-                {props.selected === 1 && (<ChatActiveIcon />)}
+                {selected !== 1 && (<ChatIcon />)}
+                {selected === 1 && (<ChatActiveIcon />)}
             </XView>
             <XView
                 width={64}
@@ -57,14 +65,14 @@ export const AppBarDesktop = React.memo((props: { selected: number, setSelected:
                 justifyContent="center"
                 hoverBackgroundColor={ThemeLightBlue.backgroundTertiaryHover}
                 cursor="pointer"
-                onClick={() => props.setSelected(2)}
+                onClick={() => setSelectedClb(2)}
             >
-                {props.selected !== 2 && (<ProfileIcon />)}
-                {props.selected === 2 && (<ProfileActiveIcon />)}
+                {selected !== 2 && (<ProfileIcon />)}
+                {selected === 2 && (<ProfileActiveIcon />)}
             </XView>
             <div
                 className={selectorStyle}
-                style={{ transform: `translateY(${props.selected * 54}px)` }}
+                style={{ transform: `translateY(${selected * 54}px)` }}
             />
         </XView>
     );

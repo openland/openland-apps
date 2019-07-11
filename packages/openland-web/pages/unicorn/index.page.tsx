@@ -19,6 +19,9 @@ const visibleContainer = css`
     right: 0px;
     bottom: 0px;
     display: flex;
+    opacity: 1;
+    will-change: opacity;
+    pointer-events: auto;
 `;
 
 const invisibleContainer = css`
@@ -27,7 +30,9 @@ const invisibleContainer = css`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    display: none;
+    opacity: 0;
+    will-change: opacity;
+    pointer-events: none;
 `;
 
 const Chat = (props: { id: string }) => {
