@@ -64,29 +64,6 @@ const Navigation = React.memo(() => {
     }
 });
 
-class SDeferred extends React.PureComponent<{}, { inited: boolean }> {
-    state = {
-        inited: false
-    };
-
-    componentWillMount() {
-        // console.log('SDeferred: Waiting');
-        setTimeout(() => { /*console.log('SDeferred: Mounting');*/ this.setState({ inited: true }); }, 50);
-    }
-
-    render() {
-        if (!this.state.inited) {
-            return null;
-        } else {
-            return (
-                <>
-                    {this.props.children}
-                </>
-            );
-        }
-    }
-}
-
 const Timer = () => {
     let [counter, setCounter] = React.useState(0);
     React.useEffect(() => {
@@ -111,12 +88,9 @@ const Timer = () => {
 };
 
 const Page = (props: { text: string }) => {
-    let controller = useController();
     return (
         <XView width="100%" height="100%">
-            <SDeferred>
-                <DialogListFragment onSearchItemSelected={() => {/*  */ }} />
-            </SDeferred>
+            <DialogListFragment onSearchItemSelected={() => {/*  */ }} />
         </XView>
     );
 };

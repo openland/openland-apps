@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { css } from "linaria";
 import { PageHeader } from './PageHeader';
+import { Deferred } from './Deferred';
+
 //
 // Container style
 //
@@ -26,7 +28,7 @@ const contentStyle = css`
     bottom: 0px;
 
     background-color: white;
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
     will-change: transform;
 `;
 
@@ -44,7 +46,7 @@ const shadowStyle = css`
     pointer-events: none;
 
     background-color: black;
-    transition: opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
     will-change: opacity;
 `;
 
@@ -90,7 +92,9 @@ export const PageLayout = (props: {
             <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
             <div className={contentStyle} style={{ transform: 'translateX(' + offset + 'px)' }}>
                 <PageHeader />
-                {props.children}
+                <Deferred>
+                    {props.children}
+                </Deferred>
             </div>
         </div>
     );
