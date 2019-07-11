@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { UserShort, UserBadge, RoomChat_room, SharedRoomKind } from 'openland-api/Types';
+import { UserShort, UserBadge, RoomChat_room } from 'openland-api/Types';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { css } from 'linaria';
-import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
+import CommentsIcon from 'openland-icons/ic-comments.svg';
 import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { MakeFeaturedModal } from 'openland-web/pages/main/profile/components/modals';
-import { XWithRole, useHasRole } from 'openland-x-permissions/XWithRole';
+import { useHasRole } from 'openland-x-permissions/XWithRole';
 
 interface PreambulaContainerProps {
     children: any;
@@ -26,7 +26,7 @@ const commentsIconWrapperClass = css`
         height: 15.2px;
     }
 
-    & svg g path {
+    & svg path {
         fill: #000;
         opacity: 0.2;
     }
@@ -39,7 +39,7 @@ const dateClassName = css`
 const CommentsIconWrapper = () => {
     return (
         <div className={commentsIconWrapperClass}>
-            <CommentIcon />
+            <CommentsIcon />
         </div>
     );
 };

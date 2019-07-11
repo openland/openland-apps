@@ -7,7 +7,7 @@ import {
     RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from '../reactions/ReactionButton';
-import CommentIcon from 'openland-icons/ic-comment-channel2.svg';
+import CommentsIcon from 'openland-icons/ic-comments.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../MessagesStateContext';
@@ -26,12 +26,12 @@ let commentsIconWrapperClass = css`
     justify-content: center;
     padding-top: 6;
 
-    & svg g path {
+    & svg path {
         fill: #000;
         opacity: 0.2;
     }
 
-    &:hover svg g path {
+    &:hover svg path {
         fill: #1790ff;
         opacity: 1;
     }
@@ -241,7 +241,7 @@ export const Menu = React.memo(
                                 !isComment &&
                                 !isChannel && (
                                     <CommentsIconWrapper onClick={commentsClick}>
-                                        <CommentIcon />
+                                        <CommentsIcon />
                                     </CommentsIconWrapper>
                                 )}
                             {!isComment && (
