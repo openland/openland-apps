@@ -122,10 +122,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 36 : 0) + 40 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 36 : 0) + 10} />
+                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 40 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 44 : 0) + 10} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
-                        <ASFlex marginRight={3} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
+                        <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
                             <AsyncAvatar
                                 size={32}
                                 src={props.message.senderPhoto}
@@ -135,13 +135,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         </ASFlex>
                     }
 
-                    <ASFlex key="margin-left-2" backgroundColor={theme.backgroundPrimary} width={(props.message.isOut ? 10 : 0)} />
-
                     {props.message.isOut && <ASFlex backgroundColor={theme.backgroundPrimary} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
 
                     {res}
 
-                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={4} />
+                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={16} />
                 </ASFlex>
 
                 {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} onReactionsPress={handleReactionsPress} />)}
