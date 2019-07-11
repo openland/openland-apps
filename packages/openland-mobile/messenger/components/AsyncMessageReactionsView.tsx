@@ -9,6 +9,7 @@ import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
 export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
 
@@ -89,7 +90,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     sw.next();
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundPrimary} >
-            <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
+            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
                 {(props.isChannel || commentsCount > 0) && (
                     <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.medium} marginRight={5} onPress={props.onCommentsPress}>
                         <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">

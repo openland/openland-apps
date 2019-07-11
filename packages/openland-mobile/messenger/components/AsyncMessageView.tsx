@@ -26,7 +26,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
         <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentPrimary : props.theme.foregroundQuaternary} >
             <ASFlex overlay={true} alignItems="center" justifyContent="center">
                 <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? props.theme.accentPrimary : props.theme.backgroundPrimary}>
-                    {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={props.theme.contrastPrimary} width={14} height={14} />}
+                    {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={props.theme.contrastSpecial} width={14} height={14} />}
                 </ASFlex>
             </ASFlex>
         </ASFlex>
@@ -122,7 +122,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 40 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 44 : 0) + 10} />
+                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 42 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 44 : 0) + 12} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
