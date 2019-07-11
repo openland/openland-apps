@@ -49,7 +49,7 @@ class NotificationSettingsComponent extends React.Component<
                 roomId: this.props.roomId,
             },
         });
-    };
+    }
 
     render() {
         const { mute } = this.props.settings;
@@ -61,7 +61,7 @@ class NotificationSettingsComponent extends React.Component<
             >
                 <MenuItem>{mute ? 'Unmute notifications' : 'Mute notifications'}</MenuItem>
             </XMenuItem>
-        )
+        );
     }
 }
 
