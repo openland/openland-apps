@@ -78,25 +78,30 @@ export default () => {
         isInvitePageSignin = true;
     }
 
+    if (router.path.includes('accept-invite') || isInvitePage) {
+        page = pages.acceptInvite;
+    }
+    if (router.path.includes('ask-activation-code')) {
+        page = pages.askActivationCode;
+    }
+    if (router.path.includes('ask-email')) {
+        page = pages.askEmail;
+    }
+    if (router.path.includes('create-new-account')) {
+        Cookie.set('x-openland-create-new-account', 'true');
+        page = pages.createNewAccount;
+    }
+    if (
+        router.path.includes('enter-your-organization') ||
+        router.path.includes('/createOrganization')
+    ) {
+        page = pages.enterYourOrganization;
+    }
     if (
         router.path.includes('introduce-yourself') ||
         router.path.includes('/createProfile')
     ) {
         page = pages.introduceYourself;
-    } else if (router.path.includes('accept-invite') || isInvitePage) {
-        page = pages.acceptInvite;
-    } else if (router.path.includes('ask-activation-code')) {
-        page = pages.askActivationCode;
-    } else if (router.path.includes('ask-email')) {
-        page = pages.askEmail;
-    } else if (router.path.includes('create-new-account')) {
-        Cookie.set('x-openland-create-new-account', 'true');
-        page = pages.createNewAccount;
-    } else if (
-        router.path.includes('enter-your-organization') ||
-        router.path.includes('/createOrganization')
-    ) {
-        page = pages.enterYourOrganization;
     }
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
