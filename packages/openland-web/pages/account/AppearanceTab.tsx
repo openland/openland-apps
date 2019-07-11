@@ -2,11 +2,12 @@ import * as React from 'react';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
-import { XView } from 'react-mental';
-import { RadioButtonsSelect, RadioButtonsSelectOptions } from './components/RadioButtonsSelect';
+import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import { XButton } from 'openland-x/XButton';
+import { FormSection } from './components/FormSection';
+import { FormWrapper } from './components/FormWrapper';
 
-enum MessagesNotificationsOptions {
+enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
     HIGHLIGHTED = 'HIGHLIGHTED',
 }
@@ -14,11 +15,7 @@ enum MessagesNotificationsOptions {
 export const AppearanceTab = () => {
     const form = useForm();
     const client = useClient();
-    let secretGroupDisplay = useField(
-        'input.secretGroupDisplay',
-        MessagesNotificationsOptions.DEFAULT,
-        form,
-    );
+    let secretGroupDisplay = useField('input.secretGroupDisplay', AppearanceOptions.DEFAULT, form);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
@@ -27,22 +24,23 @@ export const AppearanceTab = () => {
     }, []);
 
     return (
-        <XView>
-            <RadioButtonsSelect
-                title="Secret group display"
-                {...secretGroupDisplay.input}
-                selectOptions={[
-                    {
-                        value: MessagesNotificationsOptions.DEFAULT,
-                        label: `Default`,
-                    },
-                    {
-                        value: MessagesNotificationsOptions.HIGHLIGHTED,
-                        label: `Highlighted`,
-                    },
-                ]}
-            />
+        <FormWrapper title="Appearance">
+            <FormSection title="Secret group display">
+                <RadioButtonsSelect
+                    {...secretGroupDisplay.input}
+                    selectOptions={[
+                        {
+                            value: AppearanceOptions.DEFAULT,
+                            label: `Default`,
+                        },
+                        {
+                            value: AppearanceOptions.HIGHLIGHTED,
+                            label: `Highlighted`,
+                        },
+                    ]}
+                />
+            </FormSection>
             <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
-        </XView>
+        </FormWrapper>
     );
 };

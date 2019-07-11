@@ -46,12 +46,10 @@ const SelectGroupTypeClassName = css`
 `;
 
 export function RadioButtonsSelect<T>({
-    title,
     value,
     onChange,
     selectOptions,
 }: {
-    title: any;
     value: any;
     onChange: (data: T) => void;
     selectOptions: RadioButtonsSelectOptions<T>[];
@@ -91,7 +89,7 @@ export function RadioButtonsSelect<T>({
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <DropdownItem title={title} label={currentItemOptions.label} />
+                <DropdownItem title="" label={currentItemOptions.label} />
                 <ArrowIcon />
             </XView>
         </div>

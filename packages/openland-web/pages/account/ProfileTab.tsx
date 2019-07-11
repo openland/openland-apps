@@ -9,6 +9,8 @@ import { sanitizeImageRef } from '../../utils/sanitizer';
 import { XButton } from 'openland-x/XButton';
 import { XTextArea } from 'openland-x/XTextArea';
 import { InputField } from 'openland-web/components/InputField';
+import { FormSection } from './components/FormSection';
+import { FormWrapper } from './components/FormWrapper';
 
 export const ProfileTab = () => {
     const form = useForm();
@@ -68,47 +70,65 @@ export const ProfileTab = () => {
     }, []);
 
     return (
-        <XView flexDirection="row">
-            <XView>
-                <InputField title={'First name'} field={firstNameField} size="large" />
-                <InputField title={'Second name'} field={secondNameField} size="large" />
+        <FormWrapper title="Profile">
+            <XView flexDirection="row">
+                <XView>
+                    <FormSection title="Info">
+                        <InputField title={'First name'} field={firstNameField} size="large" />
+                        <InputField title={'Second name'} field={secondNameField} size="large" />
 
-                <SelectWithDropdown
-                    {...primaryOrganizationField.input}
-                    title={'Primary organization'}
-                    selectOptions={organizations.myOrganizations.map((org: any) => ({
-                        value: org.id,
-                        label: org.name,
-                    }))}
-                />
+                        <SelectWithDropdown
+                            {...primaryOrganizationField.input}
+                            title={'Primary organization'}
+                            selectOptions={organizations.myOrganizations.map((org: any) => ({
+                                value: org.id,
+                                label: org.name,
+                            }))}
+                        />
 
-                <XTextArea mode="modern" title="About" {...aboutField.input} resize={false} />
-                <InputField
-                    title={''}
-                    placeholder={'Location'}
-                    field={locationField}
-                    size="large"
+                        <XTextArea
+                            mode="modern"
+                            title="About"
+                            {...aboutField.input}
+                            resize={false}
+                        />
+                        <InputField
+                            title={''}
+                            placeholder={'Location'}
+                            field={locationField}
+                            size="large"
+                        />
+                    </FormSection>
+                    <FormSection title="Username">
+                        <InputField title={'Username'} field={usernameField} size="large" />
+                    </FormSection>
+                    <FormSection title="Contacts">
+                        <InputField
+                            placeholder={'Phone number'}
+                            title={''}
+                            field={phoneNumberField}
+                            size="large"
+                        />
+                        <InputField title={'Email'} field={emailField} size="large" />
+                        <InputField title={'Website'} field={websiteField} size="large" />
+                        <InputField
+                            placeholder="Linkedin"
+                            title={''}
+                            field={linkedinField}
+                            size="large"
+                        />
+                    </FormSection>
+                    <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
+                </XView>
+                <XAvatarFormFieldComponent
+                    {...avatarField.input}
+                    size="default"
+                    placeholder={{
+                        add: 'Add photo',
+                        change: 'Change Photo',
+                    }}
                 />
-                <InputField title={'Username'} field={usernameField} size="large" />
-                <InputField
-                    placeholder={'Phone number'}
-                    title={''}
-                    field={phoneNumberField}
-                    size="large"
-                />
-                <InputField title={'Email'} field={emailField} size="large" />
-                <InputField title={'Website'} field={websiteField} size="large" />
-                <InputField placeholder="Linkedin" title={''} field={linkedinField} size="large" />
-                <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
             </XView>
-            <XAvatarFormFieldComponent
-                {...avatarField.input}
-                size="default"
-                placeholder={{
-                    add: 'Add photo',
-                    change: 'Change Photo',
-                }}
-            />
-        </XView>
+        </FormWrapper>
     );
 };
