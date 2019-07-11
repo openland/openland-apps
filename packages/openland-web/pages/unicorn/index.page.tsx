@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Container, InnerContainer } from './components/Container';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { css as css2 } from 'glamor';
+// import { css as css2 } from 'glamor';
 import { useLayout } from './components/LayoutContext';
 import { useController } from './components/UnicornController';
 import { XButton } from 'openland-x/XButton';
@@ -32,36 +32,20 @@ const blurClass = css`
     }
 `;
 
-css2.global('html, body', {
-    overscrollBehavior: 'none',
-    overflow: 'hidden'
+const MobileNavigation = React.memo(() => {
+    return (
+        <XView height="100%" width="100%" backgroundColor="red">
+            {}
+        </XView>
+    );
 });
 
-// const Tabs = () => {
-//     let [tab, setTab] =  React.useState(0);
-
-//     return (
-
-//     )
-// };
-
-const Navigation = React.memo(() => {
-    let layout = useLayout();
-    if (layout === 'desktop') {
-        return (
-            <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, transform: 'translate3d(0,0,1px)' }} >
-                <XView width="50px" height="100%" backgroundColor="red">
-                    {}
-                </XView>
-            </div>
-        );
-    } else {
-        return (
-            <XView height="50px" position="absolute" bottom={0} left={0} right={0} backgroundColor="red">
-                {}
-            </XView>
-        );
-    }
+const DesktopNavigation = React.memo(() => {
+    return (
+        <XView height="100%" width="100%" backgroundColor="red">
+            {}
+        </XView>
+    );
 });
 
 const Timer = () => {
@@ -138,9 +122,13 @@ export default () => {
     return (
         <Container>
             <InnerContainer>
-                <UnicornLayout root={<Root />} />
+                <UnicornLayout
+                    root={<Root />}
+                    desktopBar={<DesktopNavigation />}
+                    mobileBar={<MobileNavigation />}
+                />
             </InnerContainer>
-            <Navigation />
+
         </Container>
     );
 };

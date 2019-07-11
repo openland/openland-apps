@@ -26,10 +26,23 @@ const contentStyle = css`
     left: 0px;
     right: 0px;
     bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 
     background-color: white;
     transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
     will-change: transform;
+`;
+
+const contentWrapperStyle = css`
+    position: relative;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-height: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 `;
 
 //
@@ -93,7 +106,9 @@ export const PageLayout = (props: {
             <div className={contentStyle} style={{ transform: 'translateX(' + offset + 'px)' }}>
                 <PageHeader />
                 <Deferred>
-                    {props.children}
+                    <div className={contentWrapperStyle}>
+                        {props.children}
+                    </div>
                 </Deferred>
             </div>
         </div>
