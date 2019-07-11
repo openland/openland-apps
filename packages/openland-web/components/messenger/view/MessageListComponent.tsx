@@ -135,13 +135,21 @@ const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
     );
 };
 
+const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
+
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     scroller = React.createRef<any>();
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
         super(props);
-        this.dataSource = buildMessagesDataSource(props.conversation.dataSource);
+        if (dss.has(props.conversationId)) {
+            this.dataSource = dss.get(props.conversationId)!;
+        } else {
+            let b = buildMessagesDataSource(props.conversation.dataSource);
+            dss.set(props.conversationId, b);
+            this.dataSource = b;
+        }
     }
 
     scrollToBottom = () => {
