@@ -3,15 +3,15 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { XButton } from 'openland-x/XButton';
-import { RadioButtonsSelect } from './components/RadioButtonsSelect';
+import { RadioButtonsSelect } from '../../pages/account/components/RadioButtonsSelect';
 import {
     EmailFrequency,
     CommentsNotificationDelivery,
     NotificationMessages,
 } from 'openland-api/Types';
-import { FormSection } from './components/FormSection';
-import { FormWrapper } from './components/FormWrapper';
-import { FormFooter } from './components/FormFooter';
+import { FormSection } from '../../pages/account/components/FormSection';
+import { FormWrapper } from '../../pages/account/components/FormWrapper';
+import { FormFooter } from '../../pages/account/components/FormFooter';
 
 export const Notifications = () => {
     const form = useForm();

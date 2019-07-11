@@ -175,7 +175,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
                 <XView key="root" left={0} top={0} right={0} bottom={0} position="absolute">
-                    <XView width="100%" height="100%" position="relative" paddingBottom={52} alignItems="flex-start">
+                    <XView width="100%" height="100%" position="relative" paddingBottom={52} alignItems="flex-start" backgroundColor="#fff">
                         {props.root}
                     </XView>
                 </XView>
@@ -193,7 +193,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
             <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingLeft={64}>
                 <XView width={1} backgroundColor="rgba(120, 128, 143, 0.08)" height="100%" />
                 <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
-                    <XView width="100%" height="100%" position="relative" alignItems="flex-start">
+                    <XView width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
                         {props.root}
                     </XView>
                 </XView>
