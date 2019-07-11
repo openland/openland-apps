@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { useController } from 'openland-web/pages/unicorn/components/UnicornController';
 import { Notifications } from './Notifications';
 import { AppearanceTab } from './AppearanceTab';
@@ -14,6 +15,9 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
+import { XLoader } from 'openland-x/XLoader';
+import { useClient } from 'openland-web/utils/useClient';
+import { XText, Mode } from 'openland-web/components/XText';
 
 const UserProfile = withUserInfo(({ user, onClick }: any) => {
     if (user) {
@@ -68,10 +72,54 @@ const UserProfile = withUserInfo(({ user, onClick }: any) => {
     }
 });
 
+const OrganizationItem = ({
+    id,
+    image,
+    text,
+    isPrimary,
+}: {
+    id: string;
+    image: any;
+    text: string;
+    isPrimary?: boolean;
+}) => {
+    return (
+        <XView flexDirection="row" justifyContent="space-between">
+            <XView flexDirection="row">
+                <XAvatar2 size={40} src={image} title={text} id={id} />
+                <XView marginLeft={16}>
+                    <XText mode={Mode.BodyRegular}>{text}</XText>
+                </XView>
+            </XView>
+            {isPrimary && 'Primary'}
+        </XView>
+    );
+};
+
+export const Organizations = React.memo(() => {
+    const client = useClient();
+    const myOrganizations = client.useMyOrganizations();
+    return (
+        <>
+            {myOrganizations.myOrganizations.map((organization, key) => {
+                return (
+                    <OrganizationItem
+                        key={key}
+                        id={organization.id}
+                        image={organization.photo}
+                        text={organization.name}
+                        isPrimary={organization.isPrimary}
+                    />
+                );
+            })}
+        </>
+    );
+});
+
 export const AccountFragment = React.memo(() => {
     let controller = useController();
     return (
-        <XView flexDirection="column">
+        <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
             <UserProfile />
             <UListItem
                 text="Invite Friends"
@@ -84,6 +132,7 @@ export const AccountFragment = React.memo(() => {
                     ));
                 }}
             />
+            <UListHeader text="Settings" />
             <UListItem
                 text="Notifications"
                 icon={<NotificationsIcon />}
@@ -105,6 +154,13 @@ export const AccountFragment = React.memo(() => {
                     controller.push(<NativeAppsModal />);
                 }}
             />
-        </XView>
+            <UListHeader text="Organizations" />
+
+            <XView position="relative" flexDirection="column">
+                <React.Suspense fallback={<XLoader loading={true} />}>
+                    <Organizations />
+                </React.Suspense>
+            </XView>
+        </XScrollView3>
     );
 });
