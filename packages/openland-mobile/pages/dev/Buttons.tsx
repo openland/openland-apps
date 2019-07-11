@@ -19,15 +19,37 @@ export const ButtonsComponent = (props: PageProps) => (
                     <ZRoundedButton title="Label" style="danger" />
                 </View>
             </View>
+            <View marginVertical={16} flexDirection="row">
+                <View marginRight={10}>
+                    <ZRoundedButton title="Label" loading={true} />
+                </View>
+                <View marginRight={10}>
+                    <ZRoundedButton title="Label" style="secondary" loading={true} />
+                </View>
+                <View>
+                    <ZRoundedButton title="Label" style="danger" loading={true} />
+                </View>
+            </View>
             <View marginVertical={16}>
                 <View marginBottom={10}>
-                    <ZRoundedButton title="Label" size="large" />
+                    <ZRoundedButton title="Label" size="large"  />
                 </View>
                 <View marginBottom={10}>
-                    <ZRoundedButton title="Label" size="large" style="secondary" />
+                    <ZRoundedButton title="Label" size="large" style="secondary"  />
                 </View>
                 <View marginBottom={10}>
-                    <ZRoundedButton title="Label" size="large" style="danger" />
+                    <ZRoundedButton title="Label" size="large" style="danger"  />
+                </View>
+            </View>
+            <View marginVertical={16}>
+                <View marginBottom={10}>
+                    <ZRoundedButton title="Label" size="large" loading={true} />
+                </View>
+                <View marginBottom={10}>
+                    <ZRoundedButton title="Label" size="large" style="secondary" loading={true} />
+                </View>
+                <View marginBottom={10}>
+                    <ZRoundedButton title="Label" size="large" style="danger" loading={true} />
                 </View>
             </View>
         </View>

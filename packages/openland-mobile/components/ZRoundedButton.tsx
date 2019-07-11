@@ -54,10 +54,11 @@ export interface ZRoundedButtonProps {
     size?: ZRoundedButtonSize;
     style?: ZRoundedButtonStyle;
     enabled?: boolean;
+    loading?: boolean;
 }
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
-    const [ actionInProgress, setActionInProgress ] = React.useState(false);
+    const [ actionInProgress, setActionInProgress ] = React.useState(props.loading || false);
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {
         if (props.onPress) {
@@ -96,26 +97,24 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
     return (
-        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} activeOpacity={0.6}>
+        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} disabled={actionInProgress || props.enabled === false} activeOpacity={0.6}>
             <View style={[styles.container, { backgroundColor: backgroundColor }]}>
-                <View >
-                    <Text
-                        style={[
-                            styles.title,
-                            { color: actionInProgress ? 'transparent' : textColor },
-                            { opacity: props.enabled === false ? 0.7 : undefined }
-                        ]}
-                        allowFontScaling={false}
-                    >
-                        {props.title}
-                    </Text>
+                <Text
+                    style={[
+                        styles.title,
+                        { color: actionInProgress ? 'transparent' : textColor },
+                        { opacity: props.enabled === false ? 0.7 : undefined }
+                    ]}
+                    allowFontScaling={false}
+                >
+                    {props.title}
+                </Text>
 
-                    {actionInProgress && (
-                        <View width="100%" height="100%" justifyContent="center" position="absolute">
-                            <ActivityIndicator height="100%" color={textColor} />
-                        </View>
-                    )}
-                </View>
+                {actionInProgress && (
+                    <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
+                        <ActivityIndicator height="100%" color={textColor} />
+                    </View>
+                )}
             </View>
         </TouchableOpacity>
     );
