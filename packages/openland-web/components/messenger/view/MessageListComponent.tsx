@@ -41,7 +41,6 @@ const messagesWrapperClassName = css`
 const mobileMessageWrapperClassName = css`
     padding-left: 0;
     padding-right: 0;
-    min-width: 622px;
 `;
 
 const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
