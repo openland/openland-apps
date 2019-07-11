@@ -15,6 +15,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((props) => {
     let theme = React.useContext(ThemeContext);
@@ -23,7 +24,7 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((p
             <View flexGrow={1}>
                 {props.children}
             </View>
-            <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
+            <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.medium} width={24} height={24} >
                 {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
             </View>
         </View>
