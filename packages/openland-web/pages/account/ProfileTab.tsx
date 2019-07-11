@@ -56,15 +56,10 @@ export const ProfileTab = () => {
 
                 <XTextArea title="About" {...aboutField.input} resize={false} />
                 <XInput title={'Location'} {...locationField.input} size="large" />
-
                 <XInput title={'Username'} {...usernameField.input} size="large" />
-
                 <XInput title={'Phone number'} {...phoneNumberField.input} size="large" />
-
                 <XInput title={'Email'} {...emailField.input} size="large" />
-
                 <XInput title={'Website'} {...websiteField.input} size="large" />
-
                 <XInput {...linkedinField.input} size="large" />
                 <XButton text="Save changes" style="primary" size="large" onClick={doConfirm} />
             </XView>

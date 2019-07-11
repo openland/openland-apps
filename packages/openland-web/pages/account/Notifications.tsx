@@ -5,45 +5,42 @@ import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
-
-enum MessagesNotificationsOptions {
-    ALL_NEW_MESSAGES = 'ALL_NEW_MESSAGES',
-    DIRECT_MESSAGES_AND_MENTIONS = 'DIRECT_MESSAGES_AND_MENTIONS',
-}
-
-enum CommentsNotificationsOptions {
-    ALL_NEW_COMMENTS = 'ALL_NEW_COMMENTS',
-    NEVER_NOTIFY_ME = 'NEVER_NOTIFY_ME',
-}
-
-enum EmailNotificationsOptions {
-    AT_MOST_ONCE_EVERY_15_MINS = 'AT_MOST_ONCE_EVERY_15_MINS',
-    AT_MOST_ONCE_PER_HOUR = 'AT_MOST_ONCE_PER_HOUR',
-    AT_MOST_ONCE_PER_DAY = 'AT_MOST_ONCE_PER_DAY',
-    NEVER_NOTIFY_ME = 'NEVER_NOTIFY_ME',
-}
+import {
+    EmailFrequency,
+    CommentsNotificationDelivery,
+    NotificationMessages,
+} from 'openland-api/Types';
 
 export const Notifications = () => {
     const form = useForm();
     const client = useClient();
+    const settings = client.useSettings();
+
     let messagesNotifications = useField(
         'input.messagesNotifications',
-        MessagesNotificationsOptions.ALL_NEW_MESSAGES,
+        settings.settings.desktopNotifications,
         form,
     );
     let commentsNotifications = useField(
         'input.commentsNotifications',
-        CommentsNotificationsOptions.ALL_NEW_COMMENTS,
+        settings.settings.commentNotificationsDelivery,
         form,
     );
     let emailNotifications = useField(
         'input.emailNotifications',
-        EmailNotificationsOptions.AT_MOST_ONCE_EVERY_15_MINS,
+        settings.settings.emailFrequency,
         form,
     );
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
-            //
+            await client.mutateSettingsUpdate({
+                input: {
+                    emailFrequency: emailNotifications.value,
+                    commentNotificationsDelivery: commentsNotifications.value,
+                    desktopNotifications: messagesNotifications.value,
+                    mobileNotifications: messagesNotifications.value,
+                },
+            });
         });
     }, []);
 
@@ -54,11 +51,11 @@ export const Notifications = () => {
                 {...messagesNotifications.input}
                 selectOptions={[
                     {
-                        value: MessagesNotificationsOptions.ALL_NEW_MESSAGES,
+                        value: NotificationMessages.ALL,
                         label: `All new messages`,
                     },
                     {
-                        value: MessagesNotificationsOptions.DIRECT_MESSAGES_AND_MENTIONS,
+                        value: NotificationMessages.DIRECT,
                         label: `Direct messages and mentions`,
                     },
                 ]}
@@ -68,11 +65,11 @@ export const Notifications = () => {
                 {...commentsNotifications.input}
                 selectOptions={[
                     {
-                        value: CommentsNotificationsOptions.ALL_NEW_COMMENTS,
+                        value: CommentsNotificationDelivery.ALL,
                         label: `All new comments`,
                     },
                     {
-                        value: CommentsNotificationsOptions.NEVER_NOTIFY_ME,
+                        value: CommentsNotificationDelivery.NONE,
                         label: `Never notify me`,
                     },
                 ]}
@@ -83,19 +80,19 @@ export const Notifications = () => {
                 {...emailNotifications.input}
                 selectOptions={[
                     {
-                        value: EmailNotificationsOptions.AT_MOST_ONCE_EVERY_15_MINS,
+                        value: EmailFrequency.MIN_15,
                         label: `At most once every 15 minutes`,
                     },
                     {
-                        value: EmailNotificationsOptions.AT_MOST_ONCE_PER_HOUR,
+                        value: EmailFrequency.HOUR_1,
                         label: `At most once per hour`,
                     },
                     {
-                        value: EmailNotificationsOptions.AT_MOST_ONCE_PER_DAY,
+                        value: EmailFrequency.HOUR_24,
                         label: `At most once per day`,
                     },
                     {
-                        value: EmailNotificationsOptions.NEVER_NOTIFY_ME,
+                        value: EmailFrequency.NEVER,
                         label: `Never notify me`,
                     },
                 ]}
