@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from "linaria";
 import { PageHeader } from './PageHeader';
 import { Deferred } from './Deferred';
+import { XLoader } from 'openland-x/XLoader';
 
 //
 // Container style
@@ -107,7 +108,9 @@ export const PageLayout = (props: {
                 <PageHeader />
                 <Deferred>
                     <div className={contentWrapperStyle}>
-                        {props.children}
+                        <React.Suspense fallback={<XLoader />}>
+                            {props.children}
+                        </React.Suspense>
                     </div>
                 </Deferred>
             </div>
