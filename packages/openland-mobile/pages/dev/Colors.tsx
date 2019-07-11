@@ -14,7 +14,7 @@ interface ColorRow {
     dark?: string[];
 }
 
-const ignoreParams = ['blurType', 'keyboardAppearance', 'statusBar', 'paddedText', 'transparent'];
+const ignoreParams = ['type', 'kind', 'blurType', 'keyboardAppearance', 'statusBar', 'paddedText', 'transparent'];
 
 const getColorRowFromObject = (key: string, lightObject: any, darkObject: any): ColorRow => {
     let row: ColorRow = { key };
