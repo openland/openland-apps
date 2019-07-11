@@ -37,7 +37,7 @@ export const MenuItemWithPopper = ({
             content={<AddListingContent />}
             onClickOutside={onClickOutside}
         >
-            <DesktopNavigatorItem onClick={onClick}>{targetElement}</DesktopNavigatorItem>
+            <DesktopNavigatorItem isActive onClick={onClick}>{targetElement}</DesktopNavigatorItem>
         </XPolitePopper>
     );
 };
