@@ -74,7 +74,12 @@ const Timer = () => {
 const Page = (props: { text: string }) => {
     return (
         <XView width="100%" height="100%">
-            <DialogListFragment onSearchItemSelected={() => {/*  */ }} />
+            <DialogListFragment
+                onSearchItemSelected={() => {/*  */ }}
+                onDialogPress={(id) => {
+                    //
+                }}
+            />
         </XView>
     );
 };

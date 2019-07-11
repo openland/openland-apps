@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
@@ -33,6 +33,8 @@ type DialogSearchResultsT = {
 };
 
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
+    let router = React.useContext(XViewRouterContext);
+
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
     const client = useClient();
@@ -208,6 +210,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                                 sender: message.sender.name,
                             }}
                             key={message.id}
+                            onPress={() => router!.navigate(`/mail/${chat.id}`)}
                         />
                     );
                 })}

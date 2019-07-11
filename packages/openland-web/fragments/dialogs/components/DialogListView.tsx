@@ -82,7 +82,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             ) {
                 selected = true;
             }
-            return <DialogView item={item} selected={selected} />;
+            return <DialogView item={item} selected={selected} onPress={props.onDialogClick} />;
         };
     }, [props.onDialogClick, conversationId]);
 

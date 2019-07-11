@@ -65,7 +65,7 @@ export const MessagesNavigation = XMemo(
         let tab: tabsT = tabs.empty;
         const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
 
-        const { replace } = React.useContext(XRoutingContext)!;
+        const routing = React.useContext(XRoutingContext)!;
 
         let isCall = path.endsWith('/call');
         let isOrganizationInvite = path.includes('join') && !path.includes('joinChannel');
@@ -119,7 +119,7 @@ export const MessagesNavigation = XMemo(
                 <XShortcuts
                     handlerMap={{
                         ESC: () => {
-                            replace('/mail');
+                            routing.replace('/mail');
                         },
                     }}
                     keymap={{
@@ -153,6 +153,9 @@ export const MessagesNavigation = XMemo(
                             <DialogListFragment
                                 onSearchItemSelected={(item: GlobalSearch_items) => {
                                     setSelectedChat(item ? item.id : null);
+                                }}
+                                onDialogPress={(id) => {
+                                    routing.push(`/mail/${id}`);
                                 }}
                             />
                         }

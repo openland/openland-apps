@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView, XViewSelectedContext, XViewRouterContext } from 'react-mental';
+import { XView, XViewSelectedContext } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -89,14 +89,11 @@ const EmojiStyle = css`
 
 export interface DialogViewProps {
     item: DialogListWebItem;
-    handleRef?: any;
-    onSelect?: (id: string) => void;
-    onClick?: () => void;
+    onPress?: (id: string) => void;
     selected?: boolean;
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
-    let router = React.useContext(XViewRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -189,8 +186,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         <XView
             selected={props.selected}
             as="a"
-            ref={props.handleRef}
-            onMouseDown={() => router!.navigate('/mail/' + dialog.key)}
+            onMouseDown={() => props.onPress && props.onPress(dialog.key)}
             height={80}
             flexDirection="row"
             paddingLeft={16}
