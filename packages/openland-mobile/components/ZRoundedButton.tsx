@@ -4,7 +4,7 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';

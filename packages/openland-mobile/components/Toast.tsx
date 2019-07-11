@@ -3,6 +3,7 @@ import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle, ImageS
 import { showBlanketModal } from './showBlanketModal';
 import { ZModalController } from './ZModal';
 import LoaderSpinner from './LoaderSpinner';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     modalWrapper: { 
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F0F2F5',
-        borderRadius: 18
+        borderRadius: RadiusStyles.large
     } as ViewStyle,
     toastContainerWithoutText: {
         paddingHorizontal: 32, 

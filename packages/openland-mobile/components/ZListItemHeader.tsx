@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'r
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
 
 const styles = StyleSheet.create({
@@ -80,7 +80,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
                     <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={userId} />
                     {!!score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
-                            <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: 16 }}>
+                            <View style={{ borderWidth: 3, borderColor: theme.backgroundSecondary, borderRadius: RadiusStyles.large }}>
                                 <ZReach value={score} onPress={scorePress} />
                             </View>
                         </View>
