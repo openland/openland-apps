@@ -6,6 +6,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { UserForMention } from 'openland-api/Types';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopper } from 'openland-x/XPopper';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -118,7 +119,7 @@ export class UserPopper extends React.PureComponent<
         let { user, isMe, noCardOnMe, children, startSelected, customButton } = this.props;
 
         return (
-            <XPolitePopper
+            <XPopper
                 ref={this.xPopperRef}
                 nodeSelector={this.getXPopperTargetNode}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
@@ -142,7 +143,7 @@ export class UserPopper extends React.PureComponent<
                 <span onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                     {children ? children : <UserAvatar user={user} startSelected={startSelected} />}
                 </span>
-            </XPolitePopper>
+            </XPopper>
         );
     }
 }
