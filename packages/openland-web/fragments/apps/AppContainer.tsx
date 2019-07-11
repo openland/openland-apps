@@ -2,8 +2,8 @@ import * as React from 'react';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XLoader } from 'openland-x/XLoader';
 
 const bg = css`
     display: flex;
@@ -26,7 +26,7 @@ const AppLoader = () => {
             alignItems="center"
             justifyContent="center"
         >
-            <XLoadingCircular color="#fff" />
+            <XLoader color="#fff" />
         </XView>
     );
 };
