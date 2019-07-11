@@ -93,10 +93,6 @@ export const IconWithBackground = ({ children }: { children: any }) => {
     );
 };
 
-const TextItemWrapper = ({ children }: { children: any }) => {
-    return <XView>{children}</XView>;
-};
-
 export const Item = ({
     title,
     description,
@@ -112,10 +108,9 @@ export const Item = ({
 }) => {
     return (
         <XMenuItem
-            style="gray"
             onClick={onClick}
-            TextItemWrapper={TextItemWrapper}
             path={href}
+            customContent
             icon={
                 <XView marginRight={12} paddingTop={11} alignSelf="flex-start">
                     {icon}

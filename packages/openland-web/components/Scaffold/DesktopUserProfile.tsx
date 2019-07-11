@@ -200,7 +200,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                                 </OtherOrgWrapper>
                                             }
                                         >
-                                            <XMenuItem iconRight="x-right">
+                                            <XMenuItem>
                                                 Other organizations
                                             </XMenuItem>
                                         </XPolitePopper>

@@ -11,10 +11,10 @@ interface XLoaderProps {
 
 let displayFlex = css`
 display: flex;
-`
+`;
 let displayNone = css`
 display: none;
-`
+`;
 
 let base = css`
 overflow: hidden
@@ -54,18 +54,18 @@ const sizes = {
         height: '32',
         viewBox: '0 0 32 32',
     }
-}
+};
 
 const minHeightSmall = css`
 min-height: 24px;
-`
+`;
 const minHeightMedium = css`
 min-height: 32px;
-`
+`;
 
 const backgroundColor = css`
 background-color: #fff
-`
+`;
 
 export const XLoader = (props: XLoaderProps) => (
     <div className={cx(base, props.loading !== false ? displayFlex : displayNone, props.size === 'small' ? minHeightSmall : minHeightMedium, props.transparentBackground ? undefined : backgroundColor)}>

@@ -6,7 +6,6 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XStore } from 'openland-y-store/XStore';
 import { XTitle } from 'openland-x/XTitle';
 import { XButton } from 'openland-x/XButton';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XLoader } from 'openland-x/XLoader';
 
@@ -41,7 +40,6 @@ export default withApp('UI Framework - Loaders', 'viewer', props => {
                             <XTitle>Loading Bar</XTitle>
                             <Toggler />
                             <XTitle>Circular Bar</XTitle>
-                            <XLoadingCircular color="#000000" />
                             <XView height={50}>
                                 <XLoader loading={true} />
                             </XView>
