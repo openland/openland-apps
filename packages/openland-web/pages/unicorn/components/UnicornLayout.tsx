@@ -29,7 +29,7 @@ const containerDesktop = css`
     min-width: 500px;
     height: 100%;
     flex-direction: column;
-    background-color: purple;
+    background-color: #F0F2F5;
     pointer-events: none;
 `;
 
@@ -178,10 +178,10 @@ const UnicornContainer = React.memo((props: {
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
                 <XView key="root" left={0} top={0} right={0} bottom={0} position="absolute">
-                    <XView width="100%" height="100%" position="relative" paddingBottom={50} alignItems="flex-start">
+                    <XView width="100%" height="100%" position="relative" paddingBottom={52} alignItems="flex-start">
                         {props.root}
                     </XView>
-                    <XView position="absolute" left={0} right={0} bottom={0} height={50}>
+                    <XView position="absolute" left={0} right={0} bottom={0} height={52}>
                         {props.mobileBar}
                     </XView>
                 </XView>
@@ -197,7 +197,7 @@ const UnicornContainer = React.memo((props: {
     } else {
         return (
             <XView width="100%" height="100%" flexDirection="row" overflow="hidden">
-                <XView width={50} height="100%">
+                <XView width={64} height="100%">
                     {props.desktopBar}
                 </XView>
                 <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">

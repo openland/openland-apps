@@ -5,22 +5,8 @@ import { useController } from './components/UnicornController';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { UnicornLayout } from './components/UnicornLayout';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-
-const MobileNavigation = React.memo(() => {
-    return (
-        <XView height="100%" width="100%" backgroundColor="red">
-            {}
-        </XView>
-    );
-});
-
-const DesktopNavigation = React.memo(() => {
-    return (
-        <XView height="100%" width="100%" backgroundColor="red">
-            {}
-        </XView>
-    );
-});
+import { AppBarDesktop } from './navigation/AppBarDesktop';
+import { AppBarMobile } from './navigation/AppBarMobile';
 
 const Chat = (props: { id: string }) => {
     return (
@@ -50,8 +36,8 @@ export default () => {
             <InnerContainer>
                 <UnicornLayout
                     root={<Root />}
-                    desktopBar={<DesktopNavigation />}
-                    mobileBar={<MobileNavigation />}
+                    desktopBar={<AppBarDesktop />}
+                    mobileBar={<AppBarMobile />}
                 />
             </InnerContainer>
 
