@@ -245,7 +245,7 @@ export class ConversationEngine implements MessageSendHandler {
                     break;
                 }
                 let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: loadToUnreadBatchSize }));
-                loadToUnreadBatchSize = loadToUnreadBatchSize * 2;
+                loadToUnreadBatchSize += 20;
                 let batch = [...loaded.messages];
                 batch.reverse();
                 messages.unshift(...batch);
