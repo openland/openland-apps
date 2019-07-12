@@ -84,7 +84,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {props.builder._actions.map((a, i) => (
                         <>
-                            <View style={{ width: 4 }} />
+                            <View style={{ width: 10 }} />
                             <ZRoundedButton
                                 key={i + '-ac'}
                                 style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}

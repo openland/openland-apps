@@ -37,12 +37,12 @@ export class AlertBlanketBuilder {
     }
 
     button(name: string, style?: BlanketButtonsStyle, callback?: () => void): AlertBlanketBuilder {
-        this._actions.push({ name: name.toUpperCase(), callback, style });
+        this._actions.push({ name, callback, style });
         return this;
     }
 
     action(name: string, style?: BlanketButtonsStyle, action?: () => void): AlertBlanketBuilder {
-        this._actions.push({ name: name.toUpperCase(), action, style });
+        this._actions.push({ name, action, style });
         return this;
     }
 

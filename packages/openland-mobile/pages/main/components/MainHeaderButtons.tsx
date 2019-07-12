@@ -10,20 +10,21 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPre
     const { dot, theme, onPress } = props;
 
     const icon = require('assets/ic-header-bell-24.png');
-    const size = Platform.OS === 'ios' ? 26 : 24;
+    const size = Platform.OS === 'ios' ? 44 : 48;
+    const dotPosition = Platform.OS === 'ios' ? 7 : 9;
     const color = theme.foregroundSecondary;
 
     return (
         <SHeaderButton onPress={onPress} key={'notify-button-' + dot}>
-            <View width={44} height={44} alignItems="center" justifyContent="center">
-                <Image source={icon} style={{ width: size, height: size, tintColor: color }} resizeMode="contain" />
+            <View width={size} height={size} alignItems="center" justifyContent="center">
+                <Image source={icon} style={{ width: 24, height: 24, tintColor: color }} resizeMode="contain" />
     
                 {dot && (
                     <View
                         style={{
                             position: 'absolute',
-                            top: 5,
-                            right: 5,
+                            top: dotPosition,
+                            right: dotPosition,
                             width: 6,
                             height: 6,
                             borderRadius: 3,
