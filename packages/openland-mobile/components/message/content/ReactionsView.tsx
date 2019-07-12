@@ -33,7 +33,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                                 marginRight: 7,
                                 marginTop: 2,
                                 fontSize: 13,
-                                color: props.theme.foregroundPrimary
+                                color: props.theme.foregroundTertiary
                             }}
                             numberOfLines={1}
                             allowFontScaling={false}

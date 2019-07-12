@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -33,7 +33,6 @@ import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
-import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
@@ -42,6 +41,7 @@ import { findSpans } from 'openland-y-utils/findSpans';
 import throttle from 'lodash/throttle';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { PinnedMessage } from './components/PinnedMessage';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -326,40 +326,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
                             <ConversationView inverted={true} engine={this.engine} />
-
                             {pinnedMessage && (
-                                <ASSafeAreaContext.Consumer>
-                                    {area => (
-                                        <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.backgroundSecondary} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
-                                            <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(pinnedMessage!.id)}>
-                                                <View flexDirection="row" paddingRight={16} alignItems="center">
-                                                    <View width={50} height={showPinAuthor ? 52 : 44} alignItems="center" justifyContent="center">
-                                                        <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentPrimary }} source={require('assets/ic-pinned.png')} />
-                                                    </View>
-
-                                                    <View height={showPinAuthor ? 52 : 44} flexGrow={1} flexShrink={1} paddingTop={9} >
-                                                        {showPinAuthor && <View flexDirection="row">
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, fontWeight: TextStyles.weight.medium }}>
-                                                                {pinnedMessage!.sender.name}
-                                                            </Text>
-
-                                                            {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, marginLeft: 8, fontWeight: TextStyles.weight.medium }}>
-                                                                    {pinnedMessage!.sender.primaryOrganization!.name}
-                                                                </Text>
-                                                            }
-                                                        </View>}
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.foregroundPrimary }}>
-                                                            {pinnedMessage!.fallback}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        </SBlurView>
-                                    )}
-                                </ASSafeAreaContext.Consumer>
+                                <PinnedMessage
+                                    message={pinnedMessage}
+                                    onPress={this.handlePinnedMessagePress}
+                                    theme={this.props.theme}
+                                    showAuthor={showPinAuthor}
+                                />
                             )}
-
                             {showInputBar && !showSelectedMessagesActions && (
                                 <MessageInputBar
                                     onAttachPress={this.handleAttach}

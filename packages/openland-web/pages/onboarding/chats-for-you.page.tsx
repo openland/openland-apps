@@ -157,7 +157,7 @@ const ChatsItemList = ({
                 )}
             </XView>
 
-            <XScrollView3 marginBottom={-110} flexGrow={0} flexShrink={1} alignItems="center">
+            <XScrollView3 marginBottom={-110} flexGrow={1} flexShrink={1} alignItems="center">
                 <XView
                     paddingBottom={150}
                     alignItems="stretch"

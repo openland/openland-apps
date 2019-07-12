@@ -277,7 +277,7 @@ const RootContainer = Glamorous.div<RootContainerProps>([
             },
         },
         '& input[type="number"], & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-            appearance: 'none',
+            appearance: 'textfield',
         },
     }),
     props => colorStyles(props.color),
