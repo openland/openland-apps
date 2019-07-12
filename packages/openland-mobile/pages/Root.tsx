@@ -62,7 +62,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
             blurType,
             headerColor,
             isOpaque: Platform.OS === 'ios' && blurType !== 'dark' ? false : true,
-            hairlineColor: this.props.theme.hairlineColor,
+            hairlineColor: this.props.theme.backgroundPrimary,
             keyboardAppearance: this.props.theme.keyboardAppearance
         };
 

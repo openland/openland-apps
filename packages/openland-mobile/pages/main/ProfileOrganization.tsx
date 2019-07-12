@@ -11,7 +11,7 @@ import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { View, Platform, Text, Dimensions } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -288,7 +288,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                titleLines={2}
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
 

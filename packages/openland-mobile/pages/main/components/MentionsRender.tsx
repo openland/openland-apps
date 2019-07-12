@@ -9,7 +9,7 @@ import { SuggestionsWrapper, SuggestionsItemName } from './Suggestions';
 
 export const findMentions = (activeWord: string, groupId: string): MentionToSend[] => {
     let res: MentionToSend[] = [];
-    let members = getClient().useRoomMembers({ roomId: groupId }).members;
+    let members = getClient().useRoomMembers({ roomId: groupId }, { fetchPolicy: 'cache-and-network' }).members;
 
     if (members.length <= 0) {
         return [];

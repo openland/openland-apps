@@ -20,7 +20,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -315,11 +315,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                {(privateRoom ? !privateRoom.user.isBot : true) && <SHeaderButton
-                    title="Call"
-                    icon={require('assets/ic-call-26.png')}
-                    onPress={async () => { showCallModal(this.props.chat.id); }}
-                />}
+                {(privateRoom ? !privateRoom.user.isBot : true) && (
+                    <SHeaderButton
+                        title="Call"
+                        icon={require('assets/ic-header-call-24.png')}
+                        onPress={async () => { showCallModal(this.props.chat.id); }}
+                    />
+                )}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>

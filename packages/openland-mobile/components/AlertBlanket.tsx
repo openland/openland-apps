@@ -55,12 +55,11 @@ export class AlertBlanketBuilder {
     }
 }
 
-export class Alert {
-    static alert = (message: string) => {
+export default {
+    alert: (message: string) => {
         new AlertBlanketBuilder().alert(message);
-    }
-
-    static builder = () => {
+    },
+    builder: () => {
         return new AlertBlanketBuilder();
     }
-}
+};

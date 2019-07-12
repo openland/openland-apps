@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';

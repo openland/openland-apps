@@ -23,7 +23,7 @@ import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { findSpans } from 'openland-y-utils/findSpans';

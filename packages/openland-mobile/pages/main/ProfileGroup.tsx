@@ -13,8 +13,8 @@ import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -171,6 +171,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         </>
     );
 
+    const hasAbout = !!room.description && !!room.organization;
+
     const content = (
         <>
             <ZListItemHeader
@@ -180,8 +182,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 subtitle={subtitle}
                 photo={room.photo}
                 id={room.id}
-                action={room.isChannel ? "View channel" : "Send message"}
-                onPress={handleSend}
+                action={{
+                    title: room.isChannel ? 'View channel' : 'Send message',
+                    onPress: handleSend,
+                }}
             />
 
             <ZListItemGroup header="About" marginTop={0}>
@@ -205,7 +209,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'}>
+            <ZListItemGroup header="Settings" marginTop={!hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListItemGroup>
 

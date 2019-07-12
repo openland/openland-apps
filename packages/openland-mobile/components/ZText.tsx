@@ -2,7 +2,7 @@ import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 import { Text, Linking, StyleProp, TextStyle, Clipboard } from 'react-native';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
-import { ActionSheet } from './ActionSheet';
+import ActionSheet from './ActionSheet';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ZTextProps {

@@ -4,7 +4,7 @@ import { View, Text, Switch, Image, Platform, Clipboard } from 'react-native';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { ActionSheet } from './ActionSheet';
+import ActionSheet from './ActionSheet';
 import { ZAvatar } from './ZAvatar';
 import { ThemeContext, useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';

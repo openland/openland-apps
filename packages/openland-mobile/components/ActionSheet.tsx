@@ -83,8 +83,10 @@ export class ActionSheetBuilder {
     }
 }
 
-export class ActionSheet {
-    static builder = () => {
+export const ActionSheet = {
+    builder: () => {
         return new ActionSheetBuilder();
     }
-}
+};
+
+export default ActionSheet;

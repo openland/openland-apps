@@ -75,7 +75,6 @@ export type ThemeGlobal = {
     // legacy
 
     separatorColor: string;
-    hairlineColor: string;
     accentBackgroundColor: string;
     chatImageBackground: string;
 };

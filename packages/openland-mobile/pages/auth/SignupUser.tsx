@@ -7,7 +7,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
 import { next } from './signup';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { XMemo } from 'openland-y-utils/XMemo';

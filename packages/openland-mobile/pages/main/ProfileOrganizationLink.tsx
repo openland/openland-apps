@@ -8,7 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/graphqlClient';

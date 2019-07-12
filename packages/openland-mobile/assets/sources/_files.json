@@ -680,6 +680,20 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-edit",
+            "src": "ic-edit.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-header-call",
+            "src": "ic-header-call.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

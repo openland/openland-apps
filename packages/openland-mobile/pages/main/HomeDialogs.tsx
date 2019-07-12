@@ -11,7 +11,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

@@ -165,10 +165,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         overlay={true}
                         width={layout.width}
                         height={layout.height}
-                        marginTop={-contentInsetsTop}
-                        marginLeft={-contentInsetsHorizontal}
-                        marginRight={-contentInsetsHorizontal}
-                        marginBottom={-contentInsetsBottom}
+                        marginTop={Platform.OS === 'ios' ? -contentInsetsTop : undefined}
+                        marginLeft={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
+                        marginRight={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
+                        marginBottom={Platform.OS === 'ios' ? -contentInsetsBottom : undefined}
                     >
                         <AsyncBubbleMediaView
                             isOut={message.isOut}
@@ -177,7 +177,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             theme={theme}
                             width={layout.width}
                             height={layout.height}
-                            onPress={this.handlePress}
+                            onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
                         />
                     </ASFlex>
                 )}
