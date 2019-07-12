@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent } from 'react-native';
+import { View, LayoutChangeEvent, Dimensions } from 'react-native';
 import { RoomShort_SharedRoom, GlobalSearchEntryKind, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -22,7 +22,6 @@ interface PickedItems {
 }
 
 interface GroupsListProps {
-    searchHeight: number;
     query: string;
     groups: any;
     onAdd: (item: PickedItems) => void;
@@ -32,7 +31,7 @@ const GroupsList = XMemo<GroupsListProps>((props) => {
     let groups = getClient().useUserAvailableRooms({ limit: 100 }).betaUserAvailableRooms;
 
     return (
-        <SScrollView marginTop={props.searchHeight}>
+        <>
             {groups.map((v, i) => {
                 const group = v as RoomShort_SharedRoom;
 
@@ -48,7 +47,7 @@ const GroupsList = XMemo<GroupsListProps>((props) => {
                     </CheckListBoxWraper>
                 );
             })}
-        </SScrollView >
+        </>
     );
 });
 
@@ -59,7 +58,7 @@ const GroupsSearchList = XMemo<GroupsListProps>((props) => {
     }).items as GlobalSearch_items_SharedRoom[];
 
     return (
-        <SScrollView marginTop={props.searchHeight}>
+        <>
             {groups.map((group, i) => (
                 <CheckListBoxWraper checked={!!props.groups.find((g: any) => g.id === group.id)}>
                     <GroupView
@@ -71,7 +70,7 @@ const GroupsSearchList = XMemo<GroupsListProps>((props) => {
                     />
                 </CheckListBoxWraper>
             ))}
-        </SScrollView >
+        </>
     );
 });
 
@@ -113,10 +112,14 @@ const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
                 }}
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                <React.Suspense fallback={<ZLoader />}>
-                    {query.length === 0 && <GroupsList groups={groups} searchHeight={searchHeight} query={query} onAdd={handleAddGroup} />}
-                    {query.length > 0 && <GroupsSearchList groups={groups} searchHeight={searchHeight} query={query} onAdd={handleAddGroup} />}
-                </React.Suspense>
+                <SScrollView>
+                    <View paddingTop={searchHeight} minHeight={Dimensions.get('screen').height - searchHeight}>
+                        <React.Suspense fallback={<ZLoader />}>
+                            {query.length === 0 && <GroupsList groups={groups} query={query} onAdd={handleAddGroup} />}
+                            {query.length > 0 && <GroupsSearchList groups={groups} query={query} onAdd={handleAddGroup} />}
+                        </React.Suspense>
+                    </View>
+                </SScrollView>
             </View>
             <ASSafeAreaContext.Consumer>
                 {area => (
