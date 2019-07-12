@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
-import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
@@ -45,10 +44,10 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     }
 
     return (
-        <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
+        <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.accentPositive }} /></View>)}
-                {(room.isChannel) && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.accentPositive : theme.foregroundPrimary }} /></View>)}
+                {(room.kind === 'GROUP' && !room.isChannel) && (<View height={18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: theme.accentPositive }} /></View>)}
+                {(room.isChannel) && (<View height={18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.accentPositive : theme.foregroundPrimary }} /></View>)}
                 <Text style={[styles.title, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
             <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail">
@@ -86,7 +85,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
     }
 
     return (
-        <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
+        <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
                 <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>

@@ -9,7 +9,7 @@ interface ZManageButtonProps {
 export const ZManageButton = (props: ZManageButtonProps) => (
     <SHeaderButton
         title="Manage"
-        icon={Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png')}
+        icon={require('assets/ic-header-manage-24.png')}
         onPress={props.onPress}
     />
 );

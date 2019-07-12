@@ -198,7 +198,7 @@ export class HeaderTitleViewCoordinator {
                     if (this.page.config.searchUnderlay) {
                         this.page.config.searchUnderlay!!.translateY = -96;
                     }
-                    this.searchInputBackgroundView.iosWidth = -64;
+                    this.searchInputBackgroundView.iosWidth = -69;
                     this.searchInputBackgroundView.translateX = -32;
                     this.searchCancelView.translateX = -53;
                     this.searchCancelView.opacity = 1;
