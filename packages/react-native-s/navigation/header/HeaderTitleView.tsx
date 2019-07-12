@@ -9,6 +9,7 @@ import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { HeaderTitleViewProps } from './HeaderTitleView.ios';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     root: {
@@ -29,13 +30,10 @@ const styles = StyleSheet.create({
         // backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
+        ...TypeStyles.title2,
         textAlign: 'left',
-        fontSize: 22,
-        fontWeight: '600',
-        // lineHeight: 20,
-        includeFontPadding: true,
         textAlignVertical: 'center',
-        height: 56,
+        height: SDevice.navigationBarHeight,
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
@@ -134,7 +132,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             )}
                             {!v.config.searchActive && title}
                         </View>
-                        <View flexDirection="row" alignItems="center" alignSelf="flex-end" paddingRight={2}>
+                        <View flexDirection="row" alignItems="center" alignSelf="center" paddingRight={2}>
                             {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-search-a.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
