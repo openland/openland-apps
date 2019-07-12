@@ -179,8 +179,9 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
             let ex = props.routing.resolve(to);
             if (ex) {
                 let Component = ex.route.factory();
-                let r = Routes.findAndGetUrls(to);
-                Router.replace(r.urls.href, r.urls.as, { shallow: true });
+                // let r = Routes.findAndGetUrls(to);
+                // console.log(r);
+                Router.replace('/unicorn', to, { shallow: true });
                 // window.location.assign(to);
                 props.controller.push(<Component />);
             }

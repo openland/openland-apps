@@ -14,6 +14,8 @@ import { css } from 'linaria';
 import { AccountFragment } from 'openland-web/fragments/account/AccountFragment';
 import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragment';
 import { Routing } from './routing';
+import Router from 'next/router';
+import { Routes } from 'openland-web/routes';
 
 const visibleContainer = css`
     position: absolute;
@@ -161,13 +163,71 @@ const Inner = () => {
         }
     }
     let [selected, setSelected] = React.useState(def);
+    let lastTab = React.useRef(def);
     let root0 = React.useMemo(() => <RootDiscover />, []);
     let root1 = React.useMemo(() => <Root />, []);
     let root2 = React.useMemo(() => <RootAccount />, []);
-    const setSelectedClb = (id: number) => {
-        setSelected(id);
+    React.useLayoutEffect(() => {
+        console.warn(window.history.state);
+        // if (!window.history.state.options) {
+        //     window.history.state.options = {};
+        // }
+        // window.history.state.options['unicorn-switch-tab'] = def;
+        window.history.replaceState({ ...window.history.state, options: { ...window.history.state.options, 'unicorn-switch-tab': def } }, '');
+        console.warn(window.history.state);
+    }, []);
+
+    const setSelectedClb = React.useCallback((id: number) => {
         localStorage.setItem('unicorn-tab', id + '');
-    };
+        let path = '/discover';
+        if (id === 0) {
+            path = '/discover';
+        } else if (id === 1) {
+            path = '/mail';
+        } else if (id === 2) {
+            path = '/settings';
+        }
+
+        // let r = Routes.findAndGetUrls('/discover');
+        let old = lastTab.current!;
+        let n = id;
+        lastTab.current = id;
+
+        console.log('switch: ' + old + ' -> ' + n);
+        Router.push('/unicorn', path, {
+            shallow: true,
+            'unicorn-switch-tab': id
+        });
+
+        setSelected(id);
+    }, []);
+
+    React.useEffect(() => {
+        // let callback = () => {
+        //     console.log(window.history.state);
+        // };
+        let before = () => {
+            console.log('before');
+            console.log(window.history.state);
+            if (window.history.state.options) {
+                let tb = window.history.state.options['unicorn-switch-tab'];
+                if (typeof tb === 'number') {
+                    if (tb >= 0 && tb <= 2) {
+                        console.log('tab: ' + tb);
+                        localStorage.setItem('unicorn-tab', tb + '');
+                        setSelected(tb);
+                    }
+                }
+            }
+            // if (window.history.state['unicorn-switch-tab'])
+            //     console.log(window.history.state);
+        };
+        Router.events.on('routeChangeComplete', before);
+        return () => {
+            Router.events.off('routeChangeComplete', before);
+        };
+    }, []);
+
     return (
         <>
             <InnerContainer>
