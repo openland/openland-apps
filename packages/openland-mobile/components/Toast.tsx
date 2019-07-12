@@ -120,7 +120,7 @@ export function showCopiedLink() {
     success({ text: 'Link copied', duration: 1000 }).show();
 }
 
-export const processing = async (
+export const handle = async (
     fn: Function,
     config: { success?: ToastBuildConfig; failure?: ToastBuildConfig; } = {},
 ) => {
@@ -135,8 +135,8 @@ export const processing = async (
         success({ duration: 1000, ...config.success }).show();
     } catch (err) {
         toastLoader.hide();
-        failure({ duration: 1000, ...config.success }).show();
+        failure({ duration: 1000, ...config.failure }).show();
     }
 };
 
-export default { build, loader, success, failure, showCopiedLink, processing };
+export default { build, loader, success, failure, showCopiedLink, handle };

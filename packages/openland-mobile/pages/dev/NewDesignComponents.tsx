@@ -11,13 +11,13 @@ import { delay } from 'openland-y-utils/timer';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     } as ViewStyle,
     content: {
         padding: 20,
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center'
     } as ViewStyle,
     headerText: {
@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
 });
 
 const showProcessing = () => {
-    Toast.processing(
+    Toast.handle(
         async () => {
             await delay(1000);
             throw new Error();
-            
-        }, 
+
+        },
         { success: { text: 'Error load data' } }
     );
 };
@@ -61,7 +61,7 @@ export default withApp(() => {
                     </Text>
                     <View>
                         <View style={styles.content}>
-                            <Button 
+                            <Button
                                 title={'Show processing'}
                                 onPress={() => showProcessing()}
                             />
@@ -71,17 +71,17 @@ export default withApp(() => {
                         Toast notifications design
                     </Text>
                     <View style={styles.content}>
-                        <Button 
+                        <Button
                             title={'Show unknow Error'}
                             onPress={() => {
                                 Toast.failure({ text: 'Unknown error', duration: 1000 }).show();
                             }}
                         />
-                        <Button 
+                        <Button
                             title={'Show link copiend'}
                             onPress={() => {
                                 Toast
-                                    .build({ 
+                                    .build({
                                         text: 'Link copiend',
                                         iconSource: require('assets/ic-toast-checkmark-32.png'),
                                         duration: 1000
