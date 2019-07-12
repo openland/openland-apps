@@ -5,7 +5,6 @@ import { XRouter } from './XRouter';
 import { RouterProps } from 'next/router';
 import { XRouterContext } from './XRouterContext';
 import { XRouting } from './XRouting';
-import { XRoutingContext } from './XRoutingContext';
 import { XViewRouterContext, XViewRouter, XViewRouteContext } from 'react-mental';
 
 interface NextRoutes {
@@ -150,11 +149,9 @@ export class XRouterProvider extends React.Component<{
         return (
             <XViewRouterContext.Provider value={this.xViewRouter}>
                 <XRouterContext.Provider value={this.xRouterState}>
-                    <XRoutingContext.Provider value={this.xRouting}>
-                        <XViewRouteContext.Provider value={this.xRouterState}>
-                            {this.props.children}
-                        </XViewRouteContext.Provider>
-                    </XRoutingContext.Provider>
+                    <XViewRouteContext.Provider value={this.xRouterState}>
+                        {this.props.children}
+                    </XViewRouteContext.Provider>
                 </XRouterContext.Provider>
             </XViewRouterContext.Provider>
         );

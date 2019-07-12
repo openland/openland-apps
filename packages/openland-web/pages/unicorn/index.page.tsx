@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { Container, InnerContainer } from './components/Container';
+import { Container, InnerContainer } from '../../../openland-unicorn/components/Container';
 import { XView } from 'react-mental';
-import { useController } from './components/UnicornController';
+import { useController } from '../../../openland-unicorn/components/UnicornController';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
-import { UnicornLayout } from './components/UnicornLayout';
+import { UnicornLayout } from '../../../openland-unicorn/UnicornLayout';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { AppBarDesktop } from './navigation/AppBarDesktop';
 import { AppBarMobile } from './navigation/AppBarMobile';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
-import { useLayout } from './components/LayoutContext';
+import { useLayout } from '../../../openland-unicorn/components/LayoutContext';
 import { css } from 'linaria';
 import { AccountFragment } from 'openland-web/fragments/account/AccountFragment';
 import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragment';
+import { Routing } from './routing';
 
 const visibleContainer = css`
     position: absolute;
@@ -171,13 +172,13 @@ const Inner = () => {
         <>
             <InnerContainer>
                 <div className={selected === 0 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root0} />
+                    <UnicornLayout root={root0} routing={Routing} />
                 </div>
                 <div className={selected === 1 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root1} />
+                    <UnicornLayout root={root1} routing={Routing} />
                 </div>
                 <div className={selected === 2 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root2} />
+                    <UnicornLayout root={root2} routing={Routing} />
                 </div>
 
                 {layout === 'desktop' && (

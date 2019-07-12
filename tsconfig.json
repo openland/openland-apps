@@ -157,6 +157,9 @@
             ],
             "openland-form": [
                 "openland-form"
+            ],
+            "openland-unicorn": [
+                "openland-unicorn"
             ]
         },
         "importHelpers": true
@@ -219,6 +222,7 @@
         "./packages/react-native-notification-handler",
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",
-        "./packages/react-native-auth0-s"
+        "./packages/react-native-auth0-s",
+        "./packages/openland-unicorn"
     ]
 }

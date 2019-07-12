@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { useController } from 'openland-web/pages/unicorn/components/UnicornController';
+import { useController } from 'openland-unicorn/components/UnicornController';
 import { Notifications } from './Notifications';
 import { AppearanceTab } from './AppearanceTab';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
@@ -137,16 +137,12 @@ export const AccountFragment = React.memo(() => {
             <UListItem
                 text="Notifications"
                 icon={<NotificationsIcon />}
-                onClick={() => {
-                    controller.push(<Notifications />);
-                }}
+                path="/settings/notifications"
             />
             <UListItem
                 text="Appearance"
                 icon={<AppearanceIcon />}
-                onClick={() => {
-                    controller.push(<AppearanceTab />);
-                }}
+                path="/settings/appearance"
             />
             <UListItem
                 text="Download Apps"

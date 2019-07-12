@@ -309,10 +309,15 @@ routes.add('/test', '/dev/test');
 // Account
 //
 
-routes.add('/settings', '/account/root');
-routes.add('/settings/profile', '/account/root');
-routes.add('/settings/appearance', '/account/root');
-routes.add('/settings/notifications', '/account/root');
+// routes.add('/settings', '/account/root');
+// routes.add('/settings/profile', '/account/root');
+// routes.add('/settings/appearance', '/account/root');
+// routes.add('/settings/notifications', '/account/root');
+
+routes.add('/settings', '/unicorn/index');
+routes.add('/settings/profile', '/unicorn/index');
+routes.add('/settings/appearance', '/unicorn/index');
+routes.add('/settings/notifications', '/unicorn/index');
 
 //
 // Authentication

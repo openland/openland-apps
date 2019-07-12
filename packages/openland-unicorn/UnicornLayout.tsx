@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { useLayout } from './LayoutContext';
-import { XView } from 'react-mental';
+import { useLayout } from './components/LayoutContext';
+import { XView, XViewRouterContext } from 'react-mental';
 import { css } from 'linaria';
-import { PageLayout } from './PageLayout';
-import { UnicornController, UnicornContext } from './UnicornController';
+import { PageLayout } from './components/PageLayout';
+import { UnicornController, UnicornContext } from './components/UnicornController';
+import { URouting } from './URouting';
+import { Routes } from 'openland-web/routes';
+import Router from 'next/router';
 
 const rootClassName = css`
     display: flex;
@@ -166,17 +169,31 @@ function animationReducer(
     }
 }
 
-const UnicornContainer = React.memo((props: { root: any, controller: UnicornController }) => {
+const UnicornContainer = React.memo((props: { root: any, controller: UnicornController, routing: URouting }) => {
     let layout = useLayout();
     let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
     React.useEffect(() => { return props.controller.addListener(dispatch); }, []);
     React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
+    const routing = React.useMemo(() => ({
+        navigate: (to: string) => {
+            let ex = props.routing.resolve(to);
+            if (ex) {
+                let Component = ex.route.factory();
+                let r = Routes.findAndGetUrls(to);
+                Router.replace(r.urls.href, r.urls.as, { shallow: true });
+                // window.location.assign(to);
+                props.controller.push(<Component />);
+            }
+        }
+    }), []);
     if (layout === 'mobile') {
         return (
             <XView width="100%" height="100%" position="relative" overflow="hidden">
                 <XView key="root" left={0} top={0} right={0} bottom={0} position="absolute">
                     <XView width="100%" height="100%" position="relative" paddingBottom={52} alignItems="flex-start" backgroundColor="#fff">
-                        {props.root}
+                        <XViewRouterContext.Provider value={routing}>
+                            {props.root}
+                        </XViewRouterContext.Provider>
                     </XView>
                 </XView>
                 <div key="content" className={containerMobile} ref={props.controller.ref}>
@@ -194,7 +211,9 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
                 <XView width={1} backgroundColor="rgba(120, 128, 143, 0.08)" height="100%" />
                 <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                     <XView width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
-                        {props.root}
+                        <XViewRouterContext.Provider value={routing}>
+                            {props.root}
+                        </XViewRouterContext.Provider>
                     </XView>
                 </XView>
                 <XView width={1} height="100%" backgroundColor="rgba(0, 0, 0, 0.08)" />
@@ -210,7 +229,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     }
 });
 
-export const UnicornLayout = React.memo((props: { root: any }) => {
+export const UnicornLayout = React.memo((props: { root: any, routing: URouting }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     let controller = React.useMemo(() => new UnicornController(ref), []);
     return (
@@ -219,6 +238,7 @@ export const UnicornLayout = React.memo((props: { root: any }) => {
                 <UnicornContainer
                     root={props.root}
                     controller={controller}
+                    routing={props.routing}
                 />
             </UnicornContext.Provider>
         </div>
