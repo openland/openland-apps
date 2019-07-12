@@ -245,7 +245,7 @@ const EditCommunityEntity = (props: {
 
     return (
         <XView borderRadius={8} overflow="hidden" flexShrink={1}>
-            <XScrollView3 flexShrink={1} flexGrow={1}>
+            <XScrollView3 flexShrink={1} flexGrow={1} useDefaultScroll>
                 <XView paddingHorizontal={40} paddingBottom={34}>
                     <XView
                         flexDirection="row"
