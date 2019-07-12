@@ -58,7 +58,7 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
         if (Platform.OS === 'ios') {
             capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
         } else {
-            capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
+            capInsets = { top: 17, left: 17, right: 17, bottom: 17 };
         }
 
         let resolved = Image.resolveAssetSource(image);

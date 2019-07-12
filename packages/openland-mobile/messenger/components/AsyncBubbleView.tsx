@@ -48,17 +48,9 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
 
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
-            if (this.props.isOut) {
-                capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
-            } else {
-                capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
-            }
+            capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
         } else {
-            if (this.props.isOut) {
-                capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
-            } else {
-                capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
-            }
+            capInsets = { top: 17, left: 17, right: 17, bottom: 17 };
         }
         let contentInsets: { left: number, right: number, top: number, bottom: number };
 
