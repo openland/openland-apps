@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -9,6 +9,8 @@ import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSha
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SNativeConfig } from 'react-native-s/SNativeConfig';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 interface GlobalSearchProps {
     query: string;
@@ -19,50 +21,59 @@ interface GlobalSearchProps {
     onGroupPress?: (id: string, title: string) => void;
 }
 
-export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
+const GlobalSearchInner = (props: GlobalSearchProps) => {
     let theme = React.useContext(ThemeContext);
     let items = getClient().useGlobalSearch({ query: props.query }).items;
 
+    return (
+        <>
+            {items.length === 0 && (
+                <View style={{ flexDirection: 'column', width: '100%', height: '100%', flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.foregroundPrimary }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
+                </View>
+            )}
+            {items.map((item, index) => (
+                <ASView style={{ height: 48 }} key={'search-item-' + index}>
+                    {item.__typename === 'Organization' && (
+                        <GlobalSearchItemOrganization
+                            item={item}
+                            onPress={props.onOrganizationPress ? props.onOrganizationPress : () => props.router.push('ProfileOrganization', { id: item.id })}
+                        />
+                    )}
+                    {item.__typename === 'User' && (
+                        <GlobalSearchItemUser
+                            item={item}
+                            onPress={props.onUserPress ? props.onUserPress : () => props.router.push('Conversation', { id: item.id })}
+                        />
+                    )}
+                    {item.__typename === 'SharedRoom' && (
+                        <GlobalSearchItemSharedRoom
+                            item={item}
+                            onPress={props.onGroupPress ? props.onGroupPress : () => props.router.push('Conversation', { id: item.id })}
+                        />
+                    )}
+                </ASView>
+            ))}
+        </>
+    );
+};
+
+export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
     if (props.query.trim().length === 0) {
         return null;
     }
 
-    if (items.length === 0) {
-        return (
-            <KeyboardSafeAreaView>
-                <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.foregroundPrimary }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
-                </View>
-            </KeyboardSafeAreaView>
-        );
-    }
-
     return (
-        <SScrollView keyboardDismissMode="on-drag">
-            <View style={{ flexDirection: 'column', width: '100%' }}>
-                {items.map((item, index) => (
-                    <ASView style={{ height: 48 }} key={'search-item-' + index}>
-                        {item.__typename === 'Organization' && (
-                            <GlobalSearchItemOrganization
-                                item={item}
-                                onPress={props.onOrganizationPress ? props.onOrganizationPress : () => props.router.push('ProfileOrganization', { id: item.id })}
-                            />
-                        )}
-                        {item.__typename === 'User' && (
-                            <GlobalSearchItemUser
-                                item={item}
-                                onPress={props.onUserPress ? props.onUserPress : () => props.router.push('Conversation', { id: item.id })}
-                            />
-                        )}
-                        {item.__typename === 'SharedRoom' && (
-                            <GlobalSearchItemSharedRoom
-                                item={item}
-                                onPress={props.onGroupPress ? props.onGroupPress : () => props.router.push('Conversation', { id: item.id })}
-                            />
-                        )}
-                    </ASView>
-                ))}
-            </View>
+        <SScrollView>
+            <ASSafeAreaContext.Consumer>
+                {area => (
+                    <View minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
+                        <React.Suspense fallback={SNativeConfig.loader}>
+                            <GlobalSearchInner {...props} />
+                        </React.Suspense>
+                    </View>
+                )}
+            </ASSafeAreaContext.Consumer>
         </SScrollView>
     );
 });
