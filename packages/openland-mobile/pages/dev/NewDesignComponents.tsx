@@ -7,6 +7,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 import { Alert, AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
+import { delay } from 'openland-y-utils/timer';
 
 const styles = StyleSheet.create({
     container: {
@@ -25,6 +26,17 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     } as TextStyle
 });
+
+const showProcessing = () => {
+    Toast.processing(
+        async () => {
+            await delay(1000);
+            throw new Error();
+            
+        }, 
+        { success: { text: 'Error load data' } }
+    );
+};
 
 export default withApp(() => {
     return (
@@ -45,16 +57,13 @@ export default withApp(() => {
                         </View>
                     </View>
                     <Text style={styles.headerText}>
-                        Global Loader
+                        Toast processing
                     </Text>
                     <View>
                         <View style={styles.content}>
                             <Button 
-                                title={'Show new global loader'}
-                                onPress={() => {
-                                    startLoader();
-                                    setTimeout(() => stopLoader(), 2000);
-                                }}
+                                title={'Show processing'}
+                                onPress={() => showProcessing()}
                             />
                         </View>
                     </View>
