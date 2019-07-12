@@ -40,7 +40,7 @@ const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
         alignItems: 'center',
         '&:hover': {
             textDecoration: 'none',
-        }
+        },
     },
     props => XMenuItemColorStyles(props.colorTheme),
 ]);
@@ -59,8 +59,8 @@ const XMenuItemText = Glamorous.div({
 
 const IconWrapper = (props: { children: any }) => (
     <XView
-        width={22}
-        height={22}
+        minWidth={22}
+        minHeight={22}
         marginRight={18}
         flexDirection="row"
         alignItems="center"

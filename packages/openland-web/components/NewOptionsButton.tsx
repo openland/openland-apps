@@ -112,7 +112,7 @@ export const Item = ({
             path={href}
             customContent
             icon={
-                <XView marginRight={12} paddingTop={11} alignSelf="flex-start">
+                <XView alignSelf="flex-start">
                     {icon}
                 </XView>
             }
