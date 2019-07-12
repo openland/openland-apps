@@ -18,7 +18,11 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
             )}
 
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                {props.topView}
+                {!!props.topView && (
+                    <View marginBottom={-8}>
+                        {props.topView}
+                    </View>
+                )}
 
                 <MessageInputInner {...props} theme={theme} ref={ref} />
             </View>
