@@ -315,11 +315,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                {(privateRoom ? !privateRoom.user.isBot : true) && <SHeaderButton
-                    title="Call"
-                    icon={require('assets/ic-call-26.png')}
-                    onPress={async () => { showCallModal(this.props.chat.id); }}
-                />}
+                {(privateRoom ? !privateRoom.user.isBot : true) && (
+                    <SHeaderButton
+                        title="Call"
+                        icon={require('assets/ic-header-call-24.png')}
+                        onPress={async () => { showCallModal(this.props.chat.id); }}
+                    />
+                )}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
