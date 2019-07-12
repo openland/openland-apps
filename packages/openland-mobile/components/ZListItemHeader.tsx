@@ -10,6 +10,7 @@ import { ZIconButton } from './ZIconButton';
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 16,
+        marginTop: 8,
         marginBottom: 9
     } as ViewStyle,
     inner: {
