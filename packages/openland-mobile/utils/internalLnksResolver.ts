@@ -1,6 +1,6 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { randomEmptyPlaceholderEmoji } from './tolerance';
 import { AsyncStorage } from 'react-native';
 import { formatError } from 'openland-y-forms/errorHandling';

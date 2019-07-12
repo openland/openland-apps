@@ -1,5 +1,5 @@
 import { Platform, Linking } from 'react-native';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
 export type permissionsType = 'gallery' | 'gallery-add' | 'microphone' | 'camera' | 'android-storage';

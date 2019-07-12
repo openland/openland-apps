@@ -4,7 +4,7 @@ import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAw
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { forward } from 'openland-mobile/messenger/MobileMessenger';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';

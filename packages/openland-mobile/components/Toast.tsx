@@ -75,7 +75,7 @@ const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBui
 };
 
 const q = [];
-export function build(config: ToastBuildConfig) {
+function build(config: ToastBuildConfig) {
     let modal: ZModalController;
 
     const show = () =>
@@ -98,29 +98,29 @@ export function build(config: ToastBuildConfig) {
     return { show, hide };
 }
 
-export function loader() {
+function loader() {
     return { show: () => startLoader(), hide: () => stopLoader() };
 }
 
-export function success(config: ToastBuildConfig = {}) {
+function success(config: ToastBuildConfig = {}) {
     return build({
         iconSource: require('assets/ic-toast-checkmark-32.png'),
         ...config,
     });
 }
 
-export function failure(config: ToastBuildConfig = {}) {
+function failure(config: ToastBuildConfig = {}) {
     return build({
         iconSource: require('assets/ic-toast-attention-32.png'),
         ...config,
     });
 }
 
-export function showCopiedLink() {
+function showCopiedLink() {
     success({ text: 'Link copied', duration: 1000 }).show();
 }
 
-export const handle = async (
+const handle = async (
     fn: Function,
     config: { success?: ToastBuildConfig; failure?: ToastBuildConfig; } = {},
 ) => {

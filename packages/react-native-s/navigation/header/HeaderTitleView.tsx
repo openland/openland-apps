@@ -9,6 +9,7 @@ import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { HeaderTitleViewProps } from './HeaderTitleView.ios';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     root: {
@@ -29,13 +30,10 @@ const styles = StyleSheet.create({
         // backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
+        ...TypeStyles.title2,
         textAlign: 'left',
-        fontSize: 22,
-        fontWeight: '600',
-        // lineHeight: 20,
-        includeFontPadding: true,
         textAlignVertical: 'center',
-        height: 56,
+        height: SDevice.navigationBarHeight,
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
@@ -119,14 +117,14 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             height={SDevice.navigationBarHeight}
                         >
                             {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
-                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.textColor} />}
+                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.accentColor} />}
                             {v.config.searchActive && (
                                 <>
                                     <TextInput style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56, color: this.props.style.textColor }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />
                                     {this.state.searchText.length > 0 && (
                                         <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                             <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Image source={require('assets/ic-cancel.png')} style={{ tintColor: this.props.style.textColor, width: 14, height: 14 }} />
+                                                <Image source={require('assets/ic-cancel.png')} style={{ tintColor: this.props.style.accentColor, width: 14, height: 14 }} />
                                             </View>
                                         </TouchableOpacity>
                                     )}
@@ -134,7 +132,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             )}
                             {!v.config.searchActive && title}
                         </View>
-                        <View flexDirection="row" alignItems="center" alignSelf="flex-end" paddingRight={2}>
+                        <View flexDirection="row" alignItems="center" alignSelf="center" paddingRight={2}>
                             {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-search-a.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
