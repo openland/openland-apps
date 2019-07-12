@@ -24,6 +24,7 @@ export type ThemeGlobal = {
     backgroundTertiaryActive: string;
 
     backgroundHighlight: string;
+    backgroundInverted: string;
 
     contrastPrimary: string;
     contrastSpecial: string;
