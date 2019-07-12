@@ -76,7 +76,6 @@ export const ThemeLightBlue: ThemeGlobal = {
     // legacy
 
     separatorColor: '#eaeaea',
-    accentBackgroundColor: '#e5f2fe',
     chatImageBackground: '#dbdce1',
 };
 
@@ -156,6 +155,5 @@ export const ThemeDark: ThemeGlobal = {
     // legacy
 
     separatorColor: '#262629',
-    accentBackgroundColor: '#808080',
     chatImageBackground: '#555555',
 };
