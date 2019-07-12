@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container, InnerContainer } from '../../../openland-unicorn/components/Container';
 import { XView } from 'react-mental';
-import { useController } from '../../../openland-unicorn/components/UnicornController';
+import { useController, UnicornController } from '../../../openland-unicorn/components/UnicornController';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { UnicornLayout } from '../../../openland-unicorn/UnicornLayout';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
@@ -16,6 +16,7 @@ import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragme
 import { Routing } from './routing';
 import Router from 'next/router';
 import { Routes } from 'openland-web/routes';
+import { UTransitionManager } from 'openland-unicorn/UTransitionManager';
 
 const visibleContainer = css`
     position: absolute;
@@ -166,9 +167,13 @@ const Inner = () => {
     }, []);
     let [selected, setSelected] = React.useState(def);
     let [selectedMounted, setSelectedMounted] = React.useState(def);
+    let currentTab = React.useRef(def);
     let root0 = React.useMemo(() => <RootDiscover />, []);
+    let controller0 = React.useMemo(() => new UnicornController('/discover'), []);
     let root1 = React.useMemo(() => <Root />, []);
+    let controller1 = React.useMemo(() => new UnicornController('/mail'), []);
     let root2 = React.useMemo(() => <RootAccount />, []);
+    let controller2 = React.useMemo(() => new UnicornController('/settings'), []);
 
     // Put initial tab id
     React.useLayoutEffect(() => {
@@ -192,6 +197,12 @@ const Inner = () => {
             path = '/settings';
         }
 
+        currentTab.current = id;
+        localStorage.setItem('unicorn-tab', id + '');
+        setSelected(id);
+        setTimeout(() => {
+            setSelectedMounted(id);
+        }, 20);
         Router.push('/unicorn', path, {
             shallow: true,
             'unicorn-switch-tab': id
@@ -199,24 +210,35 @@ const Inner = () => {
     }, []);
 
     React.useEffect(() => {
-        let before = () => {
-            if (window.history.state.options) {
+        UTransitionManager.onBackPressed = () => {
+            if (window.history.state && window.history.state.options) {
                 let tb = window.history.state.options['unicorn-switch-tab'];
                 if (typeof tb === 'number') {
                     if (tb >= 0 && tb <= 2) {
                         console.log('tab: ' + tb);
                         localStorage.setItem('unicorn-tab', tb + '');
+                        currentTab.current = tb;
                         setSelected(tb);
                         setTimeout(() => {
                             setSelectedMounted(tb);
                         }, 20);
                     }
+                } else {
+                    let path = window.history.state.as as string;
+                    console.warn('back -> ' + path);
+                    if (currentTab.current === 2) {
+                        let ex = Routing.resolve(path);
+                        if (ex) {
+                            let Component = ex.route.factory();
+                            controller2.push(path, <Component />);
+                        }
+                    }
                 }
             }
         };
-        Router.events.on('routeChangeComplete', before);
+
         return () => {
-            Router.events.off('routeChangeComplete', before);
+            UTransitionManager.onBackPressed = undefined;
         };
     }, []);
 
@@ -224,13 +246,13 @@ const Inner = () => {
         <>
             <InnerContainer>
                 <div className={selectedMounted === 0 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root0} routing={Routing} emptyPath="/discover" />
+                    <UnicornLayout root={root0} routing={Routing} controller={controller0} />
                 </div>
                 <div className={selectedMounted === 1 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root1} routing={Routing} emptyPath="/mail" />
+                    <UnicornLayout root={root1} routing={Routing} controller={controller1} />
                 </div>
                 <div className={selectedMounted === 2 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root2} routing={Routing} emptyPath="/settings" />
+                    <UnicornLayout root={root2} routing={Routing} controller={controller2} />
                 </div>
 
                 {layout === 'desktop' && (

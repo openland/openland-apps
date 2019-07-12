@@ -226,15 +226,13 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     }
 });
 
-export const UnicornLayout = React.memo((props: { root: any, emptyPath: string, routing: URouting }) => {
-    let ref = React.useRef<HTMLDivElement>(null);
-    let controller = React.useMemo(() => new UnicornController(props.emptyPath, ref), []);
+export const UnicornLayout = React.memo((props: { root: any, routing: URouting, controller: UnicornController }) => {
     return (
         <div className={rootClassName}>
-            <UnicornContext.Provider value={controller}>
+            <UnicornContext.Provider value={props.controller}>
                 <UnicornContainer
                     root={props.root}
-                    controller={controller}
+                    controller={props.controller}
                     routing={props.routing}
                 />
             </UnicornContext.Provider>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import uuid from 'uuid';
 import Router from 'next/router';
+import { UTransitionManager } from 'openland-unicorn/UTransitionManager';
 
 export interface UnicornPage {
     key: string;
@@ -9,13 +10,12 @@ export interface UnicornPage {
 }
 
 export class UnicornController {
-    readonly ref: React.RefObject<HTMLDivElement>;
+    readonly ref: React.RefObject<HTMLDivElement> = React.createRef();
     readonly pages: UnicornPage[] = [];
     readonly emptyPath: string;
     private readonly _listeners: ((action: { type: 'push', key: string, component: any } | { type: 'pop', key: string }) => void)[] = [];
 
-    constructor(emptyPath: string, ref: React.RefObject<HTMLDivElement>) {
-        this.ref = ref;
+    constructor(emptyPath: string) {
         this.emptyPath = emptyPath;
     }
 
@@ -28,7 +28,7 @@ export class UnicornController {
         for (let l of this._listeners) {
             l({ type: 'push', key, component });
         }
-        Router.push('/unicorn', path, { shallow: true, ['unicorn-transition']: 'push' });
+        UTransitionManager.push(path);
     }
 
     pop = () => {
@@ -40,10 +40,11 @@ export class UnicornController {
             for (let l of this._listeners) {
                 l({ type: 'pop', key: r[0].key });
             }
+
             if (this.pages.length > 0) {
-                Router.push('/unicorn', this.pages[this.pages.length - 1].path, { shallow: true, ['unicorn-transition']: 'pop' });
+                UTransitionManager.fakePop(this.pages[this.pages.length - 1].path);
             } else {
-                Router.push('/unicorn', this.emptyPath, { shallow: true, ['unicorn-transition']: 'pop' });
+                UTransitionManager.fakePop(this.emptyPath);
             }
         }
     }
