@@ -6,7 +6,7 @@ import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { YFormContextValue, YFormContext } from './YFormContext';
 import { formatError, exportWrongFields } from './errorHandling';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { Keyboard } from 'react-native';
 
 const LOGGING = false;

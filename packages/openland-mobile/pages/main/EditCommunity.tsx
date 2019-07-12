@@ -14,7 +14,7 @@ import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 
 const EditCommunityComponent = XMemo<PageProps>((props) => {
     const ref = React.useRef<ZForm | null>(null);

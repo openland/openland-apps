@@ -5,7 +5,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
-import { Alert, AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import Alert, { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { delay } from 'openland-y-utils/timer';
 

@@ -10,7 +10,7 @@ import RNRestart from 'react-native-restart';
 import { Text, StyleSheet, TextStyle } from 'react-native';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';

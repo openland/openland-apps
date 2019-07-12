@@ -14,7 +14,7 @@ import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSend
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
 import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 

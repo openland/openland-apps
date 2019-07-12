@@ -16,7 +16,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { SUPER_ADMIN } from '../Init';
 import { Modals } from './modals/Modals';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { showReachInfo } from 'openland-mobile/components/ZReach';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

@@ -20,7 +20,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
