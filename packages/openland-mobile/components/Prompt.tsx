@@ -41,8 +41,8 @@ export class PromptBuilder {
     }
 }
 
-export class Prompt {
-    static builder = () => {
+export default {
+    builder: () => {
         return new PromptBuilder();
     }
-}
+};

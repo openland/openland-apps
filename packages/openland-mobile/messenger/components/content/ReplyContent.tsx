@@ -47,14 +47,14 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}
+                                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
                                         letterSpacing={-0.3}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}

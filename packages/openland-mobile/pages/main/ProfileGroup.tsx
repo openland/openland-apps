@@ -13,7 +13,7 @@ import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

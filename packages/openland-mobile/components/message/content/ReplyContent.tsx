@@ -47,13 +47,13 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     });
 
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.accentPrimary} paddingLeft={8}>
+                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.foregroundQuaternary} paddingLeft={8}>
                             <Text
                                 style={{
                                     marginTop: -2,
                                     height: 15,
                                     lineHeight: 15,
-                                    color: theme.accentPrimary,
+                                    color: theme.foregroundPrimary,
                                     letterSpacing: -0.3,
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,

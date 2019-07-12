@@ -9,7 +9,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { Clipboard } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
-import { ActionSheet } from 'openland-mobile/components/ActionSheet';
+import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
