@@ -25,6 +25,7 @@ import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { trackEvent } from 'openland-mobile/analytics';
 import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -102,7 +103,7 @@ export class MobileMessenger {
                 y: event.y,
                 width: event.w,
                 height: event.h,
-                borderRadius: typeof radius !== 'undefined' ? radius : 16
+                borderRadius: typeof radius !== 'undefined' ? radius : RadiusStyles.large
             },
             ...Platform.OS === 'ios' ? {
                 onBegin: () => {
