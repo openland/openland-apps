@@ -288,7 +288,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                titleLines={2}
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
 

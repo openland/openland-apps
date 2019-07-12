@@ -680,6 +680,13 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-edit",
+            "src": "ic-edit.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

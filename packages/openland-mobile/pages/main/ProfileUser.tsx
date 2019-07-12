@@ -73,22 +73,25 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 <ZListItemHeader
                     photo={user.photo}
                     id={user.id}
-                    userId={user.id}
                     title={user.name}
                     subtitle={sub}
                     subtitleColor={subColor}
-                    action={!user.isBot ? ((myID === user.id) ? 'Edit profile' : 'Send message') : 'Open messages'}
-                    score={(!user.isBot && user.audienceSize > 0) ? user.audienceSize : undefined}
-                    scorePress={handleScorePress}
-                    onPress={() => {
-                        if (myID === user.id) {
-                            props.router.push('SettingsProfile');
-                        } else {
-                            props.router.pushAndReset('Conversation', {
-                                flexibleId: props.router.params.id,
-                            });
+                    action={{
+                        title: !user.isBot ? ((myID === user.id) ? 'Edit profile' : 'Send message') : 'Open messages',
+                        onPress: () => {
+                            if (myID === user.id) {
+                                props.router.push('SettingsProfile');
+                            } else {
+                                props.router.pushAndReset('Conversation', {
+                                    flexibleId: props.router.params.id,
+                                });
+                            }
                         }
                     }}
+                    score={(!user.isBot && user.audienceSize > 0) ? {
+                        value: user.audienceSize,
+                        onPress: handleScorePress
+                    } : undefined}
                 />
 
                 <ZListItemGroup header="About" marginTop={0}>

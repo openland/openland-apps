@@ -74,14 +74,17 @@ let SettingsContent = ((props: PageProps) => {
             <ZListItemHeader
                 photo={resp.me.photo}
                 id={resp.me.id}
-                userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
                 subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
                 subtitleColor={status.status === 'connected' ? theme.accentPrimary : undefined}
-                path="SettingsProfile"
-                action="Edit profile"
-                score={me.audienceSize > 0 ? me.audienceSize : undefined}
-                scorePress={handleScorePress}
+                score={(me.audienceSize > 0) ? {
+                    value: me.audienceSize,
+                    onPress: handleScorePress
+                } : undefined}
+                iconRight={{
+                    src: require('assets/ic-edit-24.png'),
+                    path: 'SettingsProfile'
+                }}
             />
             <ZListItem
                 leftIconColor={theme.tint2}
