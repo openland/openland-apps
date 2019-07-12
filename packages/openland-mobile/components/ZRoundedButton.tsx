@@ -29,7 +29,7 @@ const stylesLarge = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: RadiusStyles.medium,
-        height: 56,
+        height: 48,
         paddingHorizontal: 24,
     } as ViewStyle,
     title: {
