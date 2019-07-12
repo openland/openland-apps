@@ -39,7 +39,7 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
             <Text
                 style={{
                     ...TypeStyles.label1,
-                    color: props.selected ? (style === 'fill' ? theme.contrastPrimary : theme.foregroundSecondary) : theme.foregroundSecondary
+                    color: props.selected ? (style === 'fill' ? theme.contrastSpecial : theme.foregroundSecondary) : theme.foregroundSecondary
                 }}
             >
                 {props.tag.title}

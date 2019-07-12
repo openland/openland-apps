@@ -74,9 +74,7 @@ export type ThemeGlobal = {
     },
 
     // legacy
-
     separatorColor: string;
-    chatImageBackground: string;
 };
 
 export type PlaceholderGlobal = {
