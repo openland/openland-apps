@@ -150,31 +150,35 @@ const RootDiscover = () => {
 
 const Inner = () => {
     let layout = useLayout();
-    let d = localStorage.getItem('unicorn-tab');
-    let def = 1;
-    if (d) {
-        try {
-            let i = parseInt(d, 10);
-            if (i >= 0 && i <= 2) {
-                def = i;
+    let def = React.useMemo(() => {
+        let d = localStorage.getItem('unicorn-tab');
+        if (d) {
+            try {
+                let i = parseInt(d, 10);
+                if (i >= 0 && i <= 2) {
+                    return i;
+                }
+            } catch (e) {
+                console.warn(e);
             }
-        } catch (e) {
-            console.warn(e);
         }
-    }
+        return 1;
+    }, []);
     let [selected, setSelected] = React.useState(def);
-    let lastTab = React.useRef(def);
+    let [selectedMounted, setSelectedMounted] = React.useState(def);
     let root0 = React.useMemo(() => <RootDiscover />, []);
     let root1 = React.useMemo(() => <Root />, []);
     let root2 = React.useMemo(() => <RootAccount />, []);
+
+    // Put initial tab id
     React.useLayoutEffect(() => {
-        console.warn(window.history.state);
-        // if (!window.history.state.options) {
-        //     window.history.state.options = {};
-        // }
-        // window.history.state.options['unicorn-switch-tab'] = def;
-        window.history.replaceState({ ...window.history.state, options: { ...window.history.state.options, 'unicorn-switch-tab': def } }, '');
-        console.warn(window.history.state);
+        window.history.replaceState({
+            ...window.history.state,
+            options: {
+                ...window.history.state.options,
+                'unicorn-switch-tab': def
+            }
+        }, '');
     }, []);
 
     const setSelectedClb = React.useCallback((id: number) => {
@@ -188,24 +192,13 @@ const Inner = () => {
             path = '/settings';
         }
 
-        // let r = Routes.findAndGetUrls('/discover');
-        let old = lastTab.current!;
-        let n = id;
-        lastTab.current = id;
-
-        console.log('switch: ' + old + ' -> ' + n);
         Router.push('/unicorn', path, {
             shallow: true,
             'unicorn-switch-tab': id
         });
-
-        setSelected(id);
     }, []);
 
     React.useEffect(() => {
-        // let callback = () => {
-        //     console.log(window.history.state);
-        // };
         let before = () => {
             console.log('before');
             console.log(window.history.state);
@@ -216,11 +209,12 @@ const Inner = () => {
                         console.log('tab: ' + tb);
                         localStorage.setItem('unicorn-tab', tb + '');
                         setSelected(tb);
+                        setTimeout(() => {
+                            setSelectedMounted(tb);
+                        }, 20);
                     }
                 }
             }
-            // if (window.history.state['unicorn-switch-tab'])
-            //     console.log(window.history.state);
         };
         Router.events.on('routeChangeComplete', before);
         return () => {
@@ -231,13 +225,13 @@ const Inner = () => {
     return (
         <>
             <InnerContainer>
-                <div className={selected === 0 ? visibleContainer : invisibleContainer}>
+                <div className={selectedMounted === 0 ? visibleContainer : invisibleContainer}>
                     <UnicornLayout root={root0} routing={Routing} />
                 </div>
-                <div className={selected === 1 ? visibleContainer : invisibleContainer}>
+                <div className={selectedMounted === 1 ? visibleContainer : invisibleContainer}>
                     <UnicornLayout root={root1} routing={Routing} />
                 </div>
-                <div className={selected === 2 ? visibleContainer : invisibleContainer}>
+                <div className={selectedMounted === 2 ? visibleContainer : invisibleContainer}>
                     <UnicornLayout root={root2} routing={Routing} />
                 </div>
 
