@@ -52,6 +52,11 @@ class AppStorageStatic {
         ]);
     }
 
+    clear = async () => {
+        await this.resetToken();
+        await AsyncStorage.clear();
+    }
+
     private doPrepare = async () => {
         this._token = await AsyncStorage.getItem('openland-token');
         if (this._token) {
