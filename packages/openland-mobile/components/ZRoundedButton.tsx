@@ -98,13 +98,9 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
     return (
         <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} disabled={actionInProgress || props.enabled === false} activeOpacity={0.6}>
-            <View style={[styles.container, { backgroundColor: backgroundColor }]}>
+            <View style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]}>
                 <Text
-                    style={[
-                        styles.title,
-                        { color: actionInProgress ? 'transparent' : textColor },
-                        { opacity: props.enabled === false ? 0.7 : undefined }
-                    ]}
+                    style={[styles.title, { color: actionInProgress ? 'transparent' : textColor }]}
                     allowFontScaling={false}
                 >
                     {props.title}
