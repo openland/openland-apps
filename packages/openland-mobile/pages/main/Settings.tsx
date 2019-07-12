@@ -122,7 +122,7 @@ let SettingsContent = ((props: PageProps) => {
                     leftIconColor={theme.tint4}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
                     text="Ask for help"
-                    onPress={() => props.router.push('Conversation', { flexibleId: 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
+                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
             </ZListItemGroup>
 
