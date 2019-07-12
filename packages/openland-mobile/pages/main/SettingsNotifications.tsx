@@ -48,8 +48,8 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
                     <ZListItem text="Alert" toggleField={{ key: 'input.mobileAlert' }} />
                     <ZListItem text="Include preview of messages" toggleField={{ key: 'input.mobileIncludeText' }} />
                 </ZListItemGroup>
-                <ZListItemGroup header="Comment notifications">
-                    <ZListItem text="All" checkmarkField={{ key: 'input.commentNotificationsDelivery', value: 'ALL' }} />
+                <ZListItemGroup header="Comments notifications">
+                    <ZListItem text="All comments" checkmarkField={{ key: 'input.commentNotificationsDelivery', value: 'ALL' }} />
                     <ZListItem text="Never notify me" checkmarkField={{ key: 'input.commentNotificationsDelivery', value: 'NONE' }} />
                 </ZListItemGroup>
                 <ZListItemGroup header="Send notification about">
