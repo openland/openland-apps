@@ -576,8 +576,7 @@
         },
         {
             "name": "ic-loader",
-            "src": "ic-loader-android.svg",
-            "suffix": "android",
+            "src": "ic-loader.svg",
             "sizes": [
                 22,
                 32

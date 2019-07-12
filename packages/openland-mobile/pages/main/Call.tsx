@@ -224,7 +224,7 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
                 }}
             >
                 <LinearGradient colors={['#0084fe', '#004280']} style={{ flexGrow: 1, flexDirection: 'column' }}>
-                    <React.Suspense fallback={<ZLoader transparent={true} />}>
+                    <React.Suspense fallback={<ZLoader />}>
                         <Content id={this.props.id} hide={this.hide} />
                     </React.Suspense>
                 </LinearGradient>
