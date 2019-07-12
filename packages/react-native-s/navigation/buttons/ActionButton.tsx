@@ -12,7 +12,7 @@ export const ActionButton = XMemo<{ title: string, icon?: any, tintColor?: strin
         return (
             <STouchable onPress={onPress}>
                 <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={icon} style={{ width: 26, height: 26, tintColor: tintColor || '#78808F' }} resizeMode="contain" />
+                    <Image source={icon} style={{ width: 24, height: 24, tintColor: tintColor || '#78808F' }} resizeMode="contain" />
                 </View>
             </STouchable>
         );
