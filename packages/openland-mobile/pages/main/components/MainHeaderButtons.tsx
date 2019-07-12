@@ -11,6 +11,7 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPre
 
     const icon = require('assets/ic-header-bell-24.png');
     const size = Platform.OS === 'ios' ? 44 : 48;
+    const dotPosition = Platform.OS === 'ios' ? 7 : 9;
     const color = theme.foregroundSecondary;
 
     return (
@@ -22,8 +23,8 @@ const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPre
                     <View
                         style={{
                             position: 'absolute',
-                            top: 7,
-                            right: 7,
+                            top: dotPosition,
+                            right: dotPosition,
                             width: 6,
                             height: 6,
                             borderRadius: 3,
