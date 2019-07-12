@@ -199,6 +199,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         );
     }
 
+    const isImageBottom = hasImage && !hasText && !hasDocument;
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
             <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut} backgroundColor={theme.backgroundPrimary}>
@@ -215,7 +217,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                         <ASFlex
                             flexDirection="row"
                             height={14}
-                            backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
+                            backgroundColor={isImageBottom ? 'rgba(0,0,0,0.3)' : undefined}
                             borderRadius={4}
                             alignItems="center"
                             justifyContent="center"
@@ -229,8 +231,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                                 marginLeft={3}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
-                                color={hasImage ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
-                                opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
+                                color={isImageBottom ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
+                                opacity={(props.message.isOut || isImageBottom) ? 0.7 : 0.6}
                             >
                                 {formatTime(props.message.date)}
                             </ASText>
