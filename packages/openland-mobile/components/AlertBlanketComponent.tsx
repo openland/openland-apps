@@ -78,8 +78,8 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                     paddingVertical: 20,
                 }}
             >
-                {props.builder._title && <Text style={{ marginBottom: props.builder._message ? 12 : 16, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{props.builder._title}</Text>}
-                {props.builder._message && <Text style={{ marginBottom: 16, color: theme.foregroundPrimary, fontSize: 16 }}>{props.builder._message}</Text>}
+                {props.builder._title && <Text style={{ marginBottom: props.builder._message ? 12 : 16, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>{props.builder._title}</Text>}
+                {props.builder._message && <Text style={{ marginBottom: 16, color: theme.foregroundPrimary, fontSize: 16 }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {props.builder._actions.map((a, i) => (
