@@ -12,7 +12,7 @@ import { Clipboard, Platform, View, TouchableOpacity, Image } from 'react-native
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';

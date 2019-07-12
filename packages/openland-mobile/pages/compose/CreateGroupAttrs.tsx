@@ -15,7 +15,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const CreateGroupComponent = (props: PageProps) => {

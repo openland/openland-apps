@@ -15,7 +15,7 @@ import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';

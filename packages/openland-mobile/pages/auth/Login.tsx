@@ -4,7 +4,7 @@ import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { Auth0Client } from 'openland-mobile/utils/auth0Client';
