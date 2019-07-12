@@ -358,7 +358,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title={organization.name} />
+            <SHeader title={Platform.OS === 'android' ? 'Info' : organization.name} />
 
             {showManageBtn && <ZManageButton key={'manage-btn-' + showManageBtn} onPress={handleManageClick} />}
 

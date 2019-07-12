@@ -242,7 +242,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title={room.title} />
+            <SHeader title={Platform.OS === 'android' ? 'Info' : room.title} />
             <ZManageButton onPress={handleManageClick} />
 
             <SFlatList
