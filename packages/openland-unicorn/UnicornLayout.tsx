@@ -179,11 +179,7 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
             let ex = props.routing.resolve(to);
             if (ex) {
                 let Component = ex.route.factory();
-                // let r = Routes.findAndGetUrls(to);
-                // console.log(r);
-                Router.replace('/unicorn', to, { shallow: true });
-                // window.location.assign(to);
-                props.controller.push(<Component />);
+                props.controller.push(to, <Component />);
             }
         }
     }), []);
@@ -230,9 +226,9 @@ const UnicornContainer = React.memo((props: { root: any, controller: UnicornCont
     }
 });
 
-export const UnicornLayout = React.memo((props: { root: any, routing: URouting }) => {
+export const UnicornLayout = React.memo((props: { root: any, emptyPath: string, routing: URouting }) => {
     let ref = React.useRef<HTMLDivElement>(null);
-    let controller = React.useMemo(() => new UnicornController(ref), []);
+    let controller = React.useMemo(() => new UnicornController(props.emptyPath, ref), []);
     return (
         <div className={rootClassName}>
             <UnicornContext.Provider value={controller}>

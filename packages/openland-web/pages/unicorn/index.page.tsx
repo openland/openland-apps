@@ -77,7 +77,7 @@ const Root = () => {
                 <DialogListFragment
                     onSearchItemSelected={() => {/*  */ }}
                     onDialogPress={(id) => {
-                        controller.push(<Chat id={id} />);
+                        // controller.push(<Chat id={id} />);
                     }}
                 />
             </XView>
@@ -200,8 +200,6 @@ const Inner = () => {
 
     React.useEffect(() => {
         let before = () => {
-            console.log('before');
-            console.log(window.history.state);
             if (window.history.state.options) {
                 let tb = window.history.state.options['unicorn-switch-tab'];
                 if (typeof tb === 'number') {
@@ -226,13 +224,13 @@ const Inner = () => {
         <>
             <InnerContainer>
                 <div className={selectedMounted === 0 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root0} routing={Routing} />
+                    <UnicornLayout root={root0} routing={Routing} emptyPath="/discover" />
                 </div>
                 <div className={selectedMounted === 1 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root1} routing={Routing} />
+                    <UnicornLayout root={root1} routing={Routing} emptyPath="/mail" />
                 </div>
                 <div className={selectedMounted === 2 ? visibleContainer : invisibleContainer}>
-                    <UnicornLayout root={root2} routing={Routing} />
+                    <UnicornLayout root={root2} routing={Routing} emptyPath="/settings" />
                 </div>
 
                 {layout === 'desktop' && (

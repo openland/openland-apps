@@ -148,14 +148,14 @@ export const AccountFragment = React.memo(() => {
                 text="Download Apps"
                 icon={<DownloadAppsIcon />}
                 onClick={() => {
-                    controller.push(<NativeAppsModal />);
+                    // controller.push(<NativeAppsModal />);
                 }}
             />
             <UListItem
                 text="Apps"
                 icon={<DownloadAppsIcon />}
                 onClick={() => {
-                    controller.push(<AppsFragment />);
+                    // controller.push(<AppsFragment />);
                 }}
             />
             <UListHeader text="Organizations" />
