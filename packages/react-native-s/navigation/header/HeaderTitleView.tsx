@@ -116,6 +116,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             flexDirection="row"
                             alignItems="center"
                             flexGrow={1}
+                            height={SDevice.navigationBarHeight}
                         >
                             {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
                             {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.textColor} />}
