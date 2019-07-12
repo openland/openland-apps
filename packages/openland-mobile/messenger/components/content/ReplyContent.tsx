@@ -102,7 +102,27 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                 </ASFlex>
                             );
                         } else {
-                            return null;
+                            return (
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
+                                    {message.replyTextSpans[i].length > 0 && (
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                            <RenderSpans
+                                                spans={message.replyTextSpans[i]}
+                                                message={message}
+                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
+                                                theme={this.props.theme}
+                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                insetLeft={8}
+                                                insetRight={contentInsetsHorizontal}
+                                                insetTop={4}
+
+                                                onUserPress={this.props.onUserPress}
+                                                onGroupPress={this.props.onGroupPress}
+                                            />
+                                        </ASFlex>
+                                    )}
+                                </ASFlex>
+                            );
                         }
                     })
                 )}
