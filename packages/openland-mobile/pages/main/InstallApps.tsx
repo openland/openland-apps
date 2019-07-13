@@ -18,9 +18,9 @@ const InstallAppsComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Openland apps" hairline="hidden" />
             <ASSafeAreaView height="100%" width="100%">
-                <ZListItem text="Mac" onPress={() => shareCallback('https://oplnd.com/mac')} leftIconColor={theme.accentPrimary} leftIcon={require('assets/install_app_mac-22.png')} />
-                <ZListItem text="Windows" onPress={() => shareCallback('https://oplnd.com/windows')} leftIconColor={theme.accentPrimary} leftIcon={require('assets/install_app_windows-20.png')} />
-                <ZListItem text="Linux" onPress={() => shareCallback('https://oplnd.com/linux')} leftIconColor={theme.accentPrimary} leftIcon={require('assets/install_app_linux-19.png')} />
+                <ZListItem text="Mac" onPress={() => shareCallback('https://oplnd.com/mac')} leftIcon={require('assets/install_app_mac-22.png')} />
+                <ZListItem text="Windows" onPress={() => shareCallback('https://oplnd.com/windows')} leftIcon={require('assets/install_app_windows-20.png')} />
+                <ZListItem text="Linux" onPress={() => shareCallback('https://oplnd.com/linux')} leftIcon={require('assets/install_app_linux-19.png')} />
             </ASSafeAreaView>
 
         </>
