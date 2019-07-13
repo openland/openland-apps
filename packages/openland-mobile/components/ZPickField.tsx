@@ -41,7 +41,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         alignItems: 'center',
         justifyContent: 'center',
-    } as ViewStyle
+    } as ViewStyle,
+    descriptionContainer: {
+        paddingHorizontal: 16,
+        paddingTop: 8
+    } as ViewStyle,
+    description: {
+        ...TypeStyles.caption
+    } as TextStyle,
 });
 
 export interface ZPickFieldProps {
@@ -50,10 +57,11 @@ export interface ZPickFieldProps {
     noWrapper?: boolean;
     path?: string;
     onPress?: () => void;
+    description?: string;
 }
 
 const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
-    const { label, value, noWrapper } = props;
+    const { label, value, noWrapper, description } = props;
     const theme = React.useContext(ThemeContext);
     const hasValue = !!(value && value.length > 0);
 
@@ -95,6 +103,14 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
                     </View>
                 </View>
             </TouchableOpacity>
+
+            {!!description && (
+                <View style={styles.descriptionContainer}>
+                    <Text style={[styles.description,  { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                        {description}
+                    </Text>
+                </View>
+            )}
         </View>
     );
 };

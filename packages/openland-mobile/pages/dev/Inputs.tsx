@@ -19,9 +19,10 @@ export const InputsComponent = (props: PageProps) => (
                 <ZInput label="With prefix" prefix="@" description="Description" />
                 <ZInput label="With prefix" value="Value" prefix="@@" description="Description" invalid={true} />
             </ZListItemGroup>
-            <ZListItemGroup header="Pick fields">
+            <ZListItemGroup header="Pick fields" marginTop={0}>
                 <ZPickField label="Label" />
                 <ZPickField label="Label" value="Value" />
+                <ZPickField label="Label" value="Value" description="Description" />
             </ZListItemGroup>
         </View>
     </SScrollView>
