@@ -52,11 +52,11 @@ export interface ZInputBasicProps extends TextInputProps {
     invalid?: boolean;
     description?: string;
     enabled?: boolean;
-    noMargin?: boolean;
+    noWrapper?: boolean;
 }
 
 export const ZInputBasic = (props: ZInputBasicProps) => {
-    const { label, prefix, invalid, description, enabled, noMargin, ...other } = props;
+    const { label, prefix, invalid, description, enabled, noWrapper, ...other } = props;
     const theme = React.useContext(ThemeContext);
     const [ focused, setFocused ] = React.useState<boolean>(false);
     const [ filled, setFilled ] = React.useState<boolean>(!!(props.value && props.value.length > 0));
@@ -91,7 +91,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     }, []);
 
     return (
-        <View marginHorizontal={noMargin ? 0 : 16}>
+        <View marginHorizontal={noWrapper ? 0 : 16} marginVertical={noWrapper ? 0 : 8}>
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                 {!!label && (
                     <View style={[styles.labelContainer, (focused || filled) && styles.labelContainerFocused]}>

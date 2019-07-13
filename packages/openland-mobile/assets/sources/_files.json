@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-right",
+            "src": "ic-right.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-user",
             "src": "ic-user.svg",
             "sizes": [
