@@ -91,7 +91,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     }, []);
 
     return (
-        <View marginHorizontal={noWrapper ? 0 : 16} marginVertical={noWrapper ? 0 : 8}>
+        <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                 {!!label && (
                     <View style={[styles.labelContainer, (focused || filled) && styles.labelContainerFocused]}>
