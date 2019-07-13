@@ -95,14 +95,16 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                 {!!label && (
                     <View style={[styles.labelContainer, (focused || filled) && styles.labelContainerFocused]}>
-                        <Text style={[styles.label, (focused || filled) && styles.labelFocused, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail">
+                        <Text style={[styles.label, (focused || filled) && styles.labelFocused, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                             {label}
                         </Text>
                     </View>
                 )}
                 {!!prefix && (focused || filled) && (
                     <View style={styles.prefixContainer} onLayout={handlePrefixLayout}>
-                        <Text style={[styles.prefix, { color: theme.foregroundPrimary }]}>{prefix}</Text>
+                        <Text style={[styles.prefix, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                            {prefix}
+                        </Text>
                     </View>
                 )}
                 <TextInput
@@ -135,7 +137,9 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
 
             {!!description && (
                 <View style={styles.descriptionContainer}>
-                    <Text style={[styles.description,  { color: invalid ? theme.accentNegative : theme.foregroundSecondary }]}>{description}</Text>
+                    <Text style={[styles.description,  { color: invalid ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
+                        {description}
+                    </Text>
                 </View>
             )}
         </View>
