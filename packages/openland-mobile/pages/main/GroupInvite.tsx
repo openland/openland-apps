@@ -94,23 +94,21 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                 </View>
 
                 <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
-                    <View width={178}>
-                        <ZRoundedButton
-                            size="large"
-                            title="Accept invitation"
-                            onPress={async () => {
-                                startLoader();
-                                try {
-                                    await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
+                    <ZRoundedButton
+                        size="large"
+                        title="Accept invitation"
+                        onPress={async () => {
+                            startLoader();
+                            try {
+                                await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
 
-                                    props.router.pushAndReset('Conversation', { id: room.id });
-                                } catch (e) {
-                                    Alert.alert(e.message);
-                                }
-                                stopLoader();
-                            }}
-                        />
-                    </View>
+                                props.router.pushAndReset('Conversation', { id: room.id });
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            }
+                            stopLoader();
+                        }}
+                    />
                 </View>
             </View>
         </ASSafeAreaView>
