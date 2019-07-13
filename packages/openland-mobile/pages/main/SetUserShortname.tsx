@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { Clipboard, Text } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
@@ -102,7 +102,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                 }}
             >
                 <ZListItemGroup
-                    header={null}
                     footer={{
                         text: 'You can choose a username in Openland.' + '\n' +
                             'Other people will be able to find you by this username, and mention you with this username in groups.' + '\n\n' +
@@ -122,13 +121,11 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         }
                     }}
                 >
-                    <ZTextInput
-                        title="Username"
-                        placeholder="username"
+                    <ZInput
+                        label="Username"
                         prefix="@"
                         field="shortname"
                         autoCapitalize="none"
-                        border="force-full"
                         onChangeText={(src: string) => {
                             setShortname(src);
                             setError(undefined);

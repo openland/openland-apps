@@ -56,6 +56,7 @@ import { Invites } from './pages/main/Invites';
 import { InvitesMore } from './pages/main/InvitesMore';
 import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 import { Buttons } from './pages/dev/Buttons';
+import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
 
 export const Routes = new SRoutesBuilder()
@@ -113,6 +114,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevColors', Colors)
   .addRoute('DevNewDesign', NewDesignComponents)
   .addRoute('DevButtons', Buttons)
+  .addRoute('DevInputs', Inputs)
   .addRoute('DevAvatars', Avatars)
 
   .addRoute('HomeDialogs', HomeDialogs)
