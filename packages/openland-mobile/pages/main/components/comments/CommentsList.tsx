@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -66,7 +66,7 @@ export const CommentsList = (props: CommentsListProps) => {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
                 <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                <Text style={{ fontSize: 15, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
+                <Text style={{ ...TypeStyles.body, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
             </View>
         );
     }
