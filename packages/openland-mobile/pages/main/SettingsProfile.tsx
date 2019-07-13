@@ -82,7 +82,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
 
-                <ZListItemGroup header="Username">
+                <ZListItemGroup header="Username" marginTop={0}>
                     <ZPickField
                         label="Username"
                         value={me.shortname ? '@' + me.shortname : undefined}
@@ -90,7 +90,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
 
-                <ZListItemGroup header="Contacts">
+                <ZListItemGroup header="Contacts" marginTop={0}>
                     <ZInput
                         label="Phone"
                         field="input.phone"
