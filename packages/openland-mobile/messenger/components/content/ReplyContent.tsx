@@ -16,6 +16,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 interface ReplyContentProps {
     message: DataSourceMessageItem;
     maxWidth?: number;
+    width?: number;
     compensateBubble?: boolean;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -26,7 +27,7 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, compensateBubble } = this.props;
+        let { message, maxWidth, width, compensateBubble } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -61,7 +62,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontWeight={TextStyles.weight.medium}
                                         marginBottom={2}
                                     >
-                                        {generalMesage!.sender.name || ''}
+                                        {generalMesage.sender.name || ''}
                                     </ASText>
 
                                     {message.replyTextSpans[i].length > 0 && (
@@ -69,9 +70,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             <RenderSpans
                                                 spans={message.replyTextSpans[i]}
                                                 message={message}
-                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
+                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
                                                 theme={this.props.theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                width={width}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetTop={4}
@@ -112,6 +114,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
                                                 theme={this.props.theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                width={width}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetTop={4}

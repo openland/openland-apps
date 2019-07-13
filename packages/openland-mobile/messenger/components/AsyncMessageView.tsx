@@ -103,7 +103,6 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <TextContent
                         emojiOnly={false}
                         theme={theme}
-                        padded={false}
                         fontStyle="italic"
                         message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
                         onUserPress={props.onUserPress}

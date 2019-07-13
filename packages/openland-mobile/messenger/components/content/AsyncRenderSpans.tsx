@@ -35,6 +35,7 @@ interface RenderSpansProps {
     fontStyle?: 'italic' | 'normal';
     theme: ThemeGlobal;
     maxWidth: number;
+    width?: number;
     insetLeft: number;
     insetRight: number;
     insetTop: number;
@@ -47,24 +48,25 @@ interface RenderSpansProps {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
+        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
         const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.contrastPrimary : theme.foregroundPrimary);
-        const content = getSpansSlices(spans, padded);
+        const content = getSpansSlices(spans, padded);  
 
         return (
             <>
                 {content.map((c, i) => (
                     <>
-                        {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
+                        {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
                                 fontSize={c.type === 'emoji' ? 48 : (c.type === 'loud' ? 20 : 16)}
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
-                                marginBottom={(c.type === 'loud' && i !== content.length - 1) ? 8 : undefined}
+                                marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? 8 : undefined}
                                 textAlign={textAlign}
-                                maxWidth={maxWidth}
+                                maxWidth={!width ? maxWidth : undefined}
+                                width={width}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                 {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
@@ -76,10 +78,11 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 marginLeft={-insetLeft}
                                 marginRight={-insetRight}
                                 marginTop={i === 0 ? insetTop : undefined}
+                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
                                 backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
                             >
                                 <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
-                                    <TextWrapper fontSize={14} color={mainTextColor} maxWidth={maxWidth}>
+                                    <TextWrapper fontSize={14} color={mainTextColor} maxWidth={!width ? maxWidth : undefined} width={width}>
                                         {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                     </TextWrapper>
                                 </ASFlex>

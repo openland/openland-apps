@@ -44,8 +44,8 @@ export const TextContent = (props: TextContentProps) => {
     const preprocessed = processSpans(message.message || '', message.spans);
     const content = getSpansSlices(preprocessed);
 
-    const codeMarginLeft = isSmall ? 0 : (inReply ? 8 : 16);
-    const codeMarginRight = isSmall ? 0 : (inReply ? 8 : 16);
+    const codeMarginLeft = isSmall ? 0 : -(inReply ? 8 : 16);
+    const codeMarginRight = isSmall ? 0 : -(inReply ? 8 : 16);
     const codePaddingLeft = isSmall ? 10 : -codeMarginLeft;
     const codePaddingRight = isSmall ? 10 : -codeMarginRight;
 
@@ -67,14 +67,14 @@ export const TextContent = (props: TextContentProps) => {
         <>
             {content.map((c, i) => (
                 <>
-                    {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji') && (
+                    {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
                         <TextWrapper
                             key={c.type + '-' + i}
                             color={theme.foregroundPrimary}
                             style={{
                                 fontStyle: fontStyle,
                                 marginTop: (c.type === 'loud' && i !== 0) ? (isSmall ? 5 : 8) : undefined,
-                                marginBottom: (c.type === 'loud' && i !== content.length - 1) ? (isSmall ? 5 : 8) : undefined,
+                                marginBottom: (c.type !== 'emoji' && i !== content.length - 1) ? (isSmall ? 5 : 8) : undefined,
                                 fontSize: fontSize[c.type],
                                 lineHeight: lineHeight[c.type]
                             }}
@@ -89,6 +89,7 @@ export const TextContent = (props: TextContentProps) => {
                             marginTop={i === 0 && inReply ? 4 : undefined}
                             marginLeft={codeMarginLeft}
                             marginRight={codeMarginRight}
+                            marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
                             paddingLeft={codePaddingLeft}
                             paddingRight={codePaddingRight}
                             paddingVertical={6}

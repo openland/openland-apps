@@ -7,11 +7,11 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 interface TextContentProps {
     message: DataSourceMessageItem;
-    padded?: boolean;
     fontStyle?: 'italic' | 'normal';
     theme: ThemeGlobal;
     emojiOnly: boolean;
     maxWidth?: number;
+    width?: number;
     compensateBubble?: boolean;
 
     onUserPress: (id: string) => void;
@@ -22,17 +22,18 @@ interface TextContentProps {
 
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        const { message, padded, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, maxWidth, compensateBubble } = this.props;
+        const { message, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, maxWidth, width, compensateBubble } = this.props;
 
         return (
             <RenderSpans
                 spans={message.textSpans}
                 message={message}
-                padded={compensateBubble ? (emojiOnly ? false : padded !== false) : false}
+                padded={compensateBubble ? (emojiOnly ? false : true) : false}
                 textAlign={emojiOnly && message.isOut ? 'right' : 'left'}
                 fontStyle={fontStyle}
                 theme={theme}
-                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 40}
+                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (contentInsetsHorizontal * 2)}
+                width={width}
                 insetLeft={compensateBubble ? contentInsetsHorizontal : 16}
                 insetRight={compensateBubble ? contentInsetsHorizontal : 16}
                 insetTop={8}

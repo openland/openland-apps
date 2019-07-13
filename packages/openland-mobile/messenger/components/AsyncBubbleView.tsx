@@ -2,8 +2,8 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
 
-export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50 - 10, 400);
-export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);
+export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 74 - 12, 400);
+export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 56 - 36, 400);
 
 export let contentInsetsHorizontal = 13;
 export let contentInsetsTop = 8;
@@ -21,9 +21,8 @@ interface AsyncBubbleViewProps {
 
 export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, colorIn, colorOut, backgroundColor, width } = this.props;
-
-        let bubbleRes = this.props.isOut ? 'outgoing' : 'incoming';
+        const { isOut, attachTop, attachBottom, colorIn, colorOut, backgroundColor, width, children } = this.props;
+        let bubbleRes = isOut ? 'outgoing' : 'incoming';
 
         if (attachTop && attachBottom) {
             bubbleRes += '-middle';
@@ -56,7 +55,7 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
 
         let insetsTop = 8;
         let insetsBottom = 9;
-        if (this.props.isOut) {
+        if (isOut) {
             contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
         } else {
             contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
@@ -64,10 +63,10 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
 
         let resolved = Image.resolveAssetSource(image);
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" width={this.props.width ? this.props.width + (this.props.isOut ? 12 : 5) : undefined} maxWidth={(this.props.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming)} >
-                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={this.props.isOut ? this.props.colorOut : this.props.colorIn}>
-                    <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch" >
-                        {this.props.children}
+            <ASFlex flexDirection="column" alignItems="stretch" width={width} maxWidth={(isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming)}>
+                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={isOut ? colorOut : colorIn}>
+                    <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
+                        {children}
                     </ASFlex>
                 </ASFlex>
             </ASFlex>

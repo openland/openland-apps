@@ -113,8 +113,6 @@ const CanvasLoader = (props: LoaderRenderProps) => {
         }
     }, [ref.current]);
 
-    console.warn('boom', size);
-
     return <canvas width={size} height={size} className={rotate} ref={ref} />;
 };
 

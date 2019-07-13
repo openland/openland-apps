@@ -58,8 +58,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
 
-            console.warn('boom', event.instanceKey);
-
             this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event }, undefined, this.props.message.senderName, this.props.message.date);
         }
     }
