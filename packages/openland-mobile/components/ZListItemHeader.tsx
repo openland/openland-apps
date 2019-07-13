@@ -86,7 +86,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
         <>
             <View style={styles.container}>
                 <View style={styles.avatar}>
-                    <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={id} />
+                    <XPAvatarWithPreview size="x-large" src={photo} placeholderKey={id} placeholderTitle={title} />
                     {score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
                             <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.large }}>

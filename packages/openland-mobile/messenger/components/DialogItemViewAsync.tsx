@@ -11,6 +11,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={10} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={20} minWidth={20} justifyContent="center" alignItems="center">
@@ -26,8 +27,10 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
     const isGroup = item.kind === 'GROUP';
     const isChannel = item.isChannel;
     const height = props.compact ? 48 : 80;
-    const avatarSize = props.compact ? 30 : 56;
+    const avatarSize = props.compact ? 'small' : 'large';
     const paddingHorizontal = props.compact ? 12 : 16;
+
+    const { size } = avatarSizes[avatarSize];
 
     return (
         <ASFlex
@@ -39,7 +42,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
             }}
             alignItems={props.compact ? 'center' : undefined}
         >
-            <ASFlex marginLeft={paddingHorizontal} width={avatarSize} height={height} alignItems="center" justifyContent="center">
+            <ASFlex marginLeft={paddingHorizontal} width={size} height={height} alignItems="center" justifyContent="center">
                 {!isUser && <ASAvatar
                     src={item.photo}
                     size={avatarSize}

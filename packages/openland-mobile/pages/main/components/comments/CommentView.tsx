@@ -109,7 +109,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
             )}
             {!deleted && (
                 <ZAvatar
-                    size={16}
+                    size="x-small"
                     src={sender.photo}
                     placeholderKey={sender.id}
                     placeholderTitle={sender.name}

@@ -78,7 +78,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
-                    <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
+                    <ZAvatar size="x-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
                     <Text style={[styles.title, { color: theme.foregroundPrimary }]}>{room.title}</Text>
 
                     <View flexDirection="row">

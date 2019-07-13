@@ -62,7 +62,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     {!isCommunity && (
                         <>
                             <View alignSelf="center" marginTop={30} marginBottom={31}>
-                                <ZAvatarPicker field="input.photoRef" />
+                                <ZAvatarPicker field="input.photoRef" size="x-large" />
                             </View>
                             <ZListItemGroup footer="Please, provide organization name and optional logo">
                                 <ZTextInput placeholder="Organization name" field="input.name" autoFocus={true} />

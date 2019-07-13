@@ -19,7 +19,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
         <ZListItemBase height={40} onPress={() => props.onPress(props.user.id) } separator={false}>
             <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
                 <ZAvatar
-                    size={28}
+                    size="small"
                     src={props.user.photo}
                     placeholderTitle={props.user.name}
                     placeholderKey={props.user.id}

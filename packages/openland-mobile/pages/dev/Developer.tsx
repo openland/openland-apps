@@ -21,6 +21,7 @@ export const Developer = withApp(() => {
             <SScrollView>
                 <ZListItemGroup header={null}>
                     <ZListItem text="Colors" path="DevColors" />
+                    <ZListItem text="Avatars" path="DevAvatars" />
                     <ZListItem text="Typography" path="DevTypography" />
                     <ZListItem text="List items" path="DevComponents" />
                     <ZListItem text="Buttons" path="DevButtons" />

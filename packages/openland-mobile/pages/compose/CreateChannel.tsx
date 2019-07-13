@@ -62,7 +62,7 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                 >
                     <View>
                         <View alignSelf="center" marginTop={30} marginBottom={10}>
-                            <ZAvatarPicker field="photoRef" />
+                            <ZAvatarPicker field="photoRef" size="x-large" />
                         </View>
                         <ZTextInput autoFocus={true} placeholder="Title" field="title" />
                         <View marginTop={21}>

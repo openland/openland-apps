@@ -27,10 +27,10 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
         onPress={onPress}
         separator={false}
     >
-        <View width={74} height={60} alignItems="center" justifyContent="center">
+        <View width={72} height={56} alignItems="center" justifyContent="center">
             <ZAvatar
                 src={props.item.photo}
-                size={42}
+                size="medium"
                 placeholderKey={props.item.id}
                 placeholderTitle={props.item.title}
             />

@@ -42,7 +42,7 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShor
                         <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
                     </View>
                     <View paddingTop={screenHeight <= 640 ? 60 : 100} paddingHorizontal={16} alignItems="center" flexDirection="column">
-                        <ZAvatar size={86} src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
+                        <ZAvatar size="x-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
                         <Text style={{ color: theme.foregroundPrimary, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: TextStyles.weight.medium }}>{organization.name}</Text>
 
                         {!!organization.about && (

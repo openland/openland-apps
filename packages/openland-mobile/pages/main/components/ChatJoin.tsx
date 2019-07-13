@@ -26,7 +26,7 @@ export const ChatJoin = XMemo<ChatJoinProps>((props) => (
             <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
                 <ZAvatar
                     src={props.room.photo}
-                    size={100}
+                    size="xx-large"
                     placeholderKey={props.room.id}
                     placeholderTitle={props.room.title}
                 />

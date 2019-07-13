@@ -127,7 +127,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
                             <AsyncAvatar
-                                size={32}
+                                size="small"
                                 src={props.message.senderPhoto}
                                 placeholderKey={props.message.senderId}
                                 placeholderTitle={props.message.senderName}

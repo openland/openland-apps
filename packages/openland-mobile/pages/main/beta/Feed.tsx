@@ -20,7 +20,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                         <ASView style={{ height: 345 }}>
                             <ASFlex flexDirection="column" backgroundGradient={{ start: '#3023ae', end: '#c86dd7' }} borderRadius={RadiusStyles.medium} alignItems="stretch">
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
-                                    <AsyncAvatar size={36} placeholderKey="key" placeholderTitle="T T" />
+                                    <AsyncAvatar size="small" placeholderKey="key" placeholderTitle="T T" />
                                     {}
                                 </ASFlex>
                                 <ASFlex flexDirection="column" flexGrow={1} marginLeft={30} marginRight={30} alignItems="stretch" justifyContent="center">
@@ -36,7 +36,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                         <ASView style={{ height: 345 }}>
                             <ASFlex flexDirection="column" backgroundGradient={{ start: '#fad961', end: '#f76b1c' }} borderRadius={RadiusStyles.medium} alignItems="stretch">
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
-                                    <AsyncAvatar size={36} placeholderKey="key" placeholderTitle="T T" />
+                                    <AsyncAvatar size="small" placeholderKey="key" placeholderTitle="T T" />
                                     {}
                                 </ASFlex>
                                 <ASFlex flexDirection="column" flexGrow={1} marginLeft={30} marginRight={30} alignItems="stretch" justifyContent="center">

@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
 
 export const SuggestionsWrapper = (props: { children: any }) => (
-    <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={186}>
+    <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={198}>
         <View height={6} />
 
         {props.children}

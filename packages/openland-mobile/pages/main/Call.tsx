@@ -98,8 +98,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View alignItems="center" justifyContent="center" flexDirection="column">
                 <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
-                    <ZAvatar size={120} placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
-
+                    <ZAvatar size="xx-large" placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
                 </View>
                 <Text
                     style={{ fontSize: 28, fontWeight: TextStyles.weight.medium, color: 'white', textAlign: 'center', marginTop: 25 }}
@@ -122,7 +121,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             {room.__typename === 'SharedRoom' && <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
                 {conference && conference.conference.peers.map(p => {
                     return <View key={p.id} margin={10}>
-                        <ZAvatar size={45} placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
+                        <ZAvatar size="medium" placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
                     </View>;
 
                 })}

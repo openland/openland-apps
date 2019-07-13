@@ -23,7 +23,7 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
             <View alignItems="stretch" marginTop={15} marginBottom={8} flexDirection="row">
                 <View marginRight={12}>
                     <ZAvatar
-                        size={40}
+                        size="medium"
                         src={sender.photo}
                         placeholderKey={sender.id}
                         placeholderTitle={sender.name}

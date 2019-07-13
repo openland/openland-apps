@@ -117,7 +117,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 height={height}
             >
                 {this.props.leftIcon && <LeftIcon theme={theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
-                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
+                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingHorizontal={16} paddingVertical={this.props.multiline ? 3 : undefined} flexGrow={1} justifyContent="center">
                     {this.props.title && <Text style={{ ...TypeStyles.caption, color: theme.foregroundSecondary, marginTop: 2, marginBottom: -2 }} allowFontScaling={false}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
@@ -174,7 +174,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     </View>
                     {this.props.subTitle && <Text style={{ ...TypeStyles.subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>{this.props.subTitle}</Text>}
                 </View>
-                {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
+                {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
             </ZListItemBase >
         );
     }

@@ -23,16 +23,14 @@ const ItemBase = XMemo<ItemBaseProps>((props) => {
     const height = 48;
 
     return (
-        <ASFlex height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems={'center'}>
-            <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
+        <ASFlex marginLeft={12} marginRight={12} height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems="center">
+            <ASFlex width={height} height={height} alignItems="center" justifyContent="center">
                 {avatar}
             </ASFlex>
-            <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                <ASFlex alignItems="center">
-                    <ASText fontSize={15} lineHeight={Platform.OS === 'android' ? 22 : 18} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} marginRight={10}>
-                        {name}
-                    </ASText>
-                </ASFlex>
+            <ASFlex marginLeft={4} flexGrow={1} flexBasis={0} alignItems="center">
+                <ASText fontSize={15} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
+                    {name}
+                </ASText>
             </ASFlex>
         </ASFlex>
     );
@@ -59,7 +57,7 @@ export const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
             avatar={
                 <ASAvatar
                     src={item.roomPhoto}
-                    size={30}
+                    size="small"
                     placeholderKey={item.id}
                     placeholderTitle={item.title}
                 />
@@ -85,7 +83,7 @@ export const GlobalSearchItemOrganization = XMemo<ItemOrganizationProps>((props)
             avatar={
                 <ASAvatar
                     src={item.photo}
-                    size={30}
+                    size="small"
                     placeholderKey={item.id}
                     placeholderTitle={item.name}
                 />
@@ -111,7 +109,7 @@ export const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
             avatar={
                 <UserAvatar
                     src={item.photo}
-                    size={30}
+                    size="small"
                     placeholderKey={item.id}
                     placeholderTitle={item.name}
                     online={item.online}
