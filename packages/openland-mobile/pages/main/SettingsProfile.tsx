@@ -55,7 +55,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
             >
                 <View alignItems="center" marginTop={10}>
                     <ZAvatarPicker size="xx-large" field="input.photoRef" />
-                </View> 
+                </View>
 
                 <ZListItemGroup header="Info" marginTop={0}>
                     <ZInput

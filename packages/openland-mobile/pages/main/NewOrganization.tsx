@@ -11,7 +11,6 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 
@@ -59,33 +58,27 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                         }
                     }}
                 >
-                    {!isCommunity && (
-                        <>
-                            <View alignSelf="center" marginTop={15}>
-                                <ZAvatarPicker field="input.photoRef" size="xx-large" />
-                            </View>
-                            <ZListItemGroup header={null}>
-                                <ZInput
-                                    placeholder="Organization name"
-                                    field="input.name"
-                                    autoFocus={true}
-                                    description="Please, provide organization name and optional logo"
-                                />
-                            </ZListItemGroup>
-                        </>
-                    )}
+                    <View alignSelf="center" marginTop={15}>
+                        <ZAvatarPicker field="input.photoRef" size="xx-large" />
+                    </View>
 
-                    {isCommunity && (
-                        <>
-                            <View alignSelf="center" marginTop={15}>
-                                <ZAvatarPicker field="input.photoRef" size="xx-large" />
-                            </View>
-                            <ZListItemGroup header={null}>
+                    <ZListItemGroup header={null}>
+                        {!isCommunity && (
+                            <ZInput
+                                placeholder="Organization name"
+                                field="input.name"
+                                autoFocus={true}
+                                description="Please, provide organization name and optional logo"
+                            />
+                        )}
+
+                        {isCommunity && (
+                            <>
                                 <ZInput placeholder="Community name" field="input.name" autoFocus={true} />
                                 <ZInput placeholder="About" field="input.about" multiline={true} />
-                            </ZListItemGroup>
-                        </>
-                    )}
+                            </>
+                        )}
+                    </ZListItemGroup>
                 </ZForm>
             </ZTrack>
         );
