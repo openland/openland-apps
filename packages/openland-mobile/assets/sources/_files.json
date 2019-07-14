@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-header-share",
+            "src": "ic-header-share.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-picker",
             "src": "ic-picker.svg",
             "sizes": [
