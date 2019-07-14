@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { css } from "linaria";
-import { PageHeader } from './PageHeader';
 import { Deferred } from './Deferred';
 import { XLoader } from 'openland-x/XLoader';
+import { HeaderComponent } from './HeaderComponent';
 
 //
 // Container style
@@ -105,14 +105,15 @@ export const PageLayout = (props: {
         <div className={containerStyle}>
             <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
             <div className={contentStyle} style={{ transform: 'translateX(' + offset + 'px)' }}>
-                <PageHeader />
-                <Deferred>
-                    <div className={contentWrapperStyle}>
-                        <React.Suspense fallback={<XLoader />}>
-                            {props.children}
-                        </React.Suspense>
-                    </div>
-                </Deferred>
+                <HeaderComponent>
+                    <Deferred>
+                        <div className={contentWrapperStyle}>
+                            <React.Suspense fallback={<XLoader />}>
+                                {props.children}
+                            </React.Suspense>
+                        </div>
+                    </Deferred>
+                </HeaderComponent>
             </div>
         </div>
     );

@@ -3,8 +3,9 @@ import { XView } from 'react-mental';
 
 import BackIcon from './back_24.svg';
 import { useStackRouter } from './StackRouter';
+import { HeaderConfig } from './HeaderConfig';
 
-export const PageHeader = () => {
+export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
     return (
         <XView height={56} flexDirection="row" alignItems="center">
@@ -28,8 +29,8 @@ export const PageHeader = () => {
                 lineHeight="32px"
                 fontWeight="600"
             >
-                Header
+                {props.config.title}
             </XView>
         </XView>
     );
-};
+});

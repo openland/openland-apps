@@ -12,9 +12,9 @@ export const FormWrapper = ({ title, children }: { title: string; children: any 
             paddingBottom={40}
         >
             <XView flexDirection="column" flexGrow={1} maxWidth={592}>
-                <XView marginBottom={40}>
+                {/* <XView marginBottom={40}>
                     <XText mode={Mode.TitleOne}>{title}</XText>
-                </XView>
+                </XView> */}
                 {children}
             </XView>
         </XView>

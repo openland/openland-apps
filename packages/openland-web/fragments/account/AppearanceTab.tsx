@@ -7,6 +7,7 @@ import { XButton } from 'openland-x/XButton';
 import { FormSection } from '../../pages/account/components/FormSection';
 import { FormWrapper } from '../../pages/account/components/FormWrapper';
 import { FormFooter } from '../../pages/account/components/FormFooter';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -33,35 +34,38 @@ export const AppearanceTab = () => {
     };
 
     return (
-        <FormWrapper title="Appearance">
-            <FormSection title="Secret group display">
-                <XView marginHorizontal={-16}>
-                    <RadioButtonsSelect
-                        {...secretGroupDisplay.input}
-                        selectOptions={[
-                            {
-                                value: AppearanceOptions.DEFAULT,
-                                label: `Default`,
-                            },
-                            {
-                                value: AppearanceOptions.HIGHLIGHTED,
-                                label: `Highlighted`,
-                            },
-                        ]}
+        <>
+            <UHeader title="Appearance" />
+            <FormWrapper title="Appearance">
+                <FormSection title="Secret group display">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...secretGroupDisplay.input}
+                            selectOptions={[
+                                {
+                                    value: AppearanceOptions.DEFAULT,
+                                    label: `Default`,
+                                },
+                                {
+                                    value: AppearanceOptions.HIGHLIGHTED,
+                                    label: `Highlighted`,
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormFooter>
+                    <XButton
+                        square
+                        loading={form.loading}
+                        text="Save changes"
+                        style="primary"
+                        size="large"
+                        onClick={doConfirm}
+                        alignSelf="flex-start"
                     />
-                </XView>
-            </FormSection>
-            <FormFooter>
-                <XButton
-                    square
-                    loading={form.loading}
-                    text="Save changes"
-                    style="primary"
-                    size="large"
-                    onClick={doConfirm}
-                    alignSelf="flex-start"
-                />
-            </FormFooter>
-        </FormWrapper>
+                </FormFooter>
+            </FormWrapper>
+        </>
     );
 };

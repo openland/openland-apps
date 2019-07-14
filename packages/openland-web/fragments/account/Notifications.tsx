@@ -13,6 +13,7 @@ import {
 import { FormSection } from '../../pages/account/components/FormSection';
 import { FormWrapper } from '../../pages/account/components/FormWrapper';
 import { FormFooter } from '../../pages/account/components/FormFooter';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 export const Notifications = () => {
     const form = useForm();
@@ -48,77 +49,80 @@ export const Notifications = () => {
     };
 
     return (
-        <FormWrapper title="Notifications">
-            <FormSection title="Messages notifications">
-                <XView marginHorizontal={-16}>
-                    <RadioButtonsSelect
-                        {...messagesNotifications.input}
-                        selectOptions={[
-                            {
-                                value: NotificationMessages.ALL,
-                                label: `All new messages`,
-                            },
-                            {
-                                value: NotificationMessages.DIRECT,
-                                label: `Direct messages and mentions`,
-                            },
-                        ]}
+        <>
+            <UHeader title="Appearance" />
+            <FormWrapper title="Notifications">
+                <FormSection title="Messages notifications">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...messagesNotifications.input}
+                            selectOptions={[
+                                {
+                                    value: NotificationMessages.ALL,
+                                    label: `All new messages`,
+                                },
+                                {
+                                    value: NotificationMessages.DIRECT,
+                                    label: `Direct messages and mentions`,
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Comments notifications">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...commentsNotifications.input}
+                            selectOptions={[
+                                {
+                                    value: CommentsNotificationDelivery.ALL,
+                                    label: `All new comments`,
+                                },
+                                {
+                                    value: CommentsNotificationDelivery.NONE,
+                                    label: `Never notify me`,
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Email notifications">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...emailNotifications.input}
+                            selectOptions={[
+                                {
+                                    value: EmailFrequency.MIN_15,
+                                    label: `At most once every 15 minutes`,
+                                },
+                                {
+                                    value: EmailFrequency.HOUR_1,
+                                    label: `At most once per hour`,
+                                },
+                                {
+                                    value: EmailFrequency.HOUR_24,
+                                    label: `At most once per day`,
+                                },
+                                {
+                                    value: EmailFrequency.NEVER,
+                                    label: `Never notify me`,
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormFooter>
+                    <XButton
+                        square
+                        text="Save changes"
+                        style="primary"
+                        size="large"
+                        onClick={doConfirm}
+                        loading={form.loading}
+                        alignSelf="flex-start"
                     />
-                </XView>
-            </FormSection>
-            <FormSection title="Comments notifications">
-                <XView marginHorizontal={-16}>
-                    <RadioButtonsSelect
-                        {...commentsNotifications.input}
-                        selectOptions={[
-                            {
-                                value: CommentsNotificationDelivery.ALL,
-                                label: `All new comments`,
-                            },
-                            {
-                                value: CommentsNotificationDelivery.NONE,
-                                label: `Never notify me`,
-                            },
-                        ]}
-                    />
-                </XView>
-            </FormSection>
-            <FormSection title="Email notifications">
-                <XView marginHorizontal={-16}>
-                    <RadioButtonsSelect
-                        {...emailNotifications.input}
-                        selectOptions={[
-                            {
-                                value: EmailFrequency.MIN_15,
-                                label: `At most once every 15 minutes`,
-                            },
-                            {
-                                value: EmailFrequency.HOUR_1,
-                                label: `At most once per hour`,
-                            },
-                            {
-                                value: EmailFrequency.HOUR_24,
-                                label: `At most once per day`,
-                            },
-                            {
-                                value: EmailFrequency.NEVER,
-                                label: `Never notify me`,
-                            },
-                        ]}
-                    />
-                </XView>
-            </FormSection>
-            <FormFooter>
-                <XButton
-                    square
-                    text="Save changes"
-                    style="primary"
-                    size="large"
-                    onClick={doConfirm}
-                    loading={form.loading}
-                    alignSelf="flex-start"
-                />
-            </FormFooter>
-        </FormWrapper>
+                </FormFooter>
+            </FormWrapper>
+        </>
     );
 };
