@@ -109,7 +109,6 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 onPress={this.handleOnPress}
                 onLongPress={this.handleOnLongPress}
                 enabled={enabled}
-                backgroundColor={theme.backgroundPrimary}
                 separator={this.props.separator === true}
                 path={this.props.path}
                 pathParams={this.props.pathParams}
@@ -167,7 +166,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                     height: 22,
                                     borderRadius: 11,
                                     borderWidth: checkmarkEnabled ? 7 : 2,
-                                    borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary
+                                    borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary,
                                 }}
                             />
                         )}

@@ -129,6 +129,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             },
             'Add members',
             members.map(m => m.user.id),
+            [ getMessenger().engine.user.id ],
             { path: 'ProfileGroupLink', pathParams: { room } }
         );
     }, [members]);

@@ -17,6 +17,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
@@ -106,6 +107,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         },
                         'Add members',
                         [],
+                        [ getMessenger().engine.user.id ],
                         {
                             path: 'ProfileGroupLink',
                             pathParams: { id: res.room.id },

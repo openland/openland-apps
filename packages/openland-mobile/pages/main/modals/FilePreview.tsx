@@ -13,25 +13,24 @@ import { formatBytes } from '../../../utils/formatBytes';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
 import { PdfPreview } from './PdfPreview';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     name: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#000000',
+        ...TypeStyles.label1,
         marginTop: 20,
         marginHorizontal: 64,
         textAlign: 'center'
     } as TextStyle,
     size: {
-        fontSize: 14,
-        fontWeight: '500',
-        color: '#000',
-        opacity: 0.8,
+        ...TypeStyles.subhead,
         marginTop: 2
     } as TextStyle
 });
-class FilePreviewComponent extends React.PureComponent<PageProps, { completed: boolean, path?: string, downloadState?: DownloadState }> {
+class FilePreviewComponent extends React.PureComponent<PageProps & { theme: ThemeGlobal }, { completed: boolean, path?: string, downloadState?: DownloadState }> {
 
     subscription?: WatchSubscription;
     isPdf = false;
@@ -79,13 +78,14 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
 
     render() {
         const config = this.props.router.params.config;
+        const { theme } = this.props;
 
-        let content = <View backgroundColor="#fff" flexGrow={1}>
+        let content = <View backgroundColor={theme.backgroundPrimary} flexGrow={1}>
             <TouchableHighlight underlayColor="#fff" onPress={this.handleOpen}>
                 <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
-                    <Text style={styles.name}>{config.name}</Text>
-                    <Text style={styles.size}>{formatBytes(config.size)}</Text>
+                    <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} />
+                    <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
+                    <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
                     <View height={46} justifyContent="center" marginTop={5}>
                         {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
                         {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
@@ -100,13 +100,18 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         return (
             <>
                 <SHeader title="Document" />
-                <SHeaderButton title="Share" icon={require('assets/ic-export-white-ios.png')} onPress={this.handleOpen} />
+                <SHeaderButton title="Share" icon={require('assets/ic-header-share-24.png')} onPress={this.handleOpen} />
 
                 {content}
-
             </>
         );
     }
 }
 
-export const FilePreview = withApp(FilePreviewComponent, { navigationAppearance: 'small' });
+const ThemedFilePreview = XMemo<PageProps>(props => {
+    const theme = React.useContext(ThemeContext);
+
+    return <FilePreviewComponent {...props} theme={theme} />;
+});
+
+export const FilePreview = withApp(ThemedFilePreview, { navigationAppearance: 'small' });

@@ -7,37 +7,46 @@ import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import Alert from 'openland-mobile/components/AlertBlanket';
-import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
-class NewOrganizationComponent extends React.PureComponent<PageProps> {
+class SignupOrgComponent extends React.PureComponent<PageProps, { name: string }> {
     private ref = React.createRef<ZForm>();
+
+    constructor(props: PageProps) {
+        super(props);
+
+        this.state = {
+            name: ''
+        };
+    }
+
+    handleNameChange = (text: string) => {
+        this.setState({
+            name: text
+        });
+    }
+
     render() {
-        const isCommunity = this.props.router.params.isCommunity;
+        const { name } = this.state;
+        const canSkip = name.length <= 0;
 
         return (
-            <ZTrack event="new_org_view">
-                <SHeader title={isCommunity ? 'New community' : 'New organization'} />
-                <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
+            <ZTrack event="signup_org_view">
+                <SHeader title="New organization" />
+                <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
                     ref={this.ref}
                     action={async (src) => {
-                        if (!src.input || (src.input && !src.input.name)) {
-                            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
-
-                            throw new SilentError();
-                        }
-
                         let client = getClient();
 
                         let res = await client.mutateCreateOrganization({
                             input: {
-                                name: '',
+                                name: canSkip ? getMessenger().engine.user.name : name,
                                 personal: false,
-                                isCommunity: isCommunity,
+                                isCommunity: false,
                                 ...src.input
                             },
                         });
@@ -57,21 +66,12 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     </View>
 
                     <ZListItemGroup header={null}>
-                        {!isCommunity && (
-                            <ZInput
-                                placeholder="Organization name"
-                                field="input.name"
-                                autoFocus={true}
-                                description="Please, provide organization name and optional logo"
-                            />
-                        )}
-
-                        {isCommunity && (
-                            <>
-                                <ZInput placeholder="Community name" field="input.name" autoFocus={true} />
-                                <ZInput placeholder="About" field="input.about" multiline={true} />
-                            </>
-                        )}
+                        <ZInput
+                            placeholder="Organization name"
+                            autoFocus={true}
+                            description="Please, provide organization name and optional logo"
+                            onChangeText={this.handleNameChange}
+                        />
                     </ZListItemGroup>
                 </ZForm>
             </ZTrack>
@@ -79,4 +79,4 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
     }
 }
 
-export const NewOrganization = withApp(NewOrganizationComponent);
+export const SignupOrg = withApp(SignupOrgComponent);

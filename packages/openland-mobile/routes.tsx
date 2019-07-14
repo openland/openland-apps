@@ -56,6 +56,7 @@ import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
+import { SignupOrg } from './pages/auth/SignupOrg';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -92,6 +93,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
+  .addRoute('SignupOrg', SignupOrg)
 
   .addRoute('Waitlist', Waitlist)
   .addRoute('Login', Login)

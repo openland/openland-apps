@@ -29,6 +29,7 @@ export const Modals = {
         },
         title?: string,
         disableUsers?: string[],
+        excludeUsers?: string[],
         inviteLinkButton?: {
             path: String,
             pathParams: any,
@@ -37,9 +38,9 @@ export const Modals = {
         pushAndReset?: boolean
     ) {
         if (pushAndReset) {
-            router.pushAndReset('UserMultiplePicker', { action, title, disableUsers, inviteLinkButton });
+            router.pushAndReset('UserMultiplePicker', { action, title, disableUsers, excludeUsers, inviteLinkButton });
         } else {
-            router.push('UserMultiplePicker', { action, title, disableUsers, inviteLinkButton });
+            router.push('UserMultiplePicker', { action, title, disableUsers, excludeUsers, inviteLinkButton });
         }
     },
     showUserPicker(

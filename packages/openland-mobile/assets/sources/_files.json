@@ -1,6 +1,27 @@
 {
     "icons": [
         {
+            "name": "ic-header-share",
+            "src": "ic-header-share.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-picker",
+            "src": "ic-picker.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-picker-selected",
+            "src": "ic-picker-selected.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-header-search",
             "src": "ic-header-search.svg",
             "sizes": [

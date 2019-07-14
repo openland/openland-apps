@@ -189,7 +189,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             backgroundColor={theme.backgroundSecondary}
                             onLayout={this.onLayout}
                         >
-                            <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>
+                            <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingTop: 10 }}>
                                 {this.contents}
                             </ScrollView>
                         </View>
