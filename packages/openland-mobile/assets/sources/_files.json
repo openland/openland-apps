@@ -1,6 +1,76 @@
 {
     "icons": [
         {
+            "name": "ic-msg-pin",
+            "src": "ic-msg-pin.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-s-leave",
+            "src": "ic-s-leave.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-create-private",
+            "src": "ic-create-private.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-create-public",
+            "src": "ic-create-public.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-comment",
+            "src": "ic-msg-comment.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-copy",
+            "src": "ic-msg-copy.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-delete",
+            "src": "ic-msg-delete.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-forward",
+            "src": "ic-msg-forward.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-reply",
+            "src": "ic-msg-reply.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-select",
+            "src": "ic-msg-select.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-right",
             "src": "ic-right.svg",
             "sizes": [

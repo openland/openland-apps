@@ -34,7 +34,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                         {props.user.name}{'   '}
                         {props.user.primaryOrganization && (
                             <Text
-                                style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.regular }}
+                                style={{ color: theme.foregroundSecondary, fontWeight: TextStyles.weight.regular }}
                                 allowFontScaling={false}
                             >
                                 {props.user.primaryOrganization.name}

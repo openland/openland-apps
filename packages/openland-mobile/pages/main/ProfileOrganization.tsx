@@ -127,9 +127,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
             if (canEdit) {
                 if (organization.isCommunity) {
-                    builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }));
+                    builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
                 } else {
-                    builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
+                    builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
                 }
             }
 
@@ -168,8 +168,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                 props.router.back();
                             })
                             .show();
-                    },
-                    true,
+                    }, false, require('assets/ic-s-leave-24.png')
                 );
             }
 
@@ -185,7 +184,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
                             props.router.back();
                         }).show();
-                }, true);
+                }, false, require('assets/ic-msg-delete-24.png'));
             }
 
             builder.show();
@@ -237,8 +236,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     props.router.back();
                                 })
                                 .show();
-                        },
-                        true,
+                        }, false, require('assets/ic-s-leave-24.png')
                     );
                 }
 
@@ -259,7 +257,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                 })
                                 .show();
                         },
-                        true,
+                        false,
                     );
                 }
 

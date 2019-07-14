@@ -19,7 +19,7 @@ export const ZText = (props: ZTextProps) => {
     let theme = React.useContext(ThemeContext);
 
     let openContextMenu = React.useCallback(async (link: string) => {
-        ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
+        ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
     }, []);
 
     let linkifyPressFallback = React.useCallback((link: string) => {

@@ -28,7 +28,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                 }
             });
         }
-    }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
+    }, false, require('assets/ic-camera-24.png'));
 
     if (Platform.OS === 'android') {
         builder.action('Record Video', async () => {
@@ -50,7 +50,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                     }
                 });
             }
-        }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
+        }, false, require('assets/ic-video-24.png'));
     }
 
     builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), async () => {
@@ -81,7 +81,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                 }
             );
         }
-    }, false, Platform.OS === 'android' ? require('assets/ic-gallery-24.png') : undefined);
+    }, false, require('assets/ic-gallery-24.png'));
 
     if (Platform.OS === 'android') {
         builder.action('Video Gallery', async () => {
@@ -103,7 +103,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                     }
                 });
             }
-        }, false, Platform.OS === 'android' ? require('assets/ic-gallery-video-24.png') : undefined);
+        }, false, require('assets/ic-gallery-video-24.png'));
     }
 
     builder.action('Document', () => {
@@ -118,7 +118,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                 }
             }
         );
-    }, false, Platform.OS === 'android' ? require('assets/ic-document-24.png') : undefined);
+    }, false, require('assets/ic-document-24.png'));
 
     builder.show();
 };

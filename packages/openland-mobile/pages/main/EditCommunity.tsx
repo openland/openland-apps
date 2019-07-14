@@ -41,11 +41,11 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
 
         builder.action('Private', async () => {
             await changeType(true);
-        }, false, Platform.OS === 'android' ? require('assets/ic-secret-24.png') : undefined);
+        }, false, require('assets/ic-create-public-24.png'));
 
         builder.action('Public', async () => {
             await changeType(false);
-        }, false, Platform.OS === 'android' ? require('assets/ic-community-24.png') : undefined);
+        }, false, require('assets/ic-create-private-24.png'));
 
         builder.show();
     }, [organization, profile]);

@@ -12,7 +12,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Copy', () => Clipboard.setString(link));
+    builder.action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png'));
     builder.action('Share', () => Share.share({ message: link }));
     builder.action('Open', resolveInternalLink(link, async () => await Linking.openURL(link)));
 

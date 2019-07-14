@@ -161,7 +161,7 @@ export class MobileMessenger {
         let builder = new ActionSheetBuilder();
 
         builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
@@ -177,32 +177,32 @@ export class MobileMessenger {
 
         builder.action('Select', () => {
             conversation.messagesActionsState.selectToggle(message);
-        });
+        }, false, require('assets/ic-msg-select-24.png'));
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
                 conversation.messagesActionsState.setState({ messages: [message], action: 'reply' });
-            });
+            }, false, require('assets/ic-msg-reply-24.png'));
         }
 
         builder.action('Forward', () => {
             forward(conversation, [message]);
-        });
+        }, false, require('assets/ic-msg-forward-24.png'));
 
         builder.action('Comment', () => {
             this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
-        });
+        }, false, require('assets/ic-msg-comment-24.png'));
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
                     conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
-                });
+                }, false, require('assets/ic-edit-24.png'));
             }
 
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
-            });
+            }, false, require('assets/ic-msg-copy-24.png'));
         }
 
         if (conversation.canPin) {
@@ -213,7 +213,7 @@ export class MobileMessenger {
                 } finally {
                     stopLoader();
                 }
-            });
+            }, false, require('assets/ic-msg-pin-24.png'));
         }
 
         if (message.senderId === this.engine.user.id || SUPER_ADMIN) {
@@ -229,7 +229,7 @@ export class MobileMessenger {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-            }, true);
+            }, false, require('assets/ic-msg-delete-24.png'));
         }
 
         builder.show();

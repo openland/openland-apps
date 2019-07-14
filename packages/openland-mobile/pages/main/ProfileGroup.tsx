@@ -102,10 +102,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 }
             }
             if (canKick) {
-                builder.action('Kick', () => handleKick(user), true);
+                builder.action('Kick', () => handleKick(user), false);
             }
         } else {
-            builder.action('Leave', handleLeave, true);
+            builder.action('Leave', handleLeave, false, require('assets/ic-s-leave-24.png'));
         }
 
         builder.show();
@@ -137,14 +137,14 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         let builder = new ActionSheetBuilder();
 
         if (room.canEdit) {
-            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
+            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }), false, require('assets/ic-edit-24.png'));
         }
 
         if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
             builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
         }
 
-        builder.action('Leave and delete', handleLeave, true);
+        builder.action('Leave and delete', handleLeave, false, require('assets/ic-s-leave-24.png'));
 
         builder.show();
     }, [room]);

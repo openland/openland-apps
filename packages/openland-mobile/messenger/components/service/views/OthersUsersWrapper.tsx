@@ -19,16 +19,16 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
     private handlePress = () => {
         if (this.props.users.length > 0) {
             let builder = new ActionSheetBuilder();
-    
-            builder.flat();
+
             builder.view((ctx: ZModalController) => (
-                <View flexGrow={1} paddingTop={5}>
+                <View flexGrow={1}>
                     {this.props.users.map((u) => (
                         <ZUserView key={'user-' + u.id} user={u} onPress={(id) => { ctx.hide(); this.props.onUserPress(id); }} />
                     ))}
                 </View>
             ));
-    
+
+            builder.cancelable(false);
             builder.show();
         }
     }

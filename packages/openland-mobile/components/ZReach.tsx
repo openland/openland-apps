@@ -34,7 +34,6 @@ export const ZReach = XMemo<ZReachProps>(props => {
 export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
     const builder = new ActionSheetBuilder();
 
-    builder.flat();
     builder.view(ctx => (
         <View marginHorizontal={20} marginTop={20} marginBottom={20}>
             <View flexDirection="row" alignItems="center" marginBottom={5}>
@@ -49,5 +48,6 @@ export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
         </View>
     ));
 
+    builder.cancelable(false);
     builder.show();
 });

@@ -111,12 +111,12 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                             'openland.com/' + (shortname ? shortname : ' username'),
                         onPress: (link: string) => {
                             if (me!.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
                             if (me!.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         }
                     }}

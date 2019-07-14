@@ -31,12 +31,12 @@ export const CommentsList = (props: CommentsListProps) => {
             if (comment.sender.id === engine.user.id) {
                 builder.action('Edit', () => {
                     onEditPress(comment);
-                });
+                }, false, require('assets/ic-edit-24.png'));
             }
 
             builder.action('Copy', () => {
                 Clipboard.setString(comment.message!!);
-            });
+            }, false, require('assets/ic-msg-copy-24.png'));
         }
         
         if (comment.sender.id === engine.user.id) {
@@ -52,7 +52,7 @@ export const CommentsList = (props: CommentsListProps) => {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-            }, true);
+            }, false, require('assets/ic-msg-delete-24.png'));
         }
 
         builder.show();
