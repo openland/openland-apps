@@ -10,8 +10,6 @@ import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import { makeActionable } from 'openland-x/Actionable';
-// import { XShortcuts } from 'openland-x/XShortcuts';
-// import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
@@ -183,7 +181,6 @@ export const NewOptionsMenu = () => (
 );
 
 export const NewOptionsButton = XMemo(() => {
-    // let router = React.useContext(XRoutingContext)!;
     const [show, setShow] = React.useState(false);
     const [width] = useWithWidth();
 

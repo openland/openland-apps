@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { tabs, tabsT } from '../tabs';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
@@ -9,7 +9,6 @@ import { Navigation } from 'openland-web/components/Navigation';
 import { NewOptionsButton, NotificationsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
-import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { GlobalSearch_items } from 'openland-api/Types';
 
 const getId = (myPath: string, substring: string) => {
@@ -65,7 +64,7 @@ export const MessagesNavigation = XMemo(
         let tab: tabsT = tabs.empty;
         const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
 
-        const routing = React.useContext(XRoutingContext)!;
+        const routing = React.useContext(XViewRouterContext)!;
 
         let isCall = path.endsWith('/call');
         let isOrganizationInvite = path.includes('join') && !path.includes('joinChannel');
@@ -119,7 +118,7 @@ export const MessagesNavigation = XMemo(
                 <XShortcuts
                     handlerMap={{
                         ESC: () => {
-                            routing.replace('/mail');
+                            routing.navigate('/mail');
                         },
                     }}
                     keymap={{
@@ -155,7 +154,7 @@ export const MessagesNavigation = XMemo(
                                     setSelectedChat(item ? item.id : null);
                                 }}
                                 onDialogPress={(id) => {
-                                    routing.push(`/mail/${id}`);
+                                    routing.navigate(`/mail/${id}`);
                                 }}
                             />
                         }

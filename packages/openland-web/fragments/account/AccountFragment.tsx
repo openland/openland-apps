@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { useController } from 'openland-web/pages/unicorn/components/UnicornController';
 import { ProfileTab } from './ProfileTab';
 import { Notifications } from './Notifications';
 import { AppearanceTab } from './AppearanceTab';
@@ -26,12 +25,11 @@ import { OrganizationProfile } from 'openland-web/pages/main/profile/components/
 import { UserProfile } from 'openland-web/pages/main/profile/components/UserProfileComponent';
 
 const UserProfileCard = withUserInfo(({ user }) => {
-    const controller = useController();
     if (user) {
         return (
             <XView
                 cursor="pointer"
-                onClick={() => controller.push(<UserProfile userId={user.id} hideBack />)}
+                // onClick={() => controller.push(<UserProfile userId={user.id} hideBack />)}
                 hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 height={70}
                 width="100%"
@@ -81,11 +79,11 @@ const UserProfileCard = withUserInfo(({ user }) => {
                         justifyContent="center"
                         onClick={e => {
                             e.stopPropagation();
-                            controller.push(
-                                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                                    <ProfileTab />
-                                </XScrollView3>,
-                            );
+                            // controller.push(
+                            //     <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                            //         <ProfileTab />
+                            //     </XScrollView3>,
+                            // );
                         }}
                     >
                         <EditProfileIcon />
@@ -136,7 +134,7 @@ const OrganizationItem = ({
 export const Organizations = React.memo(() => {
     const client = useClient();
     const myOrganizations = client.useMyOrganizations();
-    const controller = useController();
+    // const controller = useController();
     return (
         <>
             {myOrganizations.myOrganizations.map((organization, key) => {
@@ -147,11 +145,11 @@ export const Organizations = React.memo(() => {
                         image={organization.photo}
                         text={organization.name}
                         isPrimary={organization.isPrimary}
-                        onClick={() =>
-                            controller.push(
-                                <OrganizationProfile organizationId={organization.id} hideBack />,
-                            )
-                        }
+                        // onClick={() =>
+                        //     // controller.push(
+                        //     //     <OrganizationProfile organizationId={organization.id} hideBack />,
+                        //     // )
+                        // }
                     />
                 );
             })}
@@ -160,7 +158,7 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-    const controller = useController();
+    // const controller = useController();
     return (
         <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
             <UserProfileCard />
@@ -179,34 +177,36 @@ export const AccountFragment = React.memo(() => {
             <UListItem
                 text="Notifications"
                 icon={<NotificationsIcon />}
-                onClick={() =>
-                    controller.push(
-                        <XScrollView3 flexGrow={1} flexShrink={1}>
-                            <Notifications />
-                        </XScrollView3>,
-                    )
-                }
+                path="/settings/notifications"
+                // onClick={() =>
+                //     controller.push(
+                //         <XScrollView3 flexGrow={1} flexShrink={1}>
+                //             <Notifications />
+                //         </XScrollView3>,
+                //     )
+                // }
             />
             <UListItem
                 text="Appearance"
                 icon={<AppearanceIcon />}
-                onClick={() =>
-                    controller.push(
-                        <XScrollView3 flexGrow={1} flexShrink={1}>
-                            <AppearanceTab />
-                        </XScrollView3>,
-                    )
-                }
+                path="/settings/appearance"
+                // onClick={() =>
+                //     controller.push(
+                //         <XScrollView3 flexGrow={1} flexShrink={1}>
+                //             <AppearanceTab />
+                //         </XScrollView3>,
+                //     )
+                // }
             />
             <UListItem
                 text="Download Apps"
                 icon={<DownloadAppsIcon />}
-                onClick={() => controller.push(<NativeAppsModal />)}
+                // onClick={() => controller.push(<NativeAppsModal />)}
             />
             <UListItem
                 text="Apps"
                 icon={<DownloadAppsIcon />}
-                onClick={() => controller.push(<AppsFragment />)}
+                // onClick={() => controller.push(<AppsFragment />)}
             />
             <UListHeader text="Organizations" />
 

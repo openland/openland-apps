@@ -273,6 +273,7 @@ export default class OpenlandDocument extends Document {
 
                     {/* <script src="/static/bns.js" /> */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
+                    <script dangerouslySetInnerHTML={{ __html: 'window.initial = JSON.stringify(window.history.state)' }} />
                 </Head>
 
                 <body>

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 
 import BackIcon from './back_24.svg';
-import { useController } from './UnicornController';
+import { useStackRouter } from './StackRouter';
 
 export const PageHeader = () => {
-    let controller = useController();
+    let router = useStackRouter();
     return (
         <XView height={56} flexDirection="row" alignItems="center">
             <XView
@@ -13,7 +13,7 @@ export const PageHeader = () => {
                 width={56}
                 alignItems="center"
                 justifyContent="center"
-                onClick={() => controller.pop()}
+                onClick={() => router.pop()}
                 cursor="pointer"
             >
                 <BackIcon />

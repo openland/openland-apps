@@ -5,8 +5,6 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XPhotoRef } from './XCloudImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
-import { XRouting } from 'openland-x-routing/XRouting';
-import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { XImage } from './XImage';
 
 export type XAvatarSize =
@@ -117,145 +115,145 @@ let borderRadiusStyles = styleResolverWithProps(
         'x-large':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 9,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 9,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 9,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 9,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 9,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 9,
+                }
                 : { borderRadius: 76 },
         large:
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                }
                 : { borderRadius: 65 },
         's-large':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                }
                 : { borderRadius: 65 },
         'x-medium':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                }
                 : { borderRadius: 43 },
         's-medium':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                }
                 : { borderRadius: 33 },
         'l-medium':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 8,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 8,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+                }
                 : { borderRadius: 28 },
         medium:
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 5,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 5,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 5,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 5,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 5,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 5,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 5,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 5,
+                }
                 : { borderRadius: 24 },
         default:
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+                }
                 : { borderRadius: 20 },
         small:
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                }
                 : { borderRadius: 18 },
         'l-small':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                }
                 : { borderRadius: 10 },
         'x-small':
             props.style === 'organization' || props.style === 'room'
                 ? {
-                      borderTopLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderBottomLeftRadius:
-                          props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-                      borderTopRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                      borderBottomRightRadius:
-                          props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-                  }
+                    borderTopLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderBottomLeftRadius:
+                        props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+                    borderTopRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                    borderBottomRightRadius:
+                        props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+                }
                 : { borderRadius: 9 },
     }),
 );
@@ -410,7 +408,7 @@ const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     cursor: 'default',
 }));
 
-class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting }> {
+class XAvatarWrapper extends React.Component<XAvatarProps> {
     render() {
         let props = this.props;
 
@@ -470,20 +468,20 @@ class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting 
                         <StyledPlaceholder {...avatarProps}>
                             {(props.style === undefined || props.style === 'person') &&
                                 (props.size === 'large' ||
-                                props.size === 'x-large' ||
-                                props.size === 's-large' ? (
-                                    <AvatarStub className="user-large" />
-                                ) : (
-                                    <AvatarStub className="user" />
-                                ))}
+                                    props.size === 'x-large' ||
+                                    props.size === 's-large' ? (
+                                        <AvatarStub className="user-large" />
+                                    ) : (
+                                        <AvatarStub className="user" />
+                                    ))}
                             {!(props.style === undefined || props.style === 'person') && (
                                 <ColorusStub
                                     fontSize={fontSize}
                                     backgroundImage={
                                         (props.objectId &&
                                             ColorusArr[
-                                                Math.abs(doSimpleHash(props.objectId)) %
-                                                    ColorusArr.length
+                                            Math.abs(doSimpleHash(props.objectId)) %
+                                            ColorusArr.length
                                             ]) ||
                                         ColorusArr[1]
                                     }
@@ -501,8 +499,4 @@ class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting 
     }
 }
 
-export const XAvatar = Glamorous((props: XAvatarProps) => (
-    <XRoutingContext.Consumer>
-        {routing => <XAvatarWrapper {...props} routing={routing!} />}
-    </XRoutingContext.Consumer>
-))();
+export const XAvatar = Glamorous((props: XAvatarProps) => (<XAvatarWrapper {...props} />))();
