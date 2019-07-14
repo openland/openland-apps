@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { LayoutProvider } from './LayoutContext';
+import { LayoutProvider } from './utils/LayoutContext';
 
 const body = css`
     overflow: hidden;

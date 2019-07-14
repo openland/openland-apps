@@ -2,10 +2,10 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { useController } from 'openland-unicorn/components/UnicornController';
-import { Notifications } from './Notifications';
-import { AppearanceTab } from './AppearanceTab';
-import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
+// import { useController } from 'openland-unicorn/components/UnicornController';
+// import { Notifications } from './Notifications';
+// import { AppearanceTab } from './AppearanceTab';
+// import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 import AppearanceIcon from 'openland-icons/appearance_icon.svg';
 import DownloadAppsIcon from 'openland-icons/download_apps_icon.svg';
 import NotificationsIcon from 'openland-icons/notifications_icon.svg';
@@ -18,7 +18,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
-import { AppsFragment } from '../apps/AppsFragment';
+// import { AppsFragment } from '../apps/AppsFragment';
 
 const UserProfile = withUserInfo(({ user, onClick }: any) => {
     if (user) {
@@ -118,7 +118,6 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-    let controller = useController();
     return (
         <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
             <UserProfile />
