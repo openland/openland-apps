@@ -56,6 +56,7 @@ export interface ZPickFieldProps {
     value?: string;
     noWrapper?: boolean;
     path?: string;
+    pathParams?: any;
     onPress?: () => void;
     description?: string;
 }
@@ -70,9 +71,9 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
             props.onPress();
         }
         if (props.path) {
-            props.router.push(props.path);
+            props.router.push(props.path, props.pathParams);
         }
-    }, [props.onPress, props.path]);
+    }, [props.onPress, props.path, props.pathParams]);
 
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
