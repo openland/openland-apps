@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from './modal/ZPictureModal';
-import { ZAvatarProps, ZAvatar } from './ZAvatar';
+import { ZAvatarProps, ZAvatar, avatarSizes } from './ZAvatar';
 
 class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
     ref = React.createRef<View>();
@@ -27,7 +27,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
                 width: 256,
                 height: 256,
                 isGif: false,
-                animate: { x: pageX, y: pageY, width, height, borderRadius: this.props.size / 2 },
+                animate: { x: pageX, y: pageY, width, height, borderRadius: avatarSizes[this.props.size].size / 2 },
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });
                 },
@@ -43,7 +43,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
 
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
-                <View onLayout={this.handleLayout} ref={this.ref} width={this.props.size} height={this.props.size}>
+                <View onLayout={this.handleLayout} ref={this.ref} width={avatarSizes[this.props.size].size} height={avatarSizes[this.props.size].size}>
                     <ZAvatar {...other} />
                 </View>
             </TouchableWithoutFeedback>

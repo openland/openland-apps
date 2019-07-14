@@ -8,7 +8,7 @@ import { XInputBasicProps } from 'openland-x/basics/XInputBasic';
 const InputStyledClassName = css`
     height: 52px !important;
     border-radius: 8px !important;
-    background-color: #f9f9f9 !important;
+    background-color: #f0f2f5 !important;
     border-color: transparent !important;
     &:focus-within {
         border-color: transparent !important;
@@ -24,12 +24,13 @@ const InputStyledClassName = css`
     }
     & input {
         padding-top: 11px !important;
+        color: #171b1f !important;
     }
     & .input-placeholder {
         top: 0px !important;
         left: 0 !important;
         background-color: transparent !important;
-        color: #696c6e !important;
+        color: #676d7a !important;
         padding-left: 16px !important;
         height: 100% !important;
         width: 100% !important;
@@ -44,11 +45,28 @@ const InputStyledClassName = css`
     }
 `;
 
+const InputLargeClassName = css`
+    height: 56px !important;
+    font-size: 15px !important;
+`;
+
+const InputTitleLargeClassName = css`
+    &:focus-within {
+        & .input-placeholder {
+            font-size: 13px !important;
+            top: -11px !important;
+        }
+    }
+    & .input-placeholder {
+        font-size: 13px !important;
+        top: -11px !important;
+    }
+`;
+
 const InputValueStyledClassName = css`
     & .input-placeholder {
         font-size: 12px !important;
         top: -11px !important;
-        color: #1488f3 !important;
     }
 `;
 
@@ -85,6 +103,19 @@ export const InputField = (props: InputProps) => {
             ref.current.focus();
         }
     }
+
+    let largeClassName = undefined;
+    let placeholderClassNames = undefined;
+
+    if (props.size === 'large') {
+        largeClassName = InputLargeClassName;
+    }
+    if (field.input.value !== '') {
+        placeholderClassNames = InputValueStyledClassName;
+        if (props.size === 'large') {
+            placeholderClassNames = InputTitleLargeClassName;
+        }
+    }
     return (
         <>
             <XInput
@@ -94,15 +125,17 @@ export const InputField = (props: InputProps) => {
                 ref={ref}
                 className={cx(
                     InputStyledClassName,
-                    field.input.value !== '' && InputValueStyledClassName,
+                    largeClassName,
+                    placeholderClassNames,
                     (props.invalid || field.input.invalid) && InputInvalidStyledClassName,
                 )}
             />
-            {field.input.invalid && !hideErrorText && (
-                <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                    {field.input.errorText}
-                </XView>
-            )}
+            {field.input.invalid &&
+                !hideErrorText && (
+                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                        {field.input.errorText}
+                    </XView>
+                )}
         </>
     );
 };

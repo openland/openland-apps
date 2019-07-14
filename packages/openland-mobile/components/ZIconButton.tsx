@@ -8,6 +8,7 @@ export interface ZIconButtonProps {
     src: NodeRequire;
     onPress?: () => void;
     path?: string;
+    pathParams?: any;
 }
 
 const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>((props) => {
@@ -17,9 +18,9 @@ const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>(
             props.onPress();
         }
         if (props.path) {
-            props.router.push(props.path);
+            props.router.push(props.path, props.pathParams);
         }
-    }, [props.onPress, props.path]);
+    }, [props.onPress, props.path, props.pathParams]);
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>

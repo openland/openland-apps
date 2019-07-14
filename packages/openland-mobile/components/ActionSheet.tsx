@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, Platform } from 'react-native';
 import { showSheetModal } from './showSheetModal';
-import { ZActionSheetItem, ZActionSheetViewItem } from './ZActionSheetItem';
 import { ZModalController } from './ZModal';
-import { isPad } from 'openland-mobile/pages/Root';
+import { ZListItem } from './ZListItem';
+import { ZRoundedButton } from './ZRoundedButton';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -17,27 +17,15 @@ interface ActionSheetBuilderActionItem {
 interface ActionSheetBuilderViewItem {
     __typename: "ViewItem";
 
-    view: (ctx: ZModalController) => void;
+    view: (ctx: ZModalController) => JSX.Element;
 }
 
 export class ActionSheetBuilder {
-    private _title?: string;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
-    private _flat: boolean;
+    private _cancelable: boolean;
 
     constructor() {
-        this._flat = Platform.OS === 'android' ? true : false;
-    }
-
-    flat(): ActionSheetBuilder {
-        this._flat = true;
-
-        return this;
-    }
-
-    title(title: string): ActionSheetBuilder {
-        this._title = title;
-        return this;
+        this._cancelable = Platform.OS === 'ios';
     }
 
     action(name: string, callback: () => void, distructive?: boolean, icon?: any): ActionSheetBuilder {
@@ -47,10 +35,16 @@ export class ActionSheetBuilder {
         return this;
     }
 
-    view(view: (ctx: ZModalController) => void): ActionSheetBuilder {
+    view(view: (ctx: ZModalController) => JSX.Element): ActionSheetBuilder {
         let item: ActionSheetBuilderViewItem = { __typename: "ViewItem", view };
 
         this._items.push(item);
+        return this;
+    }
+
+    cancelable(value: boolean): ActionSheetBuilder {
+        this._cancelable = value;
+
         return this;
     }
 
@@ -61,25 +55,35 @@ export class ActionSheetBuilder {
                     {this._items.map((a, i) => (
                         <>
                             {a.__typename === 'ActionItem' && (
-                                <ZActionSheetItem
+                                <ZListItem
                                     key={i + '-ac'}
-                                    icon={a.icon}
+                                    leftIcon={a.icon}
                                     appearance={a.distructive ? 'danger' : 'default'}
-                                    name={a.name}
+                                    text={a.name}
+                                    small={true}
                                     onPress={() => { ctx.hide(); a.callback(); }}
-                                    separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetViewItem key={i + '-view'} separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}>
+                                <View key={i + '-view'}>
                                     {a.view(ctx)}
-                                </ZActionSheetViewItem>
+                                </View>
                             )}
                         </>
                     ))}
+                    {this._cancelable && (
+                        <View margin={16}>
+                            <ZRoundedButton
+                                size="large"
+                                title="Cancel"
+                                style="secondary-inverted"
+                                onPress={() => { ctx.hide(); }}
+                            />
+                        </View>
+                    )}
                 </View>
             );
-        }, this._flat);
+        });
     }
 }
 

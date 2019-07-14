@@ -28,7 +28,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
             <View marginHorizontal={16} height={52} alignItems="center" justifyContent="center">
                 <ZAvatar
                     src={photo}
-                    size={40}
+                    size="medium"
                     placeholderKey={item.id}
                     placeholderTitle={item.title}
                 />

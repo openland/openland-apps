@@ -19,7 +19,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
         <ZListItemBase height={40} onPress={() => props.onPress(props.user.id) } separator={false}>
             <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
                 <ZAvatar
-                    size={28}
+                    size="small"
                     src={props.user.photo}
                     placeholderTitle={props.user.name}
                     placeholderKey={props.user.id}
@@ -34,7 +34,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                         {props.user.name}{'   '}
                         {props.user.primaryOrganization && (
                             <Text
-                                style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.regular }}
+                                style={{ color: theme.foregroundSecondary, fontWeight: TextStyles.weight.regular }}
                                 allowFontScaling={false}
                             >
                                 {props.user.primaryOrganization.name}

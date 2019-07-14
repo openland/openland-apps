@@ -23,6 +23,8 @@ export interface SNavigationViewStyle {
     hairlineColor: string;
     keyboardAppearance: 'dark' | 'light';
     headerColor: string;
+    searchBackground: string;
+    searchColor: string;
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
@@ -119,6 +121,8 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             hairlineColor: '#e0e3e7',
             keyboardAppearance: 'light',
             headerColor: 'white',
+            searchBackground: '#F0F2F5',
+            searchColor: '#969AA3',
             ...this.props.navigationBarStyle
         };
 

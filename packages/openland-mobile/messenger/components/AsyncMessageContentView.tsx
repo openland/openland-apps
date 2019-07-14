@@ -107,16 +107,16 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let topContent = [];
 
-    let maxTextSize = !compensateBubble ? maxSize : undefined;
+    let textSize = !compensateBubble ? maxSize : undefined;
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} maxWidth={maxTextSize} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} hasText={hasText} hasReply={hasReply} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} maxWidth={maxTextSize} emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasDocument) {
         topContent.push(<DocumentContent key="msg-document" theme={props.theme} compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
@@ -185,7 +185,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         bottomContent,
         richAttachIsCompact,
         isEmojiOnly
-    } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
+    } = extractContent(props, (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
     let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
 
@@ -198,6 +198,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
             />
         );
     }
+
+    const isImageBottom = hasImage && !hasText && !hasDocument;
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
@@ -215,7 +217,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                         <ASFlex
                             flexDirection="row"
                             height={14}
-                            backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
+                            backgroundColor={isImageBottom ? 'rgba(0,0,0,0.3)' : undefined}
                             borderRadius={4}
                             alignItems="center"
                             justifyContent="center"
@@ -229,8 +231,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                                 marginLeft={3}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
-                                color={hasImage ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
-                                opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
+                                color={isImageBottom ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
+                                opacity={(props.message.isOut || isImageBottom) ? 0.7 : 0.6}
                             >
                                 {formatTime(props.message.date)}
                             </ASText>

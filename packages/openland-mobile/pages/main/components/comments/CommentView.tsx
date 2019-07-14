@@ -109,7 +109,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
             )}
             {!deleted && (
                 <ZAvatar
-                    size={16}
+                    size="x-small"
                     src={sender.photo}
                     placeholderKey={sender.id}
                     placeholderTitle={sender.name}
@@ -127,15 +127,15 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     {depth === 0 && (
                         <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
                             <View flexDirection="row">
-                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentPrimary, width: 16, height: 16, opacity: 0.7 }} />
-                                <Text style={[styles.reply, { color: theme.accentPrimary }]} allowFontScaling={false}>Reply</Text>
+                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7 }} />
+                                <Text style={[styles.reply, { color: theme.foregroundPrimary }]} allowFontScaling={false}>Reply</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     )}
 
                     {depth !== 0 && (
                         <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentPrimary, width: 16, height: 16, opacity: 0.7}} />
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7}} />
                         </TouchableWithoutFeedback>
                     )}
                 </View>
@@ -146,7 +146,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let likes = !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
             <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
-                <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
+                <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? theme.accentNegative : theme.foregroundQuaternary, width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? theme.foregroundPrimary : theme.foregroundPrimary }} allowFontScaling={false}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
@@ -169,7 +169,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
-                                <Text style={[styles.senderName, { color: !deleted ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{sender.name}</Text>
+                                <Text style={[styles.senderName, { color: !deleted ? theme.foregroundPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{sender.name}</Text>
 
                                 {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundSecondary }]} allowFontScaling={false}>• Edited</Text>}
                             </View>

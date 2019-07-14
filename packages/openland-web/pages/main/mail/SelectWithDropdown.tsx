@@ -62,13 +62,16 @@ export function SelectWithDropdown<T>({
         selectOptions.find((item: SelectWithDropdownOption<T>) => item.value === value)!!,
     );
 
-    React.useEffect(() => {
-        if (value !== innerValue) {
-            if (value && !(value instanceof Array)) {
-                onChange(innerValue.value);
+    React.useEffect(
+        () => {
+            if (value !== innerValue) {
+                if (value && !(value instanceof Array)) {
+                    onChange(innerValue.value);
+                }
             }
-        }
-    }, [innerValue]);
+        },
+        [innerValue],
+    );
 
     const currentItemOptions = selectOptions.find(
         (item: SelectWithDropdownOption<T>) => item.value === innerValue.value,
@@ -87,7 +90,7 @@ export function SelectWithDropdown<T>({
             <XView
                 height={52}
                 paddingHorizontal={16}
-                backgroundColor="#f9f9f9"
+                backgroundColor="#F0F2F5"
                 borderRadius={8}
                 flexDirection="row"
                 justifyContent="space-between"

@@ -24,6 +24,7 @@ export type ThemeGlobal = {
     backgroundTertiaryActive: string;
 
     backgroundHighlight: string;
+    backgroundInverted: string;
 
     contrastPrimary: string;
     contrastSpecial: string;
@@ -73,10 +74,7 @@ export type ThemeGlobal = {
     },
 
     // legacy
-
     separatorColor: string;
-    accentBackgroundColor: string;
-    chatImageBackground: string;
 };
 
 export type PlaceholderGlobal = {

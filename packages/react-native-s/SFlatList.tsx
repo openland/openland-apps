@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Animated, FlatListProps, ActivityIndicator, View } from 'react-native';
+import { Animated, FlatListProps, View } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
+import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
 export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;
@@ -10,6 +11,12 @@ export interface SFlatListProps<T> extends FlatListProps<T> {
 
 export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
     private contentOffset = new STrackedValue();
+
+    renderLoader = (
+        <View height={56} alignItems="center" justifyContent="center">
+            <LoaderSpinner size="small" />
+        </View>
+    );
 
     render() {
         let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, ...other } = this.props;
@@ -43,7 +50,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 legacyImplementation={true}
                                 onEndReachedThreshold={1}
                                 refreshing={refreshing}
-                                ListFooterComponent={refreshing ? <ActivityIndicator /> : undefined}
+                                ListFooterComponent={refreshing ? this.renderLoader : undefined}
                             />
                         );
                     }}

@@ -6,7 +6,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
@@ -68,7 +68,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title={user.name} />
+            <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
             <SScrollView>
                 <ZListItemHeader
                     photo={user.photo}

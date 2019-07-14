@@ -62,9 +62,9 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
             flexDirection="column"
         >
             <ASFlex marginBottom={9}>
-                <ASFlex onPress={() => messenger.handleUserClick(item.senderId)}>
+                <ASFlex onPress={() => messenger.handleUserClick(item.senderId)} alignItems="center">
                     <AsyncAvatar
-                        size={18}
+                        size="x-small"
                         src={item.senderPhoto}
                         placeholderKey={item.senderId}
                         placeholderTitle={item.senderName}
@@ -86,7 +86,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.foregroundPrimary} />
                         <ASFlex onPress={() => messenger.handleConversationClick(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
-                                size={18}
+                                size="x-small"
                                 src={sharedRoom.photo}
                                 placeholderKey={sharedRoom.id}
                                 placeholderTitle={sharedRoom.title}

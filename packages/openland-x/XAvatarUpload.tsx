@@ -93,6 +93,7 @@ export const XAvatarFormFieldComponent = ({
     cropParams?: string;
     dataTestId?: string;
     darkMode?: boolean;
+    rounded?: boolean;
 }) => {
     return (
         <XAvatarUploadBasic

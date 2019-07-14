@@ -4,24 +4,23 @@ import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
-import { UserError, SilentError } from 'openland-y-forms/errorHandling';
+import { SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
-
-    const theme = React.useContext(ThemeContext);
 
     let isChannel = !!props.router.params.isChannel;
     let orgIdFromRouter = props.router.params.organizationId;
@@ -43,11 +42,11 @@ const CreateGroupComponent = (props: PageProps) => {
 
         builder.action(`Secret ${chatTypeString.toLowerCase()}`, () => {
             setSelectedKind(SharedRoomKind.GROUP);
-        }, false, Platform.OS === 'android' ? require('assets/ic-secret-24.png') : undefined);
+        }, false, require('assets/ic-create-public-24.png'));
 
         builder.action(`Shared ${chatTypeString.toLowerCase()}`, () => {
             setSelectedKind(SharedRoomKind.PUBLIC);
-        }, false, Platform.OS === 'android' ? require('assets/ic-community-24.png') : undefined);
+        }, false, require('assets/ic-create-private-24.png'));
 
         builder.show();
     }, []);
@@ -108,6 +107,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         },
                         'Add members',
                         [],
+                        [ getMessenger().engine.user.id ],
                         {
                             path: 'ProfileGroupLink',
                             pathParams: { id: res.room.id },
@@ -119,42 +119,37 @@ const CreateGroupComponent = (props: PageProps) => {
                     );
                 }}
             >
-                <ZAvatarPickerInputsGroup avatarField="photoRef">
-                    <ZTextInput
-                        placeholder={`${chatTypeString} name`}
-                        field="title"
-                        autoFocus={true}
-                    />
-                </ZAvatarPickerInputsGroup>
-
-                <View marginTop={20}>
-                    <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}>
-                        <ZListItem
-                            onPress={handleKindPress}
-                            text={`${chatTypeString} type`}
-                            description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
-                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? theme.accentPositive : undefined}
-                            descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
-                        />
-                    </ZListItemGroup>
-
-                    {selectedKind === SharedRoomKind.PUBLIC && (
-                        <View marginTop={20}>
-                            {sortedOrganizations.map(org => (
-                                <ZListItem
-                                    text={org.name}
-                                    leftAvatar={{
-                                        photo: org.photo,
-                                        key: org.id,
-                                        title: org.name
-                                    }}
-                                    checkmark={org.id === selectedOrg}
-                                    onPress={() => setSelectedOrg(org.id)}
-                                />
-                            ))}
-                        </View>
-                    )}
+                <View alignItems="center" marginTop={10} marginBottom={24}>
+                    <ZAvatarPicker size="xx-large" field="photoRef" />
                 </View>
+                <ZInput
+                    placeholder={`${chatTypeString} name`}
+                    field="title"
+                    autoFocus={true}
+                />
+                <ZPickField
+                    label={`${chatTypeString} type`}
+                    value={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
+                    onPress={handleKindPress}
+                    description={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}
+                />
+
+                {selectedKind === SharedRoomKind.PUBLIC && (
+                    <ZListItemGroup header="Share with" marginTop={0}>
+                        {sortedOrganizations.map(org => (
+                            <ZListItem
+                                text={org.name}
+                                leftAvatar={{
+                                    photo: org.photo,
+                                    key: org.id,
+                                    title: org.name
+                                }}
+                                checkmark={org.id === selectedOrg}
+                                onPress={() => setSelectedOrg(org.id)}
+                            />
+                        ))}
+                    </ZListItemGroup>
+                )}
             </ZForm>
         </>
     );

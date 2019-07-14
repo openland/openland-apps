@@ -8,10 +8,10 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
     let profile = getClient().useProfile({ fetchPolicy: 'network-only' }).profile;
@@ -22,6 +22,10 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
             ref.current.submitForm();
         }
     }, []);
+
+    if (!me) {
+        return null;
+    }
 
     return (
         <>
@@ -49,55 +53,61 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     },
                 }}
             >
-                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                    <ZTextInput
+                <View alignItems="center" marginTop={10}>
+                    <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                </View>
+
+                <ZListItemGroup header="Info" marginTop={0}>
+                    <ZInput
                         placeholder="First name"
                         field="input.firstName"
                     />
-                    <ZTextInput
+                    <ZInput
                         placeholder="Last name"
                         field="input.lastName"
                     />
-                </ZAvatarPickerInputsGroup>
-                <View height={20} />
-                <ZTextInput
-                    field="input.about"
-                    placeholder="Add your bio"
-                    multiline={true}
-                />
-                <View height={30} />
-                <ZListItemGroup>
-                    <ZListItem text="Username" description={me!.shortname ? '@' + me!.shortname : 'Create'} path="SetUserShortname" />
-                    <ZListItem text="Primary organization" description={me!.primaryOrganization!.name} path="SelectPrimaryOrganization" />
-                </ZListItemGroup>
-                <View height={30} />
-                <View>
-                    <ZTextInput
-                        title="Phone"
-                        field="input.phone"
-                        placeholder="Add your phone"
+                    <ZPickField
+                        label="Primary organization"
+                        value={me.primaryOrganization ? me.primaryOrganization.name : undefined}
+                        path="SelectPrimaryOrganization"
                     />
-                    <ZTextInput
-                        title="Email"
-                        field="input.email"
-                        placeholder="Add your email"
+                    <ZInput
+                        placeholder="About"
+                        field="input.about"
+                        multiline={true}
                     />
-                    <ZTextInput
-                        title="Location"
+                    <ZInput
+                        placeholder="Location"
                         field="input.location"
-                        placeholder="Add your location"
                     />
-                    <ZTextInput
-                        title="Website"
+                </ZListItemGroup>
+
+                <ZListItemGroup header="Username" marginTop={0}>
+                    <ZPickField
+                        label="Username"
+                        value={me.shortname ? '@' + me.shortname : undefined}
+                        path="SetUserShortname"
+                    />
+                </ZListItemGroup>
+
+                <ZListItemGroup header="Contacts" marginTop={0}>
+                    <ZInput
+                        placeholder="Phone"
+                        field="input.phone"
+                    />
+                    <ZInput
+                        placeholder="Email"
+                        field="input.email"
+                    />
+                    <ZInput
+                        placeholder="Website"
                         field="input.website"
-                        placeholder="Add your website"
                     />
-                    <ZTextInput
-                        title="LinkedIn"
+                    <ZInput
+                        placeholder="LinkedIn"
                         field="input.alphaLinkedin"
-                        placeholder="Add your LinkedIn account"
                     />
-                </View>
+                </ZListItemGroup>
             </ZForm>
         </>
     );

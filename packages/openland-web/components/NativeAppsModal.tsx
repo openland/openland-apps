@@ -6,6 +6,7 @@ import { XImage } from 'react-mental';
 import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const textAlignClassName = css`
     text-align: center;
@@ -152,8 +153,8 @@ const MobileAppButton = (props: { href: string; image: string }) => (
 export type OS = 'Mac' | 'iOS' | 'Windows' | 'Android' | 'Linux';
 export const detectOS = (): OS | null => {
     let os: OS | null = null;
-    let userAgent = window.navigator.userAgent,
-        platform = window.navigator.platform,
+    let userAgent = canUseDOM ? window.navigator.userAgent : '',
+        platform = canUseDOM ? window.navigator.platform : '',
         macPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
         windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
         iosPlatforms = ['iPhone', 'iPad', 'iPod'];

@@ -1,34 +1,82 @@
 import * as React from 'react';
-import { ZTextInput } from '../../components/ZTextInput';
-import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
+import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
-import { signupStyles } from './SignupUser';
-import { next } from './signup';
+import { View } from 'react-native';
+import { ZAvatarPicker } from '../../components/ZAvatarPicker';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { ZInput } from 'openland-mobile/components/ZInput';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
-class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: () => void }, { name: string, loading: boolean }> {
+class SignupOrgComponent extends React.PureComponent<PageProps, { name: string }> {
     private ref = React.createRef<ZForm>();
 
+    constructor(props: PageProps) {
+        super(props);
+
+        this.state = {
+            name: ''
+        };
+    }
+
+    handleNameChange = (text: string) => {
+        this.setState({
+            name: text
+        });
+    }
+
     render() {
+        const { name } = this.state;
+        const canSkip = name.length <= 0;
+
         return (
-            <>
-                <SHeader title="Your organization" />
-                <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
+            <ZTrack event="signup_org_view">
+                <SHeader title="New organization" />
+                <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
                     ref={this.ref}
-                    defaultData={{ input: { name: '' } }}
                     action={async (src) => {
-                        await getClient().mutateCreateOrganization({ input: { name: src.input.name, personal: false } });
-                        await next(this.props.router);
+                        let client = getClient();
+
+                        let res = await client.mutateCreateOrganization({
+                            input: {
+                                name: canSkip ? getMessenger().engine.user.name : name,
+                                personal: false,
+                                isCommunity: false,
+                                ...src.input
+                            },
+                        });
+
+                        await client.refetchAccount();
+                        await client.refetchAccountSettings();
+
+                        if (this.props.router.params.action) {
+                            await this.props.router.params.action(this.props.router);
+                        } else {
+                            this.props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
+                        }
                     }}
                 >
-                    <ZTextInput field="input.name" placeholder="Name" style={signupStyles.input} width="100%" />
+                    <View alignSelf="center" marginTop={15}>
+                        <ZAvatarPicker field="input.photoRef" size="xx-large" />
+                    </View>
+
+                    <ZListItemGroup header={null}>
+                        <ZInput
+                            placeholder="Organization name"
+                            autoFocus={true}
+                            description="Please, provide organization name and optional logo"
+                            onChangeText={this.handleNameChange}
+                        />
+                    </ZListItemGroup>
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }
+
 export const SignupOrg = withApp(SignupOrgComponent);

@@ -9,14 +9,15 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { ZInput } from 'openland-mobile/components/ZInput';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
-    let ref = React.useRef<ZForm | null>(null);
-    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
-    let profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organizationProfile;
+    const ref = React.useRef<ZForm | null>(null);
+    const organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
+    const profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organizationProfile;
+
     return (
         <>
             <SHeader title="Edit organization" />
@@ -49,52 +50,49 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }}
             >
-                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                    <ZTextInput
+                <View alignItems="center" marginTop={10}>
+                    <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                </View>
+                <ZListItemGroup header="Info" marginTop={0}>
+                    <ZInput
                         placeholder="Organization name"
                         field="input.name"
                     />
-                </ZAvatarPickerInputsGroup>
-                <View height={20} />
-                <ZListItemGroup footer="Publicly describe this organization for all to see">
-                    <ZTextInput
+                    <ZInput
                         field="input.about"
-                        placeholder="Add a short description"
+                        placeholder="About"
                         multiline={true}
+                        description="Publicly describe this organization for all to see"
                     />
                 </ZListItemGroup>
                 <View height={15} />
-                <ZListItemGroup footer="People will be able to find your organization by this shortname">
-                    <ZListItem
-                        text="Shortname"
-                        description={organization.shortname ? '@' + organization.shortname : 'Create'}
+                <ZListItemGroup header="Shortname" marginTop={0}>
+                    <ZPickField
+                        label="Shortname"
+                        value={organization.shortname ? '@' + organization.shortname : undefined}
                         path="SetOrgShortname"
                         pathParams={{ id: organization.id }}
+                        description="People will be able to find your organization by this shortname"
                     />
                 </ZListItemGroup>
-                <View height={15} />
-                <View>
-                    <ZTextInput
-                        title="Website"
+                <ZListItemGroup header="Contacts" marginTop={0}>
+                    <ZInput
+                        placeholder="Website"
                         field="input.website"
-                        placeholder="Add a link"
                     />
-                    <ZTextInput
-                        title="Twitter"
+                    <ZInput
+                        placeholder="Twitter"
                         field="input.twitter"
-                        placeholder="Add Twitter handle"
                     />
-                    <ZTextInput
-                        title="Facebook"
+                    <ZInput
+                        placeholder="Facebook"
                         field="input.facebook"
-                        placeholder="Add Facebook account"
                     />
-                    <ZTextInput
-                        title="Linkedin"
+                    <ZInput
+                        placeholder="Linkedin"
                         field="input.linkedin"
-                        placeholder="Add LinkedIn account"
                     />
-                </View>
+                </ZListItemGroup>
             </ZForm>
         </>
     );

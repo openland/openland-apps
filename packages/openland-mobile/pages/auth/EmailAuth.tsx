@@ -3,7 +3,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ZTextInput } from '../../components/ZTextInput';
+import { ZInput } from '../../components/ZInput';
 import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
@@ -15,19 +15,16 @@ import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
     hint: {
+        ...TypeStyles.body,
         paddingHorizontal: 16,
-        fontSize: 16,
         marginTop: 15,
         marginBottom: 26,
-        lineHeight: 24,
-        fontWeight: '400',
-        color: '#000',
-        opacity: 0.9,
     } as TextStyle,
 });
 
@@ -112,14 +109,12 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     <Text style={styles.hint}>
                         Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                     </Text>
-                    <ZTextInput
+                    <ZInput
                         field="email"
-                        style={signupStyles.input}
                         placeholder="Email"
                         autoCapitalize="none"
                         keyboardType="email-address"
                         autoFocus={true}
-                        width="100%"
                         returnKeyType="next"
                         onSubmitEditing={this.submitForm}
                     />
@@ -220,14 +215,12 @@ class EmailCodeComponent extends React.PureComponent<PageProps, { code: string }
                     <Text style={styles.hint}>
                         Enter activation code that was just sent to {email}
                     </Text>
-                    <ZTextInput
+                    <ZInput
                         field="code"
-                        style={signupStyles.input}
                         placeholder="Activation Code"
                         autoCapitalize="none"
                         keyboardType="number-pad"
                         autoFocus={true}
-                        width="100%"
                         returnKeyType="next"
                         onSubmitEditing={this.submitForm}
                         onChangeText={this.handleCodeChange}

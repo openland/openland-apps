@@ -52,16 +52,15 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
                         key={'mention-' + index}
                         onPress={() => props.onMentionPress(props.activeWord, mention)}
                         separator={false}
-                        height={40}
+                        height={48}
                         underlayColor="rgba(0, 0, 0, 0.03)"
                     >
                         <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
                             <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
                                 {mention.__typename === 'User' && (
                                     <ZAvatar
-                                        userId={mention.id}
                                         src={mention.photo}
-                                        size={28}
+                                        size="small"
                                         placeholderKey={mention.id}
                                         placeholderTitle={mention.name}
                                     />

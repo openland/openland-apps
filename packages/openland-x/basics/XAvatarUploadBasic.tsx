@@ -20,6 +20,7 @@ export interface XAvatarUploadBasicProps {
     initialUrl?: string | null;
     cropParams?: string;
     dataTestId?: string;
+    rounded?: boolean;
 }
 
 let DrowAreaSize = styleResolver({
@@ -49,6 +50,7 @@ interface DropAreaWrapperProps {
     hasImage: boolean;
     avatarSize?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     darkMode?: boolean;
+    rounded?: boolean;
 }
 
 const DropAreaWrapper = Glamorous.div<DropAreaWrapperProps>([
@@ -56,7 +58,7 @@ const DropAreaWrapper = Glamorous.div<DropAreaWrapperProps>([
         position: 'relative',
         backgroundColor: props.darkMode ? '#f9f9f9' : '#fff',
         overflow: 'hidden',
-        borderRadius: props.darkMode ? 8 : 12,
+        borderRadius: props.rounded ? '100%' : props.darkMode ? 8 : 12,
         border: props.darkMode ? undefined : '1px solid rgba(220, 222, 228, 0.45)',
         cursor: 'pointer',
 
@@ -141,6 +143,7 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
     darkMode?: boolean;
     size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     dataTestId?: string;
+    rounded?: boolean;
 }
 
 let AvatarImageSize = {
@@ -174,7 +177,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
 
     handleOnLoad = () => {
         this.setState({ srcLoading: false });
-    }
+    };
     render() {
         let hasImage =
             (this.props.value &&
@@ -197,6 +200,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                 avatarSize={this.props.size}
                 className={(this.props as any).className}
                 darkMode={this.props.darkMode}
+                rounded={this.props.rounded}
             >
                 {hasImage && (
                     <AvatarImage
@@ -248,6 +252,7 @@ export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicPr
                     return (
                         <AvatarRender
                             {...rp}
+                            rounded={this.props.rounded}
                             dataTestId={this.props.dataTestId}
                             placeholder={this.props.placeholder}
                             size={this.props.size}

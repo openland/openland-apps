@@ -103,7 +103,6 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <TextContent
                         emojiOnly={false}
                         theme={theme}
-                        padded={false}
                         fontStyle="italic"
                         message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
                         onUserPress={props.onUserPress}
@@ -127,7 +126,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
                             <AsyncAvatar
-                                size={32}
+                                size="small"
                                 src={props.message.senderPhoto}
                                 placeholderKey={props.message.senderId}
                                 placeholderTitle={props.message.senderName}
@@ -139,7 +138,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
                     {res}
 
-                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={16} />
+                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={12} />
                 </ASFlex>
 
                 {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} onReactionsPress={handleReactionsPress} />)}

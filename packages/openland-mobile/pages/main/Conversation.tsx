@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, SharedRoomKind } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
@@ -21,10 +21,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -33,15 +30,16 @@ import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
-import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
-import { SHeader } from 'react-native-s/SHeader';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import throttle from 'lodash/throttle';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { PinnedMessage } from './components/PinnedMessage';
+import { ChatAccessDenied } from './components/ChatAccessDenied';
+import { ChatJoin } from './components/ChatJoin';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -63,6 +61,7 @@ interface ConversationRootState {
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
+    inputRef = React.createRef<TextInput>();
     private themeSub?: () => void;
 
     private setTyping = throttle(() => {
@@ -103,6 +102,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 this.setState({
                     text: editMessage.text || '',
                     mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
+                }, () => {
+                    if (this.inputRef.current) {
+                        this.inputRef.current.focus();
+                    }
                 });
             }
         });
@@ -326,42 +329,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
                             <ConversationView inverted={true} engine={this.engine} />
-
                             {pinnedMessage && (
-                                <ASSafeAreaContext.Consumer>
-                                    {area => (
-                                        <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.backgroundSecondary} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
-                                            <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(pinnedMessage!.id)}>
-                                                <View flexDirection="row" paddingRight={16} alignItems="center">
-                                                    <View width={50} height={showPinAuthor ? 52 : 44} alignItems="center" justifyContent="center">
-                                                        <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentPrimary }} source={require('assets/ic-pinned.png')} />
-                                                    </View>
-
-                                                    <View height={showPinAuthor ? 52 : 44} flexGrow={1} flexShrink={1} paddingTop={9} >
-                                                        {showPinAuthor && <View flexDirection="row">
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, fontWeight: TextStyles.weight.medium }}>
-                                                                {pinnedMessage!.sender.name}
-                                                            </Text>
-
-                                                            {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.foregroundPrimary, marginLeft: 8, fontWeight: TextStyles.weight.medium }}>
-                                                                    {pinnedMessage!.sender.primaryOrganization!.name}
-                                                                </Text>
-                                                            }
-                                                        </View>}
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.foregroundPrimary }}>
-                                                            {pinnedMessage!.fallback}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        </SBlurView>
-                                    )}
-                                </ASSafeAreaContext.Consumer>
+                                <PinnedMessage
+                                    message={pinnedMessage}
+                                    onPress={this.handlePinnedMessagePress}
+                                    theme={this.props.theme}
+                                    showAuthor={showPinAuthor}
+                                />
                             )}
-
                             {showInputBar && !showSelectedMessagesActions && (
                                 <MessageInputBar
+                                    ref={this.inputRef}
                                     onAttachPress={this.handleAttach}
                                     onSubmitPress={this.handleSubmit}
                                     onChangeText={this.handleTextChange}
@@ -388,80 +366,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 const ConversationComponent = XMemo<PageProps>((props) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
-    let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' });
+    let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
 
-    if (room.room === null) {
-        // access denied view
-        return (
-            <>
-                <SHeader title="Access Denied" />
-                <SHeaderButton />
-                <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
-                    <View height="73%" alignItems="center" justifyContent="center">
-                        <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                        <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>Cannot view group</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.foregroundPrimary, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
-                    </View>
-                    <View height="27%" alignItems="center" justifyContent="center">
-                        <View width={118}>
-                            <ZRoundedButton
-                                size="large"
-                                title="Go back"
-                                style="secondary"
-                                onPress={() => props.router.back()}
-                            />
-                        </View>
-                    </View>
-                </ASSafeAreaView>
-            </>
-        );
+    if (room === null) {
+        return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
     }
 
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
-    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
-        // not a member - show preview with join/request access button
-        return (
-            <View flexDirection="column" height="100%" width="100%">
-                <SHeaderView>
-                    <ChatHeader conversationId={sharedRoom.id} router={props.router} />
-                </SHeaderView>
-                <SHeaderButton />
-                <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
-                    <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
-                        <ZAvatar
-                            src={sharedRoom.photo}
-                            size={100}
-                            placeholderKey={sharedRoom.id}
-                            placeholderTitle={sharedRoom.title}
-
-                        />
-                        <View flexDirection="column" zIndex={- 1}>
-                            <Text style={{ fontSize: 20, fontWeight: '500', color: theme.foregroundPrimary, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                            <Text style={{ fontSize: 15, color: theme.foregroundPrimary, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                            <Text style={{ fontSize: 14, color: theme.foregroundPrimary, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
-                        </View>
-                    </View>
-                    <View alignSelf="center" marginBottom={46}>
-                        <ZRoundedButton
-                            title="Join"
-                            onPress={async () => {
-                                startLoader();
-                                try {
-                                    await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
-                                } catch (e) {
-                                    Alert.alert(e.message);
-                                } finally {
-                                    stopLoader();
-                                }
-                            }}
-                        />
-                    </View>
-
-                </ASSafeAreaView>
-            </View>
-        );
+        return <ChatJoin room={sharedRoom!} router={props.router} theme={theme} />;
     }
 
     return (

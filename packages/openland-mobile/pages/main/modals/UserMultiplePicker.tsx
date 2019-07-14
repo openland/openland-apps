@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent, Image, Platform } from 'react-native';
+import { View, LayoutChangeEvent, Image, Platform, Dimensions } from 'react-native';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -18,23 +18,27 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((props) => {
-    let theme = React.useContext(ThemeContext);
+    const theme = React.useContext(ThemeContext);
+
     return (
         <View flexDirection="row">
             <View flexGrow={1}>
                 {props.children}
             </View>
             <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.medium} width={24} height={24} >
-                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
+                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastSpecial }} />}
             </View>
         </View>
     );
 });
 
-const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
-    let users = getClient().useExplorePeople({ query: props.query });
+const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
+    const users = getClient().useExplorePeople({ query: props.query });
+    const disableUsers = props.router.params.disableUsers || [];
+    const excludeUsers = props.router.params.excludeUsers || [];
+
     return (
-        <SScrollView marginTop={props.searchHeight}>
+        <>
             {props.router.params.inviteLinkButton &&
                 <View marginBottom={6} marginTop={18}>
                     <ZListItem
@@ -46,18 +50,18 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
                     />
                 </View>
             }
-            {users.items.edges.map((v) => (
+            {users.items.edges.filter(v => excludeUsers.indexOf(v.node.id) === -1).map((v) => (
                 <CheckListBoxWraper checked={!!props.users.find((u: any) => u.id === v.node.id)}>
                     <UserView
                         key={v.node.id}
                         user={v.node}
-                        enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)}
+                        enabled={!(disableUsers.indexOf(v.node.id) > -1)}
                         onPress={() => props.onAdd(v.node)}
                         paddingRight={56}
                     />
                 </CheckListBoxWraper>
             ))}
-        </SScrollView >
+        </>
     );
 });
 
@@ -99,9 +103,13 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                 }}
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                <React.Suspense fallback={<ZLoader />}>
-                    <UsersList {...props} users={users} searchHeight={searchHeight} query={query} onAdd={handleAddUser} />
-                </React.Suspense>
+                <SScrollView>
+                    <View paddingTop={searchHeight} minHeight={Dimensions.get('screen').height - searchHeight}>
+                        <React.Suspense fallback={<ZLoader />}>
+                            <UsersList {...props} users={users} query={query} onAdd={handleAddUser} />
+                        </React.Suspense>
+                    </View>
+                </SScrollView>
             </View>
             <ASSafeAreaContext.Consumer>
                 {area => (

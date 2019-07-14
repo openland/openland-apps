@@ -146,7 +146,7 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
     return res;
 };
 
-type SpansSliceType = 'slice' | 'code_block' | 'loud' | 'emoji';
+type SpansSliceType = 'slice' | 'padded' | 'code_block' | 'loud' | 'emoji';
 
 interface SpansSlice {
     type: SpansSliceType;
@@ -161,7 +161,7 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
         let index = spans.findIndex(v => ['code_block', 'loud', 'emoji'].includes(v.type));
         let type: SpansSliceType = spans[index].type as any;
 
-        // before current code-block/loud
+        // before current slice
         if (index > 0) {
             res.push({
                 type: 'slice',
@@ -170,7 +170,7 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
             });
         }
 
-        // current code-block/loud
+        // current slice
         res.push({
             type: type,
             spans: [spans[index]],
@@ -180,13 +180,14 @@ export const getSpansSlices = (spans: Span[], usePadded?: boolean): SpansSlice[]
         spans = spans.slice(index + 1);
     }
 
-    // after all code-blocks/louds
-    if (spans.length > 0 || (!!usePadded && res[res.length - 1].type === 'code_block')) {
-        res.push({
-            type: 'slice',
-            spans: spans,
-            padded: !!usePadded,
-        });
+    const hasSpans = spans.length > 0;
+    const needPaddedAfterCode = (!!usePadded && res[res.length - 1] && res[res.length - 1].type === 'code_block');
+
+    // after all slices
+    if (hasSpans) {
+        res.push({ type: 'slice', spans, padded: !!usePadded });
+    } else if (needPaddedAfterCode) {
+        res.push({ type: 'padded', spans, padded: !!usePadded });
     }
 
     return res;

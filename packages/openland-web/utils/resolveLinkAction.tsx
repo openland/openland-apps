@@ -7,7 +7,6 @@ import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.pag
 import { WriteFirstMessageModal } from 'openland-web/components/WriteFirstMessageModal';
 
 export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
-    console.warn('boom', url);
     if (url === '/onboarding_invite') {
         return () => {
             showModalBox({ fullScreen: true }, ctx => (

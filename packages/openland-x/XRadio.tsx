@@ -1,6 +1,7 @@
 import Glamorous from 'glamorous';
 import XStyles from './XStyles';
 import * as React from 'react';
+import { XView } from 'react-mental';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>(props => ({
     display: 'flex',
@@ -55,6 +56,7 @@ export class XRadioItem extends React.Component<{
     checked?: boolean;
     onChange?: (checked?: string) => void;
     useAnyOption?: boolean;
+    className?: string;
 }> {
     static defaultProps = {
         _isRadioItem: true,
@@ -79,31 +81,35 @@ export class XRadioItem extends React.Component<{
                 this.props.checked
                     ? undefined
                     : this.props.value !== undefined
-                        ? this.props.value
-                        : this.props.label,
+                    ? this.props.value
+                    : this.props.label,
             );
         }
     }
 
     render() {
+        const { checked, className, label, useAnyOption } = this.props;
         const id = `toggle_${Math.random()
             .toString()
             .replace(/0\./, '')}`;
 
         return (
             <CheckboxInputDiv
-                active={this.props.checked !== undefined ? this.props.checked : false}
+                active={checked !== undefined ? checked : false}
+                className={className}
             >
                 <input
-                    onClick={this.props.useAnyOption === false ? this.handleChange : undefined}
-                    onChange={this.props.useAnyOption === false ? undefined : this.handleChange}
+                    onClick={useAnyOption === false ? this.handleChange : undefined}
+                    onChange={useAnyOption === false ? undefined : this.handleChange}
                     id={id}
                     type="radio"
-                    checked={this.props.checked}
+                    checked={checked}
                 />
                 <label htmlFor={id}>
-                    <CheckIcon active={this.props.checked} />
-                    <span>{this.props.label}</span>
+                    <XView flexDirection="row" flexGrow={1} justifyContent="space-between">
+                        <span>{label}</span>
+                        <CheckIcon active={checked} />
+                    </XView>
                 </label>
             </CheckboxInputDiv>
         );

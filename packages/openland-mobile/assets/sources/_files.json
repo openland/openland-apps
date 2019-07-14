@@ -1,8 +1,127 @@
 {
     "icons": [
         {
+            "name": "ic-header-share",
+            "src": "ic-header-share.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-picker",
+            "src": "ic-picker.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-picker-selected",
+            "src": "ic-picker-selected.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-header-search",
+            "src": "ic-header-search.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-pin",
+            "src": "ic-msg-pin.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-s-leave",
+            "src": "ic-s-leave.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-create-private",
+            "src": "ic-create-private.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-create-public",
+            "src": "ic-create-public.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-comment",
+            "src": "ic-msg-comment.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-copy",
+            "src": "ic-msg-copy.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-delete",
+            "src": "ic-msg-delete.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-forward",
+            "src": "ic-msg-forward.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-reply",
+            "src": "ic-msg-reply.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-msg-select",
+            "src": "ic-msg-select.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-right",
+            "src": "ic-right.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-user",
             "src": "ic-user.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-input-clear",
+            "src": "ic-input-clear.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-input-reply",
+            "src": "ic-input-reply.svg",
             "sizes": [
                 24
             ]
@@ -576,8 +695,7 @@
         },
         {
             "name": "ic-loader",
-            "src": "ic-loader-android.svg",
-            "suffix": "android",
+            "src": "ic-loader.svg",
             "sizes": [
                 22,
                 32
@@ -693,6 +811,36 @@
             "src": "ic-header-call.svg",
             "sizes": [
                 24
+            ]
+        },
+        {
+            "name": "ic-header-manage",
+            "suffix": "android",
+            "src": "ic-header-manage-android.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-header-manage",
+            "suffix": "ios",
+            "src": "ic-header-manage-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-search-icon",
+            "src": "ic-search-icon.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-search-clear",
+            "src": "ic-search-clear.svg",
+            "sizes": [
+                16
             ]
         }
     ]

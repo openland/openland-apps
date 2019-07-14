@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputBarProps, MessageInputInner } from './MessageInputInner';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: React.RefObject<TextInput>) => {
     let theme = React.useContext(ThemeContext);
 
     return (
@@ -18,7 +18,11 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
             )}
 
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                {props.topView}
+                {!!props.topView && (
+                    <View marginBottom={-8}>
+                        {props.topView}
+                    </View>
+                )}
 
                 <MessageInputInner {...props} theme={theme} ref={ref} />
             </View>

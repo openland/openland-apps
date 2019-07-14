@@ -21,7 +21,7 @@ const ReactionsList = (props: ReactionsListProps) => {
     const { list, ctx } = props;
 
     return (
-        <View flexGrow={1} paddingHorizontal={16} paddingTop={5}>
+        <View flexGrow={1} paddingHorizontal={16} marginTop={-15}>
             {Object.keys(list).map((r, i) => {
                 let users = list[r];
 
@@ -55,9 +55,6 @@ export const showReactionsList = (reactions: FullMessage_GeneralMessage_reaction
     }
 
     let builder = new ActionSheetBuilder();
-
-    builder.flat();
-
     let reactionList: { [key: string]: UserShort[]; } = {};
 
     reactions.map((r) => {
@@ -69,5 +66,6 @@ export const showReactionsList = (reactions: FullMessage_GeneralMessage_reaction
     });
 
     builder.view((ctx: ZModalController) => <ReactionsList ctx={ctx} list={reactionList} />);
+    builder.cancelable(false);
     builder.show();
 };

@@ -42,7 +42,7 @@ export const ProfileTab = () => {
     let websiteField = useField('input.website', profile.website || '', form);
     let linkedinField = useField('input.linkedin', profile.linkedin || '', form);
 
-    const doConfirm = React.useCallback(() => {
+    const doConfirm = () => {
         form.doAction(async () => {
             await client.mutateProfileUpdate({
                 input: {
@@ -68,74 +68,86 @@ export const ProfileTab = () => {
             await client.refetchAccount();
             await client.refetchMyOrganizations();
         });
-    }, []);
+    };
+
+    const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
 
     return (
         <FormWrapper title="Profile">
-            <XView flexDirection="row">
-                <XView>
+            <XView flexDirection="row" flexGrow={1}>
+                <XView flexGrow={1}>
                     <FormSection title="Info">
-                        <InputField title={'First name'} field={firstNameField} size="large" />
-                        <InputField title={'Second name'} field={secondNameField} size="large" />
-
-                        <SelectWithDropdown
-                            {...primaryOrganizationField.input}
-                            title={'Primary organization'}
-                            selectOptions={organizations.myOrganizations.map((org: any) => ({
-                                value: org.id,
-                                label: org.name,
-                            }))}
-                        />
-
-                        <XTextArea
-                            mode="modern"
-                            title="About"
-                            {...aboutField.input}
-                            resize={false}
-                        />
-                        <InputField
-                            title={''}
-                            placeholder={'Location'}
-                            field={locationField}
-                            size="large"
-                        />
+                        <XView marginBottom={16}>
+                            <InputField title={'First name'} field={firstNameField} size="large" />
+                        </XView>
+                        <XView marginBottom={16}>
+                            <InputField
+                                title={'Second name'}
+                                field={secondNameField}
+                                size="large"
+                            />
+                        </XView>
+                        <XView marginBottom={16}>
+                            <SelectWithDropdown
+                                {...primaryOrganizationField.input}
+                                title={'Primary organization'}
+                                selectOptions={organizationsWithoutCommunity.map((org: any) => ({
+                                    value: org.id,
+                                    label: org.name,
+                                }))}
+                            />
+                        </XView>
+                        <XView marginBottom={16}>
+                            <XTextArea
+                                mode="modern"
+                                title="About"
+                                {...aboutField.input}
+                                resize={false}
+                            />
+                        </XView>
+                        <InputField title={'Location'} field={locationField} size="large" />
                     </FormSection>
                     <FormSection title="Username">
                         <InputField title={'Username'} field={usernameField} size="large" />
                     </FormSection>
                     <FormSection title="Contacts">
-                        <InputField
-                            placeholder={'Phone number'}
-                            title={''}
-                            field={phoneNumberField}
-                            size="large"
-                        />
-                        <InputField title={'Email'} field={emailField} size="large" />
-                        <InputField title={'Website'} field={websiteField} size="large" />
-                        <InputField
-                            placeholder="Linkedin"
-                            title={''}
-                            field={linkedinField}
-                            size="large"
-                        />
+                        <XView marginBottom={16}>
+                            <InputField
+                                title={'Phone number'}
+                                field={phoneNumberField}
+                                size="large"
+                            />
+                        </XView>
+                        <XView marginBottom={16}>
+                            <InputField title={'Email'} field={emailField} size="large" />
+                        </XView>
+                        <XView marginBottom={16}>
+                            <InputField title={'Website'} field={websiteField} size="large" />
+                        </XView>
+                        <InputField title={'Linkedin'} field={linkedinField} size="large" />
                     </FormSection>
                     <FormFooter>
                         <XButton
                             text="Save changes"
                             style="primary"
                             size="large"
+                            alignSelf="flex-start"
                             onClick={doConfirm}
+                            square
                         />
                     </FormFooter>
                 </XView>
-                <XAvatarFormFieldComponent
-                    {...avatarField.input}
-                    size="default"
-                    placeholder={{
-                        add: 'Add photo',
-                        change: 'Change Photo',
-                    }}
-                />
+                <XView marginLeft={16} marginTop={48}>
+                    <XAvatarFormFieldComponent
+                        {...avatarField.input}
+                        size="default"
+                        rounded
+                        placeholder={{
+                            add: 'Add photo',
+                            change: 'Change Photo',
+                        }}
+                    />
+                </XView>
             </XView>
         </FormWrapper>
     );

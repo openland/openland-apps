@@ -39,11 +39,10 @@ const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter 
             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                 <ZAvatar
                     src={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
-                    size={32}
+                    size="small"
                     placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                     placeholderTitle={privateRoom ? privateRoom.user.name : sharedRoom!.title}
                     online={privateRoom ? privateRoom.user.online : false}
-                    userId={privateRoom ? privateRoom.user.id : undefined}
                 />
             </View>
         </TouchableOpacity>

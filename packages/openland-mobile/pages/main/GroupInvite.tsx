@@ -78,7 +78,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
-                    <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
+                    <ZAvatar size="x-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
                     <Text style={[styles.title, { color: theme.foregroundPrimary }]}>{room.title}</Text>
 
                     <View flexDirection="row">
@@ -94,23 +94,21 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                 </View>
 
                 <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
-                    <View width={178}>
-                        <ZRoundedButton
-                            size="large"
-                            title="Accept invitation"
-                            onPress={async () => {
-                                startLoader();
-                                try {
-                                    await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
+                    <ZRoundedButton
+                        size="large"
+                        title="Accept invitation"
+                        onPress={async () => {
+                            startLoader();
+                            try {
+                                await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
 
-                                    props.router.pushAndReset('Conversation', { id: room.id });
-                                } catch (e) {
-                                    Alert.alert(e.message);
-                                }
-                                stopLoader();
-                            }}
-                        />
-                    </View>
+                                props.router.pushAndReset('Conversation', { id: room.id });
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            }
+                            stopLoader();
+                        }}
+                    />
                 </View>
             </View>
         </ASSafeAreaView>

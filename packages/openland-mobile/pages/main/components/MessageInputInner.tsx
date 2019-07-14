@@ -24,7 +24,7 @@ export interface MessageInputBarProps {
 const iconAttach = require('assets/ic-input-attach-24.png');
 const icon = require('assets/ic-input-send-24.png');
 
-export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: any) => {
+export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: React.RefObject<TextInput>) => {
     const { theme } = props;
     const inputProps = {
         flexGrow: 1,
@@ -61,7 +61,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     flexGrow={1}
                     flexBasis={0}
                     style={{
-                        backgroundColor: theme.backgroundTertiary,
+                        backgroundColor: theme.backgroundInverted,
                         borderRadius: RadiusStyles.large,
                         paddingHorizontal: 12,
                         paddingVertical: 6,
@@ -88,7 +88,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                         color: theme.foregroundPrimary,
                         maxHeight: 100,
                         fontSize: 17,
-                        backgroundColor: theme.backgroundTertiary,
+                        backgroundColor: theme.backgroundInverted,
                         borderRadius: RadiusStyles.large,
                         paddingHorizontal: 12,
                         paddingTop: 3,

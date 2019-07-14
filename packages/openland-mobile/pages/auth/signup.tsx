@@ -10,7 +10,7 @@ export const resolveNextPage = (session: SessionStateFull) => {
     if (!session.isProfileCreated) {
         return 'SignupUser';
     } else if (!session.isAccountExists) {
-        return 'NewOrganization';
+        return 'SignupOrg';
     } else if (!session.isAccountActivated) {
         trackEvent('registration_complete');
 
@@ -26,7 +26,7 @@ export const resolveNextPage = (session: SessionStateFull) => {
 export var next: (router: SRouter | NavigationManager) => void;
 
 export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter) => void) | undefined = (page: string) => {
-    if (page === 'NewOrganization') {
+    if (page === 'SignupOrg') {
         return async (router) => await next(router);
     }
     return undefined;
@@ -36,6 +36,6 @@ next = async (router: SRouter | NavigationManager) => {
     let res = await backoff(async () => await getClient().refetchAccount()); // TODO: Refetch!
     let nextPage = resolveNextPage(res.sessionState);
     if (nextPage) {
-        router.push(nextPage, { action: resolveNextPageCompleteAction(nextPage), fromSignup: true });
+        router.push(nextPage, { action: resolveNextPageCompleteAction(nextPage) });
     }
 };

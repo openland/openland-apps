@@ -3,17 +3,14 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'r
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
 import { ZIconButton } from './ZIconButton';
 
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 16,
-        marginTop: 8,
-        marginBottom: 9
-    } as ViewStyle,
-    inner: {
+        marginVertical: 8,
         flexDirection: 'row',
         paddingVertical: 8,
     } as ViewStyle,
@@ -31,7 +28,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexShrink: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
         minWidth: 0,
     } as ViewStyle,
     title: {
@@ -50,10 +46,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     } as ViewStyle,
     footer: {
-        flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        paddingLeft: 88,
+        marginTop: 16
     } as ViewStyle
 });
 
@@ -90,38 +85,37 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
     return (
         <>
             <View style={styles.container}>
-                <View style={styles.inner}>
-                    <View style={styles.avatar}>
-                        <XPAvatarWithPreview size={72} src={photo} placeholderKey={id} placeholderTitle={title} userId={id} />
-                        {score && (
-                            <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
-                                <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.large }}>
-                                    <ZReach value={score.value} onPress={score.onPress} />
-                                </View>
+                <View style={styles.avatar}>
+                    <XPAvatarWithPreview size="x-large" src={photo} placeholderKey={id} placeholderTitle={title} />
+                    {score && (
+                        <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
+                            <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.large }}>
+                                <ZReach value={score.value} onPress={score.onPress} />
                             </View>
-                        )}
-                    </View>
-                    <View style={styles.body}>
-                        <View style={styles.header}>
-                            <View flexDirection="row">
-                                {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', tintColor: colorTitle }} />}
-                                <Text style={[styles.title, { color: colorTitle }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            </View>
-                            <Text style={[styles.subtitle, { color: colorSubtitle }]} numberOfLines={1} ellipsizeMode="tail">{subtitle}</Text>
                         </View>
+                    )}
+                </View>
+                <View style={styles.body}>
+                    <View style={styles.header} justifyContent={!action ? 'center' : undefined}>
+                        <View flexDirection="row">
+                            {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', tintColor: colorTitle }} />}
+                            <Text style={[styles.title, { color: colorTitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                        </View>
+                        <Text style={[styles.subtitle, { color: colorSubtitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
 
-                        {iconRight && (
-                            <View style={styles.iconRight}>
-                                <ZIconButton src={iconRight.src} path={iconRight.path} onPress={iconRight.onPress} />
+                        {action && (
+                            <View style={styles.footer}>
+                                <ZRoundedButton title={action.title} path={action.path} onPress={action.onPress} />
                             </View>
                         )}
                     </View>
+
+                    {iconRight && (
+                        <View style={styles.iconRight}>
+                            <ZIconButton src={iconRight.src} path={iconRight.path} onPress={iconRight.onPress} />
+                        </View>
+                    )}
                 </View>
-                {action && (
-                    <View style={styles.footer}>
-                        <ZRoundedButton title={action.title} path={action.path} onPress={action.onPress} />
-                    </View>
-                )}
             </View>
         </>
     );

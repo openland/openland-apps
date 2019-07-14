@@ -24,6 +24,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     backgroundTertiaryActive: '#F0F2F5',
 
     backgroundHighlight: '#FFFEE8',
+    backgroundInverted: '#F0F2F5',
 
     contrastPrimary: '#FFFFFF',
     contrastSpecial: '#FFFFFF',
@@ -75,8 +76,6 @@ export const ThemeLightBlue: ThemeGlobal = {
     // legacy
 
     separatorColor: '#eaeaea',
-    accentBackgroundColor: '#e5f2fe',
-    chatImageBackground: '#dbdce1',
 };
 
 export const ThemeDark: ThemeGlobal = {
@@ -103,6 +102,7 @@ export const ThemeDark: ThemeGlobal = {
     backgroundTertiaryActive: '#1F1F1F',
 
     backgroundHighlight: '#002140',
+    backgroundInverted: '#000000',
 
     contrastPrimary: '#FFFFFF',
     contrastSpecial: '#000000',
@@ -154,6 +154,4 @@ export const ThemeDark: ThemeGlobal = {
     // legacy
 
     separatorColor: '#262629',
-    accentBackgroundColor: '#808080',
-    chatImageBackground: '#555555',
 };

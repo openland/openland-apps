@@ -16,6 +16,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 interface ReplyContentProps {
     message: DataSourceMessageItem;
     maxWidth?: number;
+    width?: number;
     compensateBubble?: boolean;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -26,7 +27,7 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, compensateBubble } = this.props;
+        let { message, maxWidth, width, compensateBubble } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -47,21 +48,21 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary}
+                                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
                                         letterSpacing={-0.3}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}
                                         fontWeight={TextStyles.weight.medium}
                                         marginBottom={2}
                                     >
-                                        {generalMesage!.sender.name || ''}
+                                        {generalMesage.sender.name || ''}
                                     </ASText>
 
                                     {message.replyTextSpans[i].length > 0 && (
@@ -69,9 +70,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             <RenderSpans
                                                 spans={message.replyTextSpans[i]}
                                                 message={message}
-                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
+                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
                                                 theme={this.props.theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                width={width}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetTop={4}
@@ -102,7 +104,28 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                 </ASFlex>
                             );
                         } else {
-                            return null;
+                            return (
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
+                                    {message.replyTextSpans[i].length > 0 && (
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                            <RenderSpans
+                                                spans={message.replyTextSpans[i]}
+                                                message={message}
+                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
+                                                theme={this.props.theme}
+                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                width={width}
+                                                insetLeft={8}
+                                                insetRight={contentInsetsHorizontal}
+                                                insetTop={4}
+
+                                                onUserPress={this.props.onUserPress}
+                                                onGroupPress={this.props.onGroupPress}
+                                            />
+                                        </ASFlex>
+                                    )}
+                                </ASFlex>
+                            );
                         }
                     })
                 )}

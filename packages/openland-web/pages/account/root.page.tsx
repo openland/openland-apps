@@ -153,6 +153,7 @@ export default withApp('Apps', 'viewer', () => {
     return (
         <Navigation
             fullHeight
+            tab={'empty'}
             title={isMobile ? 'title' : 'Account'}
             swapFragmentsOnMobile
             menuRightContent={<NewOptionsButton />}
@@ -225,7 +226,7 @@ export default withApp('Apps', 'viewer', () => {
             secondFragment={
                 <XView
                     flexGrow={1}
-                    height={isMobile ? undefined : '100%'}
+                    // height={isMobile ? undefined : '100%'}
                     position="relative"
                     flexShrink={1}
                 >

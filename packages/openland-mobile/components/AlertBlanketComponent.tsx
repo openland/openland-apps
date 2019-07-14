@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
 import { delay } from 'openland-y-utils/timer';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -67,24 +67,23 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
             flexDirection="column"
             justifyContent="center"
             backgroundColor={state === 'error' ? theme.accentNegative : theme.backgroundSecondary}
-            borderRadius={16}
+            borderRadius={RadiusStyles.large}
         >
             <SAnimated.View
                 name={key + '--ctns'}
                 style={{
                     backgroundColor: theme.backgroundSecondary,
                     borderRadius: 16,
-                    paddingHorizontal: 24,
-                    paddingVertical: 20,
+                    padding: 24,
                 }}
             >
-                {props.builder._title && <Text style={{ marginBottom: props.builder._message ? 12 : 16, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>{props.builder._title}</Text>}
-                {props.builder._message && <Text style={{ marginBottom: 16, color: theme.foregroundPrimary, fontSize: 16 }} allowFontScaling={false}>{props.builder._message}</Text>}
+                {props.builder._title && <Text style={{ ...TypeStyles.title3, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
+                {props.builder._message && <Text style={{ ...TypeStyles.body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {props.builder._actions.map((a, i) => (
                         <>
-                            <View style={{ width: 4 }} />
+                            <View style={{ width: 8 }} />
                             <ZRoundedButton
                                 key={i + '-ac'}
                                 style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}

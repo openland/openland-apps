@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { Clipboard } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
@@ -57,7 +57,6 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                 }}
             >
                 <ZListItemGroup
-                    header={null}
                     footer={{
                         text: 'You can choose a shortname for ' + organization.name + ' in Openland.' + '\n' +
                               'Other people will be able to find ' + organization.name + ' by this shortname.' + '\n\n' +
@@ -68,23 +67,21 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
 
                         onPress: (link: string) => {
                             if (organization.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
                             if (organization.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         }
                     }}
                 >
-                    <ZTextInput
-                        title="Shortname"
-                        placeholder="shortname"
+                    <ZInput
+                        placeholder="Shortname"
                         prefix="@"
                         field="shortname"
                         autoCapitalize="none"
-                        border="force-full"
                         onChangeText={(src: string) => {
                             setShortname(src);
                             setError(undefined);

@@ -7,7 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
+type ZRoundedButtonStyle = 'primary' | 'secondary' | 'secondary-inverted' | 'danger';
 type ZRoundedButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({
@@ -29,7 +29,7 @@ const stylesLarge = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: RadiusStyles.medium,
-        height: 56,
+        height: 48,
         paddingHorizontal: 24,
     } as ViewStyle,
     title: {
@@ -93,18 +93,14 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
     return (
         <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} disabled={actionInProgress || props.enabled === false} activeOpacity={0.6}>
-            <View style={[styles.container, { backgroundColor: backgroundColor }]}>
+            <View style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]}>
                 <Text
-                    style={[
-                        styles.title,
-                        { color: actionInProgress ? 'transparent' : textColor },
-                        { opacity: props.enabled === false ? 0.7 : undefined }
-                    ]}
+                    style={[styles.title, { color: actionInProgress ? 'transparent' : textColor }]}
                     allowFontScaling={false}
                 >
                     {props.title}
