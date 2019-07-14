@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-header-search",
+            "src": "ic-header-search.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-msg-pin",
             "src": "ic-msg-pin.svg",
             "sizes": [
