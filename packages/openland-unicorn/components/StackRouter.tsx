@@ -33,6 +33,7 @@ export class StackRouter {
         // Push page to stack
         let ex = this.routing.resolve(path);
         if (!ex) {
+            console.warn('Unable to resolve component for ' + path);
             // TODO: Error handling
             return;
         }

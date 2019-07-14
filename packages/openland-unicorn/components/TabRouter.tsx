@@ -19,6 +19,7 @@ export class TabRouter {
     private id: string = randomKey();
     private topId = 1;
     private currentId = 1;
+    private isPopping = false;
     currentTab: number;
 
     onChangeListener?: (index: number) => void;
@@ -29,7 +30,15 @@ export class TabRouter {
         }
         this.persistenceKey = persistenceKey;
         this.tabs = tabs;
-        this.stacks = this.tabs.map((v) => new StackRouter(v.path, routing));
+        this.stacks = this.tabs.map((v, i) => {
+            let r = new StackRouter(v.path, routing);
+            r.addListener((action) => {
+                if (action.type === 'pop') {
+                    this.onStackPopped(i);
+                }
+            });
+            return r;
+        });
         this.currentTab = defaultTab;
         this.routing = routing;
 
@@ -138,24 +147,11 @@ export class TabRouter {
                         }
 
                         console.log('history changed');
-                        this.historyChanged(window.history.state.options, index, tab);
+                        this.historyChanged(window.history.state.options, index, tab, window.history.state.as);
                     }
                 }
             });
         }
-    }
-
-    navigate(path: string) {
-        this.incrementId();
-
-        this.stacks[this.currentTab].push(path);
-
-        Router.push('/unicorn', path, {
-            shallow: true, 
-            ['tab-router']: this.id,
-            ['tab-router-current']: this.currentTab,
-            ['tab-router-index']: this.currentId
-        });
     }
 
     switchTab(index: number) {
@@ -172,25 +168,94 @@ export class TabRouter {
         }
     }
 
+    //
+    // Stack
+    // 
+
+    navigate(path: string) {
+        this.incrementId();
+
+        this.stacks[this.currentTab].push(path);
+
+        Router.push('/unicorn', path, {
+            shallow: true,
+            ['tab-router']: this.id,
+            ['tab-router-current']: this.currentTab,
+            ['tab-router-index']: this.currentId,
+            ['tab-router-action']: 'push'
+        });
+    }
+
+    private onStackPopped(index: number) {
+        if (this.isPopping) {
+            return;
+        }
+        this.incrementId();
+        let stack = this.stacks[index];
+        let destUrl;
+        if (stack.pages.length === 0) {
+            destUrl = stack.rootPath;
+        } else {
+            destUrl = stack.pages[stack.pages.length - 1].path;
+        }
+
+        console.log('popped to ' + destUrl);
+
+        Router.push('/unicorn', destUrl, {
+            shallow: true,
+            ['tab-router']: this.id,
+            ['tab-router-current']: this.currentTab,
+            ['tab-router-index']: this.currentId,
+            ['tab-router-action']: 'pop'
+        });
+    }
+
+    //
+    // Implementation
+    //
+
     private incrementId = () => {
         this.currentId = ++this.topId;
         sessionStorage.setItem('tab-router-' + this.id + '-top', this.topId + '');
     }
 
-    private historyChanged = (src: any, index: number, tab: number) => {
-        if (this.currentId > index) {
-            console.log('back navigation');
-        } else if (this.currentId < index) {
-            console.log('forward navigation');
-        }
-        this.currentId = index;
+    private historyChanged = (src: any, index: number, tab: number, path: string) => {
         if (tab !== this.currentTab) {
             if (this.tryChangeTab(tab)) {
                 if (this.onChangeListener) {
                     this.onChangeListener(this.currentTab);
                 }
             }
+        } else {
+            if (this.currentId > index) {
+                if (src['tab-router-action'] === 'pop') {
+                    console.log('push: ' + path);
+                    this.stacks[this.currentTab].push(path);
+                } else if (src['tab-router-action'] === 'push') {
+                    console.log('pop');
+                    this.isPopping = true;
+                    this.stacks[this.currentTab].pop();
+                    this.isPopping = false;
+                }
+            } else {
+                if (src['tab-router-action'] === 'pop') {
+                    console.log('pop');
+                    this.isPopping = true;
+                    this.stacks[this.currentTab].pop();
+                    this.isPopping = false;
+                } else if (src['tab-router-action'] === 'push') {
+                    console.log('push: ' + path);
+                    this.stacks[this.currentTab].push(path);
+                }
+            }
         }
+
+        if (this.currentId > index) {
+            console.log('back navigation');
+        } else if (this.currentId < index) {
+            console.log('forward navigation');
+        }
+        this.currentId = index;
     }
 
     private tryChangeTab(index: number) {
