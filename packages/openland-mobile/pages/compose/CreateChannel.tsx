@@ -9,7 +9,7 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZTextInputDEPRECATED } from 'openland-mobile/components/ZTextInput';
 
 interface CreateChannelComponentState {
     query: string;
@@ -64,9 +64,9 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                         <View alignSelf="center" marginTop={30} marginBottom={10}>
                             <ZAvatarPicker field="photoRef" size="x-large" />
                         </View>
-                        <ZTextInput autoFocus={true} placeholder="Title" field="title" />
+                        <ZTextInputDEPRECATED autoFocus={true} placeholder="Title" field="title" />
                         <View marginTop={21}>
-                            <ZTextInput placeholder="Description" field="description" multiline={true} />
+                            <ZTextInputDEPRECATED placeholder="Description" field="description" multiline={true} />
                         </View>
                     </View>
                 </ZForm>

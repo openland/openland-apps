@@ -17,7 +17,6 @@ import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
 import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
-import { SignupOrg } from './pages/auth/SignupOrg';
 import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 import { Compose } from './pages/main/Compose';
@@ -95,7 +94,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
-  .addRoute('SignupOrg', SignupOrg)
 
   .addRoute('Waitlist', Waitlist)
   .addRoute('Login', Login)

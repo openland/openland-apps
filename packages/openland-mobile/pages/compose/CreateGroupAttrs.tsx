@@ -9,7 +9,7 @@ import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
 import { UserError, SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZTextInputDEPRECATED } from 'openland-mobile/components/ZTextInput';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
@@ -120,7 +120,7 @@ const CreateGroupComponent = (props: PageProps) => {
                 }}
             >
                 <ZAvatarPickerInputsGroup avatarField="photoRef">
-                    <ZTextInput
+                    <ZTextInputDEPRECATED
                         placeholder={`${chatTypeString} name`}
                         field="title"
                         autoFocus={true}

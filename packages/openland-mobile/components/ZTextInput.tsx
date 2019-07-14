@@ -58,7 +58,7 @@ class ZTextInputComponent extends React.PureComponent<ZTextInputProps & { store?
     }
 }
 
-export class ZTextInput extends React.PureComponent<ZTextInputProps> {
+export class ZTextInputDEPRECATED extends React.PureComponent<ZTextInputProps> {
     render() {
         let { field, valueStoreKey, invalidStoreKey, enabledStoreKey, ...other } = this.props;
 
