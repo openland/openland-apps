@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -61,6 +61,7 @@ interface ConversationRootState {
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
+    inputRef = React.createRef<TextInput>();
     private themeSub?: () => void;
 
     private setTyping = throttle(() => {
@@ -101,6 +102,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 this.setState({
                     text: editMessage.text || '',
                     mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
+                }, () => {
+                    if (this.inputRef.current) {
+                        this.inputRef.current.focus();
+                    }
                 });
             }
         });
@@ -334,6 +339,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             )}
                             {showInputBar && !showSelectedMessagesActions && (
                                 <MessageInputBar
+                                    ref={this.inputRef}
                                     onAttachPress={this.handleAttach}
                                     onSubmitPress={this.handleSubmit}
                                     onChangeText={this.handleTextChange}
