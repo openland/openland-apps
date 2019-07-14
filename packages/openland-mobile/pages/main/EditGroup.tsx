@@ -7,8 +7,9 @@ import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
@@ -50,19 +51,20 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         props.router.back();
                     }}
                 >
-                    <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                        <ZTextInput
-                            placeholder="Group name"
+                    <View alignItems="center" marginTop={10}>
+                        <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                    </View>
+                    <ZListItemGroup header="Info" marginTop={0}>
+                        <ZInput
+                            label="Group name"
                             field="input.title"
-                            autoFocus={true}
                         />
-                    </ZAvatarPickerInputsGroup>
-                    <View height={20} />
-                    <ZTextInput
-                        field="input.description"
-                        placeholder="What is this group about?"
-                        multiline={true}
-                    />
+                        <ZInput
+                            field="input.description"
+                            label="Description"
+                            multiline={true}
+                        />
+                    </ZListItemGroup>
                 </ZForm>
             </>
         );

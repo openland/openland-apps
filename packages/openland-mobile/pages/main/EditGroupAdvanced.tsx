@@ -6,7 +6,7 @@ import { ZForm } from '../../components/ZForm';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
@@ -17,6 +17,7 @@ import { ZImage } from 'openland-mobile/components/ZImage';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
@@ -116,9 +117,9 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
 
                     {welcomeMessageEnabled && (
                         <ZListItemGroup header={null}>
-                            <ZListItem
-                                text="Sender"
-                                description={welcomeMessageSender ? welcomeMessageSender.name : undefined}
+                            <ZPickField
+                                label="Sender"
+                                value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
                                 onPress={() => {
                                     Modals.showUserPicker(
                                         props.router,
@@ -136,7 +137,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                                     );
                                 }}
                             />
-                            <ZTextInput multiline={true} placeholder="Text message" field="input.welcomeMessageText" border={false} />
+                            <ZInput multiline={true} label="Text message" field="input.welcomeMessageText" />
                         </ZListItemGroup>
                     )}
 
