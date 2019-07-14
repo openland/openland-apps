@@ -149,7 +149,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                             <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 4, color: this.props.style.textColor }} placeholder="Search" placeholderTextColor={this.props.style.searchColor} keyboardAppearance={this.props.style.keyboardAppearance} />
                                             {this.state.searchText.length > 0 && (
                                                 <TouchableOpacity onPress={() => this.handleTextChange('')}>
-                                                    <View style={{ height: 36, width: 36, marginRight: -6, justifyContent: 'center', alignItems: 'center' }}>
+                                                    <View style={{ height: 36, width: 36, marginRight: -2, justifyContent: 'center', alignItems: 'center' }}>
                                                         <Image source={require('assets/ic-search-clear-16.png')} style={{ tintColor: this.props.style.searchColor, width: 16, height: 16 }} />
                                                     </View>
                                                 </TouchableOpacity>
