@@ -139,21 +139,19 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
-    handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
-        startLoader();
+    handleReactionSetUnset = (message: DataSourceMessageItem, r: string, doubleTap?: boolean) => {
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             } else {
-                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: 'not' });
+                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
 
                 this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             }
         } catch (e) {
             Alert.alert(e.message);
         }
-        stopLoader();
     }
 
     private handleMessageLongPress = (message: DataSourceMessageItem, chatId: string) => {
@@ -236,15 +234,7 @@ export class MobileMessenger {
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
-        startLoader();
-        try {
-            trackEvent('reaction_sent', { reaction_type: 'like', double_tap: 'yes' });
-
-            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap.LIKE });
-        } catch (e) {
-            Alert.alert(e.message);
-        }
-        stopLoader();
+        this.handleReactionSetUnset(message, 'LIKE', true);
     }
 
     private handleReactionsClick = (message: DataSourceMessageItem) => {
