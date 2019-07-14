@@ -34,6 +34,8 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((p
 
 const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
     const users = getClient().useExplorePeople({ query: props.query });
+    const disableUsers = props.router.params.disableUsers || [];
+    const excludeUsers = props.router.params.excludeUsers || [];
 
     return (
         <>
@@ -48,12 +50,12 @@ const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: U
                     />
                 </View>
             }
-            {users.items.edges.map((v) => (
+            {users.items.edges.filter(v => excludeUsers.indexOf(v.node.id) === -1).map((v) => (
                 <CheckListBoxWraper checked={!!props.users.find((u: any) => u.id === v.node.id)}>
                     <UserView
                         key={v.node.id}
                         user={v.node}
-                        enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)}
+                        enabled={!(disableUsers.indexOf(v.node.id) > -1)}
                         onPress={() => props.onAdd(v.node)}
                         paddingRight={56}
                     />

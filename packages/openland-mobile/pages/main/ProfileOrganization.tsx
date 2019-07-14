@@ -110,6 +110,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             },
                 'Add members',
                 organization.members.map(u => u.user.id),
+                [ getMessenger().engine.user.id ],
                 { path: 'OrganizationInviteLinkModal', pathParams: { organization } });
         }, [organization]);
 
