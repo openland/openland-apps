@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { useController } from 'openland-web/pages/unicorn/components/UnicornController';
+import { ProfileTab } from './ProfileTab';
 import { Notifications } from './Notifications';
 import { AppearanceTab } from './AppearanceTab';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
@@ -10,6 +12,7 @@ import AppearanceIcon from 'openland-icons/appearance_icon.svg';
 import DownloadAppsIcon from 'openland-icons/download_apps_icon.svg';
 import NotificationsIcon from 'openland-icons/notifications_icon.svg';
 import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
+import EditProfileIcon from 'openland-icons/ic-edit-profile.svg';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
@@ -19,14 +22,17 @@ import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
 import { AppsFragment } from '../apps/AppsFragment';
+import { OrganizationProfile } from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
+import { UserProfile } from 'openland-web/pages/main/profile/components/UserProfileComponent';
 
-const UserProfile = withUserInfo(({ user, onClick }: any) => {
+const UserProfileCard = withUserInfo(({ user }) => {
+    const controller = useController();
     if (user) {
         return (
             <XView
-                as="a"
-                onClick={onClick}
-                path={`/settings/profile`}
+                cursor="pointer"
+                onClick={() => controller.push(<UserProfile userId={user.id} hideBack />)}
+                hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 height={70}
                 width="100%"
                 flexShrink={0}
@@ -35,7 +41,7 @@ const UserProfile = withUserInfo(({ user, onClick }: any) => {
                 color="#000"
             >
                 <XView
-                    paddingHorizontal={20}
+                    paddingHorizontal={16}
                     paddingTop={16}
                     paddingBottom={13}
                     flexDirection="row"
@@ -65,6 +71,25 @@ const UserProfile = withUserInfo(({ user, onClick }: any) => {
                             </XView>
                         </XView>
                     </XView>
+                    <XView
+                        cursor="pointer"
+                        width={32}
+                        height={32}
+                        borderRadius={32}
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="center"
+                        onClick={e => {
+                            e.stopPropagation();
+                            controller.push(
+                                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                                    <ProfileTab />
+                                </XScrollView3>,
+                            );
+                        }}
+                    >
+                        <EditProfileIcon />
+                    </XView>
                 </XView>
             </XView>
         );
@@ -78,17 +103,28 @@ const OrganizationItem = ({
     image,
     text,
     isPrimary,
+    onClick,
 }: {
     id: string;
     image: any;
     text: string;
     isPrimary?: boolean;
+    onClick?: () => void;
 }) => {
     return (
-        <XView flexDirection="row" justifyContent="space-between">
-            <XView flexDirection="row">
+        <XView
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
+            cursor="pointer"
+            height={56}
+            paddingHorizontal={16}
+            onClick={onClick}
+        >
+            <XView flexDirection="row" alignItems="center">
                 <XAvatar2 size={40} src={image} title={text} id={id} />
-                <XView marginLeft={16}>
+                <XView marginLeft={16} alignItems="center" flexDirection="row">
                     <XText mode={Mode.BodyRegular}>{text}</XText>
                 </XView>
             </XView>
@@ -100,6 +136,7 @@ const OrganizationItem = ({
 export const Organizations = React.memo(() => {
     const client = useClient();
     const myOrganizations = client.useMyOrganizations();
+    const controller = useController();
     return (
         <>
             {myOrganizations.myOrganizations.map((organization, key) => {
@@ -110,6 +147,11 @@ export const Organizations = React.memo(() => {
                         image={organization.photo}
                         text={organization.name}
                         isPrimary={organization.isPrimary}
+                        onClick={() =>
+                            controller.push(
+                                <OrganizationProfile organizationId={organization.id} hideBack />,
+                            )
+                        }
                     />
                 );
             })}
@@ -118,15 +160,15 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-    let controller = useController();
+    const controller = useController();
     return (
         <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-            <UserProfile />
+            <UserProfileCard />
             <UListItem
                 text="Invite Friends"
                 icon={<InviteFriendsIcon />}
                 onClick={() => {
-                    showModalBox({ fullScreen: true }, (ctx) => (
+                    showModalBox({ fullScreen: true }, ctx => (
                         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
                             <InviteFriendsFragment asModalContent modalContext={ctx} />
                         </XScrollView3>
@@ -137,30 +179,34 @@ export const AccountFragment = React.memo(() => {
             <UListItem
                 text="Notifications"
                 icon={<NotificationsIcon />}
-                onClick={() => {
-                    controller.push(<Notifications />);
-                }}
+                onClick={() =>
+                    controller.push(
+                        <XScrollView3 flexGrow={1} flexShrink={1}>
+                            <Notifications />
+                        </XScrollView3>,
+                    )
+                }
             />
             <UListItem
                 text="Appearance"
                 icon={<AppearanceIcon />}
-                onClick={() => {
-                    controller.push(<AppearanceTab />);
-                }}
+                onClick={() =>
+                    controller.push(
+                        <XScrollView3 flexGrow={1} flexShrink={1}>
+                            <AppearanceTab />
+                        </XScrollView3>,
+                    )
+                }
             />
             <UListItem
                 text="Download Apps"
                 icon={<DownloadAppsIcon />}
-                onClick={() => {
-                    controller.push(<NativeAppsModal />);
-                }}
+                onClick={() => controller.push(<NativeAppsModal />)}
             />
             <UListItem
                 text="Apps"
                 icon={<DownloadAppsIcon />}
-                onClick={() => {
-                    controller.push(<AppsFragment />);
-                }}
+                onClick={() => controller.push(<AppsFragment />)}
             />
             <UListHeader text="Organizations" />
 

@@ -5,12 +5,14 @@ const titleOneClassName = css`
     font-size: 24px;
     line-height: 32px;
     letter-spacing: 0.36px;
+    font-weight: 600;
 `;
 
 const titleTwoClassName = css`
     font-size: 17px;
     line-height: 24px;
     letter-spacing: -0.24px;
+    font-weight: 600;
 `;
 
 const labelSemicolumnClassName = css`

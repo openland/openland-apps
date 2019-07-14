@@ -283,7 +283,7 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
         this.setState({
             status: 'accepted',
         });
-    }
+    };
 
     declineRequest = (e: any) => {
         e.preventDefault();
@@ -292,7 +292,7 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
         this.setState({
             status: 'declined',
         });
-    }
+    };
 
     render() {
         const { user } = this.props.member;
@@ -997,7 +997,7 @@ interface OrganizationProfileInnerProps extends XWithRouter {
 }
 
 export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
-    let { organization } = props;
+    const { organization } = props;
 
     return (
         <>
@@ -1024,14 +1024,14 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
 const OrganizationProvider = ({
     variables,
     onDirectory,
+    hideBack,
 }: {
     variables: { organizationId: string };
     onDirectory?: boolean;
+    hideBack?: boolean;
 }) => {
     const client = useClient();
-
-    let router = React.useContext(XRouterContext)!;
-
+    const router = React.useContext(XRouterContext)!;
     const data = client.useOrganizationWithoutMembers(variables);
 
     if (!data.organization.isMine && data.organization.isPrivate) {
@@ -1043,16 +1043,22 @@ const OrganizationProvider = ({
             organization={data.organization}
             router={router}
             onDirectory={onDirectory}
+            hideBack={hideBack}
         />
     );
 };
 
-export const OrganizationProfile = (props: { organizationId: string; onDirectory?: boolean }) => {
+export const OrganizationProfile = (props: {
+    organizationId: string;
+    onDirectory?: boolean;
+    hideBack?: boolean;
+}) => {
     return (
         <React.Suspense fallback={<XLoader loading={true} />}>
             <OrganizationProvider
                 variables={{ organizationId: props.organizationId }}
                 onDirectory={props.onDirectory}
+                hideBack={props.hideBack}
             />
         </React.Suspense>
     );

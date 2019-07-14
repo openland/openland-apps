@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Navigation } from '../../../../components/Navigation';
+import { Navigation } from 'openland-web/components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 

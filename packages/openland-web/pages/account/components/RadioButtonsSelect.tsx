@@ -19,13 +19,16 @@ export function RadioButtonsSelect<T>({
         selectOptions.find((item: RadioButtonsSelectOptions<T>) => item.value === value)!!,
     );
 
-    React.useEffect(() => {
-        if (value !== innerValue) {
-            if (value && !(value instanceof Array)) {
-                onChange(innerValue.value);
+    React.useEffect(
+        () => {
+            if (value !== innerValue) {
+                if (value && !(value instanceof Array)) {
+                    onChange(innerValue.value);
+                }
             }
-        }
-    }, [innerValue]);
+        },
+        [innerValue],
+    );
 
     return (
         <>
