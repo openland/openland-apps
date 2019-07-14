@@ -9,12 +9,12 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import Alert from 'openland-mobile/components/AlertBlanket';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const EditCommunityComponent = XMemo<PageProps>((props) => {
     const ref = React.useRef<ZForm | null>(null);
@@ -77,35 +77,36 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }}
             >
-                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                    <ZTextInput
-                        placeholder="Community name"
+                <View alignItems="center" marginTop={10}>
+                    <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                </View>
+
+                <ZListItemGroup header="Info" marginTop={0}>
+                    <ZInput
+                        label="Community name"
                         field="input.name"
                     />
-                </ZAvatarPickerInputsGroup>
-                <View height={20} />
-                <ZListItemGroup footer="Publicly describe this community for all to see">
-                    <ZTextInput
+                    <ZInput
                         field="input.about"
-                        placeholder="Add a short description"
+                        label="About"
                         multiline={true}
+                        description="Publicly describe this community for all to see see"
                     />
-                </ZListItemGroup>
-                <View height={15} />
-                <ZListItemGroup footer="Set by creator">
-                    <ZListItem
-                        text="Community type"
-                        description={organization.isPrivate ? 'Private' : 'Public'}
+                    <ZPickField
+                        label="Community type"
+                        value={organization.isPrivate ? 'Private' : 'Public'}
                         onPress={organization.isOwner ? handleChangeTypePress : undefined}
+                        description="Set by creator"
                     />
                 </ZListItemGroup>
-                <View height={15} />
-                <ZListItemGroup footer="People will be able to find your community by this shortname">
-                    <ZListItem
-                        text="Shortname"
-                        description={organization.shortname ? '@' + organization.shortname : 'Create'}
+
+                <ZListItemGroup header="Shortname" marginTop={0}>
+                    <ZPickField
+                        label="Shortname"
+                        value={organization.shortname ? '@' + organization.shortname : 'Create'}
                         path="SetOrgShortname"
                         pathParams={{ id: organization.id }}
+                        description="People will be able to find your community by this shortname"
                     />
                 </ZListItemGroup>
             </ZForm>
