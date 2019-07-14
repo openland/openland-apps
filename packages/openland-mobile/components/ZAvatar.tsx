@@ -33,7 +33,7 @@ export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: n
     'medium': { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
     'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
     'x-large': { size: 72, placeholder: 32, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
-    'xx-large': { size: 100, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
+    'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
 const ZAvatarInner = XMemo<ZAvatarProps>((props) => {

@@ -9,12 +9,12 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 const mock1 = {
     src: 'https://ucarecdn.com/ce2508ab-8048-4e28-a1aa-8c2d64fdf3c7/-/crop/708x708/89,0/-/format/jpeg/-/scale_crop/80x80/center/-/quality/lighter/-/progressive/yes/',
     placeholderKey: '1',
-    placeholderTitle: 'A'
+    placeholderTitle: 'A A'
 };
 
 const mock2 = {
     placeholderKey: '1',
-    placeholderTitle: 'A'
+    placeholderTitle: 'A A'
 };
 
 export const AvatarsComponent = (props: PageProps) => {
