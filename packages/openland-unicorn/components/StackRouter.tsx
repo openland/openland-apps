@@ -1,6 +1,7 @@
 import * as React from 'react';
 import uuid from 'uuid';
 import { URouting } from 'openland-unicorn/URouting';
+import { NotFound } from 'openland-unicorn/NotFound';
 
 export interface StackItems {
     key: string;
@@ -32,14 +33,16 @@ export class StackRouter {
 
         // Push page to stack
         let ex = this.routing.resolve(path);
+        let component: any;
         if (!ex) {
             console.warn('Unable to resolve component for ' + path);
-            // TODO: Error handling
-            return;
+            component = <NotFound />;
+        } else {
+            let Component = ex.route.factory();
+            component = <Component />;
         }
         let key = uuid();
-        let Component = ex.route.factory();
-        let component =  <Component />;
+
         this.pages.push({ path, key, component });
         for (let l of this._listeners) {
             l({ type: 'push', key, component });

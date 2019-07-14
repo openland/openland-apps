@@ -8,5 +8,6 @@ const routing = new URouting();
 routing.addRoute('/settings/profile', () => ProfileTab);
 routing.addRoute('/settings/notifications', () => Notifications);
 routing.addRoute('/settings/appearance', () => AppearanceTab);
+// routing.addRoute('/mail/appearance', () => AppearanceTab);
 
 export const Routing = routing;

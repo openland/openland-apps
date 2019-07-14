@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
@@ -17,6 +17,7 @@ import { TabLayout } from 'openland-unicorn/components/TabLayout';
 import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext';
 const Root = () => {
     // let controller = useController();
+    let router = React.useContext(XViewRouterContext)!;
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <XView
@@ -44,7 +45,7 @@ const Root = () => {
                 <DialogListFragment
                     onSearchItemSelected={() => {/*  */ }}
                     onDialogPress={(id) => {
-                        // controller.push(<Chat id={id} />);
+                        router.navigate(`/mail/${id}`);
                     }}
                 />
             </XView>
