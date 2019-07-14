@@ -15,8 +15,8 @@ import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
     const ref = React.useRef<ZForm | null>(null);
-    const organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
-    const profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organizationProfile;
+    const organizationId = props.router.params.id;
+    const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
     return (
         <>
@@ -27,8 +27,8 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 action={async src => {
                     let client = getClient();
                     await client.mutateUpdateOrganization(src);
-                    await client.refetchOrganizationProfile({ organizationId: props.router.params.id });
-                    await client.refetchOrganization({ organizationId: props.router.params.id });
+                    await client.refetchOrganizationProfile({ organizationId });
+                    await client.refetchOrganization({ organizationId });
                 }}
                 defaultData={{
                     input: {
@@ -44,7 +44,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     },
                 }}
                 staticData={{
-                    organizationId: props.router.params.id,
+                    organizationId
                 }}
                 onSuccess={() => {
                     props.router.back();
@@ -69,9 +69,9 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 <ZListItemGroup header="Shortname" marginTop={0}>
                     <ZPickField
                         label="Shortname"
-                        value={organization.shortname ? '@' + organization.shortname : undefined}
+                        value={profile.shortname ? '@' + profile.shortname : undefined}
                         path="SetOrgShortname"
-                        pathParams={{ id: organization.id }}
+                        pathParams={{ id: organizationId }}
                         description="People will be able to find your organization by this shortname"
                     />
                 </ZListItemGroup>

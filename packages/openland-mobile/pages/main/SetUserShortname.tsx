@@ -63,17 +63,20 @@ export const validateShortname = (shortname: string | null, min: number, max: nu
 };
 
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
-    let account = getClient().useAccount({ fetchPolicy: 'network-only' });
-    let me = account.me;
+    const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
 
-    const [shortname, setShortname] = React.useState(me!.shortname);
+    if (!user || !profile) {
+        return null;
+    }
+
+    const [shortname, setShortname] = React.useState<string>(user.shortname || '');
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
+    const ref = React.useRef<ZForm | null>(null);
+    const handleSave = React.useCallback(() => {
         if (ref.current) {
             if (validateShortname(shortname, minLength, maxLength)) {
                 ref.current.submitForm();
@@ -98,7 +101,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                 onError={(e) => setError(formatError(e))}
                 ref={ref}
                 defaultData={{
-                    shortname: me!.shortname
+                    shortname: user.shortname
                 }}
             >
                 <ZListItemGroup
@@ -110,12 +113,12 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                             'This link opens a chat with you:' + '\n' +
                             'openland.com/' + (shortname ? shortname : ' username'),
                         onPress: (link: string) => {
-                            if (me!.shortname) {
+                            if (user.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
-                            if (me!.shortname) {
+                            if (user.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         }

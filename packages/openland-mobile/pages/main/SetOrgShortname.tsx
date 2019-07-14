@@ -15,9 +15,10 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
-    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
+    const organizationId = props.router.params.id;
+    const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
-    const [shortname, setShortname] = React.useState(organization.shortname);
+    const [shortname, setShortname] = React.useState<string>(profile.shortname || '');
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
@@ -42,36 +43,35 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                     setError(undefined);
 
                     await getClient().mutateSetOrgShortname(args);
-
-                    await getClient().refetchOrganization({ organizationId: organization.id });
-                    await getClient().refetchOrganizationProfile({ organizationId: organization.id });
+                    await getClient().refetchOrganization({ organizationId });
+                    await getClient().refetchOrganizationProfile({ organizationId });
                 }}
                 onSuccess={() => props.router.back()}
                 onError={(e) => setError(formatError(e))}
                 ref={ref}
                 defaultData={{
-                    shortname: organization.shortname
+                    shortname: profile.shortname
                 }}
                 staticData={{
-                    organizationId: organization.id
+                    organizationId
                 }}
             >
                 <ZListItemGroup
                     footer={{
-                        text: 'You can choose a shortname for ' + organization.name + ' in Openland.' + '\n' +
-                              'Other people will be able to find ' + organization.name + ' by this shortname.' + '\n\n' +
+                        text: 'You can choose a shortname for ' + profile.name + ' in Openland.' + '\n' +
+                              'Other people will be able to find ' + profile.name + ' by this shortname.' + '\n\n' +
                               'You can use a-z, 0-9 and underscores.' + '\n' +
                               'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                              'This link opens ' + organization.name + ' page:' + '\n' +
+                              'This link opens ' + profile.name + ' page:' + '\n' +
                               'openland.com/' + (shortname ? shortname : ' shortname'),
 
                         onPress: (link: string) => {
-                            if (organization.shortname) {
+                            if (profile.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
-                            if (organization.shortname) {
+                            if (profile.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
                             }
                         }

@@ -14,16 +14,15 @@ import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
-    let profile = getClient().useProfile({ fetchPolicy: 'network-only' }).profile;
-    let me = getClient().useAccount({ fetchPolicy: 'network-only' }).me;
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
+    const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
+    const ref = React.useRef<ZForm | null>(null);
+    const handleSave = React.useCallback(() => {
         if (ref.current) {
             ref.current.submitForm();
         }
     }, []);
 
-    if (!me) {
+    if (!user || !profile) {
         return null;
     }
 
@@ -39,17 +38,17 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 ref={ref}
                 defaultData={{
                     input: {
-                        firstName: profile!.firstName,
-                        lastName: profile!.lastName,
+                        firstName: profile.firstName,
+                        lastName: profile.lastName,
                         photoRef: sanitizeImageRef(
-                            profile!.photoRef,
+                            profile.photoRef,
                         ),
-                        about: profile!.about,
-                        phone: profile!.phone,
-                        email: profile!.email,
-                        location: profile!.location,
-                        website: profile!.website,
-                        alphaLinkedin: profile!.linkedin,
+                        about: profile.about,
+                        phone: profile.phone,
+                        email: profile.email,
+                        location: profile.location,
+                        website: profile.website,
+                        alphaLinkedin: profile.linkedin,
                     },
                 }}
             >
@@ -68,7 +67,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                     <ZPickField
                         label="Primary organization"
-                        value={me.primaryOrganization ? me.primaryOrganization.name : undefined}
+                        value={profile.primaryOrganization ? profile.primaryOrganization.name : undefined}
                         path="SelectPrimaryOrganization"
                     />
                     <ZInput
@@ -85,7 +84,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 <ZListItemGroup header="Username" marginTop={0}>
                     <ZPickField
                         label="Username"
-                        value={me.shortname ? '@' + me.shortname : undefined}
+                        value={user.shortname ? '@' + user.shortname : undefined}
                         path="SetUserShortname"
                     />
                 </ZListItemGroup>
