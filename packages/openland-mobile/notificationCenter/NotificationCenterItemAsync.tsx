@@ -62,7 +62,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
             flexDirection="column"
         >
             <ASFlex marginBottom={9}>
-                <ASFlex onPress={() => messenger.handleUserClick(item.senderId)}>
+                <ASFlex onPress={() => messenger.handleUserClick(item.senderId)} alignItems="center">
                     <AsyncAvatar
                         size="x-small"
                         src={item.senderPhoto}

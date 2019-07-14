@@ -11,7 +11,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
@@ -69,17 +69,18 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                     await next(props.router);
                 }}
             >
-                <View alignSelf="center" marginTop={30} marginBottom={10}>
-                    <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} size="x-large" />
+                <View alignSelf="center" marginTop={15}>
+                    <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
                 </View>
-                <ZListItemGroup footer="Please, provide your name. This information is part of your public profile.">
-                    <ZTextInput
+                <ZListItemGroup header={null}>
+                    <ZInput
                         field="input.firstName"
-                        placeholder="First name"
+                        label="First name"
                     />
-                    <ZTextInput
+                    <ZInput
                         field="input.lastName"
-                        placeholder="Last name"
+                        label="Last name"
+                        description="Please, provide your name. This information is part of your public profile."
                     />
                 </ZListItemGroup>
             </ZForm>

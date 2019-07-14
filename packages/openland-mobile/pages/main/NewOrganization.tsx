@@ -9,7 +9,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { SilentError } from 'openland-y-forms/errorHandling';
-import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -61,22 +61,29 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                 >
                     {!isCommunity && (
                         <>
-                            <View alignSelf="center" marginTop={30} marginBottom={31}>
-                                <ZAvatarPicker field="input.photoRef" size="x-large" />
+                            <View alignSelf="center" marginTop={15}>
+                                <ZAvatarPicker field="input.photoRef" size="xx-large" />
                             </View>
-                            <ZListItemGroup footer="Please, provide organization name and optional logo">
-                                <ZTextInput placeholder="Organization name" field="input.name" autoFocus={true} />
+                            <ZListItemGroup header={null}>
+                                <ZInput
+                                    label="Organization name"
+                                    field="input.name"
+                                    autoFocus={true}
+                                    description="Please, provide organization name and optional logo"
+                                />
                             </ZListItemGroup>
                         </>
                     )}
 
                     {isCommunity && (
                         <>
-                            <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                                <ZTextInput placeholder="Community name" field="input.name" autoFocus={true} />
-                            </ZAvatarPickerInputsGroup>
-                            <View height={20} />
-                            <ZTextInput placeholder="About" field="input.about" multiline={true} />
+                            <View alignSelf="center" marginTop={15}>
+                                <ZAvatarPicker field="input.photoRef" size="xx-large" />
+                            </View>
+                            <ZListItemGroup header={null}>
+                                <ZInput label="Community name" field="input.name" autoFocus={true} />
+                                <ZInput label="About" field="input.about" multiline={true} />
+                            </ZListItemGroup>
                         </>
                     )}
                 </ZForm>

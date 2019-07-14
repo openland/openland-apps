@@ -15,7 +15,7 @@ export const ShowAuthError = (error: NamedError) => {
             .message('Please check your email address and try again.')
             .button('TRY AGAIN').show();
     } else if (error.name === 'wrong_code' || error.name === 'wrong_code_length') {
-        Toast.failure({ text: 'wrong code', duration: 1000 }).show();
+        Toast.failure({ text: 'Wrong code', duration: 1000 }).show();
     } else if (error.name === 'no_code') {
         Alert.builder()
             .title('Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email')
