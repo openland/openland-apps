@@ -76,7 +76,7 @@ export class ActionSheetBuilder {
                             <ZRoundedButton
                                 size="large"
                                 title="Cancel"
-                                style="secondary"
+                                style="secondary-inverted"
                                 onPress={() => { ctx.hide(); }}
                             />
                         </View>

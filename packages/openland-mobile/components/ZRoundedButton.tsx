@@ -7,7 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
+type ZRoundedButtonStyle = 'primary' | 'secondary' | 'secondary-inverted' | 'danger';
 type ZRoundedButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({
@@ -93,7 +93,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
     return (
