@@ -21,7 +21,6 @@ import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
-import { CreateChannel } from './pages/compose/CreateChannel';
 import { ProfileOrganizationLink } from './pages/main/ProfileOrganizationLink';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
@@ -77,7 +76,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FilePreview', FilePreview)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
-  .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', ProfileOrganizationLink)
   .addRoute('GroupMultiplePicker', GroupMultiplePicker)
   .addRoute('UserMultiplePicker', UserMultiplePicker)

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { ZInputBasicProps, ZInputBasic } from './input/ZInputBasic';
+import { ZInputBasicProps, ZInputBasic } from './basics/ZInputBasic';
 
 export interface ZInputProps extends ZInputBasicProps {
     field?: string;
