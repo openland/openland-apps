@@ -84,7 +84,8 @@ export class NavigationManager {
         if (this.locksCount > 0) {
             return;
         }
-        let record = new NavigationPage(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 2].key);
+        let prevKey = this.state.history.length <= 1 ? undefined : this.state.history[this.state.history.length - 2].key;
+        let record = new NavigationPage(this, this.state.history.length, route, params, prevKey);
         let pages = [...this.state.history];
         pages.pop();
         let nhistory = new NavigationState([...pages, record]); // keep to avoid insonsistency if we will change routes in watchers
