@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 export const ZLoader = React.memo<LoaderSpinnerProps>((props) => (
     <View style={styles.container}>
         <KeyboardSafeAreaView >
-            <LoaderSpinner />
+            <LoaderSpinner {...props} />
         </KeyboardSafeAreaView>
     </View>
 ));
