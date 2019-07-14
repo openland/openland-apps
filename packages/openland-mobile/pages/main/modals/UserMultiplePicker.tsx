@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent, Image, Platform } from 'react-native';
+import { View, LayoutChangeEvent, Image, Platform, Dimensions } from 'react-native';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -32,11 +32,11 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((p
     );
 });
 
-const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
+const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
     const users = getClient().useExplorePeople({ query: props.query });
 
     return (
-        <SScrollView marginTop={props.searchHeight}>
+        <>
             {props.router.params.inviteLinkButton &&
                 <View marginBottom={6} marginTop={18}>
                     <ZListItem
@@ -59,7 +59,7 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
                     />
                 </CheckListBoxWraper>
             ))}
-        </SScrollView >
+        </>
     );
 });
 
@@ -101,9 +101,13 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                 }}
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                <React.Suspense fallback={<ZLoader />}>
-                    <UsersList {...props} users={users} searchHeight={searchHeight} query={query} onAdd={handleAddUser} />
-                </React.Suspense>
+                <SScrollView>
+                    <View paddingTop={searchHeight} minHeight={Dimensions.get('screen').height - searchHeight}>
+                        <React.Suspense fallback={<ZLoader />}>
+                            <UsersList {...props} users={users} query={query} onAdd={handleAddUser} />
+                        </React.Suspense>
+                    </View>
+                </SScrollView>
             </View>
             <ASSafeAreaContext.Consumer>
                 {area => (
