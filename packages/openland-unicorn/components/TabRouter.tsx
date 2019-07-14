@@ -132,6 +132,8 @@ export class TabRouter {
                 if (window.history.state && window.history.state.options) {
                     if (window.history.state.options['tab-router'] === this.id) {
 
+                        // console.log('changed', JSON.parse(JSON.stringify(window.history.state.options)));
+
                         // Ignore if not changed
                         let index = window.history.state.options['tab-router-index'];
                         if (typeof index !== 'number') {
@@ -158,13 +160,7 @@ export class TabRouter {
         let destUrl = this.tryChangeTab(index);
         if (destUrl) {
             this.incrementId();
-            // Update browser history
-            Router.push('/unicorn', destUrl, {
-                shallow: true,
-                ['tab-router']: this.id,
-                ['tab-router-current']: this.currentTab,
-                ['tab-router-index']: this.currentId
-            });
+            this.pushHistory(destUrl, 'switch');
         }
     }
 
@@ -173,17 +169,20 @@ export class TabRouter {
     // 
 
     navigate(path: string) {
+
+        //
+        // Ignore navigation if url is not changed
+        // otherwise next.js won't push new page to history
+        //
+        if (Router.asPath === path) {
+            return;
+        }
+
         this.incrementId();
 
         this.stacks[this.currentTab].push(path);
 
-        Router.push('/unicorn', path, {
-            shallow: true,
-            ['tab-router']: this.id,
-            ['tab-router-current']: this.currentTab,
-            ['tab-router-index']: this.currentId,
-            ['tab-router-action']: 'push'
-        });
+        this.pushHistory(path, 'push');
     }
 
     private onStackPopped(index: number) {
@@ -201,13 +200,7 @@ export class TabRouter {
 
         console.log('popped to ' + destUrl);
 
-        Router.push('/unicorn', destUrl, {
-            shallow: true,
-            ['tab-router']: this.id,
-            ['tab-router-current']: this.currentTab,
-            ['tab-router-index']: this.currentId,
-            ['tab-router-action']: 'pop'
-        });
+        this.pushHistory(destUrl, 'pop');
     }
 
     //
@@ -290,5 +283,22 @@ export class TabRouter {
             localStorage.setItem('tab-router-' + this.persistenceKey, index + '');
         }
         return destUrl;
+    }
+
+    private pushHistory = (path: string, action: string) => {
+        console.log('push', {
+            ['tab-router']: this.id,
+            ['tab-router-current']: this.currentTab,
+            ['tab-router-index']: this.currentId,
+            ['tab-router-action']: action
+        });
+
+        Router.push('/unicorn', path, {
+            shallow: true,
+            ['tab-router']: this.id,
+            ['tab-router-current']: this.currentTab,
+            ['tab-router-index']: this.currentId,
+            ['tab-router-action']: action
+        });
     }
 }
