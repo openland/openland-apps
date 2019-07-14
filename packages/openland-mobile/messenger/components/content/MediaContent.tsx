@@ -121,7 +121,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginBottom={compensateBubble ? (single || !hasText ? -contentInsetsBottom : 8) : undefined}
-                backgroundColor={!single ? theme.backgroundTertiary : undefined}
+                backgroundColor={theme.backgroundTertiary}
                 alignItems="center"
             >
                 <ASFlex>
