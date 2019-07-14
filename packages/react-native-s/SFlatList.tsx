@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Animated, FlatListProps, ActivityIndicator, View } from 'react-native';
+import { Animated, FlatListProps, View } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
-import { ZLoader } from 'openland-mobile/components/ZLoader';
+import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
 export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;
@@ -14,7 +14,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
 
     renderLoader = (
         <View height={56} alignItems="center" justifyContent="center">
-            <ZLoader size="small" />
+            <LoaderSpinner size="small" />
         </View>
     );
 
