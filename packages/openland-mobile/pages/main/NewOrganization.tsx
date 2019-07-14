@@ -66,7 +66,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                             </View>
                             <ZListItemGroup header={null}>
                                 <ZInput
-                                    label="Organization name"
+                                    placeholder="Organization name"
                                     field="input.name"
                                     autoFocus={true}
                                     description="Please, provide organization name and optional logo"
@@ -81,8 +81,8 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                                 <ZAvatarPicker field="input.photoRef" size="xx-large" />
                             </View>
                             <ZListItemGroup header={null}>
-                                <ZInput label="Community name" field="input.name" autoFocus={true} />
-                                <ZInput label="About" field="input.about" multiline={true} />
+                                <ZInput placeholder="Community name" field="input.name" autoFocus={true} />
+                                <ZInput placeholder="About" field="input.about" multiline={true} />
                             </ZListItemGroup>
                         </>
                     )}

@@ -59,11 +59,11 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
 
                 <ZListItemGroup header="Info" marginTop={0}>
                     <ZInput
-                        label="First name"
+                        placeholder="First name"
                         field="input.firstName"
                     />
                     <ZInput
-                        label="Last name"
+                        placeholder="Last name"
                         field="input.lastName"
                     />
                     <ZPickField
@@ -72,12 +72,12 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         path="SelectPrimaryOrganization"
                     />
                     <ZInput
-                        label="About"
+                        placeholder="About"
                         field="input.about"
                         multiline={true}
                     />
                     <ZInput
-                        label="Location"
+                        placeholder="Location"
                         field="input.location"
                     />
                 </ZListItemGroup>
@@ -92,19 +92,19 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
 
                 <ZListItemGroup header="Contacts" marginTop={0}>
                     <ZInput
-                        label="Phone"
+                        placeholder="Phone"
                         field="input.phone"
                     />
                     <ZInput
-                        label="Email"
+                        placeholder="Email"
                         field="input.email"
                     />
                     <ZInput
-                        label="Website"
+                        placeholder="Website"
                         field="input.website"
                     />
                     <ZInput
-                        label="LinkedIn"
+                        placeholder="LinkedIn"
                         field="input.alphaLinkedin"
                     />
                 </ZListItemGroup>

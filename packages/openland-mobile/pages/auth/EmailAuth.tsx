@@ -111,7 +111,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     </Text>
                     <ZInput
                         field="email"
-                        label="Email"
+                        placeholder="Email"
                         autoCapitalize="none"
                         keyboardType="email-address"
                         autoFocus={true}
@@ -217,7 +217,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps, { code: string }
                     </Text>
                     <ZInput
                         field="code"
-                        label="Activation Code"
+                        placeholder="Activation Code"
                         autoCapitalize="none"
                         keyboardType="number-pad"
                         autoFocus={true}

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: RadiusStyles.medium
     } as ViewStyle,
-    labelContainer: {
+    placeholderContainer: {
         position: 'absolute',
         top: 0,
         right: 0,
@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 16
     } as ViewStyle,
-    labelContainerFocused: {
+    placeholderContainerFocused: {
         justifyContent: 'flex-start',
         paddingTop: 8,
     } as ViewStyle,
-    label: {
+    placeholder: {
         ...TypeStyles.densed
     } as TextStyle,
-    labelFocused: {
+    placeholderFocused: {
         ...TypeStyles.caption
     } as TextStyle,
     prefixContainer: {
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
 });
 
 export interface ZInputBasicProps extends TextInputProps {
-    label?: string;
     prefix?: string;
     invalid?: boolean;
     description?: string;
@@ -56,7 +55,7 @@ export interface ZInputBasicProps extends TextInputProps {
 }
 
 export const ZInputBasic = (props: ZInputBasicProps) => {
-    const { label, prefix, invalid, description, enabled, noWrapper, ...other } = props;
+    const { placeholder, prefix, invalid, description, enabled, noWrapper, ...other } = props;
     const theme = React.useContext(ThemeContext);
     const [ focused, setFocused ] = React.useState<boolean>(false);
     const [ filled, setFilled ] = React.useState<boolean>(!!(props.value && props.value.length > 0));
@@ -93,10 +92,10 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
-                {!!label && (
-                    <View style={[styles.labelContainer, (focused || filled) && styles.labelContainerFocused]}>
-                        <Text style={[styles.label, (focused || filled) && styles.labelFocused, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {label}
+                {!!placeholder && (
+                    <View style={[styles.placeholderContainer, (focused || filled) && styles.placeholderContainerFocused]}>
+                        <Text style={[styles.placeholder, (focused || filled) && styles.placeholderFocused, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                            {placeholder}
                         </Text>
                     </View>
                 )}

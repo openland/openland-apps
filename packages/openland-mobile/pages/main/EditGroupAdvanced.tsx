@@ -137,7 +137,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                                     );
                                 }}
                             />
-                            <ZInput multiline={true} label="Text message" field="input.welcomeMessageText" />
+                            <ZInput multiline={true} placeholder="Text message" field="input.welcomeMessageText" />
                         </ZListItemGroup>
                     )}
 

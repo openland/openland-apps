@@ -122,7 +122,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     }}
                 >
                     <ZInput
-                        label="Username"
+                        placeholder="Username"
                         prefix="@"
                         field="shortname"
                         autoCapitalize="none"

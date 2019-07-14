@@ -55,12 +55,12 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 </View>
                 <ZListItemGroup header="Info" marginTop={0}>
                     <ZInput
-                        label="Organization name"
+                        placeholder="Organization name"
                         field="input.name"
                     />
                     <ZInput
                         field="input.about"
-                        label="About"
+                        placeholder="About"
                         multiline={true}
                         description="Publicly describe this organization for all to see"
                     />
@@ -77,19 +77,19 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
                 <ZListItemGroup header="Contacts" marginTop={0}>
                     <ZInput
-                        label="Website"
+                        placeholder="Website"
                         field="input.website"
                     />
                     <ZInput
-                        label="Twitter"
+                        placeholder="Twitter"
                         field="input.twitter"
                     />
                     <ZInput
-                        label="Facebook"
+                        placeholder="Facebook"
                         field="input.facebook"
                     />
                     <ZInput
-                        label="Linkedin"
+                        placeholder="Linkedin"
                         field="input.linkedin"
                     />
                 </ZListItemGroup>

@@ -83,12 +83,12 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
 
                 <ZListItemGroup header="Info" marginTop={0}>
                     <ZInput
-                        label="Community name"
+                        placeholder="Community name"
                         field="input.name"
                     />
                     <ZInput
                         field="input.about"
-                        label="About"
+                        placeholder="About"
                         multiline={true}
                         description="Publicly describe this community for all to see see"
                     />

@@ -56,12 +56,12 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                     </View>
                     <ZListItemGroup header="Info" marginTop={0}>
                         <ZInput
-                            label="Group name"
+                            placeholder="Group name"
                             field="input.title"
                         />
                         <ZInput
                             field="input.description"
-                            label="Description"
+                            placeholder="Description"
                             multiline={true}
                         />
                     </ZListItemGroup>

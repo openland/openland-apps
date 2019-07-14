@@ -75,11 +75,11 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                 <ZListItemGroup header={null}>
                     <ZInput
                         field="input.firstName"
-                        label="First name"
+                        placeholder="First name"
                     />
                     <ZInput
                         field="input.lastName"
-                        label="Last name"
+                        placeholder="Last name"
                         description="Please, provide your name. This information is part of your public profile."
                     />
                 </ZListItemGroup>

@@ -78,7 +78,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                     }}
                 >
                     <ZInput
-                        label="Shortname"
+                        placeholder="Shortname"
                         prefix="@"
                         field="shortname"
                         autoCapitalize="none"

@@ -11,13 +11,13 @@ export const InputsComponent = (props: PageProps) => (
     <SScrollView>
         <View>
             <ZListItemGroup header="Text fields" marginTop={0}>
-                <ZInput label="Label" />
-                <ZInput label="Label" value="Value" />
-                <ZInput label="Label" multiline={true} />
-                <ZInput label="Label" value="Value" multiline={true} />
-                <ZInput label="Label" value="Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value" multiline={true} />
-                <ZInput label="With prefix" prefix="@" description="Description" />
-                <ZInput label="With prefix" value="Value" prefix="@@" description="Description" invalid={true} />
+                <ZInput placeholder="Label" />
+                <ZInput placeholder="Label" value="Value" />
+                <ZInput placeholder="Label" multiline={true} />
+                <ZInput placeholder="Label" value="Value" multiline={true} />
+                <ZInput placeholder="Label" value="Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value" multiline={true} />
+                <ZInput placeholder="With prefix" prefix="@" description="Description" />
+                <ZInput placeholder="With prefix" value="Value" prefix="@@" description="Description" invalid={true} />
             </ZListItemGroup>
             <ZListItemGroup header="Pick fields" marginTop={0}>
                 <ZPickField label="Label" />
