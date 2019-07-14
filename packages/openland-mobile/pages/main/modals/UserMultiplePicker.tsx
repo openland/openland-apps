@@ -18,21 +18,23 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((props) => {
-    let theme = React.useContext(ThemeContext);
+    const theme = React.useContext(ThemeContext);
+
     return (
         <View flexDirection="row">
             <View flexGrow={1}>
                 {props.children}
             </View>
             <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.medium} width={24} height={24} >
-                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
+                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastSpecial }} />}
             </View>
         </View>
     );
 });
 
 const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
-    let users = getClient().useExplorePeople({ query: props.query });
+    const users = getClient().useExplorePeople({ query: props.query });
+
     return (
         <SScrollView marginTop={props.searchHeight}>
             {props.router.params.inviteLinkButton &&

@@ -166,9 +166,13 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                     height: 22,
                                     borderRadius: 11,
                                     borderWidth: checkmarkEnabled ? 7 : 2,
-                                    borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary
+                                    borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
-                            />
+                            >
+                                {checkmarkEnabled && <Image source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastSpecial }} />}
+                            </View>
                         )}
                     </View>
                     {this.props.subTitle && <Text style={{ ...TypeStyles.subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>{this.props.subTitle}</Text>}
