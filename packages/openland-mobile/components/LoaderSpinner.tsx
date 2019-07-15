@@ -1,12 +1,26 @@
 import React from 'react';
 import { Animated, Easing, Platform, ActivityIndicator } from 'react-native';
 
+type LoaderSpinnerSize = 'small' | 'medium' | 'large';
+
 export interface LoaderSpinnerProps {
-    size?: 'small' | 'large';
+    size?: 'small' | 'medium' | 'large';
     color?: string;
 }
 
-export function LoaderSpinnerIOS({ size = 'small', color }: LoaderSpinnerProps) {
+const loaderSize: { [key in LoaderSpinnerSize]: number } = {
+    small: 16,
+    medium: 22,
+    large: 32
+};
+
+const loaderIcon: { [key in LoaderSpinnerSize]: NodeRequire } = {
+    small: require('assets/ic-loader-32.png'),
+    medium: require('assets/ic-loader-22.png'),
+    large: require('assets/ic-loader-32.png')
+};
+
+export function LoaderSpinnerIOS({ size = 'medium', color }: LoaderSpinnerProps) {
     const rotateValue = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
@@ -26,16 +40,11 @@ export function LoaderSpinnerIOS({ size = 'small', color }: LoaderSpinnerProps) 
         outputRange: ['0deg', '360deg'],
     });
 
-    const isSmall = size === 'small';
-    const loaderIcon = isSmall
-        ? require('assets/ic-loader-22.png')
-        : require('assets/ic-loader-32.png');
-
-    return <Animated.Image style={[{ transform: [{ rotate }] }, !!color && { tintColor: color }]} source={loaderIcon} />;
+    return <Animated.Image style={[{ transform: [{ rotate }], width: loaderSize[size], height: loaderSize[size] }, !!color && { tintColor: color }]} source={loaderIcon[size]} />;
 }
 
-export const LoaderSpinnerAndroid = ({ size = 'small', color }: LoaderSpinnerProps) => (
-    <ActivityIndicator color={color || '#C4C7CC'} size={size} />
+export const LoaderSpinnerAndroid = ({ size = 'medium', color }: LoaderSpinnerProps) => (
+    <ActivityIndicator color={color || '#C4C7CC'} size={loaderSize[size]} />
 );
 
 export default Platform.OS === 'ios' ? LoaderSpinnerIOS : LoaderSpinnerAndroid;

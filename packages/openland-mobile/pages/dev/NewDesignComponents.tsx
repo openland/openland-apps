@@ -55,6 +55,10 @@ export default withApp(() => {
                         <View style={styles.content}>
                             <LoaderSpinner />
                         </View>
+
+                        <View style={styles.content}>
+                            <LoaderSpinner size={'small'} />
+                        </View>
                     </View>
                     <Text style={styles.headerText}>
                         Toast processing

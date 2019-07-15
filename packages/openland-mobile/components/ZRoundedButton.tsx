@@ -109,7 +109,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
                 {actionInProgress && (
                     <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
-                        <LoaderSpinner color={textColor} />
+                        <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
                     </View>
                 )}
             </View>

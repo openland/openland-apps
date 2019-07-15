@@ -14,7 +14,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
 
     renderLoader = (
         <View height={56} alignItems="center" justifyContent="center">
-            <LoaderSpinner size="small" />
+            <LoaderSpinner />
         </View>
     );
 

@@ -193,7 +193,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                     )}
                     {this.state.loading && (
                         <View position="absolute" alignItems="center" justifyContent="center" width={size} height={size} borderRadius={size / 2} backgroundColor={theme.overlayLight}>
-                            <LoaderSpinner size="small" />
+                            <LoaderSpinner />
                         </View>
                     )}
                 </View>

@@ -124,7 +124,7 @@ const handle = async (
     fn: Function,
     config: { success?: ToastBuildConfig; failure?: ToastBuildConfig; } = {},
 ) => {
-    const toastLoader = build({ IconComponent: () => <LoaderSpinner /> });
+    const toastLoader = build({ IconComponent: () => <LoaderSpinner size="large" /> });
 
     try {
         toastLoader.show();
