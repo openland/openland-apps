@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { detectOS } from 'openland-web/components/NativeAppsModal';
+// import { detectOS } from 'openland-web/components/NativeAppsModal';
 
 type LoaderSize = 'medium' | 'small';
 
@@ -126,6 +126,7 @@ const CanvasLoader = (props: LoaderRenderProps) => {
                 let canvas = ref.current;
                 let ctx = canvas.getContext('2d');
                 if (ctx) {
+                    ctx.beginPath();
                     canvas.width = size * scale;
                     canvas.height = size * scale;
                     canvas.style.width = size + 'px';
@@ -140,7 +141,7 @@ const CanvasLoader = (props: LoaderRenderProps) => {
                     ctx.arc(center, center, size / 2 - 1 - padding, 0, 1 - 0.68 * Math.PI);
                     ctx.lineWidth = 2;
                     ctx.strokeStyle = props.color;
-                    ctx.imageSmoothingEnabled = true;
+                    // ctx.imageSmoothingEnabled = true;
                     ctx.stroke();
                 }
             }
@@ -152,8 +153,8 @@ const CanvasLoader = (props: LoaderRenderProps) => {
 };
 
 export const XLoader = (props: XLoaderProps) => {
-    const canvas = detectOS() === 'iOS';
-
+    // const canvas = detectOS() === 'iOS';
+    const canvas = false;
     return (
         <div
             className={cx(
