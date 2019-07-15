@@ -3,9 +3,10 @@ import { Animated, Easing, Platform, ActivityIndicator } from 'react-native';
 
 export interface LoaderSpinnerProps {
     size?: 'small' | 'large';
+    color?: string;
 }
 
-export function LoaderSpinnerIOS({ size = 'small' }: LoaderSpinnerProps) {
+export function LoaderSpinnerIOS({ size = 'small', color }: LoaderSpinnerProps) {
     const rotateValue = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
@@ -30,11 +31,11 @@ export function LoaderSpinnerIOS({ size = 'small' }: LoaderSpinnerProps) {
         ? require('assets/ic-loader-22.png')
         : require('assets/ic-loader-32.png');
 
-    return <Animated.Image style={{ transform: [{ rotate }] }} source={loaderIcon} />;
+    return <Animated.Image style={[{ transform: [{ rotate }] }, !!color && { tintColor: color }]} source={loaderIcon} />;
 }
 
-export const LoaderSpinnerAndroid = ({ size = 'small' }: LoaderSpinnerProps) => (
-    <ActivityIndicator color={'#C4C7CC'} size={size} />
+export const LoaderSpinnerAndroid = ({ size = 'small', color }: LoaderSpinnerProps) => (
+    <ActivityIndicator color={color || '#C4C7CC'} size={size} />
 );
 
 export default Platform.OS === 'ios' ? LoaderSpinnerIOS : LoaderSpinnerAndroid;
