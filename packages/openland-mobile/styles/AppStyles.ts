@@ -20,55 +20,30 @@ export const TextStyles = {
     }
 };
 
-export const TypeStyles = {
-    title1: {
-        fontSize: 34,
-        lineHeight: 40,
-        fontWeight: TextStyles.weight.bold
-    } as TextStyle,
-    title2: {
-        fontSize: 28,
-        lineHeight: 32,
-        fontWeight: TextStyles.weight.bold
-    } as TextStyle,
-    title3: {
-        fontSize: 20,
-        lineHeight: 26,
-        fontWeight: TextStyles.weight.bold
-    } as TextStyle,
-    title4: {
-        fontSize: 17,
-        lineHeight: 24,
-        fontWeight: TextStyles.weight.bold
-    } as TextStyle,
-    label1: {
-        fontSize: 17,
-        lineHeight: 24,
-        fontWeight: TextStyles.weight.medium
-    } as TextStyle,
-    label2: {
-        fontSize: 15,
-        lineHeight: 20,
-        fontWeight: TextStyles.weight.medium
-    } as TextStyle,
-    body: {
-        fontSize: 17,
-        lineHeight: 24,
-        fontWeight: TextStyles.weight.regular
-    } as TextStyle,
-    densed: {
-        fontSize: 17,
-        lineHeight: 22,
-        fontWeight: TextStyles.weight.regular
-    } as TextStyle,
-    subhead: {
-        fontSize: 15,
-        lineHeight: 20,
-        fontWeight: TextStyles.weight.regular
-    } as TextStyle,
-    caption: {
-        fontSize: 13,
-        lineHeight: 18,
-        fontWeight: TextStyles.weight.regular
-    } as TextStyle
+const TypeStylesIOS = {
+    large: { fontSize: 34, lineHeight: 40, fontWeight: TextStyles.weight.bold } as TextStyle,
+    title1: { fontSize: 28, lineHeight: 32, fontWeight: TextStyles.weight.bold } as TextStyle,
+    title2: { fontSize: 20, lineHeight: 26, fontWeight: TextStyles.weight.bold } as TextStyle,
+    headline: { fontSize: 17, lineHeight: 24, fontWeight: TextStyles.weight.bold } as TextStyle,
+    label1: { fontSize: 17, lineHeight: 24, fontWeight: TextStyles.weight.medium } as TextStyle,
+    label2: { fontSize: 15, lineHeight: 20, fontWeight: TextStyles.weight.medium } as TextStyle,
+    body: { fontSize: 17, lineHeight: 24, fontWeight: TextStyles.weight.regular } as TextStyle,
+    densed: { fontSize: 17, lineHeight: 22, fontWeight: TextStyles.weight.regular } as TextStyle,
+    subhead: { fontSize: 15, lineHeight: 20, fontWeight: TextStyles.weight.regular } as TextStyle,
+    caption: { fontSize: 13, lineHeight: 18, fontWeight: TextStyles.weight.regular } as TextStyle
 };
+
+const TypeStylesAndroid = {
+    large: { fontSize: 34, lineHeight: 40, fontWeight: TextStyles.weight.bold } as TextStyle,
+    title1: { fontSize: 28, lineHeight: 32, fontWeight: TextStyles.weight.bold } as TextStyle,
+    title2: { fontSize: 18, lineHeight: 26, fontWeight: TextStyles.weight.bold } as TextStyle,
+    headline: { fontSize: 20, lineHeight: 28, fontWeight: TextStyles.weight.bold } as TextStyle,
+    label1: { fontSize: 16, lineHeight: 24, fontWeight: TextStyles.weight.medium } as TextStyle,
+    label2: { fontSize: 14, lineHeight: 20, fontWeight: TextStyles.weight.medium } as TextStyle,
+    body: { fontSize: 16, lineHeight: 24, fontWeight: TextStyles.weight.regular } as TextStyle,
+    densed: { fontSize: 16, lineHeight: 22, fontWeight: TextStyles.weight.regular } as TextStyle,
+    subhead: { fontSize: 14, lineHeight: 20, fontWeight: TextStyles.weight.regular } as TextStyle,
+    caption: { fontSize: 12, lineHeight: 16, fontWeight: TextStyles.weight.regular } as TextStyle
+};
+
+export const TypeStyles = Platform.OS === 'ios' ? TypeStylesIOS : TypeStylesAndroid;

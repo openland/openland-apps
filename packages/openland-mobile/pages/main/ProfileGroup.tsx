@@ -87,6 +87,16 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .show();
     }, [roomId]);
 
+    const handleRevokeAdmin = React.useCallback((user: UserShort) => {
+        Alert.builder().title(`Change role for ${user.name} to Member?`)
+            .button('Cancel', 'cancel')
+            .action('Revoke', 'destructive', async () => {
+                await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.MEMBER });
+                await resetMembersList();
+            })
+            .show();
+    }, [roomId]);
+
     const handleMemberLongPress = React.useCallback((member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean) => {
         let builder = ActionSheet.builder();
 
@@ -98,6 +108,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             if (canEdit) {
                 if (member.role === RoomMemberRole.MEMBER) {
                     builder.action('Make admin', () => handleMakeAdmin(user));
+                } else if (member.role === RoomMemberRole.ADMIN) {
+                    builder.action('Revoke admin status', () => handleRevokeAdmin(user));
                 }
             }
             if (canKick) {

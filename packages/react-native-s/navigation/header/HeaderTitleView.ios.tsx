@@ -12,7 +12,7 @@ import { TypeStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     title: {
-        ...TypeStyles.label1,
+        ...TypeStyles.headline,
 
         width: '100%',
         textAlignVertical: 'center',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         lineHeight: 44,
     } as TextStyle,
     titleLarge: {
-        ...TypeStyles.title1,
+        ...TypeStyles.large,
 
         width: '100%',
         textAlign: 'left',

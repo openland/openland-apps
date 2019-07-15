@@ -77,7 +77,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                     padding: 24,
                 }}
             >
-                {props.builder._title && <Text style={{ ...TypeStyles.title3, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
+                {props.builder._title && <Text style={{ ...TypeStyles.title2, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
                 {props.builder._message && <Text style={{ ...TypeStyles.body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >

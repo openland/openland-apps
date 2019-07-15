@@ -6,6 +6,7 @@ import Alert from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import LoaderSpinner from './LoaderSpinner';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'secondary-inverted' | 'danger';
 type ZRoundedButtonSize = 'default' | 'large';
@@ -108,7 +109,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
                 {actionInProgress && (
                     <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
-                        <ActivityIndicator height="100%" color={textColor} />
+                        <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
                     </View>
                 )}
             </View>

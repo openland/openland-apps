@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         // backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
-        ...TypeStyles.title2,
+        ...TypeStyles.headline,
         textAlign: 'left',
         textAlignVertical: 'center',
         height: SDevice.navigationBarHeight,

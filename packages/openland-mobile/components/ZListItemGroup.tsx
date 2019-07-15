@@ -49,7 +49,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                 >
                     <Text
                         style={{
-                            ...TypeStyles.title3,
+                            ...TypeStyles.title2,
                             color: theme.foregroundPrimary,
                             paddingLeft: 16,
                             flexShrink: 1,
