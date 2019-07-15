@@ -1,0 +1,80 @@
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeader } from 'react-native-s/SHeader';
+import { withApp } from 'openland-mobile/components/withApp';
+import { PageProps } from 'openland-mobile/components/PageProps';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import Toast from 'openland-mobile/components/Toast';
+import { delay } from 'openland-y-utils/timer';
+
+export const LoadersComponent = (props: PageProps) => (
+    <SScrollView>
+        <SHeader title="Toast" />
+        <View alignItems={'center'}>
+            <View marginVertical={20}>
+                <ZRoundedButton
+                    title={'Show success'}
+                    onPress={() => {
+                        Toast.success({ duration: 1000 }).show();
+                    }}
+                />
+            </View>
+            <View marginVertical={20}>
+                <ZRoundedButton
+                    title={'Show failure with custom text'}
+                    onPress={() => {
+                        Toast.failure({ text: 'Unknown error', duration: 1000 }).show();
+                    }}
+                />
+            </View>
+            <View marginVertical={20}>
+                <ZRoundedButton
+                    title={'Show custom toast'}
+                    onPress={() => {
+                        Toast.build({
+                            iconSource: require('assets/ic-comments-24.png'),
+                            text: 'Custom icon',
+                            duration: 1000,
+                        }).show();
+                    }}
+                />
+            </View>
+            <View marginVertical={20}>
+                <ZRoundedButton
+                    title={'Handle error'}
+                    onPress={() => {
+                        Toast.handle(
+                            async () => {
+                                await delay(1000);
+                                throw new Error();
+                            },
+                            {
+                                failure: { text: 'Error load data' },
+                                success: { text: 'success load data' },
+                            },
+                        );
+                    }}
+                />
+            </View>
+            <View marginVertical={20}>
+                <ZRoundedButton
+                    title={'Handle success'}
+                    onPress={() => {
+                        Toast.handle(
+                            async () => {
+                                await delay(1000);
+                            },
+                            {
+                                failure: { text: 'Error load data' },
+                                success: { text: 'success load' },
+                            },
+                        );
+                    }}
+                />
+            </View>
+        </View>
+    </SScrollView>
+);
+
+export const ToastPage = withApp(LoadersComponent, { navigationAppearance: 'small' });
