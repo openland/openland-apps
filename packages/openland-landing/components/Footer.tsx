@@ -67,7 +67,7 @@ export const Footer = () => (
             </div>
         </Container>
         <div className={FooterStyles.info}>
-            &copy; 2018 Data Makes Perfect Inc.<span>Built in San Francisco</span>
+            &copy; 2019 Data Makes Perfect Inc.<span>Built in San Francisco</span>
         </div>
     </footer>
 );
