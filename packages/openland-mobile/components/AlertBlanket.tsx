@@ -51,7 +51,7 @@ export class AlertBlanketBuilder {
             return (
                 <AlertBlanketComponent builder={this} modalController={ctx} />
             );
-        }, this._cancelable);
+        }, { cancelable: this._cancelable });
     }
 }
 
