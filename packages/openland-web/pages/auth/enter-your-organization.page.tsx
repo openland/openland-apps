@@ -148,8 +148,8 @@ export const EnterYourOrganizationPageInner = ({
 
     const initialOrganizationName =
         profile.profile &&
-        profile.profile.primaryOrganization &&
-        profile.profile.primaryOrganization.name
+            profile.profile.primaryOrganization &&
+            profile.profile.primaryOrganization.name
             ? profile.profile.primaryOrganization.name
             : undefined;
 
@@ -247,6 +247,7 @@ export const EnterYourOrganizationPageInner = ({
                 // can not remove cookie or update will break
                 // Cookie.remove('x-openland-invite');
                 Cookie.remove('x-openland-create-new-account');
+                await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
                 window.location.href = `/mail/${room.join.id}`;
             } else {
                 Cookie.remove('x-openland-create-new-account');
