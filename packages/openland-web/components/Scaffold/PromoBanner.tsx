@@ -9,6 +9,7 @@ import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
+import { detectOS } from 'openland-web/components/NativeAppsModal';
 
 const ActiveButton = Glamorous(XButton)({
     height: 30,
@@ -16,6 +17,9 @@ const ActiveButton = Glamorous(XButton)({
     border: 'solid 1px #ffffff',
     '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    },
+    '& svg': {
+        marginRight: 6,
     },
     '& svg path:last-child': {
         fill: '#fff',
@@ -27,25 +31,7 @@ const titleClassName = css`
 `;
 
 export const PromoBanner = (props: { onClise: () => void }) => {
-    let userAgent = window.navigator.userAgent,
-        platform = window.navigator.platform,
-        macPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
-        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        os = null;
-
-    if (macPlatforms.indexOf(platform) !== -1) {
-        os = 'Mac';
-    } else if (iosPlatforms.indexOf(platform) !== -1) {
-        os = 'iOS';
-    } else if (windowsPlatforms.indexOf(platform) !== -1) {
-        os = 'Windows';
-    } else if (/Android/.test(userAgent)) {
-        os = 'Android';
-    } else if (!os && /Linux/.test(platform)) {
-        os = 'Linux';
-    }
-
+    const os = detectOS();
     return (
         <XView
             height={50}
