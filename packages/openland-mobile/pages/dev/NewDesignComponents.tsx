@@ -49,11 +49,11 @@ export default withApp(() => {
                     </Text>
                     <View>
                         <View style={styles.content}>
-                            <LoaderSpinner />
+                            <LoaderSpinner size={'large'} />
                         </View>
 
                         <View style={styles.content}>
-                            <LoaderSpinner size={'small'} />
+                            <LoaderSpinner />
                         </View>
                     </View>
                     <Text style={styles.headerText}>

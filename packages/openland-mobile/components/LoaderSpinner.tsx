@@ -33,7 +33,7 @@ export function LoaderSpinnerIOS({ size = 'large' }: LoaderSpinnerProps) {
     return <Animated.Image style={{ transform: [{ rotate }] }} source={loaderIcon} />;
 }
 
-export const LoaderSpinnerAndroid = ({ size = 'large' }: LoaderSpinnerProps) => (
+export const LoaderSpinnerAndroid = ({ size = 'small' }: LoaderSpinnerProps) => (
     <ActivityIndicator color={'#C4C7CC'} size={size} />
 );
 
