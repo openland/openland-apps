@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View } from 'react-native';
 import { ZForm } from '../../components/ZForm';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
@@ -52,11 +51,11 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     },
                 }}
             >
-                <View alignItems="center" marginTop={10}>
+                <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field="input.photoRef" />
-                </View>
+                </ZListItemGroup>
 
-                <ZListItemGroup header="Info" marginTop={0}>
+                <ZListItemGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="First name"
                         field="input.firstName"
@@ -81,7 +80,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
 
-                <ZListItemGroup header="Username" marginTop={0}>
+                <ZListItemGroup header="Username" headerMarginTop={0}>
                     <ZPickField
                         label="Username"
                         value={user.shortname ? '@' + user.shortname : undefined}
@@ -89,7 +88,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
 
-                <ZListItemGroup header="Contacts" marginTop={0}>
+                <ZListItemGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Phone"
                         field="input.phone"

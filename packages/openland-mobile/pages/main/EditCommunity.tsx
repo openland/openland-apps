@@ -4,14 +4,12 @@ import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { View, Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
@@ -77,11 +75,11 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }}
             >
-                <View alignItems="center" marginTop={10}>
+                <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field="input.photoRef" />
-                </View>
+                </ZListItemGroup>
 
-                <ZListItemGroup header="Info" marginTop={0}>
+                <ZListItemGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Community name"
                         field="input.name"
@@ -100,7 +98,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
 
-                <ZListItemGroup header="Shortname" marginTop={0}>
+                <ZListItemGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
                         value={organization.shortname ? '@' + organization.shortname : 'Create'}

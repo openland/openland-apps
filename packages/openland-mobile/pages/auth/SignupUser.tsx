@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle, View, Text } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -69,9 +69,9 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                     await next(props.router);
                 }}
             >
-                <View alignSelf="center" marginTop={15}>
+                <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
-                </View>
+                </ZListItemGroup>
                 <ZListItemGroup header={null}>
                     <ZInput
                         field="input.firstName"

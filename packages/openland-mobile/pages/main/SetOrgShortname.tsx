@@ -57,6 +57,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                 }}
             >
                 <ZListItemGroup
+                    header={null}
                     footer={{
                         text: 'You can choose a shortname for ' + profile.name + ' in Openland.' + '\n' +
                               'Other people will be able to find ' + profile.name + ' by this shortname.' + '\n\n' +

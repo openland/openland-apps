@@ -10,7 +10,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
 import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
@@ -189,7 +188,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 }}
             />
 
-            <ZListItemGroup header="About" marginTop={0}>
+            <ZListItemGroup header="About" headerMarginTop={0}>
                 {!!room.description && (
                     <ZListItem
                         text={room.description}
@@ -210,7 +209,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Settings" marginTop={!hasAbout ? 0 : undefined}>
+            <ZListItemGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListItemGroup>
 

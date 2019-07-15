@@ -94,7 +94,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     } : undefined}
                 />
 
-                <ZListItemGroup header="About" marginTop={0}>
+                <ZListItemGroup header="About" headerMarginTop={0}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
                     {!!user.about && <View height={10} />}
                     {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}

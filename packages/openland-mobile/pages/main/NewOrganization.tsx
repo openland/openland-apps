@@ -3,7 +3,6 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
-import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -52,9 +51,9 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                         }
                     }}
                 >
-                    <View alignSelf="center" marginTop={15}>
+                    <ZListItemGroup header={null} alignItems="center">
                         <ZAvatarPicker field="input.photoRef" size="xx-large" />
-                    </View>
+                    </ZListItemGroup>
 
                     <ZListItemGroup header={null}>
                         {!isCommunity && (

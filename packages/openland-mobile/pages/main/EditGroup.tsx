@@ -3,7 +3,6 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
-import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -51,10 +50,10 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         props.router.back();
                     }}
                 >
-                    <View alignItems="center" marginTop={10}>
+                    <ZListItemGroup header={null} alignItems="center">
                         <ZAvatarPicker size="xx-large" field="input.photoRef" />
-                    </View>
-                    <ZListItemGroup header="Info" marginTop={0}>
+                    </ZListItemGroup>
+                    <ZListItemGroup header="Info" headerMarginTop={0}>
                         <ZInput
                             placeholder="Group name"
                             field="input.title"

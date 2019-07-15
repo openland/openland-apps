@@ -13,7 +13,6 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { View, Platform, Text, Dimensions } from 'react-native';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { Organization_organization_members, Organization_organization_members_user, OrganizationMembersShortPaginated_organization, OrganizationMemberRole } from 'openland-api/Types';
 import { GroupView } from './components/GroupView';
@@ -290,7 +289,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
 
-            <ZListItemGroup header="About" marginTop={0}>
+            <ZListItemGroup header="About" headerMarginTop={0}>
                 {organization.about && (
                     <ZListItem multiline={true} text={organization.about} copy={true} />
                 )}

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZText } from './ZText';
-import { TextStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ZListItemGroupProps {
     header?: string | null;
-    marginTop?: number;
+    headerMarginTop?: number;
     counter?: number | null;
     footer?: {
         text: string;
@@ -17,12 +17,13 @@ interface ZListItemGroupProps {
         title: string,
         onPress: () => void
     };
+    alignItems?: 'center';
     children?: any;
 }
 
 export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { header, marginTop, counter, footer, actionRight, children, } = props;
+    const { header, headerMarginTop, counter, footer, actionRight, alignItems, children } = props;
     const components: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -40,7 +41,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
             {header !== null && header !== undefined &&
                 <View
                     style={{
-                        marginTop: (marginTop !== undefined) ? marginTop : 16,
+                        marginTop: (headerMarginTop !== undefined) ? headerMarginTop : 16,
                         flexDirection: 'row',
                         height: 48,
                         alignItems: 'center',
@@ -95,8 +96,8 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                     )}
                 </View>
             }
-            {header === null && <View height={22} />}
-            <View>
+            {header === null && <View height={16} />}
+            <View alignItems={alignItems}>
                 {components}
             </View>
             {footer !== undefined && (

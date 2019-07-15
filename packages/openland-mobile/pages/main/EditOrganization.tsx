@@ -50,10 +50,10 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }}
             >
-                <View alignItems="center" marginTop={10}>
+                <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field="input.photoRef" />
-                </View>
-                <ZListItemGroup header="Info" marginTop={0}>
+                </ZListItemGroup>
+                <ZListItemGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Organization name"
                         field="input.name"
@@ -66,7 +66,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     />
                 </ZListItemGroup>
                 <View height={15} />
-                <ZListItemGroup header="Shortname" marginTop={0}>
+                <ZListItemGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
                         value={profile.shortname ? '@' + profile.shortname : undefined}
@@ -75,7 +75,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         description="People will be able to find your organization by this shortname"
                     />
                 </ZListItemGroup>
-                <ZListItemGroup header="Contacts" marginTop={0}>
+                <ZListItemGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Website"
                         field="input.website"
