@@ -5,7 +5,7 @@ export interface LoaderSpinnerProps {
     size?: 'small' | 'large';
 }
 
-export function LoaderSpinnerIOS({ size = 'large' }: LoaderSpinnerProps) {
+export function LoaderSpinnerIOS({ size = 'small' }: LoaderSpinnerProps) {
     const rotateValue = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
