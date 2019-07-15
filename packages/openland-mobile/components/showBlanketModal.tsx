@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform } from 'react-native';
+import {
+    View,
+    TouchableWithoutFeedback,
+    LayoutChangeEvent,
+    BackHandler,
+    Platform,
+    ViewStyle,
+} from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -17,9 +24,11 @@ interface BlanketModalProps {
     safe: ASSafeArea;
     cancelable?: boolean;
     withoutWrapper?: boolean;
+    overlayStyle?: ViewStyle;
 }
 
-class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }> implements ZModalController {
+class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }>
+    implements ZModalController {
     key = randomKey();
     contents: any;
 
@@ -68,7 +77,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                 SAnimated.spring(name, {
                     property: prop,
                     from: from,
-                    to: to
+                    to: to,
                 });
             });
         } else {
@@ -77,7 +86,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                     property: prop,
                     from: from,
                     to: to,
-                    easing: 'material'
+                    easing: 'material',
                 });
             });
         }
@@ -100,7 +109,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                 SAnimated.spring(name, {
                     property: prop,
                     from: from,
-                    to: to
+                    to: to,
                 });
             });
         } else {
@@ -109,7 +118,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                     property: prop,
                     from: from,
                     to: to,
-                    easing: 'material'
+                    easing: 'material',
                 });
             });
         }
@@ -117,9 +126,11 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         this.bgView.opacity = 0;
         // this.contentView.translateY = 200;
 
-        SAnimated.commitTransaction(() => { this.props.ctx.hide(); });
+        SAnimated.commitTransaction(() => {
+            this.props.ctx.hide();
+        });
     }
-    
+
     renderWrapper = () => {
         if (!isPad) {
             return this.renderContents();
@@ -144,11 +155,13 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
     )
 
     render() {
-        const { theme, withoutWrapper } = this.props;
+        const { theme, withoutWrapper, overlayStyle } = this.props;
 
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
-                <TouchableWithoutFeedback onPress={this.props.cancelable !== false ? this.hide : undefined}>
+                <TouchableWithoutFeedback
+                    onPress={this.props.cancelable !== false ? this.hide : undefined}
+                >
                     <View
                         style={{
                             position: 'absolute',
@@ -160,15 +173,18 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                     >
                         <SAnimated.View
                             name={this.key + '--bg'}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                backgroundColor: theme.overlayMedium,
-                                opacity: 0
-                            }}
+                            style={[
+                                {
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    backgroundColor: theme.overlayMedium,
+                                    opacity: 0,
+                                },
+                                overlayStyle,
+                            ]}
                         />
                     </View>
                 </TouchableWithoutFeedback>
@@ -183,11 +199,22 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                         alignItems: 'stretch',
                     }}
                 >
-                    <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom} marginTop={this.props.safe.top + 48}>
-                        {!withoutWrapper ? this.renderWrapper() : (
-                            <View onLayout={this.onLayout}>
-                                {this.contents}
-                            </View>
+                    <View
+                        flexGrow={1}
+                        flexBasis={0}
+                        minHeight={0}
+                        minWidth={0}
+                        alignItems="stretch"
+                        alignSelf="stretch"
+                        flexDirection="column"
+                        justifyContent="center"
+                        marginBottom={this.props.safe.bottom}
+                        marginTop={this.props.safe.top + 48}
+                    >
+                        {!withoutWrapper ? (
+                            this.renderWrapper()
+                        ) : (
+                            <View onLayout={this.onLayout}>{this.contents}</View>
                         )}
                     </View>
                 </SAnimated.View>
@@ -202,22 +229,17 @@ const ThemedBlanketModal = XMemo((props: BlanketModalProps) => {
 });
 
 export function showBlanketModal(
-    render: (ctx: ZModalController) => React.ReactElement<{}>, 
-    cancelable?: boolean, 
-    withoutWrapper?: boolean
+    render: (ctx: ZModalController) => React.ReactElement<{}>,
+    props?: {
+        cancelable?: boolean;
+        withoutWrapper?: boolean;
+        overlayStyle?: ViewStyle;
+    },
 ) {
-    showModal((modal) => {
+    showModal(modal => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (
-                    <ThemedBlanketModal 
-                        ctx={modal} 
-                        modal={render} 
-                        safe={safe} 
-                        cancelable={cancelable} 
-                        withoutWrapper={withoutWrapper}
-                    />
-                )}
+                {safe => <ThemedBlanketModal ctx={modal} modal={render} safe={safe} {...props} />}
             </ASSafeAreaContext.Consumer>
         );
     });
