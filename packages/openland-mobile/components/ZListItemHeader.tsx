@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         minWidth: 0,
     } as ViewStyle,
     title: {
-        ...TypeStyles.title3,
+        ...TypeStyles.title2,
         textAlignVertical: 'center'
     } as TextStyle,
     subtitle: {
