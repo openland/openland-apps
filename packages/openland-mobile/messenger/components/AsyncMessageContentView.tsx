@@ -113,7 +113,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} hasText={hasText} hasReply={hasReply} />);
+        topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
     }
     if (hasText) {
         topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
@@ -203,7 +203,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut} backgroundColor={theme.backgroundPrimary}>
+            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
                 <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
 
