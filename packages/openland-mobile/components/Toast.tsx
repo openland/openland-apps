@@ -85,7 +85,10 @@ function build(config: ToastBuildConfig) {
 
                 return <ToastComponent {...config} />;
             },
-            { withoutWrapper: true },
+            { 
+                withoutWrapper: true,
+                overlayStyle: { backgroundColor: 'transparent' }
+            },
         );
 
     const hide = () => modal && modal.hide();
