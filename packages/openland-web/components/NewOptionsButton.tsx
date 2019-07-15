@@ -15,6 +15,10 @@ import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useWithWidth } from '../hooks/useWithWidth';
+import { openCreateCommunityModal } from 'openland-web/pages/main/mail/createCommunity';
+import { openCreateGroupModal } from 'openland-web/pages/main/mail/createGroup';
+import { EntityKind } from 'openland-web/pages/main/mail/createEntity';
+import { openCreateOrganizationModal } from 'openland-web/pages/main/mail/createOrganization';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -38,7 +42,9 @@ const NotificationButton = ({ haveNotification }: { haveNotification: boolean })
 
 export const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
     const client = useClient();
-    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({ fetchPolicy: 'network-only' });
+    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({
+        fetchPolicy: 'network-only',
+    });
 
     let router = React.useContext(XRouterContext)!;
     return (
@@ -58,7 +64,9 @@ export const NotificationsButton = makeActionable<{ onClick: () => void }>(() =>
             }}
         >
             <NotificationButton
-                haveNotification={notificationsCenter ? !!notificationsCenter.myNotificationCenter.unread : false}
+                haveNotification={
+                    notificationsCenter ? !!notificationsCenter.myNotificationCenter.unread : false
+                }
             />
         </XView>
     );
@@ -109,11 +117,7 @@ export const Item = ({
             onClick={onClick}
             path={href}
             customContent
-            icon={
-                <XView alignSelf="flex-start">
-                    {icon}
-                </XView>
-            }
+            icon={<XView alignSelf="flex-start">{icon}</XView>}
         >
             <XView
                 paddingTop={10}
@@ -138,7 +142,7 @@ export const Item = ({
 export const NewOptionsMenu = () => (
     <>
         <Item
-            href="/mail/create"
+            onClick={() => openCreateGroupModal(EntityKind.GROUP)}
             icon={
                 <IconWithBackground>
                     <CellRoomIcon />
@@ -148,7 +152,7 @@ export const NewOptionsMenu = () => (
             description="Chat where everyone can write"
         />
         <Item
-            href="/mail/create?channel=true"
+            onClick={() => openCreateGroupModal(EntityKind.CHANNEL)}
             icon={
                 <IconWithBackground>
                     <CreateChannelIcon />
@@ -158,7 +162,7 @@ export const NewOptionsMenu = () => (
             description="Chat where you write, others comment"
         />
         <Item
-            href="/mail/createCommunity"
+            onClick={openCreateCommunityModal}
             icon={
                 <IconWithBackground>
                     <CreateCommunityIcon />
@@ -168,7 +172,7 @@ export const NewOptionsMenu = () => (
             description="A hub for chats for the same audience"
         />
         <Item
-            href="/mail/createOrganization"
+            onClick={() => openCreateOrganizationModal({})}
             icon={
                 <IconWithBackground>
                     <OrganizationIcon />
@@ -197,12 +201,9 @@ export const NewOptionsButton = XMemo(() => {
     //     router.push(`/mail`);
     // };
 
-    const toggle = React.useCallback(
-        () => {
-            setShow(!show);
-        },
-        [show],
-    );
+    const toggle = React.useCallback(() => {
+        setShow(!show);
+    }, [show]);
 
     let marginRight = 0;
     if (width && width < 951) {

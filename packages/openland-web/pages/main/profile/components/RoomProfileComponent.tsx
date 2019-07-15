@@ -37,7 +37,7 @@ import {
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
-import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
+import { AddMembersModal, openAddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
@@ -334,15 +334,16 @@ const MembersProvider = ({
             >
                 {tab === tabs.members && (
                     <XView flexGrow={1} flexShrink={1}>
-                        <AddMembersModal
-                            id={chatId}
-                            isRoom={true}
-                            isChannel={isChannel}
-                            isOrganization={false}
-                        />
                         <XCreateCard
                             text="Add members"
-                            query={{ field: 'inviteMembers', value: 'true' }}
+                            onClick={() =>
+                                openAddMembersModal({
+                                    id: chatId,
+                                    isRoom: true,
+                                    isOrganization: false,
+                                    isChannel: isChannel,
+                                })
+                            }
                         />
                     </XView>
                 )}

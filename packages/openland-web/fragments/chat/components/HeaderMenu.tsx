@@ -11,7 +11,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
-import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
+import { AddMembersModal, openAddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { AdvancedSettingsModal } from '../AdvancedSettingsModal';
 import InviteIcon from 'openland-icons/ic-invite-members.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
@@ -49,7 +49,7 @@ class NotificationSettingsComponent extends React.Component<
                 roomId: this.props.roomId,
             },
         });
-    }
+    };
 
     render() {
         const { mute } = this.props.settings;
@@ -96,12 +96,6 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
 
         modals = (
             <>
-                <AddMembersModal
-                    id={room.id}
-                    isRoom={true}
-                    isOrganization={false}
-                    isChannel={isChannel}
-                />
                 {sharedRoom && (
                     <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                         <AdvancedSettingsModal
@@ -121,7 +115,14 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
             {sharedRoom && (
                 <XMenuItem
                     icon={<InviteIcon />}
-                    query={{ field: 'inviteMembers', value: 'true' }}
+                    onClick={() =>
+                        openAddMembersModal({
+                            id: room.id,
+                            isRoom: true,
+                            isOrganization: false,
+                            isChannel: isChannel,
+                        })
+                    }
                     customContent
                 >
                     <MenuItem>Invite friends</MenuItem>

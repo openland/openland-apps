@@ -13,6 +13,7 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XView } from 'react-mental';
 import { XShortcuts } from 'openland-x/XShortcuts';
+import _ from 'lodash';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -259,6 +260,11 @@ export interface XModalProps extends ModalContentRenderProps {
     // Target
     target?: React.ReactElement<any>;
     targetQuery?: string;
+
+    // added for sake of simplicy and for use in new models
+    ignoreTargetQuery?: boolean;
+
+    hide?: () => void;
 }
 
 export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
@@ -276,7 +282,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
         this.setState({
             isOpen: true,
         });
-    }
+    };
 
     onModalCloseRequest = () => {
         if (this.props.onClosed) {
@@ -289,7 +295,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
             }
         }
-    }
+    };
 
     render() {
         let size = this.props.size || 'default';
@@ -326,17 +332,20 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     </ModalRender>
                 </React.Suspense>
             );
-        } else if (this.props.targetQuery) {
-            let q = this.props.targetQuery;
+        } else if (this.props.targetQuery || this.props.ignoreTargetQuery) {
+            let q = _.get(this.props, ['targetQuery'])!;
             result = (
                 <React.Suspense fallback={<div />}>
                     <XRouterContext.Consumer>
                         {router => {
                             this.lastRouter = router;
+                            const isOpen =
+                                _.get(router, ['query', q]) ||
+                                _.get(this.props, ['ignoreTargetQuery'], false);
                             return (
                                 <ModalRender
                                     scrollableContent={this.props.scrollableContent}
-                                    isOpen={!!router!!.query[q]}
+                                    isOpen={isOpen}
                                     onCloseRequest={this.onModalCloseRequest}
                                     size={size}
                                     sWidth={this.props.width}

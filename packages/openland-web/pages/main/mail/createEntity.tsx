@@ -13,10 +13,8 @@ import { OrganizationsList } from './OrganizationsList';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdown';
-import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
 import { InputField } from 'openland-web/components/InputField';
 import { XTextArea } from 'openland-x/XTextArea';
-import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -41,22 +39,6 @@ type MainWrapperT = {
     entityKind: EntityKind;
     showLeaveModal: boolean;
 };
-
-const CloseModalTarget = (props: { path?: string }) => (
-    <XView
-        cursor="pointer"
-        alignItems="center"
-        justifyContent="center"
-        padding={8}
-        width={32}
-        height={32}
-        borderRadius={50}
-        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-        path={props.path}
-    >
-        <CloseIcon />
-    </XView>
-);
 
 const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }: MainWrapperT) => {
     let chatTypeStr = entityKind.toLowerCase();
@@ -89,17 +71,6 @@ const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }
                         </XView>
                         <span>Back</span>
                     </XView>
-                )}
-                {showLeaveModal && (
-                    <LeaveAndDeleteModal
-                        chatTypeStr={chatTypeStr}
-                        redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                    />
-                )}
-                {!showLeaveModal && (
-                    <CloseModalTarget
-                        path={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                    />
                 )}
             </XView>
             <XView
@@ -190,6 +161,8 @@ interface CreateEntityProps {
     inOrgId?: string;
     entityKind: EntityKind;
     selectOptions?: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
+
+    hide(): void;
 }
 
 export const CreateEntity = ({
@@ -198,6 +171,7 @@ export const CreateEntity = ({
     entityKind,
     inOrgId,
     selectOptions,
+    hide,
 }: CreateEntityProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -315,6 +289,8 @@ export const CreateEntity = ({
             await doSubmit({
                 membersToAdd: membersIds,
             });
+
+            hide();
         });
 
     const onSkip = () =>
@@ -322,6 +298,8 @@ export const CreateEntity = ({
             await doSubmit({
                 membersToAdd: [myId],
             });
+
+            hide();
         });
 
     const handleChatTypeChange = (data: SharedRoomKind) => {
@@ -411,15 +389,14 @@ export const CreateEntity = ({
                                 <InputField field={titleField} title={`${chatTypeStr} name`} />
                             </XView>
 
-                            {selectOptions &&
-                                entityKind !== EntityKind.ORGANIZATION && (
-                                    <SelectWithDropdown
-                                        title={`${chatTypeStr} type`}
-                                        value={typeField.value}
-                                        onChange={handleChatTypeChange}
-                                        selectOptions={selectOptions}
-                                    />
-                                )}
+                            {selectOptions && entityKind !== EntityKind.ORGANIZATION && (
+                                <SelectWithDropdown
+                                    title={`${chatTypeStr} type`}
+                                    value={typeField.value}
+                                    onChange={handleChatTypeChange}
+                                    selectOptions={selectOptions}
+                                />
+                            )}
                             {entityKind === EntityKind.ORGANIZATION && (
                                 <XView flexGrow={1} flexDirection="row">
                                     <XTextArea

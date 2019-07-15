@@ -29,6 +29,7 @@ import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
+import { showModalBox } from 'openland-x/showModalBox';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -147,7 +148,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             return;
         }
         this.input = e;
-    }
+    };
 
     private copy = (e: any) => {
         const { props } = this;
@@ -179,7 +180,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 copied: false,
             });
         }, 1500);
-    }
+    };
 
     private resetLink = () => {
         this.setState({
@@ -193,7 +194,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 resetLink: false,
             });
         }, 3000);
-    }
+    };
 
     render() {
         const { props } = this;
@@ -412,6 +413,8 @@ interface InviteModalProps extends XModalProps {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
+
+    hide?: () => void;
 }
 
 interface InviteModalState {
@@ -431,7 +434,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
             searchQuery: data,
         });
         return data;
-    }
+    };
 
     private onChange = (data: { label: string; value: string }[]) => {
         let newSelected = new Map();
@@ -442,7 +445,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
         this.setState({
             selectedUsers: newSelected,
         });
-    }
+    };
 
     private selectMembers = (label: string, value: string) => {
         let selected = this.state.selectedUsers || new Map();
@@ -452,14 +455,17 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
         this.setState({
             selectedUsers: selected,
         });
-    }
+    };
 
     private onClosed = () => {
-        this.setState({
-            selectedUsers: null,
-            searchQuery: '',
-        });
-    }
+        this.setState(
+            {
+                selectedUsers: null,
+                searchQuery: '',
+            },
+            () => (this.props.hide ? this.props.hide() : {}),
+        );
+    };
 
     render() {
         const { props } = this;
@@ -499,7 +505,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
-                targetQuery="inviteMembers"
+                ignoreTargetQuery
                 defaultAction={async () => {
                     if (props.isRoom) {
                         await (props.addMembers as RoomAddMembersType)({
@@ -595,7 +601,14 @@ interface AddMemberToOrganization {
 }
 
 export const AddMembersModal = React.memo(
-    ({ id, isRoom, isChannel, isOrganization, isCommunity }: AddMemberModalT & XModalProps) => {
+    ({
+        id,
+        isRoom,
+        isChannel,
+        isOrganization,
+        isCommunity,
+        hide,
+    }: AddMemberModalT & XModalProps) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 
@@ -629,6 +642,7 @@ export const AddMembersModal = React.memo(
 
         return (
             <AddMemberModalInner
+                hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
                 id={id}
                 members={
@@ -645,3 +659,7 @@ export const AddMembersModal = React.memo(
         );
     },
 );
+
+export const openAddMembersModal = (props: AddMemberModalT) => {
+    showModalBox({}, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
+};
