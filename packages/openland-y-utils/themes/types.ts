@@ -32,6 +32,7 @@ export type ThemeGlobal = {
     overlayHeavy: string;
     overlayMedium: string;
     overlayLight: string;
+    overlayInverted: string;
 
     accentPrimary: string;
     accentPrimaryHover: string;

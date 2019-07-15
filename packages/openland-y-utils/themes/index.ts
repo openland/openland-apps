@@ -32,6 +32,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
+    overlayInverted: 'rgba(0, 0, 0, 0.24)',
 
     accentPrimary: '#1885F2',
     accentPrimaryHover: '#0D86FF',
@@ -110,6 +111,7 @@ export const ThemeDark: ThemeGlobal = {
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
+    overlayInverted: 'rgba(255, 255, 255, 0.24)',
 
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',
