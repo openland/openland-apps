@@ -10,7 +10,6 @@ export const ShortnameFragment = React.memo(() => {
     let client = useClient();
     let router = useXRouter();
     let shortname = router.routeQuery.shortname as string;
-    console.log(router);
     let data = client.useResolveShortName({ shortname: shortname }).item;
 
     if (data && data.__typename) {
