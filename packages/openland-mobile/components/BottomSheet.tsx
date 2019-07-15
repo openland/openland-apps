@@ -129,7 +129,7 @@ export class BottomSheetProviderComponent extends React.Component<
         const modalizeStyle = {
             borderTopLeftRadius: RadiusStyles.large,
             borderTopRightRadius: RadiusStyles.large,
-            backgroundColor: theme.backgroundPrimary,
+            backgroundColor: theme.backgroundSecondary,
         };
 
         const handleStyle = {
