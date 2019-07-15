@@ -13,34 +13,28 @@ interface XLoaderProps {
     color?: string;
 }
 
-let displayFlex = css`
+const displayFlex = css`
     display: flex;
 `;
 
-let displayNone = css`
+const displayNone = css`
     display: none;
 `;
 
-let base = css`
-overflow: hidden
-justify-content: center;
-align-items: center;
-position: absolute;
-flex-grow: 1;
-width: 100%;
-height: 100%;
-top: 0;
-left: 0;
-overflow: hidden;
+const base = css`
+    overflow: hidden
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
 `;
 
-let rotate = css`    
-    & path {
-        animation: rotate 0.752s linear infinite;
-        transform-origin: 50%;
-        transform-box: fill-box;
-    }
-    
+const rotateAnimation = `
     @keyframes rotate {
         from {
             transform: rotate(0deg);
@@ -49,6 +43,20 @@ let rotate = css`
             transform: rotate(360deg);
         }
     }
+`;
+
+const rotateSvg = css`
+    & path {
+        animation: rotate 0.752s linear infinite;
+        transform-origin: 50%;
+        transform-box: fill-box;
+    }
+    ${rotateAnimation};
+`;
+
+const rotateCanvas = css`
+    animation: rotate 0.752s linear infinite;
+    ${rotateAnimation};
 `;
 
 const sizes = {
@@ -83,7 +91,7 @@ interface LoaderRenderProps {
 const SvgLoader = (props: LoaderRenderProps) => {
     return (
         <svg
-            className={rotate}
+            className={rotateSvg}
             {...sizes[props.size]}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +144,7 @@ const CanvasLoader = (props: LoaderRenderProps) => {
         [ref.current],
     );
 
-    return <canvas width={size} height={size} className={rotate} ref={ref} />;
+    return <canvas width={size} height={size} className={rotateCanvas} ref={ref} />;
 };
 
 export const XLoader = (props: XLoaderProps) => {
