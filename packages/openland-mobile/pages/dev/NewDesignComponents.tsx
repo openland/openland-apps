@@ -53,7 +53,7 @@ export default withApp(() => {
                         </View>
 
                         <View style={styles.content}>
-                            <LoaderSpinner />
+                            <LoaderSpinner size={'medium'} />
                         </View>
 
                         <View style={styles.content}>

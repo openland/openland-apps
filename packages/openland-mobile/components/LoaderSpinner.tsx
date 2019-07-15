@@ -10,13 +10,13 @@ export interface LoaderSpinnerProps {
 
 const loaderSize: { [key in LoaderSpinnerSize]: number } = {
     small: 16,
-    medium: 22,
+    medium: 24,
     large: 32
 };
 
 const loaderIcon: { [key in LoaderSpinnerSize]: NodeRequire } = {
-    small: require('assets/ic-loader-32.png'),
-    medium: require('assets/ic-loader-22.png'),
+    small: require('assets/ic-loader-16.png'),
+    medium: require('assets/ic-loader-24.png'),
     large: require('assets/ic-loader-32.png')
 };
 

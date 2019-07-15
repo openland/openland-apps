@@ -695,9 +695,22 @@
         },
         {
             "name": "ic-loader",
-            "src": "ic-loader.svg",
+            "src": "ic-loader-16.svg",
             "sizes": [
-                22,
+                16
+            ]
+        },
+        {
+            "name": "ic-loader",
+            "src": "ic-loader-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-loader",
+            "src": "ic-loader-32.svg",
+            "sizes": [
                 32
             ]
         },
