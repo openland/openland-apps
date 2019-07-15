@@ -105,6 +105,21 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
                 </ZListItemGroup>
 
+                {!!user.primaryOrganization && (
+                    <ZListItemGroup header="Organization">
+                        <ZListItem
+                            leftAvatar={{
+                                photo: user.primaryOrganization.photo,
+                                key: user.primaryOrganization.id,
+                                title: user.primaryOrganization.name,
+                            }}
+                            text={user.primaryOrganization.name}
+                            path="ProfileOrganization"
+                            pathParams={{ id: user.primaryOrganization.id }}
+                        />
+                    </ZListItemGroup>
+                )}
+
                 {(myID !== user.id) && (
                     <ZListItemGroup header="Settings">
                         <NotificationSettings
@@ -136,21 +151,6 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                         />
                     ))}
                 </ZListItemGroup>
-
-                {!!user.primaryOrganization && (
-                    <ZListItemGroup header="Organization">
-                        <ZListItem
-                            leftAvatar={{
-                                photo: user.primaryOrganization.photo,
-                                key: user.primaryOrganization.id,
-                                title: user.primaryOrganization.name,
-                            }}
-                            text={user.primaryOrganization.name}
-                            path="ProfileOrganization"
-                            pathParams={{ id: user.primaryOrganization.id }}
-                        />
-                    </ZListItemGroup>
-                )}
             </SScrollView>
         </>
     );
