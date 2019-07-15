@@ -21,6 +21,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
             onplayerror: () => {
                 console.warn('sound play error');
             },
+            volume: 0.4
         })
         : undefined;
 
