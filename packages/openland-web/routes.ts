@@ -335,8 +335,8 @@ routes.add('/authorization/:step', '/auth/root');
 // Shortnames
 //
 
-routes.add('/:shortname', '/main/profile/shortname');
-routes.add('/:shortname/', '/main/profile/shortname');
+routes.add('/:shortname', '/unicorn/index');
+routes.add('/:shortname/', '/unicorn/index');
 
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);

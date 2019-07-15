@@ -2,7 +2,8 @@ import { URouting } from 'openland-unicorn/URouting';
 import { StackRouter } from './StackRouter';
 import { randomKey } from './utils/randomKey';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import Router from 'next/router';
+import { Router } from 'openland-web/routes';
+import NextRouter from 'next/router';
 
 export interface TabDefinition {
     readonly icon: any;
@@ -128,7 +129,7 @@ export class TabRouter {
         }
 
         if (canUseDOM) {
-            Router.events.on('routeChangeComplete', () => {
+            NextRouter.events.on('routeChangeComplete', () => {
                 if (window.history.state && window.history.state.options) {
                     if (window.history.state.options['tab-router'] === this.id) {
 
@@ -174,7 +175,7 @@ export class TabRouter {
         // Ignore navigation if url is not changed
         // otherwise next.js won't push new page to history
         //
-        if (Router.asPath === path) {
+        if (NextRouter.asPath === path) {
             return;
         }
 
@@ -292,8 +293,7 @@ export class TabRouter {
             ['tab-router-index']: this.currentId,
             ['tab-router-action']: action
         });
-
-        Router.push('/unicorn', path, {
+        Router.pushRoute(path, {
             shallow: true,
             ['tab-router']: this.id,
             ['tab-router-current']: this.currentTab,
