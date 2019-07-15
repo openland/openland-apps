@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
-// import { detectOS } from 'openland-web/components/NativeAppsModal';
+import { detectOS } from 'openland-web/components/NativeAppsModal';
 
 type LoaderSize = 'medium' | 'small';
 
@@ -22,7 +21,7 @@ const displayNone = css`
 `;
 
 const base = css`
-    overflow: hidden
+    overflow: hidden;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -34,33 +33,25 @@ const base = css`
     overflow: hidden;
 `;
 
-const rotateAnimation = `
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
+let rotate = css`
+animation: rotate 0.752s linear infinite;
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
     }
+    to {
+        transform: rotate(360deg);
+    }
+}
 `;
 
-const rotateSvg = css`
-    & path {
-        animation: rotate 0.752s linear infinite;
-        transform-origin: 50%;
-        transform-box: fill-box;
-    }
-    
-    ${rotateAnimation};
+let rotateHackMedium = css`
+transform-origin: 15.5px 16px;
 `;
 
-const rotateCanvas = css`
-    animation: rotate 0.752s linear infinite;
-    transform-origin: 50%;
-    transform-box: fill-box;
-    
-    ${rotateAnimation};
+let rotateHackSmall = css`
+transform-origin: 9.5px 10px;
 `;
 
 const sizes = {
@@ -93,12 +84,13 @@ interface LoaderRenderProps {
 }
 
 const SvgLoader = (props: LoaderRenderProps) => {
+    const ios = detectOS() === 'iOS';
     return (
         <svg
-            className={rotateSvg}
             {...sizes[props.size]}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className={cx(rotate, ios && (props.size === 'small' ? rotateHackSmall : rotateHackMedium))}
         >
             {props.size === 'small' ? (
                 <path
@@ -106,55 +98,16 @@ const SvgLoader = (props: LoaderRenderProps) => {
                     fill={props.color}
                 />
             ) : (
-                <path
-                    d="M16,1.00089125 C16,0.448100132 15.5518,-0.00328771327 15.0006,0.0312307033 C11.8055,0.231319261 8.73516,1.38724569 6.19349,3.36057599 C3.38777,5.53890435 1.38573,8.58953294 0.50267,12.032011 C-0.380386,15.474369 -0.0942841,19.1131071 1.31593,22.3748994 C2.72613,25.6366917 5.18031,28.3362683 8.29194,30.048439 C11.4036,31.7606097 14.9958,32.3881854 18.5029,31.8321753 C22.0101,31.2761653 25.2328,29.5682985 27.6635,26.9775218 C30.0942,24.3866449 31.5948,21.0600932 31.929,17.5217472 C32.2317,14.3164067 31.5616,11.1022581 30.0184,8.29488263 C29.7521,7.81056833 29.1312,7.67368276 28.6649,7.96988449 C28.1986,8.26608622 28.064,8.88310226 28.3259,9.36978873 C29.6337,11.8000983 30.1988,14.5704397 29.9379,17.3333744 C29.6455,20.4294146 28.3324,23.3401849 26.2056,25.6071646 C24.0787,27.8741443 21.2588,29.3685152 18.1901,29.8549615 C15.1213,30.3415078 11.9781,29.7924041 9.25545,28.2942297 C6.53278,26.7960553 4.38537,24.4338883 3.15143,21.5798701 C1.9175,18.7257517 1.66716,15.541931 2.43984,12.5297676 C3.21251,9.5176744 4.9643,6.84837563 7.4193,4.94233707 C9.61016,3.24137664 12.25,2.23450295 15.0008,2.03753225 C15.5517,1.99808606 16,1.55367837 16,1.00089125 Z"
-                    fill={props.color}
-                />
-            )}
+                    <path
+                        d="M16,1.00089125 C16,0.448100132 15.5518,-0.00328771327 15.0006,0.0312307033 C11.8055,0.231319261 8.73516,1.38724569 6.19349,3.36057599 C3.38777,5.53890435 1.38573,8.58953294 0.50267,12.032011 C-0.380386,15.474369 -0.0942841,19.1131071 1.31593,22.3748994 C2.72613,25.6366917 5.18031,28.3362683 8.29194,30.048439 C11.4036,31.7606097 14.9958,32.3881854 18.5029,31.8321753 C22.0101,31.2761653 25.2328,29.5682985 27.6635,26.9775218 C30.0942,24.3866449 31.5948,21.0600932 31.929,17.5217472 C32.2317,14.3164067 31.5616,11.1022581 30.0184,8.29488263 C29.7521,7.81056833 29.1312,7.67368276 28.6649,7.96988449 C28.1986,8.26608622 28.064,8.88310226 28.3259,9.36978873 C29.6337,11.8000983 30.1988,14.5704397 29.9379,17.3333744 C29.6455,20.4294146 28.3324,23.3401849 26.2056,25.6071646 C24.0787,27.8741443 21.2588,29.3685152 18.1901,29.8549615 C15.1213,30.3415078 11.9781,29.7924041 9.25545,28.2942297 C6.53278,26.7960553 4.38537,24.4338883 3.15143,21.5798701 C1.9175,18.7257517 1.66716,15.541931 2.43984,12.5297676 C3.21251,9.5176744 4.9643,6.84837563 7.4193,4.94233707 C9.61016,3.24137664 12.25,2.23450295 15.0008,2.03753225 C15.5517,1.99808606 16,1.55367837 16,1.00089125 Z"
+                        fill={props.color}
+                    />
+                )}
         </svg>
     );
 };
 
-const CanvasLoader = (props: LoaderRenderProps) => {
-    const scale = (canUseDOM ? window.devicePixelRatio : 1) || 1;
-    const size = props.size === 'small' ? 24 : 32;
-    let ref = React.createRef<HTMLCanvasElement>();
-    React.useEffect(
-        () => {
-            if (ref.current) {
-                //
-                let canvas = ref.current;
-                let ctx = canvas.getContext('2d');
-                if (ctx) {
-                    ctx.beginPath();
-                    canvas.width = size * scale;
-                    canvas.height = size * scale;
-                    canvas.style.width = size + 'px';
-                    canvas.style.height = size + 'px';
-
-                    const padding = (props.size === 'small' ? 2 : 0) / 2;
-
-                    ctx.scale(scale, scale);
-
-                    const center = size / 2;
-
-                    ctx.arc(center, center, size / 2 - 1 - padding, 0, 1 - 0.68 * Math.PI);
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = props.color;
-                    // ctx.imageSmoothingEnabled = true;
-                    ctx.stroke();
-                }
-            }
-        },
-        [ref.current],
-    );
-
-    return <canvas width={size} height={size} className={rotateCanvas} ref={ref} />;
-};
-
 export const XLoader = (props: XLoaderProps) => {
-    // const canvas = detectOS() === 'iOS';
-    const canvas = false;
     return (
         <div
             className={cx(
@@ -164,12 +117,7 @@ export const XLoader = (props: XLoaderProps) => {
                 props.transparentBackground ? undefined : backgroundColor,
             )}
         >
-            {!canvas && (
-                <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
-            )}
-            {canvas && (
-                <CanvasLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
-            )}
+            <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
         </div>
     );
 };
