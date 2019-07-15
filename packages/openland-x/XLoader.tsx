@@ -51,11 +51,15 @@ const rotateSvg = css`
         transform-origin: 50%;
         transform-box: fill-box;
     }
+    
     ${rotateAnimation};
 `;
 
 const rotateCanvas = css`
     animation: rotate 0.752s linear infinite;
+    transform-origin: 50%;
+    transform-box: fill-box;
+    
     ${rotateAnimation};
 `;
 
