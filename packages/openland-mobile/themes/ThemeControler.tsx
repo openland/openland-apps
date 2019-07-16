@@ -1,4 +1,4 @@
-import { ThemeGlobalKind } from 'openland-y-utils/themes/types';
+import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
     private _theme: ThemeGlobalKind = 'LightBlue';

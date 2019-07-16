@@ -10,7 +10,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 const styles = StyleSheet.create({
     senderName: {

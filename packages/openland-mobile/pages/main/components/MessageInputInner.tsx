@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, ActivityIndicator, Platform } from 'react-native';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface MessageInputBarProps {

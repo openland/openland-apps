@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({

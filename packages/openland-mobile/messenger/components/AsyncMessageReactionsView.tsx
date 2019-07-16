@@ -8,7 +8,7 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
 export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];

@@ -10,7 +10,7 @@ import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceItem } from 'openland-y-utils/DataSource';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (

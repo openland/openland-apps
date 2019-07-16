@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ScrollView, View, Text, TextInput, Dimensions, NativeSyntheticEvent, TextInputKeyPressEventData, TouchableWithoutFeedback, Platform } from 'react-native';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface ZTagViewProps {

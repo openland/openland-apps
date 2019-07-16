@@ -1,4 +1,4 @@
-import { PlaceholderGlobal } from './types';
+import { PlaceholderGlobal } from './ThemeGlobal';
 
 export const PlaceholderRed: PlaceholderGlobal = {
     start: '#FF655D',

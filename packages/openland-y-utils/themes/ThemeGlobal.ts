@@ -53,10 +53,6 @@ export type ThemeGlobal = {
     tint5: string;
     tint6: string;
 
-    blurType: 'dark' | 'light';
-    keyboardAppearance: 'dark' | 'light';
-    statusBar: 'dark-content' | 'light-content';
-
     bubbleIn: string;
     bubbleOut: string;
 
@@ -73,6 +69,11 @@ export type ThemeGlobal = {
         background: string;
         paddedText: string;
     },
+
+    // mobile-only
+    blurType: 'dark' | 'light';
+    keyboardAppearance: 'dark' | 'light';
+    statusBar: 'dark-content' | 'light-content';
 
     // legacy
     separatorColor: string;

@@ -4,7 +4,7 @@ import { Platform, View, Image } from 'react-native';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SRouter } from 'react-native-s/SRouter';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPress: () => void }>((props) => {
     const { dot, theme, onPress } = props;

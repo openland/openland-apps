@@ -9,7 +9,7 @@ import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessa
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;

@@ -4,7 +4,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';

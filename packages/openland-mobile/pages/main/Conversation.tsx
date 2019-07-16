@@ -36,7 +36,7 @@ import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openla
 import { findSpans } from 'openland-y-utils/findSpans';
 import throttle from 'lodash/throttle';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { PinnedMessage } from './components/PinnedMessage';
 import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';

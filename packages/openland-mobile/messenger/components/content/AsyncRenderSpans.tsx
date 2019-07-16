@@ -6,7 +6,7 @@ import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessa
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface TextWrapperProps extends ASTextProps {
     color: string;

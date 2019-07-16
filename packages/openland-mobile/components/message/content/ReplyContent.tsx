@@ -6,7 +6,7 @@ import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
 import { DocumentContent } from './DocumentContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ReplyContentProps {
     quotedMessages: FullMessage_GeneralMessage_quotedMessages[];

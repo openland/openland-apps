@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/types';
+import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 import { ThemeLightBlue, ThemeDark } from 'openland-y-utils/themes';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLightBlue);

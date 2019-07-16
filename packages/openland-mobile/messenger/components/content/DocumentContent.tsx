@@ -13,7 +13,7 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface DocumentContentProps {
     message: DataSourceMessageItem;

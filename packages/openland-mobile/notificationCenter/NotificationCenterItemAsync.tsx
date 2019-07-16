@@ -14,7 +14,7 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { RoomNano_SharedRoom } from 'openland-api/Types';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { NotificationCenterHandlers } from './NotificationCenterHandlers';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;

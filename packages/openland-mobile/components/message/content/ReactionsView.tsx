@@ -5,7 +5,7 @@ import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap, extractReactionsSorted } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ReactionsViewProps {
     reactions: FullMessage_GeneralMessage_reactions[];

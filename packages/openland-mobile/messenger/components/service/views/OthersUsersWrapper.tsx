@@ -5,7 +5,7 @@ import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { Text, View } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface OthersUsersWrapperProps {
     children?: any;

@@ -7,7 +7,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();

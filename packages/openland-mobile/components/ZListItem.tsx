@@ -7,7 +7,7 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import ActionSheet from './ActionSheet';
 import { ZAvatar } from './ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface ZListItemProps {

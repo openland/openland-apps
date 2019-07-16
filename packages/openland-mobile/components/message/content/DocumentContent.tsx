@@ -6,7 +6,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface DocumentContentProps {
     message: FullMessage_GeneralMessage;

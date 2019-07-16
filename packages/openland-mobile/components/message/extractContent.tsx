@@ -8,7 +8,7 @@ import { RichAttachContent } from './content/RichAttachContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
 import { Dimensions } from 'react-native';
 import { isPad } from 'openland-mobile/pages/Root';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ExtractContentProps {
     message: FullMessage_GeneralMessage;

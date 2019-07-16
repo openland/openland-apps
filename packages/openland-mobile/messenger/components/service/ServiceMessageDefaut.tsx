@@ -4,7 +4,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { renderPreprocessedText } from '../AsyncMessageContentView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export interface ServiceMessageDefaultProps {
     message: DataSourceMessageItem;

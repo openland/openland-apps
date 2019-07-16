@@ -8,7 +8,7 @@ import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ItemBaseProps {
     avatar: JSX.Element;

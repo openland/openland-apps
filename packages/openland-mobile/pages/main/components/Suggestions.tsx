@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export const SuggestionsWrapper = (props: { children: any }) => (
     <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={198}>

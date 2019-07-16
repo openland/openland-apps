@@ -17,7 +17,7 @@ import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsSt
 import { ASImage } from 'react-native-async-view/ASImage';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     let selected = useMessageSelected(props.engine.messagesActionsState, props.message);

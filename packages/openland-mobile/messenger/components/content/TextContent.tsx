@@ -3,7 +3,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming } from '../AsyncBubbleView';
 import { RenderSpans } from './AsyncRenderSpans';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface TextContentProps {
     message: DataSourceMessageItem;

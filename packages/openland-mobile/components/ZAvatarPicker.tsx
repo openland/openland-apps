@@ -10,7 +10,7 @@ import { ZAvatar, ZAvatarSize, avatarSizes } from './ZAvatar';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import LoaderSpinner from './LoaderSpinner';
 
 interface AvatarImageRef {

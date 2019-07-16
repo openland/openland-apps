@@ -13,7 +13,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from 
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;

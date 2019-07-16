@@ -6,7 +6,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SHeader } from 'react-native-s/SHeader';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ChatAccessDeniedProps {
     theme: ThemeGlobal;

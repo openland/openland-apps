@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { ThemeController } from './ThemeControler';
-import { ThemeGlobalKind } from 'openland-y-utils/themes/types';
+import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemePersisterImpl {
     prepare = async () => {

@@ -4,7 +4,7 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ActionSheetBuilder } from './ActionSheet';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export interface ZReachProps {
     value: number;

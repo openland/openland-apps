@@ -4,7 +4,7 @@ import { isAndroid } from '../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;

@@ -5,7 +5,7 @@ import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages }
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface TextWrapperProps extends TextProps {
     color: string;

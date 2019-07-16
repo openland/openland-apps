@@ -4,7 +4,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { formatTime } from 'openland-mobile/utils/formatTime';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface EmojiOnlyContentProps {
     theme: ThemeGlobal;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatarProps } from './AsyncAvatar';
 import { ASAvatar } from './ASAvatar';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 export function UserAvatar(props: AsyncAvatarProps & { online?: boolean, theme: ThemeGlobal }) {

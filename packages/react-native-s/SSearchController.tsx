@@ -10,7 +10,7 @@ import { SearchContext } from './navigation/SearchContext';
 import { SNativeConfig } from './SNativeConfig';
 import { SDevice } from './SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;

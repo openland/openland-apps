@@ -5,7 +5,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SBlurView } from 'react-native-s/SBlurView';
 import { FullMessage } from 'openland-api/Types';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface PinnedMessageProps {
     message: FullMessage;

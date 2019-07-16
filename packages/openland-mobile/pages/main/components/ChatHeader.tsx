@@ -9,7 +9,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({

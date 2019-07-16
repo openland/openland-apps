@@ -1,4 +1,4 @@
-import { ThemeGlobal } from './types';
+import { ThemeGlobal } from './ThemeGlobal';
 
 export const ThemeLightBlue: ThemeGlobal = {
     type: 'Light',

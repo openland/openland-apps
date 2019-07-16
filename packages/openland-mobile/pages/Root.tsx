@@ -6,7 +6,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 export interface RootProps {
     width: number;

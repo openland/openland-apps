@@ -5,7 +5,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ThemeGlobal } from 'openland-y-utils/themes/types';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 
