@@ -144,7 +144,7 @@ const PageComponent = React.memo((props: { component: any, path: string, query: 
     let ctx = React.useMemo(() => ({
         path: props.path,
         query: props.query,
-        id: props.id
+        id: props.id!
     }), []);
     return (
         <UnicornContext.Provider value={ctx}>
