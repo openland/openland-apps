@@ -20,6 +20,7 @@ import { openCommentsModal } from 'openland-web/fragments/chat/messenger/message
 import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 const wrapperClassName = css`
     width: 100%;
@@ -57,7 +58,7 @@ interface CommentsNotificationsProps {
 class CommentsNotificationsInner extends React.PureComponent<
     CommentsNotificationsProps,
     { dataSourceGeneration: number }
-> {
+    > {
     private unmount?: () => void;
     private unmount1?: () => void;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
@@ -151,26 +152,18 @@ class CommentsNotificationsInner extends React.PureComponent<
         }
 
         return (
-            <XView paddingTop={24} flexGrow={1} flexShrink={1}>
-                <MessagesWrapper>
-                    <XView
-                        opacity={0.9}
-                        fontSize={18}
-                        fontWeight={'600'}
-                        lineHeight={1.33}
-                        color="#000"
-                    >
-                        Comments
-                    </XView>
-                </MessagesWrapper>
-                <DataSourceRender
-                    dataSource={this.dataSource}
-                    reverce={false}
-                    wrapWith={this.dataSourceWrapper}
-                    renderItem={this.renderMessage}
-                    renderLoading={this.renderLoading}
-                />
-            </XView>
+            <>
+                <UHeader title="Notifications" />
+                <XView paddingTop={24} flexGrow={1} flexShrink={1}>
+                    <DataSourceRender
+                        dataSource={this.dataSource}
+                        reverce={false}
+                        wrapWith={this.dataSourceWrapper}
+                        renderItem={this.renderMessage}
+                        renderLoading={this.renderLoading}
+                    />
+                </XView>
+            </>
         );
     }
 }
