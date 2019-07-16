@@ -5,7 +5,6 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XVertical2 } from 'openland-x/XVertical2';
 import * as React from 'react';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { HeadTitle } from '../main/settings/components/SettingComponents';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
@@ -108,7 +107,6 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], pro
         <XHeader text="Debug" />
         <XContent>
             <XVertical2>
-                <HeadTitle>Debug events</HeadTitle>
                 <DebugEvents />
             </XVertical2>
         </XContent>
