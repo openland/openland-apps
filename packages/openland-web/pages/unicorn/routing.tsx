@@ -4,7 +4,7 @@ import { ProfileTab } from 'openland-web/fragments/account/ProfileTab';
 import { Notifications } from 'openland-web/fragments/account/Notifications';
 import { AppearanceTab } from 'openland-web/fragments/account/AppearanceTab';
 import { ShortnameFragment } from 'openland-web/fragments/profile/ShortnameFragment';
-import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
+import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 
 const routing = new URouting();

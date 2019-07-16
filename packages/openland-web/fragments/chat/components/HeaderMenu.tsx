@@ -9,9 +9,9 @@ import { RoomHeader_room, RoomHeader_room_SharedRoom } from 'openland-api/Types'
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
+import { LeaveChatComponent } from 'openland-web/fragments/chat/MessengerRootComponent';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
-import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
+import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { AdvancedSettingsModal } from '../AdvancedSettingsModal';
 import InviteIcon from 'openland-icons/ic-invite-members.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';

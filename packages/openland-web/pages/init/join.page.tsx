@@ -4,7 +4,7 @@ import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
+import { InviteLandingComponent } from '../../fragments/invite/InviteLandingComponent';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
 import Glamorous from 'glamorous';

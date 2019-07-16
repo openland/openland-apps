@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';

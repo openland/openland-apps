@@ -15,8 +15,8 @@ import {
     RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
-import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
-import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
+import { MessageTextComponent } from 'openland-web/fragments/chat/messenger/message/content/MessageTextComponent';
+import { niceBytes } from 'openland-web/fragments/chat/messenger/message/content/MessageFileComponent';
 import { XMutation } from 'openland-x/XMutation';
 import IconFile from 'openland-icons/ic-pinfile-doc.svg';
 import IconImage from 'openland-icons/ic-pinfile-photo.svg';
@@ -25,7 +25,7 @@ import PinIcon from 'openland-icons/ic-pinned-message.svg';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
-import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
+import { MessageReplyComponent } from 'openland-web/fragments/chat/messenger/message/content/MessageReplyComponent';
 import { XLink } from 'openland-x/XLink';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';

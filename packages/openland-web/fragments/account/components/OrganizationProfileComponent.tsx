@@ -46,11 +46,11 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
+import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { showLeaveConfirmation } from 'openland-web/fragments/modals/showLeaveConfirmation';
+import { showLeaveConfirmation } from 'openland-web/fragments/chat/showLeaveConfirmation';
 import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
 import { EditCommunityModal } from './EditCommunityModal';
 

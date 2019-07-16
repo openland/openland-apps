@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
-import { MessengerProvider } from 'openland-web/components/messenger/MessengerProvider';
+import { MessengerProvider } from 'openland-web/fragments/chat/messenger/MessengerProvider';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-web/utils/useClient';

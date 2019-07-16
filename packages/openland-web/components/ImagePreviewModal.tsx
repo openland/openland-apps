@@ -7,7 +7,7 @@ import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { XLink2 } from 'openland-x/XLink2';
-import { MessagesStateContext } from './messenger/MessagesStateContext';
+import { MessagesStateContext } from '../fragments/chat/messenger/MessagesStateContext';
 
 const ModalBody = css`
     display: flex;

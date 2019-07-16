@@ -8,7 +8,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { SpannedView } from 'openland-web/components/messenger/message/content/SpannedView';
+import { SpannedView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
 import { css } from 'linaria';
 

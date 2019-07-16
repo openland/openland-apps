@@ -3,9 +3,9 @@ import { withApp } from 'openland-web/components/withApp';
 import { MessagesNavigation } from './components/MessagesNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { MessageStateProviderComponent } from 'openland-web/components/messenger/MessagesStateContext';
+import { MessageStateProviderComponent } from 'openland-web/fragments/chat/messenger/MessagesStateContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
+import { MessagesStateContext } from 'openland-web/fragments/chat/messenger/MessagesStateContext';
 
 const CheckContextRerender = React.memo(() => {
     const context = React.useContext(MessagesStateContext);

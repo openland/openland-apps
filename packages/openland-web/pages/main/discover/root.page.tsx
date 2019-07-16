@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { withApp } from 'openland-web/components/withApp';
 import { RoomsExploreComponent } from './components/RoomsExploreComponent';
-import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
+import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { DiscoverNavigation } from './components/DiscoverNavigation';
 import { RoomProfile } from '../../../fragments/account/components/RoomProfileComponent';
 import { tabs } from './tabs';

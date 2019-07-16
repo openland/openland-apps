@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import RemoveIcon from 'openland-icons/ic-close.svg';
-import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
+import { niceBytes } from 'openland-web/fragments/chat/messenger/message/content/MessageFileComponent';
 import { UploadContext } from './UploadContext';
 
 const CoverWrapper = Glamorous.div({

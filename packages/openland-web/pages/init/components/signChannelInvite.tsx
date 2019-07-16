@@ -4,7 +4,7 @@ import { MessagePageContent } from '../../../components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
-import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import * as Cookie from 'js-cookie';
 import { XLoader } from 'openland-x/XLoader';

@@ -5,7 +5,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     DataSourceRender,
     ScrollTo,
-} from 'openland-web/components/messenger/view/DataSourceRender';
+} from 'openland-web/fragments/chat/messenger/view/DataSourceRender';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import glamorous from 'glamorous';
@@ -13,11 +13,11 @@ import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
     DataSourceWebDateItem,
-} from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+} from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
-import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
-import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
+import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
+import { openCommentsModal } from 'openland-web/fragments/chat/messenger/message/content/comments/CommentsModalInner';
+import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 

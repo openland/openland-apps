@@ -9,8 +9,8 @@ import CloseIcon from 'openland-icons/ic-close.svg';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
-import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
+import { convertDsMessage } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
+import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 export interface MessageComponentProps {

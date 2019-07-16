@@ -8,7 +8,7 @@ import {
     RoomHeader_room_SharedRoom,
     RoomHeader_room,
 } from 'openland-api/Types';
-import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
+import { MessagesStateContext } from 'openland-web/fragments/chat/messenger/MessagesStateContext';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderSubtitle } from './components/HeaderSubtitle';

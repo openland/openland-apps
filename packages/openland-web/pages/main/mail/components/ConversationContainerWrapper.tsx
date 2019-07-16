@@ -5,8 +5,8 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
+import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
+import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { OrganizationProfile } from '../../../../fragments/account/components/OrganizationProfileComponent';
 import { RoomProfile } from '../../../../fragments/account/components/RoomProfileComponent';
 import { UserProfile } from '../../../../fragments/account/components/UserProfileComponent';
@@ -18,7 +18,7 @@ import { PerfViewer } from 'openland-web/perf/PerfViewer';
 import {
     DeleteUrlAugmentationComponent,
     DeleteMessageComponent,
-} from 'openland-web/fragments/MessengerRootComponent';
+} from 'openland-web/fragments/chat/MessengerRootComponent';
 import { CacheComponent } from './CacheComponent';
 import { CommentsNotifications } from '../CommentsNotifications';
 

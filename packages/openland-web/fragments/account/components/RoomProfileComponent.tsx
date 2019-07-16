@@ -12,8 +12,8 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
-import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
-import { RemoveMemberModal } from 'openland-web/fragments/membersComponent';
+import { LeaveChatComponent } from 'openland-web/fragments/chat/MessengerRootComponent';
+import { RemoveMemberModal } from 'openland-web/fragments/chat/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -36,7 +36,7 @@ import {
 } from 'openland-web/fragments/account/components/RoomControls';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
-import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
+import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';

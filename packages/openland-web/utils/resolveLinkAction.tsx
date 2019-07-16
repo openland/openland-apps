@@ -4,7 +4,7 @@ import { InviteFriendsFragment } from '../pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
-import { WriteFirstMessageModal } from 'openland-web/components/WriteFirstMessageModal';
+import { WriteFirstMessageModal } from 'openland-web/fragments/chat/WriteFirstMessageModal';
 
 export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
     if (url === '/onboarding_invite') {

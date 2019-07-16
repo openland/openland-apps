@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { MessagesStateContextProps } from '../../components/messenger/MessagesStateContext';
+import { MessagesStateContextProps } from './messenger/MessagesStateContext';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 const ForwardRoot = Glamorous.div({
