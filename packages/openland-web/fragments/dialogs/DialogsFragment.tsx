@@ -31,7 +31,7 @@ export const DialogsFragment = React.memo(() => {
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <DialogListFragment
-                    onSearchItemSelected={() => {/*  */ }}
+                    onSearchItemSelected={() => { /* */ }}
                     onDialogPress={(id) => {
                         router.navigate(`/mail/${id}`);
                     }}
