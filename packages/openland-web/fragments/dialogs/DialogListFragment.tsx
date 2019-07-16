@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { DialogListView } from './components/DialogListView';
-// import { DialogsInviteButton } from './components/DialogsInviteButton';
 import { GlobalSearch_items } from 'openland-api/Types';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 
@@ -16,8 +15,6 @@ export const DialogListFragment = React.memo((props: {
                 onSearchItemSelected={props.onSearchItemSelected}
                 onDialogClick={props.onDialogPress}
             />
-            {/* <DialogsInviteButton /> */}
         </XView>
     );
-},
-);
+});

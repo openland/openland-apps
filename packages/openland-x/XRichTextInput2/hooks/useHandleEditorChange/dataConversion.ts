@@ -1,10 +1,8 @@
 import { genKey } from 'draft-js';
-const {
-    preprocessMentions,
-} = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
 const emojione = require('emojione');
 
 import { SuggestionTypeT } from '../../modules/mentions/MentionSuggestions/useMentionSuggestions';
+import { preprocessMentions } from 'openland-web/fragments/chat/messenger/message/content/utils/preprocessMentions';
 
 let emojiList = emojione.emojioneList;
 const shortnamesRegexp = new RegExp('(:[+-\\d\\w]+:)', 'g');
