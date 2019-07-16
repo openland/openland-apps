@@ -25,7 +25,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
         return (
             <XView
                 cursor="pointer"
-                // onClick={() => controller.push(<UserProfile userId={user.id} hideBack />)}
+                path="/settings/profile"
                 hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
                 height={70}
                 width="100%"
@@ -66,21 +66,12 @@ const UserProfileCard = withUserInfo(({ user }) => {
                         </XView>
                     </XView>
                     <XView
-                        cursor="pointer"
                         width={32}
                         height={32}
                         borderRadius={32}
                         flexDirection="row"
                         alignItems="center"
                         justifyContent="center"
-                        onClick={e => {
-                            e.stopPropagation();
-                            // controller.push(
-                            //     <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                            //         <ProfileTab />
-                            //     </XScrollView3>,
-                            // );
-                        }}
                     >
                         <EditProfileIcon />
                     </XView>
