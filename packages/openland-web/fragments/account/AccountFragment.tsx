@@ -1,21 +1,24 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import AppearanceIcon from 'openland-icons/appearance_icon.svg';
-import DownloadAppsIcon from 'openland-icons/download_apps_icon.svg';
+
 import NotificationsIcon from 'openland-icons/notifications_icon.svg';
 import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
 import EditProfileIcon from 'openland-icons/ic-edit-profile.svg';
-import { showModalBox } from 'openland-x/showModalBox';
-import { XScrollView3 } from 'openland-x/XScrollView3';
+import AppearanceIcon from './icons/appearance_icon.svg';
+import DownloadIcon from './icons/download_icon.svg';
+
 import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
+import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -94,13 +97,11 @@ const OrganizationItem = ({
     image,
     text,
     isPrimary,
-    onClick,
 }: {
     id: string;
     image: any;
     text: string;
     isPrimary?: boolean;
-    onClick?: () => void;
 }) => {
     return (
         <XView
@@ -127,7 +128,6 @@ const OrganizationItem = ({
 export const Organizations = React.memo(() => {
     const client = useClient();
     const myOrganizations = client.useMyOrganizations();
-    // const controller = useController();
     return (
         <>
             {myOrganizations.myOrganizations.map((organization, key) => {
@@ -138,11 +138,6 @@ export const Organizations = React.memo(() => {
                         image={organization.photo}
                         text={organization.name}
                         isPrimary={organization.isPrimary}
-                    // onClick={() =>
-                    //     // controller.push(
-                    //     //     <OrganizationProfile organizationId={organization.id} hideBack />,
-                    //     // )
-                    // }
                     />
                 );
             })}
@@ -151,7 +146,24 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-    // const controller = useController();
+    const showInvites = React.useCallback(() => {
+        showModalBox({ fullScreen: true }, (ctx) => (
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                <InviteFriendsFragment asModalContent modalContext={ctx} />
+            </XScrollView3>
+        ));
+    }, []);
+
+    const showApps = React.useCallback(() => {
+        showModalBox({ fullScreen: true }, () => (
+            <NativeAppsModal
+                title="Get Openland apps"
+                text="Openland is better experience as a mobile and desktop app. Install your app now."
+                hideLogo={true}
+            />
+        ));
+    }, []);
+
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <XView
@@ -169,57 +181,32 @@ export const AccountFragment = React.memo(() => {
                     Account
                 </XView>
             </XView>
-            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
+            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                     <UserProfileCard />
                     <UListItem
                         text="Invite Friends"
                         icon={<InviteFriendsIcon />}
-                        onClick={() => {
-                            showModalBox({ fullScreen: true }, ctx => (
-                                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                                    <InviteFriendsFragment asModalContent modalContext={ctx} />
-                                </XScrollView3>
-                            ));
-                        }}
+                        onClick={showInvites}
                     />
                     <UListHeader text="Settings" />
                     <UListItem
                         text="Notifications"
                         icon={<NotificationsIcon />}
                         path="/settings/notifications"
-                    // onClick={() =>
-                    //     controller.push(
-                    //         <XScrollView3 flexGrow={1} flexShrink={1}>
-                    //             <Notifications />
-                    //         </XScrollView3>,
-                    //     )
-                    // }
                     />
                     <UListItem
                         text="Appearance"
                         icon={<AppearanceIcon />}
                         path="/settings/appearance"
-                    // onClick={() =>
-                    //     controller.push(
-                    //         <XScrollView3 flexGrow={1} flexShrink={1}>
-                    //             <AppearanceTab />
-                    //         </XScrollView3>,
-                    //     )
-                    // }
                     />
                     <UListItem
                         text="Download Apps"
-                        icon={<DownloadAppsIcon />}
-                    // onClick={() => controller.push(<NativeAppsModal />)}
+                        icon={<DownloadIcon />}
+                        onClick={showApps}
                     />
-                    <UListItem
-                        text="Apps"
-                        icon={<DownloadAppsIcon />}
-                    // onClick={() => controller.push(<AppsFragment />)}
-                    />
-                    <UListHeader text="Organizations" />
 
+                    <UListHeader text="Organizations" />
                     <XView position="relative" flexDirection="column">
                         <React.Suspense fallback={<XLoader loading={true} />}>
                             <Organizations />
