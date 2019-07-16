@@ -3,16 +3,14 @@ import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 
-export type XButtonSize = 'small' | 'medium' | 'large';
-export type XButtonStyle = 'default' | 'danger' | 'primary';
+type UButtonSize = 'small' | 'medium' | 'large';
+type UButtonStyle = 'primary' | 'secondary' | 'danger';
 
 export interface UButtonProps extends XViewProps {
     square?: boolean;
     text: string;
-    icon?: any;
-    iconRight?: any;
-    size?: XButtonSize;
-    style?: XButtonStyle;
+    size?: UButtonSize;
+    style?: UButtonStyle;
     loading?: boolean;
     disable?: boolean;
 }
@@ -47,13 +45,6 @@ const loadingStyle = css`
     opacity: 0;
 `;
 
-const iconWrapperStyle = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`;
-
 const size28 = css`
     font-size: 14px;
     line-height: 20px;
@@ -78,7 +69,12 @@ const size40 = css`
     padding-right: 24px;
 `;
 
-const defaultStyle = css`
+const primaryStyle = css`
+    color: #fff;
+    background-color: #1885f2;
+`;
+
+const secondaryStyle = css`
     color: #676d7a;
     background-color: #f0f2f5;
 `;
@@ -88,11 +84,6 @@ const dangerStyle = css`
     background-color: #e62e3d;
 `;
 
-const primaryStyle = css`
-    color: #fff;
-    background-color: #1885f2;
-`;
-
 const sizeResolver = {
     small: size28,
     medium: size32,
@@ -100,25 +91,25 @@ const sizeResolver = {
 };
 
 const styleResolver = {
-    default: defaultStyle,
-    danger: dangerStyle,
     primary: primaryStyle,
+    secondary: secondaryStyle,
+    danger: dangerStyle,
 };
 
 const loaderColor = {
-    default: {
+    primary: {
+        color: '#fff',
+    },
+    secondary: {
         color: '#676D7A',
     },
     danger: {
         color: '#fff',
     },
-    primary: {
-        color: '#fff',
-    },
 };
 
-export const XButton = (props: UButtonProps) => {
-    const { text, icon, iconRight, square, size, style, loading, disable, ...other } = props;
+export const UButton = (props: UButtonProps) => {
+    const { text, square, size, style, loading, disable, ...other } = props;
     return (
         <XView {...other}>
             <div
@@ -130,13 +121,7 @@ export const XButton = (props: UButtonProps) => {
                     styleResolver[style || 'primary'],
                 )}
             >
-                {icon && (
-                    <div className={cx(iconWrapperStyle, loading && loadingStyle)}>{icon}</div>
-                )}
                 <span className={cx(textStyle, loading && loadingStyle)}>{text}</span>
-                {iconRight && (
-                    <div className={cx(iconWrapperStyle, loading && loadingStyle)}>{iconRight}</div>
-                )}
                 {loading && (
                     <XLoader
                         loading={true}
