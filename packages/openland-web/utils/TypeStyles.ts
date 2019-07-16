@@ -4,12 +4,12 @@ export const TypeStyles: { [key in string]: XViewProps } = {
     title1: {
         fontSize: 24,
         lineHeight: '32px',
-        fontWeight: '600' // Need to be 700. TBD in mentaljs
+        fontWeight: '700'
     },
     title2: {
         fontSize: 17,
         lineHeight: '24px',
-        fontWeight: '600' // Need to be 700. TBD in mentaljs
+        fontWeight: '700'
     },
     label1: {
         fontSize: 15,
