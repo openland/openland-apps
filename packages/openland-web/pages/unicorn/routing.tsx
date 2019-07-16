@@ -6,6 +6,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { ProfileFragment } from 'openland-web/fragments/account/ProfileFragment';
 import { NotificationFragment } from 'openland-api/queries/MyNotificationsCenter';
 import { AppearanceFragment } from 'openland-web/fragments/account/AppearanceFragment';
+import { RecommendedFragment } from 'openland-web/fragments/discover/RecommendedFragment';
 
 const routing = new URouting();
 
@@ -18,12 +19,8 @@ routing.addRoute('/mail/:conversationId', () =>
 );
 
 // Discover
-routing.addRoute('/discover/recommended', () => ProfileFragment);
+routing.addRoute('/discover/recommended', () => RecommendedFragment);
 routing.addRoute('/discover/groups', () => ProfileFragment);
-routing.addRoute('/discover/communities', () => ProfileFragment);
-routing.addRoute('/discover/people', () => ProfileFragment);
-routing.addRoute('/discover/organizations', () => ProfileFragment);
-routing.addRoute('/discover/explore', () => ProfileFragment);
 
 // Settings
 routing.addRoute('/settings/profile', () => ProfileFragment);

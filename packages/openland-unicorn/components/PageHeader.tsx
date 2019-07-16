@@ -8,7 +8,7 @@ import { HeaderConfig } from './HeaderConfig';
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
     return (
-        <XView height={56} flexDirection="row" alignItems="center">
+        <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
             <XView
                 height={56}
                 width={56}
