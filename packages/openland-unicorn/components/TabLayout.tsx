@@ -39,9 +39,6 @@ const visibleContainer = css`
     right: 0px;
     bottom: 0px;
     display: flex;
-    opacity: 1;
-    will-change: opacity;
-    pointer-events: auto;
 `;
 
 const invisibleContainer = css`
@@ -50,9 +47,7 @@ const invisibleContainer = css`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    opacity: 0;
-    will-change: opacity;
-    pointer-events: none;
+    display: none;
 `;
 
 export const TabLayout = React.memo((props: { router: TabRouter }) => {
@@ -92,7 +87,6 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
             props.router.navigate(to);
         }
     }), []);
-
     if (layout === 'mobile') {
         return (
             <XViewRouterContext.Provider value={xRouting}>

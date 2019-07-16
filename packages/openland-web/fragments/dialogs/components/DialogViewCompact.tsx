@@ -9,7 +9,6 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 export const DialogViewCompact = React.memo(
     (props: {
         item: DialogDataSourceItem;
-        handleRef?: any;
         onSelect?: (id: string) => void;
         onClick?: () => void;
         selected?: boolean;
@@ -22,9 +21,8 @@ export const DialogViewCompact = React.memo(
         }
 
         return (
-            <XLink2
+            <XView
                 selected={props.selected}
-                ref={props.handleRef}
                 path={path}
                 height={50}
                 flexDirection="row"
@@ -32,16 +30,18 @@ export const DialogViewCompact = React.memo(
                 minWidth={0}
                 alignItems="center"
                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                selectedBackgroundColor="#4596e1"
-                selectedHoverBackgroundColor="#4596e1"
-                onClick={() => {
-                    if (props.onSelect) {
-                        props.onSelect(props.item.key);
-                    }
-                    if (props.onClick) {
-                        props.onClick();
-                    }
-                }}
+                hoverTextDecoration="none"
+                cursor="pointer"
+                // selectedBackgroundColor="#4596e1"
+                // selectedHoverBackgroundColor="#4596e1"
+                // onClick={() => {
+                //     if (props.onSelect) {
+                //         props.onSelect(props.item.key);
+                //     }
+                //     if (props.onClick) {
+                //         props.onClick();
+                //     }
+                // }}
             >
                 <XAvatar
                     objectName={dialog.title}
@@ -101,7 +101,7 @@ export const DialogViewCompact = React.memo(
                         )}
                     </XView>
                 </XView>
-            </XLink2>
+            </XView>
         );
     },
 );
