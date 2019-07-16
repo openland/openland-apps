@@ -215,6 +215,12 @@
     },
     "devDependencies": {
         "@babel/cli": "7.0.0",
+        "@babel/core": "^7.5.4",
+        "@storybook/addon-actions": "^5.1.9",
+        "@storybook/addon-info": "^5.1.9",
+        "@storybook/addon-links": "^5.1.9",
+        "@storybook/addons": "^5.1.9",
+        "@storybook/react": "^5.1.9",
         "@types/auth0-js": "^8.11.0",
         "@types/chart.js": "^2.7.3",
         "@types/classnames": "^2.2.3",
@@ -258,6 +264,7 @@
         "@types/react-select": "^1.2.2",
         "@types/react-test-renderer": "^16.0.1",
         "@types/simplebar": "^2.4.1",
+        "@types/storybook__react": "^4.0.2",
         "@types/styled-jsx": "^2.2.1",
         "@types/supercluster": "^3.0.2",
         "@types/tlds": "^1.199.0",
@@ -268,6 +275,8 @@
         "@zeit/next-css": "^1.0.1",
         "@zeit/next-source-maps": "0.0.3",
         "apollo": "^2.6.2",
+        "awesome-typescript-loader": "^5.2.1",
+        "babel-loader": "^8.0.6",
         "babel-plugin-glamorous-displayname": "^2.2.0",
         "babel-plugin-graphql-tag": "^2.0.0",
         "babel-plugin-inline-import-graphql-ast": "^2.1.2",
@@ -285,6 +294,7 @@
         "linaria-jest": "^0.0.4",
         "nodemon": "^1.17.1",
         "postinstall-postinstall": "^1.0.0",
+        "react-docgen-typescript-loader": "^3.1.0",
         "react-native": "0.59.9",
         "rimraf": "^2.6.2",
         "rsync": "^0.6.1",
@@ -352,6 +362,7 @@
         "mac:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./packages/openland-mac/build/native",
         "mac:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --preserveWatchOutput --outDir ./packages/openland-mac/build/native",
         "mac:bundler": "./scripts/mac_bundler.sh",
-        "mac:prepare": "cd ./packages/openland-mac && yarn"
+        "mac:prepare": "cd ./packages/openland-mac && yarn",
+        "storybook": "yarn start-storybook -c ./packages/openland-storybook/.storybook"
     }
 }
