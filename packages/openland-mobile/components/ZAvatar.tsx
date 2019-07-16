@@ -47,7 +47,11 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
                     <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={size} height={size} source={props.src} borderRadius={size / 2} />
                     {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                 </View>
-                {props.online && <View style={{ position: 'absolute', width: dotSize, height: dotSize, bottom: dotPosition, right: dotPosition, borderRadius: dotSize / 2, borderColor: theme.backgroundPrimary, backgroundColor: theme.accentPrimary, borderWidth: dotBorderWidth }} />}
+                {props.online && (
+                    <View position="absolute" width={dotSize} height={dotSize} bottom={dotPosition} right={dotPosition} borderRadius={dotSize / 2} padding={dotBorderWidth} backgroundColor={theme.backgroundPrimary}>
+                        <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.accentPrimary} />
+                    </View>
+                )}
             </View>
         );
     }
