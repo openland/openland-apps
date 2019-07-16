@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
@@ -26,7 +26,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
             <XView
                 cursor="pointer"
                 path="/settings/profile"
-                hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
+                hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
                 height={70}
                 width="100%"
                 flexShrink={0}
@@ -99,7 +99,7 @@ const OrganizationItem = ({
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
-            hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
+            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
             cursor="pointer"
             height={56}
             paddingHorizontal={16}
@@ -165,7 +165,7 @@ export const AccountFragment = React.memo(() => {
                 fontSize={24}
                 lineHeight="32px"
                 fontWeight="600"
-                color={ThemeLightBlue.foregroundPrimary}
+                color={ThemeDefault.foregroundPrimary}
                 flexDirection="row"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>

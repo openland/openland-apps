@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 import { TabRouter } from './TabRouter';
 
 export const TabBarMobile = React.memo((props: {
@@ -9,7 +9,7 @@ export const TabBarMobile = React.memo((props: {
     router: TabRouter
 }) => {
     return (
-        <XView height={52} backgroundColor={ThemeLightBlue.backgroundPrimary} flexDirection="row">
+        <XView height={52} backgroundColor={ThemeDefault.backgroundPrimary} flexDirection="row">
             {props.router.tabs.map((v, i) => (
                 <XView
                     height={52}
@@ -18,7 +18,7 @@ export const TabBarMobile = React.memo((props: {
                     minWidth={0}
                     alignItems="center"
                     justifyContent="center"
-                    hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
+                    hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
                     cursor="pointer"
                     onClick={() => props.setSelected(i)}
                 >

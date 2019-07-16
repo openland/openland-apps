@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 export const DiscoverFragment = React.memo(() => {
     return (
@@ -14,7 +14,7 @@ export const DiscoverFragment = React.memo(() => {
                 fontSize={24}
                 lineHeight="32px"
                 fontWeight="600"
-                color={ThemeLightBlue.foregroundPrimary}
+                color={ThemeDefault.foregroundPrimary}
                 flexDirection="row"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>

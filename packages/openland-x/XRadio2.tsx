@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 const inputClassName = css`
     display: none;
@@ -59,7 +59,7 @@ export const XRadioItem = (props: XRadioItemProps) => {
                     fontSize={15}
                     color="#171B1F"
                     lineHeight="24px"
-                    hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
+                    hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
                 >
                     <span>{props.label}</span>
                     <XView

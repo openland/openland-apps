@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { TabRouter } from './TabRouter';
 
@@ -22,7 +22,7 @@ export const TabBarDesktop = React.memo((props: {
     router: TabRouter
 }) => {
     return (
-        <XView height="100%" width="100%" backgroundColor={ThemeLightBlue.backgroundTertiary} paddingTop={2}>
+        <XView height="100%" width="100%" backgroundColor={ThemeDefault.backgroundTertiary} paddingTop={2}>
             <XView width={64} height={64} alignItems="center" justifyContent="center">
                 <img src="/static/img/logo.png" srcSet="/static/img/logo@2x.png" width={36} height={36} />
             </XView>
@@ -32,7 +32,7 @@ export const TabBarDesktop = React.memo((props: {
                     height={54}
                     alignItems="center"
                     justifyContent="center"
-                    hoverBackgroundColor={ThemeLightBlue.backgroundTertiaryHover}
+                    hoverBackgroundColor={ThemeDefault.backgroundTertiaryHover}
                     cursor="pointer"
                     onClick={() => props.setSelected(i)}
                 >

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XViewRouterContext, XView } from 'react-mental';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { DialogListFragment } from './DialogListFragment';
 
@@ -16,7 +16,7 @@ export const DialogsFragment = React.memo(() => {
                 fontSize={24}
                 lineHeight="32px"
                 fontWeight="600"
-                color={ThemeLightBlue.foregroundPrimary}
+                color={ThemeDefault.foregroundPrimary}
                 flexDirection="row"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>

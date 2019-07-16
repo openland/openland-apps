@@ -157,3 +157,5 @@ export const ThemeDark: ThemeGlobal = {
 
     separatorColor: '#262629',
 };
+
+export const ThemeDefault = ThemeLightBlue;
