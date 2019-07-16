@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { UserProfile } from '../profile/components/UserProfileComponent';
+import { UserProfile } from '../../../fragments/account/components/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { DiscoverNavigation, ComponentWithSort } from './components/DiscoverNavigation';

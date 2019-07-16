@@ -32,7 +32,6 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
-import { TestCommentsComponent } from './test';
 
 export default withData(
     class MyApp extends App<{

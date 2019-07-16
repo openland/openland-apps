@@ -33,10 +33,9 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import {
     RoomSetFeatured,
     RoomSetHidden,
-} from 'openland-web/pages/main/profile/components/RoomControls';
+} from 'openland-web/fragments/account/components/RoomControls';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
-import { tabs, tabsT } from '../tabs';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
@@ -77,6 +76,14 @@ export const AdminTools = (props: { id: string; variables: { id: string } }) => 
             )}
         </>
     );
+};
+
+export type tabsT = 'featured' | 'requests' | 'members';
+
+export const tabs: { [K in tabsT]: tabsT } = {
+    featured: 'featured',
+    requests: 'requests',
+    members: 'members',
 };
 
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {

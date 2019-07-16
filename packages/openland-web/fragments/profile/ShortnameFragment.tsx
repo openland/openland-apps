@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { UserProfile } from 'openland-web/pages/main/profile/components/UserProfileComponent';
+import { UserProfile } from 'openland-web/fragments/account/components/UserProfileComponent';
 import { NotFound } from 'openland-unicorn/NotFound';
-import { OrganizationProfileInner } from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
+import { OrganizationProfileInner } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 import { ResolveShortName_item_User, ResolveShortName_item_Organization } from 'openland-api/Types';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';

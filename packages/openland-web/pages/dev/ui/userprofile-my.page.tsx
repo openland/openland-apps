@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { UserProfile } from '../../main/profile/components/UserProfileComponent';
+import { UserProfile } from '../../../fragments/account/components/UserProfileComponent';
 import { withUserInfo } from '../../../components/UserInfo';
 
 const MyUserProfile = withUserInfo(props => {

@@ -18,7 +18,7 @@ import {
     SectionContent,
     HeaderWrapper,
     extractHostname,
-} from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
+} from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';

@@ -44,58 +44,19 @@ routes.add('/404', '/404');
 // Settings
 //
 
-// routes.add('/settings/profile', '/main/settings/profile');
-// routes.add('/settings/profile/', '/main/settings/profile');
-// routes.add('/settings/notifications', '/main/settings/notifications');
-// routes.add('/settings/notifications/', '/main/settings/notifications');
-// routes.add('/settings/appearance', '/main/settings/appearance');
-// routes.add('/settings/appearance/', '/main/settings/appearance');
 routes.add('/settings/apps', '/main/settings/apps');
 routes.add('/settings/apps/', '/main/settings/apps');
-routes.add('/settings/dev', '/main/settings/developer');
-routes.add('/settings/dev/', '/main/settings/developer');
-routes.add('/settings/organization/:organizationId', '/main/settings/organization');
-routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
-
-//
-// Experimental
-//
-
-routes.add('/feed', '/main/feed/root');
-routes.add('/apps', '/main/apps/apps');
-routes.add('/apps/', '/main/apps/apps');
-routes.add('/apps/:appId', '/main/apps/apps');
-routes.add('/apps/:appId/', '/main/apps/apps');
-routes.add('/apps/:appId/*', '/main/apps/apps');
 
 //
 // Discover
 //
 
-routes.add('/directory', '/main/discover/root');
-routes.add('/directory/', '/main/discover/root');
-routes.add('/discover', '/main/discover/root');
-routes.add('/discover/', '/main/discover/root');
-routes.add('/discover/people', '/main/discover/people');
-routes.add('/discover/people/', '/main/discover/people');
-routes.add('/discover/organizations', '/main/discover/organizations');
-routes.add('/discover/organizations/', '/main/discover/organizations');
-routes.add('/discover/communities', '/main/discover/communities');
-routes.add('/discover/communities/', '/main/discover/communities');
-routes.add('/discover/recommended', '/main/discover/discover');
-routes.add('/discover/recommended/', '/main/discover/discover');
-routes.add('/discover/explore', '/main/discover/explore');
-routes.add('/discover/expslore/', '/main/discover/explore');
-routes.add('/directory/r/:conversationId', '/main/discover/root');
-routes.add('/directory/r/:conversationId/', '/main/discover/root');
-routes.add('/directory/p/:conversationId', '/main/discover/root');
-routes.add('/directory/p/:conversationId/', '/main/discover/root');
-routes.add('/directory/u/:userId', '/main/discover/people');
-routes.add('/directory/u/:userId/', '/main/discover/people');
-routes.add('/directory/o/:organizationId', '/main/discover/organizations');
-routes.add('/directory/o/:organizationId/', '/main/discover/organizations');
-routes.add('/directory/c/:organizationId', '/main/discover/communities');
-routes.add('/directory/c/:organizationId/', '/main/discover/communities');
+routes.add('/discover/recommended', '/unicorn/index');
+routes.add('/discover/groups', '/unicorn/index');
+routes.add('/discover/communities', '/unicorn/index');
+routes.add('/discover/people', '/unicorn/index');
+routes.add('/discover/organizations', '/unicorn/index');
+routes.add('/discover/explore', '/unicorn/index');
 
 //
 // Onboardinng
@@ -109,20 +70,8 @@ routes.add('/onboarding/discover', '/onboarding/discover');
 routes.add('/onboarding/discover/', '/onboarding/discover/');
 
 //
-// Profiles
+// Invites
 //
-
-routes.add('/o/:organizationId', '/main/profile/organization');
-routes.add('/o/:organizationId/', '/main/profile/organization');
-routes.add('/o/:organizationId/listings', '/main/profile/organization');
-routes.add('/o/:organizationId/listings/', '/main/profile/organization');
-routes.add('/o/:organizationId/listings', '/main/profile/organization');
-routes.add('/o/:organizationId/listings/all', '/main/profile/organization');
-routes.add('/o/:organizationId/listings/all/', '/main/profile/organization');
-
-///
-/// Invites
-///
 
 routes.add('/join/:inviteKey', '/init/resolveInvite');
 routes.add('/join/:inviteKey/', '/init/resolveInvite');

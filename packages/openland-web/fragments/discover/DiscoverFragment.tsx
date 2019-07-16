@@ -5,12 +5,12 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 export const DiscoverFragment = React.memo(() => {
     return (
         <XView flexDirection="column">
-            <UListItem text="Chats for you" />
-            <UListItem text="Groups and channels" />
-            <UListItem text="Communities" />
-            <UListItem text="People" />
-            <UListItem text="Organizations" />
-            <UListItem text="Explore" />
+            <UListItem text="Chats for you" path="/discover/recommended" />
+            <UListItem text="Groups and channels" path="/discover/groups" />
+            <UListItem text="Communities" path="/discover/communities" />
+            <UListItem text="People" path="/discover/people" />
+            <UListItem text="Organizations" path="/discover/organizations" />
+            <UListItem text="Explore" path="/discover/explore" />
         </XView>
     );
 });

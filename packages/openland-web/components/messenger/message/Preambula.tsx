@@ -8,7 +8,7 @@ import { css } from 'linaria';
 import CommentsIcon from 'openland-icons/ic-comments.svg';
 import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
-import { MakeFeaturedModal } from 'openland-web/pages/main/profile/components/modals';
+import { MakeFeaturedModal } from 'openland-web/fragments/account/components/modals';
 import { useHasRole } from 'openland-x-permissions/XWithRole';
 
 interface PreambulaContainerProps {

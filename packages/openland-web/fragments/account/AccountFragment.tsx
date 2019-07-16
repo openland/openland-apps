@@ -3,10 +3,6 @@ import { XView } from 'react-mental';
 import { ThemeLightBlue } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { ProfileTab } from './ProfileTab';
-import { Notifications } from './Notifications';
-import { AppearanceTab } from './AppearanceTab';
-import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 import AppearanceIcon from 'openland-icons/appearance_icon.svg';
 import DownloadAppsIcon from 'openland-icons/download_apps_icon.svg';
 import NotificationsIcon from 'openland-icons/notifications_icon.svg';
@@ -20,9 +16,6 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
-import { AppsFragment } from '../apps/AppsFragment';
-import { OrganizationProfile } from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
-import { UserProfile } from 'openland-web/pages/main/profile/components/UserProfileComponent';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
