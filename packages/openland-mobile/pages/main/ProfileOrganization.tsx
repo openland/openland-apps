@@ -148,7 +148,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     } finally {
                         stopLoader();
                     }
-                });
+                }, false, require('assets/ic-star-24.png'));
             }
 
             if (canLeave) {
@@ -215,7 +215,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
                                     await resetMembersList();
                                 }).show();
-                        },
+                        }, false, require('assets/ic-star-24.png')
                     );
                 }
 
@@ -256,8 +256,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     await resetMembersList();
                                 })
                                 .show();
-                        },
-                        false,
+                        }, false, require('assets/ic-s-leave-24.png')
                     );
                 }
 
@@ -345,7 +344,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             >
                 {organization.isMine && (
                     <ZListItem
-                        leftIcon={require('assets/ic-add-24.png')}
+                        leftIcon={require('assets/ic-invite-24.png')}
                         text="Add members"
                         onPress={handleAddMember}
                     />

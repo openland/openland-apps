@@ -12,7 +12,7 @@ export const NotificationSettings = XMemo<{ id: string, mute: boolean }>((props)
     }, []);
     return (
         <ZListItem
-            leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
+            leftIcon={require('assets/ic-header-bell-24.png')}
             text="Notifications"
             toggle={nofications}
             onToggle={handleNotifications}

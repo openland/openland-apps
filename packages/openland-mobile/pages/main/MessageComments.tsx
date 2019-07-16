@@ -152,7 +152,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 } finally {
                     stopLoader();
                 }
-            });
+            }, false, require('assets/ic-msg-unpin-24.png'));
         }
 
         builder.show();

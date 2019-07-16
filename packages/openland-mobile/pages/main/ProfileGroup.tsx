@@ -103,17 +103,17 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         let user = member.user;
 
         if (user.id !== getMessenger().engine.user.id) {
-            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
+            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }), false, require('assets/ic-user-24.png'));
 
             if (canEdit) {
                 if (member.role === RoomMemberRole.MEMBER) {
-                    builder.action('Make admin', () => handleMakeAdmin(user));
+                    builder.action('Make admin', () => handleMakeAdmin(user), false, require('assets/ic-star-24.png'));
                 } else if (member.role === RoomMemberRole.ADMIN) {
-                    builder.action('Revoke admin status', () => handleRevokeAdmin(user));
+                    builder.action('Revoke admin status', () => handleRevokeAdmin(user), false, require('assets/ic-star-24.png'));
                 }
             }
             if (canKick) {
-                builder.action('Kick', () => handleKick(user), false);
+                builder.action('Kick', () => handleKick(user), false, require('assets/ic-s-leave-24.png'));
             }
         } else {
             builder.action('Leave', handleLeave, false, require('assets/ic-s-leave-24.png'));
@@ -153,7 +153,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         }
 
         if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
-            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
+            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }), false, require('assets/ic-edit-24.png'));
         }
 
         builder.action('Leave and delete', handleLeave, false, require('assets/ic-s-leave-24.png'));
@@ -228,7 +228,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             <ZListItemGroup header="Members" counter={room.membersCount}>
                 <ZListItem
                     text="Add members"
-                    leftIcon={require('assets/ic-add-24.png')}
+                    leftIcon={require('assets/ic-invite-24.png')}
                     onPress={handleAddMember}
                 />
 
