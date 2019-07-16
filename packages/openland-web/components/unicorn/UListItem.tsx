@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { XView, XViewSelectedContext } from 'react-mental';
-import { ThemeLightBlue } from 'openland-y-utils/themes';
+import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 
 const selectedStyle = css`
- * path {
-    stroke: white; 
- }
+    * path {
+        stroke: white; 
+    }
 `;
 
 const SelectableSVG = React.memo((props: { children?: any }) => {
@@ -17,30 +17,34 @@ const SelectableSVG = React.memo((props: { children?: any }) => {
     return (<div>{props.children}</div>);
 });
 
-export const UListItem = React.memo((props: {
-    text: string,
-    icon?: any,
-    onClick?: () => void,
-    path?: string
-}) => {
+interface UListItemProps {
+    text: string;
+    icon?: any;
+    onClick?: () => void;
+    path?: string;
+}
+
+export const UListItem = React.memo((props: UListItemProps) => {
+    const { text, icon, onClick, path } = props;
+
     return (
         <XView
             height={48}
             paddingHorizontal={16}
             alignItems="center"
             flexDirection="row"
-            hoverBackgroundColor={ThemeLightBlue.backgroundPrimaryHover}
-            selectedBackgroundColor={ThemeLightBlue.accentPrimary}
-            selectedHoverBackgroundColor={ThemeLightBlue.accentPrimaryHover}
+            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
+            selectedBackgroundColor={ThemeDefault.accentPrimary}
+            selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
             selectedColor="#fff"
             cursor="pointer"
-            onClick={props.onClick}
-            path={props.path}
+            onClick={onClick}
+            path={path}
             linkSelectable={true}
         >
-            {props.icon && <XView marginRight={19} width={24} height={24}><SelectableSVG>{props.icon}</SelectableSVG></XView>}
+            {icon && <XView marginRight={19} width={24} height={24}><SelectableSVG>{props.icon}</SelectableSVG></XView>}
             <XView lineHeight="24px" fontSize={15}>
-                {props.text}
+                {text}
             </XView>
         </XView>
     );
