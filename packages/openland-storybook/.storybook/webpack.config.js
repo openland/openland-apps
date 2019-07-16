@@ -1,4 +1,6 @@
 const path = require('path');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
 module.exports = ({ config }) => {
     config.module.rules.push({
         test: /\.(ts|tsx)$/,
@@ -12,5 +14,11 @@ module.exports = ({ config }) => {
         ],
     });
     config.resolve.extensions.push('.ts', '.tsx');
+    config.resolve.plugins = [
+        new TsConfigPathsPlugin({
+            tsconfig: path.resolve(__dirname, '../../../tsconfig.json'),
+            compiler: 'typescript',
+        }),
+    ];
     return config;
 };

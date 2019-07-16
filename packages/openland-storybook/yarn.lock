@@ -11090,9 +11090,9 @@ symbol.prototype.description@^1.0.0:
     has-symbols "^1.0.0"
 
 table@^5.2.3:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/table/-/table-5.4.2.tgz#e837706859a17b5a9a6352c6695d4c8534543b4d"
-  integrity sha512-DQqgZw837CvGJ/IDqjHX3ZCY9RWlB3jEpbPURQaTMZPbuYEV+F58RGfPG1WMvghzXKFQyvIShcD4bSLiIkkuUg==
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/table/-/table-5.4.3.tgz#1f6a1377966ce70a33230d9457fb48ac173d216b"
+  integrity sha512-TZwDoOgrIMgcfRxLkCCrxg8U49WQ2SfoDC/PDTeVZQ/cmOpDeJBBsHLS9r5IHXTxJKvk+lqfj97cIRy+nfGp3w==
   dependencies:
     ajv "^6.10.2"
     lodash "^4.17.14"
@@ -11394,10 +11394,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
-  integrity sha512-Y21Xqe54TBVp+VDSNbuDYdGw0BpoR/Q6wo/+35M8PAU0vipahnyduJWirxxdxjsAkS7hue53x2zp8gz7F05u0A==
+typescript@3.3.4000:
+  version "3.3.4000"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
+  integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
 
 ua-parser-js@^0.7.18:
   version "0.7.20"
