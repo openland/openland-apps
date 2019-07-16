@@ -1,7 +1,5 @@
+import { preprocessMentions } from 'openland-web/fragments/chat/messenger/message/content/utils/preprocessMentions';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
-const {
-    preprocessMentions,
-} = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
 import { UserForMention, AllMentionType } from 'openland-api/Types';
 
 const makeIncrementFunc = () => {
