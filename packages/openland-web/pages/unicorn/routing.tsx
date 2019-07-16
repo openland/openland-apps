@@ -3,11 +3,12 @@ import { URouting } from 'openland-unicorn/URouting';
 import { ShortnameFragment } from 'openland-web/fragments/shortname/ShortnameFragment';
 import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
-import { ProfileFragment } from 'openland-web/fragments/account/ProfileFragment';
-import { AppearanceFragment } from 'openland-web/fragments/account/AppearanceFragment';
+import { SettingsProfileFragment } from 'openland-web/fragments/account/SettingsProfileFragment';
+import { SettingsAppearanceFragment } from 'openland-web/fragments/account/SettingsAppearanceFragment';
 import { RecommendedFragment } from 'openland-web/fragments/discover/RecommendedFragment';
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
-import { NotificationsFragment } from 'openland-web/fragments/account/NotificationsFragment';
+import { SettingsNotificationsFragment } from 'openland-web/fragments/account/SettingsNotificationsFragment';
+import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
 
 const routing = new URouting();
 
@@ -19,14 +20,17 @@ routing.addRoute('/mail/:conversationId', () =>
     })
 );
 
+// Notifications
+routing.addRoute('/notifications', () => NotificationsFragment);
+
 // Discover
 routing.addRoute('/discover/recommended', () => RecommendedFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 
 // Settings
-routing.addRoute('/settings/profile', () => ProfileFragment);
-routing.addRoute('/settings/notifications', () => NotificationsFragment);
-routing.addRoute('/settings/appearance', () => AppearanceFragment);
+routing.addRoute('/settings/profile', () => SettingsProfileFragment);
+routing.addRoute('/settings/notifications', () => SettingsNotificationsFragment);
+routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
 
 // Profile
 routing.addRoute('/:shortname', () => ShortnameFragment);

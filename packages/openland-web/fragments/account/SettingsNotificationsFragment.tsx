@@ -15,7 +15,7 @@ import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 
-export const NotificationsFragment = React.memo(() => {
+export const SettingsNotificationsFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
     const settings = client.useSettings();

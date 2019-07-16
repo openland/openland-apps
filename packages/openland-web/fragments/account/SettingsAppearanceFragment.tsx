@@ -14,7 +14,7 @@ enum AppearanceOptions {
     HIGHLIGHTED = 'HIGHLIGHTED',
 }
 
-export const AppearanceFragment = React.memo(() => {
+export const SettingsAppearanceFragment = React.memo(() => {
     const form = useForm();
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',

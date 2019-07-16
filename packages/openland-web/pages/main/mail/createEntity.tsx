@@ -6,7 +6,7 @@ import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { CoverUpload } from './CoverUpload';
-import { ExplorePeople } from './ExplorePeople';
+import { ExplorePeople } from '../../../fragments/discover/components/ExplorePeople';
 import { SearchPeopleBox } from './SearchPeopleBox';
 import { useClient } from 'openland-web/utils/useClient';
 import { OrganizationsList } from './OrganizationsList';

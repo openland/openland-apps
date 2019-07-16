@@ -175,8 +175,8 @@ class CommentsNotificationsInner extends React.PureComponent<
     }
 }
 
-export const CommentsNotifications = () => {
+export const NotificationsFragment = React.memo(() => {
     const messenger = React.useContext(MessengerContext);
 
     return <CommentsNotificationsInner engine={messenger.notificationCenter} />;
-};
+});

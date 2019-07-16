@@ -13,7 +13,7 @@ import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 
-export const ProfileFragment = React.memo(() => {
+export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
 
