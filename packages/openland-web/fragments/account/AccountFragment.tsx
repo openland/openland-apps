@@ -118,7 +118,7 @@ const OrganizationItem = ({
             cursor="pointer"
             height={56}
             paddingHorizontal={16}
-            onClick={onClick}
+            path={`/${id}`}
         >
             <XView flexDirection="row" alignItems="center">
                 <XAvatar2 size={40} src={image} title={text} id={id} />

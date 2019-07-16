@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { Platform, Dimensions, Image } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
@@ -16,7 +16,6 @@ import { ThemeGlobal } from 'openland-y-utils/themes/types';
 import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
 
 interface MediaContentProps {
-    single?: boolean;
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
@@ -26,8 +25,8 @@ interface MediaContentProps {
     layout: { width: number, height: number };
     compensateBubble?: boolean;
     theme: ThemeGlobal;
-    hasText?: boolean;
-    hasReply?: boolean;
+    hasTopContent: boolean;
+    hasBottomContent: boolean;
 }
 
 export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
@@ -109,18 +108,19 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { single, message, attach, onUserPress, onGroupPress, onMediaPress, onDocumentPress, layout, compensateBubble, theme, hasText, hasReply } = this.props;
+        const { hasTopContent, hasBottomContent, message, attach, onUserPress, onGroupPress, onMediaPress, onDocumentPress, layout, compensateBubble, theme } = this.props;
         const { downloadState } = this.state;
+        const isSingle = !hasTopContent && !hasBottomContent;
 
         return (
             <ASFlex
                 flexDirection="column"
-                width={single ? layout.width : undefined}
+                width={isSingle ? layout.width : undefined}
                 height={layout.height}
-                marginTop={compensateBubble ? (hasReply ? 0 : -contentInsetsTop) : undefined}
+                marginTop={compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
-                marginBottom={compensateBubble ? (single || !hasText ? -contentInsetsBottom : 8) : undefined}
+                marginBottom={compensateBubble ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
                 backgroundColor={theme.backgroundTertiary}
                 alignItems="center"
             >
@@ -158,23 +158,25 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                     </ASFlex>
                 </ASFlex>
 
-                {single && compensateBubble && (
+                {compensateBubble && (
                     <ASFlex
                         overlay={true}
-                        width={layout.width}
+                        width={isSingle ? layout.width : undefined}
                         height={layout.height}
-                        marginTop={Platform.OS === 'ios' ? -contentInsetsTop : undefined}
+                        marginTop={Platform.OS === 'ios' ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                         marginLeft={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
                         marginRight={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
-                        marginBottom={Platform.OS === 'ios' ? -contentInsetsBottom : undefined}
+                        marginBottom={Platform.OS === 'ios' ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
+                        alignItems="stretch"
                     >
                         <AsyncBubbleMediaView
                             isOut={message.isOut}
                             attachTop={message.attachTop}
                             attachBottom={message.attachBottom}
-                            theme={theme}
-                            width={layout.width}
-                            height={layout.height}
+                            hasTopContent={hasTopContent}
+                            hasBottomContent={hasBottomContent}
+                            maskColor={theme.backgroundPrimary}
+                            borderColor={theme.overlayInverted}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
                         />
                     </ASFlex>

@@ -85,8 +85,10 @@ function build(config: ToastBuildConfig) {
 
                 return <ToastComponent {...config} />;
             },
-            false,
-            true,
+            { 
+                withoutWrapper: true,
+                overlayStyle: { backgroundColor: 'transparent' }
+            },
         );
 
     const hide = () => modal && modal.hide();
@@ -122,7 +124,7 @@ function showCopiedLink() {
 
 const handle = async (
     fn: Function,
-    config: { success?: ToastBuildConfig; failure?: ToastBuildConfig; } = {},
+    config: { success?: ToastBuildConfig; failure?: ToastBuildConfig } = {},
 ) => {
     const toastLoader = build({ IconComponent: () => <LoaderSpinner size="large" /> });
 

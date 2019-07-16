@@ -26,6 +26,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { Track } from 'openland-engines/Tracking';
 import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -69,6 +70,7 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
             <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }} onLayout={props.onLayout}>
                 {props.children}
                 <ZModalProvider />
+                <BottomSheetProvider />
                 <AppPlaceholder loading={props.loading} />
             </View>
         </ThemeProvider>

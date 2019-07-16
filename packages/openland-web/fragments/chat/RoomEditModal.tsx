@@ -42,28 +42,24 @@ export const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function })
     ]);
     const longDescriptionField = useField('input.longDescription', '', form);
     const descriptionField = useField('input.description', props.description || '', form);
-    const onSubmit = React.useCallback(
-        async () => {
-            await form.doAction(async () => {
-                let newPhoto = avatarField.value;
+    const onSubmit = async () => {
+        await form.doAction(async () => {
+            let newPhoto = avatarField.value;
+            const dataToSend = {
+                roomId: props.roomId,
+                input: {
+                    ...{ title: titleField.value.trim() },
+                    ...{ description: descriptionField.value },
+                    ...(newPhoto && newPhoto.uuid !== editPhotoRef
+                        ? { photoRef: sanitizeImageRef(newPhoto) }
+                        : {}),
+                },
+            };
 
-                const dataToSend = {
-                    roomId: props.roomId,
-                    input: {
-                        ...{ title: titleField.value.trim() },
-                        ...{ description: descriptionField.value },
-                        ...(newPhoto && newPhoto.uuid !== editPhotoRef
-                            ? { photoRef: sanitizeImageRef(newPhoto) }
-                            : {}),
-                    },
-                };
-
-                await client.mutateRoomUpdate(dataToSend);
-                props.onClose();
-            });
-        },
-        [titleField.value],
-    );
+            await client.mutateRoomUpdate(dataToSend);
+            props.onClose();
+        });
+    };
     return (
         <>
             <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>

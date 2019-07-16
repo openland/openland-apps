@@ -143,28 +143,39 @@ routes.add('/inviteFriends/', '/main/mail/inviteFriends');
 // Mail
 //
 
-routes.add('/mail', '/main/mail/root');
-routes.add('/mail/', '/main/mail/root');
+// Old Modals
 routes.add('/mail/create', '/main/mail/createGroup');
 routes.add('/mail/create/', '/main/mail/createGroup');
 routes.add('/mail/createCommunity', '/main/mail/createCommunity');
 routes.add('/mail/createCommunity/', '/main/mail/createCommunity');
 routes.add('/mail/createOrganization', '/main/mail/createOrganization');
 routes.add('/mail/createOrganization/', '/main/mail/createOrganization');
-routes.add('/mail/:conversationId', '/main/mail/root');
-routes.add('/mail/:conversationId/', '/main/mail/root');
+
+// Joins
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
 routes.add('/mail/join/:inviteKey', '/main/mail/root');
 routes.add('/mail/join/:inviteKey/', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey/', '/main/mail/root');
-routes.add('/mail/o/:organizationId', '/main/mail/root');
-routes.add('/mail/o/:organizationId/', '/main/mail/root');
-routes.add('/mail/p/:conversationId', '/main/mail/root');
-routes.add('/mail/p/:conversationId/', '/main/mail/root');
-routes.add('/mail/u/:userId', '/main/mail/root');
-routes.add('/mail/u/:userId/', '/main/mail/root');
+
+// Profiles
+// routes.add('/mail/o/:organizationId', '/main/mail/root');
+// routes.add('/mail/o/:organizationId/', '/main/mail/root');
+// routes.add('/mail/p/:conversationId', '/main/mail/root');
+// routes.add('/mail/p/:conversationId/', '/main/mail/root');
+// routes.add('/mail/u/:userId', '/main/mail/root');
+// routes.add('/mail/u/:userId/', '/main/mail/root');
+
+routes.add('/mail', '/unicorn/index');
+routes.add('/mail/', '/unicorn/index');
+routes.add('/mail/:conversationId', '/unicorn/index');
+routes.add('/mail/:conversationId/', '/unicorn/index');
+
+//
+// Notifications
+//
+
 routes.add('/notifications/comments', '/main/mail/root');
 routes.add('/notifications/comments/', '/main/mail/root');
 
@@ -335,8 +346,8 @@ routes.add('/authorization/:step', '/auth/root');
 // Shortnames
 //
 
-routes.add('/:shortname', '/main/profile/shortname');
-routes.add('/:shortname/', '/main/profile/shortname');
+routes.add('/:shortname', '/unicorn/index');
+routes.add('/:shortname/', '/unicorn/index');
 
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);

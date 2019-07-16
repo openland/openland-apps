@@ -15,13 +15,12 @@ interface AsyncBubbleViewProps {
     attachBottom: boolean;
     colorIn: string;
     colorOut: string;
-    backgroundColor: string;
     width?: number;
 }
 
 export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, colorIn, colorOut, backgroundColor, width, children } = this.props;
+        const { isOut, attachTop, attachBottom, colorIn, colorOut, width, children } = this.props;
         let bubbleRes = isOut ? 'outgoing' : 'incoming';
 
         if (attachTop && attachBottom) {

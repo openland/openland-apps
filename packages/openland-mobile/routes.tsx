@@ -30,7 +30,8 @@ import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
-import NewDesignComponents from './pages/dev/NewDesignComponents';
+import { ToastPage } from './pages/dev/Toast';
+import { BottomSheetPage } from './pages/dev/BottomSheetPage';
 import { GroupList } from './pages/main/GroupList';
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
@@ -110,7 +111,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
   .addRoute('DevColors', Colors)
-  .addRoute('DevNewDesign', NewDesignComponents)
+  .addRoute('DevToast', ToastPage)
+  .addRoute('DevBottomSheet', BottomSheetPage)
   .addRoute('DevButtons', Buttons)
   .addRoute('DevInputs', Inputs)
   .addRoute('DevAvatars', Avatars)
