@@ -63,7 +63,7 @@
             "check-typecast"
         ],
         "jsx-boolean-value": false,
-        "semicolon": [true, "always", "ignore-bound-class-methods"]
+        "semicolon": [true, "always"]
     },
     "jsRules": {
         "no-empty": true

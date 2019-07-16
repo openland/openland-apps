@@ -333,19 +333,20 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 </React.Suspense>
             );
         } else if (this.props.targetQuery || this.props.ignoreTargetQuery) {
-            let q = _.get(this.props, ['targetQuery'])!;
+            let q = this.props.targetQuery || '';
             result = (
                 <React.Suspense fallback={<div />}>
                     <XRouterContext.Consumer>
                         {router => {
                             this.lastRouter = router;
-                            const isOpen =
-                                _.get(router, ['query', q]) ||
-                                _.get(this.props, ['ignoreTargetQuery'], false);
                             return (
                                 <ModalRender
                                     scrollableContent={this.props.scrollableContent}
-                                    isOpen={isOpen}
+                                    isOpen={
+                                        router && q in router.query
+                                            ? router.query[q]
+                                            : this.props.ignoreTargetQuery
+                                    }
                                     onCloseRequest={this.onModalCloseRequest}
                                     size={size}
                                     sWidth={this.props.width}
