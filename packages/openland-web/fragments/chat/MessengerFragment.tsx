@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessengerRootComponent } from './MessengerRootComponent';
+import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { InviteLandingComponent } from '../invite/InviteLandingComponent';
 import {
     UserShort,

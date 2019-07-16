@@ -12,7 +12,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
-import { LeaveChatComponent } from 'openland-web/fragments/chat/MessengerRootComponent';
+import { LeaveChatComponent } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { RemoveMemberModal } from 'openland-web/fragments/chat/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {

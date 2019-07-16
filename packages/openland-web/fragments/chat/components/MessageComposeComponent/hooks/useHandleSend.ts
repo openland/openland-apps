@@ -11,7 +11,7 @@ import {
 import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
-import { UploadContext } from '../../../../modules/FileUploading/UploadContext';
+import { UploadContext } from '../../../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { getUploadCareFile } from 'openland-web/fragments/chat/messenger/message/content/comments/useSendMethods';

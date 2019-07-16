@@ -13,8 +13,8 @@ import {
     MessageComposeComponentProps,
 } from './MessageComposeComponent/components/MessageComposeComponentDesktop';
 import { MobileMessageCompose } from './MessageComposeComponent/components/MessageComposeComponentMobile';
-import { ConversationMessagesComponent } from './messenger/ConversationMessagesComponent';
-import { UploadCareUploading } from '../../utils/UploadCareUploading';
+import { ConversationMessagesComponent } from '../messenger/ConversationMessagesComponent';
+import { UploadCareUploading } from '../../../utils/UploadCareUploading';
 import {
     UserShort,
     SharedRoomKind,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { UserInfoContext } from '../../../../components/UserInfo';
+import { UserInfoContext } from '../../../../../components/UserInfo';
 import {
     ReplyMessageVariables,
     ReplyMessage,
@@ -25,12 +25,12 @@ import { useQuote } from '../hooks/useQuote';
 import { useHandleChange } from '../hooks/useHandleChange';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
-import { UploadContext } from '../../../../modules/FileUploading/UploadContext';
+import { UploadContext } from '../../../../../modules/FileUploading/UploadContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import { XShortcuts } from 'openland-x/XShortcuts';
-import { MessagesStateContextProps, MessagesStateContext } from '../../messenger/MessagesStateContext';
+import { MessagesStateContextProps, MessagesStateContext } from '../../../messenger/MessagesStateContext';
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';

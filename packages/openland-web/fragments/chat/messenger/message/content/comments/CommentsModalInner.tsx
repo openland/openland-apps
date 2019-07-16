@@ -21,7 +21,7 @@ import {
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { useSendMethods } from './useSendMethods';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
-import { showDeleteCommentConfirmation } from './DeleteCommentConfirmModal';
+import { showDeleteCommentConfirmation } from './showDeleteCommentConfirmation';
 import { css, cx } from 'linaria';
 import {
     MessagesStateContext,

@@ -11,7 +11,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
-import { setDraftMessage } from './MessageComposeComponent/hooks/useDraft/DraftStore';
+import { setDraftMessage } from './components/MessageComposeComponent/hooks/useDraft/DraftStore';
 
 const textAlignClassName = css`
     text-align: center;
