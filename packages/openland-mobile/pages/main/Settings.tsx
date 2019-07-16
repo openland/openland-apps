@@ -88,26 +88,26 @@ let SettingsContent = ((props: PageProps) => {
             />
             <ZListItem
                 leftIconColor={theme.tint2}
-                leftIcon={require('assets/ic-invite-24.png')}
+                leftIcon={require('assets/ic-invite-fill-24.png')}
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
             <ZListItemGroup header="Settings">
                 <ZListItem
                     leftIconColor={theme.tint5}
-                    leftIcon={require('assets/ic-header-bell-24.png')}
+                    leftIcon={require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
                 />
                 <ZListItem
                     leftIconColor={theme.tint1}
-                    leftIcon={require('assets/ic-appearance-24.png')}
+                    leftIcon={require('assets/ic-appearance-fill-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
                 />
                 <ZListItem
                     leftIconColor={theme.tint6}
-                    leftIcon={require('assets/ic-star-24.png')}
+                    leftIcon={require('assets/ic-rate-fill-24.png')}
                     text="Rate the App"
                     onPress={() => {
                         Rate.rate({
@@ -120,7 +120,7 @@ let SettingsContent = ((props: PageProps) => {
             <ZListItemGroup header="Support">
                 <ZListItem
                     leftIconColor={theme.tint4}
-                    leftIcon={require('assets/ic-help-24.png')}
+                    leftIcon={require('assets/ic-help-fill-24.png')}
                     text="Ask for help"
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />

@@ -228,7 +228,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             <ZListItemGroup header="Members" counter={room.membersCount}>
                 <ZListItem
                     text="Add members"
-                    leftIcon={require('assets/ic-invite-24.png')}
+                    leftIcon={require('assets/ic-add-24.png')}
                     onPress={handleAddMember}
                 />
 

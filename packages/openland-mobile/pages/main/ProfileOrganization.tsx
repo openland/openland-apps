@@ -344,7 +344,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             >
                 {organization.isMine && (
                     <ZListItem
-                        leftIcon={require('assets/ic-invite-24.png')}
+                        leftIcon={require('assets/ic-add-24.png')}
                         text="Add members"
                         onPress={handleAddMember}
                     />
