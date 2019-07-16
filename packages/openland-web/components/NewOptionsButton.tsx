@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -13,8 +12,10 @@ import { makeActionable } from 'openland-x/Actionable';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useWithWidth } from '../hooks/useWithWidth';
+import XPopper from 'openland-x/XPopper';
+import { showCreateGroupModal } from 'openland-web/fragments/group/showCreateGroupModal';
+import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (
     <XView
@@ -133,7 +134,7 @@ export const Item = ({
 export const NewOptionsMenu = () => (
     <>
         <Item
-            href="/mail/create"
+            onClick={() => showCreateGroupModal('group')}
             icon={
                 <IconWithBackground>
                     <CellRoomIcon />
@@ -143,7 +144,7 @@ export const NewOptionsMenu = () => (
             description="Chat where everyone can write"
         />
         <Item
-            href="/mail/create?channel=true"
+            onClick={() => showCreateGroupModal('channel')}
             icon={
                 <IconWithBackground>
                     <CreateChannelIcon />
@@ -153,7 +154,7 @@ export const NewOptionsMenu = () => (
             description="Chat where you write, others comment"
         />
         <Item
-            href="/mail/createCommunity"
+            onClick={() => showCreateOrganization('community')}
             icon={
                 <IconWithBackground>
                     <CreateCommunityIcon />
@@ -163,7 +164,7 @@ export const NewOptionsMenu = () => (
             description="A hub for chats for the same audience"
         />
         <Item
-            href="/mail/createOrganization"
+            onClick={() => showCreateOrganization('organization')}
             icon={
                 <IconWithBackground>
                     <OrganizationIcon />
@@ -208,7 +209,7 @@ export const NewOptionsButton = XMemo(() => {
     }
 
     return (
-        <XPolitePopper
+        <XPopper
             contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
             placement="bottom-end"
             show={show}
@@ -232,6 +233,6 @@ export const NewOptionsButton = XMemo(() => {
             {/*>*/}
             {/*    <NewButton onClick={toggle} />*/}
             {/*</XShortcuts>*/}
-        </XPolitePopper>
+        </XPopper>
     );
 });

@@ -5,18 +5,18 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { CoverUpload } from './CoverUpload';
-import { ExplorePeople } from '../../../fragments/discover/components/ExplorePeople';
+import { CoverUpload } from '../../pages/main/mail/CoverUpload';
+import { ExplorePeople } from '../discover/components/ExplorePeople';
 import { SearchPeopleBox } from './SearchPeopleBox';
 import { useClient } from 'openland-web/utils/useClient';
-import { OrganizationsList } from './OrganizationsList';
+import { OrganizationsList } from '../../pages/main/mail/OrganizationsList';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SelectWithDropdown, SelectWithDropdownOption } from './SelectWithDropdown';
-import { LeaveAndDeleteModal } from './LeaveAndDeleteModal';
+import { SelectWithDropdown, SelectWithDropdownOption } from '../../pages/main/mail/SelectWithDropdown';
 import { InputField } from 'openland-web/components/InputField';
 import { XTextArea } from 'openland-x/XTextArea';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
+import { XModalController } from 'openland-x/showModal';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -89,17 +89,6 @@ const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }
                         </XView>
                         <span>Back</span>
                     </XView>
-                )}
-                {showLeaveModal && (
-                    <LeaveAndDeleteModal
-                        chatTypeStr={chatTypeStr}
-                        redirectPath={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                    />
-                )}
-                {!showLeaveModal && (
-                    <CloseModalTarget
-                        path={entityKind === EntityKind.COMMUNITY ? '/discover' : '/mail'}
-                    />
                 )}
             </XView>
             <XView
@@ -185,11 +174,12 @@ const AddMembers = ({
 };
 
 interface CreateEntityProps {
-    myId: string;
-    myOrgId: string;
+    myId?: string;
+    myOrgId?: string;
     inOrgId?: string;
     entityKind: EntityKind;
     selectOptions?: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
+    ctx: XModalController;
 }
 
 export const CreateEntity = ({
@@ -198,6 +188,7 @@ export const CreateEntity = ({
     entityKind,
     inOrgId,
     selectOptions,
+    ctx,
 }: CreateEntityProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -254,7 +245,9 @@ export const CreateEntity = ({
             });
 
             const roomId: string = returnedData.room.id as string;
-            router.replace('/mail/' + roomId);
+
+            // TODO: Navigate
+            ctx.hide();
         } else {
             const isCommunity = entityKind === EntityKind.COMMUNITY;
 
@@ -278,8 +271,8 @@ export const CreateEntity = ({
 
             await client.refetchAccount();
 
-            window.location.href =
-                (isCommunity ? '/directory/c/' : '/directory/o/') + res.organization.id;
+            // TODO: Navigate
+            ctx.hide();
         }
     };
 
@@ -299,7 +292,10 @@ export const CreateEntity = ({
 
     const onSubmit = () =>
         form.doAction(async () => {
-            let membersIds: string[] = [myId];
+            let membersIds: string[] = [];
+            if (myId) {
+                membersIds.push(myId);
+            }
 
             if (selectedUsers) {
                 selectedUsers.forEach((l, v) => {
@@ -319,9 +315,15 @@ export const CreateEntity = ({
 
     const onSkip = () =>
         form.doAction(async () => {
-            await doSubmit({
-                membersToAdd: [myId],
-            });
+            if (myId) {
+                await doSubmit({
+                    membersToAdd: [myId],
+                });
+            } else {
+                await doSubmit({
+                    membersToAdd: [],
+                });
+            }
         });
 
     const handleChatTypeChange = (data: SharedRoomKind) => {
