@@ -18,7 +18,7 @@ import { PerfViewer } from 'openland-web/perf/PerfViewer';
 import {
     DeleteUrlAugmentationComponent,
     DeleteMessageComponent,
-} from 'openland-web/fragments/chat/MessengerRootComponent';
+} from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { CacheComponent } from './CacheComponent';
 
 export const OrganizationProfileContainer = Glamorous.div({
