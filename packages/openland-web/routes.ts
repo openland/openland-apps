@@ -171,13 +171,8 @@ routes.add('/mail', '/unicorn/index');
 routes.add('/mail/', '/unicorn/index');
 routes.add('/mail/:conversationId', '/unicorn/index');
 routes.add('/mail/:conversationId/', '/unicorn/index');
-
-//
-// Notifications
-//
-
-routes.add('/notifications/comments', '/main/mail/root');
-routes.add('/notifications/comments/', '/main/mail/root');
+routes.add('/notifications', '/unicorn/index');
+routes.add('/notifications/', '/unicorn/index');
 
 //
 // UI

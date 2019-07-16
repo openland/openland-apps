@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StackRouter, StackRouterContext } from './StackRouter';
 import { PageLayout } from './PageLayout';
+import { UnicornContext } from './UnicornContext';
 
 const PageAnimator = React.memo((props: {
     children?: any,
@@ -48,6 +49,9 @@ const PageAnimator = React.memo((props: {
 type AnimationAction = {
     type: 'push';
     key: string;
+    query: any;
+    id?: string;
+    path: string;
     component: any;
 } | {
     type: 'pop';
@@ -66,6 +70,9 @@ type AnimationState = {
     pages: {
         key: string;
         component: any;
+        path: string;
+        query: any;
+        id?: string;
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
 };
@@ -75,7 +82,7 @@ function animationReducer(
     action: AnimationAction
 ): AnimationState {
     if (action.type === 'push') {
-        return { pages: [...state.pages, { key: action.key, component: action.component, state: 'mounting' }] };
+        return { pages: [...state.pages, { key: action.key, path: action.path, query: action.query, id: action.id, component: action.component, state: 'mounting' }] };
     } else if (action.type === 'pop') {
         return {
             pages: state.pages.map((v, i) => {
@@ -133,6 +140,19 @@ function animationReducer(
     }
 }
 
+const PageComponent = React.memo((props: { component: any, path: string, query: any, id?: string }) => {
+    let ctx = React.useMemo(() => ({
+        path: props.path,
+        query: props.query,
+        id: props.id
+    }), []);
+    return (
+        <UnicornContext.Provider value={ctx}>
+            {props.component}
+        </UnicornContext.Provider>
+    );
+});
+
 export const StackLayout = React.memo((props: { router: StackRouter, className?: string }) => {
     let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
     React.useEffect(() => { return props.router.addListener(dispatch); }, []);
@@ -142,7 +162,7 @@ export const StackLayout = React.memo((props: { router: StackRouter, className?:
             <div key="content" className={props.className} ref={props.router.ref}>
                 {state.pages.map((v) => (
                     <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} router={props.router}>
-                        {v.component}
+                        <PageComponent component={v.component} query={v.query} id={v.id} path={v.path} />
                     </PageAnimator>
                 ))}
             </div>

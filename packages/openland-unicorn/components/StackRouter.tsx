@@ -2,15 +2,18 @@ import * as React from 'react';
 import uuid from 'uuid';
 import { URouting } from 'openland-unicorn/URouting';
 import { NotFound } from 'openland-unicorn/NotFound';
+import { string } from 'prop-types';
 
 export interface StackItems {
     key: string;
     path: string;
+    query: any;
+    id?: string;
     component: any;
 }
 
 export type StackRouterAction =
-    { type: 'push', key: string, component: any } |
+    { type: 'push', key: string, component: any, query: any, id?: string, path: string; } |
     { type: 'pop', key: string };
 
 export class StackRouter {
@@ -34,18 +37,28 @@ export class StackRouter {
         // Push page to stack
         let ex = this.routing.resolve(path);
         let component: any;
+        let query: any = {};
+        let id: string | undefined;
         if (!ex) {
             console.warn('Unable to resolve component for ' + path);
             component = <NotFound />;
         } else {
             let Component = ex.route.factory();
+            query = ex.params;
+            let keys = Object.keys(query);
+            if (keys.length === 1) {
+                let id2 = query[keys[0]];
+                if (typeof id2 === 'string') {
+                    id = id2;
+                }
+            }
             component = <Component />;
         }
         let key = uuid();
 
-        this.pages.push({ path, key, component });
+        this.pages.push({ path, key, query, id, component });
         for (let l of this._listeners) {
-            l({ type: 'push', key, component });
+            l({ type: 'push', key, component, query, id, path });
         }
     }
 
@@ -64,7 +77,7 @@ export class StackRouter {
         }
     }
 
-    addListener = (handler: (action: { type: 'push', key: string, component: any } | { type: 'pop', key: string }) => void) => {
+    addListener = (handler: (action: { type: 'push', key: string, component: any, query: any, id?: string, path: string; } | { type: 'pop', key: string }) => void) => {
         this._listeners.push(handler);
         return () => {
             this._listeners.splice(this._listeners.indexOf(handler), 1);
