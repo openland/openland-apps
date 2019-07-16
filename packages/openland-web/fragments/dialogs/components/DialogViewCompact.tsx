@@ -18,7 +18,7 @@ export const DialogViewCompact = React.memo(
 
         let path = '/mail/' + dialog.key;
         if (dialog.isOrganization) {
-            path = '/mail/o/' + dialog.key;
+            path = '/' + dialog.key;
         }
 
         return (
