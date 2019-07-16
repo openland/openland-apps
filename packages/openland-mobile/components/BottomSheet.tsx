@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Modalize from 'react-native-modalize';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -7,31 +7,42 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
+import { SDevice } from 'react-native-s/SDevice';
 
+export interface BottomSheetActions {
+    hide: () => void; 
+    show: () => void;
+}
 interface BuildConfig {
-    view?: () => React.ReactElement;
-    cancelButton?: boolean;
+    view: (actions: BottomSheetActions) => React.ReactElement;
+    cancelable?: boolean;
 }
 
 interface Modal extends BuildConfig {
     key: string;
+    actions: BottomSheetActions;
 }
 
 interface BottomSheetProviderProps {
     theme: ThemeGlobal;
-    safeArea: ASSafeArea;
 }
 
 interface BottomSheetProviderState {
     modals: Modal[];
 }
 
-const styles = StyleSheet.create({
+let provider: BottomSheetProviderComponent;
 
-});
+export function showBottomSheet(
+    view: (actions: BottomSheetActions) => React.ReactElement, 
+    { cancelable = true }: { cancelable?: boolean; } = {}
+) {
+    if (provider) {
+        provider.create({ view, cancelable }).show();
+    }
+}
 
-export class BottomSheetProviderComponent extends React.Component<
+class BottomSheetProviderComponent extends React.Component<
     BottomSheetProviderProps,
     BottomSheetProviderState
 > {
@@ -39,7 +50,6 @@ export class BottomSheetProviderComponent extends React.Component<
     state = { modals: [] };
 
     componentDidMount() {
-        // tslint:disable-next-line: no-use-before-declare
         provider = this;
     }
 
@@ -58,30 +68,27 @@ export class BottomSheetProviderComponent extends React.Component<
         }, 1);
     }
 
-    build = (config: BuildConfig) => {
+    create = (config: BuildConfig) => {
         const { modals } = this.state;
 
-        const modal = { 
-            key: randomKey(), 
-            view: config.view
+        const key = randomKey();
+        const actions = {
+            show: () => this.show(key),
+            hide: () => this.hide(key),
         };
+
+        const modal = { key, actions, ...config };
 
         this.setState({
-            modals: [...modals, modal],
+            modals: [...modals,  modal],
         });
         
-        return {
-            show: () => this.show(modal),
-            hide: () => this.hide(modal),
-        };
+        return actions;
     }
 
-    private show = (modal: Modal) => {
+    private show = (key: string) => {
         setTimeout(() => {
-            const modalRef = this._refs.find(ref => ref.key === modal.key);
-
-            console.log(this._refs);
-
+            const modalRef = this._refs.find(ref => ref.key === key);
             if (!modalRef || !modalRef.current) {
                 return;
             }
@@ -90,8 +97,8 @@ export class BottomSheetProviderComponent extends React.Component<
         }, 1);
     }
 
-    hide = (modal: Modal) => {
-        const modalRef = this._refs.find(ref => ref.key === modal.key);
+    hide = (key: string) => {
+        const modalRef = this._refs.find(ref => ref.key === key);
         if (!modalRef || !modalRef.current) {
             return;
         }
@@ -100,19 +107,17 @@ export class BottomSheetProviderComponent extends React.Component<
     }
 
     renderFooter = (modal: Modal) => () => {
-        const { safeArea } = this.props;
-
-        if (modal.cancelButton === false) {
+        if (modal.cancelable === false) {
             return <View />;
         }
 
         return (
-            <View style={{ padding: 10, marginBottom: 20, paddingHorizontal: 16 }}>
+            <View paddingVertical={15} paddingHorizontal={16} paddingBottom={SDevice.safeArea.bottom}>
                 <ZRoundedButton
                     title={'Cancel'}
                     size="large"
                     style="secondary"
-                    onPress={() => this.hide(modal)}
+                    onPress={() => this.hide(modal.key)}
                 />
             </View>
         );
@@ -150,8 +155,8 @@ export class BottomSheetProviderComponent extends React.Component<
                 handleStyle={handleStyle}
                 FooterComponent={this.renderFooter(modal)}
             >
-                <View style={{ paddingTop: 30 }}>
-                    {modal.view && modal.view()}
+                <View paddingTop={20} paddingBottom={modal.cancelable === false ? SDevice.safeArea.bottom : 0}>
+                    {modal.view(modal.actions)}
                 </View>
             </Modalize>
         ));
@@ -160,15 +165,6 @@ export class BottomSheetProviderComponent extends React.Component<
 
 export const BottomSheetProvider = XMemo(() => {
     const theme = React.useContext(ThemeContext);
-    const safeArea = React.useContext(ASSafeAreaContext);
 
-    return <BottomSheetProviderComponent theme={theme} safeArea={safeArea} />;
+    return <BottomSheetProviderComponent theme={theme} />;
 });
-
-let provider: BottomSheetProviderComponent;
-
-export function showBottomSheet(view: () => React.ReactElement) {
-    if (provider) {
-        provider.build({ view }).show();
-    }
-}

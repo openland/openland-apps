@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';
 import { ZRoundedButton } from './ZRoundedButton';
+import { showBottomSheet, BottomSheetActions } from './BottomSheet';
+import { isPad } from 'openland-mobile/pages/Root';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -48,42 +50,54 @@ export class ActionSheetBuilder {
         return this;
     }
 
-    show() {
-        showSheetModal((ctx) => {
-            return (
-                <View flexDirection="column" alignItems="stretch">
-                    {this._items.map((a, i) => (
-                        <>
-                            {a.__typename === 'ActionItem' && (
-                                <ZListItem
-                                    key={i + '-ac'}
-                                    leftIcon={a.icon}
-                                    appearance={a.distructive ? 'danger' : 'default'}
-                                    text={a.name}
-                                    small={true}
-                                    onPress={() => { ctx.hide(); a.callback(); }}
-                                />
-                            )}
-                            {a.__typename === 'ViewItem' && (
-                                <View key={i + '-view'}>
-                                    {a.view(ctx)}
-                                </View>
-                            )}
-                        </>
-                    ))}
-                    {this._cancelable && (
-                        <View margin={16}>
-                            <ZRoundedButton
-                                size="large"
-                                title="Cancel"
-                                style="secondary-inverted"
-                                onPress={() => { ctx.hide(); }}
+    renderItems = (ctx: ZModalController | BottomSheetActions) => {
+        return (
+            <> 
+                {this._items.map((a, i) => (
+                    <>
+                        {a.__typename === 'ActionItem' && (
+                            <ZListItem
+                                key={i + '-ac'}
+                                leftIcon={a.icon}
+                                appearance={a.distructive ? 'danger' : 'default'}
+                                text={a.name}
+                                small={true}
+                                onPress={() => { ctx.hide(); a.callback(); }}
                             />
-                        </View>
-                    )}
-                </View>
-            );
-        });
+                        )}
+                        {a.__typename === 'ViewItem' && (
+                            <View key={i + '-view'}>
+                                {a.view(ctx)}
+                            </View>
+                        )}
+                    </>
+                ))} 
+            </>
+        );
+    }
+
+    show() {
+        if (isPad) {
+            showSheetModal((ctx) => {
+                return (
+                    <View flexDirection="column" alignItems="stretch">
+                        {this.renderItems(ctx)}
+                        {this._cancelable && (
+                            <View margin={16}>
+                                <ZRoundedButton
+                                    size="large"
+                                    title="Cancel"
+                                    style="secondary-inverted"
+                                    onPress={() => { ctx.hide(); }}
+                                />
+                            </View>
+                        )}
+                    </View>
+                );
+            });
+        } else {
+            showBottomSheet(this.renderItems, { cancelable: this._cancelable });
+        }
     }
 }
 

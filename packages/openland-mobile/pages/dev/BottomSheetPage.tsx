@@ -8,41 +8,23 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 export const BottomSheet = (props: PageProps) => (
     <SScrollView>
         <SHeader title={'Bottom Sheet'} />
         <View alignItems={'center'}>
-            <Text>Скоро тут что-то будет</Text>
-
             <View marginVertical={20}>
                 <ZRoundedButton 
-                    title={'Open sheet'}
+                    title={'Open bottom sheet'}
                     onPress={() => {
-                        showBottomSheet(() => (
-                            <ZListItemGroup>
-                                <ZListItem
-                                    leftIcon={require('assets/ic-header-bell-24.png')}
-                                    small={true}
-                                    text="Open bottom sheet again"
-                                    onPress={() => {
-                                        showBottomSheet(() => (<Text>123</Text>));
-                                    }}
-                                />
-                                <ZListItem
-                                    leftIcon={require('assets/ic-header-bell-24.png')}
-                                    small={true}
-                                    text="Invate friends"
-                                    onPress={() => console.log('')}
-                                />
-                                <ZListItem
-                                    leftIcon={require('assets/ic-header-bell-24.png')}
-                                    small={true}
-                                    text="Leave and delete"
-                                    onPress={() => console.log('')}
-                                />
-                            </ZListItemGroup>
-                        ));
+                        let builder = new ActionSheetBuilder();
+
+                        builder.action('Share', () => console.log(), false, require('assets/ic-header-share-24.png'));
+
+                        builder.action('Save to Gallery' , () => console.log(), false, require('assets/ic-download-24.png'));
+
+                        builder.show();
                     }}
                 />
             </View>
