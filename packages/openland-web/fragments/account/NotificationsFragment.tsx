@@ -4,18 +4,18 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { XButton } from 'openland-x/XButton';
-import { RadioButtonsSelect } from '../../pages/account/components/RadioButtonsSelect';
+import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import {
     EmailFrequency,
     CommentsNotificationDelivery,
     NotificationMessages,
 } from 'openland-api/Types';
-import { FormSection } from '../../pages/account/components/FormSection';
-import { FormWrapper } from '../../pages/account/components/FormWrapper';
-import { FormFooter } from '../../pages/account/components/FormFooter';
+import { FormSection } from './components/FormSection';
+import { FormWrapper } from './components/FormWrapper';
+import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 
-export const Notifications = () => {
+export const NotificationsFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
     const settings = client.useSettings();
@@ -125,4 +125,4 @@ export const Notifications = () => {
             </FormWrapper>
         </>
     );
-};
+});

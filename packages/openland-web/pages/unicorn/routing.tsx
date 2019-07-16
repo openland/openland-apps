@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { URouting } from 'openland-unicorn/URouting';
-import { ProfileTab } from 'openland-web/fragments/account/ProfileTab';
-import { Notifications } from 'openland-web/fragments/account/Notifications';
-import { AppearanceTab } from 'openland-web/fragments/account/AppearanceTab';
-import { ShortnameFragment } from 'openland-web/fragments/profile/ShortnameFragment';
+import { ShortnameFragment } from 'openland-web/fragments/shortname/ShortnameFragment';
 import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
+import { ProfileFragment } from 'openland-web/fragments/account/ProfileFragment';
+import { NotificationFragment } from 'openland-api/queries/MyNotificationsCenter';
+import { AppearanceFragment } from 'openland-web/fragments/account/AppearanceFragment';
 
 const routing = new URouting();
 
@@ -18,17 +18,17 @@ routing.addRoute('/mail/:conversationId', () =>
 );
 
 // Discover
-routing.addRoute('/discover/recommended', () => ProfileTab);
-routing.addRoute('/discover/groups', () => ProfileTab);
-routing.addRoute('/discover/communities', () => ProfileTab);
-routing.addRoute('/discover/people', () => ProfileTab);
-routing.addRoute('/discover/organizations', () => ProfileTab);
-routing.addRoute('/discover/explore', () => ProfileTab);
+routing.addRoute('/discover/recommended', () => ProfileFragment);
+routing.addRoute('/discover/groups', () => ProfileFragment);
+routing.addRoute('/discover/communities', () => ProfileFragment);
+routing.addRoute('/discover/people', () => ProfileFragment);
+routing.addRoute('/discover/organizations', () => ProfileFragment);
+routing.addRoute('/discover/explore', () => ProfileFragment);
 
 // Settings
-routing.addRoute('/settings/profile', () => ProfileTab);
-routing.addRoute('/settings/notifications', () => Notifications);
-routing.addRoute('/settings/appearance', () => AppearanceTab);
+routing.addRoute('/settings/profile', () => ProfileFragment);
+routing.addRoute('/settings/notifications', () => NotificationFragment);
+routing.addRoute('/settings/appearance', () => AppearanceFragment);
 
 // Profile
 routing.addRoute('/:shortname', () => ShortnameFragment);

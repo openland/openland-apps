@@ -138,11 +138,11 @@ export const Organizations = React.memo(() => {
                         image={organization.photo}
                         text={organization.name}
                         isPrimary={organization.isPrimary}
-                        // onClick={() =>
-                        //     // controller.push(
-                        //     //     <OrganizationProfile organizationId={organization.id} hideBack />,
-                        //     // )
-                        // }
+                    // onClick={() =>
+                    //     // controller.push(
+                    //     //     <OrganizationProfile organizationId={organization.id} hideBack />,
+                    //     // )
+                    // }
                     />
                 );
             })}
@@ -153,61 +153,80 @@ export const Organizations = React.memo(() => {
 export const AccountFragment = React.memo(() => {
     // const controller = useController();
     return (
-        <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-            <UserProfileCard />
-            <UListItem
-                text="Invite Friends"
-                icon={<InviteFriendsIcon />}
-                onClick={() => {
-                    showModalBox({ fullScreen: true }, ctx => (
-                        <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                            <InviteFriendsFragment asModalContent modalContext={ctx} />
-                        </XScrollView3>
-                    ));
-                }}
-            />
-            <UListHeader text="Settings" />
-            <UListItem
-                text="Notifications"
-                icon={<NotificationsIcon />}
-                path="/settings/notifications"
-                // onClick={() =>
-                //     controller.push(
-                //         <XScrollView3 flexGrow={1} flexShrink={1}>
-                //             <Notifications />
-                //         </XScrollView3>,
-                //     )
-                // }
-            />
-            <UListItem
-                text="Appearance"
-                icon={<AppearanceIcon />}
-                path="/settings/appearance"
-                // onClick={() =>
-                //     controller.push(
-                //         <XScrollView3 flexGrow={1} flexShrink={1}>
-                //             <AppearanceTab />
-                //         </XScrollView3>,
-                //     )
-                // }
-            />
-            <UListItem
-                text="Download Apps"
-                icon={<DownloadAppsIcon />}
-                // onClick={() => controller.push(<NativeAppsModal />)}
-            />
-            <UListItem
-                text="Apps"
-                icon={<DownloadAppsIcon />}
-                // onClick={() => controller.push(<AppsFragment />)}
-            />
-            <UListHeader text="Organizations" />
-
-            <XView position="relative" flexDirection="column">
-                <React.Suspense fallback={<XLoader loading={true} />}>
-                    <Organizations />
-                </React.Suspense>
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <XView
+                height={56}
+                paddingHorizontal={16}
+                paddingVertical={12}
+                backgroundColor="#fff"
+                fontSize={24}
+                lineHeight="32px"
+                fontWeight="600"
+                color={ThemeLightBlue.foregroundPrimary}
+                flexDirection="row"
+            >
+                <XView flexGrow={1} minWidth={0} flexBasis={0}>
+                    Account
+                </XView>
             </XView>
-        </XScrollView3>
+            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
+                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                    <UserProfileCard />
+                    <UListItem
+                        text="Invite Friends"
+                        icon={<InviteFriendsIcon />}
+                        onClick={() => {
+                            showModalBox({ fullScreen: true }, ctx => (
+                                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                                    <InviteFriendsFragment asModalContent modalContext={ctx} />
+                                </XScrollView3>
+                            ));
+                        }}
+                    />
+                    <UListHeader text="Settings" />
+                    <UListItem
+                        text="Notifications"
+                        icon={<NotificationsIcon />}
+                        path="/settings/notifications"
+                    // onClick={() =>
+                    //     controller.push(
+                    //         <XScrollView3 flexGrow={1} flexShrink={1}>
+                    //             <Notifications />
+                    //         </XScrollView3>,
+                    //     )
+                    // }
+                    />
+                    <UListItem
+                        text="Appearance"
+                        icon={<AppearanceIcon />}
+                        path="/settings/appearance"
+                    // onClick={() =>
+                    //     controller.push(
+                    //         <XScrollView3 flexGrow={1} flexShrink={1}>
+                    //             <AppearanceTab />
+                    //         </XScrollView3>,
+                    //     )
+                    // }
+                    />
+                    <UListItem
+                        text="Download Apps"
+                        icon={<DownloadAppsIcon />}
+                    // onClick={() => controller.push(<NativeAppsModal />)}
+                    />
+                    <UListItem
+                        text="Apps"
+                        icon={<DownloadAppsIcon />}
+                    // onClick={() => controller.push(<AppsFragment />)}
+                    />
+                    <UListHeader text="Organizations" />
+
+                    <XView position="relative" flexDirection="column">
+                        <React.Suspense fallback={<XLoader loading={true} />}>
+                            <Organizations />
+                        </React.Suspense>
+                    </XView>
+                </XScrollView3>
+            </XView>
+        </XView>
     );
 });

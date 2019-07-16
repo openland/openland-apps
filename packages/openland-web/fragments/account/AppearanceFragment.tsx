@@ -2,11 +2,11 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { RadioButtonsSelect } from '../../pages/account/components/RadioButtonsSelect';
+import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import { XButton } from 'openland-x/XButton';
-import { FormSection } from '../../pages/account/components/FormSection';
-import { FormWrapper } from '../../pages/account/components/FormWrapper';
-import { FormFooter } from '../../pages/account/components/FormFooter';
+import { FormSection } from './components/FormSection';
+import { FormWrapper } from './components/FormWrapper';
+import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 
 enum AppearanceOptions {
@@ -14,7 +14,7 @@ enum AppearanceOptions {
     HIGHLIGHTED = 'HIGHLIGHTED',
 }
 
-export const AppearanceTab = () => {
+export const AppearanceFragment = React.memo(() => {
     const form = useForm();
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',
@@ -68,4 +68,4 @@ export const AppearanceTab = () => {
             </FormWrapper>
         </>
     );
-};
+});
