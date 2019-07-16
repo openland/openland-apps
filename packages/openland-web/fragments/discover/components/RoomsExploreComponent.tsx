@@ -4,9 +4,9 @@ import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
     SearchCardsOrShowProfile,
     ComponentWithSort,
-} from 'openland-web/pages/main/discover/components/DiscoverNavigation';
+} from 'openland-web/fragments/discover/components/DiscoverNavigation';
 import { useClient } from 'openland-web/utils/useClient';
-import { EmptySearchBlock } from 'openland-web/pages/main/discover/components/EmptySearchBlock';
+import { EmptySearchBlock } from './EmptySearchBlock';
 
 interface WithChatSearchRoomsProps {
     customButton?: any;

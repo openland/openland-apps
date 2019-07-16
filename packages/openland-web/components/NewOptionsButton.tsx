@@ -40,7 +40,6 @@ export const NotificationsButton = makeActionable<{ onClick: () => void }>(() =>
     const client = useClient();
     const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({ fetchPolicy: 'network-only' });
 
-    let router = React.useContext(XRouterContext)!;
     return (
         <XView
             width={32}
@@ -51,11 +50,7 @@ export const NotificationsButton = makeActionable<{ onClick: () => void }>(() =>
             justifyContent="center"
             borderRadius={32}
             hoverBackgroundColor="#F0F2F5"
-            onClick={() => {
-                if (router) {
-                    router.push(`/notifications/comments`);
-                }
-            }}
+            path="/notifications"
         >
             <NotificationButton
                 haveNotification={notificationsCenter ? !!notificationsCenter.myNotificationCenter.unread : false}
