@@ -4,10 +4,10 @@ import { ShortnameFragment } from 'openland-web/fragments/shortname/ShortnameFra
 import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { ProfileFragment } from 'openland-web/fragments/account/ProfileFragment';
-import { NotificationFragment } from 'openland-api/queries/MyNotificationsCenter';
 import { AppearanceFragment } from 'openland-web/fragments/account/AppearanceFragment';
 import { RecommendedFragment } from 'openland-web/fragments/discover/RecommendedFragment';
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
+import { NotificationsFragment } from 'openland-web/fragments/account/NotificationsFragment';
 
 const routing = new URouting();
 
@@ -25,7 +25,7 @@ routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 
 // Settings
 routing.addRoute('/settings/profile', () => ProfileFragment);
-routing.addRoute('/settings/notifications', () => NotificationFragment);
+routing.addRoute('/settings/notifications', () => NotificationsFragment);
 routing.addRoute('/settings/appearance', () => AppearanceFragment);
 
 // Profile
