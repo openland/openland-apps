@@ -50,7 +50,7 @@ import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { showLeaveConfirmation } from 'openland-web/fragments/chat/showLeaveConfirmation';
+import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
 import { EditCommunityModal } from './EditCommunityModal';
 

@@ -31,16 +31,6 @@ interface MessengerComponentLoaderProps {
     room: RoomChat_room | null;
 }
 
-const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
-    const isActive = React.useContext(IsActivePoliteContext).useValue();
-
-    if (!isActive) {
-        return null;
-    }
-
-    return <XDocumentHead title={title} />;
-};
-
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
 > {
@@ -88,7 +78,6 @@ class MessagengerFragmentInner extends React.PureComponent<
 
         return (
             <>
-                <DocumentHeadTitleUpdater title={title} />
                 <XView
                     flexGrow={1}
                     flexShrink={1}

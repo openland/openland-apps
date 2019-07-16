@@ -14,7 +14,7 @@ import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
 import { useWithWidth } from '../hooks/useWithWidth';
 import XPopper from 'openland-x/XPopper';
-import { showCreateGroupModal } from 'openland-web/fragments/group/showCreateGroupModal';
+import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
 import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
 
 const NewButton = makeActionable<{ onClick: () => void }>(props => (

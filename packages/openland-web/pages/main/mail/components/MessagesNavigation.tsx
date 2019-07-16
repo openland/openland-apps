@@ -4,7 +4,7 @@ import { tabs, tabsT } from '../tabs';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/ConversationContainerWrapper';
-import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
+import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/components/ChatHeaderView';
 import { Navigation } from 'openland-web/components/Navigation';
 import { NewOptionsButton, NotificationsButton } from 'openland-web/components/NewOptionsButton';
 import { XMemo } from 'openland-y-utils/XMemo';

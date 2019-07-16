@@ -370,7 +370,6 @@ const ForwardIconClassName = css`
 `;
 
 export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
-    const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
     const attach = attachments[0];
@@ -393,7 +392,6 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                 height={60}
                 flexShrink={0}
                 flexGrow={1}
-                paddingHorizontal={isMobile ? 20 : 110}
                 alignItems="center"
                 flexDirection="row"
                 justifyContent="space-between"

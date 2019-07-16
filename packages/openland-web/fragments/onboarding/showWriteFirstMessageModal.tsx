@@ -8,16 +8,17 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { useClient } from 'openland-web/utils/useClient';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
-import { setDraftMessage } from './components/MessageComposeComponent/hooks/useDraft/DraftStore';
+import { setDraftMessage } from '../chat/components/MessageComposeComponent/hooks/useDraft/DraftStore';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const textAlignClassName = css`
     text-align: center;
 `;
 
-export const WriteFirstMessageModal = () => {
+const WriteFirstMessageModal = () => {
     const modal = React.useContext(XModalBoxContext);
     const router = React.useContext(XRouterContext)!;
     const isMobile = useIsMobile() || undefined;
@@ -123,3 +124,11 @@ export const WriteFirstMessageModal = () => {
         </XView>
     );
 };
+
+export function showWriteFirstMessageModal() {
+    showModalBox({ fullScreen: true }, () => (
+        <XScrollView3 flexGrow={1} flexShrink={1}>
+            <WriteFirstMessageModal />
+        </XScrollView3>
+    ));
+}

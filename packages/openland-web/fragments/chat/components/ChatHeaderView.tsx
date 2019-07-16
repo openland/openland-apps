@@ -10,10 +10,10 @@ import {
 } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/fragments/chat/messenger/MessagesStateContext';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
-import { HeaderTitle } from './components/HeaderTitle';
-import { HeaderSubtitle } from './components/HeaderSubtitle';
-import { HeaderLastSeen } from './components/HeaderLastSeen';
-import { HeaderMenu, CallButton } from './components/HeaderMenu';
+import { HeaderTitle } from './HeaderTitle';
+import { HeaderSubtitle } from './HeaderSubtitle';
+import { HeaderLastSeen } from './HeaderLastSeen';
+import { HeaderMenu, CallButton } from './HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { UserInfoContext } from 'openland-web/components/UserInfo';

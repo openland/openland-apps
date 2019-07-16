@@ -6,7 +6,7 @@ import {
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
-import { EmptyBlock } from 'openland-web/fragments/chat/ChatEmptyComponent';
+import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { DataSourceRender, ScrollTo } from './DataSourceRender';
