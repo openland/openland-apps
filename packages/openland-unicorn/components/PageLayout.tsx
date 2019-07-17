@@ -107,31 +107,25 @@ export const PageLayout = (props: {
 
     React.useLayoutEffect(() => {
         if (props.state === 'mounting') {
-            ref.current!.style.transform = `translateX(${props.container.current!.clientWidth}px)`;
-        } else if (props.state === 'entering') {
             ref.current!.animate([
                 {
                     transform: `translateX(${props.container.current!.clientWidth}px)`
                 }, {
                     transform: `translateX(0px)`
-                },
-                {
-                    transform: `translateX(0px)`
                 }
-            ], { duration: 480, fill: 'forwards', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+        } else if (props.state === 'entering') {
+            // Nothing to do
         } else if (props.state === 'visible') {
-            ref.current!.style.transform = `translateX(0px)`;
+            // ref.current!.style.transform = `translateX(0px)`;
         } else if (props.state === 'exiting') {
             ref.current!.animate([
                 {
                     transform: `translateX(0px)`
                 }, {
                     transform: `translateX(${props.container.current!.clientWidth}px)`
-                },
-                {
-                    transform: `translateX(${props.container.current!.clientWidth}px)`
                 }
-            ], { duration: 480, fill: 'forwards', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
         }
     }, [props.state]);
 
