@@ -8,7 +8,7 @@ export const UGroupView = React.memo((props: { group: RoomShort_SharedRoom }) =>
 
     return (
         <UListItem
-            text={title}
+            title={title}
             description={membersCount ? plural(membersCount, ['member', 'members']) : undefined}
             avatar={{ photo, id, title }}
             useRadius={true}

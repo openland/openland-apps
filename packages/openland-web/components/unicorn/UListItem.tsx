@@ -38,7 +38,8 @@ const SelectableText = React.memo((props: XViewProps) => {
 });
 
 interface UListItemProps {
-    text: string;
+    title: string;
+    subtitle?: string;
     description?: string | null;
     descriptionColor?: string;
     icon?: any;
@@ -50,9 +51,10 @@ interface UListItemProps {
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { text, description, descriptionColor, icon, avatar, onClick, path, large, useRadius } = props;
+    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius } = props;
     const height = large ? 80 : (!!avatar ? 56 : 48);
     const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
+    const subtitleFont = TypeStyles.caption;
     const descriptionFont = large ? TypeStyles.densed : TypeStyles.caption;
 
     return (
@@ -79,9 +81,17 @@ export const UListItem = React.memo((props: UListItemProps) => {
             )}
 
             <XView flexDirection="column">
-                <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.contrastSpecial}>
-                    {text}
-                </SelectableText>
+                <XView flexDirection="row" alignItems="center">
+                    <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.contrastSpecial}>
+                        {title}
+                    </SelectableText>
+
+                    {!!subtitle && (
+                        <SelectableText {...subtitleFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial} marginLeft={8}>
+                            {subtitle}
+                        </SelectableText>
+                    )}
+                </XView>
 
                 {!!description && (
                     <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>

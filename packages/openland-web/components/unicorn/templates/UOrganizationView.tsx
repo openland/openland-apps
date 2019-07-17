@@ -8,7 +8,7 @@ export const UOrganizationView = React.memo((props: { organization: Organization
 
     return (
         <UListItem
-            text={name}
+            title={name}
             description={about}
             avatar={{ photo, id, title: name }}
             useRadius={true}

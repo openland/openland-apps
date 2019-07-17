@@ -157,23 +157,23 @@ export const AccountFragment = React.memo(() => {
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                     <UserProfileCard />
                     <UListItem
-                        text="Invite Friends"
+                        title="Invite Friends"
                         icon={<InviteFriendsIcon />}
                         path="/settings/invites"
                     />
                     <UListHeader text="Settings" />
                     <UListItem
-                        text="Notifications"
+                        title="Notifications"
                         icon={<NotificationsIcon />}
                         path="/settings/notifications"
                     />
                     <UListItem
-                        text="Appearance"
+                        title="Appearance"
                         icon={<AppearanceIcon />}
                         path="/settings/appearance"
                     />
                     <UListItem
-                        text="Download Apps"
+                        title="Download Apps"
                         icon={<DownloadIcon />}
                         path="/settings/download"
                     />
