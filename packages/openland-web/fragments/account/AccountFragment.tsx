@@ -6,6 +6,7 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
+import LeaveIcon from 'openland-icons/ic-leave.svg';
 import NotificationsIcon from 'openland-icons/notifications_icon.svg';
 import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
 import EditProfileIcon from 'openland-icons/ic-edit-profile.svg';
@@ -104,7 +105,6 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <XView
@@ -117,9 +117,23 @@ export const AccountFragment = React.memo(() => {
                 fontWeight="600"
                 color={ThemeDefault.foregroundPrimary}
                 flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>
                     Account
+                </XView>
+                <XView
+                    width={32}
+                    height={32}
+                    cursor="pointer"
+                    path="/auth/logout"
+                    borderRadius={32}
+                    alignItems="center"
+                    justifyContent="center"
+                    hoverBackgroundColor="#F0F2F5"
+                >
+                    <LeaveIcon />
                 </XView>
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">

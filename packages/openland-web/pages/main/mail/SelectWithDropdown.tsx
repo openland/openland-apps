@@ -2,15 +2,15 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 const DropdownItem = ({ title, label }: { title: string; label: string }) => {
     return (
         <XView flexDirection="column" marginTop={-3}>
-            <XView color="#1488f3" fontSize={12}>
+            <XView color="#676D7A" fontSize={13}>
                 {title}
             </XView>
-            <XView fontSize={14} color="#000" marginTop={-4}>
+            <XView fontSize={15} color="#171B1F" marginTop={-4}>
                 {label}
             </XView>
         </XView>
@@ -24,7 +24,7 @@ export interface SelectWithDropdownOption<T> {
     subtitle?: string;
 }
 
-const SelectGroupTypeClassName = css`
+const selectGroupTypeClassName = css`
     position: relative;
     cursor: pointer;
     & .Select-control > *,
@@ -47,16 +47,25 @@ const SelectGroupTypeClassName = css`
     }
 `;
 
+const selectGroupTypeLargeClassName = css`
+    & .Select-control {
+        height: 56px !important;
+        opacity: 0;
+    }
+`;
+
 export function SelectWithDropdown<T>({
     title,
     value,
     onChange,
     selectOptions,
+    size,
 }: {
     title: any;
     value: any;
     onChange: (data: T) => void;
     selectOptions: SelectWithDropdownOption<T>[];
+    size?: 'large';
 }) {
     const [innerValue, setInnerValue] = React.useState<SelectWithDropdownOption<T>>(
         selectOptions.find((item: SelectWithDropdownOption<T>) => item.value === value)!!,
@@ -78,7 +87,7 @@ export function SelectWithDropdown<T>({
     )!!;
 
     return (
-        <div className={SelectGroupTypeClassName}>
+        <div className={cx(selectGroupTypeClassName, !!size && selectGroupTypeLargeClassName)}>
             <XSelect
                 searchable={false}
                 clearable={false}

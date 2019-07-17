@@ -20,8 +20,8 @@ interface TextAreaStyledProps {
 
 let sizeStyles = styleResolver({
     large: {
-        fontSize: 16,
-        lineHeight: 1.3,
+        fontSize: 15,
+        lineHeight: '24px',
         paddingTop: 16,
         paddingLeft: 20,
         paddingRight: 20,
@@ -39,13 +39,13 @@ let sizeStyles = styleResolver({
 
 let titleStyles = styleResolver({
     large: {
-        top: 0,
-        lineHeight: '32px',
+        top: 10,
+        lineHeight: '18px',
         paddingLeft: 19,
         left: 0,
         height: 27,
         width: '100%',
-        fontSize: 16,
+        fontSize: 13,
     },
     default: {
         top: 0,
@@ -63,8 +63,7 @@ export const Title = Glamorous.div<{ format?: XTextArea; invalid?: boolean }>([
         pointerEvents: 'none',
         position: 'absolute',
         paddingRight: 3,
-        color: '#1488f3',
-        backgroundColor: '#F0F2F5',
+        color: '#676D7A',
         borderRadius: 10,
     },
     props => titleStyles(props.format),
@@ -128,7 +127,7 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
                   }
                 : {};
             return {
-                color: '#000',
+                color: '#171B1F',
                 backgroundColor: '#F0F2F5',
                 border: 'none',
                 paddingTop: 24,

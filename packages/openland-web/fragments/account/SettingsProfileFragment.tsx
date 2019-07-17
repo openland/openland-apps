@@ -12,11 +12,14 @@ import { InputField } from 'openland-web/components/InputField';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
-import { Page } from '../../../openland-unicorn/Page';
+import { Page } from 'openland-unicorn/Page';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import EditPhotoIcon from 'openland-icons/ic-edit-photo.svg';
 
 export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
+    const layout = useLayout();
 
     const profile = client.useProfile().profile!;
     const user = client.useProfile().user!;
@@ -73,14 +76,45 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
 
+    const avatarUploadComponent = (
+        <XView>
+            <XAvatarFormFieldComponent
+                {...avatarField.input}
+                size="small"
+                rounded
+                placeholder={{
+                    add: 'Add photo',
+                    change: 'Change Photo',
+                }}
+            />
+            <XView
+                position="absolute"
+                right={2}
+                bottom={2}
+                zIndex={2}
+                alignItems="center"
+                justifyContent="center"
+            >
+                <EditPhotoIcon />
+            </XView>
+        </XView>
+    );
+
     return (
         <Page>
             <FormWrapper title="Profile">
                 <XView flexDirection="row" flexGrow={1}>
                     <XView flexGrow={1}>
+                        {layout === 'mobile' && (
+                            <XView alignItems="center">{avatarUploadComponent}</XView>
+                        )}
                         <FormSection title="Info">
                             <XView marginBottom={16}>
-                                <InputField title={'First name'} field={firstNameField} size="large" />
+                                <InputField
+                                    title={'First name'}
+                                    field={firstNameField}
+                                    size="large"
+                                />
                             </XView>
                             <XView marginBottom={16}>
                                 <InputField
@@ -92,17 +126,21 @@ export const SettingsProfileFragment = React.memo(() => {
                             <XView marginBottom={16}>
                                 <SelectWithDropdown
                                     {...primaryOrganizationField.input}
+                                    size="large"
                                     title={'Primary organization'}
-                                    selectOptions={organizationsWithoutCommunity.map((org: any) => ({
-                                        value: org.id,
-                                        label: org.name,
-                                    }))}
+                                    selectOptions={organizationsWithoutCommunity.map(
+                                        (org: any) => ({
+                                            value: org.id,
+                                            label: org.name,
+                                        }),
+                                    )}
                                 />
                             </XView>
                             <XView marginBottom={16}>
                                 <XTextArea
                                     mode="modern"
                                     title="About"
+                                    size="large"
                                     {...aboutField.input}
                                     resize={false}
                                 />
@@ -139,17 +177,11 @@ export const SettingsProfileFragment = React.memo(() => {
                             />
                         </FormFooter>
                     </XView>
-                    <XView marginLeft={16} marginTop={48}>
-                        <XAvatarFormFieldComponent
-                            {...avatarField.input}
-                            size="default"
-                            rounded
-                            placeholder={{
-                                add: 'Add photo',
-                                change: 'Change Photo',
-                            }}
-                        />
-                    </XView>
+                    {layout === 'desktop' && (
+                        <XView marginLeft={16} marginTop={48}>
+                            {avatarUploadComponent}
+                        </XView>
+                    )}
                 </XView>
             </FormWrapper>
         </Page>

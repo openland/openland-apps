@@ -7,9 +7,12 @@ export const FormWrapper = ({ title, children }: { title: string; children: any 
         <XView
             marginTop={12}
             justifyContent="center"
-            alignSelf="stretch"
+            alignSelf="center"
             flexDirection="row"
             paddingBottom={40}
+            paddingHorizontal={16}
+            maxWidth={480}
+            width="100%"
         >
             <XView flexDirection="column" flexGrow={1}>
                 {/* <XView marginBottom={40}>
