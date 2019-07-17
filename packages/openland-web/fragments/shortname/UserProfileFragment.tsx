@@ -8,11 +8,12 @@ import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOr
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou } = user;
+    const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
 
     const buttons = (
         <>
@@ -48,6 +49,21 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 {!!primaryOrganization && (
                     <UOrganizationView organization={primaryOrganization} />
                 )}
+            </UListGroup>
+            <UListGroup header="Featured in" counter={user.chatsWithBadge.length}>
+                {chatsWithBadge.map((item, index) => (
+                    <UListItem
+                        avatar={{
+                            photo: item.chat.__typename === 'PrivateRoom' ? item.chat.user.photo : item.chat.photo,
+                            id: item.chat.id,
+                            title: item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title,
+                        }}
+                        title={item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title}
+                        description={item.badge.name}
+                        path={'/mail/' + item.chat.id}
+                        useRadius={true}
+                    />
+                ))}
             </UListGroup>
         </Page>
     );
