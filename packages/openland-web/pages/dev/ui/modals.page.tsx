@@ -90,7 +90,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="Room edit"
                             style="primary"
-                            onClick={() => showRoomEditModal(webInboxChat)}
+                            onClick={() => showRoomEditModal(webInboxChat.id, true)}
                         />
 
                         <XButton
@@ -102,7 +102,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="Add description"
                             style="primary"
-                            onClick={() => showAddDescriptionModal(webInboxChat)}
+                            onClick={() => showAddDescriptionModal(webInboxChat.id)}
                         />
 
                         <XButton
