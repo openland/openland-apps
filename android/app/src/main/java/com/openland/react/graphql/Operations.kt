@@ -1907,6 +1907,15 @@ private val ResolvedInviteSelector = obj(
                             )),
                         field("id","id", notNull(scalar("ID"))),
                         field("orgId","orgId", notNull(scalar("ID"))),
+                        field("organization","organization", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("about","about", scalar("String")),
+                                field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("membersCount","membersCount", notNull(scalar("Int"))),
+                                field("name","name", notNull(scalar("String"))),
+                                field("photo","photo", scalar("String"))
+                            )),
                         field("title","title", notNull(scalar("String")))
                     )),
                     inline("AppInvite", obj(
@@ -3502,7 +3511,7 @@ object Operations {
     val ResolvedInvite = object: OperationDefinition {
         override val name = "ResolvedInvite"
         override val kind = OperationKind.QUERY
-        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
+        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo}title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
         override val selector = ResolvedInviteSelector
     }
     val Room = object: OperationDefinition {

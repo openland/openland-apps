@@ -7,7 +7,7 @@ import { JoinComponent } from './join.page';
 import { AppJoinComponent } from './components/AppJoinComponent';
 import { XLoader } from 'openland-x/XLoader';
 
-export default withAppBase('Join', () => {
+export const ResolveInviteComponent = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
@@ -28,4 +28,8 @@ export default withAppBase('Join', () => {
     }
 
     return <XLoader loading={true} />;
+};
+
+export default withAppBase('Join', () => {
+    return <ResolveInviteComponent />;
 });

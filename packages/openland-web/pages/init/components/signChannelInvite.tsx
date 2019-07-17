@@ -70,11 +70,7 @@ export const InviteInfoInner = (props: any) => {
                     <Content>
                         {data.invite && (
                             <InviteLandingComponent
-                                noLogin={true}
-                                room={data.invite.room as any}
-                                invite={data.invite}
-                                inviteLink={variables.invite}
-                                signup={'/signup?redirect=' + encodeURIComponent(redirect)}
+                                signupRedirect={'/signup?redirect=' + encodeURIComponent(redirect)}
                             />
                         )}
                         {!data.invite && !loading && (

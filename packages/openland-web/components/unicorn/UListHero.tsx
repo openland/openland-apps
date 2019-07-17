@@ -24,13 +24,14 @@ const Score = (props: { value: number }) => (
 interface UListHeroProps {
     title: string;
     score?: number;
-    description?: string;
+    description?: string | JSX.Element;
     descriptionColor?: string;
     avatar?: { photo: string | null; id: string; title: string; };
+    buttons?: JSX.Element;
 }
 
 export const UListHero = (props: UListHeroProps) => {
-    const { title, score, description, descriptionColor, avatar } = props;
+    const { title, score, description, descriptionColor, avatar, buttons } = props;
 
     return (
         <XView
@@ -64,7 +65,7 @@ export const UListHero = (props: UListHeroProps) => {
                     </XView>
                 )}
             </XView>
-            <XView>buttons</XView>
+            {!!buttons && <XView flexDirection="row" alignItems="center">{buttons}</XView>}
         </XView>
     );
 };

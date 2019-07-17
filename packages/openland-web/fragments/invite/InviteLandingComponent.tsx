@@ -8,7 +8,7 @@ import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { delayForewer } from 'openland-y-utils/timer';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_invite_InviteInfo_organization, RoomFull_SharedRoom, SharedRoomMembershipStatus, RoomChat_room_SharedRoom } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -17,6 +17,8 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
+import { useUnicorn } from 'openland-unicorn/useUnicorn';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const RootClassName = css`
     position: relative;
@@ -225,14 +227,14 @@ const InviteByRow = ({
                     </Text>
                 </UserInfoWrapper>
             ) : (
-                <div style={{ height: 50 }} />
-            )}
+                    <div style={{ height: 50 }} />
+                )}
         </>
     );
 };
 
 type RoomInfoColumnT = {
-    photo: string;
+    photo: string | null;
     title: string;
     id: string;
     membersCount?: number | null;
@@ -241,13 +243,12 @@ type RoomInfoColumnT = {
     button: any;
 };
 
-const RoomInfoColumn = ({
+const EntityInfoColumn = ({
     photo,
     title,
     id,
     membersCount,
     description,
-    signup,
     button,
 }: RoomInfoColumnT) => {
     return (
@@ -286,11 +287,9 @@ const RoomInfoColumn = ({
                     <div className={textAlignCenter}>{description}</div>
                 </XView>
             )}
-            {!signup && (
-                <XView marginTop={36} marginBottom={40}>
-                    {button}
-                </XView>
-            )}
+            <XView marginTop={36} marginBottom={40}>
+                {button}
+            </XView>
         </XView>
     );
 };
@@ -335,9 +334,7 @@ export const InviteLandingComponentLayout = ({
     membersCount,
     description,
     invite,
-    inviteLink,
     noLogin,
-    signup,
     button,
 }: RoomInfoColumnT & {
     inviteLink?: string;
@@ -381,29 +378,16 @@ export const InviteLandingComponentLayout = ({
                         {`${whereToInvite} invitation`}
                     </XView>
                 )}
-                {!noLogin && (
-                    <XView
-                        zIndex={100}
-                        hoverCursor="pointer"
-                        height={52}
-                        flexDirection="row"
-                        marginRight={16}
-                        alignItems="center"
-                    >
-                        <ClosingCross />
-                    </XView>
-                )}
             </XView>
             <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
                 <InviteByRow invite={invite} chatTypeStr={whereToInvite} />
             </XView>
-            <RoomInfoColumn
+            <EntityInfoColumn
                 photo={photo}
                 title={title}
                 id={id}
                 membersCount={membersCount}
                 description={description}
-                signup={signup}
                 button={button}
             />
             {!isMobile && (
@@ -411,135 +395,135 @@ export const InviteLandingComponentLayout = ({
                     <Image />
                 </ImageWrapper>
             )}
-            {signup && (
-                <MainContent>
-                    <XButton
-                        style="primary"
-                        size="large"
-                        text="Accept invitation"
-                        alignSelf="center"
-                        flexShrink={0}
-                        path={signup}
-                    />
-                </MainContent>
-            )}
+
             {!isMobile && noLogin && <Footer />}
         </div>
     );
 };
 
-export const InviteLandingComponent = ({
-    room,
-    organization,
-    inviteLink,
-    invite,
-    noLogin,
-    signup,
-}: {
-    room?: Partial<Room_room_SharedRoom>;
-    organization?: {
-        photo: string | null;
-        title: string;
-        id: string;
-        membersCount: number | null;
-        description: string | null;
-        isCommunity: boolean;
-    };
-    inviteLink?: string;
-    noLogin?: boolean;
-    signup?: string;
-    invite?: {
-        invitedByUser?: {
-            id: string;
-            name: string;
-            photo?: string | null;
-        };
-    };
-}) => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
+const resolveRoomButton = (room: { id: string, membership: SharedRoomMembershipStatus }, key?: string) => {
+    if (room &&
+        (room.membership === 'NONE' ||
+            room.membership === 'KICKED' ||
+            room.membership === 'LEFT') &&
+        !key) {
+        return <JoinButton roomId={room.id!} text="Join group" />;
+    } else if (room && key) {
+        return <JoinLinkButton
+            invite={key}
+            refetchVars={{ conversationId: room.id! }}
+            text="Accept invite"
+        />;
+    } else if (room && room.membership === 'REQUESTED') {
+        return <XButton
+            style="ghost"
+            size="large"
+            text="Pending"
+            alignSelf="center"
+            flexShrink={0}
+        />;
+    } else if (room && room.membership === 'MEMBER') {
+        return <XButton
+            style="primary"
+            size="large"
+            text="Open room"
+            alignSelf="center"
+            flexShrink={0}
+            path={'/mail/' + room.id}
+        />;
+    }
+    return <></>;
+};
 
-    const { inviteKey } = router.routeQuery;
+export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom }) => {
 
-    const button = (
-        <>
-            {room &&
-                (room.membership === 'NONE' ||
-                    room.membership === 'KICKED' ||
-                    room.membership === 'LEFT') &&
-                !inviteLink && <JoinButton roomId={room.id!} text="Join group" />}
-            {room && inviteLink && (
-                <JoinLinkButton
-                    invite={inviteLink}
-                    refetchVars={{ conversationId: room.id! }}
-                    text="Accept invite"
-                />
-            )}
-            {room && room.membership === 'REQUESTED' && (
-                <XButton
-                    style="ghost"
-                    size="large"
-                    text="Pending"
-                    alignSelf="center"
-                    flexShrink={0}
-                />
-            )}
-            {room && room.membership === 'MEMBER' && (
-                <XButton
-                    style="primary"
-                    size="large"
-                    text="Open room"
-                    alignSelf="center"
-                    flexShrink={0}
-                    path={'/mail/' + room.id}
-                />
-            )}
-            {organization && (
-                <XButton
-                    text={'Accept invite'}
-                    action={async () => {
-                        await client.mutateAccountInviteJoin({
-                            inviteKey,
-                        });
-                        switchOrganization(organization.id);
-                    }}
-                    style="primary"
-                    alignSelf="center"
-                    flexShrink={0}
-                    size="large"
-                />
-            )}
-        </>
-    );
+    return <InviteLandingComponentLayout
+        button={resolveRoomButton(room)}
+        whereToInvite="Group"
+        photo={room.photo}
+        title={room.title}
+        id={room.id}
+        membersCount={room.membersCount}
+    />;
+};
+
+export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: string }) => {
+    let userInfo = React.useContext(UserInfoContext);
+    let loggedIn = userInfo && userInfo.isLoggedIn;
+    let client = useClient();
+    let unicorn = useUnicorn();
+
+    let key = unicorn.id;
+
+    let invite = client.useResolvedInvite({ key });
+    let room: ResolvedInvite_invite_RoomInvite_room | undefined;
+    let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
+
+    if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
+        organization = invite.invite.organization;
+    }
+
+    if (invite.invite && invite.invite.__typename === 'RoomInvite') {
+        room = invite.invite.room;
+    }
+
+    let button: JSX.Element | undefined;
+    if (!loggedIn) {
+        button = <MainContent>
+            <XButton
+                style="primary"
+                size="large"
+                text="Accept invitation"
+                alignSelf="center"
+                flexShrink={0}
+                path={signupRedirect}
+            />
+        </MainContent>;
+    } if (room) {
+        button = resolveRoomButton(room, key);
+    } else if (organization) {
+        button = <XButton
+            text={'Accept invite'}
+            action={async () => {
+                await client.mutateAccountInviteJoin({
+                    inviteKey: key,
+                });
+                switchOrganization(organization!.id);
+            }}
+            style="primary"
+            alignSelf="center"
+            flexShrink={0}
+            size="large"
+        />;
+    }
 
     const whereToInvite = room
         ? room.isChannel
             ? 'Channel'
             : 'Group'
         : organization && organization.isCommunity
-        ? 'Community'
-        : 'Organization';
+            ? 'Community'
+            : 'Organization';
+
+    if (!room && !organization) {
+        throw new Error('Invalid invite');
+    }
 
     return (
         <>
-            {noLogin && (
-                <XTrack
-                    event="invite_landing_view"
-                    params={{ invite_type: whereToInvite.toLowerCase() }}
-                />
-            )}
+            <XTrack
+                event="invite_landing_view"
+                params={{ invite_type: whereToInvite.toLowerCase() }}
+            />
             <InviteLandingComponentLayout
                 button={button}
+                noLogin={!loggedIn}
                 whereToInvite={whereToInvite}
-                photo={room ? room.photo!! : organization!!.photo!!}
-                title={room ? room.title!! : organization!!.title!!}
-                id={room ? room.id!! : organization!!.id!!}
-                membersCount={room ? room.membersCount : organization!!.membersCount!!}
-                description={room ? room.description : organization!!.description!!}
-                invite={invite}
-                inviteLink={inviteLink}
-                noLogin={noLogin}
-                signup={signup}
+                photo={room ? room.photo : organization!.photo}
+                title={room ? room.title : organization!.name}
+                id={room ? room.id : organization!.id}
+                membersCount={room ? room.membersCount : organization!.membersCount}
+                description={room ? room.description : organization!.about}
             />
         </>
     );

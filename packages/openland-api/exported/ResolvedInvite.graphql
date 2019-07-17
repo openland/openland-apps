@@ -8,6 +8,15 @@ query ResolvedInvite($key: String!) {
       }
       id
       orgId
+      organization {
+        __typename
+        about
+        isCommunity: alphaIsCommunity
+        id
+        membersCount
+        name
+        photo
+      }
       title
     }
     ... on AppInvite {

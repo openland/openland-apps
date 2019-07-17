@@ -40,7 +40,7 @@ const SelectableText = React.memo((props: XViewProps) => {
 interface UListItemProps {
     title: string;
     subtitle?: string;
-    description?: string | null;
+    description?: string | JSX.Element | null;
     descriptionColor?: string;
     icon?: any;
     avatar?: { photo?: string | null, id: string, title: string, online?: boolean };
@@ -73,7 +73,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             path={path}
             linkSelectable={true}
         >
-            {!!icon && <XView marginRight={16} width={24} height={24}><SelectableSVG>{icon}</SelectableSVG></XView>}
+            {!!icon && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG>{icon}</SelectableSVG></XView>}
             {!!avatar && !icon && (
                 <XView marginRight={16}>
                     <UAvatar {...avatar} size={large ? 'large' : 'medium'} />

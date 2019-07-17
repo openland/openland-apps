@@ -12,8 +12,15 @@ import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { ResolveInviteComponent } from '../init/resolveInvite.page';
 
 export default React.memo(() => {
+    const userInfo = React.useContext(UserInfoContext);
+    let loggedIn = userInfo && userInfo.isLoggedIn;
+    if (!loggedIn && (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
+        return <ResolveInviteComponent />;
+    }
     const router = React.useMemo(() => new TabRouter([{
         icon: <DiscoverIcon />,
         iconActive: <DiscoverActiveIcon />,

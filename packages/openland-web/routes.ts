@@ -76,10 +76,10 @@ routes.add('/onboarding/discover/', '/onboarding/discover/');
 // Invites
 //
 
-routes.add('/join/:inviteKey', '/init/resolveInvite');
-routes.add('/join/:inviteKey/', '/init/resolveInvite');
-routes.add('/invite/:inviteKey', '/init/resolveInvite');
-routes.add('/invite/:inviteKey/', '/init/resolveInvite');
+routes.add('/join/:inviteKey', '/unicorn/index');
+routes.add('/join/:inviteKey/', '/unicorn/index');
+routes.add('/invite/:inviteKey', '/unicorn/index');
+routes.add('/invite/:inviteKey/', '/unicorn/index');
 routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');

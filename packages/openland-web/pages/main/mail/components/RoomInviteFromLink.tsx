@@ -21,27 +21,23 @@ export const RoomInviteFromLink = () => {
                 data.invite.room.membership === 'MEMBER' ? (
                     <XPageRedirect path={'/mail/' + data.invite.room.id} />
                 ) : (
-                    <>
-                        <XDocumentHead
-                            titleSocial={data.invite && data.invite.room.title}
-                            title={data.invite && data.invite.room.title}
-                            description={data.invite && data.invite.room.description}
-                            imgUrl={
-                                data.invite && data.invite.room
-                                    ? data.invite.room.socialImage || data.invite.room.photo
-                                    : undefined
-                            }
-                        />
-                        <InviteLandingComponent
-                            inviteLink={inviteKey}
-                            room={data.invite.room as any}
-                            invite={data.invite}
-                        />
-                    </>
-                )
+                        <>
+                            <XDocumentHead
+                                titleSocial={data.invite && data.invite.room.title}
+                                title={data.invite && data.invite.room.title}
+                                description={data.invite && data.invite.room.description}
+                                imgUrl={
+                                    data.invite && data.invite.room
+                                        ? data.invite.room.socialImage || data.invite.room.photo
+                                        : undefined
+                                }
+                            />
+                            <InviteLandingComponent />
+                        </>
+                    )
             ) : (
-                <XLoader loading={true} />
-            )}
+                    <XLoader loading={true} />
+                )}
         </>
     );
 };

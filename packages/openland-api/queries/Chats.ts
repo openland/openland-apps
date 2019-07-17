@@ -984,6 +984,14 @@ export const ResolvedInviteQuery = gql`
                 creator {
                     ...UserShort
                 }
+                organization{
+                    id
+                    photo
+                    name
+                    membersCount
+                    about
+                    isCommunity: alphaIsCommunity
+                }
             }
             ... on AppInvite {
                 inviter {

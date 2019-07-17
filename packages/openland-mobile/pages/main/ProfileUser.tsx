@@ -22,9 +22,7 @@ import { showReachInfo } from 'openland-mobile/components/ZReach';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
-    const userQuery = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
-    const user = userQuery.user;
-    const conversation = userQuery.conversation;
+    const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     const theme = React.useContext(ThemeContext);
 
     const handleAddMember = React.useCallback(() => {
@@ -58,8 +56,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
         sub = 'bot';
         subColor = '#0084fe';
     } else {
-        if (!userQuery.user.online && userQuery.user.lastSeen) {
-            sub = formatLastSeen(userQuery.user.lastSeen);
+        if (!user.online && user.lastSeen) {
+            sub = formatLastSeen(user.lastSeen);
         } else {
             sub = 'online';
             subColor = '#0084fe';

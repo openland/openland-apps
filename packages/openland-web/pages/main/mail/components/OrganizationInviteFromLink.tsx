@@ -28,19 +28,6 @@ export const OrganizationInviteFromLink = () => {
     }
 
     return (
-        <InviteLandingComponent
-            organization={{
-                photo: data.invite.photo,
-                title: data.invite.title,
-                id: data.invite.id,
-                membersCount: data.invite.membersCount,
-                description:
-                    data.invite && data.invite.organization ? data.invite.organization.about : '',
-                isCommunity: data.invite.organization
-                    ? data.invite.organization.isCommunity
-                    : false,
-            }}
-            invite={invitedByUser ? { invitedByUser } : undefined}
-        />
+        <InviteLandingComponent />
     );
 };
