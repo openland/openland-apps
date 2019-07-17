@@ -326,7 +326,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' &&
             this.props.room.isChannel;
 
-        this.props.pinMessage!.id;
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                 {this.props.pinMessage &&
