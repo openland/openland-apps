@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { addMemberModalChatId, webInboxChat, egoarkaId, fredId, rfzzOrgId } from './fixtures';
+import {
+    addMemberModalChatId,
+    webInboxChat,
+    egoarkaId,
+    fredId,
+    rfzzOrgId,
+    fredUser,
+} from './fixtures';
 
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
@@ -20,6 +27,9 @@ import {
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
 import { showDeleteOrganizationModal } from '../orgView.page';
+import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
+import { XCloudImage } from 'openland-x/XCloudImage';
+import { XView } from 'react-mental';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -110,10 +120,9 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             style="primary"
                             onClick={() =>
                                 showAvatarModal({
-                                    id: fredId,
-                                    title: 'Fred Morozov',
-                                    photo:
-                                        'https://ucarecdn.com/c39d275a-8b1c-419f-a663-cfae8c471191/-/crop/1200x1200/0,0/-/scale_crop/512x512/center/-/format/jpeg/-/progressive/yes/',
+                                    id: fredUser.id,
+                                    title: fredUser.fullName,
+                                    photo: fredUser.photo,
                                 })
                             }
                         />
@@ -125,6 +134,36 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 showDeleteOrganizationModal({
                                     accountId: egoarkaId,
                                     orgId: rfzzOrgId,
+                                })
+                            }
+                        />
+
+                        <XButton
+                            text="image preview"
+                            style="primary"
+                            onClick={() =>
+                                showImagePreviewModal({
+                                    file: 'fooBar',
+                                    height: 50,
+                                    width: 50,
+                                    target: (
+                                        <XView
+                                            flexDirection="row"
+                                            justifyContent="center"
+                                            borderRadius={4}
+                                            overflow="hidden"
+                                            alignSelf="flex-start"
+                                            maxWidth="100%"
+                                        >
+                                            <XCloudImage
+                                                srcCloud={fredUser.photo}
+                                                resize="fill"
+                                                width={50}
+                                                height={50}
+                                                className={'foo-image'}
+                                            />
+                                        </XView>
+                                    ),
                                 })
                             }
                         />
