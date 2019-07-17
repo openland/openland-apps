@@ -11,12 +11,13 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const user = client.useUser({ userId: props.id }).user;
-    const { id, name, photo, online, lastSeen, about, shortname, location, phone, email, linkedin, primaryOrganization } = user;
+    const { id, name, photo, audienceSize, online, lastSeen, about, shortname, location, phone, email, linkedin, primaryOrganization } = user;
 
     return (
         <Page padded={false}>
             <UListHero
                 title={name}
+                score={audienceSize}
                 description={online ? 'online' : formatLastSeen(lastSeen || 'never_online')}
                 descriptionColor={online ? ThemeDefault.accentPrimary : undefined}
                 avatar={{ photo, id, title: name }}
