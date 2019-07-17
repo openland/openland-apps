@@ -16,7 +16,6 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
-import { XText, Mode } from 'openland-web/components/XText';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -81,52 +80,22 @@ const UserProfileCard = withUserInfo(({ user }) => {
     }
 });
 
-const OrganizationItem = ({
-    id,
-    image,
-    text,
-    isPrimary,
-}: {
-    id: string;
-    image: any;
-    text: string;
-    isPrimary?: boolean;
-}) => {
-    return (
-        <XView
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
-            cursor="pointer"
-            height={56}
-            paddingHorizontal={16}
-            path={`/${id}`}
-        >
-            <XView flexDirection="row" alignItems="center">
-                <XAvatar2 size={40} src={image} title={text} id={id} />
-                <XView marginLeft={16} alignItems="center" flexDirection="row">
-                    <XText mode={Mode.BodyRegular}>{text}</XText>
-                </XView>
-            </XView>
-            {isPrimary && 'Primary'}
-        </XView>
-    );
-};
-
 export const Organizations = React.memo(() => {
     const client = useClient();
-    const myOrganizations = client.useMyOrganizations();
+    const myOrganizations = client.useMyOrganizations().myOrganizations;
+
     return (
         <>
-            {myOrganizations.myOrganizations.map((organization, key) => {
+            {myOrganizations.map((organization, key) => {
+                const { id, photo, name, isPrimary, shortname } = organization;
+
                 return (
-                    <OrganizationItem
-                        key={key}
-                        id={organization.id}
-                        image={organization.photo}
-                        text={organization.name}
-                        isPrimary={organization.isPrimary}
+                    <UListItem
+                        key={'organization-' + id}
+                        avatar={{ photo, id, title: name }}
+                        title={name}
+                        textRight={isPrimary ? 'Primary' : undefined}
+                        path={shortname ? '/' + shortname : '/' + id}
                     />
                 );
             })}

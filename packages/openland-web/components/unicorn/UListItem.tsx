@@ -48,14 +48,17 @@ interface UListItemProps {
     path?: string;
     large?: boolean;
     useRadius?: boolean;
+    textRight?: string;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius } = props;
+    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight } = props;
     const height = large ? 80 : (!!avatar ? 56 : 48);
+
     const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
     const subtitleFont = TypeStyles.caption;
     const descriptionFont = large ? TypeStyles.densed : TypeStyles.caption;
+    const textRightFont = TypeStyles.body;
 
     return (
         <XView
@@ -80,7 +83,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 </XView>
             )}
 
-            <XView flexDirection="column">
+            <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0}>
                 <XView flexDirection="row" alignItems="center">
                     <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.contrastSpecial}>
                         {title}
@@ -94,11 +97,17 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 </XView>
 
                 {!!description && (
-                    <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>
+                    <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial} textOverflow="ellipsis" height={descriptionFont.lineHeight} white-space="nowrap" overflow="hidden">
                         {description}
                     </SelectableText>
                 )}
             </XView>
+
+            {!!textRight && (
+                <SelectableText {...textRightFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>
+                    {textRight}
+                </SelectableText>
+            )}
         </XView>
     );
 });
