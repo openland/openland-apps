@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { formatRelativeTime } from 'openland-mobile/utils/formatTime';
+import { formatRelativeTime } from 'openland-y-utils/formatTime';
 import { ASTextProps, ASText } from 'react-native-async-view/ASText';
 
 interface ZRelativeDateAsyncProps extends ASTextProps {

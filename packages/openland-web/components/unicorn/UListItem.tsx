@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { XView, XViewSelectedContext } from 'react-mental';
+import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { UAvatar } from './UAvatar';
 
 const selectedStyle = css`
     svg {
@@ -23,18 +24,36 @@ const SelectableSVG = React.memo((props: { children?: any }) => {
     return (<div>{props.children}</div>);
 });
 
+const SelectableText = React.memo((props: XViewProps) => {
+    const selected = React.useContext(XViewSelectedContext);
+    
+    return (
+        <XView
+            {...props}
+            color={selected ? props.selectedColor : props.color}
+        >
+            {props.children}
+        </XView>
+    );
+});
+
 interface UListItemProps {
     text: string;
+    description?: string;
+    descriptionColor?: string;
     icon?: any;
-    avatar?: { photo?: string | null, key: string, title: string };
+    avatar?: { photo?: string | null, id: string, title: string, online?: boolean };
     onClick?: () => void;
     path?: string;
     large?: boolean;
+    useRadius?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { text, icon, avatar, onClick, path, large } = props;
+    const { text, description, descriptionColor, icon, avatar, onClick, path, large, useRadius } = props;
     const height = large ? 80 : (!!avatar ? 56 : 48);
+    const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
+    const descriptionFont = large ? TypeStyles.densed : TypeStyles.caption;
 
     return (
         <XView
@@ -47,14 +66,28 @@ export const UListItem = React.memo((props: UListItemProps) => {
             selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
             selectedColor={ThemeDefault.contrastSpecial}
             cursor="pointer"
+            borderRadius={useRadius ? 8 : 0}
             onClick={onClick}
             path={path}
             linkSelectable={true}
         >
             {!!icon && <XView marginRight={16} width={24} height={24}><SelectableSVG>{icon}</SelectableSVG></XView>}
+            {!!avatar && !icon && (
+                <XView marginRight={16}>
+                    <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
+                </XView>
+            )}
 
-            <XView {...TypeStyles.body}>
-                {text}
+            <XView flexDirection="column">
+                <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.contrastSpecial}>
+                    {text}
+                </SelectableText>
+
+                {!!description && (
+                    <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>
+                        {description}
+                    </SelectableText>
+                )}
             </XView>
         </XView>
     );

@@ -19,7 +19,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
-import { formatDateTime } from 'openland-mobile/utils/formatTime';
+import { formatDateTime } from 'openland-y-utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';

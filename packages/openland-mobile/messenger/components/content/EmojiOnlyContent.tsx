@@ -3,7 +3,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { formatTime } from 'openland-mobile/utils/formatTime';
+import { formatTime } from 'openland-y-utils/formatTime';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface EmojiOnlyContentProps {

@@ -25,7 +25,7 @@ export const UListHeader = (props: UListHeaderProps) => {
             </XView>
 
             {!!counter && (
-                <XView {...TypeStyles.label1} color={ThemeDefault.foregroundTertiary}>
+                <XView {...TypeStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
                     {counter}
                 </XView>
             )}

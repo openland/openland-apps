@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextStyle, Text, TextProps } from 'react-native';
-import { formatLastSeen } from 'openland-mobile/utils/formatTime';
+import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 interface PresenceComponentProps extends TextProps {

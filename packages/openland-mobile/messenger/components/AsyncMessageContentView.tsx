@@ -4,7 +4,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { formatTime } from '../../utils/formatTime';
+import { formatTime } from '../../../openland-y-utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { TextStyles } from '../../styles/AppStyles';

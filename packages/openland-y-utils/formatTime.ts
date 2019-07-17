@@ -1,5 +1,5 @@
 import * as humanize from 'humanize';
-import { formatDate, formatAbsoluteDate } from './formatDate';
+import { formatDate, formatAbsoluteDate } from '../openland-mobile/utils/formatDate';
 
 const addLeadingZero = (time: number) => {
     return ('0' + time).substr(-2);

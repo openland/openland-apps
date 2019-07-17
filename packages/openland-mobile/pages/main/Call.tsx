@@ -18,7 +18,7 @@ import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermiss
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
-import { formatTimerTime } from 'openland-mobile/utils/formatTime';
+import { formatTimerTime } from 'openland-y-utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

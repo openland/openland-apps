@@ -10,7 +10,7 @@ type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-la
 export interface UAvatarProps {
     title: string;
     titleEmoji?: any;
-    key: string;
+    id: string;
     photo?: string | null;
     online?: boolean;
     size?: UAvatarSize;
@@ -35,9 +35,9 @@ const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, 
 };
 
 const AvatarPlaceholder = React.memo((props: UAvatarProps) => {
-    const { title, titleEmoji, key, size = 'medium' } = props;
+    const { title, titleEmoji, id, size = 'medium' } = props;
     const ph = extractPlaceholder(title);
-    const phIndex = Math.abs(doSimpleHash(key)) % PlaceholderColor.length;
+    const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
 
     return (
         <XView

@@ -9,7 +9,7 @@ interface UListHeroProps {
     description?: string;
     avatar?: {
         photo: string | null;
-        key: string;
+        id: string;
         title: string;
     };
 }
@@ -26,12 +26,7 @@ export const UListHero = (props: UListHeroProps) => {
         >
             {!!avatar && (
                 <XView marginRight={16}>
-                    <UAvatar
-                        photo={avatar.photo}
-                        key={avatar.key}
-                        title={avatar.title}
-                        size="x-large"
-                    />
+                    <UAvatar {...avatar} size="x-large" />
                 </XView>
             )}
 

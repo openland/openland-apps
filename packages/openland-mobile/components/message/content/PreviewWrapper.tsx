@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata, FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata } from 'openland-api/Types';
-import { formatDateTime } from 'openland-mobile/utils/formatTime';
+import { formatDateTime } from 'openland-y-utils/formatTime';
 
 interface PreviewWrapperProps {
     path?: string;
