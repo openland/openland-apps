@@ -118,7 +118,7 @@ export const PageLayout = (props: {
                 {
                     transform: `translateX(0px)`
                 }
-            ], { duration: 480 });
+            ], { duration: 480, fill: 'forwards', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
         } else if (props.state === 'visible') {
             ref.current!.style.transform = `translateX(0px)`;
         } else if (props.state === 'exiting') {
@@ -131,7 +131,7 @@ export const PageLayout = (props: {
                 {
                     transform: `translateX(${props.container.current!.clientWidth}px)`
                 }
-            ], { duration: 480 });
+            ], { duration: 480, fill: 'forwards', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
         }
     }, [props.state]);
 
