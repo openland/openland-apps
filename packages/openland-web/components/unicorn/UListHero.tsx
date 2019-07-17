@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
+import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 interface UListHeroProps {
     title: string;
@@ -32,10 +34,23 @@ export const UListHero = (props: UListHeroProps) => {
                     />
                 </XView>
             )}
+
             <XView flexGrow={1} flexDirection="column" justifyContent="center">
-                <XView>{title}</XView>
+                <XView
+                    {...TypeStyles.title2}
+                    color={ThemeDefault.foregroundPrimary}
+                >
+                    {title}
+                </XView>
+
                 {!!description && (
-                    <XView>{description}</XView>
+                    <XView
+                        {...TypeStyles.densed}
+                        color={ThemeDefault.foregroundSecondary}
+                        marginTop={4}
+                    >
+                        {description}
+                    </XView>
                 )}
             </XView>
             <XView>buttons</XView>
