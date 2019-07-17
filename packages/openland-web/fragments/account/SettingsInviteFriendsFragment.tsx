@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { withUserInfo } from 'openland-web/components/UserInfo';
-import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
@@ -17,6 +14,7 @@ import LinkedinIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
 import FacebookIcon from 'openland-icons/ic-fb.svg';
 import { XModalController } from 'openland-x/showModal';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const letterSpasingClassName = css`
     letter-spacing: 0.9px;
@@ -69,8 +67,8 @@ const CopyButton = (props: CopyButtonProps) => (
         {props.copied ? (
             <CheckIcon />
         ) : (
-            <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
-        )}
+                <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
+            )}
         <XView marginLeft={10}>{props.copied ? 'Copied' : props.text ? props.text : 'Copy'}</XView>
     </XView>
 );
@@ -311,7 +309,6 @@ const InviteAcceptedBlock = (props: { accepted: number }) => (
 );
 
 interface InviteFriendsFragmentProps {
-    asModalContent?: boolean;
     modalContext?: XModalController;
 }
 
@@ -333,29 +330,9 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
             paddingRight={isMobile ? 20 : 0}
             backgroundColor="#fff"
         >
-            {!props.asModalContent && (
-                <XView position="absolute" right={20} top={20} zIndex={100}>
-                    <XView
-                        onClick={() => {
-                            router.replace(`/mail`);
-                        }}
-                        href={'/mail'}
-                        cursor="pointer"
-                        alignItems="center"
-                        justifyContent="center"
-                        padding={8}
-                        width={32}
-                        height={32}
-                        borderRadius={50}
-                        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                    >
-                        <CloseIcon />
-                    </XView>
-                </XView>
-            )}
-            <XView position={isMobile ? 'absolute' : 'fixed'} top={19} left={32}>
+            {props.modalContext && <XView position={isMobile ? 'absolute' : 'fixed'} top={19} left={32}>
                 <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-            </XView>
+            </XView>}
             <XView
                 flexDirection="column"
                 alignItems="center"
@@ -391,16 +368,3 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
         </XView>
     );
 };
-
-export default withApp(
-    'Invite Friends',
-    'viewer',
-    withUserInfo(() => {
-        return (
-            <>
-                <XDocumentHead title={'Invite People'} />
-                <InviteFriendsFragment />
-            </>
-        );
-    }),
-);

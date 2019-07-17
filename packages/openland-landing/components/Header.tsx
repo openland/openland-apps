@@ -9,10 +9,10 @@ import { HeaderStyles } from './header/styles';
 import { MobileMenu } from './MobileMenu';
 import { LandingLinks } from './_links';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { detectOS } from 'openland-web/components/NativeAppsModal';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 export const Header = XMemo(() => {
-    const [ showMenu, setShowMenu ] = React.useState(false);
+    const [showMenu, setShowMenu] = React.useState(false);
     const os = detectOS();
 
     return (

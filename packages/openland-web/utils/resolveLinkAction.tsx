@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
-import { InviteFriendsFragment } from '../pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
 import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/showWriteFirstMessageModal';
+import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
+import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 
 export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
     if (url === '/onboarding_invite') {
         return () => {
             showModalBox({ fullScreen: true }, ctx => (
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                    <InviteFriendsFragment asModalContent modalContext={ctx} />
+                    <InviteFriendsFragment modalContext={ctx} />
                 </XScrollView3>
             ));
         };
@@ -20,7 +20,7 @@ export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: 
         return () => {
             showModalBox({ fullScreen: true }, () => (
                 <XScrollView3 flexGrow={1} flexShrink={1}>
-                    <NativeAppsModal />
+                    <DownloadAppsFragment />
                 </XScrollView3>
             ));
         };

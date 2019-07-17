@@ -6,7 +6,8 @@ import { XImage } from 'react-mental';
 import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const textAlignClassName = css`
     text-align: center;
@@ -150,40 +151,17 @@ const MobileAppButton = (props: { href: string; image: string }) => (
     </XView>
 );
 
-export type OS = 'Mac' | 'iOS' | 'Windows' | 'Android' | 'Linux';
-export const detectOS = (): OS | null => {
-    let os: OS | null = null;
-    let userAgent = canUseDOM ? window.navigator.userAgent : '',
-        platform = canUseDOM ? window.navigator.platform : '',
-        macPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
-        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'];
-
-    if (macPlatforms.indexOf(platform) !== -1) {
-        os = 'Mac';
-    } else if (iosPlatforms.indexOf(platform) !== -1) {
-        os = 'iOS';
-    } else if (windowsPlatforms.indexOf(platform) !== -1) {
-        os = 'Windows';
-    } else if (/Android/.test(userAgent)) {
-        os = 'Android';
-    } else if (!os && /Linux/.test(platform)) {
-        os = 'Linux';
-    }
-
-    return os;
-};
-
 interface NativaAppsModalProps {
     title?: string;
     text?: string;
     hideLogo?: boolean;
 }
 
-export const NativeAppsModal = (props: NativaAppsModalProps) => {
-    const { title, text, hideLogo } = props;
+export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
+    const { title, text } = props;
     const isMobile = useIsMobile() || undefined;
     const os = detectOS();
+    const modalContext = React.useContext(XModalBoxContext);
 
     return (
         <XView
@@ -195,7 +173,7 @@ export const NativeAppsModal = (props: NativaAppsModalProps) => {
             paddingRight={isMobile ? 40 : 0}
             paddingBottom={80}
         >
-            {!hideLogo && (
+            {modalContext && (
                 <XView position="fixed" top={19} left={32}>
                     <XImage src="/static/landing/logotype.svg" width={145} height={42} />
                 </XView>

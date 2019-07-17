@@ -9,7 +9,7 @@ import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
-import { detectOS } from 'openland-web/components/NativeAppsModal';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const ActiveButton = Glamorous(XButton)({
     height: 30,

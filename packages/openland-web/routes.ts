@@ -147,6 +147,8 @@ routes.add('/performance', '/perf/perf');
 routes.add('/settings', '/unicorn/index');
 routes.add('/settings/profile', '/unicorn/index');
 routes.add('/settings/appearance', '/unicorn/index');
+routes.add('/settings/download', '/unicorn/index');
+routes.add('/settings/invites', '/unicorn/index');
 routes.add('/settings/notifications', '/unicorn/index');
 routes.add('/settings/apps', '/unicorn/index');
 routes.add('/settings/apps/', '/unicorn/index');

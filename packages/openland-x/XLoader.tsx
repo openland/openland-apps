@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { detectOS } from 'openland-web/components/NativeAppsModal';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 type LoaderSize = 'medium' | 'small';
 

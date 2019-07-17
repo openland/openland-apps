@@ -5,10 +5,10 @@ import InviteIcon from 'openland-icons/ic-invite-plus.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { showModalBox } from 'openland-x/showModalBox';
-import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { trackEvent } from 'openland-x-analytics';
 import { useClient } from 'openland-web/utils/useClient';
+import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
@@ -59,7 +59,7 @@ export const DialogsInviteButton = XMemo(() => {
                 trackEvent('invite_view', { invite_type: 'general' });
                 showModalBox({ fullScreen: true }, ctx => (
                     <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                        <InviteFriendsFragment asModalContent modalContext={ctx} />
+                        <InviteFriendsFragment modalContext={ctx} />
                     </XScrollView3>
                 ));
             }}

@@ -9,6 +9,8 @@ import { RecommendedFragment } from 'openland-web/fragments/discover/Recommended
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
 import { SettingsNotificationsFragment } from 'openland-web/fragments/account/SettingsNotificationsFragment';
 import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
+import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
+import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 
 const routing = new URouting();
 
@@ -31,6 +33,8 @@ routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 routing.addRoute('/settings/profile', () => SettingsProfileFragment);
 routing.addRoute('/settings/notifications', () => SettingsNotificationsFragment);
 routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
+routing.addRoute('/settings/download', () => DownloadAppsFragment);
+routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 
 // Profile
 routing.addRoute('/:shortname', () => ShortnameFragment);

@@ -12,13 +12,11 @@ import EditProfileIcon from 'openland-icons/ic-edit-profile.svg';
 import AppearanceIcon from './icons/appearance_icon.svg';
 import DownloadIcon from './icons/download_icon.svg';
 
-import { InviteFriendsFragment } from 'openland-web/pages/main/mail/inviteFriends.page';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XText, Mode } from 'openland-web/components/XText';
-import { NativeAppsModal } from 'openland-web/components/NativeAppsModal';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -137,23 +135,6 @@ export const Organizations = React.memo(() => {
 });
 
 export const AccountFragment = React.memo(() => {
-    const showInvites = React.useCallback(() => {
-        showModalBox({ fullScreen: true }, (ctx) => (
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                <InviteFriendsFragment asModalContent modalContext={ctx} />
-            </XScrollView3>
-        ));
-    }, []);
-
-    const showApps = React.useCallback(() => {
-        showModalBox({ fullScreen: true }, () => (
-            <NativeAppsModal
-                title="Get Openland apps"
-                text="Openland is better experience as a mobile and desktop app. Install your app now."
-                hideLogo={true}
-            />
-        ));
-    }, []);
 
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
@@ -178,7 +159,7 @@ export const AccountFragment = React.memo(() => {
                     <UListItem
                         text="Invite Friends"
                         icon={<InviteFriendsIcon />}
-                        onClick={showInvites}
+                        path="/settings/invites"
                     />
                     <UListHeader text="Settings" />
                     <UListItem
@@ -194,7 +175,7 @@ export const AccountFragment = React.memo(() => {
                     <UListItem
                         text="Download Apps"
                         icon={<DownloadIcon />}
-                        onClick={showApps}
+                        path="/settings/download"
                     />
 
                     <UListHeader text="Organizations" />
