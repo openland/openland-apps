@@ -88,6 +88,28 @@ export const tabs: { [K in tabsT]: tabsT } = {
     members: 'members',
 };
 
+export const showRoomEditModal = (chat: Room_room_SharedRoom) => {
+    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+    console.log({ chat });
+    showModalBox(
+        {
+            title: isChannel ? 'Channel settings' : 'Group settings',
+        },
+        ctx => (
+            <RoomEditModalBody
+                roomId={chat.id}
+                title={chat.title}
+                photo={chat.photo}
+                description={chat.description}
+                socialImage={chat.socialImage}
+                isChannel={isChannel}
+                onClose={ctx.hide}
+            />
+        ),
+    );
+};
+
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
@@ -95,8 +117,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     const canEdit = chat.canEdit;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
-    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
-    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -128,28 +149,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 content={
                                     <React.Suspense fallback={<XLoader loading={true} />}>
                                         <XWithRole role="super-admin" or={canEdit}>
-                                            <XMenuItem
-                                                onClick={() =>
-                                                    showModalBox(
-                                                        {
-                                                            title: isChannel
-                                                                ? 'Channel settings'
-                                                                : 'Group settings',
-                                                        },
-                                                        ctx => (
-                                                            <RoomEditModalBody
-                                                                roomId={chat.id}
-                                                                title={chat.title}
-                                                                photo={chat.photo}
-                                                                description={chat.description}
-                                                                socialImage={chat.socialImage}
-                                                                isChannel={isChannel}
-                                                                onClose={ctx.hide}
-                                                            />
-                                                        ),
-                                                    )
-                                                }
-                                            >
+                                            <XMenuItem onClick={() => showRoomEditModal(chat)}>
                                                 Settings
                                             </XMenuItem>
                                         </XWithRole>
