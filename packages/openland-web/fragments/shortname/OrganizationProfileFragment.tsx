@@ -10,7 +10,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const organization = client.useOrganizationMembersShortPaginated({ organizationId: props.id, first: 10 }).organization;
-    const { name, photo, id, about, shortname, website, twitter, facebook, rooms, membersCount, members } = organization;
+    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, members } = organization;
 
     return (
         <Page padded={false}>

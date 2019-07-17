@@ -5,6 +5,8 @@ export const OrganizationShort = gql`
         id
         name
         photo
+        shortname
+        about
         isCommunity: alphaIsCommunity
     }
 `;

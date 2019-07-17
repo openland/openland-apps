@@ -12,7 +12,7 @@ export const ShortnameFragment = React.memo(() => {
 
     if (data && data.__typename) {
         if (data.__typename === 'User') {
-            return (<UserProfileFragment id={data.id} />);
+            return <UserProfileFragment id={data.id} />;
         }
         if (data.__typename === 'Organization') {
             return <OrganizationProfileFragment id={data.id} />;

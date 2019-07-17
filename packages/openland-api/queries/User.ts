@@ -94,10 +94,10 @@ export const ResolveShortNameQuery = gql`
     query ResolveShortName($shortname: String!) {
         item: alphaResolveShortName(shortname: $shortname) {
             ... on User {
-                ...UserFull
+                id
             }
             ... on Organization {
-                ...OrganizationFull
+                id
             }
         }
     }

@@ -7,15 +7,12 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 interface UListHeroProps {
     title: string;
     description?: string;
-    avatar?: {
-        photo: string | null;
-        id: string;
-        title: string;
-    };
+    descriptionColor?: string;
+    avatar?: { photo: string | null; id: string; title: string; };
 }
 
 export const UListHero = (props: UListHeroProps) => {
-    const { title, description, avatar } = props;
+    const { title, description, descriptionColor, avatar } = props;
 
     return (
         <XView
@@ -41,7 +38,7 @@ export const UListHero = (props: UListHeroProps) => {
                 {!!description && (
                     <XView
                         {...TypeStyles.densed}
-                        color={ThemeDefault.foregroundSecondary}
+                        color={descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary}
                         marginTop={4}
                     >
                         {description}

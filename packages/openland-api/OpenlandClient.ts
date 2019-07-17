@@ -1,7 +1,7 @@
 import * as Source from './index';
-import * as Types from './Types';
-import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from 'openland-graphql/GraphqlClient';
-import { BaseApiClient } from 'openland-graphql/BaseApiClient';
+import * as Types from './Types'
+import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from 'openland-graphql/GraphqlClient'
+import { BaseApiClient } from 'openland-graphql/BaseApiClient'
 
 export class OpenlandClient extends BaseApiClient {
     constructor(client: GraphqlClient) {

@@ -1,7 +1,9 @@
 fragment OrganizationShort on Organization {
   __typename
+  about
   isCommunity: alphaIsCommunity
   id
   name
   photo
+  shortname
 }

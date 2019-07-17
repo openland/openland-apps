@@ -11,6 +11,8 @@ export interface Account_me_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68,6 +70,8 @@ export interface AccountSettings_me_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -93,6 +97,8 @@ export interface AccountSettings_organizations {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -166,6 +172,8 @@ export interface AccountInviteInfo_invite_creator_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -228,6 +236,8 @@ export interface AccountAppInviteInfo_invite_creator_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -258,6 +268,8 @@ export interface AccountAppInviteInfo_appInvite_inviter_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -429,6 +441,8 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1030,6 +1044,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1149,6 +1165,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1186,6 +1204,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1217,6 +1237,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1308,6 +1330,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1345,6 +1369,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1376,6 +1402,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1546,6 +1574,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1728,6 +1758,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1847,6 +1879,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1884,6 +1918,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -1915,6 +1951,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2006,6 +2044,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2043,6 +2083,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2074,6 +2116,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2244,6 +2288,8 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2435,6 +2481,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2554,6 +2602,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2591,6 +2641,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2622,6 +2674,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2713,6 +2767,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2750,6 +2806,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2781,6 +2839,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -2951,6 +3011,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3133,6 +3195,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3252,6 +3316,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3289,6 +3355,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3320,6 +3388,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3411,6 +3481,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3448,6 +3520,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3479,6 +3553,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3649,6 +3725,8 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -3860,6 +3938,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4072,6 +4152,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4109,6 +4191,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4140,6 +4224,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4231,6 +4317,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4268,6 +4356,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4299,6 +4389,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4469,6 +4561,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4521,6 +4615,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4645,6 +4741,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4665,6 +4763,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4691,6 +4791,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4711,6 +4813,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4780,6 +4884,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -4992,6 +5098,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5029,6 +5137,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5060,6 +5170,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5151,6 +5263,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5188,6 +5302,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5219,6 +5335,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5389,6 +5507,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5441,6 +5561,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5565,6 +5687,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5585,6 +5709,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5611,6 +5737,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5631,6 +5759,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5712,6 +5842,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5742,6 +5874,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5954,6 +6088,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -5991,6 +6127,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6022,6 +6160,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6113,6 +6253,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6150,6 +6292,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6181,6 +6325,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6351,6 +6497,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6403,6 +6551,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6527,6 +6677,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6547,6 +6699,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6573,6 +6727,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6593,6 +6749,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6672,6 +6830,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6884,6 +7044,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6921,6 +7083,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -6952,6 +7116,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7043,6 +7209,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7080,6 +7248,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7111,6 +7281,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7281,6 +7453,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7333,6 +7507,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7457,6 +7633,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7477,6 +7655,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7503,6 +7683,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7523,6 +7705,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7586,6 +7770,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7646,6 +7832,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7858,6 +8046,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7895,6 +8085,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -7926,6 +8118,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8017,6 +8211,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8054,6 +8250,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8085,6 +8283,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8255,6 +8455,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8307,6 +8509,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8431,6 +8635,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8451,6 +8657,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8477,6 +8685,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8497,6 +8707,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8566,6 +8778,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8778,6 +8992,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8815,6 +9031,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8846,6 +9064,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8937,6 +9157,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -8974,6 +9196,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9005,6 +9229,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9175,6 +9401,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9227,6 +9455,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9351,6 +9581,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9371,6 +9603,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9397,6 +9631,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9417,6 +9653,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9498,6 +9736,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9528,6 +9768,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9740,6 +9982,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9777,6 +10021,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9808,6 +10054,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9899,6 +10147,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9936,6 +10186,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -9967,6 +10219,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10137,6 +10391,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10189,6 +10445,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10313,6 +10571,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10333,6 +10593,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10359,6 +10621,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10379,6 +10643,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10458,6 +10724,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10670,6 +10938,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10707,6 +10977,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10738,6 +11010,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10829,6 +11103,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10866,6 +11142,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -10897,6 +11175,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11067,6 +11347,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11119,6 +11401,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11243,6 +11527,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11263,6 +11549,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11289,6 +11577,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11309,6 +11599,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11372,6 +11664,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11456,6 +11750,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11499,6 +11795,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11588,6 +11886,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11631,6 +11931,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11718,6 +12020,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11761,6 +12065,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11841,6 +12147,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -11884,6 +12192,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12006,6 +12316,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12049,6 +12361,8 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12151,6 +12465,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12194,6 +12510,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12283,6 +12601,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12326,6 +12646,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12413,6 +12735,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12456,6 +12780,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12536,6 +12862,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12579,6 +12907,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12701,6 +13031,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12744,6 +13076,8 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12861,6 +13195,8 @@ export interface Room_room_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -12891,6 +13227,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_sender_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13103,6 +13441,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13140,6 +13480,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13171,6 +13513,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13262,6 +13606,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13299,6 +13645,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13330,6 +13678,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13500,6 +13850,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_GeneralMessage_reactions_us
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13552,6 +13904,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_sender_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13676,6 +14030,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13696,6 +14052,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13722,6 +14080,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13742,6 +14102,8 @@ export interface Room_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13833,6 +14195,8 @@ export interface Room_room_SharedRoom_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13873,6 +14237,8 @@ export interface Room_room_SharedRoom_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -13921,6 +14287,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14133,6 +14501,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14170,6 +14540,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14201,6 +14573,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14292,6 +14666,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14329,6 +14705,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14360,6 +14738,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14530,6 +14910,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_use
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14582,6 +14964,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14706,6 +15090,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14726,6 +15112,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14752,6 +15140,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14772,6 +15162,8 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14884,6 +15276,8 @@ export interface Rooms_rooms_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -14914,6 +15308,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_sender_pri
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15126,6 +15522,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15163,6 +15561,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15194,6 +15594,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15285,6 +15687,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15322,6 +15726,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15353,6 +15759,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15523,6 +15931,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_GeneralMessage_reactions_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15575,6 +15985,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_sender_pri
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15699,6 +16111,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15719,6 +16133,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15745,6 +16161,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15765,6 +16183,8 @@ export interface Rooms_rooms_PrivateRoom_pinnedMessage_ServiceMessage_serviceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -15844,6 +16264,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_sender_prim
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16056,6 +16478,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16093,6 +16517,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16124,6 +16550,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16215,6 +16643,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16252,6 +16682,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16283,6 +16715,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16453,6 +16887,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_GeneralMessage_reactions_u
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16505,6 +16941,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_sender_prim
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16629,6 +17067,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16649,6 +17089,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16675,6 +17117,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16695,6 +17139,8 @@ export interface Rooms_rooms_SharedRoom_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16758,6 +17204,8 @@ export interface Rooms_rooms_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -16875,6 +17323,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17087,6 +17537,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17124,6 +17576,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17155,6 +17609,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17246,6 +17702,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17283,6 +17741,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17314,6 +17774,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17484,6 +17946,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_reaction
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17536,6 +18000,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17660,6 +18126,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17680,6 +18148,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17706,6 +18176,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17726,6 +18198,8 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -17796,6 +18270,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18008,6 +18484,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18045,6 +18523,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18076,6 +18556,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18167,6 +18649,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18204,6 +18688,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18235,6 +18721,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18405,6 +18893,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_reactions
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18457,6 +18947,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18581,6 +19073,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18601,6 +19095,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18627,6 +19123,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18647,6 +19145,8 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18832,6 +19332,8 @@ export interface RoomWithoutMembers_room_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -18908,6 +19410,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19120,6 +19624,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19157,6 +19663,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19188,6 +19696,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19279,6 +19789,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19316,6 +19828,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19347,6 +19861,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19517,6 +20033,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19569,6 +20087,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19693,6 +20213,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19713,6 +20235,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19739,6 +20263,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19759,6 +20285,8 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19869,6 +20397,8 @@ export interface RoomFeaturedMembers_roomFeaturedMembers_user_primaryOrganizatio
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19925,6 +20455,8 @@ export interface RoomTiny_room_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -19955,6 +20487,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20167,6 +20701,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20204,6 +20740,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20235,6 +20773,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20326,6 +20866,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20363,6 +20905,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20394,6 +20938,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20564,6 +21110,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_GeneralMessage_reaction
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20616,6 +21164,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20740,6 +21290,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20760,6 +21312,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20786,6 +21340,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20806,6 +21362,8 @@ export interface RoomTiny_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -20885,6 +21443,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21097,6 +21657,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21134,6 +21696,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21165,6 +21729,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21256,6 +21822,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21293,6 +21861,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21324,6 +21894,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21494,6 +22066,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21546,6 +22120,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21670,6 +22246,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21690,6 +22268,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21716,6 +22296,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21736,6 +22318,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21799,6 +22383,8 @@ export interface RoomTiny_room_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21879,6 +22465,8 @@ export interface PinMessage_pinMessage_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -21909,6 +22497,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22121,6 +22711,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22158,6 +22750,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22189,6 +22783,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22280,6 +22876,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22317,6 +22915,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22348,6 +22948,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22518,6 +23120,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22570,6 +23174,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22694,6 +23300,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22714,6 +23322,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22740,6 +23350,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22760,6 +23372,8 @@ export interface PinMessage_pinMessage_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -22839,6 +23453,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23051,6 +23667,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23088,6 +23706,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23119,6 +23739,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23210,6 +23832,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23247,6 +23871,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23278,6 +23904,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23448,6 +24076,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_GeneralMessage_r
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23500,6 +24130,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23624,6 +24256,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23644,6 +24278,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23670,6 +24306,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23690,6 +24328,8 @@ export interface PinMessage_pinMessage_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23753,6 +24393,8 @@ export interface PinMessage_pinMessage_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23811,6 +24453,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_user_primaryOrganization 
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -23841,6 +24485,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24053,6 +24699,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24090,6 +24738,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24121,6 +24771,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24212,6 +24864,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24249,6 +24903,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24280,6 +24936,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24450,6 +25108,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_GeneralMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24502,6 +25162,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_ServiceMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24626,6 +25288,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_ServiceMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24646,6 +25310,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_ServiceMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24672,6 +25338,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_ServiceMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24692,6 +25360,8 @@ export interface UnpinMessage_unpinMessage_PrivateRoom_pinnedMessage_ServiceMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24771,6 +25441,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -24983,6 +25655,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25020,6 +25694,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25051,6 +25727,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25142,6 +25820,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25179,6 +25859,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25210,6 +25892,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25380,6 +26064,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25432,6 +26118,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25556,6 +26244,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25576,6 +26266,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25602,6 +26294,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25622,6 +26316,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_pinnedMessage_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25685,6 +26381,8 @@ export interface UnpinMessage_unpinMessage_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -25915,6 +26613,8 @@ export interface ChatHistory_messages_GeneralMessage_sender_primaryOrganization 
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26127,6 +26827,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26164,6 +26866,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26195,6 +26899,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26286,6 +26992,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26323,6 +27031,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26354,6 +27064,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26524,6 +27236,8 @@ export interface ChatHistory_messages_GeneralMessage_reactions_user_primaryOrgan
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26576,6 +27290,8 @@ export interface ChatHistory_messages_ServiceMessage_sender_primaryOrganization 
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26700,6 +27416,8 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26720,6 +27438,8 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26746,6 +27466,8 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26766,6 +27488,8 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -26853,6 +27577,8 @@ export interface ChatInit_messages_GeneralMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27065,6 +27791,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27102,6 +27830,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27133,6 +27863,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27224,6 +27956,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27261,6 +27995,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27292,6 +28028,8 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27462,6 +28200,8 @@ export interface ChatInit_messages_GeneralMessage_reactions_user_primaryOrganiza
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27514,6 +28254,8 @@ export interface ChatInit_messages_ServiceMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27638,6 +28380,8 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27658,6 +28402,8 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27684,6 +28430,8 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27704,6 +28452,8 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27772,6 +28522,8 @@ export interface ChatInit_room_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -27802,6 +28554,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28014,6 +28768,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28051,6 +28807,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28082,6 +28840,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28173,6 +28933,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28210,6 +28972,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28241,6 +29005,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28411,6 +29177,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_reaction
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28463,6 +29231,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28587,6 +29357,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28607,6 +29379,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28633,6 +29407,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28653,6 +29429,8 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28732,6 +29510,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28944,6 +29724,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -28981,6 +29763,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29012,6 +29796,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29103,6 +29889,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29140,6 +29928,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29171,6 +29961,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29341,6 +30133,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_reactions
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29393,6 +30187,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29517,6 +30313,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29537,6 +30335,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29563,6 +30363,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29583,6 +30385,8 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29646,6 +30450,8 @@ export interface ChatInit_room_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29900,6 +30706,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_user_primaryOrganizati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -29930,6 +30738,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30142,6 +30952,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30179,6 +30991,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30210,6 +31024,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30301,6 +31117,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30338,6 +31156,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30369,6 +31189,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30539,6 +31361,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30591,6 +31415,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30715,6 +31541,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30735,6 +31563,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30761,6 +31591,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30781,6 +31613,8 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30872,6 +31706,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrg
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30912,6 +31748,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -30960,6 +31798,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31172,6 +32012,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31209,6 +32051,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31240,6 +32084,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31331,6 +32177,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31368,6 +32216,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31399,6 +32249,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31569,6 +32421,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31621,6 +32475,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31745,6 +32601,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31765,6 +32623,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31791,6 +32651,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31811,6 +32673,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31927,6 +32791,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_us
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -31957,6 +32823,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32169,6 +33037,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32206,6 +33076,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32237,6 +33109,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32328,6 +33202,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32365,6 +33241,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32396,6 +33274,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32566,6 +33446,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32618,6 +33500,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32742,6 +33626,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32762,6 +33648,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32788,6 +33676,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32808,6 +33698,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_pi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32899,6 +33791,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_mem
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32939,6 +33833,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_req
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -32987,6 +33883,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33199,6 +34097,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33236,6 +34136,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33267,6 +34169,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33358,6 +34262,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33395,6 +34301,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33426,6 +34334,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33596,6 +34506,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33648,6 +34560,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33772,6 +34686,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33792,6 +34708,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33818,6 +34736,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33838,6 +34758,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33951,6 +34873,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_user_primaryOrganizat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -33981,6 +34905,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34193,6 +35119,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34230,6 +35158,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34261,6 +35191,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34352,6 +35284,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34389,6 +35323,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34420,6 +35356,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34590,6 +35528,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34642,6 +35582,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34766,6 +35708,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34786,6 +35730,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34812,6 +35758,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34832,6 +35780,8 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34923,6 +35873,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -34963,6 +35915,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryO
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35011,6 +35965,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35223,6 +36179,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35260,6 +36218,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35291,6 +36251,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35382,6 +36344,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35419,6 +36383,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35450,6 +36416,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35620,6 +36588,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35672,6 +36642,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35796,6 +36768,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35816,6 +36790,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35842,6 +36818,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35862,6 +36840,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -35978,6 +36958,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36008,6 +36990,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36220,6 +37204,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36257,6 +37243,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36288,6 +37276,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36379,6 +37369,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36416,6 +37408,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36447,6 +37441,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36617,6 +37613,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36669,6 +37667,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36793,6 +37793,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36813,6 +37815,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36839,6 +37843,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36859,6 +37865,8 @@ export interface RoomKick_betaRoomKick_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36950,6 +37958,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganizati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -36990,6 +38000,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganizat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37038,6 +38050,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37250,6 +38264,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37287,6 +38303,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37318,6 +38336,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37409,6 +38429,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37446,6 +38468,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37477,6 +38501,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37647,6 +38673,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_r
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37699,6 +38727,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37823,6 +38853,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37843,6 +38875,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37869,6 +38903,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -37889,6 +38925,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38002,6 +39040,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_user_primaryOrgan
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38032,6 +39072,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38244,6 +39286,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38281,6 +39325,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38312,6 +39358,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38403,6 +39451,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38440,6 +39490,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38471,6 +39523,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38641,6 +39695,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38693,6 +39749,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38817,6 +39875,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38837,6 +39897,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38863,6 +39925,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38883,6 +39947,8 @@ export interface RoomChangeRole_betaRoomChangeRole_PrivateRoom_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -38974,6 +40040,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_members_user_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39014,6 +40082,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_requests_user_prim
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39062,6 +40132,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39274,6 +40346,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39311,6 +40385,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39342,6 +40418,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39433,6 +40511,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39470,6 +40550,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39501,6 +40583,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39671,6 +40755,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39723,6 +40809,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39847,6 +40935,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39867,6 +40957,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39893,6 +40985,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -39913,6 +41007,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40027,6 +41123,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40057,6 +41155,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40269,6 +41369,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40306,6 +41408,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40337,6 +41441,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40428,6 +41534,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40465,6 +41573,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40496,6 +41606,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40666,6 +41778,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40718,6 +41832,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40842,6 +41958,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40862,6 +41980,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40888,6 +42008,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40908,6 +42030,8 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -40999,6 +42123,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganiza
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41039,6 +42165,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganiz
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41087,6 +42215,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41299,6 +42429,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41336,6 +42468,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41367,6 +42501,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41458,6 +42594,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41495,6 +42633,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41526,6 +42666,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41696,6 +42838,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41748,6 +42892,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41872,6 +43018,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41892,6 +43040,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41918,6 +43068,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -41938,6 +43090,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42238,6 +43392,8 @@ export interface RoomMembers_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42290,6 +43446,8 @@ export interface RoomOrganizationAdminMembers_room_SharedRoom_organization_admin
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42388,6 +43546,8 @@ export interface RoomMembersPaginated_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42472,6 +43632,8 @@ export interface RoomJoin_join_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42502,6 +43664,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42714,6 +43878,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42751,6 +43917,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42782,6 +43950,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42873,6 +44043,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42910,6 +44082,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -42941,6 +44115,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43111,6 +44287,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_reaction
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43163,6 +44341,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43287,6 +44467,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43307,6 +44489,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43333,6 +44517,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43353,6 +44539,8 @@ export interface RoomJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43444,6 +44632,8 @@ export interface RoomJoin_join_SharedRoom_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43484,6 +44674,8 @@ export interface RoomJoin_join_SharedRoom_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43532,6 +44724,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43744,6 +44938,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43781,6 +44977,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43812,6 +45010,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43903,6 +45103,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43940,6 +45142,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -43971,6 +45175,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44141,6 +45347,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44193,6 +45401,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44317,6 +45527,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44337,6 +45549,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44363,6 +45577,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44383,6 +45599,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44495,6 +45713,8 @@ export interface RoomsJoin_join_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44525,6 +45745,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_sender_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44737,6 +45959,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44774,6 +45998,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44805,6 +46031,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44896,6 +46124,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44933,6 +46163,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -44964,6 +46196,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_quotedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45134,6 +46368,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_GeneralMessage_reactio
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45186,6 +46422,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_sender_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45310,6 +46548,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45330,6 +46570,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45356,6 +46598,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45376,6 +46620,8 @@ export interface RoomsJoin_join_PrivateRoom_pinnedMessage_ServiceMessage_service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45455,6 +46701,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45667,6 +46915,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45704,6 +46954,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45735,6 +46987,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45826,6 +47080,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45863,6 +47119,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -45894,6 +47152,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46064,6 +47324,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reaction
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46116,6 +47378,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46240,6 +47504,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46260,6 +47526,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46286,6 +47554,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46306,6 +47576,8 @@ export interface RoomsJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46369,6 +47641,8 @@ export interface RoomsJoin_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46426,6 +47700,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46456,6 +47732,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46668,6 +47946,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46705,6 +47985,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46736,6 +48018,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46827,6 +48111,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46864,6 +48150,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -46895,6 +48183,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47065,6 +48355,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47117,6 +48409,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47241,6 +48535,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47261,6 +48557,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47287,6 +48585,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47307,6 +48607,8 @@ export interface RoomsInviteUser_rooms_PrivateRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47386,6 +48688,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47598,6 +48902,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47635,6 +48941,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47666,6 +48974,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47757,6 +49067,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47794,6 +49106,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47825,6 +49139,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -47995,6 +49311,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_GeneralMessage_r
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48047,6 +49365,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48171,6 +49491,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48191,6 +49513,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48217,6 +49541,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48237,6 +49563,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_pinnedMessage_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48300,6 +49628,8 @@ export interface RoomsInviteUser_rooms_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48381,6 +49711,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48411,6 +49743,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48623,6 +49957,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48660,6 +49996,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48691,6 +50029,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48782,6 +50122,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48819,6 +50161,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -48850,6 +50194,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49020,6 +50366,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49072,6 +50420,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49196,6 +50546,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49216,6 +50568,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49242,6 +50596,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49262,6 +50618,8 @@ export interface RoomJoinInviteLink_join_PrivateRoom_pinnedMessage_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49353,6 +50711,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganiza
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49393,6 +50753,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganiz
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49441,6 +50803,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49653,6 +51017,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49690,6 +51056,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49721,6 +51089,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49812,6 +51182,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49849,6 +51221,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -49880,6 +51254,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50050,6 +51426,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50102,6 +51480,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50226,6 +51606,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50246,6 +51628,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50272,6 +51656,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50292,6 +51678,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50436,6 +51824,8 @@ export interface RoomInviteInfo_invite_room_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50458,6 +51848,8 @@ export interface RoomInviteInfo_invite_invitedByUser_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50505,6 +51897,8 @@ export interface ResolvedInvite_invite_InviteInfo_creator_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50537,6 +51931,8 @@ export interface ResolvedInvite_invite_AppInvite_inviter_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50566,6 +51962,8 @@ export interface ResolvedInvite_invite_RoomInvite_invitedByUser_primaryOrganizat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -50870,6 +52268,8 @@ export interface Message_message_GeneralMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51082,6 +52482,8 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51119,6 +52521,8 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_sp
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51150,6 +52554,8 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_sp
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51241,6 +52647,8 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51278,6 +52686,8 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_sp
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51309,6 +52719,8 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_sp
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51479,6 +52891,8 @@ export interface Message_message_GeneralMessage_reactions_user_primaryOrganizati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51531,6 +52945,8 @@ export interface Message_message_ServiceMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51655,6 +53071,8 @@ export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51675,6 +53093,8 @@ export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMet
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51701,6 +53121,8 @@ export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51721,6 +53143,8 @@ export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -51991,6 +53415,8 @@ export interface MessageComments_messageComments_comments_comment_sender_primary
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52110,6 +53536,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52147,6 +53575,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52178,6 +53608,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52269,6 +53701,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52306,6 +53740,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52337,6 +53773,8 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52507,6 +53945,8 @@ export interface MessageComments_messageComments_comments_comment_reactions_user
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -52813,6 +54253,8 @@ export interface Conference_conference_peers_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53307,6 +54749,8 @@ export interface ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganiza
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53592,6 +55036,8 @@ export interface GlobalSearch_items_Organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53600,6 +55046,8 @@ export interface GlobalSearch_items_User_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53661,6 +55109,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_user_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53691,6 +55141,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53903,6 +55355,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53940,6 +55394,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -53971,6 +55427,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54062,6 +55520,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54099,6 +55559,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54130,6 +55592,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54300,6 +55764,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54352,6 +55818,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54476,6 +55944,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54496,6 +55966,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54522,6 +55994,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54542,6 +56016,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_PrivateRoom_pinnedM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54621,6 +56097,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54833,6 +56311,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54870,6 +56350,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54901,6 +56383,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -54992,6 +56476,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55029,6 +56515,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55060,6 +56548,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55230,6 +56720,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55282,6 +56774,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55406,6 +56900,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55426,6 +56922,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55452,6 +56950,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55472,6 +56972,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_pinnedMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55535,6 +57037,8 @@ export interface DiscoverNextPage_betaNextDiscoverPage_chats_SharedRoom_organiza
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55807,6 +57311,8 @@ export interface FeedHome_homeFeed_by_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55872,6 +57378,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -55991,6 +57499,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56028,6 +57538,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56059,6 +57571,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56150,6 +57664,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56187,6 +57703,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56218,6 +57736,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56388,6 +57908,8 @@ export interface MyNotifications_myNotifications_items_content_comment_comment_r
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56691,6 +58213,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56810,6 +58334,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56847,6 +58373,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56878,6 +58406,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -56969,6 +58499,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57006,6 +58538,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57037,6 +58571,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57207,6 +58743,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57493,6 +59031,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57612,6 +59152,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57649,6 +59191,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57680,6 +59224,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57771,6 +59317,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57808,6 +59356,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -57839,6 +59389,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58009,6 +59561,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58401,6 +59955,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58520,6 +60076,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58557,6 +60115,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58588,6 +60148,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58679,6 +60241,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58716,6 +60280,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58747,6 +60313,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -58917,6 +60485,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateSingle_upda
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59120,6 +60690,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59239,6 +60811,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59276,6 +60850,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59307,6 +60883,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59398,6 +60976,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59435,6 +61015,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59466,6 +61048,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59636,6 +61220,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -59922,6 +61508,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60041,6 +61629,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60078,6 +61668,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60109,6 +61701,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60200,6 +61794,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60237,6 +61833,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60268,6 +61866,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60438,6 +62038,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60830,6 +62432,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60949,6 +62553,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -60986,6 +62592,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61017,6 +62625,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61108,6 +62718,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61145,6 +62757,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61176,6 +62790,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61346,6 +62962,8 @@ export interface MyNotificationsCenter_event_NotificationCenterUpdateBatch_updat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61602,6 +63220,8 @@ export interface MyOrganizations_myOrganizations {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
   isPrimary: boolean;
 }
@@ -61689,6 +63309,8 @@ export interface Organization_organization_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61726,6 +63348,8 @@ export interface Organization_organization_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61763,6 +63387,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -61975,6 +63601,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62012,6 +63640,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62043,6 +63673,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62134,6 +63766,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62171,6 +63805,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62202,6 +63838,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62372,6 +64010,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_re
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62424,6 +64064,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62548,6 +64190,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62568,6 +64212,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62594,6 +64240,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62614,6 +64262,8 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62677,6 +64327,8 @@ export interface Organization_organization_rooms_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62759,6 +64411,8 @@ export interface OrganizationWithoutMembers_organization_requests_user_primaryOr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -62796,6 +64450,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63008,6 +64664,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63045,6 +64703,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63076,6 +64736,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63167,6 +64829,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63204,6 +64868,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63235,6 +64901,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63405,6 +65073,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63457,6 +65127,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63581,6 +65253,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63601,6 +65275,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63627,6 +65303,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63647,6 +65325,8 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63710,6 +65390,8 @@ export interface OrganizationWithoutMembers_organization_rooms_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63791,6 +65473,8 @@ export interface OrganizationMembersShort_organization_requests_user_primaryOrga
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -63828,6 +65512,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64040,6 +65726,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64077,6 +65765,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64108,6 +65798,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64199,6 +65891,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64236,6 +65930,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64267,6 +65963,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64437,6 +66135,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64489,6 +66189,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64613,6 +66315,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64633,6 +66337,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64659,6 +66365,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64679,6 +66387,8 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64742,6 +66452,8 @@ export interface OrganizationMembersShort_organization_rooms_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64834,6 +66546,8 @@ export interface OrganizationMembersShortPaginated_organization_requests_user_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -64871,6 +66585,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65083,6 +66799,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65120,6 +66838,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65151,6 +66871,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65242,6 +66964,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65279,6 +67003,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65310,6 +67036,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65480,6 +67208,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65532,6 +67262,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65656,6 +67388,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65676,6 +67410,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65702,6 +67438,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65722,6 +67460,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65785,6 +67525,8 @@ export interface OrganizationMembersShortPaginated_organization_rooms_organizati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -65824,6 +67566,8 @@ export interface OrganizationMembersShortPaginated_organization_members_user_pri
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66108,6 +67852,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_members_user_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66145,6 +67891,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_requests_user_p
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66182,6 +67930,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66394,6 +68144,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66431,6 +68183,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66462,6 +68216,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66553,6 +68309,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66590,6 +68348,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66621,6 +68381,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66791,6 +68553,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66843,6 +68607,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66967,6 +68733,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -66987,6 +68755,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67013,6 +68783,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67033,6 +68805,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67096,6 +68870,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_organizat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67438,6 +69214,8 @@ export interface SuperAdmins_superAdmins_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67502,6 +69280,8 @@ export interface SuperAccount_superAccount_members_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67679,6 +69459,8 @@ export interface SuperAccountMemberAdd_superAccountMemberAdd_members_primaryOrga
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -67726,6 +69508,8 @@ export interface SuperAccountMemberRemove_superAccountMemberRemove_members_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68127,6 +69911,8 @@ export interface User_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68135,6 +69921,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_user_primaryOrganizat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68165,6 +69953,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68377,6 +70167,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68414,6 +70206,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68445,6 +70239,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68536,6 +70332,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68573,6 +70371,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68604,6 +70404,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68774,6 +70576,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_General
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68826,6 +70630,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68950,6 +70756,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68970,6 +70778,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -68996,6 +70806,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69016,6 +70828,8 @@ export interface User_user_chatsWithBadge_chat_PrivateRoom_pinnedMessage_Service
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69095,6 +70909,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69307,6 +71123,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69344,6 +71162,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69375,6 +71195,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69466,6 +71288,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69503,6 +71327,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69534,6 +71360,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69704,6 +71532,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69756,6 +71586,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69880,6 +71712,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69900,6 +71734,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69926,6 +71762,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -69946,6 +71784,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -70009,6 +71849,8 @@ export interface User_user_chatsWithBadge_chat_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -70174,6 +72016,8 @@ export interface ExplorePeople_items_edges_node_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -70234,1089 +72078,14 @@ export interface ExplorePeopleVariables {
 // GraphQL query operation: ResolveShortName
 // ====================================================
 
-export interface ResolveShortName_item_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
 export interface ResolveShortName_item_User {
   __typename: "User";
   id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  audienceSize: number;
-  primaryOrganization: ResolveShortName_item_User_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  audienceSize: number;
-  primaryOrganization: ResolveShortName_item_Organization_members_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: ResolveShortName_item_Organization_members_user;
-}
-
-export interface ResolveShortName_item_Organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  audienceSize: number;
-  primaryOrganization: ResolveShortName_item_Organization_requests_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: ResolveShortName_item_Organization_requests_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_senderBadge {
-  __typename: "UserBadge";
-  id: string;
-  name: string;
-  verified: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanAllMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanDate;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost";
-  fallback: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  fallback: string;
-  id: string;
-  fileId: string;
-  fileMetadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
-  __typename: "Image";
-  url: string;
-  metadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image {
-  __typename: "Image";
-  url: string;
-  metadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
-  __typename: "ModernMessageButton";
-  id: string;
-  title: string;
-  style: ModernMessageButtonStyle;
-  url: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
-  __typename: "MessageKeyboard";
-  buttons: (ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment";
-  fallback: string;
-  id: string;
-  title: string | null;
-  subTitle: string | null;
-  titleLink: string | null;
-  titleLinkHostname: string | null;
-  text: string | null;
-  icon: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  keyboard: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_senderBadge {
-  __typename: "UserBadge";
-  id: string;
-  name: string;
-  verified: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanAllMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanDate;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  /**
-   * Content
-   */
-  message: string | null;
-  sender: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
-  senderBadge: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_senderBadge | null;
-  fallback: string;
-  spans: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_senderBadge {
-  __typename: "UserBadge";
-  id: string;
-  name: string;
-  verified: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanAllMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanDate;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost";
-  fallback: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  fallback: string;
-  id: string;
-  fileId: string;
-  fileMetadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
-  __typename: "Image";
-  url: string;
-  metadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
-  __typename: "Image";
-  url: string;
-  metadata: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment";
-  fallback: string;
-  id: string;
-  title: string | null;
-  subTitle: string | null;
-  titleLink: string | null;
-  titleLinkHostname: string | null;
-  text: string | null;
-  icon: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  /**
-   * Content
-   */
-  message: string | null;
-  sender: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
-  senderBadge: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_senderBadge | null;
-  fallback: string;
-  spans: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
-  commentsCount: number;
-  edited: boolean;
-  attachments: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions {
-  __typename: "ModernMessageReaction";
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user;
-  reaction: MessageReactionType;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender;
-  senderBadge: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_senderBadge | null;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  spans: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans[];
-  edited: boolean;
-  commentsCount: number;
-  attachments: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments[];
-  quotedMessages: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages[];
-  reactions: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_senderBadge {
-  __typename: "UserBadge";
-  id: string;
-  name: string;
-  verified: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention {
-  __typename: "MessageSpanAllMention" | "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
-  offset: number;
-  length: number;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
-  __typename: "MessageSpanUserMention";
-  offset: number;
-  length: number;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
-  __typename: "User";
-  isYou: boolean;
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-  users: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention {
-  __typename: "MessageSpanRoomMention";
-  offset: number;
-  length: number;
-  room: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink {
-  __typename: "MessageSpanLink";
-  offset: number;
-  length: number;
-  url: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate {
-  __typename: "MessageSpanDate";
-  offset: number;
-  length: number;
-  date: any;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanAllMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanDate;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  isYou: boolean;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  isYou: boolean;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  isYou: boolean;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  isYou: boolean;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-  photo: string | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  respondType: string;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
-
-export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender;
-  senderBadge: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_senderBadge | null;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  spans: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans[];
-  serviceMetadata: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata | null;
-}
-
-export type ResolveShortName_item_Organization_rooms_pinnedMessage = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage;
-
-export interface ResolveShortName_item_Organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
-}
-
-export interface ResolveShortName_item_Organization_rooms_myBadge {
-  __typename: "UserBadge";
-  id: string;
-  name: string;
-  verified: boolean;
-}
-
-export interface ResolveShortName_item_Organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  isChannel: boolean;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  role: RoomMemberRole;
-  canEdit: boolean;
-  canSendMessage: boolean;
-  membersCount: number | null;
-  pinnedMessage: ResolveShortName_item_Organization_rooms_pinnedMessage | null;
-  organization: ResolveShortName_item_Organization_rooms_organization | null;
-  settings: ResolveShortName_item_Organization_rooms_settings;
-  myBadge: ResolveShortName_item_Organization_rooms_myBadge | null;
 }
 
 export interface ResolveShortName_item_Organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
-  isMine: boolean;
-  isPrivate: boolean;
-  isOwner: boolean;
-  isAdmin: boolean;
-  featured: boolean;
-  isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  membersCount: number;
-  members: ResolveShortName_item_Organization_members[];
-  requests: ResolveShortName_item_Organization_requests[];
-  rooms: ResolveShortName_item_Organization_rooms[];
 }
 
 export type ResolveShortName_item = ResolveShortName_item_User | ResolveShortName_item_Organization;
@@ -71445,6 +72214,8 @@ export interface CommentEntryFragment_comment_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71564,6 +72335,8 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_send
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71601,6 +72374,8 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_span
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71632,6 +72407,8 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_span
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71723,6 +72500,8 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_send
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71760,6 +72539,8 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_span
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71791,6 +72572,8 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_span
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -71961,6 +72744,8 @@ export interface CommentEntryFragment_comment_reactions_user_primaryOrganization
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72176,6 +72961,8 @@ export interface ConferenceFull_peers_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72361,6 +73148,8 @@ export interface TinyMessage_ServiceMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72404,6 +73193,8 @@ export interface TinyMessage_GeneralMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72492,6 +73283,8 @@ export interface FullMessage_GeneralMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72611,6 +73404,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72648,6 +73443,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72679,6 +73476,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72770,6 +73569,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72807,6 +73608,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -72838,6 +73641,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73008,6 +73813,8 @@ export interface FullMessage_GeneralMessage_reactions_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73153,6 +73960,8 @@ export interface FullMessage_ServiceMessage_sender_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73277,6 +74086,8 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73297,6 +74108,8 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73323,6 +74136,8 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73343,6 +74158,8 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73414,6 +74231,8 @@ export interface OrganizationFull_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73451,6 +74270,8 @@ export interface OrganizationFull_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73488,6 +74309,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender_prim
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73700,6 +74523,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73737,6 +74562,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73768,6 +74595,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73859,6 +74688,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73896,6 +74727,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -73927,6 +74760,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74097,6 +74932,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions_u
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74149,6 +74986,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender_prim
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74273,6 +75112,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74293,6 +75134,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74319,6 +75162,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74339,6 +75184,8 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74402,6 +75249,8 @@ export interface OrganizationFull_rooms_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74573,6 +75422,8 @@ export interface OrganizationShort {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74589,6 +75440,8 @@ export interface OrganizationWithoutMembersFragment_requests_user_primaryOrganiz
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74626,6 +75479,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74838,6 +75693,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74875,6 +75732,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74906,6 +75765,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -74997,6 +75858,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75034,6 +75897,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75065,6 +75930,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75235,6 +76102,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75287,6 +76156,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75411,6 +76282,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75431,6 +76304,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75457,6 +76332,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75477,6 +76354,8 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75540,6 +76419,8 @@ export interface OrganizationWithoutMembersFragment_rooms_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75613,6 +76494,8 @@ export interface RoomFull_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75643,6 +76526,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75855,6 +76740,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75892,6 +76779,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -75923,6 +76812,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76014,6 +76905,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76051,6 +76944,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76082,6 +76977,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76252,6 +77149,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_GeneralMessage_reactions_use
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76304,6 +77203,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76428,6 +77329,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76448,6 +77351,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76474,6 +77379,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76494,6 +77401,8 @@ export interface RoomFull_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76585,6 +77494,8 @@ export interface RoomFull_SharedRoom_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76625,6 +77536,8 @@ export interface RoomFull_SharedRoom_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76673,6 +77586,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_primary
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76885,6 +77800,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76922,6 +77839,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -76953,6 +77872,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77044,6 +77965,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77081,6 +78004,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77112,6 +78037,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77282,6 +78209,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions_user
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77334,6 +78263,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender_primary
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77458,6 +78389,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77478,6 +78411,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77504,6 +78439,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77524,6 +78461,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77628,6 +78567,8 @@ export interface RoomFullWithoutMembers_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77704,6 +78645,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77916,6 +78859,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77953,6 +78898,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -77984,6 +78931,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78075,6 +79024,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78112,6 +79063,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78143,6 +79096,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78313,6 +79268,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78365,6 +79322,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78489,6 +79448,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78509,6 +79470,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78535,6 +79498,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78555,6 +79520,8 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78703,6 +79670,8 @@ export interface RoomShort_PrivateRoom_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78733,6 +79702,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_sender_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78945,6 +79916,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -78982,6 +79955,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79013,6 +79988,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79104,6 +80081,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79141,6 +80120,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79172,6 +80153,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79342,6 +80325,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_GeneralMessage_reactions_us
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79394,6 +80379,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_sender_prima
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79518,6 +80505,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79538,6 +80527,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79564,6 +80555,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79584,6 +80577,8 @@ export interface RoomShort_PrivateRoom_pinnedMessage_ServiceMessage_serviceMetad
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79663,6 +80658,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79875,6 +80872,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79912,6 +80911,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -79943,6 +80944,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80034,6 +81037,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80071,6 +81076,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80102,6 +81109,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80272,6 +81281,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions_use
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80324,6 +81335,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender_primar
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80448,6 +81461,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80468,6 +81483,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80494,6 +81511,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80514,6 +81533,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80577,6 +81598,8 @@ export interface RoomShort_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80709,6 +81732,8 @@ export interface UserFull_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80748,6 +81773,8 @@ export interface UserShort_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80780,6 +81807,8 @@ export interface UserTiny_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80808,6 +81837,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_sender_pr
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80927,6 +81958,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80964,6 +81997,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -80995,6 +82030,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81086,6 +82123,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81123,6 +82162,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81154,6 +82195,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81324,6 +82367,8 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81506,6 +82551,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_sender_pri
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81625,6 +82672,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81662,6 +82711,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81693,6 +82744,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81784,6 +82837,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81821,6 +82876,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -81852,6 +82909,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82022,6 +83081,8 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions_
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82214,6 +83275,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82426,6 +83489,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82463,6 +83528,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82494,6 +83561,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82585,6 +83654,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82622,6 +83693,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82653,6 +83726,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82823,6 +83898,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_r
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82875,6 +83952,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -82999,6 +84078,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83019,6 +84100,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83045,6 +84128,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83065,6 +84150,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83134,6 +84221,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83346,6 +84435,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83383,6 +84474,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83414,6 +84507,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83505,6 +84600,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83542,6 +84639,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83573,6 +84672,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83743,6 +84844,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_re
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83795,6 +84898,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83919,6 +85024,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83939,6 +85046,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83965,6 +85074,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -83985,6 +85096,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84066,6 +85179,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_user_primaryOrg
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84096,6 +85211,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84308,6 +85425,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84345,6 +85464,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84376,6 +85497,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84467,6 +85590,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84504,6 +85629,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84535,6 +85662,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84705,6 +85834,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_G
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84757,6 +85888,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84881,6 +86014,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84901,6 +86036,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84927,6 +86064,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -84947,6 +86086,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_pinnedMessage_S
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85026,6 +86167,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85238,6 +86381,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85275,6 +86420,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85306,6 +86453,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85397,6 +86546,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85434,6 +86585,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85465,6 +86618,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85635,6 +86790,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85687,6 +86844,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85811,6 +86970,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85831,6 +86992,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85857,6 +87020,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85877,6 +87042,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -85940,6 +87107,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86005,6 +87174,8 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86048,6 +87219,8 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86137,6 +87310,8 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86180,6 +87355,8 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86267,6 +87444,8 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86310,6 +87489,8 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86390,6 +87571,8 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86433,6 +87616,8 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMe
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86555,6 +87740,8 @@ export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sende
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86598,6 +87785,8 @@ export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sende
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86697,6 +87886,8 @@ export interface NotificationFragment_content_comment_comment_sender_primaryOrga
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86816,6 +88007,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86853,6 +88046,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86884,6 +88079,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Ser
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -86975,6 +88172,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87012,6 +88211,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87043,6 +88244,8 @@ export interface NotificationFragment_content_comment_comment_quotedMessages_Gen
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87213,6 +88416,8 @@ export interface NotificationFragment_content_comment_comment_reactions_user_pri
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87501,6 +88706,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87620,6 +88827,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87657,6 +88866,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87688,6 +88899,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87779,6 +88992,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87816,6 +89031,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -87847,6 +89064,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88017,6 +89236,8 @@ export interface NotificationCenterUpdateFragment_NotificationReceived_notificat
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88303,6 +89524,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88422,6 +89645,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88459,6 +89684,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88490,6 +89717,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88581,6 +89810,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88618,6 +89849,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88649,6 +89882,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -88819,6 +90054,8 @@ export interface NotificationCenterUpdateFragment_NotificationUpdated_notificati
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89211,6 +90448,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89330,6 +90569,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89367,6 +90608,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89398,6 +90641,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89489,6 +90734,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89526,6 +90773,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89557,6 +90806,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 
@@ -89727,6 +90978,8 @@ export interface NotificationCenterUpdateFragment_NotificationContentUpdated_con
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
+  about: string | null;
   isCommunity: boolean;
 }
 

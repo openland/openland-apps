@@ -39,7 +39,7 @@ const SelectableText = React.memo((props: XViewProps) => {
 
 interface UListItemProps {
     text: string;
-    description?: string;
+    description?: string | null;
     descriptionColor?: string;
     icon?: any;
     avatar?: { photo?: string | null, id: string, title: string, online?: boolean };

@@ -2,10 +2,10 @@ query ResolveShortName($shortname: String!) {
   item: alphaResolveShortName(shortname: $shortname) {
     __typename
     ... on User {
-      ...UserFull
+      id
     }
     ... on Organization {
-      ...OrganizationFull
+      id
     }
   }
 }
