@@ -9,7 +9,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const organization = useClient().useOrganizationWithoutMembers({ organizationId: props.id }).organization;
 
     return (
-        <Page>
+        <Page padded={false}>
             <UListHero
                 title={organization.name}
                 description="Organization"
