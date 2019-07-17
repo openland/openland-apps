@@ -87,18 +87,18 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
                         width: isMobile
                             ? '100%'
                             : props.size !== 'x-large'
-                            ? width
-                            : 'calc(100% - 128px)',
+                                ? width
+                                : 'calc(100% - 128px)',
                         top: isMobile
                             ? 0
                             : props.size !== 'x-large' && !props.scrollableContent
-                            ? 96
-                            : 64,
+                                ? 96
+                                : 64,
                         left: isMobile
                             ? 0
                             : props.size !== 'x-large'
-                            ? `calc(50% - ${width / 2}px)`
-                            : 64,
+                                ? `calc(50% - ${width / 2}px)`
+                                : 64,
                         right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                         bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                     },
@@ -218,27 +218,30 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
 
         return (
             <Root>
-                {this.props.heading === undefined && this.props.title && (
-                    <XModalHeader alignItems="center" justifyContent="space-between">
-                        <XHorizontal alignItems="center" separator={4}>
-                            <XModalTitle>{this.props.title}</XModalTitle>
-                            {this.props.titleChildren !== undefined && this.props.titleChildren}
-                        </XHorizontal>
-                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
-                    </XModalHeader>
-                )}
-                {this.props.useTopCloser && !this.props.title && (
-                    <XView position="absolute" zIndex={100} right={32} top={28}>
-                        <XModalCloser autoClose={true} />
-                    </XView>
-                )}
+                {this.props.heading === undefined &&
+                    this.props.title && (
+                        <XModalHeader alignItems="center" justifyContent="space-between">
+                            <XHorizontal alignItems="center" separator={4}>
+                                <XModalTitle>{this.props.title}</XModalTitle>
+                                {this.props.titleChildren !== undefined && this.props.titleChildren}
+                            </XHorizontal>
+                            {this.props.useTopCloser && <XModalCloser autoClose={true} />}
+                        </XModalHeader>
+                    )}
+                {this.props.useTopCloser &&
+                    !this.props.title && (
+                        <XView position="absolute" zIndex={100} right={32} top={28}>
+                            <XModalCloser autoClose={true} />
+                        </XView>
+                    )}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
-                {this.props.footer === undefined && !this.props.useTopCloser && (
-                    <XModalFooter>
-                        <XButton text="Close" autoClose={true} />
-                    </XModalFooter>
-                )}
+                {this.props.footer === undefined &&
+                    !this.props.useTopCloser && (
+                        <XModalFooter>
+                            <XButton text="Close" autoClose={true} />
+                        </XModalFooter>
+                    )}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );
@@ -259,6 +262,9 @@ export interface XModalProps extends ModalContentRenderProps {
     // Target
     target?: React.ReactElement<any>;
     targetQuery?: string;
+
+    // added for sake of simplicy and for use in new models
+    ignoreTargetQuery?: boolean;
 }
 
 export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
@@ -326,8 +332,8 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     </ModalRender>
                 </React.Suspense>
             );
-        } else if (this.props.targetQuery) {
-            let q = this.props.targetQuery;
+        } else if (this.props.targetQuery || this.props.ignoreTargetQuery) {
+            let q = this.props.targetQuery || '';
             result = (
                 <React.Suspense fallback={<div />}>
                     <XRouterContext.Consumer>
@@ -336,7 +342,11 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                             return (
                                 <ModalRender
                                     scrollableContent={this.props.scrollableContent}
-                                    isOpen={!!router!!.query[q]}
+                                    isOpen={
+                                        router && q in router.query
+                                            ? router.query[q]
+                                            : this.props.ignoreTargetQuery
+                                    }
                                     onCloseRequest={this.onModalCloseRequest}
                                     size={size}
                                     sWidth={this.props.width}

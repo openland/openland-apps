@@ -29,6 +29,7 @@ import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
+import { showModalBox } from 'openland-x/showModalBox';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -156,8 +157,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-            ? 'community'
-            : 'organization';
+                ? 'community'
+                : 'organization';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
 
@@ -412,6 +413,8 @@ interface InviteModalProps extends XModalProps {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
+
+    hide?: () => void;
 }
 
 interface InviteModalState {
@@ -455,10 +458,13 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
     }
 
     private onClosed = () => {
-        this.setState({
-            selectedUsers: null,
-            searchQuery: '',
-        });
+        this.setState(
+            {
+                selectedUsers: null,
+                searchQuery: '',
+            },
+            () => (this.props.hide ? this.props.hide() : {}),
+        );
     }
 
     render() {
@@ -485,8 +491,8 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 ? 'channel'
                 : 'group'
             : props.isCommunity
-            ? 'community'
-            : 'organization';
+                ? 'community'
+                : 'organization';
         return (
             <XModalForm
                 autoClose={1500}
@@ -499,7 +505,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
-                targetQuery="inviteMembers"
+                ignoreTargetQuery
                 defaultAction={async () => {
                     if (props.isRoom) {
                         await (props.addMembers as RoomAddMembersType)({
@@ -578,6 +584,8 @@ type AddMemberModalT = {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
+
+    hide?: () => void;
 };
 
 interface AddMemberToRoom {
@@ -595,7 +603,14 @@ interface AddMemberToOrganization {
 }
 
 export const AddMembersModal = React.memo(
-    ({ id, isRoom, isChannel, isOrganization, isCommunity }: AddMemberModalT & XModalProps) => {
+    ({
+        id,
+        isRoom,
+        isChannel,
+        isOrganization,
+        isCommunity,
+        hide,
+    }: AddMemberModalT & XModalProps) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 
@@ -629,6 +644,7 @@ export const AddMembersModal = React.memo(
 
         return (
             <AddMemberModalInner
+                hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
                 id={id}
                 members={
@@ -645,3 +661,7 @@ export const AddMembersModal = React.memo(
         );
     },
 );
+
+export const showAddMembersModal = (props: AddMemberModalT) => {
+    showModalBox({}, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
+};

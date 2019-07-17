@@ -16,6 +16,7 @@ import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { XLoader } from 'openland-x/XLoader';
+import { showModalBox } from 'openland-x/showModalBox';
 
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
@@ -231,11 +232,10 @@ const ModalBody = (props: ModalBodyProps) => {
     return null;
 };
 
-export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
+export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide: () => void }) => {
     const api = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const [isOpen, setIsOpen] = React.useState(true);
     const [isOpenUsers, setIsOpenUsers] = React.useState(false);
     const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(props.welcomeMessageIsOn);
     const [welcomeMessageText, setWelcomeMessageText] = React.useState(props.welcomeMessageText);
@@ -287,19 +287,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         };
     }
 
-    React.useEffect(
-        () => {
-            if (!isOpen) {
-                router!!.replaceQuery('advancedSettings', undefined);
-                setIsOpen(true);
-            }
-        },
-        [isOpen],
-    );
-
     return (
         <XModalForm
-            isOpen={isOpen}
             defaultLayout={false}
             scrollableContent={true}
             alsoUseBottomCloser={true}
@@ -308,8 +297,10 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 setWelcomeMessageText(props.welcomeMessageText);
                 setWelcomeMessageSender(props.welcomeMessageSender);
                 setTriedToSend(false);
+
+                props.hide();
             }}
-            targetQuery="advancedSettings"
+            ignoreTargetQuery
             useTopCloser={true}
             title="Advanced settings"
             defaultAction={async data => {
@@ -342,7 +333,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     id: props.roomId,
                 });
                 setTriedToSend(true);
-                setIsOpen(false);
+
+                props.hide();
             }}
             defaultData={{
                 input: {
@@ -361,21 +353,23 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 },
             }}
         >
-            {isOpen && (
-                <ModalBody
-                    welcomeMessageIsOn={welcomeMessageIsOn}
-                    setWelcomeMessageIsOn={setWelcomeMessageIsOn}
-                    isOpenUsers={isOpenUsers}
-                    setIsOpenUsers={setIsOpenUsers}
-                    msgSender={msgSender}
-                    welcomeMsgSenderOnChange={welcomeMsgSenderOnChange}
-                    finalWelcomeMessageSenderError={finalWelcomeMessageSenderError}
-                    finalWelcomeMessageTextError={finalWelcomeMessageTextError}
-                    welcomeMsgOnChange={welcomeMsgOnChange}
-                    welcomeMessageText={welcomeMessageText}
-                    variables={{ id: props.roomId }}
-                />
-            )}
+            <ModalBody
+                welcomeMessageIsOn={welcomeMessageIsOn}
+                setWelcomeMessageIsOn={setWelcomeMessageIsOn}
+                isOpenUsers={isOpenUsers}
+                setIsOpenUsers={setIsOpenUsers}
+                msgSender={msgSender}
+                welcomeMsgSenderOnChange={welcomeMsgSenderOnChange}
+                finalWelcomeMessageSenderError={finalWelcomeMessageSenderError}
+                finalWelcomeMessageTextError={finalWelcomeMessageTextError}
+                welcomeMsgOnChange={welcomeMsgOnChange}
+                welcomeMessageText={welcomeMessageText}
+                variables={{ id: props.roomId }}
+            />
         </XModalForm>
     );
+};
+
+export const showAdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
+    showModalBox({}, ctx => <AdvancedSettingsModal {...props} hide={ctx.hide} />);
 };

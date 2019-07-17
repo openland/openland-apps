@@ -11,8 +11,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { LeaveChatComponent } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
-import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
-import { AdvancedSettingsModal } from '../AdvancedSettingsModal';
+import { AddMembersModal, showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { AdvancedSettingsModal, showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import InviteIcon from 'openland-icons/ic-invite-members.svg';
 import NotificationIcon from 'openland-icons/ic-notification.svg';
 import NotificationOffIcon from 'openland-icons/ic-notification-off.svg';
@@ -93,35 +93,20 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
     if (sharedRoom) {
         canEdit = sharedRoom.canEdit;
         canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat: sharedRoom });
-
-        modals = (
-            <>
-                <AddMembersModal
-                    id={room.id}
-                    isRoom={true}
-                    isOrganization={false}
-                    isChannel={isChannel}
-                />
-                {sharedRoom && (
-                    <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
-                        <AdvancedSettingsModal
-                            roomId={sharedRoom.id}
-                            socialImage={sharedRoom.socialImage}
-                            welcomeMessageText={sharedRoom.welcomeMessage!!.message}
-                            welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
-                            welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
-                        />
-                    </XWithRole>
-                )}
-            </>
-        );
     }
     const menuItems = (
         <React.Suspense fallback={<XLoader loading={true} />}>
             {sharedRoom && (
                 <XMenuItem
                     icon={<InviteIcon />}
-                    query={{ field: 'inviteMembers', value: 'true' }}
+                    onClick={() =>
+                        showAddMembersModal({
+                            id: room.id,
+                            isRoom: true,
+                            isOrganization: false,
+                            isChannel: isChannel,
+                        })
+                    }
                     customContent
                 >
                     <MenuItem>Invite friends</MenuItem>
@@ -169,10 +154,15 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
                         <XMenuItem
                             icon={<DiscoverIcon />}
                             customContent
-                            query={{
-                                field: 'advancedSettings',
-                                value: 'true',
-                            }}
+                            onClick={() =>
+                                showAdvancedSettingsModal({
+                                    roomId: sharedRoom.id,
+                                    socialImage: sharedRoom.socialImage,
+                                    welcomeMessageText: sharedRoom.welcomeMessage!!.message,
+                                    welcomeMessageSender: sharedRoom.welcomeMessage!!.sender,
+                                    welcomeMessageIsOn: sharedRoom.welcomeMessage!!.isOn,
+                                })
+                            }
                         >
                             <MenuItem>Advanced settings</MenuItem>
                         </XMenuItem>
@@ -188,7 +178,6 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
     return (
         <>
             <XOverflow placement="bottom-end" width={240} content={menuItems} horizontal rounded />
-            {modals}
         </>
     );
 };
