@@ -11,6 +11,7 @@ import { SettingsNotificationsFragment } from 'openland-web/fragments/account/Se
 import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 
 const routing = new URouting();
 
@@ -38,5 +39,9 @@ routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 
 // Profile
 routing.addRoute('/:shortname', () => ShortnameFragment);
+
+// Invites
+routing.addRoute('/invite/:invite', () => InviteLandingComponent);
+routing.addRoute('/join/:invite', () => InviteLandingComponent);
 
 export const Routing = routing;

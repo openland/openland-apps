@@ -51938,12 +51938,23 @@ export interface ResolvedInvite_invite_InviteInfo_creator {
   primaryOrganization: ResolvedInvite_invite_InviteInfo_creator_primaryOrganization | null;
 }
 
+export interface ResolvedInvite_invite_InviteInfo_organization {
+  __typename: "Organization";
+  id: string;
+  photo: string | null;
+  name: string;
+  membersCount: number;
+  about: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolvedInvite_invite_InviteInfo {
   __typename: "InviteInfo";
   id: string;
   orgId: string;
   title: string;
   creator: ResolvedInvite_invite_InviteInfo_creator | null;
+  organization: ResolvedInvite_invite_InviteInfo_organization | null;
 }
 
 export interface ResolvedInvite_invite_AppInvite_inviter_primaryOrganization {

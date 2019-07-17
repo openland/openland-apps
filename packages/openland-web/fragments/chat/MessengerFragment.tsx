@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
-import { InviteLandingComponent } from '../invite/InviteLandingComponent';
+import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import {
     UserShort,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
@@ -33,7 +33,7 @@ interface MessengerComponentLoaderProps {
 
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
-> {
+    > {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
     }
@@ -53,23 +53,23 @@ class MessagengerFragmentInner extends React.PureComponent<
             | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
             | null =
             sharedRoom &&
-            sharedRoom.pinnedMessage &&
-            sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
+                sharedRoom.pinnedMessage &&
+                sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
 
         if (privateRoom) {
             pinMessage =
                 privateRoom &&
-                privateRoom.pinnedMessage &&
-                privateRoom.pinnedMessage.__typename === 'GeneralMessage'
+                    privateRoom.pinnedMessage &&
+                    privateRoom.pinnedMessage.__typename === 'GeneralMessage'
                     ? privateRoom.pinnedMessage
                     : null;
         }
 
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
             if (sharedRoom.kind === 'PUBLIC') {
-                return <InviteLandingComponent room={sharedRoom} />;
+                return <SharedRoomPlaceholder room={sharedRoom} />;
             } else {
                 return <XPageRedirect path="/mail" />;
             }

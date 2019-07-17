@@ -8,13 +8,11 @@ import { XImage } from 'react-mental';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import CheckIcon from 'openland-icons/ic-check.svg';
-import CloseIcon from 'openland-icons/ic-close-post.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import LinkedinIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
 import FacebookIcon from 'openland-icons/ic-fb.svg';
 import { XModalController } from 'openland-x/showModal';
-import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const letterSpasingClassName = css`
     letter-spacing: 0.9px;

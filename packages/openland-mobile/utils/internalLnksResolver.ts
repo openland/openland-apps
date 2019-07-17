@@ -7,7 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
-import { ResolvedInvite_invite_RoomInvite, ResolvedInvite_invite_InviteInfo } from 'openland-api/Types';
+import { ResolvedInvite_invite_RoomInvite, ResolvedInvite_invite_InviteInfo, AccountInviteInfo_invite } from 'openland-api/Types';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
     return async () => {
@@ -39,7 +39,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             }
         };
 
-        let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
+        let joinOraganizaion = async (invite: Partial<AccountInviteInfo_invite> | null, key: string) => {
             if (invite) {
                 stopLoader();
                 Alert.builder()
@@ -280,7 +280,7 @@ export const joinInviteIfHave = async () => {
         }
     };
 
-    let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
+    let joinOraganizaion = async (invite: Partial<AccountInviteInfo_invite> | null, key: string) => {
         if (invite) {
             Alert.builder()
                 .title('Invite to ' + invite.title)
