@@ -8,6 +8,7 @@ import { XText } from 'openland-x/XText';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XView } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     {
@@ -54,13 +55,22 @@ class DeclineButton extends React.Component<{
     }
 }
 
-const RemoveMemberModalInner = ({ roomId, roomTitle }: { roomId: string; roomTitle: string }) => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
+interface RemoveMemberModalProps {
+    roomId: string;
+    roomTitle: string;
+    memberId: string;
+}
 
+const RemoveMemberModalInner = ({
+    roomId,
+    roomTitle,
+    memberId,
+    hide,
+}: RemoveMemberModalProps & { hide: () => void }) => {
+    const client = useClient();
     const data = client.useRoomMemberShort({
         roomId,
-        memberId: router.query.remove,
+        memberId,
     });
 
     const member = data && data.member ? data.member : null;
@@ -75,7 +85,7 @@ const RemoveMemberModalInner = ({ roomId, roomTitle }: { roomId: string; roomTit
                 style: 'danger',
             }}
             title={'Remove ' + member.user.name + ' from ' + roomTitle}
-            targetQuery="remove"
+            ignoreTargetQuery
             defaultAction={async () => {
                 await client.mutateRoomKick({
                     userId: member.user.id,
@@ -85,6 +95,11 @@ const RemoveMemberModalInner = ({ roomId, roomTitle }: { roomId: string; roomTit
                 await client.refetchRoom({
                     id: roomId,
                 });
+
+                hide();
+            }}
+            onClosed={() => {
+                hide();
             }}
         >
             <XText>
@@ -95,27 +110,6 @@ const RemoveMemberModalInner = ({ roomId, roomTitle }: { roomId: string; roomTit
     );
 };
 
-export const RemoveMemberModal = ({ roomId, roomTitle }: { roomId: string; roomTitle: string }) => {
-    let router = React.useContext(XRouterContext)!;
-
-    if (!router.query.remove) {
-        return null;
-    }
-    return (
-        <React.Suspense
-            fallback={
-                <XView
-                    top={0}
-                    left={0}
-                    width="100%"
-                    height="100%"
-                    backgroundColor="rgba(0, 0, 0, 0.4)"
-                    position="fixed"
-                    zIndex={100}
-                />
-            }
-        >
-            <RemoveMemberModalInner roomId={roomId} roomTitle={roomTitle} />{' '}
-        </React.Suspense>
-    );
+export const showRemoveMemberModal = (props: RemoveMemberModalProps) => {
+    showModalBox({}, ctx => <RemoveMemberModalInner {...props} hide={ctx.hide} />);
 };

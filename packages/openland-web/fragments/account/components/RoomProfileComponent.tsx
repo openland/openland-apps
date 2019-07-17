@@ -91,7 +91,6 @@ export const tabs: { [K in tabsT]: tabsT } = {
 export const showRoomEditModal = (chat: Room_room_SharedRoom) => {
     const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
     const isChannel = !!(sharedRoom && sharedRoom.isChannel);
-    console.log({ chat });
     showModalBox(
         {
             title: isChannel ? 'Channel settings' : 'Group settings',
@@ -109,6 +108,9 @@ export const showRoomEditModal = (chat: Room_room_SharedRoom) => {
         ),
     );
 };
+
+export const leaveChatModal = (chatId: string) =>
+    showModalBox({ title: 'Leave chat' }, ctx => <LeaveChatComponent id={chatId} ctx={ctx} />);
 
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
@@ -155,11 +157,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         </XWithRole>
 
                                         <XMenuItem
-                                            onClick={() =>
-                                                showModalBox({ title: 'Leave chat' }, ctx => (
-                                                    <LeaveChatComponent id={chat.id} ctx={ctx} />
-                                                ))
-                                            }
+                                            onClick={() => leaveChatModal(chat.id)}
                                             style="danger"
                                         >
                                             {leaveText}
@@ -239,6 +237,11 @@ const DescriptionModalContent = (props: {
     );
 };
 
+export const showAddDescriptionModal = (chat: Room_room_SharedRoom) =>
+    showModalBox({ title: 'Add short description' }, ctx => (
+        <DescriptionModalContent roomId={chat.id} description={chat.description} ctx={ctx} />
+    ));
+
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
 
@@ -258,15 +261,7 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                         <SectionContent>
                             <EditButton
                                 text="Add a short description"
-                                onClick={() =>
-                                    showModalBox({ title: 'Add short description' }, ctx => (
-                                        <DescriptionModalContent
-                                            roomId={chat.id}
-                                            description={chat.description}
-                                            ctx={ctx}
-                                        />
-                                    ))
-                                }
+                                onClick={() => showAddDescriptionModal(chat)}
                             />
                         </SectionContent>
                     </Section>
@@ -357,7 +352,7 @@ const MembersProvider = ({
                 )}
             </SectionContent>
 
-            <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
+            {/* <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} /> */}
         </Section>
     );
 };

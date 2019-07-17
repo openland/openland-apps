@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { addMemberModalChatId, webInboxChat } from './fixtures';
+import { addMemberModalChatId, webInboxChat, egoarkaId } from './fixtures';
 
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
@@ -12,7 +12,12 @@ import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGrou
 import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
 import { showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
-import { showRoomEditModal } from 'openland-web/fragments/account/components/RoomProfileComponent';
+import {
+    showRoomEditModal,
+    leaveChatModal,
+    showAddDescriptionModal,
+} from 'openland-web/fragments/account/components/RoomProfileComponent';
+import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -72,6 +77,30 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="Room edit"
                             style="primary"
                             onClick={() => showRoomEditModal(webInboxChat)}
+                        />
+
+                        <XButton
+                            text="Leave chat"
+                            style="primary"
+                            onClick={() => leaveChatModal(webInboxChat.id)}
+                        />
+
+                        <XButton
+                            text="Add description"
+                            style="primary"
+                            onClick={() => showAddDescriptionModal(webInboxChat)}
+                        />
+
+                        <XButton
+                            text="remove member modal"
+                            style="primary"
+                            onClick={() =>
+                                showRemoveMemberModal({
+                                    roomId: webInboxChat.id,
+                                    memberId: egoarkaId,
+                                    roomTitle: webInboxChat.title,
+                                })
+                            }
                         />
                     </XVertical>
                 </XVertical2>
