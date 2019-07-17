@@ -27,11 +27,11 @@ interface UListHeroProps {
     description?: string | JSX.Element;
     descriptionColor?: string;
     avatar?: { photo: string | null; id: string; title: string; };
-    buttons?: JSX.Element;
+    children?: any;
 }
 
 export const UListHero = (props: UListHeroProps) => {
-    const { title, score, description, descriptionColor, avatar, buttons } = props;
+    const { title, score, description, descriptionColor, avatar, children } = props;
 
     return (
         <XView
@@ -65,7 +65,9 @@ export const UListHero = (props: UListHeroProps) => {
                     </XView>
                 )}
             </XView>
-            {!!buttons && <XView flexDirection="row" alignItems="center">{buttons}</XView>}
+            <XView flexDirection="row" alignItems="center">
+                {children}
+            </XView>
         </XView>
     );
 };

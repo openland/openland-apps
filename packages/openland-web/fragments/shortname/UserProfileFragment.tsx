@@ -9,24 +9,12 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
     const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
-
-    const buttons = (
-        <>
-            {!isYou && <UButton text="Message" path={'/mail/' + id} />}
-            {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
-                <UNotificationsSwitch
-                    id={conversation.id}
-                    mute={!!conversation.settings.mute}
-                    marginLeft={16}
-                />
-            )}
-        </>
-    );
 
     return (
         <Page padded={false}>
@@ -35,8 +23,21 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 score={audienceSize}
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
-                buttons={buttons}
-            />
+            >
+                {!isYou && <UButton text="Message" path={'/mail/' + id} />}
+                {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
+                    <UNotificationsSwitch
+                        id={conversation.id}
+                        mute={!!conversation.settings.mute}
+                        marginLeft={16}
+                    />
+                )}
+                {isYou && (
+                    <UMoreButton>
+                        <UListItem title="Edit profile" path="/settings/profile/" />
+                    </UMoreButton>
+                )}
+            </UListHero>
             <UListGroup header="About">
                 {!!about && <UListField value={about} marginBottom={24} />}
                 {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
@@ -51,8 +52,9 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 )}
             </UListGroup>
             <UListGroup header="Featured in" counter={user.chatsWithBadge.length}>
-                {chatsWithBadge.map((item, index) => (
+                {chatsWithBadge.map((item) => (
                     <UListItem
+                        key={'featured-chat-' + item.chat.id}
                         avatar={{
                             photo: item.chat.__typename === 'PrivateRoom' ? item.chat.user.photo : item.chat.photo,
                             id: item.chat.id,

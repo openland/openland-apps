@@ -8,7 +8,7 @@ import { OrganizationProfileFragment } from './OrganizationProfileFragment';
 export const ShortnameFragment = React.memo(() => {
     let client = useClient();
     let unicorn = useUnicorn();
-    let data = client.useResolveShortName({ shortname: unicorn.id }).item;
+    let data = client.useResolveShortName({ shortname: unicorn.id }, { fetchPolicy: 'cache-and-network' }).item;
 
     if (data && data.__typename) {
         if (data.__typename === 'User') {

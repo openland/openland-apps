@@ -1,13 +1,32 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
+import { css } from 'linaria';
+
+const iconWrapper = css`
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 24px;
+        height: 24px;
+
+        * {
+            fill: #676D7A; // ThemeDefault.foregroundSecondary
+        }
+    }
+`;
 
 interface UIconButtonProps extends XViewProps {
     icon: JSX.Element;
+    active?: boolean;
 }
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, ...other } = props;
+    const { icon, active, ...other } = props;
 
     return (
         <XView
@@ -18,12 +37,13 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
             width={40}
             height={40}
             borderRadius={20}
+            backgroundColor={active ? ThemeDefault.backgroundPrimaryHover : undefined}
             hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
             linkSelectable={true}
         >
-            <XView width={24} height={24} alignItems="center" justifyContent="center">
+            <div className={iconWrapper}>
                 {icon}
-            </XView>
+            </div>
         </XView>
     );
 });

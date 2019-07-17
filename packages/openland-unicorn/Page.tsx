@@ -52,7 +52,7 @@ export const Page = React.memo((props: PageProps) => {
                     flexBasis={0}
                     minHeight={0}
                 >
-                    <XView flexDirection="row" justifyContent="center">
+                    <XView flexDirection="row" justifyContent="center" paddingBottom={32}>
                         <XView
                             maxWidth={width}
                             flexDirection="column"
