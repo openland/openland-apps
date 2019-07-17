@@ -44,7 +44,7 @@ export class ZImage extends React.Component<ZImageProps> {
         if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
             let w = this.props.imageSize ? this.props.imageSize.width : PixelRatio.getPixelSizeForLayoutSize(this.props.width);
             let h = this.props.imageSize ? this.props.imageSize.height : PixelRatio.getPixelSizeForLayoutSize(this.props.height);
-            url += '-/scale_crop/' + w + 'x' + h + '/';
+            url += '-/scale_crop/' + w + 'x' + h + '/center/';
             if (PixelRatio.get() > 2 && !this.props.imageSize) {
                 url += '-/quality/lighter/-/progressive/yes/';
             }
