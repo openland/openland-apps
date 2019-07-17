@@ -4,23 +4,29 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-web/utils/useClient';
+import { UListField } from 'openland-web/components/unicorn/UListField';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const organization = useClient().useOrganizationWithoutMembers({ organizationId: props.id }).organization;
+    const { name, photo, id, about, shortname, website, twitter, facebook } = organization;
 
     return (
         <Page padded={false}>
             <UListHero
-                title={organization.name}
+                title={name}
                 description="Organization"
                 avatar={{
-                    photo: organization.photo,
-                    key: organization.id,
-                    title: organization.name
+                    photo,
+                    key: id,
+                    title: name
                 }}
             />
             <UListGroup header="About">
-                <XView>{organization.about}</XView>
+                {!!about && <UListField value={about} marginBottom={24} />}
+                {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
+                {!!website && <UListField label="Website" value={website} />}
+                {!!twitter && <UListField label="Twitter" value={twitter} />}
+                {!!facebook && <UListField label="Facebook" value={facebook} />}
             </UListGroup>
         </Page>
     );
