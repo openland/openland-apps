@@ -5,9 +5,10 @@ import {
     addMemberModalChatId,
     webInboxChat,
     egoarkaId,
-    fredId,
     rfzzOrgId,
     fredUser,
+    pinMessage,
+    gfdsgsRoom,
 } from './fixtures';
 
 import { XContent } from 'openland-x-layout/XContent';
@@ -30,6 +31,7 @@ import { showDeleteOrganizationModal } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
+import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -167,6 +169,20 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
+
+                        <XButton
+                            text="pin message"
+                            style="primary"
+                            onClick={() =>
+                                showPinMessageModal({
+                                    chatId: webInboxChat.id,
+                                    pinMessage,
+                                    room: gfdsgsRoom,
+                                })
+                            }
+                        />
+
+                        {/* PinMessageComponentProps */}
                     </XVertical>
                 </XVertical2>
             </XContent>
