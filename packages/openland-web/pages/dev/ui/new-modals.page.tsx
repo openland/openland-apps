@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { addMemberModalChatId, webInboxChat, egoarkaId } from './fixtures';
+import { addMemberModalChatId, webInboxChat, egoarkaId, fredId } from './fixtures';
 
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
@@ -18,6 +18,7 @@ import {
     showAddDescriptionModal,
 } from 'openland-web/fragments/account/components/RoomProfileComponent';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
+import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -99,6 +100,19 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     roomId: webInboxChat.id,
                                     memberId: egoarkaId,
                                     roomTitle: webInboxChat.title,
+                                })
+                            }
+                        />
+
+                        <XButton
+                            text="avatar modal"
+                            style="primary"
+                            onClick={() =>
+                                showAvatarModal({
+                                    id: fredId,
+                                    title: 'Fred Morozov',
+                                    photo:
+                                        'https://ucarecdn.com/c39d275a-8b1c-419f-a663-cfae8c471191/-/crop/1200x1200/0,0/-/scale_crop/512x512/center/-/format/jpeg/-/progressive/yes/',
                                 })
                             }
                         />

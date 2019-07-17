@@ -13,7 +13,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/chat/components/MessengerRootComponent';
-import { RemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -351,8 +350,6 @@ const MembersProvider = ({
                     </XView>
                 )}
             </SectionContent>
-
-            {/* <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} /> */}
         </Section>
     );
 };

@@ -3,6 +3,7 @@ import { Room_room_SharedRoom } from 'openland-api/Types';
 export const addMemberModalChatId = 'QwJ9g164eMTdJlDDj9qzS115XW';
 
 export const egoarkaId = 'b5OljEldvVcmdakbEKexIgW5Vl';
+export const fredId = 'Jl1k97keDvsLjdwXPRKytboAyq';
 
 export const webInboxChat = {
     id: 'QwJ9g164eMTdJlDDj9qzS115XW',
