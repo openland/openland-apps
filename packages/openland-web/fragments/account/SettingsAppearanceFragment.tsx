@@ -8,6 +8,7 @@ import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { Page } from 'openland-unicorn/Page';
 
 enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -34,7 +35,7 @@ export const SettingsAppearanceFragment = React.memo(() => {
     };
 
     return (
-        <>
+        <Page>
             <UHeader title="Appearance" />
             <FormWrapper title="Appearance">
                 <FormSection title="Secret group display">
@@ -66,6 +67,6 @@ export const SettingsAppearanceFragment = React.memo(() => {
                     />
                 </FormFooter>
             </FormWrapper>
-        </>
+        </Page>
     );
 });

@@ -12,6 +12,7 @@ import { InputField } from 'openland-web/components/InputField';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
+import { Page } from '../../../openland-unicorn/Page';
 
 export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
@@ -73,82 +74,84 @@ export const SettingsProfileFragment = React.memo(() => {
     const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
 
     return (
-        <FormWrapper title="Profile">
-            <XView flexDirection="row" flexGrow={1}>
-                <XView flexGrow={1}>
-                    <FormSection title="Info">
-                        <XView marginBottom={16}>
-                            <InputField title={'First name'} field={firstNameField} size="large" />
-                        </XView>
-                        <XView marginBottom={16}>
-                            <InputField
-                                title={'Second name'}
-                                field={secondNameField}
+        <Page>
+            <FormWrapper title="Profile">
+                <XView flexDirection="row" flexGrow={1}>
+                    <XView flexGrow={1}>
+                        <FormSection title="Info">
+                            <XView marginBottom={16}>
+                                <InputField title={'First name'} field={firstNameField} size="large" />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <InputField
+                                    title={'Second name'}
+                                    field={secondNameField}
+                                    size="large"
+                                />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <SelectWithDropdown
+                                    {...primaryOrganizationField.input}
+                                    title={'Primary organization'}
+                                    selectOptions={organizationsWithoutCommunity.map((org: any) => ({
+                                        value: org.id,
+                                        label: org.name,
+                                    }))}
+                                />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <XTextArea
+                                    mode="modern"
+                                    title="About"
+                                    {...aboutField.input}
+                                    resize={false}
+                                />
+                            </XView>
+                            <InputField title={'Location'} field={locationField} size="large" />
+                        </FormSection>
+                        <FormSection title="Username">
+                            <InputField title={'Username'} field={usernameField} size="large" />
+                        </FormSection>
+                        <FormSection title="Contacts">
+                            <XView marginBottom={16}>
+                                <InputField
+                                    title={'Phone number'}
+                                    field={phoneNumberField}
+                                    size="large"
+                                />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <InputField title={'Email'} field={emailField} size="large" />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <InputField title={'Website'} field={websiteField} size="large" />
+                            </XView>
+                            <InputField title={'Linkedin'} field={linkedinField} size="large" />
+                        </FormSection>
+                        <FormFooter>
+                            <XButton
+                                text="Save changes"
+                                style="primary"
                                 size="large"
+                                alignSelf="flex-start"
+                                onClick={doConfirm}
+                                square
                             />
-                        </XView>
-                        <XView marginBottom={16}>
-                            <SelectWithDropdown
-                                {...primaryOrganizationField.input}
-                                title={'Primary organization'}
-                                selectOptions={organizationsWithoutCommunity.map((org: any) => ({
-                                    value: org.id,
-                                    label: org.name,
-                                }))}
-                            />
-                        </XView>
-                        <XView marginBottom={16}>
-                            <XTextArea
-                                mode="modern"
-                                title="About"
-                                {...aboutField.input}
-                                resize={false}
-                            />
-                        </XView>
-                        <InputField title={'Location'} field={locationField} size="large" />
-                    </FormSection>
-                    <FormSection title="Username">
-                        <InputField title={'Username'} field={usernameField} size="large" />
-                    </FormSection>
-                    <FormSection title="Contacts">
-                        <XView marginBottom={16}>
-                            <InputField
-                                title={'Phone number'}
-                                field={phoneNumberField}
-                                size="large"
-                            />
-                        </XView>
-                        <XView marginBottom={16}>
-                            <InputField title={'Email'} field={emailField} size="large" />
-                        </XView>
-                        <XView marginBottom={16}>
-                            <InputField title={'Website'} field={websiteField} size="large" />
-                        </XView>
-                        <InputField title={'Linkedin'} field={linkedinField} size="large" />
-                    </FormSection>
-                    <FormFooter>
-                        <XButton
-                            text="Save changes"
-                            style="primary"
-                            size="large"
-                            alignSelf="flex-start"
-                            onClick={doConfirm}
-                            square
+                        </FormFooter>
+                    </XView>
+                    <XView marginLeft={16} marginTop={48}>
+                        <XAvatarFormFieldComponent
+                            {...avatarField.input}
+                            size="default"
+                            rounded
+                            placeholder={{
+                                add: 'Add photo',
+                                change: 'Change Photo',
+                            }}
                         />
-                    </FormFooter>
+                    </XView>
                 </XView>
-                <XView marginLeft={16} marginTop={48}>
-                    <XAvatarFormFieldComponent
-                        {...avatarField.input}
-                        size="default"
-                        rounded
-                        placeholder={{
-                            add: 'Add photo',
-                            change: 'Change Photo',
-                        }}
-                    />
-                </XView>
-            </XView>
-        </FormWrapper>
+            </FormWrapper>
+        </Page>
     );
 });
