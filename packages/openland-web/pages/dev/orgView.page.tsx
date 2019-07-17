@@ -16,6 +16,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -68,17 +69,22 @@ const PendButton = ({ accountId }: { accountId: string }) => {
     );
 };
 
-const DeleteButton = ({ accountId, orgId }: { accountId: string; orgId: string }) => {
-    const client = useClient();
-    return (
-        <XModal
-            useTopCloser={true}
-            title="Delete organization?"
-            target={<XButton text="Delete" style="danger" flexShrink={0} />}
-            footer={
+interface DeleteButtonProps {
+    accountId: string;
+    orgId: string;
+}
+
+export const showDeleteOrganizationModal = ({ orgId, accountId }: DeleteButtonProps) =>
+    showModalBox(
+        {
+            title: 'Delete organization',
+        },
+        ctx => {
+            const client = useClient();
+            return (
                 <XView padding={20} flexDirection="row">
                     <XHorizontal justifyContent="flex-end" flexGrow={1}>
-                        <XButton text="Cancel" autoClose={true} />
+                        <XButton text="Cancel" onClick={ctx.hide} />
                         <XButton
                             text="Delete"
                             style="danger"
@@ -93,7 +99,17 @@ const DeleteButton = ({ accountId, orgId }: { accountId: string; orgId: string }
                         />
                     </XHorizontal>
                 </XView>
-            }
+            );
+        },
+    );
+
+const DeleteButton = (props: DeleteButtonProps) => {
+    return (
+        <XButton
+            text="Delete"
+            style="danger"
+            flexShrink={0}
+            onClick={() => showDeleteOrganizationModal(props)}
         />
     );
 };
@@ -319,9 +335,8 @@ export default withApp('Super Organization', 'super-admin', () => {
                         <RemoveMemberForm accountId={accountId} />
                     </>
                 )}
-                {!actionsButton && superAccount.state !== 'DELETED' && (
-                    <ActivateButton accountId={accountId} />
-                )}
+                {!actionsButton &&
+                    superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}
