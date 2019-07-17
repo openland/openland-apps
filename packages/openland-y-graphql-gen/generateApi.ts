@@ -13,13 +13,13 @@ function generateApi() {
             fragmentName: string,
             filePath: string
         }[]
-    }
+    };
 
     let output = '';
     output += 'import * as Source from \'./index\';\n';
-    output += 'import * as Types from \'./Types\'\n';
-    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'openland-graphql/GraphqlClient\'\n';
-    output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\'\n';
+    output += 'import * as Types from \'./Types\';\n';
+    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'openland-graphql/GraphqlClient\';\n';
+    output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\';\n';
     output += '\n';
     output += 'export class OpenlandClient extends BaseApiClient {\n';
     output += '    constructor(client: GraphqlClient) {\n';
