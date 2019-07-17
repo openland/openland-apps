@@ -5,22 +5,36 @@ import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-web/utils/useClient';
 import { UListField } from 'openland-web/components/unicorn/UListField';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
-import { formatLastSeen } from 'openland-y-utils/formatTime';
-import { ThemeDefault } from 'openland-y-utils/themes';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UPresence } from 'openland-web/components/unicorn/UPresence';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
-    const user = client.useUser({ userId: props.id }).user;
-    const { id, name, photo, audienceSize, online, lastSeen, about, shortname, location, phone, email, linkedin, primaryOrganization } = user;
+    const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
+    const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou } = user;
+
+    const buttons = (
+        <>
+            {!isYou && <UButton text="Message" path={'/mail/' + id} />}
+            {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
+                <UNotificationsSwitch
+                    id={conversation.id}
+                    mute={!!conversation.settings.mute}
+                    marginLeft={16}
+                />
+            )}
+        </>
+    );
 
     return (
         <Page padded={false}>
             <UListHero
                 title={name}
                 score={audienceSize}
-                description={online ? 'online' : formatLastSeen(lastSeen || 'never_online')}
-                descriptionColor={online ? ThemeDefault.accentPrimary : undefined}
+                description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
+                buttons={buttons}
             />
             <UListGroup header="About">
                 {!!about && <UListField value={about} marginBottom={24} />}
