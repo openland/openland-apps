@@ -35,7 +35,7 @@ import {
     RoomSetHidden,
 } from 'openland-web/fragments/account/components/RoomControls';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
-import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
+import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
@@ -68,12 +68,14 @@ export const AdminTools = (props: { id: string; variables: { id: string } }) => 
 
     return (
         <>
-            {data && data.roomSuper && (
-                <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
-            )}
-            {data && data.roomSuper && (
-                <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
-            )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
+                )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
+                )}
         </>
     );
 };
@@ -166,10 +168,18 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                                             <XMenuItemSeparator />
                                             <XMenuItem
-                                                query={{
-                                                    field: 'advancedSettings',
-                                                    value: 'true',
-                                                }}
+                                                onClick={() =>
+                                                    showAdvancedSettingsModal({
+                                                        roomId: chat.id,
+                                                        socialImage: chat.socialImage,
+                                                        welcomeMessageText: chat.welcomeMessage!!
+                                                            .message,
+                                                        welcomeMessageSender: chat.welcomeMessage!!
+                                                            .sender,
+                                                        welcomeMessageIsOn: chat.welcomeMessage!!
+                                                            .isOn,
+                                                    })
+                                                }
                                             >
                                                 Advanced settings
                                             </XMenuItem>
@@ -183,15 +193,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                     </React.Suspense>
                                 }
                             />
-                            {chat.welcomeMessage && (
-                                <AdvancedSettingsModal
-                                    roomId={chat.id}
-                                    socialImage={chat.socialImage}
-                                    welcomeMessageText={chat.welcomeMessage!!.message}
-                                    welcomeMessageSender={chat.welcomeMessage!!.sender}
-                                    welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
-                                />
-                            )}
                         </>
                     )}
                 </HeaderTools>
@@ -320,14 +321,15 @@ const MembersProvider = ({
                             Featured
                         </XSwitcher.Item>
                     )}
-                    {requestMembers.length > 0 && isOwner && (
-                        <XSwitcher.Item
-                            query={{ field: 'tab', value: 'requests' }}
-                            counter={requestMembers.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    )}
+                    {requestMembers.length > 0 &&
+                        isOwner && (
+                            <XSwitcher.Item
+                                query={{ field: 'tab', value: 'requests' }}
+                                counter={requestMembers.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        )}
                 </XSwitcher>
             )}
             {!showTabs && <XSubHeader title="Members" counter={membersCount} paddingBottom={0} />}

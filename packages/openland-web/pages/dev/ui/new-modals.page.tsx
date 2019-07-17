@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
+import { addMemberModalChatId } from './fixtures';
+
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XTitle } from 'openland-x/XTitle';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XVertical } from 'openland-x-layout/XVertical';
 
 import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
 import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
+import { showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -17,11 +19,53 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
             <XContent>
                 <XVertical2>
                     <XVertical width="400px">
-                        <XButton text="New group" style="primary" onClick={() => showCreateGroupModal('group')}   />
-                        <XButton text="New channel" style="primary"  onClick={() => showCreateGroupModal('channel')} />
-                        <XButton text="New community" style="primary"  onClick={() => showCreateOrganization('community')} />
-                        <XButton text="New organization" style="primary"  onClick={() => showCreateOrganization('organization')} />
+                        <XButton
+                            text="New group"
+                            style="primary"
+                            onClick={() => showCreateGroupModal('group')}
+                        />
+                        <XButton
+                            text="New channel"
+                            style="primary"
+                            onClick={() => showCreateGroupModal('channel')}
+                        />
+                        <XButton
+                            text="New community"
+                            style="primary"
+                            onClick={() => showCreateOrganization('community')}
+                        />
+                        <XButton
+                            text="New organization"
+                            style="primary"
+                            onClick={() => showCreateOrganization('organization')}
+                        />
 
+                        <XButton
+                            text="Add members"
+                            style="primary"
+                            onClick={() =>
+                                showAddMembersModal({
+                                    id: addMemberModalChatId,
+                                    isRoom: true,
+                                    isOrganization: false,
+                                    isChannel: false,
+                                })
+                            }
+                        />
+
+                        <XButton
+                            text="Advanced settings"
+                            style="primary"
+                            onClick={() =>
+                                showAdvancedSettingsModal({
+                                    roomId: addMemberModalChatId,
+                                    welcomeMessageIsOn: false,
+                                    socialImage: null,
+                                    welcomeMessageSender: null,
+                                    welcomeMessageText: null,
+                                })
+                            }
+                        />
                     </XVertical>
                 </XVertical2>
             </XContent>
