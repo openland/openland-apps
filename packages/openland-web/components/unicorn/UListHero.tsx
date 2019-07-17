@@ -4,15 +4,33 @@ import { UAvatar } from './UAvatar';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
 
+const Score = (props: { value: number }) => (
+    <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center">
+        <XView
+            {...TypeStyles.label2}
+            borderWidth={2}
+            borderRadius={12}
+            borderColor={ThemeDefault.backgroundPrimary}
+            paddingVertical={1}
+            paddingHorizontal={8}
+            color={ThemeDefault.contrastPrimary}
+            backgroundImage="linear-gradient(138deg, #FEBD17, #FF9B04)"
+        >
+            {props.value}
+        </XView>
+    </XView>
+);
+
 interface UListHeroProps {
     title: string;
+    score?: number;
     description?: string;
     descriptionColor?: string;
     avatar?: { photo: string | null; id: string; title: string; };
 }
 
 export const UListHero = (props: UListHeroProps) => {
-    const { title, description, descriptionColor, avatar } = props;
+    const { title, score, description, descriptionColor, avatar } = props;
 
     return (
         <XView
@@ -22,8 +40,9 @@ export const UListHero = (props: UListHeroProps) => {
             flexDirection="row"
         >
             {!!avatar && (
-                <XView marginRight={16}>
+                <XView marginRight={16} position="relative">
                     <UAvatar {...avatar} size="x-large" />
+                    {!!score && <Score value={score} />}
                 </XView>
             )}
 
