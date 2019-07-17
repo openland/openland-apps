@@ -87,7 +87,7 @@ export const tabs: { [K in tabsT]: tabsT } = {
     members: 'members',
 };
 
-const ReactEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
+const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
     const client = useClient();
     const data = client.useRoomWithoutMembers({ id: chatId });
 
@@ -118,7 +118,7 @@ export const showRoomEditModal = (chatId: string, isChannel: boolean) => {
         {
             title: isChannel ? 'Channel settings' : 'Group settings',
         },
-        ctx => <ReactEditModal chatId={chatId} hide={ctx.hide} />,
+        ctx => <RoomEditModal chatId={chatId} hide={ctx.hide} />,
     );
 };
 
