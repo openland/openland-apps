@@ -7,6 +7,7 @@ import { StackLayout } from './StackLayout';
 import { css } from 'linaria';
 import { TabBarDesktop } from './TabBarDesktop';
 import { TabBarMobile } from './TabBarMobile';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const containerMobile = css`
     display: flex;    
@@ -81,6 +82,12 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
             props.router.onChangeListener = undefined;
         };
     }, []);
+
+    if (canUseDOM) {
+        React.useEffect(() => {
+            (props.router as any).onMount(); // Private function access
+        }, []);
+    }
 
     const xRouting = React.useMemo(() => ({
         navigate: (to: string) => {

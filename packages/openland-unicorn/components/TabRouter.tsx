@@ -4,6 +4,7 @@ import { randomKey } from './utils/randomKey';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Router } from 'openland-web/routes';
 import NextRouter from 'next/router';
+import { parse } from 'url';
 
 export interface TabDefinition {
     readonly icon: any;
@@ -202,6 +203,30 @@ export class TabRouter {
         console.log('popped to ' + destUrl);
 
         this.pushHistory(destUrl, 'pop');
+    }
+
+    //
+    // Lifecycle
+    //
+
+    private onMount = () => {
+        let link = window.history.state.as;
+        if (typeof link === 'string') {
+
+            // Ignore root paths and switch if needed
+            let parsed = parse(link);
+            for (let i = 0; i < this.tabs.length; i++) {
+                let tab = this.tabs[i];
+                if (parsed.path && parsed.path!.toLowerCase() === tab.path.toLowerCase()) {
+                    this.switchTab(i);
+                    return;
+                }
+            }
+
+            // Update stack to a current url
+            // TODO: Do complete stack restoring
+            this.stacks[this.currentTab].push(link);
+        }
     }
 
     //
