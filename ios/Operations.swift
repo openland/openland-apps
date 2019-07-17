@@ -1776,6 +1776,20 @@ private let OrganizationByPrefixSelector = obj(
                     fragment("Organization", OrganizationSearchSelector)
                 ))
         )
+private let OrganizationMembersSelector = obj(
+            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("alphaOrganizationMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("role","role", notNull(scalar("String"))),
+                            field("user","user", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                )))
+                        ))))),
+                    field("id","id", notNull(scalar("ID")))
+                )))
+        )
 private let OrganizationMembersShortSelector = obj(
             field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3451,6 +3465,12 @@ class Operations {
         "query OrganizationByPrefix($query:String!){organizationByPrefix:alphaOrganizationByPrefix(query:$query){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}",
         OrganizationByPrefixSelector
     )
+    let OrganizationMembers = OperationDefinition(
+        "OrganizationMembers",
+        .query, 
+        "query OrganizationMembers($after:ID,$first:Int,$organizationId:ID!){organization(id:$organizationId){__typename members:alphaOrganizationMembers(after:$after,first:$first){__typename role user{__typename ...UserShort}}id}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
+        OrganizationMembersSelector
+    )
     let OrganizationMembersShort = OperationDefinition(
         "OrganizationMembersShort",
         .query, 
@@ -4455,6 +4475,7 @@ class Operations {
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
         if name == "OrganizationByPrefix" { return OrganizationByPrefix }
+        if name == "OrganizationMembers" { return OrganizationMembers }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
         if name == "OrganizationMembersShortPaginated" { return OrganizationMembersShortPaginated }
         if name == "OrganizationProfile" { return OrganizationProfile }

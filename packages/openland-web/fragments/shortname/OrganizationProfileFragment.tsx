@@ -1,19 +1,50 @@
 import * as React from 'react';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
-import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-web/utils/useClient';
 import { UListField } from 'openland-web/components/unicorn/UListField';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
-    const organization = client.useOrganizationMembersShortPaginated({ organizationId: props.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization;
-    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, members } = organization;
+    const organization = client.useOrganizationWithoutMembers({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
+    const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
+    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount } = organization;
+
+    const [ members, setMembers ] = React.useState(initialMembers);
+    const [ loading, setLoading ] = React.useState(false);
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (members.length < membersCount && !loading) {
+            setLoading(true);
+
+            const loaded = (await client.queryOrganizationMembers({
+                organizationId: organization.id,
+                first: 10,
+                after: members[members.length - 1].user.id,
+            }, { fetchPolicy: 'network-only' })).organization.members;
+
+            setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setLoading(false);
+        }
+    }, [ membersCount, members, loading ]);
 
     return (
-        <Page padded={false}>
+        <UFlatList
+            loadMore={handleLoadMore}
+            items={members}
+            loading={loading}
+            renderItem={member => (
+                <UUserView
+                    key={'member-' + member.user.id}
+                    user={member.user}
+                />
+            )}
+            padded={false}
+        >
             <UListHero
                 title={name}
                 description="Organization"
@@ -34,14 +65,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     />
                 ))}
             </UListGroup>
-            <UListGroup header="Members" counter={membersCount}>
-                {members.map(member => (
-                    <UUserView
-                        key={'member-' + member.user.id}
-                        user={member.user}
-                    />
-                ))}
-            </UListGroup>
-        </Page>
+            <UListHeader text="Members" counter={membersCount} />
+        </UFlatList>
     );
 });

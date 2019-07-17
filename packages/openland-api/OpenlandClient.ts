@@ -715,6 +715,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderOrganizationMembersShortPaginated(variables: Types.OrganizationMembersShortPaginatedVariables, opts?: QueryWatchParameters): Types.OrganizationMembersShortPaginated | null {
         return this.useQuery(Source.OrganizationMembersShortPaginatedQuery, variables, opts);
     }
+    async queryOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
+        return this.client.query(Source.OrganizationMembersQuery, variables, opts);
+    }
+    async refetchOrganizationMembers(variables: Types.OrganizationMembersVariables): Promise<Types.OrganizationMembers> {
+        return this.refetch(Source.OrganizationMembersQuery, variables);
+    }
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: QueryWatchParameters): Types.OrganizationMembers {
+        return this.useQuerySuspense(Source.OrganizationMembersQuery, variables, opts);
+    }
+    useWithoutLoaderOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: QueryWatchParameters): Types.OrganizationMembers | null {
+        return this.useQuery(Source.OrganizationMembersQuery, variables, opts);
+    }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: OperationParameters): Promise<Types.OrganizationProfile> {
         return this.client.query(Source.OrganizationProfileQuery, variables, opts);
     }

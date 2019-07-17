@@ -195,6 +195,7 @@ export const OrganizationQuery = typedQuery<Types.Organization, Types.Organizati
 export const OrganizationWithoutMembersQuery = typedQuery<Types.OrganizationWithoutMembers, Types.OrganizationWithoutMembersVariables>(Organization.OrganizationWithoutMembersQuery);
 export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
 export const OrganizationMembersShortPaginatedQuery = typedQuery<Types.OrganizationMembersShortPaginated, Types.OrganizationMembersShortPaginatedVariables>(Organization.OrganizationMembersShortPaginatedQuery);
+export const OrganizationMembersQuery = typedQuery<Types.OrganizationMembers, Types.OrganizationMembersVariables>(Organization.OrganizationMembersQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
 export const ExploreCommunityQuery = typedQuery<Types.ExploreCommunity, Types.ExploreCommunityVariables>(Organization.ExploreCommunityQuery);

@@ -1,0 +1,14 @@
+query OrganizationMembers($after: ID, $first: Int, $organizationId: ID!) {
+  organization(id: $organizationId) {
+    __typename
+    members: alphaOrganizationMembers(after: $after, first: $first) {
+      __typename
+      role
+      user {
+        __typename
+        ...UserShort
+      }
+    }
+    id
+  }
+}
