@@ -33,8 +33,7 @@ const contentStyle = css`
     
     backface-visibility: hidden;
     background-color: white;
-    transition: transform 240ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    will-change: transform opacity;
+    will-change: transform;
     contain: content;
 `;
 
@@ -86,28 +85,60 @@ export const PageLayout = (props: {
     state: 'mounting' | 'entering' | 'visible' | 'exiting',
     container: React.RefObject<HTMLDivElement>
 }) => {
-    let offset: number;
-    switch (props.state) {
-        case 'mounting':
-            offset = props.container.current!.clientWidth;
-            break;
-        case 'entering':
-            offset = 0;
-            break;
-        case 'visible':
-            offset = 0;
-            break;
-        case 'exiting':
-            offset = props.container.current!.clientWidth;
-            break;
-        default:
-            offset = 0;
-            break;
-    }
+    const ref = React.useRef<HTMLDivElement>(null);
+    // let offset: number;
+    // switch (props.state) {
+    //     case 'mounting':
+    //         offset = props.container.current!.clientWidth;
+    //         break;
+    //     case 'entering':
+    //         offset = 0;
+    //         break;
+    //     case 'visible':
+    //         offset = 0;
+    //         break;
+    //     case 'exiting':
+    //         offset = props.container.current!.clientWidth;
+    //         break;
+    //     default:
+    //         offset = 0;
+    //         break;
+    // }
+
+    React.useLayoutEffect(() => {
+        if (props.state === 'mounting') {
+            ref.current!.style.transform = `translateX(${props.container.current!.clientWidth}px)`;
+        } else if (props.state === 'entering') {
+            ref.current!.animate([
+                {
+                    transform: `translateX(${props.container.current!.clientWidth}px)`
+                }, {
+                    transform: `translateX(0px)`
+                },
+                {
+                    transform: `translateX(0px)`
+                }
+            ], { duration: 480 });
+        } else if (props.state === 'visible') {
+            ref.current!.style.transform = `translateX(0px)`;
+        } else if (props.state === 'exiting') {
+            ref.current!.animate([
+                {
+                    transform: `translateX(0px)`
+                }, {
+                    transform: `translateX(${props.container.current!.clientWidth}px)`
+                },
+                {
+                    transform: `translateX(${props.container.current!.clientWidth}px)`
+                }
+            ], { duration: 480 });
+        }
+    }, [props.state]);
+
     return (
         <div className={containerStyle}>
             <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
-            <div className={contentStyle} style={{ transform: 'translateX(' + offset + 'px)' }}>
+            <div ref={ref} className={contentStyle}>
                 <HeaderComponent>
                     <Deferred>
                         <div className={contentWrapperStyle}>
