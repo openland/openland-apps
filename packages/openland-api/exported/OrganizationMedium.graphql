@@ -1,5 +1,6 @@
 fragment OrganizationMedium on Organization {
   __typename
+  about
   isCommunity: alphaIsCommunity
   isAdmin: betaIsAdmin
   isOwner: betaIsOwner
@@ -8,4 +9,5 @@ fragment OrganizationMedium on Organization {
   membersCount
   name
   photo
+  shortname
 }

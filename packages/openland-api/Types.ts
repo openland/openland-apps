@@ -14185,6 +14185,8 @@ export interface Room_room_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -19381,6 +19383,8 @@ export interface RoomWithoutMembers_room_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -31696,6 +31700,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -33781,6 +33787,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_org
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -35863,6 +35871,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -37948,6 +37958,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -40030,6 +40042,8 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -42113,6 +42127,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -44622,6 +44638,8 @@ export interface RoomJoin_join_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -50701,6 +50719,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -75327,6 +75347,8 @@ export interface OrganizationMedium {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -77484,6 +77506,8 @@ export interface RoomFull_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -78616,6 +78640,8 @@ export interface RoomFullWithoutMembers_SharedRoom_organization {
   photo: string | null;
   isMine: boolean;
   membersCount: number;
+  shortname: string | null;
+  about: string | null;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;

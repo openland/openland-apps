@@ -8,6 +8,8 @@ export const OrganizationMedium = gql`
         photo
         isMine
         membersCount
+        shortname
+        about
         isOwner: betaIsOwner
         isAdmin: betaIsAdmin
         isCommunity: alphaIsCommunity
