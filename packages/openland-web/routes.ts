@@ -121,7 +121,8 @@ routes.add('/notifications/', '/unicorn/index');
 // UI
 //
 
-routes.add('/ui/new-modals/', '/dev/ui/new-modals');
+routes.add('/ui/modals', '/dev/ui/modals');
+routes.add('/ui/modals/', '/dev/ui/modals');
 
 //
 // Dev Tools
