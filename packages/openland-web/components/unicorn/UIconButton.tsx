@@ -13,10 +13,6 @@ const iconWrapper = css`
     svg {
         width: 24px;
         height: 24px;
-
-        * {
-            fill: #676D7A; // ThemeDefault.foregroundSecondary
-        }
     }
 `;
 
