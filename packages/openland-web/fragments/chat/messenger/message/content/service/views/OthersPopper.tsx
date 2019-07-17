@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import XPopper from 'openland-x/XPopper';
 
 const contentWrapperClassName = css`
     cursor: pointer;
@@ -63,7 +63,7 @@ export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPo
 
 export const OthersPopper = (props: { items: JoinedUserPopperRowProps[]; children: any }) => {
     return (
-        <XPolitePopper
+        <XPopper
             contentContainer={<XPopperContent />}
             content={props.items.map((item, key) => (
                 <JoinedUserPopperRow {...item} key={key} />
@@ -72,6 +72,6 @@ export const OthersPopper = (props: { items: JoinedUserPopperRowProps[]; childre
             placement="top"
         >
             <span className={contentWrapperClassName}>{props.children}</span>
-        </XPolitePopper>
+        </XPopper>
     );
 };

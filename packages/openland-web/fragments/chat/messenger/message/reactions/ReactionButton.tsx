@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -14,6 +13,7 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { trackEvent } from 'openland-x-analytics';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { XPopperArrow } from 'openland-x/popper/XPopperArrow';
+import XPopper from 'openland-x/XPopper';
 
 const CustomPickerDiv = Glamorous(XPopperContent)({
     padding: '4px 10px',
@@ -220,7 +220,7 @@ export const MessageReactionButton = ({
     }
 
     return (
-        <XPolitePopper
+        <XPopper
             content={
                 <ReactionPicker
                     setReaction={handleSetReaction}
@@ -253,7 +253,7 @@ export const MessageReactionButton = ({
             >
                 <ReactionIcon />
             </ReactionButtonInner>
-        </XPolitePopper>
+        </XPopper>
     );
 };
 
@@ -348,7 +348,7 @@ export const CommentReactionButton = React.memo(
 
         const finalLikeIconElement =
             reactions && reactions.length ? (
-                <XPolitePopper
+                <XPopper
                     content={
                         <XView paddingRight={32} paddingBottom={1}>
                             <XView marginTop={2} fontWeight={'600'} fontSize={11}>
@@ -371,7 +371,7 @@ export const CommentReactionButton = React.memo(
                     style="dark"
                 >
                     {likeIconElement}
-                </XPolitePopper>
+                </XPopper>
             ) : (
                 likeIconElement
             );

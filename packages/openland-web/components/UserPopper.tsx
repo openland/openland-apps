@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import Loadable from 'react-loadable';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { UserForMention } from 'openland-api/Types';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { XPopper } from 'openland-x/XPopper';

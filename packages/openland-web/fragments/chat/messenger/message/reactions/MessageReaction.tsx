@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -14,6 +13,7 @@ import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emojifyReactions } from './emojifyReactions';
 import { trackEvent } from 'openland-x-analytics';
 import { reactionEmojiMap } from './ReactionButton';
+import XPopper from 'openland-x/XPopper';
 
 const LikeIconClassName = css`
     width: 18px;
@@ -285,7 +285,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
             }
             foundMyReaction = true;
             components.push(
-                <XPolitePopper
+                <XPopper
                     key={'reaction' + reactionsMap[k][0].reaction}
                     placement="bottom"
                     style="dark"
@@ -314,7 +314,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                     >
                         {content}
                     </SingleReactionUnset>
-                </XPolitePopper>,
+                </XPopper>,
             );
         } else {
             let content = emojifyReactions({
@@ -329,7 +329,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                 content = <div className={ThumbIconClassName} />;
             }
             components.push(
-                <XPolitePopper
+                <XPopper
                     key={'reaction' + reactionsMap[k][0].reaction}
                     placement="bottom"
                     style="dark"
@@ -358,7 +358,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                     >
                         {content}
                     </SingleReactionSet>
-                </XPolitePopper>,
+                </XPopper>,
             );
         }
     }

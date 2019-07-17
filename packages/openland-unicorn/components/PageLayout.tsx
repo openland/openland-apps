@@ -30,10 +30,12 @@ const contentStyle = css`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-
+    
+    backface-visibility: hidden;
     background-color: white;
-    transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    will-change: transform;
+    transition: transform 240ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    will-change: transform opacity;
+    contain: content;
 `;
 
 const contentWrapperStyle = css`
@@ -44,6 +46,7 @@ const contentWrapperStyle = css`
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    contain: content;
 `;
 
 //

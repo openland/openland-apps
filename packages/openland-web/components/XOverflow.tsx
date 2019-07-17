@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { Placement } from 'openland-x/XPopper';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
+import XPopper, { Placement } from 'openland-x/XPopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
 
 interface DottedMenuButtonStyleProps {
@@ -136,7 +135,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         }
 
         return (
-            <XPolitePopper
+            <XPopper
                 show={show}
                 contentContainer={<XMenuVertical />}
                 content={this.props.content}
@@ -161,7 +160,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                         <div />
                     </DottedMenuButtonStyle>
                 )}
-            </XPolitePopper>
+            </XPopper>
         );
     }
 }
