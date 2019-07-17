@@ -110,9 +110,9 @@ class BottomSheetProviderComponent extends React.Component<
         if (modal.cancelable === false) {
             return <View />;
         }
-
+        
         return (
-            <View paddingVertical={15} paddingHorizontal={16} paddingBottom={SDevice.safeArea.bottom}>
+            <View padding={16} paddingBottom={SDevice.safeArea.bottom || undefined}>
                 <ZRoundedButton
                     title={'Cancel'}
                     size="large"
