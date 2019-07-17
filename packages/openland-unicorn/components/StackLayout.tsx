@@ -153,8 +153,25 @@ const PageComponent = React.memo((props: { component: any, path: string, query: 
     );
 });
 
+function initialState(router: StackRouter): AnimationState {
+    if (router.pages.length === 0) {
+        return { pages: [] };
+    } else {
+        return {
+            pages: router.pages.map((p, i) => ({
+                key: p.key,
+                id: p.id,
+                query: p.query,
+                path: p.path,
+                component: p.component,
+                state: i === router.pages.length - 1 ? 'visible' : 'hidden'
+            }))
+        };
+    }
+}
+
 export const StackLayout = React.memo((props: { router: StackRouter, className?: string }) => {
-    let [state, dispatch] = React.useReducer(animationReducer, { pages: [] });
+    let [state, dispatch] = React.useReducer(animationReducer, props.router, initialState);
     React.useEffect(() => { return props.router.addListener(dispatch); }, []);
     React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
     return (

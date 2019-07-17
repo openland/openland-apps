@@ -28,6 +28,34 @@ export class StackRouter {
         this.routing = routing;
     }
 
+    restore = (paths: string[]) => {
+        this.pages.splice(0, this.pages.length - 1);
+
+        for (let p of paths) {
+            let ex = this.routing.resolve(p);
+            let component: any;
+            let query: any = {};
+            let id: string | undefined;
+            if (!ex) {
+                console.warn('Unable to resolve component for ' + p);
+                component = <NotFound />;
+            } else {
+                let Component = ex.route.factory();
+                query = ex.params;
+                let keys = Object.keys(query);
+                if (keys.length === 1) {
+                    let id2 = query[keys[0]];
+                    if (typeof id2 === 'string') {
+                        id = id2;
+                    }
+                }
+                component = <Component />;
+            }
+            let key = uuid();
+            this.pages.push({ path: p, key, query, id, component });
+        }
+    }
+
     push = (path: string) => {
         // Ignore action if not mounted
         if (!this.ref.current) {

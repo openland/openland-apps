@@ -30,6 +30,7 @@ export class TabRouter {
         if (defaultTab < 0 || defaultTab >= tabs.length) {
             throw Error('Invalid tab index: ' + defaultTab);
         }
+
         this.persistenceKey = persistenceKey;
         this.tabs = tabs;
         this.stacks = this.tabs.map((v, i) => {
@@ -67,6 +68,16 @@ export class TabRouter {
                     this.currentId = routerCurrentId;
                     this.topId = this.currentId;
                     this.currentTab = routerCurrentTab;
+
+                    // Restore stacks
+                    let stks = src.options['tab-router-stacks'];
+                    if (Array.isArray(stks)) {
+                        if (this.stacks.length === stks.length) {
+                            for (let i = 0; i < this.stacks.length; i++) {
+                                this.stacks[i].restore(stks[i]);
+                            }
+                        }
+                    }
 
                     let maxId = sessionStorage.getItem('tab-router-' + this.id + '-top');
                     if (maxId) {
@@ -112,6 +123,9 @@ export class TabRouter {
                     ['tab-router-index']: this.currentId,
                 }
             }, '');
+            if (!wasRestored) {
+                this.onMount();
+            }
         }
 
         // Restore last known tab
@@ -312,18 +326,21 @@ export class TabRouter {
     }
 
     private pushHistory = (path: string, action: string) => {
+        let stacks = this.stacks.map((s) => s.pages.map((v) => v.path));
         console.log('push', {
             ['tab-router']: this.id,
             ['tab-router-current']: this.currentTab,
             ['tab-router-index']: this.currentId,
-            ['tab-router-action']: action
+            ['tab-router-action']: action,
+            ['tab-router-stacks']: stacks
         });
         Router.pushRoute(path, {
             shallow: true,
             ['tab-router']: this.id,
             ['tab-router-current']: this.currentTab,
             ['tab-router-index']: this.currentId,
-            ['tab-router-action']: action
+            ['tab-router-action']: action,
+            ['tab-router-stacks']: stacks
         });
     }
 }
