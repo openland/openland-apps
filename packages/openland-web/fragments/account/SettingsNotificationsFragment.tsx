@@ -51,7 +51,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
 
     return (
         <Page>
-            <UHeader title="Appearance" />
+            <UHeader title="Notifications" />
             <FormWrapper title="Notifications">
                 <FormSection title="Messages notifications">
                     <XView marginHorizontal={-16}>

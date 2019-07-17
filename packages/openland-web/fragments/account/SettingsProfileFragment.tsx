@@ -13,6 +13,7 @@ import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 import { Page } from 'openland-unicorn/Page';
+import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import EditPhotoIcon from 'openland-icons/ic-edit-photo.svg';
 
@@ -102,6 +103,7 @@ export const SettingsProfileFragment = React.memo(() => {
 
     return (
         <Page>
+            <UHeader title="Profile" />
             <FormWrapper title="Profile">
                 <XView flexDirection="row" flexGrow={1}>
                     <XView flexGrow={1}>
