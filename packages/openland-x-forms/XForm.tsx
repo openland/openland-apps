@@ -364,8 +364,8 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     values: { [key: string]: any; };
     fillValues?: { [key: string]: any; };
     prepareValues: { [key: string]: any; };
-    submitLocks = new Set();
-    submitLocksActive = new Set();
+    submitLocks = new Set<any>();
+    submitLocksActive = new Set<any>();
     //
     // Callbacks
     //

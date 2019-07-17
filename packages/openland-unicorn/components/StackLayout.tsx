@@ -164,7 +164,7 @@ function initialState(router: StackRouter): AnimationState {
                 query: p.query,
                 path: p.path,
                 component: p.component,
-                state: i === router.pages.length - 1 ? 'visible' : 'hidden'
+                state: (i === router.pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
             }))
         };
     }

@@ -601,10 +601,6 @@ declare module 'react-native-extra-dimensions-android' {
     export = instance;
 }
 
-declare module 'react-navigation-material-bottom-tabs' {
-    export function createMaterialBottomTabNavigator(arg1: any, arg2?: any): any;
-}
-
 declare module 'react-native-webrtc' {
     export const mediaDevices: {
         getUserMedia(args: any): Promise<any>;
