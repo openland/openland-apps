@@ -3,9 +3,10 @@ import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
 import { DiscoverStart } from 'openland-web/pages/onboarding/start.page';
-import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
+import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
+import { RoomShort_SharedRoom } from 'openland-api/Types';
 
 export const RecommendedFragment = React.memo(() => {
     const client = useClient();
@@ -28,14 +29,12 @@ export const RecommendedFragment = React.memo(() => {
                 <>
                     <UHeader title="Chats for you" />
                     <Page>
-                        {data.suggestedRooms.map((room, key) => {
+                        {data.suggestedRooms.map((room) => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
-                                    <XRoomCard
-                                        key={key}
-                                        room={room as any}
-                                        path={'/directory/p/' + room.id}
-                                        customMenu={null}
+                                    <UGroupView
+                                        key={'group-' + room.id}
+                                        group={room as RoomShort_SharedRoom}
                                     />
                                 );
                             }

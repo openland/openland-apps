@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
     SearchCardsOrShowProfile,
     ComponentWithSort,
 } from 'openland-web/fragments/discover/components/DiscoverNavigation';
 import { useClient } from 'openland-web/utils/useClient';
 import { EmptySearchBlock } from './EmptySearchBlock';
+import { RoomShort_SharedRoom } from 'openland-api/Types';
+import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 
 interface WithChatSearchRoomsProps {
     customButton?: any;
@@ -49,14 +50,9 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
                     let room = c.node;
 
                     return (
-                        <XRoomCard
-                            customMenu={customMenu}
-                            customButton={customButton}
-                            CustomButtonComponent={CustomButtonComponent}
-                            key={c.node.id}
-                            room={room as any /* Sorry, universe */}
-                            path={'/directory/p/' + room.id}
-                            isMember={room.membership === 'MEMBER'}
+                        <UGroupView
+                            key={'group-' + c.node.id}
+                            group={room as RoomShort_SharedRoom}
                         />
                     );
                 })}
