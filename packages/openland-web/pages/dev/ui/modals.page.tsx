@@ -121,9 +121,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="avatar modal"
                             style="primary"
-                            onClick={() =>
-                                showAvatarModal(fredUser.photo)
-                            }
+                            onClick={() => showAvatarModal(fredUser.photo)}
                         />
 
                         <XButton
@@ -143,25 +141,16 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             onClick={() =>
                                 showImagePreviewModal({
                                     file: fredUser.photo,
-                                    height: 50,
-                                    width: 50,
+                                    height: 200,
+                                    width: 200,
                                     target: (
-                                        <XView
-                                            flexDirection="row"
-                                            justifyContent="center"
-                                            borderRadius={4}
-                                            overflow="hidden"
-                                            alignSelf="flex-start"
-                                            maxWidth="100%"
-                                        >
-                                            <XCloudImage
-                                                srcCloud={fredUser.photo}
-                                                resize="fill"
-                                                width={50}
-                                                height={50}
-                                                className={'foo-image'}
-                                            />
-                                        </XView>
+                                        <XCloudImage
+                                            srcCloud={fredUser.photo}
+                                            resize="fill"
+                                            width={200}
+                                            height={200}
+                                            className={'foo-image'}
+                                        />
                                     ),
                                 })
                             }

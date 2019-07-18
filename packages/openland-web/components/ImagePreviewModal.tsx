@@ -15,7 +15,7 @@ const ModalBody = css`
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     &:hover a {
         opacity: 1 !important;
     }
@@ -81,7 +81,7 @@ const modalBody = (width: number, height: number) => (props: ImagePreviewModalPr
 );
 
 export const showImagePreviewModal = (props: ImagePreviewModalProps) => {
-    showModalBox({}, () => {
+    showModalBox({ flowing: true }, () => {
         let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
         const modal = modalBody(dimensions.width, dimensions.height)(props);
         return modal;

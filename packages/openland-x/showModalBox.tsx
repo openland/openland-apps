@@ -18,7 +18,6 @@ const boxStyle = css`
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: calc(100vh - 48px);
     max-width: calc(100vw - 20px);
-    width: 575px;
     overflow: hidden;
 `;
 
@@ -166,7 +165,11 @@ const ModalBoxComponent = React.memo<{
               borderRadius: 0,
               transition: 'none',
           }
-        : { top, left, width: props.config.width };
+        : {
+              top,
+              left,
+              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 575,
+          };
 
     return (
         <XModalBoxContext.Provider
@@ -247,6 +250,7 @@ export interface XModalBoxConfig {
     title?: string;
     width?: number;
     fullScreen?: boolean;
+    flowing?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
