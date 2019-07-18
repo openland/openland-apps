@@ -228,7 +228,7 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
     }
 
     const form = useForm();
-    const editDescription = chat.description;
+    const editDescription = chat.description || undefined;
     const descriptionField = useField('input.description', editDescription, form);
 
     const createAction = () => {
