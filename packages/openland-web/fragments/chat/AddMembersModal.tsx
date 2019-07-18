@@ -591,8 +591,6 @@ type AddMemberModalT = {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
-
-    hide: () => void;
 };
 
 interface AddMemberToRoom {
@@ -617,7 +615,7 @@ export const AddMembersModal = React.memo(
         isOrganization,
         isCommunity,
         hide,
-    }: AddMemberModalT & XModalProps) => {
+    }: AddMemberModalT & XModalProps & { hide: () => void }) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XAvatarUpload, XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -17,6 +17,11 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { XButton } from 'openland-x/XButton';
 
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
@@ -58,6 +63,8 @@ const SocialImageWrapperClassName = css`
 interface ModalBodyProps {
     welcomeMessageIsOn: boolean;
     setWelcomeMessageIsOn: (data: boolean) => void;
+    setSocialImageRef: (file: Partial<StoredFileT>) => void;
+    socialImageRef: Partial<StoredFileT> | undefined;
     isOpenUsers: boolean;
     setIsOpenUsers: (data: boolean) => void;
     msgSender: any;
@@ -75,6 +82,8 @@ const ModalBody = (props: ModalBodyProps) => {
     const {
         welcomeMessageIsOn,
         setWelcomeMessageIsOn,
+        setSocialImageRef,
+        socialImageRef,
         isOpenUsers,
         setIsOpenUsers,
         msgSender,
@@ -215,13 +224,10 @@ const ModalBody = (props: ModalBodyProps) => {
                 </XView>
                 <XView marginTop={16}>
                     <div className={SocialImageWrapperClassName}>
-                        <XAvatarUpload
+                        <XAvatarFormFieldComponent
                             cropParams="16:9"
-                            field="input.socialImageRef"
-                            placeholder={{
-                                add: 'Add image',
-                                change: 'Change image',
-                            }}
+                            onChange={file => (file ? setSocialImageRef(file) : {})}
+                            value={socialImageRef as StoredFileT}
                         />
                     </div>
                 </XView>
@@ -242,6 +248,19 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState(
         props.welcomeMessageSender,
     );
+
+    const [socialImageRef, setSocialImageRef] = React.useState<Partial<StoredFileT> | undefined>(
+        props.socialImage
+            ? {
+                  uuid: props.socialImage ? props.socialImage : '',
+                  crop: {
+                      w: 190,
+                      h: 100,
+                  },
+              }
+            : undefined,
+    );
+
     const [triedToSend, setTriedToSend] = React.useState(false);
     const [welcomeMessageSenderError, setWelcomeMessageSenderError] = React.useState(
         !welcomeMessageSender,
@@ -288,88 +307,81 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
     }
 
     return (
-        <XModalForm
-            defaultLayout={false}
-            scrollableContent={true}
-            alsoUseBottomCloser={true}
-            onClosed={() => {
-                setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-                setWelcomeMessageText(props.welcomeMessageText);
-                setWelcomeMessageSender(props.welcomeMessageSender);
-                setTriedToSend(false);
+        <XView borderRadius={8}>
+            <XModalContent>
+                <ModalBody
+                    welcomeMessageIsOn={welcomeMessageIsOn}
+                    setWelcomeMessageIsOn={setWelcomeMessageIsOn}
+                    socialImageRef={socialImageRef}
+                    setSocialImageRef={setSocialImageRef}
+                    isOpenUsers={isOpenUsers}
+                    setIsOpenUsers={setIsOpenUsers}
+                    msgSender={msgSender}
+                    welcomeMsgSenderOnChange={welcomeMsgSenderOnChange}
+                    finalWelcomeMessageSenderError={finalWelcomeMessageSenderError}
+                    finalWelcomeMessageTextError={finalWelcomeMessageTextError}
+                    welcomeMsgOnChange={welcomeMsgOnChange}
+                    welcomeMessageText={welcomeMessageText}
+                    variables={{ id: props.roomId }}
+                />
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={async data => {
+                        if (
+                            welcomeMessageIsOn &&
+                            (welcomeMessageSenderError || welcomeMessageTextError)
+                        ) {
+                            setTriedToSend(true);
+                            throw Error();
+                        }
 
-                props.hide();
-            }}
-            ignoreTargetQuery
-            useTopCloser={true}
-            title="Advanced settings"
-            defaultAction={async data => {
-                if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
-                    setTriedToSend(true);
-                    throw Error();
-                }
+                        const newSocialImage = socialImageRef;
 
-                const newSocialImage = data.input.socialImageRef;
+                        await api.mutateRoomUpdate({
+                            roomId: props.roomId,
+                            input: {
+                                ...(newSocialImage && newSocialImage.uuid !== props.socialImage
+                                    ? {
+                                          socialImageRef: sanitizeImageRef(newSocialImage),
+                                      }
+                                    : {}),
+                            },
+                        });
 
-                await api.mutateRoomUpdate({
-                    roomId: props.roomId,
-                    input: {
-                        ...(newSocialImage && newSocialImage.uuid !== props.socialImage
-                            ? {
-                                  socialImageRef: sanitizeImageRef(newSocialImage),
-                              }
-                            : {}),
-                    },
-                });
+                        await api.mutateUpdateWelcomeMessage({
+                            roomId: props.roomId,
+                            welcomeMessageIsOn: welcomeMessageIsOn,
+                            welcomeMessageSender: welcomeMessageSender
+                                ? welcomeMessageSender!!.id
+                                : null,
+                            welcomeMessageText: welcomeMessageText,
+                        });
 
-                await api.mutateUpdateWelcomeMessage({
-                    roomId: props.roomId,
-                    welcomeMessageIsOn: welcomeMessageIsOn,
-                    welcomeMessageSender: welcomeMessageSender ? welcomeMessageSender!!.id : null,
-                    welcomeMessageText: welcomeMessageText,
-                });
+                        await api.refetchRoom({
+                            id: props.roomId,
+                        });
+                        setTriedToSend(true);
 
-                await api.refetchRoom({
-                    id: props.roomId,
-                });
-                setTriedToSend(true);
-
-                props.hide();
-            }}
-            defaultData={{
-                input: {
-                    welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
-                    welcomeMessageText: welcomeMessageText,
-                    welcomeMessageSender: welcomeMessageSender,
-                    socialImageRef: props.socialImage
-                        ? {
-                              uuid: props.socialImage,
-                              crop: {
-                                  w: 190,
-                                  h: 100,
-                              },
-                          }
-                        : undefined,
-                },
-            }}
-        >
-            <ModalBody
-                welcomeMessageIsOn={welcomeMessageIsOn}
-                setWelcomeMessageIsOn={setWelcomeMessageIsOn}
-                isOpenUsers={isOpenUsers}
-                setIsOpenUsers={setIsOpenUsers}
-                msgSender={msgSender}
-                welcomeMsgSenderOnChange={welcomeMsgSenderOnChange}
-                finalWelcomeMessageSenderError={finalWelcomeMessageSenderError}
-                finalWelcomeMessageTextError={finalWelcomeMessageTextError}
-                welcomeMsgOnChange={welcomeMsgOnChange}
-                welcomeMessageText={welcomeMessageText}
-                variables={{ id: props.roomId }}
-            />
-        </XModalForm>
+                        props.hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
 
 export const showAdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
-    showModalBox({}, ctx => <AdvancedSettingsModal {...props} hide={ctx.hide} />);
+    showModalBox(
+        {
+            title: 'Advanced settings',
+        },
+        ctx => <AdvancedSettingsModal {...props} hide={ctx.hide} />,
+    );
 };
