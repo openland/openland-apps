@@ -2,7 +2,6 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
-// import { ThemeDefault } from 'openland-y-utils/themes';
 
 type UButtonSize = 'small' | 'medium' | 'large';
 type UButtonStyle = 'primary' | 'secondary' | 'danger';
@@ -14,6 +13,7 @@ export interface UButtonProps extends XViewProps {
     style?: UButtonStyle;
     loading?: boolean;
     disable?: boolean;
+    action?: () => void;
 }
 
 const textStyle = css`
@@ -159,28 +159,37 @@ const loaderColor = {
 };
 
 export const UButton = (props: UButtonProps) => {
-    const { text, square, size, style, loading, disable, ...other } = props;
+    const { text, square, size = 'medium', style = 'primary', loading, disable, action, onClick, ...other } = props;
+    const [loadingState, setLoadingState] = React.useState(loading);
+    const actionCallback = React.useCallback(async () => {
+        if (!action) {
+            return;
+        }
+        setLoadingState(true);
+        await action();
+        setLoadingState(false);
+    }, [action]);
     return (
-        <XView {...other}>
+        <XView {...other} onClick={action ? actionCallback : onClick}>
             <div
                 tabIndex={-1}
                 className={cx(
                     buttonWrapperStyle,
                     square && squareStyle,
-                    (loading || disable) && disableStyle,
-                    sizeResolver[size || 'medium'],
-                    styleResolver[style || 'primary'],
-                    !(loading || disable) && styleResolverHover[style || 'primary'],
-                    !(loading || disable) && styleResolverActive[style || 'primary'],
+                    (loadingState || disable) && disableStyle,
+                    sizeResolver[size],
+                    styleResolver[style],
+                    !(loadingState || disable) && styleResolverHover[style],
+                    !(loadingState || disable) && styleResolverActive[style],
                 )}
             >
-                <span className={cx(textStyle, loading && loadingStyle)}>{text}</span>
-                {loading && (
+                <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
+                {loadingState && (
                     <XLoader
                         loading={true}
                         size="small"
                         transparentBackground
-                        {...loaderColor[style || 'primary']}
+                        {...loaderColor[style]}
                     />
                 )}
             </div>

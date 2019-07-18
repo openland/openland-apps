@@ -22,6 +22,7 @@ export const GroupProfileFragment = React.memo((props) => {
         return null;
     }
 
+    const featuredMembers = client.useRoomFeaturedMembers({ roomId: unicorn.id }, { fetchPolicy: 'cache-and-network' }).roomFeaturedMembers;
     const initialMembers = client.useRoomMembersPaginated({ roomId: unicorn.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).members;
     const { id, membersCount, photo, title, description, organization, settings } = group;
 
@@ -78,6 +79,16 @@ export const GroupProfileFragment = React.memo((props) => {
                     <UOrganizationView organization={organization} />
                 </UListGroup>
             )}
+
+            <UListGroup header="Featured" counter={featuredMembers.length}>
+                {featuredMembers.map(member => (
+                    <UUserView
+                        key={'featured-member-' + member.user.id}
+                        user={member.user}
+                        badge={member.badge}
+                    />
+                ))}
+            </UListGroup>
 
             <UListHeader text="Members" counter={membersCount || 0} />
         </UFlatList>

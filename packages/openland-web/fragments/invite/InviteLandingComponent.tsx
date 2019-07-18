@@ -8,17 +8,17 @@ import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { delayForewer } from 'openland-y-utils/timer';
-import { ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_invite_InviteInfo_organization, RoomFull_SharedRoom, SharedRoomMembershipStatus, RoomChat_room_SharedRoom } from 'openland-api/Types';
-import { XView } from 'react-mental';
+import { ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_invite_InviteInfo_organization, SharedRoomMembershipStatus, RoomChat_room_SharedRoom } from 'openland-api/Types';
+import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from '../../utils/switchOrganization';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const RootClassName = css`
     position: relative;
@@ -149,9 +149,9 @@ export const FooterImage = () => {
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XViewRouterContext);
     return (
-        <XButton
+        <UButton
             style="primary"
             size="large"
             text={text}
@@ -160,8 +160,8 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
             action={async () => {
                 await client.mutateRoomJoin({ roomId });
                 await client.refetchRoom({ id: roomId });
-
-                router!.push(`/mail/${roomId}`);
+                console.warn(router, roomId);
+                router!.navigate(`/mail/${roomId}`);
             }}
         />
     );
@@ -173,17 +173,18 @@ const JoinLinkButton = (props: {
     text: string;
 }) => {
     const client = useClient();
+    const router = React.useContext(XViewRouterContext);
 
     return (
-        <XButton
+        <UButton
             style="primary"
             size="large"
             text={props.text}
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await client.mutateRoomJoinInviteLink({ invite: props.invite });
-                await delayForewer();
+                let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
+                router!.navigate(`/mail/${res.join.id}`);
             }}
         />
     );
@@ -199,30 +200,28 @@ const titleClassName = css`
 `;
 
 const InviteByRow = ({
-    invite,
+    invitedByUser,
     chatTypeStr,
 }: {
-    invite?: {
-        invitedByUser?: {
-            id: string;
-            name: string;
-            photo?: string | null;
-        };
-    };
+    invitedByUser?: {
+        id: string;
+        name: string;
+        photo?: string | null;
+    } | null;
     chatTypeStr: string;
 }) => {
     return (
         <>
-            {invite && invite.invitedByUser ? (
+            {invitedByUser ? (
                 <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                     <XAvatar2
-                        src={invite.invitedByUser.photo || undefined}
-                        title={invite.invitedByUser.name}
-                        id={invite.invitedByUser.id}
+                        src={invitedByUser.photo || undefined}
+                        title={invitedByUser.name}
+                        id={invitedByUser.id}
                         size={24}
                     />
                     <Text>
-                        {invite.invitedByUser.name}{' '}
+                        {invitedByUser.name}{' '}
                         {`invites you to join ${chatTypeStr.toLowerCase()}`}
                     </Text>
                 </UserInfoWrapper>
@@ -333,19 +332,17 @@ export const InviteLandingComponentLayout = ({
     id,
     membersCount,
     description,
-    invite,
+    invitedByUser,
     noLogin,
     button,
 }: RoomInfoColumnT & {
     inviteLink?: string;
     signup?: string;
-    invite?: {
-        invitedByUser?: {
-            id: string;
-            name: string;
-            photo?: string | null;
-        };
-    };
+    invitedByUser?: {
+        id: string;
+        name: string;
+        photo?: string | null;
+    } | null;
     noLogin?: boolean;
     whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
 }) => {
@@ -380,7 +377,7 @@ export const InviteLandingComponentLayout = ({
                 )}
             </XView>
             <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                <InviteByRow invite={invite} chatTypeStr={whereToInvite} />
+                <InviteByRow invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
             </XView>
             <EntityInfoColumn
                 photo={photo}
@@ -408,6 +405,15 @@ const resolveRoomButton = (room: { id: string, membership: SharedRoomMembershipS
             room.membership === 'LEFT') &&
         !key) {
         return <JoinButton roomId={room.id!} text="Join group" />;
+    } else if (room && room.membership === 'MEMBER') {
+        return <UButton
+            style="primary"
+            size="large"
+            text="Open room"
+            alignSelf="center"
+            flexShrink={0}
+            path={'/mail/' + room.id}
+        />;
     } else if (room && key) {
         return <JoinLinkButton
             invite={key}
@@ -415,21 +421,12 @@ const resolveRoomButton = (room: { id: string, membership: SharedRoomMembershipS
             text="Accept invite"
         />;
     } else if (room && room.membership === 'REQUESTED') {
-        return <XButton
-            style="ghost"
+        return <UButton
+            style="secondary"
             size="large"
             text="Pending"
             alignSelf="center"
             flexShrink={0}
-        />;
-    } else if (room && room.membership === 'MEMBER') {
-        return <XButton
-            style="primary"
-            size="large"
-            text="Open room"
-            alignSelf="center"
-            flexShrink={0}
-            path={'/mail/' + room.id}
         />;
     }
     return <></>;
@@ -453,21 +450,33 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let client = useClient();
     let unicorn = useUnicorn();
 
-    let key = unicorn.id;
+    let path = window.location.pathname.split('/');
+    let key = unicorn ? unicorn.id : path[path.length - 1];
 
     let invite = client.useResolvedInvite({ key });
     let room: ResolvedInvite_invite_RoomInvite_room | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
+    let invitedByUser;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
+        invitedByUser = invite.invite.creator;
+
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
+        invitedByUser = invite.invite.invitedByUser;
+
+    }
+
+    if (invite.invite && invite.invite.__typename === 'AppInvite') {
+        invitedByUser = invite.invite.inviter;
     }
 
     let button: JSX.Element | undefined;
+
+    console.warn(userInfo);
     if (!loggedIn) {
         button = <MainContent>
             <XButton
@@ -479,7 +488,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 path={signupRedirect}
             />
         </MainContent>;
-    } if (room) {
+    } else if (room) {
         button = resolveRoomButton(room, key);
     } else if (organization) {
         button = <XButton
@@ -516,6 +525,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
             <InviteLandingComponentLayout
+                invitedByUser={invitedByUser}
                 button={button}
                 noLogin={!loggedIn}
                 whereToInvite={whereToInvite}

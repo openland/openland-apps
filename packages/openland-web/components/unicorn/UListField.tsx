@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
+import { UText } from './UText';
 
 interface UListFieldProps extends XViewProps {
     label?: string;
@@ -35,7 +36,7 @@ export const UListField = (props: UListFieldProps) => {
                 flexGrow={1}
                 flexShrink={1}
             >
-                {value}
+                <UText text={value} />
             </XView>
         </XView>
     );
