@@ -43,7 +43,7 @@ export const UListHero = (props: UListHeroProps) => {
         >
             {!!avatar && (
                 <XView marginRight={16} position="relative">
-                    <UAvatar {...avatar} size="x-large" onClick={avatar.photo ? () => showAvatarModal(avatar.photo!) : undefined} />
+                    <UAvatar {...avatar} size="x-large" onClick={avatar.photo && !avatar.photo.startsWith('ph://') ? () => showAvatarModal(avatar.photo!) : undefined} />
                     {!!score && <Score value={score} />}
                 </XView>
             )}
