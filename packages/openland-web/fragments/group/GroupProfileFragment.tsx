@@ -70,7 +70,7 @@ export const GroupProfileFragment = React.memo((props) => {
             </UListHero>
 
             <UListGroup header="About">
-                {!!description && <UListField value={description} marginBottom={16} />}
+                {!!description && <UListField value={description} />}
             </UListGroup>
 
             {organization && (
