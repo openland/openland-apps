@@ -20,16 +20,29 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 <BackIcon />
             </XView>
             <XView
-                height={32}
-                color="#171B1F"
                 minWidth={0}
                 flexBasis={0}
                 flexGrow={1}
                 fontSize={24}
-                lineHeight="32px"
-                fontWeight="600"
+                flexDirection="row"
+                justifyContent="center"
+                marginRight={56}
             >
-                {props.config.title}
+                <XView
+                    height={32}
+                    color="#171B1F"
+                    minWidth={0}
+                    flexBasis={0}
+                    flexGrow={1}
+                    fontSize={24}
+                    maxWidth={600}
+                    lineHeight="32px"
+                    fontWeight="600"
+                    flexDirection="row"
+                    paddingHorizontal={16}
+                >
+                    {props.config.title}
+                </XView>
             </XView>
         </XView>
     );

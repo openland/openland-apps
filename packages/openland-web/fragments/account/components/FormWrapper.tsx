@@ -11,7 +11,6 @@ export const FormWrapper = ({ title, children }: { title: string; children: any 
             flexDirection="row"
             paddingBottom={40}
             paddingHorizontal={16}
-            maxWidth={480}
             width="100%"
         >
             <XView flexDirection="column" flexGrow={1}>
