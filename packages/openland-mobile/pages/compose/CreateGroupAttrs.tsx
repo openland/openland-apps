@@ -113,7 +113,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         field="title"
                         autoFocus={true}
                     />
-                    <ZSelect 
+                    <ZSelect
                         label={`${chatTypeString} type`}
                         defaultValue={selectedKind}
                         onChange={(option: { label: string; value: SharedRoomKind.GROUP | SharedRoomKind.PUBLIC }) => {
@@ -131,6 +131,7 @@ const CreateGroupComponent = (props: PageProps) => {
                     <ZListItemGroup header="Share with" headerMarginTop={0}>
                         {sortedOrganizations.map(org => (
                             <ZListItem
+                                key={'org-' + org.id}
                                 text={org.name}
                                 leftAvatar={{
                                     photo: org.photo,
