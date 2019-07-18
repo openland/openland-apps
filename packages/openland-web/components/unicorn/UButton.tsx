@@ -13,6 +13,7 @@ export interface UButtonProps extends XViewProps {
     style?: UButtonStyle;
     loading?: boolean;
     disable?: boolean;
+    action?: () => void;
 }
 
 const textStyle = css`
@@ -158,23 +159,32 @@ const loaderColor = {
 };
 
 export const UButton = (props: UButtonProps) => {
-    const { text, square, size = 'medium', style = 'primary', loading, disable, ...other } = props;
+    const { text, square, size = 'medium', style = 'primary', loading, disable, action, onClick, ...other } = props;
+    const [loadingState, setLoadingState] = React.useState(loading);
+    const actionCallback = React.useCallback(async () => {
+        if (!action) {
+            return;
+        }
+        setLoadingState(true);
+        await action();
+        setLoadingState(false);
+    }, [action]);
     return (
-        <XView {...other}>
+        <XView {...other} onClick={action ? actionCallback : onClick}>
             <div
                 tabIndex={-1}
                 className={cx(
                     buttonWrapperStyle,
                     square && squareStyle,
-                    (loading || disable) && disableStyle,
+                    (loadingState || disable) && disableStyle,
                     sizeResolver[size],
                     styleResolver[style],
-                    !(loading || disable) && styleResolverHover[style],
-                    !(loading || disable) && styleResolverActive[style],
+                    !(loadingState || disable) && styleResolverHover[style],
+                    !(loadingState || disable) && styleResolverActive[style],
                 )}
             >
-                <span className={cx(textStyle, loading && loadingStyle)}>{text}</span>
-                {loading && (
+                <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
+                {loadingState && (
                     <XLoader
                         loading={true}
                         size="small"

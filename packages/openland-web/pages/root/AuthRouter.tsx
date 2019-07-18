@@ -64,12 +64,12 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
     ////////////////////////////////////////////////
 
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
-    if (
-        !userInfo.isLoggedIn &&
-        (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
-    ) {
-        // unicorn will handle it
-        return <>{props.children}</>;
+    if (router.path.startsWith('/join/') || router.path.startsWith('/invite/')) {
+        if (userInfo.isLoggedIn) {
+            return defaultRoute;
+        } else {
+            return redirectIfNeeded('/signin/invite');
+        }
     }
 
     // Redirect to Signup/Signin pages
