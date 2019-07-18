@@ -89,7 +89,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         field="input.facebook"
                     />
                     <ZInput
-                        placeholder="Linkedin"
+                        placeholder="LinkedIn"
                         field="input.linkedin"
                     />
                 </ZListItemGroup>
