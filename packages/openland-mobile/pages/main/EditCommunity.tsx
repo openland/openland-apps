@@ -79,10 +79,9 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     <ZSelect 
                         label="Community type"
                         defaultValue={organization.isPrivate}
+                        disabled={!organization.isOwner}
                         onChange={async (option: { label: string; value: boolean }) => {
-                            if (organization.isOwner) {
-                                await changeType(option.value);
-                            }
+                            await changeType(option.value);
                         }}
                         options={[
                             { label: 'Private', value: true, icon: require('assets/ic-create-private-24.png') },

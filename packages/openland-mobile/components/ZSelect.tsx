@@ -15,10 +15,11 @@ type ZSelectOption = {
 
 interface ZSelectBasicProps {
     label: string;
+    options: ZSelectOption[];
+    disabled?: boolean;
     value?: ZSelectValue;
     description?: string;
-    onChange?: (option: ZSelectOption) => void;
-    options: ZSelectOption[];
+    onChange?: (option: ZSelectOption) => void;  
 }
 
 interface ZSelectProps extends ZSelectBasicProps {
