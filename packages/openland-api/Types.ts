@@ -17314,10 +17314,19 @@ export interface RoomPicoVariables {
 // GraphQL query operation: RoomChat
 // ====================================================
 
+export interface RoomChat_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomChat_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: RoomChat_room_PrivateRoom_user_primaryOrganization | null;
+  isBot: boolean;
 }
 
 export interface RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {

@@ -268,6 +268,12 @@ export const RoomChatQuery = gql`
                 user {
                     id
                     name
+                    photo
+                    primaryOrganization {
+                        id
+                        name
+                    }
+                    isBot
                 }
                 pinnedMessage {
                     ...FullMessage

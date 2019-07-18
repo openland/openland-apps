@@ -10,7 +10,14 @@ query RoomChat($id: ID!) {
       user {
         __typename
         id
+        isBot
         name
+        photo
+        primaryOrganization {
+          __typename
+          id
+          name
+        }
       }
     }
     ... on SharedRoom {

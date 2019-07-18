@@ -7,6 +7,9 @@ import { ForwardPlaceholder } from './ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { ChatHeaderView } from './components/ChatHeaderView';
+import { ChatHeader } from './header/ChatHeader';
+import { Deferred } from 'openland-unicorn/components/Deferred';
 
 export const MessengerFragment = React.memo<{ id: string }>(props => {
 
@@ -35,37 +38,41 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
         }
     }
 
-    let title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+    const header = React.useMemo(() => {
+        return <ChatHeader chat={chat} />;
+    }, [chat]);
 
     return (
         <>
-            <UHeader title={title} appearance="wide" />
-            <XView
-                flexGrow={1}
-                flexShrink={1}
-                flexBasis={0}
-                minWidth={0}
-                minHeight={0}
-                alignSelf="stretch"
-                alignItems="stretch"
-            >
-                {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
-                <TalkBarComponent chat={chat} />
+            <UHeader titleView={header} appearance="wide" />
+            <Deferred>
                 <XView
                     flexGrow={1}
-                    flexBasis={0}
-                    minHeight={0}
                     flexShrink={1}
+                    flexBasis={0}
+                    minWidth={0}
+                    minHeight={0}
+                    alignSelf="stretch"
+                    alignItems="stretch"
                 >
-                    <MessengerRootComponent
-                        onChatLostAccess={onChatLostAccess}
-                        pinMessage={pinMessage}
-                        conversationId={chat.id}
-                        conversationType={chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'}
-                        room={chat}
-                    />
+                    {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
+                    <TalkBarComponent chat={chat} />
+                    <XView
+                        flexGrow={1}
+                        flexBasis={0}
+                        minHeight={0}
+                        flexShrink={1}
+                    >
+                        <MessengerRootComponent
+                            onChatLostAccess={onChatLostAccess}
+                            pinMessage={pinMessage}
+                            conversationId={chat.id}
+                            conversationType={chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'}
+                            room={chat}
+                        />
+                    </XView>
                 </XView>
-            </XView>
+            </Deferred>
         </>
     );
 });

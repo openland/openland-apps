@@ -29,22 +29,40 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 justifyContent="center"
                 marginRight={56}
             >
-                <XView
-                    height={32}
-                    color="#171B1F"
-                    minWidth={0}
-                    flexBasis={0}
-                    flexGrow={1}
-                    fontSize={24}
-                    maxWidth={appearance === 'normal' ? 600 : 900}
-                    lineHeight="32px"
-                    fontWeight="600"
-                    flexDirection="row"
-                    paddingHorizontal={16}
-                >
-                    {props.config.title}
-                </XView>
+                {!!props.config.titleView && (
+                    <XView
+                        height={56}
+                        color="#171B1F"
+                        minWidth={0}
+                        flexBasis={0}
+                        flexGrow={1}
+                        maxWidth={appearance === 'normal' ? 600 : 900}
+                        flexDirection="row"
+                        paddingHorizontal={16}
+                        alignItems="stretch"
+                        justifyContent="flex-start"
+                    >
+                        {props.config.titleView}
+                    </XView>
+                )}
+                {!props.config.titleView && (
+                    <XView
+                        height={32}
+                        color="#171B1F"
+                        minWidth={0}
+                        flexBasis={0}
+                        flexGrow={1}
+                        fontSize={24}
+                        maxWidth={appearance === 'normal' ? 600 : 900}
+                        lineHeight="32px"
+                        fontWeight="600"
+                        flexDirection="row"
+                        paddingHorizontal={16}
+                    >
+                        {props.config.title}
+                    </XView>
+                )}
             </XView>
-        </XView>
+        </XView >
     );
 });
