@@ -5,11 +5,16 @@ import { XView } from 'react-mental';
 interface UListGroupProps {
     header?: string;
     counter?: number;
+    action?: {
+        title: string;
+        path?: string;
+        onClick?: () => void;
+    };
     children?: any;
 }
 
 export const UListGroup = (props: UListGroupProps) => {
-    const { header, counter, children } = props;
+    const { header, counter, action, children } = props;
     const components: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -24,7 +29,7 @@ export const UListGroup = (props: UListGroupProps) => {
 
     return (
         <XView>
-            {!!header && <UListHeader text={header} counter={counter} />}
+            {!!header && <UListHeader text={header} counter={counter} action={action} />}
 
             <XView>
                 {components}

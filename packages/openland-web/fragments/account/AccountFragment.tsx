@@ -18,6 +18,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
+import { showCreateOrganization } from '../org/showCreateOrganization';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -149,7 +150,7 @@ export const AccountFragment = React.memo(() => {
                         path="/settings/download"
                     />
 
-                    <UListGroup header="Organizations">
+                    <UListGroup header="Organizations" action={{ title: '+ New', onClick: () => showCreateOrganization('organization')}}>
                         <React.Suspense fallback={<XLoader loading={true} />}>
                             <Organizations />
                         </React.Suspense>

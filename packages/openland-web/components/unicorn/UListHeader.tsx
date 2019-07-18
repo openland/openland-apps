@@ -6,10 +6,15 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 interface UListHeaderProps {
     text: string;
     counter?: string | number;
+    action?: {
+        title: string;
+        path?: string;
+        onClick?: () => void;
+    };
 }
 
 export const UListHeader = (props: UListHeaderProps) => {
-    const { text, counter } = props;
+    const { text, counter, action } = props;
 
     return (
         <XView
@@ -18,15 +23,29 @@ export const UListHeader = (props: UListHeaderProps) => {
             paddingHorizontal={16}
             flexDirection="row"
             alignItems="center"
-            justifyContent="flex-start"
         >
-            <XView {...TypeStyles.title2} color={ThemeDefault.foregroundPrimary}>
-                {text}
+            <XView flexDirection="row" flexGrow={1} justifyContent="flex-start">
+                <XView {...TypeStyles.title2} color={ThemeDefault.foregroundPrimary}>
+                    {text}
+                </XView>
+
+                {!!counter && (
+                    <XView {...TypeStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
+                        {counter}
+                    </XView>
+                )}
             </XView>
 
-            {!!counter && (
-                <XView {...TypeStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
-                    {counter}
+            {!!action && (
+                <XView
+                    {...TypeStyles.label1}
+                    cursor="pointer"
+                    color={ThemeDefault.foregroundTertiary}
+                    hoverColor={ThemeDefault.foregroundSecondary}
+                    path={action.path}
+                    onClick={action.onClick}
+                >
+                    {action.title}
                 </XView>
             )}
         </XView>
