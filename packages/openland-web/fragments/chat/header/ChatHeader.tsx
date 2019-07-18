@@ -20,6 +20,9 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 lineHeight="24px"
                 fontWeight="600"
                 color={ThemeDefault.foregroundPrimary}
+                hoverColor={ThemeDefault.accentPrimary}
+                cursor="pointer"
+                path={props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.id}` : `/group/${props.chat.id}`}
             >
                 <span>
                     {title}

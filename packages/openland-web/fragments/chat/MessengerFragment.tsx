@@ -7,7 +7,6 @@ import { ForwardPlaceholder } from './ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
-import { ChatHeaderView } from './components/ChatHeaderView';
 import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 
