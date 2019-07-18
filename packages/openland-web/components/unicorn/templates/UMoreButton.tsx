@@ -60,7 +60,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
         return (
             <XPopper
                 show={computedShow}
-                // contentContainer={<XMenuVertical />}
+                contentContainer={<XMenuVertical />}
                 content={children}
                 arrow={null}
                 placement={placement}

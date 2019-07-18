@@ -7,12 +7,13 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
+import { OrganizationManageButtons } from './components/OrganizationManageButtons';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const organization = client.useOrganizationWithoutMembers({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
-    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount } = organization;
+    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity } = organization;
 
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
@@ -47,9 +48,11 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         >
             <UListHero
                 title={name}
-                description="Organization"
+                description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
-            />
+            >
+                <OrganizationManageButtons organization={organization} />
+            </UListHero>
             <UListGroup header="About">
                 {!!about && <UListField value={about} marginBottom={24} />}
                 {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
