@@ -493,7 +493,7 @@ const EditCommunityEntity = (props: {
     );
 };
 
-export const EditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) =>
+export const showEditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) =>
     showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
         return (
             <EditCommunityEntity

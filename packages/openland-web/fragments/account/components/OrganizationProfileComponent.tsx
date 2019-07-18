@@ -52,7 +52,7 @@ import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
-import { EditCommunityModal } from './EditCommunityModal';
+import { showEditCommunityModal } from './EditCommunityModal';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -528,7 +528,7 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
     const editButton = (
         <XMenuItem
             onClick={() =>
-                EditCommunityModal(organization.id, organization.isCommunity, organization.isOwner)
+                showEditCommunityModal(organization.id, organization.isCommunity, organization.isOwner)
             }
         >
             {TextProfiles.Organization.edit}

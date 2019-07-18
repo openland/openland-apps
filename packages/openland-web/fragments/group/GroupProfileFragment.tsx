@@ -21,6 +21,7 @@ export const GroupProfileFragment = React.memo((props) => {
     if (!group || group.__typename === 'PrivateRoom') {
         return null;
     }
+
     const featuredMembers = client.useRoomFeaturedMembers({ roomId: unicorn.id }, { fetchPolicy: 'cache-and-network' }).roomFeaturedMembers;
     const initialMembers = client.useRoomMembersPaginated({ roomId: unicorn.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).members;
     const { id, membersCount, photo, title, description, organization, settings } = group;
