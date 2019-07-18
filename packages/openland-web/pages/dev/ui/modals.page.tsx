@@ -121,11 +121,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="avatar modal"
                             style="primary"
                             onClick={() =>
-                                showAvatarModal({
-                                    id: fredUser.id,
-                                    title: fredUser.fullName,
-                                    photo: fredUser.photo,
-                                })
+                                showAvatarModal(fredUser.photo)
                             }
                         />
 

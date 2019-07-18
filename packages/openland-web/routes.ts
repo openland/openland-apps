@@ -161,6 +161,13 @@ routes.add('/settings/apps', '/unicorn/index');
 routes.add('/settings/apps/', '/unicorn/index');
 
 //
+// Group
+//
+
+routes.add('/group/:id', '/unicorn/index');
+routes.add('/group/:id/', '/unicorn/index');
+
+//
 // Shortnames
 //
 

@@ -12,6 +12,7 @@ import { NotificationsFragment } from 'openland-web/fragments/notifications/Nofi
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
 
 const routing = new URouting();
 
@@ -38,6 +39,7 @@ routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 
 // Profile
+routing.addRoute('/group/:id', () => GroupProfileFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);
 
 // Invites

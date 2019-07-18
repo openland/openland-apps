@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { XView, XImage } from 'react-mental';
+import { XView, XImage, XViewProps } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
-export interface UAvatarProps {
+export interface UAvatarProps extends XViewProps {
     title: string;
     titleEmoji?: any;
     id: string;
@@ -168,73 +169,8 @@ const OnlineDotXSmall = () => (
     />
 );
 
-interface AvatarContainerProps {
-    content: any;
-    online?: boolean;
-}
-
-const AvatarContainerXXLarge = (props: AvatarContainerProps) => (
-    <XView width={96} height={96}>
-        <XView width="100%" height="100%" borderRadius={48} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotXXLarge />}
-    </XView>
-);
-
-const AvatarContainerXLarge = (props: AvatarContainerProps) => (
-    <XView width={72} height={72}>
-        <XView width="100%" height="100%" borderRadius={36} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotXLarge />}
-    </XView>
-);
-
-const AvatarContainerLarge = (props: AvatarContainerProps) => (
-    <XView width={56} height={56}>
-        <XView width="100%" height="100%" borderRadius={28} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotLarge />}
-    </XView>
-);
-
-const AvatarContainerMedium = (props: AvatarContainerProps) => (
-    <XView width={40} height={40}>
-        <XView width="100%" height="100%" borderRadius={20} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotMedium />}
-    </XView>
-);
-
-const AvatarContainerSmall = (props: AvatarContainerProps) => (
-    <XView width={32} height={32}>
-        <XView width="100%" height="100%" borderRadius={16} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotSmall />}
-    </XView>
-);
-
-const AvatarContainerXSmall = (props: AvatarContainerProps) => (
-    <XView width={24} height={24}>
-        <XView width="100%" height="100%" borderRadius={12} overflow="hidden">
-            {props.content}
-        </XView>
-
-        {props.online && <OnlineDotXSmall />}
-    </XView>
-);
-
 export const UAvatar = XMemo<UAvatarProps>(props => {
-    const { photo, size = 'medium' } = props;
+    const { title, titleEmoji, id, photo, online, size = 'medium', ...other } = props;
     let content: any = undefined;
 
     if (photo) {
@@ -247,17 +183,25 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
         content = <AvatarPlaceholder {...props} />;
     }
 
-    if (size === 'x-small') {
-        return <AvatarContainerXSmall content={content} online={props.online} />;
-    } else if (size === 'small') {
-        return <AvatarContainerSmall content={content} online={props.online} />;
-    } else if (size === 'medium') {
-        return <AvatarContainerMedium content={content} online={props.online} />;
-    } else if (size === 'large') {
-        return <AvatarContainerLarge content={content} online={props.online} />;
-    } else if (size === 'x-large') {
-        return <AvatarContainerXLarge content={content} online={props.online} />;
-    } else {
-        return <AvatarContainerXXLarge content={content} online={props.online} />;
-    }
+    const boxSize = avatarSizes[size].size;
+
+    return (
+        <XView
+            {...other}
+            width={boxSize}
+            height={boxSize}
+            cursor={props.onClick || props.path ? 'pointer' : undefined}
+        >
+            <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
+                {content}
+            </XView>
+    
+            {online && size === 'x-small' && <OnlineDotXSmall />}
+            {online && size === 'small' && <OnlineDotSmall />}
+            {online && size === 'medium' && <OnlineDotMedium />}
+            {online && size === 'large' && <OnlineDotLarge />}
+            {online && size === 'x-large' && <OnlineDotXLarge />}
+            {online && size === 'xx-large' && <OnlineDotXXLarge />}
+        </XView>
+    );
 });

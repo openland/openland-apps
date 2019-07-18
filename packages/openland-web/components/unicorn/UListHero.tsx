@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
+import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
 
 const Score = (props: { value: number }) => (
     <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center">
@@ -42,7 +43,7 @@ export const UListHero = (props: UListHeroProps) => {
         >
             {!!avatar && (
                 <XView marginRight={16} position="relative">
-                    <UAvatar {...avatar} size="x-large" />
+                    <UAvatar {...avatar} size="x-large" onClick={avatar.photo ? () => showAvatarModal(avatar.photo!) : undefined} />
                     {!!score && <Score value={score} />}
                 </XView>
             )}
