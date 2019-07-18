@@ -62,7 +62,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
-    private themeSub?: () => void;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
@@ -84,12 +83,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
-    }
-
-    componentWillUnmount() {
-        if (this.themeSub) {
-            this.themeSub();
-        }
     }
 
     componentWillMount() {
